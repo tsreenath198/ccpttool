@@ -9,7 +9,7 @@ public interface IClientApplicationService {
 
 	ClientApplication getClientApplicationById(int id);
 
-	boolean addClientApplication(ClientApplication clientApplication);
+	void addClientApplication(ClientApplication clientApplication);
 
 	void updateClientApplication(ClientApplication clientApplication);
 

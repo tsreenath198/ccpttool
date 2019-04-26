@@ -40,14 +40,8 @@ public class ClientApplicationService implements IClientApplicationService {
 	}
 
 	@Override
-	public boolean addClientApplication(ClientApplication clientApplication) {
-		/*List<ClientApplication> list = clientApplicationRepository.findByTitleAndCategory(article.getTitle(), article.getCategory());
-		if (list.size() > 0) {
-			return false;
-		} else {*/
-			clientApplicationRepository.save(clientApplication);
-			return true;
-		/* } */
+	public void addClientApplication(ClientApplication clientApplication) {
+		clientApplicationRepository.save(clientApplication);
 	}
 
 }
