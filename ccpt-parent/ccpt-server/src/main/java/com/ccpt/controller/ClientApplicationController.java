@@ -3,7 +3,6 @@ package com.ccpt.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import com.ccpt.model.ClientApplication;
 import com.ccpt.service.IClientApplicationService;
@@ -33,33 +31,27 @@ public class ClientApplicationController {
 		return new ResponseEntity<List<ClientApplication>>(clientApplicationList, HttpStatus.OK);
 	}
 
-	@GetMapping("{id}")
+	@GetMapping("id/{id}")
 	public ResponseEntity<ClientApplication> getClientApplicationById(@PathVariable("id") Integer id) {
 		ClientApplication clientApplication = clientApplicationService.getClientApplicationById(id);
 		return new ResponseEntity<ClientApplication>(clientApplication, HttpStatus.OK);
 	}
 
-	@PostMapping("/")
-	public ResponseEntity<Void> addClientApplication(@RequestBody ClientApplication clientApplication,
-			UriComponentsBuilder builder) {
-		boolean flag = clientApplicationService.addClientApplication(clientApplication);
-		if (flag == false) {
-			return new ResponseEntity<Void>(HttpStatus.CONFLICT);
-		}
-		HttpHeaders headers = new HttpHeaders();
-		headers.setLocation(builder.path("/clientApplication/{id}").buildAndExpand(clientApplication.getId()).toUri());
-		return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
+	@PostMapping("create")
+	public ResponseEntity<Void> addClientApplication(@RequestBody ClientApplication clientApplication) {
+		clientApplicationService.addClientApplication(clientApplication);
+		return new ResponseEntity<Void>(HttpStatus.CREATED);
 	}
 
-	@PutMapping("/")
+	@PutMapping("update")
 	public ResponseEntity<ClientApplication> updateClientApplication(@RequestBody ClientApplication clientApplication) {
 		clientApplicationService.updateClientApplication(clientApplication);
 		return new ResponseEntity<ClientApplication>(clientApplication, HttpStatus.OK);
 	}
 
-	@DeleteMapping("{id}")
+	@DeleteMapping("id/{id}")
 	public ResponseEntity<Void> deleteClientApplication(@PathVariable("id") Integer id) {
 		clientApplicationService.deleteClientApplication(id);
-		return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 }
