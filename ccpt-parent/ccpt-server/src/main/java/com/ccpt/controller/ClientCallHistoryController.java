@@ -1,5 +1,6 @@
 package com.ccpt.controller;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,12 +40,14 @@ public class ClientCallHistoryController {
 
 	@PostMapping("create")
 	public ResponseEntity<Void> addClientCallHistory(@RequestBody ClientCallHistory clientCallHistory) {
+		clientCallHistory.setCreatedDate(new Date());
 		clientCallHistoryService.addClientCallHistory(clientCallHistory);
 		return new ResponseEntity<Void>(HttpStatus.CREATED);
 	}
 
 	@PutMapping("update")
 	public ResponseEntity<ClientCallHistory> updateClientCallHistory(@RequestBody ClientCallHistory clientCallHistory) {
+		clientCallHistory.setUpdatedDate(new Date());
 		clientCallHistoryService.updateClientCallHistory(clientCallHistory);
 		return new ResponseEntity<ClientCallHistory>(clientCallHistory, HttpStatus.OK);
 	}

@@ -22,7 +22,7 @@ CREATE TABLE client_application_status (
 
 -- Table: client_call_history
 CREATE TABLE client_call_history (
-    id int NOT NULL,
+    id int NOT NULL AUTO_INCREMENT,
     client_position_id int NOT NULL,
     notes text NOT NULL,
     created_date date NOT NULL ,
@@ -32,7 +32,7 @@ CREATE TABLE client_call_history (
 
 -- Table: client_position
 CREATE TABLE client_position (
-    id int NOT NULL,    
+    id int NOT NULL AUTO_INCREMENT,    
     technology text NOT NULL,
     experience varchar(30) NULL,
     required_skills text NOT NULL,
@@ -56,7 +56,7 @@ CREATE TABLE client_positions_status (
 
 -- Table: consultant
 CREATE TABLE consultant (
-    id int NOT NULL,
+    id int NOT NULL AUTO_INCREMENT,
     name varchar(50) NOT NULL,
     email varchar(50) NULL,
     phone varchar(20) NULL,
@@ -76,7 +76,7 @@ CREATE TABLE consultant (
 
 -- Table: consultant_call_history
 CREATE TABLE consultant_call_history (
-    id int NOT NULL,
+    id int NOT NULL AUTO_INCREMENT,
     consultant_id int NOT NULL,
     description varchar(20) NOT NULL,
     created_date date NOT NULL ,
@@ -96,6 +96,7 @@ CREATE TABLE consultant_status (
 CREATE TABLE login (
     username varchar(50) NOT NULL,
     password varchar(50) NOT NULL,
+    token varchar(50) NOT NULL,
     role varchar(20) NOT NULL,
     description text NULL,
     created_date date NOT NULL ,

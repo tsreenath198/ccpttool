@@ -15,6 +15,8 @@ public class Login {
 	private String username;
 	@Column(name = "password")
 	private String password;
+	@Column(name = "token")
+	private String token;
 	@Column(name = "role")
 	private String role;
 	@Column(name = "description")
@@ -40,6 +42,14 @@ public class Login {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
 	}
 
 	public String getRole() {
@@ -84,9 +94,9 @@ public class Login {
 
 	@Override
 	public String toString() {
-		return "Login [username=" + username + ", password=" + password + ", role=" + role + ", description="
-				+ description + ", createdDate=" + createdDate + ", updatedDate=" + updatedDate + ", activeFlag="
-				+ activeFlag + "]";
+		return "Login [username=" + username + ", password=" + password + ", token=" + token + ", role=" + role
+				+ ", description=" + description + ", createdDate=" + createdDate + ", updatedDate=" + updatedDate
+				+ ", activeFlag=" + activeFlag + "]";
 	}
 
 }

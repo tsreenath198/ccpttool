@@ -1,4 +1,4 @@
-package com.ccpt.controller;
+/*package com.ccpt.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,4 +12,4 @@ public class HomeController {
 	public String home(Model model) {
 		return "forward:/index.html";
 	}
-}
+}*/

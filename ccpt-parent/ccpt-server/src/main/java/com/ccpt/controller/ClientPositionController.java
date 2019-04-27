@@ -1,5 +1,6 @@
 package com.ccpt.controller;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,12 +40,14 @@ public class ClientPositionController {
 
 	@PostMapping("create")
 	public ResponseEntity<Void> addClientPosition(@RequestBody ClientPosition clientPosition) {
+		clientPosition.setCreatedDate(new Date());
 		clientPositionService.addClientPosition(clientPosition);
 		return new ResponseEntity<Void>(HttpStatus.CREATED);
 	}
 
 	@PutMapping("update")
 	public ResponseEntity<ClientPosition> updateClientPosition(@RequestBody ClientPosition clientPosition) {
+		clientPosition.setUpdatedDate(new Date());
 		clientPositionService.updateClientPosition(clientPosition);
 		return new ResponseEntity<ClientPosition>(clientPosition, HttpStatus.OK);
 	}

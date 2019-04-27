@@ -1,5 +1,6 @@
 package com.ccpt.controller;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,12 +40,14 @@ public class ConsultantController {
 
 	@PostMapping("create")
 	public ResponseEntity<Void> addConsultant(@RequestBody Consultant consultant) {
+		consultant.setCreatedDate(new Date());
 		consultantService.addConsultant(consultant);
 		return new ResponseEntity<Void>(HttpStatus.CREATED);
 	}
 
 	@PutMapping("update")
 	public ResponseEntity<Consultant> updateConsultant(@RequestBody Consultant consultant) {
+		consultant.setUpdatedDate(new Date());
 		consultantService.updateConsultant(consultant);
 		return new ResponseEntity<Consultant>(consultant, HttpStatus.OK);
 	}
