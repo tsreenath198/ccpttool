@@ -105,6 +105,21 @@ CREATE TABLE login (
     CONSTRAINT login_pk PRIMARY KEY (username)
 ) COMMENT 'for login credentials';
 
+--Table Recruiter
+CREATE TABLE recruiter(
+id INT NOT NULL AUTO_INCREMENT ,
+firstname VARCHAR(30) NOT NULL , 
+lastname VARCHAR(30) NOT NULL ,
+dob DATE NOT NULL ,
+phone VARCHAR(20) NOT NULL ,
+email VARCHAR(30) NOT NULL ,
+address TEXT NOT NULL, 
+role VARCHAR(20) NOT NULL,
+created_date date NOT NULL ,
+updated_date date NULL,
+active_flag char(1) NOT NULL DEFAULT 'Y',
+CONSTRAINT recruter_pk PRIMARY KEY (id));
+
 -- foreign keys
 -- Reference: client_application_client_application_status (table: client_application)
 ALTER TABLE client_application ADD CONSTRAINT client_application_client_application_status FOREIGN KEY client_application_client_application_status (client_application_status_code)
