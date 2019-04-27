@@ -1,3 +1,17 @@
+SET foreign_key_checks = 0;
+
+DROP TABLE IF EXISTS client_application;
+DROP TABLE IF EXISTS client_application_status;
+DROP TABLE IF EXISTS client_call_history;
+DROP TABLE IF EXISTS client_position;
+DROP TABLE IF EXISTS client_positions_status;
+DROP TABLE IF EXISTS consultant;
+DROP TABLE IF EXISTS consultant_call_history;
+DROP TABLE IF EXISTS consultant_status;
+DROP TABLE IF EXISTS login;
+DROP TABLE IF EXISTS upload_file;
+DROP TABLE IF EXISTS recruiter;
+
 -- Table: client_application
 CREATE TABLE client_application (
     id int NOT NULL,
@@ -102,8 +116,7 @@ CREATE TABLE login (
     updated_date date NULL,
     active_flag char(1) NOT NULL DEFAULT 'Y',
     CONSTRAINT login_pk PRIMARY KEY (username)
-) COMMENT 'for login credentials';
-
+);
 
 -- Table: upload_file
 CREATE TABLE upload_file (
@@ -113,9 +126,9 @@ CREATE TABLE upload_file (
   ref_type varchar(20) NOT NULL,
   comments text NOT NULL,
   CONSTRAINT upload_file_pk PRIMARY KEY (id)
-) 
--- Table: Recruiter
+);
 
+-- Table: Recruiter
 CREATE TABLE recruiter(
 id INT NOT NULL AUTO_INCREMENT ,
 firstname VARCHAR(30) NOT NULL , 
@@ -128,7 +141,8 @@ role VARCHAR(20) NOT NULL,
 created_date date NOT NULL ,
 updated_date date NULL,
 active_flag char(1) NOT NULL DEFAULT 'Y',
-CONSTRAINT recruter_pk PRIMARY KEY (id));
+CONSTRAINT recruter_pk PRIMARY KEY (id)
+);
 
 -- foreign keys
 -- Reference: client_application_client_application_status (table: client_application)
@@ -164,3 +178,5 @@ ALTER TABLE consultant ADD CONSTRAINT consultant_consultant_status FOREIGN KEY c
     REFERENCES consultant_status (code);
 
 -- End of file.
+
+SET foreign_key_checks = 1;
