@@ -63,7 +63,6 @@ CREATE TABLE consultant (
     skills text NULL,
     passout_year int NULL,
     qualification varchar(50) NULL,
-    resume blob NULL,
     expected_salary double(10,2) NULL,
     description varchar(100) NULL,
     created_date date NOT NULL  ,
@@ -105,6 +104,15 @@ CREATE TABLE login (
     CONSTRAINT login_pk PRIMARY KEY (username)
 ) COMMENT 'for login credentials';
 
+-- Table: upload_file
+CREATE TABLE upload_file (
+  id int(11) NOT NULL,
+  file blob NOT NULL,
+  ref_id int(11) NOT NULL,
+  ref_type varchar(20) NOT NULL,
+  comments text NOT NULL,
+  CONSTRAINT upload_file_pk PRIMARY KEY (id)
+) 
 -- Table: Recruiter
 CREATE TABLE recruiter(
 id INT NOT NULL AUTO_INCREMENT ,
