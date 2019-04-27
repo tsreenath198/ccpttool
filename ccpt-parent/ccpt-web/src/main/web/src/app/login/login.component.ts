@@ -19,10 +19,13 @@ export class LoginComponent implements OnInit {
         console.log("name", this.name)
         this.http.getLogin("assets/login.json").subscribe(resp => {
             let response = resp as LoginModel;
-            this.toastr.success("User Logged In Successfully","Login");
+            
             if (response.username == this.name) {
-                this.router.navigate(["/"]);
-                localStorage.setItem('isLoggedin','true');
+                this.toastr.success("User Logged In Successfully","Login");
+               this.router.navigate(["/dashboard"]);
+               // localStorage.setItem('isLoggedin','false');
+              }else{
+                this.toastr.error("Invalid User name or password","Login");
               }
            
         });

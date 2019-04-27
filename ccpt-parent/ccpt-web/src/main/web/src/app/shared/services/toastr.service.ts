@@ -10,4 +10,7 @@ export class ToastrCustomService {
   success(msg, current) {
     this.toastr.success(msg, current);
   }
+  error(msg, current) {
+    this.toastr.error(msg, current);
+  }
 }
