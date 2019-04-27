@@ -27,9 +27,6 @@ public class Consultant {
 	private int passoutYear;
 	@Column(name = "qualification")
 	private String qualification;
-	/*
-	 * @Column(name = "resume") private MultipartFile resume;
-	 */
 	@Column(name = "expected_salary")
 	private double expectedSalary;
 	@Column(name = "description")
@@ -101,11 +98,6 @@ public class Consultant {
 		this.qualification = qualification;
 	}
 
-	/*
-	 * public MultipartFile getResume() { return resume; }
-	 * 
-	 * public void setResume(MultipartFile resume) { this.resume = resume; }
-	 */
 	public double getExpectedSalary() {
 		return expectedSalary;
 	}
