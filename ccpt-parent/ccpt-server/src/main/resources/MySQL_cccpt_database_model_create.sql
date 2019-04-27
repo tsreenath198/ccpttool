@@ -105,7 +105,7 @@ CREATE TABLE login (
     CONSTRAINT login_pk PRIMARY KEY (username)
 ) COMMENT 'for login credentials';
 
---Table Recruiter
+-- Table: Recruiter
 CREATE TABLE recruiter(
 id INT NOT NULL AUTO_INCREMENT ,
 firstname VARCHAR(30) NOT NULL , 
