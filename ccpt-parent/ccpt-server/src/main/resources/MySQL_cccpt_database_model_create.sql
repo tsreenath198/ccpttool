@@ -104,6 +104,7 @@ CREATE TABLE login (
     CONSTRAINT login_pk PRIMARY KEY (username)
 ) COMMENT 'for login credentials';
 
+
 -- Table: upload_file
 CREATE TABLE upload_file (
   id int(11) NOT NULL,
@@ -114,6 +115,7 @@ CREATE TABLE upload_file (
   CONSTRAINT upload_file_pk PRIMARY KEY (id)
 ) 
 -- Table: Recruiter
+
 CREATE TABLE recruiter(
 id INT NOT NULL AUTO_INCREMENT ,
 firstname VARCHAR(30) NOT NULL , 
