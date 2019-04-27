@@ -23,7 +23,8 @@ export class LoginComponent implements OnInit {
             if (response.username == this.name) {
                 this.toastr.success("User Logged In Successfully","Login");
                this.router.navigate(["/dashboard"]);
-               // localStorage.setItem('isLoggedin','false');
+                localStorage.setItem('isLoggedin','false');
+                localStorage.setItem('username',response.username);
               }else{
                 this.toastr.error("Invalid User name or password","Login");
               }
