@@ -1,0 +1,83 @@
+<div [@routerTransition]>
+    <app-page-header [icon]="'fa-bar-chart-o'" [heading]="'Client Application'"></app-page-header>
+    <div class="row">
+        <div class="col-md-2">
+            <div class="table-responsive">
+                <table class="table table-hover table-striped">
+                    <thead>
+                        <tr>
+                            <th>name</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Infosys</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col-md-10">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Client Application Status Code</label>
+                        <select class="form-control" [(ngModel)]="clientApplicationModel.clientApplicationStatusCode">
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4</option>
+                            <option>5</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Client Position id</label>
+                        <select class="form-control" [(ngModel)]="clientApplicationModel.clientPositionId">
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4</option>
+                            <option>5</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Consultant Id</label>
+                        <select class="form-control" [(ngModel)]="clientApplicationModel.consultantId">
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4</option>
+                            <option>5</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group" data-provide="datepicker">
+                            <label>Interview Date</label>
+                        <input type="date" class="form-control" [(ngModel)]="clientApplicationModel.interviewDate">
+                        <div class="input-group-addon">
+                            <span class="glyphicon glyphicon-th"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Notes</label>
+                        <input class="form-control" [(ngModel)]="clientApplicationModel.notes">
+                    </div>
+                </div>
+                <div class="col-md-2 mt-4">
+                    <button type="button" class="btn btn-secondary">Add</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>

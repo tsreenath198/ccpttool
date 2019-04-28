@@ -1,0 +1,10 @@
+export interface ClientPositionModel{
+    technology:string,
+    experience:string,
+    requiredSkills:string,
+    minCtc:number,
+    maxCtc:number,
+    clientPositionsStatusCode:string,
+    closedBy:string,
+    additionalComments:string
+}

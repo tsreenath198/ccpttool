@@ -1,0 +1,78 @@
+<div [@routerTransition]>
+    <app-page-header [icon]="'fa-bar-chart-o'" [heading]="'Client Application'"></app-page-header>
+    <div class="row">
+        <div class="col-md-2">
+            <div class="table-responsive">
+                <table class="table table-hover table-striped">
+                    <thead>
+                        <tr>
+                            <th>name</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Infosys</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col-md-10">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>First Name</label>
+                        <input class="form-control" [(ngModel)]="recruiterModel.firstname">
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Last Name</label>
+                        <input class="form-control" [(ngModel)]="recruiterModel.lastname">
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group" data-provide="datepicker">
+                        <label>Date of Birth</label>
+                        <input type="date" class="form-control" [(ngModel)]="recruiterModel.dob">
+                        <div class="input-group-addon">
+                            <span class="glyphicon glyphicon-th"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Role</label>
+                        <input class="form-control" [(ngModel)]="recruiterModel.role">
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Phone</label>
+                        <input class="form-control" [(ngModel)]="recruiterModel.phone">
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>E-Mail</label>
+                        <input class="form-control" [(ngModel)]="recruiterModel.email">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Address</label>
+                            <input class="form-control" [(ngModel)]="recruiterModel.address">
+                        </div>
+                    </div>
+                    <div class="col-md-2 mt-4">
+                        <button type="button" class="btn btn-secondary">Add</button>
+                    </div>
+                </div>
+        </div>
+    </div>
+
+</div>
