@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.ccpt.model.ClientCallHistory;
 import com.ccpt.model.ConsultantCallHistory;
@@ -40,4 +41,20 @@ public class ReportController {
 		return new ResponseEntity<>(map, HttpStatus.OK);
 	}
 
+	/*@SuppressWarnings("rawtypes")
+	@GetMapping("getAllConsultantCallHistorysFromLastGivenDays")
+	public ResponseEntity<Map<String, List>> getAllConsultantCallHistorysFromLastGivenDays(@RequestParam int days) {
+
+		List<ConsultantCallHistory> consultantCallHistoryList = consultantCallHistoryService
+				.getAllConsultantCallHistorysFromLastGivenDays(days);
+		List<ClientCallHistory> clientCallHistoryList = clientCallHistoryService
+				.getAllConsultantCallHistorysFromLastGivenDays(days);
+
+		Map<String, List> map = new HashMap<>();
+		map.put("consultantCallHistoryList", consultantCallHistoryList);
+		map.put("clientCallHistoryList", clientCallHistoryList);
+
+		return new ResponseEntity<>(map, HttpStatus.OK);
+	}
+*/
 }

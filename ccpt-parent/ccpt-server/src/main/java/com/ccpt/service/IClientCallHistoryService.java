@@ -14,4 +14,6 @@ public interface IClientCallHistoryService {
 	void updateClientCallHistory(ClientCallHistory clientCallHistory);
 
 	void deleteClientCallHistory(int id);
+
+	/*List<ClientCallHistory> getAllConsultantCallHistorysFromLastGivenDays(int days);*/
 }

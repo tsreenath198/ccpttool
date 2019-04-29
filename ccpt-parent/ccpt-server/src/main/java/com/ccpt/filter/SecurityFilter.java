@@ -1,4 +1,4 @@
-package com.ccpt.filter;
+/*package com.ccpt.filter;
 
 import java.io.IOException;
 
@@ -49,4 +49,4 @@ public class SecurityFilter implements Filter {
 
 	}
 
-}
+}*/

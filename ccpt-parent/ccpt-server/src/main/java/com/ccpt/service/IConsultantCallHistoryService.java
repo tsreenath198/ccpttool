@@ -14,4 +14,6 @@ public interface IConsultantCallHistoryService {
 	void updateConsultantCallHistory(ConsultantCallHistory consultantCallHistory);
 
 	void deleteConsultantCallHistory(int id);
+
+	/*List<ConsultantCallHistory> getAllConsultantCallHistorysFromLastGivenDays(int days);*/
 }

@@ -45,4 +45,9 @@ public class ConsultantCallHistoryService implements IConsultantCallHistoryServi
 		return true;
 	}
 
+	/*@Override
+	public List<ConsultantCallHistory> getAllConsultantCallHistorysFromLastGivenDays(int days) {
+		return consultantCallHistoryRepository.getAllConsultantCallHistorysFromLastGivenDays(days);
+	}*/
+
 }

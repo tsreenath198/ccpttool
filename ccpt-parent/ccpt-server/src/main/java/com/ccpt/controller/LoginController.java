@@ -11,9 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.ccpt.model.Login;
 import com.ccpt.service.ILoginService;
@@ -37,14 +39,18 @@ public class LoginController {
 		return new ResponseEntity<Void>(HttpStatus.CREATED);
 	}
 
-	@PostMapping("getToken")
-	public ResponseEntity<String> getTokenByUsernameAndPassword(@RequestBody Login login, HttpServletRequest request,
-			HttpServletResponse response) {
-		String token = loginService.getTokenByUsernameAndPassword(login);
-		HttpSession session = request.getSession();
-		session.setAttribute("X-TOKEN", token);
-		response.setHeader("X-TOKEN", token);
-		return new ResponseEntity<String>(token, HttpStatus.OK);
+	@GetMapping("login")
+	public ResponseEntity<String> getTokenByUsernameAndPassword(@RequestParam String username,
+			@RequestParam String password, HttpServletRequest request, HttpServletResponse response) {
+		String token = loginService.getTokenByUsernameAndPassword(username, password);
+		if (token != null) {
+			HttpSession session = request.getSession();
+			session.setAttribute("X-TOKEN", token);
+			response.setHeader("X-TOKEN", token);
+			return new ResponseEntity<String>(token, HttpStatus.OK);
+		} else {
+			return new ResponseEntity<String>(token, HttpStatus.NOT_FOUND);
+		}
 	}
 
 }
