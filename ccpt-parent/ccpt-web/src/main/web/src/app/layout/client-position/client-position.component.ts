@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { routerTransition } from '../../router.animations';
 import { ClientPositionModel } from './client-position.model';
+import { HttpClientService } from 'src/app/shared/services/http.service';
 
 @Component({
     selector: 'app-client-position',
@@ -10,9 +11,17 @@ import { ClientPositionModel } from './client-position.model';
 })
 export class ClientPositionComponent implements OnInit {
     public clientPositionModel:ClientPositionModel = <ClientPositionModel>{};
-    constructor() { }
+    public componentName="Client Position Component";
+    constructor(private http: HttpClientService) { }
 
     ngOnInit() {
 
+    }
+    submit(): void {
+        this.http.create(this.componentName,this.clientPositionModel, 'url').subscribe(resp => {
+
+
+        })
+        this.clientPositionModel = <ClientPositionModel>{};
     }
 }

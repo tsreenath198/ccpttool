@@ -11,4 +11,8 @@ export class HttpClientService {
   public getLogin(URL: string) {
     return this.http.get(URL);
   }
+  create(component:string,data: any, url) {
+    console.log(component,data);
+    return this.http.post(url, data);
+  }
 }
