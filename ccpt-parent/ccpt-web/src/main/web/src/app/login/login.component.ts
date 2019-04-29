@@ -11,13 +11,13 @@ import { ToastrCustomService } from '../shared/services/toastr.service';
     animations: [routerTransition()]
 })
 export class LoginComponent implements OnInit {
-    constructor(public router: Router, public http: HttpClientService,  private toastr: ToastrCustomService) { }
+    constructor(public router: Router, public http: HttpClientService, private toastr: ToastrCustomService) { }
     public name: string = "";
     public password: string = "";
     ngOnInit() { }
     onLoggedin() {
         console.log("name", this.name)
-        this.http.getLogin("assets/login.json").subscribe(resp => {
+        /*this.http.getLogin("assets/login.json").subscribe(resp => {
             let response = resp as LoginModel;
             
             if (response.username == this.name) {
@@ -29,6 +29,9 @@ export class LoginComponent implements OnInit {
                 this.toastr.error("Invalid User name or password","Login");
               }
            
+        });*/
+        this.http.get().subscribe(resp => {
+            console.log("dfff")
         });
     }
 
