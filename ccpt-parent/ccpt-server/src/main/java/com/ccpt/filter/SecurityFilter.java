@@ -1,4 +1,4 @@
-/*package com.ccpt.filter;
+package com.ccpt.filter;
 
 import java.io.IOException;
 
@@ -26,6 +26,7 @@ public class SecurityFilter implements Filter {
 		String requestURI = httpServletRequest.getRequestURI();
 		if (requestURI.contains("/login")) {
 			chain.doFilter(httpServletRequest, httpServletResponse);
+			return;
 		}
 
 		String dbToken = (String) httpServletRequest.getSession().getAttribute("X-TOKEN");
@@ -49,4 +50,4 @@ public class SecurityFilter implements Filter {
 
 	}
 
-}*/
+}
