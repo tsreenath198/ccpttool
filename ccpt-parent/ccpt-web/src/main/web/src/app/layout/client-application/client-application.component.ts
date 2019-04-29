@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { routerTransition } from '../../router.animations';
 import { ClientApplicationModel } from './client-application.model';
 import { HttpClientService } from 'src/app/shared/services/http.service';
+import { ClientApplicationStatusModel } from '../client-application-status/client-application-status.model';
 
 @Component({
     selector: 'app-client-application',
@@ -11,16 +12,17 @@ import { HttpClientService } from 'src/app/shared/services/http.service';
 })
 export class ClientApplicationComponent implements OnInit {
     public clientApplicationModel: ClientApplicationModel = <ClientApplicationModel>{};
-    public componentName="Client Application Component";
+    public consultantStatusList:Array<ClientApplicationStatusModel> = [];
     constructor(private http: HttpClientService) { }
 
     ngOnInit() {
-
+        this.http.get('admin/getAllClientApplicationStatus').subscribe(resp => {
+            this.consultantStatusList = resp as [];
+        })
     }
     submit(): void {
-        this.http.create(this.componentName,this.clientApplicationModel, 'url').subscribe(resp => {
-
-
+        this.http.create(this.clientApplicationModel, 'clientApplication/create').subscribe(resp => {
+            
         })
         this.clientApplicationModel = <ClientApplicationModel>{};
     }

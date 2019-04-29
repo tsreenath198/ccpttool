@@ -23,11 +23,8 @@
                     <div class="form-group">
                         <label>Client Application Status Code</label>
                         <select class="form-control" [(ngModel)]="clientApplicationModel.clientApplicationStatusCode">
-                            <option>1</option>
-                            <option>2</option>
-                            <option>3</option>
-                            <option>4</option>
-                            <option>5</option>
+                            <option *ngFor="let consultantStatus of consultantStatusList"
+                                [ngValue]="consultantStatus.code">{{consultantStatus.description}}</option>
                         </select>
                     </div>
                 </div>
@@ -59,7 +56,7 @@
             <div class="row">
                 <div class="col-md-4">
                     <div class="form-group" data-provide="datepicker">
-                            <label>Interview Date</label>
+                        <label>Interview Date</label>
                         <input type="date" class="form-control" [(ngModel)]="clientApplicationModel.interviewDate">
                         <div class="input-group-addon">
                             <span class="glyphicon glyphicon-th"></span>

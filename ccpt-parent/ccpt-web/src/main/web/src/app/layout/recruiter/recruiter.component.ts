@@ -11,13 +11,12 @@ import { HttpClientService } from 'src/app/shared/services/http.service';
 })
 export class RecruiterComponent implements OnInit {
     public recruiterModel:RecruiterModel = <RecruiterModel>{};
-    public componentName="Recruiter Component";
     constructor(private http: HttpClientService) { }
     ngOnInit() {
 
     }
     submit(): void {
-        this.http.create(this.componentName,this.recruiterModel, 'url').subscribe(resp => {
+        this.http.create(this.recruiterModel, 'url').subscribe(resp => {
 
 
         })

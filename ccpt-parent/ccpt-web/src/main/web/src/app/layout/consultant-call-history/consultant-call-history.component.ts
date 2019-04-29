@@ -10,15 +10,13 @@ import { HttpClientService } from 'src/app/shared/services/http.service';
     animations: [routerTransition()]
 })
 export class ConsultantCallHistoryComponent implements OnInit {
-    public consultantCallHistoryModel:ConsultantCallHistoryModel = <ConsultantCallHistoryModel>{};
-    public componentName="Consultant Call History Component";
+    public consultantCallHistoryModel: ConsultantCallHistoryModel = <ConsultantCallHistoryModel>{};
     constructor(private http: HttpClientService) { }
     ngOnInit() {
-
+       
     }
     submit(): void {
-        this.http.create(this.componentName,this.consultantCallHistoryModel, 'url').subscribe(resp => {
-
+        this.http.create(this.consultantCallHistoryModel, 'url').subscribe(resp => {
 
         })
         this.consultantCallHistoryModel = <ConsultantCallHistoryModel>{};

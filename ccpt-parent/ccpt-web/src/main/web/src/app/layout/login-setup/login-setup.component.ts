@@ -11,14 +11,13 @@ import { HttpClientService } from 'src/app/shared/services/http.service';
 })
 export class LoginSetupComponent implements OnInit {
     public loginSetupModel:LoginSetupModel = <LoginSetupModel>{};
-    public componentName="Login Setup Component";
     constructor(private http: HttpClientService) { }
 
     ngOnInit() {
 
     }
     submit(): void {
-        this.http.create(this.componentName,this.loginSetupModel, 'url').subscribe(resp => {
+        this.http.create(this.loginSetupModel, 'url').subscribe(resp => {
 
 
         })

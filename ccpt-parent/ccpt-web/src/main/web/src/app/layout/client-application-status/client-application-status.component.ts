@@ -12,14 +12,13 @@ import { HttpClientService } from 'src/app/shared/services/http.service';
 export class ClientApplicationStatusComponent implements OnInit {
     public clientApplicationStatusModel:ClientApplicationStatusModel = <ClientApplicationStatusModel>{};
     constructor(private http: HttpClientService) { }
-    componentName:string="Client Application Status";
-    ngOnInit() {
+    
 
+    ngOnInit() {
+        
     }
     submit(): void {
-        this.http.create(this.componentName,this.clientApplicationStatusModel, 'url').subscribe(resp => {
-
-
+        this.http.create(this.clientApplicationStatusModel, 'admin/addClientApplicationStatus').subscribe(resp => {
         })
         this.clientApplicationStatusModel = <ClientApplicationStatusModel>{};
     }

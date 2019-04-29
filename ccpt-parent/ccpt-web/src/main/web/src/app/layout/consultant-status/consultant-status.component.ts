@@ -11,13 +11,12 @@ import { HttpClientService } from 'src/app/shared/services/http.service';
 })
 export class ConsultantStatusComponent implements OnInit {
     public consultantStatusModel:ConsultantStatusModel = <ConsultantStatusModel>{};
-    public componentName="Consultant Status Component";
     constructor(private http: HttpClientService) { }
     ngOnInit() {
 
     }
     submit(): void {
-        this.http.create(this.componentName,this.consultantStatusModel, 'url').subscribe(resp => {
+        this.http.create(this.consultantStatusModel, 'admin/addConsultantStatus').subscribe(resp => {
 
 
         })

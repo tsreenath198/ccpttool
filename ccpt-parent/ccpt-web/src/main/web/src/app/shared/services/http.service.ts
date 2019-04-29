@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -7,22 +7,21 @@ import { HttpClient } from '@angular/common/http';
 export class HttpClientService {
 
   constructor(private http: HttpClient) { }
-  
+  private base_url = "http://106.0.37.69:8081/";
+
   public getLogin(URL: string) {
     return this.http.get(URL);
   }
-  data:any = {
-    "username":"admin",
-    "password":"123456",
-    "token":"",
-    "role":"",
-    "description":""
+
+  create(data: any, url) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'X-TOKEN': sessionStorage.getItem("access_token")
+      })
+    };
+    return this.http.post(this.base_url + url, data, httpOptions);
   }
-  create(component:string,data: any, url) {
-    console.log(component,data);
-    return this.http.post(url, data);
-  }
-  get(){
-    return this.http.post("http://106.0.37.69:8081/login",this.data);
+  get(URL: string) {
+    return this.http.get(this.base_url + URL);
   }
 }

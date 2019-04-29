@@ -11,14 +11,13 @@ import { HttpClientService } from 'src/app/shared/services/http.service';
 })
 export class ClientCallHistoryComponent implements OnInit {
     public clientCallHistoryModel:ClientCallHistoryModel = <ClientCallHistoryModel>{};
-    public componentName:string="Client Call History";
     constructor(private http: HttpClientService) { }
 
     ngOnInit() {
 
     }
     submit(): void {
-        this.http.create(this.componentName,this.clientCallHistoryModel, 'url').subscribe(resp => {
+        this.http.create(this.clientCallHistoryModel, 'url').subscribe(resp => {
 
 
         })

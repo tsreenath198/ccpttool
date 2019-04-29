@@ -1,5 +1,33 @@
 <nav class="sidebar" [ngClass]="{sidebarPushRight: isActive, collapsed: collapsed}">
     <div class="list-group">
+            <div class="nested-menu">
+                    <a class="list-group-item" (click)="addExpandClass('pages')">
+                        <i class="fa fa-user"></i>&nbsp;
+                        <span>{{ 'Admin' | translate }}</span>
+                    </a>
+                    <li class="nested" [class.expand]="showMenu === 'pages'">
+                        <ul class="submenu">
+                            <li>
+                                <a [routerLink]="['/layout/client-application-status']"
+                                    [routerLinkActive]="['router-link-active']" class="list-group-item">
+                                    <span>{{ 'Client Application Status' | translate }}</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a [routerLink]="['/layout/client-position-status']" [routerLinkActive]="['router-link-active']"
+                                    class="list-group-item">
+                                    <span>{{ 'Client Position Status' | translate }}</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a [routerLink]="['/layout/consultant-status']" [routerLinkActive]="['router-link-active']"
+                                    class="list-group-item">
+                                    <span>{{ 'Consultant Status' | translate }}</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </div>
         <a routerLink="/layout/dashboard" [routerLinkActive]="['router-link-active']" class="list-group-item">
             <i class="fa fa-fw fa-dashboard"></i>&nbsp;
             <span>{{ 'Dashboard' | translate }}</span>
@@ -79,34 +107,7 @@
             <i class="fa fa-th-list"></i>&nbsp;
             <span>{{ 'Component' | translate }}</span>
         </a> -->
-        <div class="nested-menu">
-            <a class="list-group-item" (click)="addExpandClass('pages')">
-                <i class="fa fa-user"></i>&nbsp;
-                <span>{{ 'Admin' | translate }}</span>
-            </a>
-            <li class="nested" [class.expand]="showMenu === 'pages'">
-                <ul class="submenu">
-                    <li>
-                        <a [routerLink]="['/layout/client-application-status']"
-                            [routerLinkActive]="['router-link-active']" class="list-group-item">
-                            <span>{{ 'Client Application Status' | translate }}</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a [routerLink]="['/layout/client-position-status']" [routerLinkActive]="['router-link-active']"
-                            class="list-group-item">
-                            <span>{{ 'Client Position Status' | translate }}</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a [routerLink]="['/layout/consultant-status']" [routerLinkActive]="['router-link-active']"
-                            class="list-group-item">
-                            <span>{{ 'Consultant Status' | translate }}</span>
-                        </a>
-                    </li>
-                </ul>
-            </li>
-        </div>
+      
         <!-- <a [routerLink]="['/blank-page']" [routerLinkActive]="['router-link-active']" class="list-group-item">
             <i class="fa fa-file-o"></i>&nbsp;
             <span>{{ 'Blank Page' | translate }}</span>

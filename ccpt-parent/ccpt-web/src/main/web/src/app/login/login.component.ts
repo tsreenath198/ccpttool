@@ -30,8 +30,16 @@ export class LoginComponent implements OnInit {
               }
            
         });*/
-        this.http.get().subscribe(resp => {
-            console.log("dfff")
+        let url = "login?username=" + this.name + "&password=" + this.password;
+        this.http.get(url).subscribe(resp => {
+            console.log("dfff", resp);
+            this.toastr.success("User Logged In Successfully", "Login");
+        }, err => {
+            console.log("dfff", err);
+            sessionStorage.setItem("access_token",err.error.text);
+            
+            this.toastr.error("Invalid User name or password", "Login");
+            this.router.navigate(["/layout"]);
         });
     }
 
