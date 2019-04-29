@@ -1,5 +1,6 @@
 package com.ccpt.service;
 
+import java.util.Date;
 import java.util.List;
 
 import com.ccpt.model.ClientCallHistory;
@@ -15,5 +16,5 @@ public interface IClientCallHistoryService {
 
 	void deleteClientCallHistory(int id);
 
-	/*List<ClientCallHistory> getAllConsultantCallHistorysFromLastGivenDays(int days);*/
+	List<ClientCallHistory> getAllConsultantCallHistorysFromLastGivenDays(Date sdate, Date edate);
 }

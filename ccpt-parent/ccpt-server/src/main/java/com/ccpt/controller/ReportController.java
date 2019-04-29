@@ -1,5 +1,8 @@
 package com.ccpt.controller;
 
+import java.text.ParseException;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,14 +46,20 @@ public class ReportController {
 		return new ResponseEntity<>(map, HttpStatus.OK);
 	}
 
-	/*@SuppressWarnings("rawtypes")
+	@SuppressWarnings("rawtypes")
 	@GetMapping("getAllConsultantCallHistorysFromLastGivenDays")
-	public ResponseEntity<Map<String, List>> getAllConsultantCallHistorysFromLastGivenDays(@RequestParam int days) {
+	public ResponseEntity<Map<String, List>> getAllConsultantCallHistorysFromLastGivenDays(@RequestParam int days)
+			throws ParseException {
 
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.DATE, -days);
+
+		Date startDate = cal.getTime();
+		Date endDate = new Date();
 		List<ConsultantCallHistory> consultantCallHistoryList = consultantCallHistoryService
-				.getAllConsultantCallHistorysFromLastGivenDays(days);
+				.getAllConsultantCallHistorysFromLastGivenDays(startDate, endDate);
 		List<ClientCallHistory> clientCallHistoryList = clientCallHistoryService
-				.getAllConsultantCallHistorysFromLastGivenDays(days);
+				.getAllConsultantCallHistorysFromLastGivenDays(startDate, endDate);
 
 		Map<String, List> map = new HashMap<>();
 		map.put("consultantCallHistoryList", consultantCallHistoryList);
@@ -58,5 +67,5 @@ public class ReportController {
 
 		return new ResponseEntity<>(map, HttpStatus.OK);
 	}
-*/
+
 }

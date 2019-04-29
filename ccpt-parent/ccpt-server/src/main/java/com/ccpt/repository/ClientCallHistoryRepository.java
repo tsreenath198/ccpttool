@@ -1,14 +1,17 @@
 package com.ccpt.repository;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 
 import com.ccpt.model.ClientCallHistory;
 
 public interface ClientCallHistoryRepository extends CrudRepository<ClientCallHistory, Integer> {
-	/*@Query("SELECT client_position_id FROM client_call_history WHERE Created_date >= DATE(NOW()) - INTERVAL 7 DAY")
-	List<ClientCallHistory> getAllConsultantCallHistorysFromLastGivenDays(int days);
-*/
+	@Query("SELECT c FROM ClientCallHistory c WHERE created_date   BETWEEN  :sdate AND  :edate")
+	List<ClientCallHistory> getAllConsultantCallHistorysFromLastGivenDays(@Param(value = "sdate") Date sdate,
+			@Param(value = "edate") Date edate);
+
 }

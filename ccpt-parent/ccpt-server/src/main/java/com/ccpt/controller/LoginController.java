@@ -51,7 +51,7 @@ public class LoginController {
 			response.setHeader("X-TOKEN", token);
 			return new ResponseEntity<String>(token, HttpStatus.OK);
 		} else {
-			return new ResponseEntity<String>(token, HttpStatus.NOT_FOUND);
+			return new ResponseEntity<String>("Invalid Credentials", HttpStatus.UNAUTHORIZED);
 		}
 	}
 

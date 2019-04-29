@@ -1,6 +1,7 @@
 package com.ccpt.service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,9 +46,9 @@ public class ConsultantCallHistoryService implements IConsultantCallHistoryServi
 		return true;
 	}
 
-	/*@Override
-	public List<ConsultantCallHistory> getAllConsultantCallHistorysFromLastGivenDays(int days) {
-		return consultantCallHistoryRepository.getAllConsultantCallHistorysFromLastGivenDays(days);
-	}*/
+	@Override
+	public List<ConsultantCallHistory> getAllConsultantCallHistorysFromLastGivenDays(Date sdate, Date edate) {
+		return consultantCallHistoryRepository.getAllConsultantCallHistorysFromLastGivenDays(sdate, edate);
+	}
 
 }
