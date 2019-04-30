@@ -16,8 +16,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.ccpt.model.Login;
 import com.ccpt.service.ILoginService;
@@ -41,18 +39,18 @@ public class LoginController {
 		loginService.register(login);
 		return new ResponseEntity<Void>(HttpStatus.CREATED);
 	}
-	
+
 	@GetMapping("login")
-	public ResponseEntity<String> getTokenByUsernameAndPassword(@RequestParam String username,
-			@RequestParam String password, HttpServletRequest request, HttpServletResponse response) {
-		String token = loginService.getTokenByUsernameAndPassword(username, password);
+	public ResponseEntity<Void> getTokenByUsernameAndPassword(@RequestBody Login login, HttpServletRequest request,
+			HttpServletResponse response) {
+		String token = loginService.getTokenByUsernameAndPassword(login.getUsername(), login.getPassword());
 		if (token != null) {
 			HttpSession session = request.getSession();
 			session.setAttribute("X-TOKEN", token);
 			response.setHeader("X-TOKEN", token);
-			return new ResponseEntity<String>(token, HttpStatus.OK);
+			return new ResponseEntity<Void>(HttpStatus.OK);
 		} else {
-			return new ResponseEntity<String>("Invalid Credentials", HttpStatus.UNAUTHORIZED);
+			return new ResponseEntity<Void>(HttpStatus.UNAUTHORIZED);
 		}
 	}
 
