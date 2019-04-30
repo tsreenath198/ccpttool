@@ -1,6 +1,8 @@
 package com.ccpt.filter;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -16,27 +18,44 @@ import org.springframework.stereotype.Component;
 @Component
 public class SecurityFilter implements Filter {
 
+	private static final List<String> SWAGGER_URLS = Arrays.asList("/v2/api-docs", "/configuration/ui",
+			"/swagger-resources", "/configuration/security", "/swagger-ui.html", "/webjars/");
+
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
 
 		HttpServletRequest httpServletRequest = (HttpServletRequest) request;
 		HttpServletResponse httpServletResponse = (HttpServletResponse) response;
-
+		httpServletResponse.setHeader("Access-Control-Allow-Headers", "X-TOKEN, Content-Type");
 		String requestURI = httpServletRequest.getRequestURI();
-		if (!requestURI.contains("/login")) {
+		if (requestURI.equals("/prelogin")) {
+			httpServletResponse.setStatus(HttpServletResponse.SC_OK);
+		} else {
+			if (!requestURI.contains("/login") && !isSwaggerUrl(requestURI)) {
 
-			String dbToken = (String) httpServletRequest.getSession().getAttribute("X-TOKEN");
-			String token = httpServletRequest.getHeader("X-TOKEN");
-			System.out.println("token:" + token);
+				String dbToken = (String) httpServletRequest.getSession().getAttribute("X-TOKEN");
+				String token = httpServletRequest.getHeader("X-TOKEN");
+				System.out.println("token:" + token);
 
-			if (!dbToken.equalsIgnoreCase(token)) {
+				if (dbToken == null || !dbToken.equalsIgnoreCase(token)) {
+					httpServletResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+					httpServletResponse.getWriter().write("LOGIN");
+					return;
+				}
+			}
+			chain.doFilter(httpServletRequest, httpServletResponse);
+		}
 
-				throw new ServletException(new SecurityException("TOKEN_ERROR"));
+	}
+
+	private boolean isSwaggerUrl(String requestURI) {
+		for (String expr : SWAGGER_URLS) {
+			if (requestURI.contains(expr)) {
+				return true;
 			}
 		}
-		chain.doFilter(httpServletRequest, httpServletResponse);
-
+		return false;
 	}
 
 	@Override
