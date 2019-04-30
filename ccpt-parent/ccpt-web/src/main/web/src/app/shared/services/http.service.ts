@@ -12,7 +12,6 @@ export class HttpClientService {
   public getLogin(URL: string) {
     return this.http.get(URL);
   }
-
   create(data: any, url) {
     const httpOptions = {
       headers: new HttpHeaders({

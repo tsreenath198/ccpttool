@@ -1,7 +1,7 @@
 <div [@routerTransition]>
     <app-page-header [icon]="'fa-bar-chart-o'" [heading]="'Consultant'"></app-page-header>
     <div class="row">
-        <div class="col-md-2">
+        <div class="col-md-6">
             <div class="table-responsive">
                 <table class="table table-hover table-striped">
                     <thead>
@@ -17,21 +17,21 @@
                 </table>
             </div>
         </div>
-        <div class="col-md-10">
+        <div class="col-md-6">
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-8">
                     <div class="form-group">
                         <label>Name</label>
                         <input class="form-control" [(ngModel)]="consultantModel.name">
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-8">
                     <div class="form-group">
                         <label>E-Mail</label>
                         <input class="form-control" [(ngModel)]="consultantModel.email">
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-8">
                     <div class="form-group">
                         <label>Phone</label>
                         <input class="form-control" [(ngModel)]="consultantModel.phone">
@@ -39,19 +39,19 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-8">
                     <div class="form-group">
                         <label>Skills</label>
                         <input class="form-control" [(ngModel)]="consultantModel.skills">
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-8">
                     <div class="form-group">
                         <label>Passout Year</label>
                         <input class="form-control" type="number" [(ngModel)]="consultantModel.passoutYear">
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-8">
                     <div class="form-group">
                         <label>Qualification</label>
                         <input class="form-control" [(ngModel)]="consultantModel.qualification">
@@ -59,19 +59,19 @@
                 </div>
             </div>
             <div class="row">
-                    <div class="col-md-4">
+                    <div class="col-md-8">
                         <div class="form-group">
                             <label>Expected Salary</label>
                             <input type="number" class="form-control" [(ngModel)]="consultantModel.expectedSalary">
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-8">
                         <div class="form-group">
                             <label>Description</label>
                             <input class="form-control" [(ngModel)]="consultantModel.description">
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-8">
                         <div class="form-group">
                             <label>Consultant Status</label>
                             <input class="form-control" [(ngModel)]="consultantModel.consultantStatusCode">
@@ -79,13 +79,13 @@
                     </div>
                 </div>
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-8">
                     <div class="form-group">
                         <label>Experience</label>
                         <input class="form-control" type="number" [(ngModel)]="consultantModel.experience">
                     </div>
                 </div>
-                <div class="col-md-2 mt-4">
+                <div class="col-md-8 mt-4">
                     <button type="button" class="btn btn-secondary"  (click)="submit()">Add</button>
                 </div>
             </div>
