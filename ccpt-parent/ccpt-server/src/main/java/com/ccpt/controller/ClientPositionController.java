@@ -30,7 +30,6 @@ public class ClientPositionController {
 	@GetMapping("getAll")
 	public ResponseEntity<List<ClientPosition>> getAllClientPositions() {
 		List<ClientPosition> clientPositionList = clientPositionService.getAllClientPositions();
-
 		return new ResponseEntity<List<ClientPosition>>(clientPositionList, HttpStatus.OK);
 	}
 

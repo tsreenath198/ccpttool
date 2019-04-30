@@ -56,7 +56,7 @@ public class AdminController {
 		return new ResponseEntity<List<ClientPositionStatus>>(clientPositionList, HttpStatus.OK);
 	}
 
-	@PostMapping("addClientConsultantStatus")
+	@PostMapping("addConsultantStatus")
 	public ResponseEntity<Void> addConsultantStatus(@RequestBody ConsultantStatus consultantStatus) {
 		consultantStatusService.addConsultantStatus(consultantStatus);
 		return new ResponseEntity<Void>(HttpStatus.CREATED);
