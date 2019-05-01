@@ -24,6 +24,6 @@ export class HttpClientService {
     return this.http.get(this.base_url + URL);
   }
   update(data:any,url){
-    return this.http.post(this.base_url + url, data);
+    return this.http.put(this.base_url + url, data);
   }
 }
