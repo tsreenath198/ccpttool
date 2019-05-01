@@ -12,6 +12,7 @@ import { ClientpositionStatusModel } from '../client-position-status/client-posi
 })
 export class ClientPositionComponent implements OnInit {
     public clientPositionModel:ClientPositionModel = <ClientPositionModel>{};
+    public clientPositionList:Array<ClientPositionModel>=[];
     public clientPositionStatusList:Array<ClientpositionStatusModel> = [];
     constructor(private http: HttpClientService) { }
 
@@ -19,9 +20,22 @@ export class ClientPositionComponent implements OnInit {
         this.http.get('admin/getAllClientPositionStatus').subscribe(resp => {
             this.clientPositionStatusList = resp as [];
         })
+        this.http.get('clientPosition/getAll').subscribe(resp => {
+            this.clientPositionList = resp as [];
+        })
+    }
+    edit(data){
+        this.clientPositionModel=data;
     }
     submit(): void {
         this.http.create(this.clientPositionModel, 'clientPosition/create').subscribe(resp => {
+
+
+        })
+        this.clientPositionModel = <ClientPositionModel>{};
+    }
+    update(){
+        this.http.update(this.clientPositionModel, 'clientPosition/update').subscribe(resp => {
 
 
         })

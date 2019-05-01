@@ -11,9 +11,13 @@ import { HttpClientService } from 'src/app/shared/services/http.service';
 })
 export class ClientPositionStatusComponent implements OnInit {
     public clientPositionStatusModel:ClientpositionStatusModel = <ClientpositionStatusModel>{};
+    public clientPositionStatusList:Array<ClientpositionStatusModel> = [];
+
     constructor(private http: HttpClientService) { }
     ngOnInit() {
-
+        this.http.get('admin/getAllClientPositionStatus').subscribe(resp => {
+            this.clientPositionStatusList = resp as [];
+        })
     }
     submit(): void {
         this.http.create(this.clientPositionStatusModel, 'admin/addClientPositionStatus').subscribe(resp => {

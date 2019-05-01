@@ -10,8 +10,8 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>Infosys</td>
+                        <tr *ngFor="let cpsl of clientPositionStatusList">
+                            <td>{{cpsl.description}}</td>
                         </tr>
                     </tbody>
                 </table>

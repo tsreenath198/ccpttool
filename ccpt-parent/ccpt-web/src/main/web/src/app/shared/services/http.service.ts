@@ -7,7 +7,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 export class HttpClientService {
 
   constructor(private http: HttpClient) { }
-  private base_url = "http://106.0.37.69:8081/";
+  private base_url = "http://210.16.76.202:8081/";
 
   public getLogin(URL: string) {
     return this.http.get(URL);
@@ -22,5 +22,8 @@ export class HttpClientService {
   }
   get(URL: string) {
     return this.http.get(this.base_url + URL);
+  }
+  update(data:any,url){
+    return this.http.post(this.base_url + url, data);
   }
 }

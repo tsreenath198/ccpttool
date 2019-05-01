@@ -10,8 +10,8 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>Infosys</td>
+                        <tr *ngFor="let cchl of consultantCallHistoryList">
+                            <td (dblclick)="edit(cchl)">{{cchl.id}}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -23,11 +23,8 @@
                     <div class="form-group">
                         <label>Consultant Id</label>
                         <select class="form-control" [(ngModel)]="consultantCallHistoryModel.consultantId">
-                            <option>1</option>
-                            <option>2</option>
-                            <option>3</option>
-                            <option>4</option>
-                            <option>5</option>
+                            <option *ngFor="let cl of consultantList"
+                                [ngValue]="cl.id">{{cl.id}}</option>
                         </select>
                     </div>
                 </div>
@@ -39,6 +36,8 @@
                 </div>
                 <div class="col-md-8 mt-4">
                     <button type="button" class="btn btn-secondary"  (click)="submit()">Add</button>
+                    <button type="button" id="update" class="btn btn-primary ml-3" (click)="update()" >Update</button>
+                    <button type="button" id="cancel" class="btn btn-danger ml-3">Cancel</button>
                 </div>
             </div>
 

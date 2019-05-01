@@ -11,10 +11,14 @@ import { HttpClientService } from 'src/app/shared/services/http.service';
 })
 export class LoginSetupComponent implements OnInit {
     public loginSetupModel:LoginSetupModel = <LoginSetupModel>{};
+    public loginSetupList:Array<LoginSetupModel> = [];
+
     constructor(private http: HttpClientService) { }
 
     ngOnInit() {
-
+        // this.http.get('consultant/getAll').subscribe(resp => {
+        //     this.loginSetupList = resp as [];
+        // })
     }
     submit(): void {
         this.http.create(this.loginSetupModel, 'url').subscribe(resp => {

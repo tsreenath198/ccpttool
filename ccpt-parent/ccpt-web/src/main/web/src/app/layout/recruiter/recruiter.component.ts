@@ -11,12 +11,26 @@ import { HttpClientService } from 'src/app/shared/services/http.service';
 })
 export class RecruiterComponent implements OnInit {
     public recruiterModel:RecruiterModel = <RecruiterModel>{};
+    public recruiterList:Array<RecruiterModel> = [];
+
     constructor(private http: HttpClientService) { }
     ngOnInit() {
-
+        this.http.get('recruiter/getAll').subscribe(resp => {
+            this.recruiterList = resp as [];
+        })
+    }
+    edit(data){
+        this.recruiterModel=data;
     }
     submit(): void {
-        this.http.create(this.recruiterModel, 'url').subscribe(resp => {
+        this.http.create(this.recruiterModel, 'recruiter/create').subscribe(resp => {
+
+
+        })
+        this.recruiterModel = <RecruiterModel>{};
+    }
+    update(){
+        this.http.update(this.recruiterModel, 'recruiter/update').subscribe(resp => {
 
 
         })

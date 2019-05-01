@@ -11,9 +11,12 @@ import { HttpClientService } from 'src/app/shared/services/http.service';
 })
 export class ConsultantStatusComponent implements OnInit {
     public consultantStatusModel:ConsultantStatusModel = <ConsultantStatusModel>{};
+    public consultantStatusList:Array<ConsultantStatusModel>=[];
     constructor(private http: HttpClientService) { }
     ngOnInit() {
-
+        this.http.get('admin/getAllConsultantStatus').subscribe(resp => {
+            this.consultantStatusList = resp as [];
+        })
     }
     submit(): void {
         this.http.create(this.consultantStatusModel, 'admin/addConsultantStatus').subscribe(resp => {

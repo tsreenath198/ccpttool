@@ -12,13 +12,28 @@ import { ConsultantStatusModel } from '../consultant-status/consultant-status.mo
 })
 export class ConsultantComponent implements OnInit {
     public consultantModel:ConsultantModel = <ConsultantModel>{};
+    public consultantList:Array<ConsultantModel> = [];
+
     public consultantStatusList:Array<ConsultantStatusModel> = [];
     constructor(private http: HttpClientService) { }
 
     ngOnInit() {
         this.http.get('admin/getAllConsultantStatus').subscribe(resp => {
-            console.log(resp);
+            this.consultantStatusList = resp as [];
+        });
+        this.http.get('consultant/getAll').subscribe(resp => {
+            this.consultantList = resp as [];
         })
+    }
+    edit(data){
+        this.consultantModel=data;
+    }
+    update(){
+        this.http.update(this.consultantModel, 'consultant/update').subscribe(resp => {
+
+
+        })
+        this.consultantModel = <ConsultantModel>{};
     }
     submit(): void {
         this.http.create(this.consultantModel, 'consultant/create').subscribe(resp => {
