@@ -144,6 +144,7 @@ active_flag char(1) NOT NULL DEFAULT 'Y',
 CONSTRAINT recruter_pk PRIMARY KEY (id)
 );
 
+ALTER TABLE `client_application` CHANGE `id` `id` INT(11) NOT NULL AUTO_INCREMENT;
 -- foreign keys
 -- Reference: client_application_client_application_status (table: client_application)
 ALTER TABLE client_application ADD CONSTRAINT client_application_client_application_status FOREIGN KEY client_application_client_application_status (client_application_status_code)
