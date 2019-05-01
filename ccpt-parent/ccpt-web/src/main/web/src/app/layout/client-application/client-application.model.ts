@@ -3,5 +3,6 @@ export interface ClientApplicationModel{
     clientPositionId:number,
     consultantId:number,
     notes:string,
-    interviewDate:string
+    interviewDate:string,
+    id:number
 }

@@ -11,27 +11,28 @@ import { ConsultantStatusModel } from '../consultant-status/consultant-status.mo
     animations: [routerTransition()]
 })
 export class ConsultantComponent implements OnInit {
-    public consultantModel:ConsultantModel = <ConsultantModel>{};
-    public consultantList:Array<ConsultantModel> = [];
+    public consultantModel: ConsultantModel = <ConsultantModel>{};
+    public consultantList: Array<ConsultantModel> = [];
 
-    public consultantStatusList:Array<ConsultantStatusModel> = [];
+    public consultantStatusList: Array<ConsultantStatusModel> = [];
     constructor(private http: HttpClientService) { }
 
     ngOnInit() {
         this.http.get('admin/getAllConsultantStatus').subscribe(resp => {
             this.consultantStatusList = resp as [];
         });
+        this.init();
+    }
+    init(): void {
         this.http.get('consultant/getAll').subscribe(resp => {
             this.consultantList = resp as [];
         })
     }
-    edit(data){
-        this.consultantModel=data;
+    edit(data) {
+        this.consultantModel = data;
     }
-    update(){
+    update() {
         this.http.update(this.consultantModel, 'consultant/update').subscribe(resp => {
-
-
         })
         this.consultantModel = <ConsultantModel>{};
     }
@@ -41,6 +42,12 @@ export class ConsultantComponent implements OnInit {
 
         })
         this.consultantModel = <ConsultantModel>{};
+    }
+    delete() {
+        this.http.delete('consultant/id/' + this.consultantModel.id).subscribe(resp => {
+
+
+        })
     }
 
 }

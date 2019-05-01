@@ -50,4 +50,10 @@ export class ClientApplicationComponent implements OnInit {
         })
         this.clientApplicationModel = <ClientApplicationModel>{};
     }
+    delete() {
+        this.http.delete('clientApplication/id/' + this.clientApplicationModel.id).subscribe(resp => {
+
+
+        })
+    }
 }

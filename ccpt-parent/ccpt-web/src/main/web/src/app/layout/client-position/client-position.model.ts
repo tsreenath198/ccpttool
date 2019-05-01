@@ -1,4 +1,5 @@
 export interface ClientPositionModel{
+    id:number,
     technology:string,
     experience:string,
     requiredSkills:string,

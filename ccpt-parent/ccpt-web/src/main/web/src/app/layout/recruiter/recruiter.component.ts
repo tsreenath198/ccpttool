@@ -36,4 +36,10 @@ export class RecruiterComponent implements OnInit {
         })
         this.recruiterModel = <RecruiterModel>{};
     }
+    delete() {
+        this.http.delete('recruiter/id/' + this.recruiterModel.id).subscribe(resp => {
+
+
+        })
+    }
 }

@@ -1,4 +1,5 @@
 export interface ConsultantCallHistoryModel{
     consultantId:number,
-    description:string
+    description:string,
+    id:number
 }

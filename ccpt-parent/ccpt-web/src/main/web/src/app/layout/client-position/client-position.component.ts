@@ -41,4 +41,10 @@ export class ClientPositionComponent implements OnInit {
         })
         this.clientPositionModel = <ClientPositionModel>{};
     }
+    delete() {
+        this.http.delete('clientPosition/id/' + this.clientPositionModel.id).subscribe(resp => {
+
+
+        })
+    }
 }

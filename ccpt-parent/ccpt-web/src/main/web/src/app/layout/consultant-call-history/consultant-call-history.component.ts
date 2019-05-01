@@ -41,4 +41,10 @@ export class ConsultantCallHistoryComponent implements OnInit {
         })
         this.consultantCallHistoryModel = <ConsultantCallHistoryModel>{};
     }
+    delete() {
+        this.http.delete('consultantCallHistory/id/' + this.consultantCallHistoryModel.id).subscribe(resp => {
+
+
+        })
+    }
 }

@@ -8,5 +8,6 @@ export interface ConsultantModel{
     expectedSalary:number,
     description:string,
     consultantStatusCode:string,
-    experience:string
+    experience:string,
+    id:string
 }

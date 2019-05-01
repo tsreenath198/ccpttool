@@ -23,7 +23,10 @@ export class HttpClientService {
   get(URL: string) {
     return this.http.get(this.base_url + URL);
   }
-  update(data:any,url){
-    return this.http.put(this.base_url + url, data);
+  update(data:any,URL){
+    return this.http.put(this.base_url + URL, data);
+  }
+  delete(URL:string){
+    return this.http.delete(this.base_url + URL)
   }
 }
