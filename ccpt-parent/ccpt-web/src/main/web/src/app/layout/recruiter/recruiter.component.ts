@@ -39,7 +39,6 @@ export class RecruiterComponent implements OnInit {
     delete() {
         this.http.delete('recruiter/id/' + this.recruiterModel.id).subscribe(resp => {
 
-
         })
     }
 }
