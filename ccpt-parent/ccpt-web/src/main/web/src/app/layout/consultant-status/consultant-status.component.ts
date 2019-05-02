@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { routerTransition } from '../../router.animations';
 import { ConsultantStatusModel } from './consultant-status.model';
 import { HttpClientService } from 'src/app/shared/services/http.service';
+import { ToastrCustomService } from 'src/app/shared/services/toastr.service';
 
 @Component({
     selector: 'app-consultant-status',
@@ -12,17 +13,27 @@ import { HttpClientService } from 'src/app/shared/services/http.service';
 export class ConsultantStatusComponent implements OnInit {
     public consultantStatusModel:ConsultantStatusModel = <ConsultantStatusModel>{};
     public consultantStatusList:Array<ConsultantStatusModel>=[];
-    constructor(private http: HttpClientService) { }
+    constructor(private http: HttpClientService,private toastr: ToastrCustomService) { }
     ngOnInit() {
+        this.init();
+    }
+    init(){
         this.http.get('admin/getAllConsultantStatus').subscribe(resp => {
+            
             this.consultantStatusList = resp as [];
         })
     }
+    formReset(){
+        this.consultantStatusModel = <ConsultantStatusModel>{};
+    }
     submit(): void {
         this.http.create(this.consultantStatusModel, 'admin/addConsultantStatus').subscribe(resp => {
-
-
+            this.toastr.success("Form Submitted Successfully", "Consultant Status");
+            this.init();
+            this.formReset();
+        }, err => {
+            this.toastr.error(err.statusText, "Consultant Status");
         })
-        this.consultantStatusModel = <ConsultantStatusModel>{};
+
     }
 }
