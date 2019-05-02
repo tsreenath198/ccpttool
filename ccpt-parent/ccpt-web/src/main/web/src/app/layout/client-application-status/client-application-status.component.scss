@@ -1,6 +1,13 @@
-// .scrollit {
-//     position: relative;
-// height: 200px;
-// overflow: auto;
-// display: block;
-// }
+.table-fixed {
+  tbody {
+    height: 31.5em;
+    overflow-y: auto;
+  }
+  thead,
+  tbody,
+  tr,
+  td,
+  th {
+    display: block;
+  }
+}
