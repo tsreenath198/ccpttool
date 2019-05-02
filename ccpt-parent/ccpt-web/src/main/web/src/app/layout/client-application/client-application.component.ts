@@ -5,6 +5,7 @@ import { HttpClientService } from 'src/app/shared/services/http.service';
 import { ClientApplicationStatusModel } from '../client-application-status/client-application-status.model';
 import { ConsultantModel } from '../consultant/consultant.model';
 import { ClientPositionModel } from '../client-position/client-position.model';
+import { ToastrCustomService } from 'src/app/shared/services/toastr.service';
 
 @Component({
     selector: 'app-client-application',
@@ -18,7 +19,7 @@ export class ClientApplicationComponent implements OnInit {
     public consultantList:Array<ConsultantModel> = [];
     public clientApplicationStatusList:Array<ClientApplicationStatusModel> = [];
     public clientPositionList:Array<ClientPositionModel>=[];
-    constructor(private http: HttpClientService) { }
+    constructor(private http: HttpClientService , private toastr: ToastrCustomService) { }
 
     ngOnInit() {
         this.http.get('admin/getAllClientApplicationStatus').subscribe(resp => {
@@ -34,26 +35,31 @@ export class ClientApplicationComponent implements OnInit {
             this.clientPositionList = resp as [];
         })
     }
-    submit(): void {
-        this.http.create(this.clientApplicationModel, 'clientApplication/create').subscribe(resp => {
-            
-        })
+    
+    formReset(){
         this.clientApplicationModel = <ClientApplicationModel>{};
     }
-    edit(data){
+    submit(): void {
+        this.http.create(this.clientApplicationModel, 'clientApplication/create').subscribe(resp => {
+            this.toastr.success("Form Submitted Successfully", "Client Application");
+        })
+        
+    }
+    editClientApplication(data){
         this.clientApplicationModel=data;
     }
-    update(){
+    updateClientApplication(){
         this.http.update(this.clientApplicationModel, 'clientApplication/update').subscribe(resp => {
 
 
         })
-        this.clientApplicationModel = <ClientApplicationModel>{};
+        this.formReset();
     }
-    delete() {
+    deleteClientApplication() {
         this.http.delete('clientApplication/id/' + this.clientApplicationModel.id).subscribe(resp => {
 
 
         })
+        this.formReset();
     }
 }

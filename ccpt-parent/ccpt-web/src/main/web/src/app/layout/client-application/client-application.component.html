@@ -11,7 +11,7 @@
                     </thead>
                     <tbody>
                         <tr *ngFor="let cal of clientApplicationList">
-                            <td (dblclick)="edit(cal)">{{cal.clientPositionId}}</td>
+                            <td (dblclick)="editClientApplication(cal)">{{cal.clientPositionId}}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -64,9 +64,9 @@
                 </div>
                 <div class="col-md-8 mt-4">
                     <button type="button" class="btn btn-secondary" (click)="submit()">Add</button>
-                    <button type="button" id="update" class="btn btn-primary ml-3" (click)="update()">Update</button>
+                    <button type="button" id="update" class="btn btn-primary ml-3" (click)="updateClientApplication()">Update</button>
                     <button type="button" id="cancel" class="btn btn-danger ml-3">Cancel</button>
-                    <button type="button" id="delete" class="btn btn-danger ml-3" (click)="delete()">Delete</button>
+                    <button type="button" id="delete" class="btn btn-danger ml-3" (click)="deleteClientApplication()">Delete</button>
 
                 </div>
             </div>
