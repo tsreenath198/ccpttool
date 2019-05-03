@@ -2,16 +2,17 @@
     <app-page-header [icon]="'fa-bar-chart-o'" [heading]="'Consultant Call History'"></app-page-header>
     <div class="row">
         <div class="col-md-6">
-            <div class="table-responsive">
+            <div class="table-responsive table-fixed">
                 <table class="table table-hover table-striped">
                     <thead>
                         <tr>
                             <th>name</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody class="overflow-ele-scroll">
                         <tr *ngFor="let cchl of consultantCallHistoryList">
-                            <td (dblclick)="edit(cchl)">{{cchl.id}}</td>
+                            <td (click)="readOnlyEnable(cchl)" (dblclick)="consultantCallHistoryEdit(cchl)">{{cchl.id}}
+                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -22,27 +23,46 @@
                 <div class="col-md-8">
                     <div class="form-group">
                         <label>Consultant Id</label>
-                        <select class="form-control" [(ngModel)]="consultantCallHistoryModel.consultantId">
-                            <option *ngFor="let cl of consultantList"
-                                [ngValue]="cl.id">{{cl.id}}</option>
-                        </select>
+                        <div *ngIf="readOnlyToggler; else elseBlock">
+                            <input class="form-control" readonly [(ngModel)]="consultantCallHistoryModel.consultantId">
+                        </div>
+                        <ng-template #elseBlock>
+                            <select class="form-control" [(ngModel)]="consultantCallHistoryModel.consultantId">
+                                <option *ngFor="let cl of consultantList" [ngValue]="cl.id">{{cl.id}}</option>
+                            </select>
+                        </ng-template>
                     </div>
                 </div>
                 <div class="col-md-8">
                     <div class="form-group">
                         <label>Description</label>
-                        <input class="form-control" [(ngModel)]="consultantCallHistoryModel.description">
+                        <input class="form-control" [readonly]="readOnlyToggler" [(ngModel)]="consultantCallHistoryModel.description">
                     </div>
                 </div>
-                <div class="col-md-8 mt-4">
-                    <button type="button" class="btn btn-secondary"  (click)="submit()">Add</button>
-                    <button type="button" id="update" class="btn btn-primary ml-3" (click)="update()" >Update</button>
-                    <button type="button" id="cancel" class="btn btn-danger ml-3">Cancel</button>
-                    <button type="button" id="delete" class="btn btn-danger ml-3" (click)="delete()">Delete</button>
-
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div *ngIf="formButtonsToggler;else toggleButtons">
+                        <button type="button" id="add" class="btn btn-secondary ml-3" (click)="submit()">Add</button>
+                    </div>
+                    <ng-template #toggleButtons>
+                        <span *ngIf="editButtonToggler;else toggleEdit">
+                            <button type="button" id="update" class="btn btn-secondary ml-2"
+                                (click)="editableForm()">Edit</button>
+                        </span>
+                        <ng-template #toggleEdit>
+                            <button type="button" id="update" class="btn btn-secondary ml-2"
+                                (click)="update()">Update</button>
+                        </ng-template>
+                        <button type="button" id="delete" class="btn btn-secondary ml-2"
+                            (click)="delete()">Delete</button>
+                    </ng-template>
+                </div>
+                <div class="col-md-6">
+                    <button type="button" id="cancel" (click)="cancelForm()"
+                        class="btn btn-secondary ml-3">Cancel</button>
                 </div>
             </div>
-
         </div>
     </div>
 
