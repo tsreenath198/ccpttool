@@ -34,6 +34,15 @@ export class ClientCallHistoryComponent implements OnInit {
     }
     editClientCallHistory(data) {
         this.clientCallHistoryModel = data;
+        if(this.readOnlyToggler==true){
+            this.readOnlyToggler=false;
+        }
+        if(this.formButtonsToggler==true){
+            this.formButtonsToggler=false;
+        }
+        if(this.editButtonToggler==true){
+            this.editButtonToggler=false;
+        }
     }
     readOnlyEnable(data){
         this.clientCallHistoryModel = data;
