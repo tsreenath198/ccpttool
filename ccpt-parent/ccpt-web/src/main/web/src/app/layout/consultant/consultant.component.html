@@ -1,7 +1,7 @@
 <div [@routerTransition]>
     <app-page-header [icon]="'fa-bar-chart-o'" [heading]="'Consultant'"></app-page-header>
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-6 table-fixed">
             <div class="table-responsive">
                 <table class="table table-hover table-striped">
                     <thead>
@@ -9,9 +9,9 @@
                             <th>name</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody class="overflow-ele-scroll">
                         <tr *ngFor="let cl of consultantList">
-                            <td (dblclick)="edit(cl)">{{cl.name}}</td>
+                            <td (click)="readOnlyEnable(cl)" (dblclick)="consultantEdit(cl)">{{cl.name}}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -22,19 +22,19 @@
                 <div class="col-md-8">
                     <div class="form-group">
                         <label>Name</label>
-                        <input class="form-control" [(ngModel)]="consultantModel.name">
+                        <input class="form-control" [readonly]="readOnlyToggler" [(ngModel)]="consultantModel.name">
                     </div>
                 </div>
                 <div class="col-md-8">
                     <div class="form-group">
                         <label>E-Mail</label>
-                        <input class="form-control" [(ngModel)]="consultantModel.email">
+                        <input class="form-control" [readonly]="readOnlyToggler" [(ngModel)]="consultantModel.email">
                     </div>
                 </div>
                 <div class="col-md-8">
                     <div class="form-group">
                         <label>Phone</label>
-                        <input class="form-control" [(ngModel)]="consultantModel.phone">
+                        <input class="form-control" [readonly]="readOnlyToggler" [(ngModel)]="consultantModel.phone">
                     </div>
                 </div>
             </div>
@@ -42,60 +42,86 @@
                 <div class="col-md-8">
                     <div class="form-group">
                         <label>Skills</label>
-                        <input class="form-control" [(ngModel)]="consultantModel.skills">
+                        <input class="form-control" [readonly]="readOnlyToggler" [(ngModel)]="consultantModel.skills">
                     </div>
                 </div>
                 <div class="col-md-8">
                     <div class="form-group">
                         <label>Passout Year</label>
-                        <input class="form-control" type="number" [(ngModel)]="consultantModel.passoutYear">
+                        <input class="form-control" [readonly]="readOnlyToggler" type="number"
+                            [(ngModel)]="consultantModel.passoutYear">
                     </div>
                 </div>
                 <div class="col-md-8">
                     <div class="form-group">
                         <label>Qualification</label>
-                        <input class="form-control" [(ngModel)]="consultantModel.qualification">
+                        <input class="form-control" [readonly]="readOnlyToggler"
+                            [(ngModel)]="consultantModel.qualification">
                     </div>
                 </div>
             </div>
             <div class="row">
-                    <div class="col-md-8">
-                        <div class="form-group">
-                            <label>Expected Salary</label>
-                            <input type="number" class="form-control" [(ngModel)]="consultantModel.expectedSalary">
-                        </div>
+                <div class="col-md-8">
+                    <div class="form-group">
+                        <label>Expected Salary</label>
+                        <input type="number" [readonly]="readOnlyToggler" class="form-control"
+                            [(ngModel)]="consultantModel.expectedSalary">
                     </div>
-                    <div class="col-md-8">
-                        <div class="form-group">
-                            <label>Description</label>
-                            <input class="form-control" [(ngModel)]="consultantModel.description">
-                        </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="form-group">
+                        <label>Description</label>
+                        <input class="form-control" [readonly]="readOnlyToggler"
+                            [(ngModel)]="consultantModel.description">
                     </div>
-                    <div class="col-md-8">
-                        <div class="form-group">
-                            <label>Consultant Status</label>
+                </div>
+                <div class="col-md-8">
+                    <div class="form-group">
+                        <label>Consultant Status</label>
+                        <div *ngIf="readOnlyToggler; else elseBlock">
+                            <input class="form-control" readonly [(ngModel)]="consultantModel.consultantStatusCode">
+                        </div>
+                        <ng-template #elseBlock>
                             <select class="form-control" [(ngModel)]="consultantModel.consultantStatusCode">
                                 <option *ngFor="let consultantStatus of consultantStatusList"
                                     [ngValue]="consultantStatus.code">{{consultantStatus.description}}</option>
                             </select>
-                        </div>
+                        </ng-template>
                     </div>
                 </div>
+            </div>
             <div class="row">
                 <div class="col-md-8">
                     <div class="form-group">
                         <label>Experience</label>
-                        <input class="form-control" type="number" [(ngModel)]="consultantModel.experience">
+                        <input class="form-control" [readonly]="readOnlyToggler" type="number"
+                            [(ngModel)]="consultantModel.experience">
                     </div>
                 </div>
-                <div class="col-md-8 mt-4">
-                    <button type="button" class="btn btn-secondary"  (click)="submit()">Add</button>
-                    <button type="button" id="update" class="btn btn-primary ml-3" (click)="update()" >Update</button>
-                    <button type="button" id="cancel" class="btn btn-warning ml-3">Cancel</button>
-                    <button type="button" id="delete" class="btn btn-danger ml-3" (click)="delete()">Delete</button>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div *ngIf="formButtonsToggler;else toggleButtons">
+                        <button type="button" id="add" class="btn btn-secondary ml-3" (click)="submit()">Add</button>
+                    </div>
+                    <ng-template #toggleButtons>
+                        <span *ngIf="editButtonToggler;else toggleEdit">
+                            <button type="button" id="update" class="btn btn-secondary ml-2"
+                                (click)="editableForm()">Edit</button>
+                        </span>
+                        <ng-template #toggleEdit>
+                            <button type="button" id="update" class="btn btn-secondary ml-2"
+                                (click)="update()">Update</button>
+                        </ng-template>
+                        <button type="button" id="delete" class="btn btn-secondary ml-2"
+                            (click)="delete()">Delete</button>
+                    </ng-template>
+                </div>
+                <div class="col-md-6">
+                    <button type="button" id="cancel" (click)="cancelForm()"
+                        class="btn btn-secondary ml-3">Cancel</button>
                 </div>
             </div>
-
         </div>
     </div>
 

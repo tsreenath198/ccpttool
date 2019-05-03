@@ -3,6 +3,7 @@ import { routerTransition } from '../../router.animations';
 import { ConsultantModel } from './consultant.model';
 import { HttpClientService } from 'src/app/shared/services/http.service';
 import { ConsultantStatusModel } from '../consultant-status/consultant-status.model';
+import { ToastrCustomService } from 'src/app/shared/services/toastr.service';
 
 @Component({
     selector: 'app-consultant',
@@ -13,9 +14,11 @@ import { ConsultantStatusModel } from '../consultant-status/consultant-status.mo
 export class ConsultantComponent implements OnInit {
     public consultantModel: ConsultantModel = <ConsultantModel>{};
     public consultantList: Array<ConsultantModel> = [];
-
     public consultantStatusList: Array<ConsultantStatusModel> = [];
-    constructor(private http: HttpClientService) { }
+    public readOnlyToggler :boolean=false;
+    public formButtonsToggler :boolean=true;
+    public editButtonToggler:boolean=true;
+    constructor(private http: HttpClientService,private toastr: ToastrCustomService) { }
 
     ngOnInit() {
         this.http.get('admin/getAllConsultantStatus').subscribe(resp => {
@@ -28,26 +31,66 @@ export class ConsultantComponent implements OnInit {
             this.consultantList = resp as [];
         })
     }
-    edit(data) {
+    consultantEdit(data) {
         this.consultantModel = data;
+        if(this.readOnlyToggler==true){
+            this.readOnlyToggler=false;
+        }
+        if(this.formButtonsToggler==true){
+            this.formButtonsToggler=false;
+        }
+        if(this.editButtonToggler==true){
+            this.editButtonToggler=false;
+        }
+    }
+    readOnlyEnable(data){
+        this.consultantModel = data;
+        if(this.readOnlyToggler==false){
+            this.readOnlyToggler=true;
+        }
+        if(this.formButtonsToggler==true){
+            this.formButtonsToggler=false;
+        }
+    }
+    formReset() {
+        this.consultantModel = <ConsultantModel>{};
     }
     update() {
         this.http.update(this.consultantModel, 'consultant/update').subscribe(resp => {
         })
-        this.consultantModel = <ConsultantModel>{};
     }
     submit(): void {
         this.http.create(this.consultantModel, 'consultant/create').subscribe(resp => {
-
-
-        })
-        this.consultantModel = <ConsultantModel>{};
-    }
+            this.toastr.success("Form Submitted Successfully", "Consultant");
+            this.init();
+            this.formReset();
+        }, err => {
+            this.toastr.error(err.statusText, "Consultant");
+        }
+        )}
     delete() {
         this.http.delete('consultant/id/' + this.consultantModel.id).subscribe(resp => {
-
-
+            this.toastr.success("Form Deleted Successfully", "Consultant");
+            this.init();
+            this.formReset();
         })
     }
-
+    editableForm(){
+        if(this.readOnlyToggler==true){
+            this.readOnlyToggler=false;
+        }
+        if(this.editButtonToggler==true){
+            this.editButtonToggler=false;
+        }
+    }
+    cancelForm(){
+        this.formReset();
+        if(this.readOnlyToggler==true){
+            this.readOnlyToggler=false;
+        }
+        if(this.formButtonsToggler==false){
+            this.formButtonsToggler=true;
+        }
+        
+    }
 }
