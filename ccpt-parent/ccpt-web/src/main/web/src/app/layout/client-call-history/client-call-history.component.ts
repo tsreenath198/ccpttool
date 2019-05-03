@@ -58,26 +58,26 @@ export class ClientCallHistoryComponent implements OnInit {
     }
     submit(): void {
         this.http.create(this.clientCallHistoryModel, 'clientCallHistory/create').subscribe(resp => {
-            this.toastr.success("Form Submitted Successfully", "Client call history");
+            this.toastr.success("Form Submitted Successfully", "Client Call History");
             this.init();
             this.formReset();
         }, err => {
-            this.toastr.error(err.statusText, "Client call history");
+            this.toastr.error(err.statusText, "Client Call History");
         })
 
     }
     update() {
         this.http.update(this.clientCallHistoryModel, 'clientCallHistory/update').subscribe(resp => {
-            this.toastr.success("Form Updated Successfully", "Client call history");
+            this.toastr.success("Form Updated Successfully", "Client Call History");
             this.init();
             this.editButtonToggler=true;
         }, err => {
-            this.toastr.error(err.statusText, "Client call history");
+            this.toastr.error(err.statusText, "Client Call History");
         })
     }
     delete() {
         this.http.delete('clientCallHistory/id/' + this.clientCallHistoryModel.id).subscribe(resp => {
-            this.toastr.success("Form Deleted Successfully", "Client call history");
+            this.toastr.success("Form Deleted Successfully", "Client Call History");
             this.init();
             this.formReset();
         })
