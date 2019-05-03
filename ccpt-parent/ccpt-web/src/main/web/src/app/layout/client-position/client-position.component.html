@@ -1,7 +1,7 @@
 <div [@routerTransition]>
     <app-page-header [icon]="'fa-bar-chart-o'" [heading]="'Client Position'"></app-page-header>
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-6 table-fixed">
             <div class="table-responsive">
                 <table class="table table-hover table-striped">
                     <thead>
@@ -9,9 +9,9 @@
                             <th>Technology</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody class="overflow-ele-scroll">
                         <tr *ngFor="let cpl of clientPositionList">
-                            <td (dblclick)="edit(cpl)">{{cpl.id}}</td>
+                            <td (click)="readOnlyEnable(cpl)" (dblclick)="editClientPosition(cpl)">{{cpl.id}}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -22,19 +22,19 @@
                 <div class="col-md-8">
                     <div class="form-group">
                         <label>Technology</label>
-                        <input class="form-control" [(ngModel)]="clientPositionModel.technology">
+                        <input class="form-control" [readonly]="readOnlyToggler" [(ngModel)]="clientPositionModel.technology">
                     </div>
                 </div>
                 <div class="col-md-8">
                     <div class="form-group">
                         <label>Experience</label>
-                        <input class="form-control" [(ngModel)]="clientPositionModel.experience">
+                        <input class="form-control" [readonly]="readOnlyToggler" [(ngModel)]="clientPositionModel.experience">
                     </div>
                 </div>
                 <div class="col-md-8">
                     <div class="form-group">
                         <label>Required Skills</label>
-                        <input class="form-control" [(ngModel)]="clientPositionModel.requiredSkills">
+                        <input class="form-control" [readonly]="readOnlyToggler" [(ngModel)]="clientPositionModel.requiredSkills">
                     </div>
                 </div>
             </div>
@@ -42,21 +42,26 @@
                 <div class="col-md-8">
                     <div class="form-group">
                         <label>Min CTC</label>
-                        <input class="form-control" type="number" [(ngModel)]="clientPositionModel.minCtc">
+                        <input class="form-control" [readonly]="readOnlyToggler" type="number" [(ngModel)]="clientPositionModel.minCtc">
                     </div>
                 </div>
                 <div class="col-md-8">
                     <div class="form-group">
                         <label>Max CTC</label>
-                        <input class="form-control" type="number" [(ngModel)]="clientPositionModel.maxCtc">
+                        <input class="form-control" [readonly]="readOnlyToggler" type="number" [(ngModel)]="clientPositionModel.maxCtc">
                     </div>
                 </div>
                 <div class="col-md-8">
                     <div class="form-group">
-                        <label>Client Position Status Code</label>
-                        <select class="form-control" [(ngModel)]="clientPositionModel.clientPositionsStatusCode">
-                            <option *ngFor="let cpsl of clientPositionStatusList" [ngValue]="cpsl.code">{{cpsl.description}}</option>
-                        </select>
+                        <label>Client Position Status </label>
+                        <div *ngIf="readOnlyToggler; else elseBlock">
+                                <input class="form-control" readonly [(ngModel)]="clientPositionModel.clientPositionsStatusCode">
+                            </div>
+                            <ng-template #elseBlock>
+                                    <select class="form-control" [(ngModel)]="clientPositionModel.clientPositionsStatusCode">
+                                            <option *ngFor="let cpsl of clientPositionStatusList" [ngValue]="cpsl.code">{{cpsl.description}}</option>
+                                        </select>
+                            </ng-template>
                     </div>
                 </div>
             </div>
@@ -64,24 +69,40 @@
                 <div class="col-md-8">
                     <div class="form-group">
                         <label>Closed By</label>
-                        <input class="form-control" [(ngModel)]="clientPositionModel.closedBy">
+                        <input class="form-control" [readonly]="readOnlyToggler" [(ngModel)]="clientPositionModel.closedBy">
                         <!-- Should get dropdown of usernames will done later and present give input admin or pavan -->
                     </div>
                 </div>
                 <div class="col-md-8">
                     <div class="form-group">
                         <label>Additional Comments</label>
-                        <input class="form-control" [(ngModel)]="clientPositionModel.additionalComments">
+                        <input class="form-control" [readonly]="readOnlyToggler" [(ngModel)]="clientPositionModel.additionalComments">
                     </div>
                 </div>
-                <div class="col-md-8 mt-4">
-                    <button type="button" class="btn btn-secondary"  (click)="submit()">Add</button>
-                    <button type="button" id="update" class="btn btn-primary ml-3" (click)="update()" >Update</button>
-                    <button type="button" id="cancel" class="btn btn-danger ml-3">Cancel</button>
-                    <button type="button" id="delete" class="btn btn-danger ml-3" (click)="delete()">Delete</button>
-                </div>
             </div>
-
+            <div class="row">
+                    <div class="col-md-6">
+                        <div *ngIf="formButtonsToggler;else toggleButtons">
+                            <button type="button" id="add" class="btn btn-secondary ml-3" (click)="submit()">Add</button>
+                        </div>
+                        <ng-template #toggleButtons>
+                            <span *ngIf="editButtonToggler;else toggleEdit">
+                                <button type="button" id="update" class="btn btn-secondary ml-2"
+                                    (click)="editableForm()">Edit</button>
+                            </span>
+                            <ng-template #toggleEdit>
+                                <button type="button" id="update" class="btn btn-secondary ml-2"
+                                    (click)="update()">Update</button>
+                            </ng-template>
+                            <button type="button" id="delete" class="btn btn-secondary ml-2"
+                                (click)="delete()">Delete</button>
+                        </ng-template>
+                    </div>
+                    <div class="col-md-6">
+                        <button type="button" id="cancel" (click)="cancelForm()"
+                            class="btn btn-secondary ml-3">Cancel</button>
+                    </div>
+                </div>
         </div>
     </div>
 

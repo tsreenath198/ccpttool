@@ -3,6 +3,7 @@ import { routerTransition } from '../../router.animations';
 import { ClientPositionModel } from './client-position.model';
 import { HttpClientService } from 'src/app/shared/services/http.service';
 import { ClientpositionStatusModel } from '../client-position-status/client-position-status.model';
+import { ToastrCustomService } from 'src/app/shared/services/toastr.service';
 
 @Component({
     selector: 'app-client-position',
@@ -14,37 +15,88 @@ export class ClientPositionComponent implements OnInit {
     public clientPositionModel:ClientPositionModel = <ClientPositionModel>{};
     public clientPositionList:Array<ClientPositionModel>=[];
     public clientPositionStatusList:Array<ClientpositionStatusModel> = [];
-    constructor(private http: HttpClientService) { }
+    public readOnlyToggler :boolean=false;
+    public formButtonsToggler :boolean=true;
+    public editButtonToggler:boolean=true;
+    constructor(private http: HttpClientService,private toastr: ToastrCustomService) { }
 
     ngOnInit() {
         this.http.get('admin/getAllClientPositionStatus').subscribe(resp => {
             this.clientPositionStatusList = resp as [];
         })
+       this.init();
+    }
+    init(){
         this.http.get('clientPosition/getAll').subscribe(resp => {
             this.clientPositionList = resp as [];
         })
     }
-    edit(data){
+    editClientPosition(data){
         this.clientPositionModel=data;
+        if(this.readOnlyToggler==true){
+            this.readOnlyToggler=false;
+        }
+        if(this.formButtonsToggler==true){
+            this.formButtonsToggler=false;
+        }
+        if(this.editButtonToggler==true){
+            this.editButtonToggler=false;
+        }
+    }
+    readOnlyEnable(data){
+        this.clientPositionModel = data;
+        if(this.readOnlyToggler==false){
+            this.readOnlyToggler=true;
+        }
+        if(this.formButtonsToggler==true){
+            this.formButtonsToggler=false;
+        }
+    }
+    formReset() {
+        this.clientPositionModel = <ClientPositionModel>{};
     }
     submit(): void {
         this.http.create(this.clientPositionModel, 'clientPosition/create').subscribe(resp => {
-
-
+            this.toastr.success("Form Submitted Successfully", "Client Position");
+            this.init();
+            this.formReset();
+        }, err => {
+            this.toastr.error(err.statusText, "Client Position");
         })
-        this.clientPositionModel = <ClientPositionModel>{};
+
     }
     update(){
         this.http.update(this.clientPositionModel, 'clientPosition/update').subscribe(resp => {
-
-
+            this.toastr.success("Form Updated Successfully", "Client Position");
+            this.init();
+            this.editButtonToggler=true;
+        }, err => {
+            this.toastr.error(err.statusText, "Client Position");
         })
-        this.clientPositionModel = <ClientPositionModel>{};
     }
     delete() {
         this.http.delete('clientPosition/id/' + this.clientPositionModel.id).subscribe(resp => {
-
-
+            this.toastr.success("Form Deleted Successfully", "Client Position");
+            this.init();
+            this.formReset();
         })
+    }
+    editableForm(){
+        if(this.readOnlyToggler==true){
+            this.readOnlyToggler=false;
+        }
+        if(this.editButtonToggler==true){
+            this.editButtonToggler=false;
+        }
+    }
+    cancelForm(){
+        this.formReset();
+        if(this.readOnlyToggler==true){
+            this.readOnlyToggler=false;
+        }
+        if(this.formButtonsToggler==false){
+            this.formButtonsToggler=true;
+        }
+        
     }
 }
