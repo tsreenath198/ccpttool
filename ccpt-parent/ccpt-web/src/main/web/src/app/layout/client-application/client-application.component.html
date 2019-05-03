@@ -1,7 +1,7 @@
 <div [@routerTransition]>
     <app-page-header [icon]="'fa-bar-chart-o'" [heading]="'Client Application'"></app-page-header>
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-6 table-fixed">
             <div class="table-responsive">
                 <table class="table table-hover table-striped">
                     <thead>
@@ -9,9 +9,10 @@
                             <th>name</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody class="overflow-ele-scroll">
                         <tr *ngFor="let cal of clientApplicationList">
-                            <td (dblclick)="editClientApplication(cal)">{{cal.clientPositionId}}</td>
+                            <td (click)="readOnlyEnable(cal)" (dblclick)="editClientApplication(cal)">
+                                {{cal.clientPositionId}}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -21,28 +22,44 @@
             <div class="row">
                 <div class="col-md-8">
                     <div class="form-group">
-                        <label>Client Application Status Code</label>
-                        <select class="form-control" [(ngModel)]="clientApplicationModel.clientApplicationStatusCode">
-                            <option *ngFor="let casl of clientApplicationStatusList" [ngValue]="casl.code">{{casl.description}}
-                            </option>
-                        </select>
+                        <label>Client Application Status</label>
+                        <div *ngIf="readOnlyToggler; else elseBlock">
+                            <input class="form-control" readonly
+                                [(ngModel)]="clientApplicationModel.clientApplicationStatusCode">
+                        </div>
+                        <ng-template #elseBlock>
+                            <select class="form-control" [(ngModel)]="clientApplicationModel.clientApplicationStatusCode">
+                                <option *ngFor="let casl of clientApplicationStatusList" [ngValue]="casl.code">
+                                    {{casl.description}}
+                                </option>
+                            </select>
+                        </ng-template>
                     </div>
                 </div>
                 <div class="col-md-8">
                     <div class="form-group">
-                        <label>Client Position id</label>
-
-                        <select class="form-control" [(ngModel)]="clientApplicationModel.clientPositionId">
-                            <option *ngFor="let cpl of clientPositionList" [ngValue]="cpl.id">{{cpl.id}}</option>
-                        </select>
+                        <label>Client Position</label>
+                        <div *ngIf="readOnlyToggler; else elseBlock2">
+                            <input class="form-control" readonly [(ngModel)]="clientApplicationModel.clientPositionId">
+                        </div>
+                        <ng-template #elseBlock2>
+                            <select class="form-control" [(ngModel)]="clientApplicationModel.clientPositionId">
+                                <option *ngFor="let cpl of clientPositionList" [ngValue]="cpl.id">{{cpl.id}}</option>
+                            </select>
+                        </ng-template>
                     </div>
                 </div>
                 <div class="col-md-8">
                     <div class="form-group">
                         <label>Consultant Id</label>
-                        <select class="form-control" [(ngModel)]="clientApplicationModel.consultantId">
-                            <option *ngFor="let cl of consultantList" [ngValue]="cl.id">{{cl.id}}</option>
-                        </select>
+                        <div *ngIf="readOnlyToggler; else elseBlock3">
+                            <input class="form-control" readonly [(ngModel)]="clientApplicationModel.consultantId">
+                        </div>
+                        <ng-template #elseBlock3>
+                            <select class="form-control" [(ngModel)]="clientApplicationModel.consultantId">
+                                <option *ngFor="let cl of consultantList" [ngValue]="cl.id">{{cl.id}}</option>
+                            </select>
+                        </ng-template>
                     </div>
                 </div>
             </div>
@@ -50,27 +67,47 @@
                 <div class="col-md-8">
                     <div class="form-group" data-provide="datepicker">
                         <label>Interview Date</label>
-                        <input type="date" class="form-control" [(ngModel)]="clientApplicationModel.interviewDate">
-                        <div class="input-group-addon">
-                            <span class="glyphicon glyphicon-th"></span>
-                        </div>
+                        <div *ngIf="readOnlyToggler; else elseBlock4">
+                                <input class="form-control" readonly [(ngModel)]="clientApplicationModel.interviewDate">
+                            </div>
+                            <ng-template #elseBlock4>
+                                    <input type="date" class="form-control" [(ngModel)]="clientApplicationModel.interviewDate">
+                                    <div class="input-group-addon">
+                                        <span class="glyphicon glyphicon-th"></span>
+                                    </div>
+                            </ng-template>
                     </div>
                 </div>
                 <div class="col-md-8">
                     <div class="form-group">
                         <label>Notes</label>
-                        <input class="form-control" [(ngModel)]="clientApplicationModel.notes">
+                        <input class="form-control" [readonly]="readOnlyToggler" [(ngModel)]="clientApplicationModel.notes">
                     </div>
                 </div>
-                <div class="col-md-8 mt-4">
-                    <button type="button" class="btn btn-secondary" (click)="submit()">Add</button>
-                    <button type="button" id="update" class="btn btn-primary ml-3" (click)="updateClientApplication()">Update</button>
-                    <button type="button" id="cancel" class="btn btn-danger ml-3">Cancel</button>
-                    <button type="button" id="delete" class="btn btn-danger ml-3" (click)="deleteClientApplication()">Delete</button>
-
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div *ngIf="formButtonsToggler;else toggleButtons">
+                        <button type="button" id="add" class="btn btn-secondary ml-3" (click)="submit()">Add</button>
+                    </div>
+                    <ng-template #toggleButtons>
+                        <span *ngIf="editButtonToggler;else toggleEdit">
+                            <button type="button" id="update" class="btn btn-secondary ml-2"
+                                (click)="editableForm()">Edit</button>
+                        </span>
+                        <ng-template #toggleEdit>
+                            <button type="button" id="update" class="btn btn-secondary ml-2"
+                                (click)="updateClientApplication()">Update</button>
+                        </ng-template>
+                        <button type="button" id="delete" class="btn btn-secondary ml-2"
+                            (click)="deleteClientApplication()">Delete</button>
+                    </ng-template>
+                </div>
+                <div class="col-md-6">
+                    <button type="button" id="cancel" (click)="cancelForm()"
+                        class="btn btn-secondary ml-3">Cancel</button>
                 </div>
             </div>
-
         </div>
     </div>
 
