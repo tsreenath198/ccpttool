@@ -23,7 +23,7 @@
                 <div class="col-md-8">
                     <div class="form-group">
                         <label>Client Application Status</label>
-                        <div *ngIf="readOnlyToggler; else elseBlock">
+                        <div *ngIf="readOnlyForm; else elseBlock">
                             <input class="form-control" readonly
                                 [(ngModel)]="clientApplicationModel.clientApplicationStatusCode">
                         </div>
@@ -39,7 +39,7 @@
                 <div class="col-md-8">
                     <div class="form-group">
                         <label>Client Position</label>
-                        <div *ngIf="readOnlyToggler; else elseBlock2">
+                        <div *ngIf="readOnlyForm; else elseBlock2">
                             <input class="form-control" readonly [(ngModel)]="clientApplicationModel.clientPositionId">
                         </div>
                         <ng-template #elseBlock2>
@@ -51,8 +51,8 @@
                 </div>
                 <div class="col-md-8">
                     <div class="form-group">
-                        <label>Consultant Id</label>
-                        <div *ngIf="readOnlyToggler; else elseBlock3">
+                        <label>Consultant</label>
+                        <div *ngIf="readOnlyForm; else elseBlock3">
                             <input class="form-control" readonly [(ngModel)]="clientApplicationModel.consultantId">
                         </div>
                         <ng-template #elseBlock3>
@@ -67,7 +67,7 @@
                 <div class="col-md-8">
                     <div class="form-group" data-provide="datepicker">
                         <label>Interview Date</label>
-                        <div *ngIf="readOnlyToggler; else elseBlock4">
+                        <div *ngIf="readOnlyForm; else elseBlock4">
                                 <input class="form-control" readonly [(ngModel)]="clientApplicationModel.interviewDate">
                             </div>
                             <ng-template #elseBlock4>
@@ -81,14 +81,14 @@
                 <div class="col-md-8">
                     <div class="form-group">
                         <label>Notes</label>
-                        <input class="form-control" [readonly]="readOnlyToggler" [(ngModel)]="clientApplicationModel.notes">
+                        <input class="form-control" [readonly]="readOnlyForm" [(ngModel)]="clientApplicationModel.notes">
                     </div>
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-6">
                     <div *ngIf="formButtonsToggler;else toggleButtons">
-                        <button type="button" id="add" class="btn btn-secondary ml-3" (click)="submit()">Add</button>
+                        <button type="button" id="add" class="btn btn-secondary ml-3" (click)="createClientApplication()">Add</button>
                     </div>
                     <ng-template #toggleButtons>
                         <span *ngIf="editButtonToggler;else toggleEdit">

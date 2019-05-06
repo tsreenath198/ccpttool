@@ -26,7 +26,7 @@
                 <div class="col-md-8">
                     <div class="form-group">
                         <label>Client Position</label>
-                        <div *ngIf="readOnlyToggler; else elseBlock">
+                        <div *ngIf="readOnlyForm; else elseBlock">
                             <input class="form-control" readonly [(ngModel)]="clientCallHistoryModel.clientPositionId">
                         </div>
                         <ng-template #elseBlock>
@@ -41,7 +41,7 @@
                 <div class="col-md-8">
                     <div class="form-group">
                         <label>Notes</label>
-                        <input class="form-control" [readonly]="readOnlyToggler"
+                        <input class="form-control" [readonly]="readOnlyForm"
                             [(ngModel)]="clientCallHistoryModel.notes">
                     </div>
                 </div>
@@ -49,7 +49,7 @@
             <div class="row">
                 <div class="col-md-6">
                     <div *ngIf="formButtonsToggler;else toggleButtons">
-                        <button type="button" id="add" class="btn btn-secondary ml-3" (click)="submit()">Add</button>
+                        <button type="button" id="add" class="btn btn-secondary ml-3" (click)="createClientCallHistory()">Add</button>
                     </div>
                     <ng-template #toggleButtons>
                         <span *ngIf="editButtonToggler;else toggleEdit">
@@ -58,10 +58,10 @@
                         </span>
                         <ng-template #toggleEdit>
                             <button type="button" id="update" class="btn btn-secondary ml-2"
-                                (click)="update()">Update</button>
+                                (click)="updateClientCallHistory()">Update</button>
                         </ng-template>
                         <button type="button" id="delete" class="btn btn-secondary ml-2"
-                            (click)="delete()">Delete</button>
+                            (click)="deleteClientCallHistory()">Delete</button>
                     </ng-template>
                 </div>
                 <div class="col-md-6">

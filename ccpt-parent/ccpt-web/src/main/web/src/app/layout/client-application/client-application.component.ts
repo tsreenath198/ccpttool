@@ -19,7 +19,7 @@ export class ClientApplicationComponent implements OnInit {
     public consultantList:Array<ConsultantModel> = [];
     public clientApplicationStatusList:Array<ClientApplicationStatusModel> = [];
     public clientPositionList:Array<ClientPositionModel>=[];
-    public readOnlyToggler :boolean=false;
+    public readOnlyForm :boolean=false;
     public formButtonsToggler :boolean=true;
     public editButtonToggler:boolean=true;
     constructor(private http: HttpClientService , private toastr: ToastrCustomService) { }
@@ -47,14 +47,14 @@ export class ClientApplicationComponent implements OnInit {
     }
     readOnlyEnable(data){
         this.clientApplicationModel = data;
-        if(this.readOnlyToggler==false){
-            this.readOnlyToggler=true;
+        if(this.readOnlyForm==false){
+            this.readOnlyForm=true;
         }
         if(this.formButtonsToggler==true){
             this.formButtonsToggler=false;
         }
     }
-    submit(): void {
+    createClientApplication(): void {
         this.http.create(this.clientApplicationModel, 'clientApplication/create').subscribe(resp => {
             this.toastr.success("Form Submitted Successfully", "Client Application");
             this.init();
@@ -67,8 +67,8 @@ export class ClientApplicationComponent implements OnInit {
     }
     editClientApplication(data){
         this.clientApplicationModel=data;
-        if(this.readOnlyToggler==true){
-            this.readOnlyToggler=false;
+        if(this.readOnlyForm==true){
+            this.readOnlyForm=false;
         }
         if(this.formButtonsToggler==true){
             this.formButtonsToggler=false;
@@ -97,8 +97,8 @@ export class ClientApplicationComponent implements OnInit {
         this.formReset();
     }
     editableForm(){
-        if(this.readOnlyToggler==true){
-            this.readOnlyToggler=false;
+        if(this.readOnlyForm==true){
+            this.readOnlyForm=false;
         }
         if(this.editButtonToggler==true){
             this.editButtonToggler=false;
@@ -106,8 +106,8 @@ export class ClientApplicationComponent implements OnInit {
     }
     cancelForm(){
         this.formReset();
-        if(this.readOnlyToggler==true){
-            this.readOnlyToggler=false;
+        if(this.readOnlyForm==true){
+            this.readOnlyForm=false;
         }
         if(this.formButtonsToggler==false){
             this.formButtonsToggler=true;

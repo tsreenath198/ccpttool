@@ -27,7 +27,7 @@ export class ClientApplicationStatusComponent implements OnInit {
     formReset(){
         this.clientApplicationStatusModel = <ClientApplicationStatusModel>{};
     }
-    submit(): void {
+    createClientApplicationStatus(): void {
         this.http.create(this.clientApplicationStatusModel, 'admin/addClientApplicationStatus').subscribe(resp => {
             this.toastr.success("Form Submitted Successfully", "Client Application Status");
             this.init();

@@ -26,7 +26,7 @@ export class ClientPositionStatusComponent implements OnInit {
     formReset() {
         this.clientPositionStatusModel = <ClientpositionStatusModel>{};
     }
-    submit(): void {
+    createClientPositionStatus(): void {
         this.http.create(this.clientPositionStatusModel, 'admin/addClientPositionStatus').subscribe(resp => {
             this.toastr.success("Form Submitted Successfully", "Client Position Status");
             this.init();

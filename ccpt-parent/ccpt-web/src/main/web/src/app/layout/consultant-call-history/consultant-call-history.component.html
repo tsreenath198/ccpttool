@@ -22,8 +22,8 @@
             <div class="row">
                 <div class="col-md-8">
                     <div class="form-group">
-                        <label>Consultant Id</label>
-                        <div *ngIf="readOnlyToggler; else elseBlock">
+                        <label>Consultant</label>
+                        <div *ngIf="readOnlyForm; else elseBlock">
                             <input class="form-control" readonly [(ngModel)]="consultantCallHistoryModel.consultantId">
                         </div>
                         <ng-template #elseBlock>
@@ -36,14 +36,14 @@
                 <div class="col-md-8">
                     <div class="form-group">
                         <label>Description</label>
-                        <input class="form-control" [readonly]="readOnlyToggler" [(ngModel)]="consultantCallHistoryModel.description">
+                        <input class="form-control" [readonly]="readOnlyForm" [(ngModel)]="consultantCallHistoryModel.description">
                     </div>
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-6">
                     <div *ngIf="formButtonsToggler;else toggleButtons">
-                        <button type="button" id="add" class="btn btn-secondary ml-3" (click)="submit()">Add</button>
+                        <button type="button" id="add" class="btn btn-secondary ml-3" (click)="createConsultantCallHistory()">Add</button>
                     </div>
                     <ng-template #toggleButtons>
                         <span *ngIf="editButtonToggler;else toggleEdit">
@@ -52,10 +52,10 @@
                         </span>
                         <ng-template #toggleEdit>
                             <button type="button" id="update" class="btn btn-secondary ml-2"
-                                (click)="update()">Update</button>
+                                (click)="updateConsultantCallHistory()">Update</button>
                         </ng-template>
                         <button type="button" id="delete" class="btn btn-secondary ml-2"
-                            (click)="delete()">Delete</button>
+                            (click)="deleteConsultantCallHistory()">Delete</button>
                     </ng-template>
                 </div>
                 <div class="col-md-6">

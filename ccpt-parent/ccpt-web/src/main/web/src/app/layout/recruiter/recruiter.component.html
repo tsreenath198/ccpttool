@@ -22,19 +22,19 @@
                 <div class="col-md-8">
                     <div class="form-group">
                         <label>First Name</label>
-                        <input class="form-control" [readonly]="readOnlyToggler" [(ngModel)]="recruiterModel.firstname">
+                        <input class="form-control" [readonly]="readOnlyForm" [(ngModel)]="recruiterModel.firstname">
                     </div>
                 </div>
                 <div class="col-md-8">
                     <div class="form-group">
                         <label>Last Name</label>
-                        <input class="form-control" [readonly]="readOnlyToggler" [(ngModel)]="recruiterModel.lastname">
+                        <input class="form-control" [readonly]="readOnlyForm" [(ngModel)]="recruiterModel.lastname">
                     </div>
                 </div>
                 <div class="col-md-8">
                     <div class="form-group" data-provide="datepicker">
                         <label>Date of Birth</label>
-                        <div *ngIf="readOnlyToggler; else elseBlock4">
+                        <div *ngIf="readOnlyForm; else elseBlock4">
                             <input class="form-control" readonly [(ngModel)]="recruiterModel.dob">
                         </div>
                         <ng-template #elseBlock4>
@@ -50,19 +50,19 @@
                 <div class="col-md-8">
                     <div class="form-group">
                         <label>Role</label>
-                        <input class="form-control" [readonly]="readOnlyToggler" [(ngModel)]="recruiterModel.role">
+                        <input class="form-control" [readonly]="readOnlyForm" [(ngModel)]="recruiterModel.role">
                     </div>
                 </div>
                 <div class="col-md-8">
                     <div class="form-group">
                         <label>Phone</label>
-                        <input class="form-control" [readonly]="readOnlyToggler" [(ngModel)]="recruiterModel.phone">
+                        <input class="form-control" [readonly]="readOnlyForm" [(ngModel)]="recruiterModel.phone">
                     </div>
                 </div>
                 <div class="col-md-8">
                     <div class="form-group">
                         <label>E-Mail</label>
-                        <input class="form-control" [readonly]="readOnlyToggler" [(ngModel)]="recruiterModel.email">
+                        <input class="form-control" [readonly]="readOnlyForm" [(ngModel)]="recruiterModel.email">
                     </div>
                 </div>
             </div>
@@ -70,7 +70,7 @@
                 <div class="col-md-8">
                     <div class="form-group">
                         <label>Address</label>
-                        <input class="form-control" [readonly]="readOnlyToggler" [(ngModel)]="recruiterModel.address">
+                        <input class="form-control" [readonly]="readOnlyForm" [(ngModel)]="recruiterModel.address">
                     </div>
                 </div>
             </div>

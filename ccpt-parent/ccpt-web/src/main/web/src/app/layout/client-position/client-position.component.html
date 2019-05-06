@@ -22,19 +22,19 @@
                 <div class="col-md-8">
                     <div class="form-group">
                         <label>Technology</label>
-                        <input class="form-control" [readonly]="readOnlyToggler" [(ngModel)]="clientPositionModel.technology">
+                        <input class="form-control" [readonly]="readOnlyForm" [(ngModel)]="clientPositionModel.technology">
                     </div>
                 </div>
                 <div class="col-md-8">
                     <div class="form-group">
                         <label>Experience</label>
-                        <input class="form-control" [readonly]="readOnlyToggler" [(ngModel)]="clientPositionModel.experience">
+                        <input class="form-control" [readonly]="readOnlyForm" [(ngModel)]="clientPositionModel.experience">
                     </div>
                 </div>
                 <div class="col-md-8">
                     <div class="form-group">
                         <label>Required Skills</label>
-                        <input class="form-control" [readonly]="readOnlyToggler" [(ngModel)]="clientPositionModel.requiredSkills">
+                        <input class="form-control" [readonly]="readOnlyForm" [(ngModel)]="clientPositionModel.requiredSkills">
                     </div>
                 </div>
             </div>
@@ -42,19 +42,19 @@
                 <div class="col-md-8">
                     <div class="form-group">
                         <label>Min CTC</label>
-                        <input class="form-control" [readonly]="readOnlyToggler" type="number" [(ngModel)]="clientPositionModel.minCtc">
+                        <input class="form-control" [readonly]="readOnlyForm" type="number" [(ngModel)]="clientPositionModel.minCtc">
                     </div>
                 </div>
                 <div class="col-md-8">
                     <div class="form-group">
                         <label>Max CTC</label>
-                        <input class="form-control" [readonly]="readOnlyToggler" type="number" [(ngModel)]="clientPositionModel.maxCtc">
+                        <input class="form-control" [readonly]="readOnlyForm" type="number" [(ngModel)]="clientPositionModel.maxCtc">
                     </div>
                 </div>
                 <div class="col-md-8">
                     <div class="form-group">
                         <label>Client Position Status </label>
-                        <div *ngIf="readOnlyToggler; else elseBlock">
+                        <div *ngIf="readOnlyForm; else elseBlock">
                                 <input class="form-control" readonly [(ngModel)]="clientPositionModel.clientPositionsStatusCode">
                             </div>
                             <ng-template #elseBlock>
@@ -69,21 +69,21 @@
                 <div class="col-md-8">
                     <div class="form-group">
                         <label>Closed By</label>
-                        <input class="form-control" [readonly]="readOnlyToggler" [(ngModel)]="clientPositionModel.closedBy">
+                        <input class="form-control" [readonly]="readOnlyForm" [(ngModel)]="clientPositionModel.closedBy">
                         <!-- Should get dropdown of usernames will done later and present give input admin or pavan -->
                     </div>
                 </div>
                 <div class="col-md-8">
                     <div class="form-group">
                         <label>Additional Comments</label>
-                        <input class="form-control" [readonly]="readOnlyToggler" [(ngModel)]="clientPositionModel.additionalComments">
+                        <input class="form-control" [readonly]="readOnlyForm" [(ngModel)]="clientPositionModel.additionalComments">
                     </div>
                 </div>
             </div>
             <div class="row">
                     <div class="col-md-6">
                         <div *ngIf="formButtonsToggler;else toggleButtons">
-                            <button type="button" id="add" class="btn btn-secondary ml-3" (click)="submit()">Add</button>
+                            <button type="button" id="add" class="btn btn-secondary ml-3" (click)="createClientPosition()">Add</button>
                         </div>
                         <ng-template #toggleButtons>
                             <span *ngIf="editButtonToggler;else toggleEdit">
@@ -92,10 +92,10 @@
                             </span>
                             <ng-template #toggleEdit>
                                 <button type="button" id="update" class="btn btn-secondary ml-2"
-                                    (click)="update()">Update</button>
+                                    (click)="updateClientPosition()">Update</button>
                             </ng-template>
                             <button type="button" id="delete" class="btn btn-secondary ml-2"
-                                (click)="delete()">Delete</button>
+                                (click)="deleteClientPosition()">Delete</button>
                         </ng-template>
                     </div>
                     <div class="col-md-6">

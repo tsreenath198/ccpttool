@@ -15,7 +15,7 @@ export class ClientPositionComponent implements OnInit {
     public clientPositionModel:ClientPositionModel = <ClientPositionModel>{};
     public clientPositionList:Array<ClientPositionModel>=[];
     public clientPositionStatusList:Array<ClientpositionStatusModel> = [];
-    public readOnlyToggler :boolean=false;
+    public readOnlyForm :boolean=false;
     public formButtonsToggler :boolean=true;
     public editButtonToggler:boolean=true;
     constructor(private http: HttpClientService,private toastr: ToastrCustomService) { }
@@ -33,8 +33,8 @@ export class ClientPositionComponent implements OnInit {
     }
     editClientPosition(data){
         this.clientPositionModel=data;
-        if(this.readOnlyToggler==true){
-            this.readOnlyToggler=false;
+        if(this.readOnlyForm==true){
+            this.readOnlyForm=false;
         }
         if(this.formButtonsToggler==true){
             this.formButtonsToggler=false;
@@ -45,8 +45,8 @@ export class ClientPositionComponent implements OnInit {
     }
     readOnlyEnable(data){
         this.clientPositionModel = data;
-        if(this.readOnlyToggler==false){
-            this.readOnlyToggler=true;
+        if(this.readOnlyForm==false){
+            this.readOnlyForm=true;
         }
         if(this.formButtonsToggler==true){
             this.formButtonsToggler=false;
@@ -55,7 +55,7 @@ export class ClientPositionComponent implements OnInit {
     formReset() {
         this.clientPositionModel = <ClientPositionModel>{};
     }
-    submit(): void {
+    createClientPosition(): void {
         this.http.create(this.clientPositionModel, 'clientPosition/create').subscribe(resp => {
             this.toastr.success("Form Submitted Successfully", "Client Position");
             this.init();
@@ -65,7 +65,7 @@ export class ClientPositionComponent implements OnInit {
         })
 
     }
-    update(){
+    updateClientPosition(){
         this.http.update(this.clientPositionModel, 'clientPosition/update').subscribe(resp => {
             this.toastr.success("Form Updated Successfully", "Client Position");
             this.init();
@@ -74,7 +74,7 @@ export class ClientPositionComponent implements OnInit {
             this.toastr.error(err.statusText, "Client Position");
         })
     }
-    delete() {
+    deleteClientPosition() {
         this.http.delete('clientPosition/id/' + this.clientPositionModel.id).subscribe(resp => {
             this.toastr.success("Form Deleted Successfully", "Client Position");
             this.init();
@@ -82,8 +82,8 @@ export class ClientPositionComponent implements OnInit {
         })
     }
     editableForm(){
-        if(this.readOnlyToggler==true){
-            this.readOnlyToggler=false;
+        if(this.readOnlyForm==true){
+            this.readOnlyForm=false;
         }
         if(this.editButtonToggler==true){
             this.editButtonToggler=false;
@@ -91,8 +91,8 @@ export class ClientPositionComponent implements OnInit {
     }
     cancelForm(){
         this.formReset();
-        if(this.readOnlyToggler==true){
-            this.readOnlyToggler=false;
+        if(this.readOnlyForm==true){
+            this.readOnlyForm=false;
         }
         if(this.formButtonsToggler==false){
             this.formButtonsToggler=true;

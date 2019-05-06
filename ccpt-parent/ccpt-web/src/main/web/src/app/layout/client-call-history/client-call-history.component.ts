@@ -16,7 +16,7 @@ export class ClientCallHistoryComponent implements OnInit {
     public clientCallHistoryModel: ClientCallHistoryModel = <ClientCallHistoryModel>{};
     public clientCallHistoryList: Array<ClientCallHistoryModel> = [];
     public clientPositionList: Array<ClientPositionModel> = [];
-    public readOnlyToggler :boolean=false;
+    public readOnlyForm :boolean=false;
     public formButtonsToggler :boolean=true;
     public editButtonToggler:boolean=true;
     constructor(private http: HttpClientService,private toastr: ToastrCustomService) { }
@@ -34,8 +34,8 @@ export class ClientCallHistoryComponent implements OnInit {
     }
     editClientCallHistory(data) {
         this.clientCallHistoryModel = data;
-        if(this.readOnlyToggler==true){
-            this.readOnlyToggler=false;
+        if(this.readOnlyForm==true){
+            this.readOnlyForm=false;
         }
         if(this.formButtonsToggler==true){
             this.formButtonsToggler=false;
@@ -46,8 +46,8 @@ export class ClientCallHistoryComponent implements OnInit {
     }
     readOnlyEnable(data){
         this.clientCallHistoryModel = data;
-        if(this.readOnlyToggler==false){
-            this.readOnlyToggler=true;
+        if(this.readOnlyForm==false){
+            this.readOnlyForm=true;
         }
         if(this.formButtonsToggler==true){
             this.formButtonsToggler=false;
@@ -56,7 +56,7 @@ export class ClientCallHistoryComponent implements OnInit {
     formReset() {
         this.clientCallHistoryModel = <ClientCallHistoryModel>{};
     }
-    submit(): void {
+    createClientCallHistory(): void {
         this.http.create(this.clientCallHistoryModel, 'clientCallHistory/create').subscribe(resp => {
             this.toastr.success("Form Submitted Successfully", "Client Call History");
             this.init();
@@ -66,7 +66,7 @@ export class ClientCallHistoryComponent implements OnInit {
         })
 
     }
-    update() {
+    updateClientCallHistory() {
         this.http.update(this.clientCallHistoryModel, 'clientCallHistory/update').subscribe(resp => {
             this.toastr.success("Form Updated Successfully", "Client Call History");
             this.init();
@@ -75,7 +75,7 @@ export class ClientCallHistoryComponent implements OnInit {
             this.toastr.error(err.statusText, "Client Call History");
         })
     }
-    delete() {
+    deleteClientCallHistory() {
         this.http.delete('clientCallHistory/id/' + this.clientCallHistoryModel.id).subscribe(resp => {
             this.toastr.success("Form Deleted Successfully", "Client Call History");
             this.init();
@@ -83,8 +83,8 @@ export class ClientCallHistoryComponent implements OnInit {
         })
     }
     editableForm(){
-        if(this.readOnlyToggler==true){
-            this.readOnlyToggler=false;
+        if(this.readOnlyForm==true){
+            this.readOnlyForm=false;
         }
         if(this.editButtonToggler==true){
             this.editButtonToggler=false;
@@ -92,8 +92,8 @@ export class ClientCallHistoryComponent implements OnInit {
     }
     cancelForm(){
         this.formReset();
-        if(this.readOnlyToggler==true){
-            this.readOnlyToggler=false;
+        if(this.readOnlyForm==true){
+            this.readOnlyForm=false;
         }
         if(this.formButtonsToggler==false){
             this.formButtonsToggler=true;

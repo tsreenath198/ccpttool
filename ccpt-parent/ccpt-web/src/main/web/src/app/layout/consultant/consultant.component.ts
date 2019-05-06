@@ -15,10 +15,10 @@ export class ConsultantComponent implements OnInit {
     public consultantModel: ConsultantModel = <ConsultantModel>{};
     public consultantList: Array<ConsultantModel> = [];
     public consultantStatusList: Array<ConsultantStatusModel> = [];
-    public readOnlyToggler :boolean=false;
-    public formButtonsToggler :boolean=true;
-    public editButtonToggler:boolean=true;
-    constructor(private http: HttpClientService,private toastr: ToastrCustomService) { }
+    public readOnlyForm: boolean = false;
+    public formButtonsToggler: boolean = true;
+    public editButtonToggler: boolean = true;
+    constructor(private http: HttpClientService, private toastr: ToastrCustomService) { }
 
     ngOnInit() {
         this.http.get('admin/getAllConsultantStatus').subscribe(resp => {
@@ -33,64 +33,69 @@ export class ConsultantComponent implements OnInit {
     }
     consultantEdit(data) {
         this.consultantModel = data;
-        if(this.readOnlyToggler==true){
-            this.readOnlyToggler=false;
+        if (this.readOnlyForm == true) {
+            this.readOnlyForm = false;
         }
-        if(this.formButtonsToggler==true){
-            this.formButtonsToggler=false;
+        if (this.formButtonsToggler == true) {
+            this.formButtonsToggler = false;
         }
-        if(this.editButtonToggler==true){
-            this.editButtonToggler=false;
+        if (this.editButtonToggler == true) {
+            this.editButtonToggler = false;
         }
     }
-    readOnlyEnable(data){
+    readOnlyEnable(data) {
         this.consultantModel = data;
-        if(this.readOnlyToggler==false){
-            this.readOnlyToggler=true;
+        if (this.readOnlyForm == false) {
+            this.readOnlyForm = true;
         }
-        if(this.formButtonsToggler==true){
-            this.formButtonsToggler=false;
+        if (this.formButtonsToggler == true) {
+            this.formButtonsToggler = false;
         }
     }
     formReset() {
         this.consultantModel = <ConsultantModel>{};
     }
-    update() {
+    updateConsultant() {
         this.http.update(this.consultantModel, 'consultant/update').subscribe(resp => {
+            this.toastr.success("Form Updated Successfully", "Consultant");
+            this.init();
+            this.editButtonToggler = true;
+        }, err => {
+            this.toastr.error(err.statusText, "Client Position");
         })
     }
-    submit(): void {
+    createConsultant(): void {
         this.http.create(this.consultantModel, 'consultant/create').subscribe(resp => {
             this.toastr.success("Form Submitted Successfully", "Consultant");
             this.init();
             this.formReset();
         }, err => {
             this.toastr.error(err.statusText, "Consultant");
-        }
-        )}
-    delete() {
+        })
+    }
+    deleteConsultant() {
         this.http.delete('consultant/id/' + this.consultantModel.id).subscribe(resp => {
             this.toastr.success("Form Deleted Successfully", "Consultant");
             this.init();
             this.formReset();
         })
     }
-    editableForm(){
-        if(this.readOnlyToggler==true){
-            this.readOnlyToggler=false;
+    editableForm() {
+        if (this.readOnlyForm == true) {
+            this.readOnlyForm = false;
         }
-        if(this.editButtonToggler==true){
-            this.editButtonToggler=false;
+        if (this.editButtonToggler == true) {
+            this.editButtonToggler = false;
         }
     }
-    cancelForm(){
+    cancelForm() {
         this.formReset();
-        if(this.readOnlyToggler==true){
-            this.readOnlyToggler=false;
+        if (this.readOnlyForm == true) {
+            this.readOnlyForm = false;
         }
-        if(this.formButtonsToggler==false){
-            this.formButtonsToggler=true;
+        if (this.formButtonsToggler == false) {
+            this.formButtonsToggler = true;
         }
-        
+
     }
 }

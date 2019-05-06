@@ -12,7 +12,7 @@ import { ToastrCustomService } from 'src/app/shared/services/toastr.service';
 })
 export class RecruiterComponent implements OnInit {
     public recruiterModel:RecruiterModel = <RecruiterModel>{};
-    public readOnlyToggler :boolean=false;
+    public readOnlyForm :boolean=false;
     public formButtonsToggler :boolean=true;
     public editButtonToggler:boolean=true;
     public recruiterList:Array<RecruiterModel> = [];
@@ -28,8 +28,8 @@ export class RecruiterComponent implements OnInit {
     }
     recruiterEdit(data){
         this.recruiterModel=data;
-        if(this.readOnlyToggler==true){
-            this.readOnlyToggler=false;
+        if(this.readOnlyForm==true){
+            this.readOnlyForm=false;
         }
         if(this.formButtonsToggler==true){
             this.formButtonsToggler=false;
@@ -40,8 +40,8 @@ export class RecruiterComponent implements OnInit {
     }
     readOnlyEnable(data){
         this.recruiterModel = data;
-        if(this.readOnlyToggler==false){
-            this.readOnlyToggler=true;
+        if(this.readOnlyForm==false){
+            this.readOnlyForm=true;
         }
         if(this.formButtonsToggler==true){
             this.formButtonsToggler=false;
@@ -76,8 +76,8 @@ export class RecruiterComponent implements OnInit {
         })
     }
     editableForm(){
-        if(this.readOnlyToggler==true){
-            this.readOnlyToggler=false;
+        if(this.readOnlyForm==true){
+            this.readOnlyForm=false;
         }
         if(this.editButtonToggler==true){
             this.editButtonToggler=false;
@@ -85,8 +85,8 @@ export class RecruiterComponent implements OnInit {
     }
     cancelForm(){
         this.formReset();
-        if(this.readOnlyToggler==true){
-            this.readOnlyToggler=false;
+        if(this.readOnlyForm==true){
+            this.readOnlyForm=false;
         }
         if(this.formButtonsToggler==false){
             this.formButtonsToggler=true;

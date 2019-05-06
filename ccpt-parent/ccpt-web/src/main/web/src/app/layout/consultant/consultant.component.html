@@ -22,19 +22,19 @@
                 <div class="col-md-8">
                     <div class="form-group">
                         <label>Name</label>
-                        <input class="form-control" [readonly]="readOnlyToggler" [(ngModel)]="consultantModel.name">
+                        <input class="form-control" [readonly]="readOnlyForm" [(ngModel)]="consultantModel.name">
                     </div>
                 </div>
                 <div class="col-md-8">
                     <div class="form-group">
                         <label>E-Mail</label>
-                        <input class="form-control" [readonly]="readOnlyToggler" [(ngModel)]="consultantModel.email">
+                        <input class="form-control" [readonly]="readOnlyForm" [(ngModel)]="consultantModel.email">
                     </div>
                 </div>
                 <div class="col-md-8">
                     <div class="form-group">
                         <label>Phone</label>
-                        <input class="form-control" [readonly]="readOnlyToggler" [(ngModel)]="consultantModel.phone">
+                        <input class="form-control" [readonly]="readOnlyForm" [(ngModel)]="consultantModel.phone">
                     </div>
                 </div>
             </div>
@@ -42,20 +42,20 @@
                 <div class="col-md-8">
                     <div class="form-group">
                         <label>Skills</label>
-                        <input class="form-control" [readonly]="readOnlyToggler" [(ngModel)]="consultantModel.skills">
+                        <input class="form-control" [readonly]="readOnlyForm" [(ngModel)]="consultantModel.skills">
                     </div>
                 </div>
                 <div class="col-md-8">
                     <div class="form-group">
                         <label>Passout Year</label>
-                        <input class="form-control" [readonly]="readOnlyToggler" type="number"
+                        <input class="form-control" [readonly]="readOnlyForm" type="number"
                             [(ngModel)]="consultantModel.passoutYear">
                     </div>
                 </div>
                 <div class="col-md-8">
                     <div class="form-group">
                         <label>Qualification</label>
-                        <input class="form-control" [readonly]="readOnlyToggler"
+                        <input class="form-control" [readonly]="readOnlyForm"
                             [(ngModel)]="consultantModel.qualification">
                     </div>
                 </div>
@@ -64,21 +64,21 @@
                 <div class="col-md-8">
                     <div class="form-group">
                         <label>Expected Salary</label>
-                        <input type="number" [readonly]="readOnlyToggler" class="form-control"
+                        <input type="number" [readonly]="readOnlyForm" class="form-control"
                             [(ngModel)]="consultantModel.expectedSalary">
                     </div>
                 </div>
                 <div class="col-md-8">
                     <div class="form-group">
                         <label>Description</label>
-                        <input class="form-control" [readonly]="readOnlyToggler"
+                        <input class="form-control" [readonly]="readOnlyForm"
                             [(ngModel)]="consultantModel.description">
                     </div>
                 </div>
                 <div class="col-md-8">
                     <div class="form-group">
                         <label>Consultant Status</label>
-                        <div *ngIf="readOnlyToggler; else elseBlock">
+                        <div *ngIf="readOnlyForm; else elseBlock">
                             <input class="form-control" readonly [(ngModel)]="consultantModel.consultantStatusCode">
                         </div>
                         <ng-template #elseBlock>
@@ -94,7 +94,7 @@
                 <div class="col-md-8">
                     <div class="form-group">
                         <label>Experience</label>
-                        <input class="form-control" [readonly]="readOnlyToggler" type="number"
+                        <input class="form-control" [readonly]="readOnlyForm" type="number"
                             [(ngModel)]="consultantModel.experience">
                     </div>
                 </div>
@@ -102,7 +102,7 @@
             <div class="row">
                 <div class="col-md-6">
                     <div *ngIf="formButtonsToggler;else toggleButtons">
-                        <button type="button" id="add" class="btn btn-secondary ml-3" (click)="submit()">Add</button>
+                        <button type="button" id="add" class="btn btn-secondary ml-3" (click)="createConsultant()">Add</button>
                     </div>
                     <ng-template #toggleButtons>
                         <span *ngIf="editButtonToggler;else toggleEdit">
@@ -111,10 +111,10 @@
                         </span>
                         <ng-template #toggleEdit>
                             <button type="button" id="update" class="btn btn-secondary ml-2"
-                                (click)="update()">Update</button>
+                                (click)="updateConsultant()">Update</button>
                         </ng-template>
                         <button type="button" id="delete" class="btn btn-secondary ml-2"
-                            (click)="delete()">Delete</button>
+                            (click)="deleteConsultant()">Delete</button>
                     </ng-template>
                 </div>
                 <div class="col-md-6">
