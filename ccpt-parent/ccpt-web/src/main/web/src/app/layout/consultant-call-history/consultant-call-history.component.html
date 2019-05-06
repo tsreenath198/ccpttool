@@ -28,7 +28,7 @@
                         </div>
                         <ng-template #elseBlock>
                             <select class="form-control" [(ngModel)]="consultantCallHistoryModel.consultantId">
-                                <option *ngFor="let cl of consultantList" [ngValue]="cl.id">{{cl.id}}</option>
+                                <option *ngFor="let cl of consultantList" [ngValue]="cl.id">{{cl.name}}</option>
                             </select>
                         </ng-template>
                     </div>

@@ -23,7 +23,7 @@ export class RecruiterComponent implements OnInit {
     }
     init(){
         this.http.get('recruiter/getAll').subscribe(resp => {
-            this.recruiterList = resp as [];
+            this.recruiterList = resp as any;
         })
     }
     recruiterEdit(data){
@@ -59,11 +59,12 @@ export class RecruiterComponent implements OnInit {
             this.toastr.error(err.statusText, "Recruiter");
         })
     }
-    update(){
+    updateRecruiter(){
         this.http.update(this.recruiterModel, 'recruiter/update').subscribe(resp => {
             this.toastr.success("Form Updated Successfully", "Recruiter");
             this.init();
-            this.editButtonToggler=true;
+            this.formButtonsToggler = true;
+            this.formReset();
         }, err => {
             this.toastr.error(err.statusText, "Recruiter");
         })

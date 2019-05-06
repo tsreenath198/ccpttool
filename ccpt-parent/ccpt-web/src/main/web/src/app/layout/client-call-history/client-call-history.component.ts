@@ -23,13 +23,13 @@ export class ClientCallHistoryComponent implements OnInit {
 
     ngOnInit() {
         this.http.get('clientPosition/getAll').subscribe(resp => {
-            this.clientPositionList = resp as [];
+            this.clientPositionList = resp as any;
         })
         this.init();
     }
     init() {
         this.http.get('clientCallHistory/getAll').subscribe(resp => {
-            this.clientCallHistoryList = resp as [];
+            this.clientCallHistoryList = resp as any;
         })
     }
     editClientCallHistory(data) {
@@ -69,8 +69,9 @@ export class ClientCallHistoryComponent implements OnInit {
     updateClientCallHistory() {
         this.http.update(this.clientCallHistoryModel, 'clientCallHistory/update').subscribe(resp => {
             this.toastr.success("Form Updated Successfully", "Client Call History");
+            this.formButtonsToggler = true;
+            this.formReset();
             this.init();
-            this.editButtonToggler=true;
         }, err => {
             this.toastr.error(err.statusText, "Client Call History");
         })

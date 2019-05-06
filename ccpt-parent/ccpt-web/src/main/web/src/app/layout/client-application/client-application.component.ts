@@ -6,6 +6,7 @@ import { ClientApplicationStatusModel } from '../client-application-status/clien
 import { ConsultantModel } from '../consultant/consultant.model';
 import { ClientPositionModel } from '../client-position/client-position.model';
 import { ToastrCustomService } from 'src/app/shared/services/toastr.service';
+import { AnyARecord } from 'dns';
 
 @Component({
     selector: 'app-client-application',
@@ -27,18 +28,18 @@ export class ClientApplicationComponent implements OnInit {
     ngOnInit() {
         this.init();
         this.http.get('admin/getAllClientApplicationStatus').subscribe(resp => {
-            this.clientApplicationStatusList = resp as [];
+            this.clientApplicationStatusList = resp as any;
         })
         this.http.get('consultant/getAll').subscribe(resp => {
-            this.consultantList = resp as [];
+            this.consultantList = resp as any;
         })
         this.http.get('clientPosition/getAll').subscribe(resp => {
-            this.clientPositionList = resp as [];
+            this.clientPositionList = resp as any;
         })
     }
     init(){
         this.http.get('clientApplication/getAll').subscribe(resp => {
-            this.clientApplicationList = resp as [];
+            this.clientApplicationList = resp as any;
         })
     }
     
@@ -80,8 +81,9 @@ export class ClientApplicationComponent implements OnInit {
     updateClientApplication(){
         this.http.update(this.clientApplicationModel, 'clientApplication/update').subscribe(resp => {
             this.toastr.success("Form Updated Successfully", "Client Application");
+            this.formButtonsToggler = true;
+            this.formReset();
             this.init();
-            this.editButtonToggler=true;
         }, err => {
             this.toastr.error(err.statusText, "Client Application");
         })

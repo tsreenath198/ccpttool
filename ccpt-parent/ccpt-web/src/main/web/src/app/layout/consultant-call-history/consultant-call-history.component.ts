@@ -23,13 +23,13 @@ export class ConsultantCallHistoryComponent implements OnInit {
     ngOnInit() {
         this.init();
         this.http.get('consultant/getAll').subscribe(resp => {
-            this.consultantList = resp as [];
+            this.consultantList = resp as any;
         })
 
     }
     init(){
         this.http.get('consultantCallHistory/getAll').subscribe(resp => {
-            this.consultantCallHistoryList = resp as [];
+            this.consultantCallHistoryList = resp as any;
         })
     }
     consultantCallHistoryEdit(data) {
@@ -68,9 +68,10 @@ export class ConsultantCallHistoryComponent implements OnInit {
     }
     updateConsultantCallHistory() {
         this.http.update(this.consultantCallHistoryModel, 'consultantCallHistory/update').subscribe(resp => {
+            this.formButtonsToggler = true;
+            this.formReset();
             this.toastr.success("Form Updated Successfully", "Consultant Call History");
             this.init();
-            this.editButtonToggler=true;
         }, err => {
             this.toastr.error(err.statusText, "Consultant Call History");
         })

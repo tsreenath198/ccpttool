@@ -37,7 +37,7 @@ export class LoginComponent implements OnInit {
         }, err => {
             console.log("dfff", err);
             sessionStorage.setItem("access_token",err.error.text);
-            
+            sessionStorage.setItem('username',this.name);
             this.toastr.error("Invalid User name or password", "Login");
             this.router.navigate(["/layout"]);
         });

@@ -22,13 +22,13 @@ export class ClientPositionComponent implements OnInit {
 
     ngOnInit() {
         this.http.get('admin/getAllClientPositionStatus').subscribe(resp => {
-            this.clientPositionStatusList = resp as [];
+            this.clientPositionStatusList = resp as any;
         })
        this.init();
     }
     init(){
         this.http.get('clientPosition/getAll').subscribe(resp => {
-            this.clientPositionList = resp as [];
+            this.clientPositionList = resp as any;
         })
     }
     editClientPosition(data){
@@ -68,8 +68,9 @@ export class ClientPositionComponent implements OnInit {
     updateClientPosition(){
         this.http.update(this.clientPositionModel, 'clientPosition/update').subscribe(resp => {
             this.toastr.success("Form Updated Successfully", "Client Position");
+            this.formButtonsToggler = true;
+            this.formReset();
             this.init();
-            this.editButtonToggler=true;
         }, err => {
             this.toastr.error(err.statusText, "Client Position");
         })

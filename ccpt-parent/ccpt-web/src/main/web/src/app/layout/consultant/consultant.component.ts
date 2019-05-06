@@ -22,13 +22,13 @@ export class ConsultantComponent implements OnInit {
 
     ngOnInit() {
         this.http.get('admin/getAllConsultantStatus').subscribe(resp => {
-            this.consultantStatusList = resp as [];
+            this.consultantStatusList = resp as any;
         });
         this.init();
     }
     init(): void {
         this.http.get('consultant/getAll').subscribe(resp => {
-            this.consultantList = resp as [];
+            this.consultantList = resp as any;
         })
     }
     consultantEdit(data) {
@@ -57,9 +57,10 @@ export class ConsultantComponent implements OnInit {
     }
     updateConsultant() {
         this.http.update(this.consultantModel, 'consultant/update').subscribe(resp => {
+            this.formButtonsToggler = true;
+            this.formReset();
             this.toastr.success("Form Updated Successfully", "Consultant");
             this.init();
-            this.editButtonToggler = true;
         }, err => {
             this.toastr.error(err.statusText, "Client Position");
         })
