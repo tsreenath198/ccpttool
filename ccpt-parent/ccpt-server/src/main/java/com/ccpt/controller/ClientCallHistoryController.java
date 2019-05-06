@@ -10,52 +10,52 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import com.ccpt.constants.CCPTConstants;
 import com.ccpt.model.ClientCallHistory;
 import com.ccpt.service.IClientCallHistoryService;
 
 @Controller
 @CrossOrigin
-@RequestMapping("/clientCallHistory")
+@RequestMapping(CCPTConstants.CLIENT_CALL_HISTORY)
 public class ClientCallHistoryController {
 
 	@Autowired
 	private IClientCallHistoryService clientCallHistoryService;
 
-	@GetMapping("getAll")
+	@GetMapping(CCPTConstants.GET_ALL)
 	public ResponseEntity<List<ClientCallHistory>> getAllClientCallHistorys() {
 		List<ClientCallHistory> clientCallHistoryList = clientCallHistoryService.getAllClientCallHistorys();
-
 		return new ResponseEntity<List<ClientCallHistory>>(clientCallHistoryList, HttpStatus.OK);
 	}
 
-	@GetMapping("id/{id}")
-	public ResponseEntity<ClientCallHistory> getClientCallHistoryById(@PathVariable("id") Integer id) {
+	@GetMapping(CCPTConstants.GET_BY_ID)
+	public ResponseEntity<ClientCallHistory> getClientCallHistoryById(@RequestParam Integer id) {
 		ClientCallHistory clientCallHistory = clientCallHistoryService.getClientCallHistoryById(id);
 		return new ResponseEntity<ClientCallHistory>(clientCallHistory, HttpStatus.OK);
 	}
 
-	@PostMapping("create")
+	@PostMapping(CCPTConstants.CREATE)
 	public ResponseEntity<Void> addClientCallHistory(@RequestBody ClientCallHistory clientCallHistory) {
 		clientCallHistory.setCreatedDate(new Date());
 		clientCallHistoryService.addClientCallHistory(clientCallHistory);
 		return new ResponseEntity<Void>(HttpStatus.CREATED);
 	}
 
-	@PutMapping("update")
+	@PutMapping(CCPTConstants.UPDATE)
 	public ResponseEntity<ClientCallHistory> updateClientCallHistory(@RequestBody ClientCallHistory clientCallHistory) {
 		clientCallHistory.setUpdatedDate(new Date());
 		clientCallHistoryService.updateClientCallHistory(clientCallHistory);
 		return new ResponseEntity<ClientCallHistory>(clientCallHistory, HttpStatus.OK);
 	}
 
-	@DeleteMapping("id/{id}")
-	public ResponseEntity<Void> deleteClientCallHistory(@PathVariable("id") Integer id) {
+	@DeleteMapping(CCPTConstants.DELETE_BY_ID)
+	public ResponseEntity<Void> deleteClientCallHistory(@RequestParam Integer id) {
 		clientCallHistoryService.deleteClientCallHistory(id);
 		return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
 	}

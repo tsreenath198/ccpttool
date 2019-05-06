@@ -10,51 +10,52 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import com.ccpt.constants.CCPTConstants;
 import com.ccpt.model.ClientPosition;
 import com.ccpt.service.IClientPositionService;
 
 @Controller
 @CrossOrigin
-@RequestMapping("/clientPosition")
+@RequestMapping(CCPTConstants.CLIENT_POSITION)
 public class ClientPositionController {
 
 	@Autowired
 	private IClientPositionService clientPositionService;
 
-	@GetMapping("getAll")
+	@GetMapping(CCPTConstants.GET_ALL)
 	public ResponseEntity<List<ClientPosition>> getAllClientPositions() {
 		List<ClientPosition> clientPositionList = clientPositionService.getAllClientPositions();
 		return new ResponseEntity<List<ClientPosition>>(clientPositionList, HttpStatus.OK);
 	}
 
-	@GetMapping("id/{id}")
-	public ResponseEntity<ClientPosition> getClientPositionById(@PathVariable("id") Integer id) {
+	@GetMapping(CCPTConstants.GET_BY_ID)
+	public ResponseEntity<ClientPosition> getClientPositionById(@RequestParam Integer id) {
 		ClientPosition clientPosition = clientPositionService.getClientPositionById(id);
 		return new ResponseEntity<ClientPosition>(clientPosition, HttpStatus.OK);
 	}
 
-	@PostMapping("create")
+	@PostMapping(CCPTConstants.CREATE)
 	public ResponseEntity<Void> addClientPosition(@RequestBody ClientPosition clientPosition) {
 		clientPosition.setCreatedDate(new Date());
 		clientPositionService.addClientPosition(clientPosition);
 		return new ResponseEntity<Void>(HttpStatus.CREATED);
 	}
 
-	@PutMapping("update")
+	@PutMapping(CCPTConstants.UPDATE)
 	public ResponseEntity<ClientPosition> updateClientPosition(@RequestBody ClientPosition clientPosition) {
 		clientPosition.setUpdatedDate(new Date());
 		clientPositionService.updateClientPosition(clientPosition);
 		return new ResponseEntity<ClientPosition>(clientPosition, HttpStatus.OK);
 	}
 
-	@DeleteMapping("id/{id}")
-	public ResponseEntity<Void> deleteClientPosition(@PathVariable("id") Integer id) {
+	@DeleteMapping(CCPTConstants.DELETE_BY_ID)
+	public ResponseEntity<Void> deleteClientPosition(@RequestParam Integer id) {
 		clientPositionService.deleteClientPosition(id);
 		return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
 	}

@@ -1,5 +1,8 @@
 package com.ccpt.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,4 +20,10 @@ public class ClientPositionStatusService implements IClientPositionStatusService
 
 	}
 
+	@Override
+	public List<ClientPositionStatus> getAllClientPositionStatus() {
+		List<ClientPositionStatus> list = new ArrayList<>();
+		clientPositionStatusRepository.findAll().forEach(e -> list.add(e));
+		return list;
+	}
 }

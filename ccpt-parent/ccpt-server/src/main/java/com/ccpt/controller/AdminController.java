@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.ccpt.constants.CCPTConstants;
 import com.ccpt.model.ClientApplicationStatus;
 import com.ccpt.model.ClientPositionStatus;
 import com.ccpt.model.ConsultantStatus;
@@ -21,7 +22,7 @@ import com.ccpt.service.IConsultantStatusService;
 
 @Controller
 @CrossOrigin
-@RequestMapping("/admin")
+@RequestMapping(CCPTConstants.ADMIN)
 public class AdminController {
 
 	@Autowired
@@ -52,7 +53,7 @@ public class AdminController {
 
 	@GetMapping("getAllClientPositionStatus")
 	public ResponseEntity<List<ClientPositionStatus>> getAllClientPositionStatus() {
-		List<ClientPositionStatus> clientPositionList = clientApplicationStatusService.getAllClientPositionStatus();
+		List<ClientPositionStatus> clientPositionList = clientPositionStatusService.getAllClientPositionStatus();
 		return new ResponseEntity<List<ClientPositionStatus>>(clientPositionList, HttpStatus.OK);
 	}
 
@@ -64,7 +65,7 @@ public class AdminController {
 
 	@GetMapping("getAllConsultantStatus")
 	public ResponseEntity<List<ConsultantStatus>> getAllConsultantStatus() {
-		List<ConsultantStatus> clientPositionList = clientApplicationStatusService.getAllConsultantStatus();
+		List<ConsultantStatus> clientPositionList = consultantStatusService.getAllConsultantStatus();
 		return new ResponseEntity<List<ConsultantStatus>>(clientPositionList, HttpStatus.OK);
 	}
 }

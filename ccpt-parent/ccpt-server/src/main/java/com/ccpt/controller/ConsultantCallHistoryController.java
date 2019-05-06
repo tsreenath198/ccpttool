@@ -10,45 +10,45 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import com.ccpt.constants.CCPTConstants;
 import com.ccpt.model.ConsultantCallHistory;
 import com.ccpt.service.IConsultantCallHistoryService;
 
 @Controller
 @CrossOrigin
-@RequestMapping("/consultantCallHistory")
+@RequestMapping(CCPTConstants.CONSULTANT_CALL_HISTORY)
 public class ConsultantCallHistoryController {
 
 	@Autowired
 	private IConsultantCallHistoryService consultantCallHistoryService;
 
-	@GetMapping("getAll")
+	@GetMapping(CCPTConstants.GET_ALL)
 	public ResponseEntity<List<ConsultantCallHistory>> getAllConsultantCallHistorys() {
 		List<ConsultantCallHistory> consultantCallHistoryList = consultantCallHistoryService
 				.getAllConsultantCallHistorys();
-
 		return new ResponseEntity<List<ConsultantCallHistory>>(consultantCallHistoryList, HttpStatus.OK);
 	}
 
-	@GetMapping("id/{id}")
-	public ResponseEntity<ConsultantCallHistory> getConsultantCallHistoryById(@PathVariable("id") Integer id) {
+	@GetMapping(CCPTConstants.GET_BY_ID)
+	public ResponseEntity<ConsultantCallHistory> getConsultantCallHistoryById(@RequestParam Integer id) {
 		ConsultantCallHistory consultantCallHistory = consultantCallHistoryService.getConsultantCallHistoryById(id);
 		return new ResponseEntity<ConsultantCallHistory>(consultantCallHistory, HttpStatus.OK);
 	}
 
-	@PostMapping("create")
+	@PostMapping(CCPTConstants.CREATE)
 	public ResponseEntity<Void> addConsultantCallHistory(@RequestBody ConsultantCallHistory consultantCallHistory) {
 		consultantCallHistory.setCreatedDate(new Date());
 		consultantCallHistoryService.addConsultantCallHistory(consultantCallHistory);
 		return new ResponseEntity<Void>(HttpStatus.CREATED);
 	}
 
-	@PutMapping("update")
+	@PutMapping(CCPTConstants.UPDATE)
 	public ResponseEntity<ConsultantCallHistory> updateConsultantCallHistory(
 			@RequestBody ConsultantCallHistory consultantCallHistory) {
 		consultantCallHistory.setUpdatedDate(new Date());
@@ -56,8 +56,8 @@ public class ConsultantCallHistoryController {
 		return new ResponseEntity<ConsultantCallHistory>(consultantCallHistory, HttpStatus.OK);
 	}
 
-	@DeleteMapping("id/{id}")
-	public ResponseEntity<Void> deleteConsultantCallHistory(@PathVariable("id") Integer id) {
+	@DeleteMapping(CCPTConstants.DELETE_BY_ID)
+	public ResponseEntity<Void> deleteConsultantCallHistory(@RequestParam Integer id) {
 		consultantCallHistoryService.deleteConsultantCallHistory(id);
 		return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
 	}
