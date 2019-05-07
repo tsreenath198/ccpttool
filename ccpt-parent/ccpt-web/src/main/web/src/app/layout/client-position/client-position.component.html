@@ -11,79 +11,115 @@
                     </thead>
                     <tbody class="overflow-ele-scroll">
                         <tr *ngFor="let cpl of clientPositionList">
-                            <td (click)="readOnlyEnable(cpl)" (dblclick)="editClientPosition(cpl)">{{cpl.technology}}</td>
+                            <td (click)="readOnlyEnable(cpl)" (dblclick)="editClientPosition(cpl)">{{cpl.technology}}
+                            </td>
                         </tr>
                     </tbody>
                 </table>
             </div>
         </div>
         <div class="col-md-6">
-            <div class="row">
-                <div class="col-md-8">
-                    <div class="form-group">
-                        <label>Technology</label>
-                        <input class="form-control" [readonly]="readOnlyForm" [(ngModel)]="clientPositionModel.technology">
+            <form name="form" (ngSubmit)="f.form.valid" #f="ngForm" novalidate>
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="form-group">
+                            <label>Technology<span class="required">*</span></label>
+                            <input class="form-control" [readonly]="readOnlyForm"
+                                [(ngModel)]="clientPositionModel.technology" name="technology"
+                                [ngClass]="{'is-invalid': f.submitted && technology.invalid}" #technology="ngModel"
+                                required />
+                            <div class="invalid-feedback">
+                                Technology is mandatory
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="form-group">
+                            <label>Experience<span class="required">*</span></label>
+                            <input class="form-control" [readonly]="readOnlyForm"
+                                [(ngModel)]="clientPositionModel.experience" name="experience"
+                                [ngClass]="{'is-invalid': f.submitted && experience.invalid}" #experience="ngModel"
+                                required />
+                            <div class="invalid-feedback">
+                                Experience is mandatory
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="form-group">
+                            <label>Required Skills<span class="required">*</span></label>
+                            <input class="form-control" [readonly]="readOnlyForm"
+                                [(ngModel)]="clientPositionModel.requiredSkills" name="requiredskills"
+                                [ngClass]="{'is-invalid': f.submitted && requiredskills.invalid}"
+                                #requiredskills="ngModel" required />
+                            <div class="invalid-feedback">
+                                Required Skills are mandatory
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="col-md-8">
-                    <div class="form-group">
-                        <label>Experience</label>
-                        <input class="form-control" [readonly]="readOnlyForm" [(ngModel)]="clientPositionModel.experience">
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="form-group">
+                            <label>Min CTC<span class="required">*</span></label>
+                            <input class="form-control" [readonly]="readOnlyForm" type="number"
+                                [(ngModel)]="clientPositionModel.minCtc" name="minctc"
+                                [ngClass]="{'is-invalid': f.submitted && minctc.invalid}" #minctc="ngModel" required />
+                            <div class="invalid-feedback">
+                                Min CTC is mandatory
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div class="col-md-8">
-                    <div class="form-group">
-                        <label>Required Skills</label>
-                        <input class="form-control" [readonly]="readOnlyForm" [(ngModel)]="clientPositionModel.requiredSkills">
+                    <div class="col-md-8">
+                        <div class="form-group">
+                            <label>Max CTC<span class="required">*</span></label>
+                            <input class="form-control" [readonly]="readOnlyForm" type="number"
+                                [(ngModel)]="clientPositionModel.maxCtc" name="maxctc"
+                                [ngClass]="{'is-invalid': f.submitted && maxctc.invalid}" #maxctc="ngModel" required />
+                            <div class="invalid-feedback">
+                                Max CTC is mandatory
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-8">
-                    <div class="form-group">
-                        <label>Min CTC</label>
-                        <input class="form-control" [readonly]="readOnlyForm" type="number" [(ngModel)]="clientPositionModel.minCtc">
-                    </div>
-                </div>
-                <div class="col-md-8">
-                    <div class="form-group">
-                        <label>Max CTC</label>
-                        <input class="form-control" [readonly]="readOnlyForm" type="number" [(ngModel)]="clientPositionModel.maxCtc">
-                    </div>
-                </div>
-                <div class="col-md-8">
-                    <div class="form-group">
-                        <label>Client Position Status </label>
-                        <div *ngIf="readOnlyForm; else elseBlock">
-                                <input class="form-control" readonly [(ngModel)]="clientPositionModel.clientPositionsStatusCode">
+                    <div class="col-md-8">
+                        <div class="form-group">
+                            <label>Client Position Status </label>
+                            <div *ngIf="readOnlyForm; else elseBlock">
+                                <input class="form-control" readonly
+                                    [(ngModel)]="clientPositionModel.clientPositionsStatusCode">
                             </div>
                             <ng-template #elseBlock>
-                                    <select class="form-control" [(ngModel)]="clientPositionModel.clientPositionsStatusCode">
-                                            <option *ngFor="let cpsl of clientPositionStatusList" [ngValue]="cpsl.code">{{cpsl.description}}</option>
-                                        </select>
+                                <select class="form-control"
+                                    [(ngModel)]="clientPositionModel.clientPositionsStatusCode">
+                                    <option *ngFor="let cpsl of clientPositionStatusList" [ngValue]="cpsl.code">
+                                        {{cpsl.description}}</option>
+                                </select>
                             </ng-template>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-md-8">
-                    <div class="form-group">
-                        <label>Closed By</label>
-                        <input class="form-control" [readonly]="readOnlyForm" [(ngModel)]="clientPositionModel.closedBy">
-                        <!-- Should get dropdown of usernames will done later and present give input admin or pavan -->
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="form-group">
+                            <label>Closed By</label>
+                            <input class="form-control" [readonly]="readOnlyForm"
+                                [(ngModel)]="clientPositionModel.closedBy">
+                            <!-- Should get dropdown of usernames will done later and present give input admin or pavan -->
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="form-group">
+                            <label>Additional Comments</label>
+                            <input class="form-control" [readonly]="readOnlyForm"
+                                [(ngModel)]="clientPositionModel.additionalComments">
+                        </div>
                     </div>
                 </div>
-                <div class="col-md-8">
-                    <div class="form-group">
-                        <label>Additional Comments</label>
-                        <input class="form-control" [readonly]="readOnlyForm" [(ngModel)]="clientPositionModel.additionalComments">
-                    </div>
-                </div>
-            </div>
-            <div class="row">
+                <div class="row">
                     <div class="col-md-6">
                         <div *ngIf="formButtonsToggler;else toggleButtons">
-                            <button type="button" id="add" class="btn btn-secondary ml-3" (click)="createClientPosition()">Add</button>
+                            <button type="submit" id="add" class="btn btn-secondary ml-3"
+                                (click)="createClientPosition()">Add</button>
                         </div>
                         <ng-template #toggleButtons>
                             <span *ngIf="editButtonToggler;else toggleEdit">
@@ -103,6 +139,7 @@
                             class="btn btn-secondary ml-3">Cancel</button>
                     </div>
                 </div>
+            </form>
         </div>
     </div>
 
