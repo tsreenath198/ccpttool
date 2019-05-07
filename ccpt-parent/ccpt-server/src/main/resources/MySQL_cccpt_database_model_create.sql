@@ -55,6 +55,7 @@ CREATE TABLE client_position (
     client_positions_status_code varchar(3) NOT NULL,
     closed_by varchar(50) NULL,
     additional_comments text NOT NULL,
+    client_position_code varchar(30)  NOT NULL,
     created_date date NOT NULL ,
     updated_date date NOT NULL,
     active_flag char(1) NOT NULL DEFAULT 'Y',
