@@ -3,7 +3,8 @@ export class URLConstants {
     CASCreate: string = 'admin/addClientApplicationStatus';
     CASGetAll: string = 'admin/getAllClientApplicationStatus';
     /*Client Postion Status*/
-
+    CPSCreate: string = 'admin/addClientApplicationStatus';
+    CPSGetAll: string = 'admin/getAllClientApplicationStatus';
     /*Client Position */
     CPCreate: string = 'clientPosition/create';
     CPGetAll: string = 'clientPosition/getAll';
