@@ -10,4 +10,6 @@ public interface IClientPositionStatusService {
 
 	List<ClientPositionStatus> getAllClientPositionStatus();
 
+	ClientPositionStatus getClientPositionStatusById(String code);
+
 }

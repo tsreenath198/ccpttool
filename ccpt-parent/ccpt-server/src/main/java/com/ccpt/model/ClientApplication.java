@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name = "client_application")
@@ -31,6 +32,12 @@ public class ClientApplication {
 	private Date createdDate;
 	@Column(name = "updated_date")
 	private Date updatedDate;
+	@Transient
+	private String consultantName;
+	@Transient
+	private String clientApplicationStatus;
+	@Transient
+	private String clientPositionCode;
 
 	public int getId() {
 		return id;
@@ -110,6 +117,30 @@ public class ClientApplication {
 				+ ", clientPositionId=" + clientPositionId + ", consultantId=" + consultantId + ", notes=" + notes
 				+ ", interviewDate=" + interviewDate + ", activeFlag=" + activeFlag + ", createdDate=" + createdDate
 				+ ", updatedDate=" + updatedDate + "]";
+	}
+
+	public String getConsultantName() {
+		return consultantName;
+	}
+
+	public void setConsultantName(String consultantName) {
+		this.consultantName = consultantName;
+	}
+
+	public String getClientApplicationStatus() {
+		return clientApplicationStatus;
+	}
+
+	public void setClientApplicationStatus(String clientApplicationStatus) {
+		this.clientApplicationStatus = clientApplicationStatus;
+	}
+
+	public String getClientPositionCode() {
+		return clientPositionCode;
+	}
+
+	public void setClientPositionCode(String clientPositionCode) {
+		this.clientPositionCode = clientPositionCode;
 	}
 
 }

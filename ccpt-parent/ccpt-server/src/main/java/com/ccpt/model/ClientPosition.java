@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name = "client_position")
@@ -35,6 +36,12 @@ public class ClientPosition {
 	private Date createdDate;
 	@Column(name = "updated_date")
 	private Date updatedDate;
+	@Column(name = "active_flag")
+	private char activeFlag;
+	@Column(name = "client_position_code")
+	private String clientPositionCode;
+	@Transient
+	private String clientPositionsStatus;
 
 	public int getId() {
 		return id;
@@ -124,13 +131,37 @@ public class ClientPosition {
 		this.updatedDate = updatedDate;
 	}
 
+	public char getActiveFlag() {
+		return activeFlag;
+	}
+
+	public void setActiveFlag(char activeFlag) {
+		this.activeFlag = activeFlag;
+	}
+
+	public String getClientPositionsStatus() {
+		return clientPositionsStatus;
+	}
+
+	public void setClientPositionsStatus(String clientPositionsStatus) {
+		this.clientPositionsStatus = clientPositionsStatus;
+	}
+
 	@Override
 	public String toString() {
 		return "ClientPosition [id=" + id + ", technology=" + technology + ", experience=" + experience
 				+ ", requiredSkills=" + requiredSkills + ", minCtc=" + minCtc + ", maxCtc=" + maxCtc
 				+ ", clientPositionsStatusCode=" + clientPositionsStatusCode + ", closedBy=" + closedBy
 				+ ", additionalComments=" + additionalComments + ", createdDate=" + createdDate + ", updatedDate="
-				+ updatedDate + "]";
+				+ updatedDate + ", activeFlag=" + activeFlag + ", clientPositionsStatus=" + clientPositionsStatus + "]";
+	}
+
+	public String getClientPositionCode() {
+		return clientPositionCode;
+	}
+
+	public void setClientPositionCode(String clientPositionCode) {
+		this.clientPositionCode = clientPositionCode;
 	}
 
 }

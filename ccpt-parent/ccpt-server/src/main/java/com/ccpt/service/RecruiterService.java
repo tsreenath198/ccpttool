@@ -17,7 +17,7 @@ public class RecruiterService implements IRecruiterService {
 	@Override
 	public List<Recruiter> getAllRecruiters() {
 		List<Recruiter> list = new ArrayList<>();
-		recruiterRepository.findAll().forEach(e -> list.add(e));
+		recruiterRepository.findAllByOrderByUpdatedDateAsc().forEach(e -> list.add(e));
 		return list;
 	}
 

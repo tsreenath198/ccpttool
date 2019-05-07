@@ -14,4 +14,7 @@ public interface ClientCallHistoryRepository extends CrudRepository<ClientCallHi
 	List<ClientCallHistory> getAllConsultantCallHistorysFromLastGivenDays(@Param(value = "sdate") Date sdate,
 			@Param(value = "edate") Date edate);
 
+//	@Query("SELECT c FROM ClientCallHistory c WHERE c.name=:name")
+//	List<ClientCallHistory> getAllConsultantCallHistorysFromRecruiter(@Param(value = "name") String name);
+
 }

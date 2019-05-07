@@ -19,6 +19,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.ccpt.constants.CCPTConstants;
 import com.ccpt.model.ClientApplication;
 import com.ccpt.service.IClientApplicationService;
+import com.ccpt.service.IClientApplicationStatusService;
+import com.ccpt.service.IClientPositionService;
+import com.ccpt.service.IConsultantService;
 
 @Controller
 @CrossOrigin
@@ -28,9 +31,28 @@ public class ClientApplicationController {
 	@Autowired
 	private IClientApplicationService clientApplicationService;
 
+	@Autowired
+	private IConsultantService consultantService;
+
+	@Autowired
+	private IClientApplicationStatusService clientApplicationStatusService;
+	@Autowired
+	private IClientPositionService clientPositionService;
+
 	@GetMapping(CCPTConstants.GET_ALL)
 	public ResponseEntity<List<ClientApplication>> getAllClientApplications() {
 		List<ClientApplication> clientApplicationList = clientApplicationService.getAllClientApplications();
+
+		for (ClientApplication clientApplication : clientApplicationList) {
+			clientApplication.setConsultantName(
+					consultantService.getConsultantById(clientApplication.getConsultantId()).getFullname());
+			clientApplication.setClientApplicationStatus(clientApplicationStatusService
+					.getClientApplicationStatusById(clientApplication.getClientApplicationStatusCode())
+					.getDescription());
+			clientApplication.setClientPositionCode(clientPositionService
+					.getClientPositionById(clientApplication.getClientPositionId()).getClientPositionCode());
+		}
+
 		return new ResponseEntity<List<ClientApplication>>(clientApplicationList, HttpStatus.OK);
 	}
 
@@ -43,6 +65,7 @@ public class ClientApplicationController {
 	@PostMapping(CCPTConstants.CREATE)
 	public ResponseEntity<Void> addClientApplication(@RequestBody ClientApplication clientApplication) {
 		clientApplication.setCreatedDate(new Date());
+		clientApplication.setUpdatedDate(new Date());
 		clientApplicationService.addClientApplication(clientApplication);
 		return new ResponseEntity<Void>(HttpStatus.CREATED);
 	}

@@ -43,6 +43,7 @@ public class RecruiterController {
 	@PostMapping("create")
 	public ResponseEntity<Void> addRecruiter(@RequestBody Recruiter recruiter) {
 		recruiter.setCreatedDate(new Date());
+		recruiter.setUpdatedDate(new Date());
 		recruiterService.addRecruiter(recruiter);
 		return new ResponseEntity<Void>(HttpStatus.CREATED);
 	}

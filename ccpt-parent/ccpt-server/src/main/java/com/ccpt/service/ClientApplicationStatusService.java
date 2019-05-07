@@ -25,4 +25,10 @@ public class ClientApplicationStatusService implements IClientApplicationStatusS
 		clientApplicationStatusRepository.findAll().forEach(e -> list.add(e));
 		return list;
 	}
+	
+	@Override
+	public ClientApplicationStatus getClientApplicationStatusById(String  code) {
+		ClientApplicationStatus obj = clientApplicationStatusRepository.findById(code).get();
+		return obj;
+	}
 }

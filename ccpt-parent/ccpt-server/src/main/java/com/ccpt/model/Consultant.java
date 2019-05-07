@@ -8,27 +8,35 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name = "consultant")
 public class Consultant {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	@Column(name = "name")
-	private String name;
+	@Column(name = "fullname")
+	private String fullname;
+	@Column(name = "gender")
+	private String gender;
+	@Column(name = "dob")
+	private Date dob;
 	@Column(name = "email")
 	private String email;
 	@Column(name = "phone")
 	private String phone;
 	@Column(name = "skills")
 	private String skills;
+	@Column(name = "current_location")
+	private String currentLocation;
 	@Column(name = "passout_year")
 	private int passoutYear;
 	@Column(name = "qualification")
 	private String qualification;
-	@Column(name = "expected_salary")
-	private double expectedSalary;
+	@Column(name = "expected_ctc")
+	private double expectedCTC;
 	@Column(name = "description")
 	private String description;
 	@Column(name = "created_date")
@@ -37,10 +45,14 @@ public class Consultant {
 	private Date updatedDate;
 	@Column(name = "consultant_status_code")
 	private String consultantStatusCode;
-	@Column(name = "experience")
-	private String experience;
+	@Column(name = "experience_yrs")
+	private int experienceYrs;
+	@Column(name = "experience_months")
+	private int experienceMonths;
 	@Column(name = "activeFlag")
 	private char activeFlag;
+	@Transient
+	private String consultantStatus;
 
 	public int getId() {
 		return id;
@@ -50,12 +62,28 @@ public class Consultant {
 		this.id = id;
 	}
 
-	public String getName() {
-		return name;
+	public String getFullname() {
+		return fullname;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setFullname(String fullname) {
+		this.fullname = fullname;
+	}
+
+	public String getGender() {
+		return gender;
+	}
+
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+
+	public Date getDob() {
+		return dob;
+	}
+
+	public void setDob(Date dob) {
+		this.dob = dob;
 	}
 
 	public String getEmail() {
@@ -82,6 +110,14 @@ public class Consultant {
 		this.skills = skills;
 	}
 
+	public String getCurrentLocation() {
+		return currentLocation;
+	}
+
+	public void setCurrentLocation(String currentLocation) {
+		this.currentLocation = currentLocation;
+	}
+
 	public int getPassoutYear() {
 		return passoutYear;
 	}
@@ -98,12 +134,12 @@ public class Consultant {
 		this.qualification = qualification;
 	}
 
-	public double getExpectedSalary() {
-		return expectedSalary;
+	public double getExpectedCTC() {
+		return expectedCTC;
 	}
 
-	public void setExpectedSalary(double expectedSalary) {
-		this.expectedSalary = expectedSalary;
+	public void setExpectedCTC(double expectedCTC) {
+		this.expectedCTC = expectedCTC;
 	}
 
 	public String getDescription() {
@@ -138,12 +174,20 @@ public class Consultant {
 		this.consultantStatusCode = consultantStatusCode;
 	}
 
-	public String getExperience() {
-		return experience;
+	public int getExperienceYrs() {
+		return experienceYrs;
 	}
 
-	public void setExperience(String experience) {
-		this.experience = experience;
+	public void setExperienceYrs(int experienceYrs) {
+		this.experienceYrs = experienceYrs;
+	}
+
+	public int getExperienceMonths() {
+		return experienceMonths;
+	}
+
+	public void setExperienceMonths(int experienceMonths) {
+		this.experienceMonths = experienceMonths;
 	}
 
 	public char getActiveFlag() {
@@ -154,13 +198,23 @@ public class Consultant {
 		this.activeFlag = activeFlag;
 	}
 
+	public String getConsultantStatus() {
+		return consultantStatus;
+	}
+
+	public void setConsultantStatus(String consultantStatus) {
+		this.consultantStatus = consultantStatus;
+	}
+
 	@Override
 	public String toString() {
-		return "Consultant [id=" + id + ", name=" + name + ", email=" + email + ", phone=" + phone + ", skills="
-				+ skills + ", passoutYear=" + passoutYear + ", qualification=" + qualification + ",expectedSalary="
-				+ expectedSalary + ", description=" + description + ", createdDate=" + createdDate + ", updatedDate="
-				+ updatedDate + ", consultantStatusCode=" + consultantStatusCode + ", experience=" + experience
-				+ ", activeFlag=" + activeFlag + "]";
+		return "Consultant [id=" + id + ", fullname=" + fullname + ", gender=" + gender + ", dob=" + dob + ", email="
+				+ email + ", phone=" + phone + ", skills=" + skills + ", currentLocation=" + currentLocation
+				+ ", passoutYear=" + passoutYear + ", qualification=" + qualification + ", expectedCTC=" + expectedCTC
+				+ ", description=" + description + ", createdDate=" + createdDate + ", updatedDate=" + updatedDate
+				+ ", consultantStatusCode=" + consultantStatusCode + ", experienceYrs=" + experienceYrs
+				+ ", experienceMonths=" + experienceMonths + ", activeFlag=" + activeFlag + ", consultantStatus="
+				+ consultantStatus + "]";
 	}
 
 }

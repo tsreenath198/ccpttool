@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.ccpt.constants.CCPTConstants;
 import com.ccpt.model.Consultant;
 import com.ccpt.service.IConsultantService;
+import com.ccpt.service.IConsultantStatusService;
 
 @Controller
 @CrossOrigin
@@ -28,9 +29,17 @@ public class ConsultantController {
 	@Autowired
 	private IConsultantService consultantService;
 
+	@Autowired
+	private IConsultantStatusService consultantStatusService;
+
 	@GetMapping(CCPTConstants.GET_ALL)
 	public ResponseEntity<List<Consultant>> getAllConsultants() {
 		List<Consultant> consultantList = consultantService.getAllConsultants();
+
+		for (Consultant consultant : consultantList) {
+			consultant.setConsultantStatus(consultantStatusService
+					.getConsultantStatusById(consultant.getConsultantStatusCode()).getDescription());
+		}
 		return new ResponseEntity<List<Consultant>>(consultantList, HttpStatus.OK);
 	}
 
@@ -43,6 +52,7 @@ public class ConsultantController {
 	@PostMapping(CCPTConstants.CREATE)
 	public ResponseEntity<Void> addConsultant(@RequestBody Consultant consultant) {
 		consultant.setCreatedDate(new Date());
+		consultant.setUpdatedDate(new Date());
 		consultantService.addConsultant(consultant);
 		return new ResponseEntity<Void>(HttpStatus.CREATED);
 	}

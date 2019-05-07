@@ -10,4 +10,6 @@ public interface IClientApplicationStatusService {
 
 	List<ClientApplicationStatus> getAllClientApplications();
 
+	ClientApplicationStatus getClientApplicationStatusById(String code);
+
 }

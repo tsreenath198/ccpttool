@@ -15,34 +15,34 @@ public class Recruiter {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	
-	@Column(name = "firstname")
-	private String firstname;
-	
-	@Column(name = "lastname")
-	private String lastname;
-	
+
+	@Column(name = "fullname")
+	private String fullname;
+
+	@Column(name = "gender")
+	private String gender;
+
 	@Column(name = "dob")
 	private Date dob;
-	
+
 	@Column(name = "role")
 	private String role;
-	
+
 	@Column(name = "phone")
 	private String phone;
-	
+
 	@Column(name = "email")
 	private String email;
-	
+
 	@Column(name = "address")
 	private String address;
-	
+
 	@Column(name = "active_flag")
 	private char activeFlag;
-	
+
 	@Column(name = "created_date")
 	private Date createdDate;
-	
+
 	@Column(name = "updated_date")
 	private Date updatedDate;
 
@@ -52,22 +52,6 @@ public class Recruiter {
 
 	public void setId(int id) {
 		this.id = id;
-	}
-
-	public String getFirstname() {
-		return firstname;
-	}
-
-	public void setFirstname(String firstname) {
-		this.firstname = firstname;
-	}
-
-	public String getLastname() {
-		return lastname;
-	}
-
-	public void setLastname(String lastname) {
-		this.lastname = lastname;
 	}
 
 	public Date getDob() {
@@ -134,5 +118,20 @@ public class Recruiter {
 		this.updatedDate = updatedDate;
 	}
 
-	
+	public String getFullname() {
+		return fullname;
+	}
+
+	public void setFullname(String fullname) {
+		this.fullname = fullname;
+	}
+
+	public String getGender() {
+		return gender;
+	}
+
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+
 }

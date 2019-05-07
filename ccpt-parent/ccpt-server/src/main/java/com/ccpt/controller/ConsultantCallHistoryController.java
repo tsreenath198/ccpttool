@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.ccpt.constants.CCPTConstants;
 import com.ccpt.model.ConsultantCallHistory;
 import com.ccpt.service.IConsultantCallHistoryService;
+import com.ccpt.service.IConsultantService;
 
 @Controller
 @CrossOrigin
@@ -27,11 +28,17 @@ public class ConsultantCallHistoryController {
 
 	@Autowired
 	private IConsultantCallHistoryService consultantCallHistoryService;
+	
+	@Autowired
+	private IConsultantService consultantService;
 
-	@GetMapping(CCPTConstants.GET_ALL)
+	@GetMapping("getAll")
 	public ResponseEntity<List<ConsultantCallHistory>> getAllConsultantCallHistorys() {
 		List<ConsultantCallHistory> consultantCallHistoryList = consultantCallHistoryService
 				.getAllConsultantCallHistorys();
+		for (ConsultantCallHistory cch : consultantCallHistoryList) {
+			cch.setConsultantName(consultantService.getConsultantById(cch.getConsultantId()).getFullname());
+		}
 		return new ResponseEntity<List<ConsultantCallHistory>>(consultantCallHistoryList, HttpStatus.OK);
 	}
 
@@ -44,6 +51,7 @@ public class ConsultantCallHistoryController {
 	@PostMapping(CCPTConstants.CREATE)
 	public ResponseEntity<Void> addConsultantCallHistory(@RequestBody ConsultantCallHistory consultantCallHistory) {
 		consultantCallHistory.setCreatedDate(new Date());
+		consultantCallHistory.setUpdatedDate(new Date());
 		consultantCallHistoryService.addConsultantCallHistory(consultantCallHistory);
 		return new ResponseEntity<Void>(HttpStatus.CREATED);
 	}

@@ -26,4 +26,9 @@ public class ConsultantStatusService implements IConsultantStatusService {
 		consultantStatusRepository.findAll().forEach(e -> list.add(e));
 		return list;
 	}
+	@Override
+	public ConsultantStatus getConsultantStatusById(String  code) {
+		ConsultantStatus obj = consultantStatusRepository.findById(code).get();
+		return obj;
+	}
 }

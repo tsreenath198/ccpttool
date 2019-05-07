@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name = "consultant_call_history")
@@ -23,6 +24,9 @@ public class ConsultantCallHistory {
 	private Date createdDate;
 	@Column(name = "updated_date")
 	private Date updatedDate;
+	
+	@Transient
+	private String consultantName;
 
 	public int getId() {
 		return id;
@@ -64,10 +68,21 @@ public class ConsultantCallHistory {
 		this.updatedDate = updatedDate;
 	}
 
+	public String getConsultantName() {
+		return consultantName;
+	}
+
+	public void setConsultantName(String consultantName) {
+		this.consultantName = consultantName;
+	}
+
 	@Override
 	public String toString() {
 		return "ConsultantCallHistory [id=" + id + ", consultantId=" + consultantId + ", description=" + description
-				+ ", createdDate=" + createdDate + ", updatedDate=" + updatedDate + "]";
+				+ ", createdDate=" + createdDate + ", updatedDate=" + updatedDate + ", consultantName=" + consultantName
+				+ "]";
 	}
+
+	
 
 }

@@ -4,6 +4,6 @@ import org.springframework.data.repository.CrudRepository;
 
 import com.ccpt.model.ClientApplicationStatus;
 
-public interface ClientApplicationStatusRepository extends CrudRepository<ClientApplicationStatus, Integer> {
+public interface ClientApplicationStatusRepository extends CrudRepository<ClientApplicationStatus, String> {
 
 }

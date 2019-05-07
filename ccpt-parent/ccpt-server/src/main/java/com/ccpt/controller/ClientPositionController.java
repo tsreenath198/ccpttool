@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.ccpt.constants.CCPTConstants;
 import com.ccpt.model.ClientPosition;
 import com.ccpt.service.IClientPositionService;
+import com.ccpt.service.IClientPositionStatusService;
 
 @Controller
 @CrossOrigin
@@ -28,9 +29,25 @@ public class ClientPositionController {
 	@Autowired
 	private IClientPositionService clientPositionService;
 
+	@Autowired
+	private IClientPositionStatusService clientPositionStatusService;
+
 	@GetMapping(CCPTConstants.GET_ALL)
 	public ResponseEntity<List<ClientPosition>> getAllClientPositions() {
 		List<ClientPosition> clientPositionList = clientPositionService.getAllClientPositions();
+		
+		for(ClientPosition clientPosition:clientPositionList){
+			clientPosition.setClientPositionsStatus(clientPositionStatusService
+					.getClientPositionStatusById(clientPosition.getClientPositionsStatusCode()).getDescription());
+		}
+		
+		/*for (Iterator iterator = clientPositionList.iterator(); iterator.hasNext();) {
+			ClientPosition clientPosition = (ClientPosition) iterator.next();
+			clientPosition.setClientPositionsStatus(clientPositionStatusService
+					.getClientPositionStatusById(clientPosition.getClientPositionsStatusCode()).getCode());
+
+		}*/
+
 		return new ResponseEntity<List<ClientPosition>>(clientPositionList, HttpStatus.OK);
 	}
 
@@ -43,6 +60,7 @@ public class ClientPositionController {
 	@PostMapping(CCPTConstants.CREATE)
 	public ResponseEntity<Void> addClientPosition(@RequestBody ClientPosition clientPosition) {
 		clientPosition.setCreatedDate(new Date());
+		clientPosition.setUpdatedDate(new Date());
 		clientPositionService.addClientPosition(clientPosition);
 		return new ResponseEntity<Void>(HttpStatus.CREATED);
 	}

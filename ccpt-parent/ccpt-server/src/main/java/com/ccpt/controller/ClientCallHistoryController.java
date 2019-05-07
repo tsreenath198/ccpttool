@@ -43,6 +43,7 @@ public class ClientCallHistoryController {
 	@PostMapping(CCPTConstants.CREATE)
 	public ResponseEntity<Void> addClientCallHistory(@RequestBody ClientCallHistory clientCallHistory) {
 		clientCallHistory.setCreatedDate(new Date());
+		clientCallHistory.setUpdatedDate(new Date());
 		clientCallHistoryService.addClientCallHistory(clientCallHistory);
 		return new ResponseEntity<Void>(HttpStatus.CREATED);
 	}

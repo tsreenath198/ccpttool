@@ -26,4 +26,9 @@ public class ClientPositionStatusService implements IClientPositionStatusService
 		clientPositionStatusRepository.findAll().forEach(e -> list.add(e));
 		return list;
 	}
+	@Override
+	public ClientPositionStatus getClientPositionStatusById(String  code) {
+		ClientPositionStatus obj = clientPositionStatusRepository.findById(code).get();
+		return obj;
+	}
 }
