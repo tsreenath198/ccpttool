@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {URLConstants} from '../components/constants/url-constants';
 import { routerTransition } from '../../router.animations';
 import { ClientPositionModel } from './client-position.model';
 import { HttpClientService } from 'src/app/shared/services/http.service';
@@ -18,16 +19,17 @@ export class ClientPositionComponent implements OnInit {
     public readOnlyForm :boolean=false;
     public formButtonsToggler :boolean=true;
     public editButtonToggler:boolean=true;
+    public urlConstants = new URLConstants();
     constructor(private http: HttpClientService,private toastr: ToastrCustomService) { }
 
     ngOnInit() {
-        this.http.get('admin/getAllClientPositionStatus').subscribe(resp => {
+        this.http.get(this.urlConstants.CPSGetAll).subscribe(resp => {
             this.clientPositionStatusList = resp as any;
         })
        this.init();
     }
     init(){
-        this.http.get('clientPosition/getAll').subscribe(resp => {
+        this.http.get(this.urlConstants.CPGetAll).subscribe(resp => {
             this.clientPositionList = resp as any;
         })
     }
@@ -56,7 +58,7 @@ export class ClientPositionComponent implements OnInit {
         this.clientPositionModel = <ClientPositionModel>{};
     }
     createClientPosition(): void {
-        this.http.create(this.clientPositionModel, 'clientPosition/create').subscribe(resp => {
+        this.http.create(this.clientPositionModel, this.urlConstants.CPCreate).subscribe(resp => {
             this.toastr.success("Form Submitted Successfully", "Client Position");
             this.init();
             this.formReset();
@@ -66,7 +68,7 @@ export class ClientPositionComponent implements OnInit {
 
     }
     updateClientPosition(){
-        this.http.update(this.clientPositionModel, 'clientPosition/update').subscribe(resp => {
+        this.http.update(this.clientPositionModel, this.urlConstants.CPUpdate).subscribe(resp => {
             this.toastr.success("Form Updated Successfully", "Client Position");
             this.formButtonsToggler = true;
             this.formReset();
@@ -76,7 +78,7 @@ export class ClientPositionComponent implements OnInit {
         })
     }
     deleteClientPosition() {
-        this.http.delete('clientPosition/id/' + this.clientPositionModel.id).subscribe(resp => {
+        this.http.delete(this.urlConstants.CPDelete + this.clientPositionModel.id).subscribe(resp => {
             this.toastr.success("Form Deleted Successfully", "Client Position");
             this.init();
             this.formReset();

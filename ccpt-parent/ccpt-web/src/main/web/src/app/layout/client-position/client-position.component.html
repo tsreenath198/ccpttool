@@ -32,6 +32,8 @@
               </div>
             </div>
           </div>
+        </div>
+        <div class="row">
           <div class="col-md-8">
             <div class="form-group">
               <label>Experience<span class="required">*</span></label>
@@ -43,14 +45,19 @@
               </div>
             </div>
           </div>
+        </div>
+        <div class="row">
           <div class="col-md-8">
             <div class="form-group">
-              <label>Required Skills<span class="required">*</span></label>
-              <input class="form-control" [readonly]="readOnlyForm" [(ngModel)]="clientPositionModel.requiredSkills"
-                name="requiredskills" [ngClass]="{'is-invalid': f.submitted && requiredskills.invalid}"
-                #requiredskills="ngModel" required />
+              <label>Application Code<span class="required">*</span></label>
+              <input class="form-control" [readonly]="readOnlyForm" [(ngModel)]="clientPositionModel.code"
+                name="code" [ngClass]="{'is-invalid': f.submitted && code.invalid}" #experience="ngModel"
+                required placeholder="Eg : 123456-abcd-abcd-LOC"/>
               <div class="invalid-feedback">
-                Required Skills are mandatory
+                Experience is mandatory
+              </div>
+              <div class="invalid-feedback" *ngIf="invalidAppCode">
+                Please provide valid Application Code
               </div>
             </div>
           </div>
@@ -67,6 +74,8 @@
               </div>
             </div>
           </div>
+        </div>
+        <div class="row">
           <div class="col-md-8">
             <div class="form-group">
               <label>Max CTC<span class="required">*</span></label>
@@ -78,6 +87,8 @@
               </div>
             </div>
           </div>
+        </div>
+        <div class="row">
           <div class="col-md-8">
             <div class="form-group">
               <label>Client Position Status </label>
@@ -97,11 +108,28 @@
         <div class="row">
           <div class="col-md-8">
             <div class="form-group">
+              <label>Required Skills<span class="required">*</span></label>
+              <textarea class="form-control" cols="10" rows="10" [(ngModel)]="clientPositionModel.requiredSkills"
+                name="requiredskills" [ngClass]="{'is-invalid': f.submitted && requiredskills.invalid}"
+                #requiredskills="ngModel" required [readonly]="readOnlyForm"></textarea>
+              <div class="invalid-feedback">
+                Required Skills are mandatory
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="row">
+          <div class="col-md-8">
+            <div class="form-group">
               <label>Closed By</label>
-              <input class="form-control" [readonly]="readOnlyForm" name="closedBy" [(ngModel)]="clientPositionModel.closedBy">
+              <input class="form-control" [readonly]="readOnlyForm" name="closedBy"
+                [(ngModel)]="clientPositionModel.closedBy">
               <!-- Should get dropdown of usernames will done later and present give input admin or pavan -->
             </div>
           </div>
+        </div>
+        <div class="row">
           <div class="col-md-8">
             <div class="form-group">
               <label>Additional Comments</label>
@@ -111,29 +139,28 @@
           </div>
         </div>
         <div class="row">
-            <div class="col-md-6">
-              <div *ngIf="formButtonsToggler;else toggleButtons">
-                <button type="submit" id="add" class="btn btn-secondary ml-3"
-                  >Add</button>
-              </div>
-              <ng-template #toggleButtons>
-                <span *ngIf="editButtonToggler;else toggleEdit">
-                  <button type="button" id="update" class="btn btn-secondary ml-2" (click)="editableForm()">Edit</button>
-                </span>
-                <ng-template #toggleEdit>
-                  <button type="button" id="update" class="btn btn-secondary ml-2"
-                    (click)="updateClientPosition()">Update</button>
-                </ng-template>
-                <button type="button" id="delete" class="btn btn-secondary ml-2"
-                  (click)="deleteClientPosition()">Delete</button>
+          <div class="col-md-6">
+            <div *ngIf="formButtonsToggler;else toggleButtons">
+              <button type="submit" id="add" class="btn btn-secondary ml-3">Add</button>
+            </div>
+            <ng-template #toggleButtons>
+              <span *ngIf="editButtonToggler;else toggleEdit">
+                <button type="button" id="update" class="btn btn-secondary ml-2" (click)="editableForm()">Edit</button>
+              </span>
+              <ng-template #toggleEdit>
+                <button type="button" id="update" class="btn btn-secondary ml-2"
+                  (click)="updateClientPosition()">Update</button>
               </ng-template>
-            </div>
-            <div class="col-md-6">
-              <button type="button" id="cancel" (click)="cancelForm()" class="btn btn-secondary ml-3">Cancel</button>
-            </div>
+              <button type="button" id="delete" class="btn btn-secondary ml-2"
+                (click)="deleteClientPosition()">Delete</button>
+            </ng-template>
           </div>
+          <div class="col-md-6">
+            <button type="button" id="cancel" (click)="cancelForm()" class="btn btn-secondary ml-3">Cancel</button>
+          </div>
+        </div>
       </form>
-       
+
     </div>
   </div>
 
