@@ -50,14 +50,14 @@
           <div class="col-md-8">
             <div class="form-group">
               <label>Application Code<span class="required">*</span></label>
-              <input class="form-control" [readonly]="readOnlyForm" [(ngModel)]="clientPositionModel.code"
-                name="code" [ngClass]="{'is-invalid': f.submitted && code.invalid}" #experience="ngModel"
-                required placeholder="Eg : 123456-abcd-abcd-LOC"/>
+              <input class="form-control" [readonly]="readOnlyForm" [(ngModel)]="clientPositionModel.code" name="code"
+                [ngClass]="{'is-invalid': f.submitted && code.invalid}"
+                #code="ngModel" required placeholder="Eg : 123456-abcd-abcd-LOC" />
               <div class="invalid-feedback">
-                Experience is mandatory
+                Application Code is mandatory
               </div>
-              <div class="invalid-feedback" *ngIf="invalidAppCode">
-                Please provide valid Application Code
+              <div class="text-danger" *ngIf="invalidAppCode === true">
+                Please Application Code like 123456-abcd-abcd-LOC
               </div>
             </div>
           </div>
@@ -118,7 +118,7 @@
             </div>
           </div>
         </div>
-        
+
         <div class="row">
           <div class="col-md-8">
             <div class="form-group">
