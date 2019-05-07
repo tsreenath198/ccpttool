@@ -1,103 +1,98 @@
 <div [@routerTransition]>
-    <app-page-header [icon]="'fa-bar-chart-o'" [heading]="'Recruiter'"></app-page-header>
-    <div class="row">
-        <div class="col-md-6 table-fixed">
-            <div class="table-responsive">
-                <table class="table table-hover table-striped">
-                    <thead>
-                        <tr>
-                            <th>name</th>
-                        </tr>
-                    </thead>
-                    <tbody class="overflow-ele-scroll">
-                        <tr *ngFor="let rl of recruiterList">
-                            <td (click)="readOnlyEnable(rl)" (dblclick)="recruiterEdit(rl)">{{rl.firstname}}</td>
-                        </tr>
-                    </tbody>
-                </table>
+  <app-page-header [icon]="'fa-bar-chart-o'" [heading]="'Recruiter'"></app-page-header>
+  <div class="row">
+    <div class="col-md-6 table-fixed">
+      <div class="table-responsive">
+        <table class="table table-hover table-striped">
+          <thead>
+            <tr>
+              <th>Recruiter</th>
+            </tr>
+          </thead>
+          <tbody class="overflow-ele-scroll">
+            <tr *ngFor="let rl of recruiterList">
+              <td (click)="readOnlyEnable(rl)" (dblclick)="recruiterEdit(rl)">{{rl.firstname}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="row">
+        <div class="col-md-8">
+          <div class="form-group">
+            <label>Full Name</label>
+            <input class="form-control" [readonly]="readOnlyForm" [(ngModel)]="recruiterModel.fullname">
+          </div>
+        </div>
+        
+        <div class="col-md-8">
+          <div class="form-group" data-provide="datepicker">
+            <label>Date of Birth</label>
+            <div *ngIf="readOnlyForm; else elseBlock4">
+              <input class="form-control" readonly [(ngModel)]="recruiterModel.dob">
             </div>
+            <ng-template #elseBlock4>
+              <input type="date" class="form-control" [(ngModel)]="recruiterModel.dob">
+              <div class="input-group-addon">
+                <span class="glyphicon glyphicon-th"></span>
+              </div>
+            </ng-template>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-8">
+          <div class="form-group">
+            <label>Role</label>
+            <!-- <input class="form-control" [readonly]="readOnlyForm" [(ngModel)]="recruiterModel.role"> -->
+            <select class="form-control" [(ngModel)]="recruiterModel.role">
+              <option *ngFor="let role of rolesList" [ngValue]="role">{{role}}</option>
+            </select>
+          </div>
+        </div>
+        <div class="col-md-8">
+          <div class="form-group">
+            <label>Phone</label>
+            <input class="form-control" [readonly]="readOnlyForm" [(ngModel)]="recruiterModel.phone">
+          </div>
+        </div>
+        <div class="col-md-8">
+          <div class="form-group">
+            <label>E-Mail</label>
+            <input class="form-control" type="email" [readonly]="readOnlyForm" [(ngModel)]="recruiterModel.email">
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-8">
+          <div class="form-group">
+            <label>Address</label>
+            <input class="form-control" [readonly]="readOnlyForm" [(ngModel)]="recruiterModel.address">
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <div *ngIf="formButtonsToggler;else toggleButtons">
+            <button type="button" id="add" class="btn btn-secondary ml-3" (click)="createRecruiter()">Add</button>
+          </div>
+          <ng-template #toggleButtons>
+            <span *ngIf="editButtonToggler;else toggleEdit">
+              <button type="button" id="update" class="btn btn-secondary ml-2" (click)="editableForm()">Edit</button>
+            </span>
+            <ng-template #toggleEdit>
+              <button type="button" id="update" class="btn btn-secondary ml-2"
+                (click)="updateRecruiter()">Update</button>
+            </ng-template>
+            <button type="button" id="delete" class="btn btn-secondary ml-2" (click)="deleteRecruiter()">Delete</button>
+          </ng-template>
         </div>
         <div class="col-md-6">
-            <div class="row">
-                <div class="col-md-8">
-                    <div class="form-group">
-                        <label>First Name</label>
-                        <input class="form-control" [readonly]="readOnlyForm" [(ngModel)]="recruiterModel.firstname">
-                    </div>
-                </div>
-                <div class="col-md-8">
-                    <div class="form-group">
-                        <label>Last Name</label>
-                        <input class="form-control" [readonly]="readOnlyForm" [(ngModel)]="recruiterModel.lastname">
-                    </div>
-                </div>
-                <div class="col-md-8">
-                    <div class="form-group" data-provide="datepicker">
-                        <label>Date of Birth</label>
-                        <div *ngIf="readOnlyForm; else elseBlock4">
-                            <input class="form-control" readonly [(ngModel)]="recruiterModel.dob">
-                        </div>
-                        <ng-template #elseBlock4>
-                            <input type="date" class="form-control" [(ngModel)]="recruiterModel.dob">
-                            <div class="input-group-addon">
-                                <span class="glyphicon glyphicon-th"></span>
-                            </div>
-                        </ng-template>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-8">
-                    <div class="form-group">
-                        <label>Role</label>
-                        <input class="form-control" [readonly]="readOnlyForm" [(ngModel)]="recruiterModel.role">
-                    </div>
-                </div>
-                <div class="col-md-8">
-                    <div class="form-group">
-                        <label>Phone</label>
-                        <input class="form-control" [readonly]="readOnlyForm" [(ngModel)]="recruiterModel.phone">
-                    </div>
-                </div>
-                <div class="col-md-8">
-                    <div class="form-group">
-                        <label>E-Mail</label>
-                        <input class="form-control" [readonly]="readOnlyForm" [(ngModel)]="recruiterModel.email">
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-8">
-                    <div class="form-group">
-                        <label>Address</label>
-                        <input class="form-control" [readonly]="readOnlyForm" [(ngModel)]="recruiterModel.address">
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <div *ngIf="formButtonsToggler;else toggleButtons">
-                        <button type="button" id="add" class="btn btn-secondary ml-3" (click)="submit()">Add</button>
-                    </div>
-                    <ng-template #toggleButtons>
-                        <span *ngIf="editButtonToggler;else toggleEdit">
-                            <button type="button" id="update" class="btn btn-secondary ml-2"
-                                (click)="editableForm()">Edit</button>
-                        </span>
-                        <ng-template #toggleEdit>
-                            <button type="button" id="update" class="btn btn-secondary ml-2"
-                                (click)="updateRecruiter()">Update</button>
-                        </ng-template>
-                        <button type="button" id="delete" class="btn btn-secondary ml-2"
-                            (click)="delete()">Delete</button>
-                    </ng-template>
-                </div>
-                <div class="col-md-6">
-                    <button type="button" id="cancel" (click)="cancelForm()"
-                        class="btn btn-secondary ml-3">Cancel</button>
-                </div>
-            </div>
+          <button type="button" id="cancel" (click)="cancelForm()" class="btn btn-secondary ml-3">Cancel</button>
         </div>
+      </div>
     </div>
+  </div>
 
 </div>

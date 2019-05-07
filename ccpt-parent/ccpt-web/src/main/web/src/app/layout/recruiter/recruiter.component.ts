@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { routerTransition } from '../../router.animations';
-import { RecruiterModel } from './recruiter.model';
+import { RecruiterModel, Roles } from './recruiter.model';
 import { HttpClientService } from 'src/app/shared/services/http.service';
 import { ToastrCustomService } from 'src/app/shared/services/toastr.service';
 
@@ -11,55 +11,57 @@ import { ToastrCustomService } from 'src/app/shared/services/toastr.service';
     animations: [routerTransition()]
 })
 export class RecruiterComponent implements OnInit {
-    public recruiterModel:RecruiterModel = <RecruiterModel>{};
-    public readOnlyForm :boolean=false;
-    public formButtonsToggler :boolean=true;
-    public editButtonToggler:boolean=true;
-    public recruiterList:Array<RecruiterModel> = [];
-
-    constructor(private http: HttpClientService,private toastr: ToastrCustomService) { }
+    public recruiterModel: RecruiterModel = <RecruiterModel>{};
+    public readOnlyForm: boolean = false;
+    public formButtonsToggler: boolean = true;
+    public editButtonToggler: boolean = true;
+    public recruiterList: Array<RecruiterModel> = [];
+    public rolesModel = new Roles();
+    public rolesList: any = [];
+    constructor(private http: HttpClientService, private toastr: ToastrCustomService) { }
     ngOnInit() {
         this.init();
+        this.rolesList = this.rolesModel.roles;
     }
-    init(){
+    init() {
         this.http.get('recruiter/getAll').subscribe(resp => {
             this.recruiterList = resp as any;
         })
     }
-    recruiterEdit(data){
-        this.recruiterModel=data;
-        if(this.readOnlyForm==true){
-            this.readOnlyForm=false;
+    recruiterEdit(data) {
+        this.recruiterModel = data;
+        if (this.readOnlyForm == true) {
+            this.readOnlyForm = false;
         }
-        if(this.formButtonsToggler==true){
-            this.formButtonsToggler=false;
+        if (this.formButtonsToggler == true) {
+            this.formButtonsToggler = false;
         }
-        if(this.editButtonToggler==true){
-            this.editButtonToggler=false;
+        if (this.editButtonToggler == true) {
+            this.editButtonToggler = false;
         }
     }
-    readOnlyEnable(data){
+    readOnlyEnable(data) {
         this.recruiterModel = data;
-        if(this.readOnlyForm==false){
-            this.readOnlyForm=true;
+        if (this.readOnlyForm == false) {
+            this.readOnlyForm = true;
         }
-        if(this.formButtonsToggler==true){
-            this.formButtonsToggler=false;
+        if (this.formButtonsToggler == true) {
+            this.formButtonsToggler = false;
         }
     }
     formReset() {
         this.recruiterModel = <RecruiterModel>{};
     }
-    submit(): void {
+    createRecruiter(): void {
         this.http.create(this.recruiterModel, 'recruiter/create').subscribe(resp => {
             this.toastr.success("Form Submitted Successfully", "Recruiter");
             this.init();
             this.formReset();
         }, err => {
-            this.toastr.error(err.statusText, "Recruiter");
+            this.toastr.error(err.error.error + err.status, "Recruiter");
         })
     }
-    updateRecruiter(){
+    updateRecruiter() {
         this.http.update(this.recruiterModel, 'recruiter/update').subscribe(resp => {
             this.toastr.success("Form Updated Successfully", "Recruiter");
             this.init();
@@ -69,29 +71,29 @@ export class RecruiterComponent implements OnInit {
             this.toastr.error(err.statusText, "Recruiter");
         })
     }
-    delete() {
+    deleteRecruiter() {
         this.http.delete('recruiter/id/' + this.recruiterModel.id).subscribe(resp => {
             this.toastr.success("Form Deleted Successfully", "Recruiter");
             this.init();
             this.formReset();
         })
     }
-    editableForm(){
-        if(this.readOnlyForm==true){
-            this.readOnlyForm=false;
+    editableForm() {
+        if (this.readOnlyForm == true) {
+            this.readOnlyForm = false;
         }
-        if(this.editButtonToggler==true){
-            this.editButtonToggler=false;
+        if (this.editButtonToggler == true) {
+            this.editButtonToggler = false;
         }
     }
-    cancelForm(){
+    cancelForm() {
         this.formReset();
-        if(this.readOnlyForm==true){
-            this.readOnlyForm=false;
+        if (this.readOnlyForm == true) {
+            this.readOnlyForm = false;
         }
-        if(this.formButtonsToggler==false){
-            this.formButtonsToggler=true;
+        if (this.formButtonsToggler == false) {
+            this.formButtonsToggler = true;
         }
-        
+
     }
 }
