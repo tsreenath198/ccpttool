@@ -21,7 +21,7 @@ export class ClientApplicationStatusComponent implements OnInit {
         this.init();
     }
     init() {
-        this.http.get(this.urlConstants.clientApplicationStatusGetAll).subscribe(resp => {
+        this.http.get(this.urlConstants.CASGetAll).subscribe(resp => {
             this.clientApplicationStatusList = resp as any;
         })
     }
@@ -29,7 +29,7 @@ export class ClientApplicationStatusComponent implements OnInit {
         this.clientApplicationStatusModel = <ClientApplicationStatusModel>{};
     }
     createClientApplicationStatus(): void {
-        this.http.create(this.clientApplicationStatusModel, this.urlConstants.clientApplicationStatusCreate).subscribe(resp => {
+        this.http.create(this.clientApplicationStatusModel, this.urlConstants.CASCreate).subscribe(resp => {
             this.toastr.success("Form Submitted Successfully", "Client Application Status");
             this.init();
             this.formReset();
