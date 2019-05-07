@@ -6,7 +6,6 @@ import { ClientApplicationStatusModel } from '../client-application-status/clien
 import { ConsultantModel } from '../consultant/consultant.model';
 import { ClientPositionModel } from '../client-position/client-position.model';
 import { ToastrCustomService } from 'src/app/shared/services/toastr.service';
-import { AnyARecord } from 'dns';
 
 @Component({
     selector: 'app-client-application',
