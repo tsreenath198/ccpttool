@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { routerTransition } from '../../router.animations';
+import { URLConstants } from '../components/constants/url-constants';
 import { ClientApplicationStatusModel } from './client-application-status.model';
 import { HttpClientService } from 'src/app/shared/services/http.service';
 import { ToastrCustomService } from 'src/app/shared/services/toastr.service';
@@ -11,24 +12,24 @@ import { ToastrCustomService } from 'src/app/shared/services/toastr.service';
     animations: [routerTransition()]
 })
 export class ClientApplicationStatusComponent implements OnInit {
-    public clientApplicationStatusModel:ClientApplicationStatusModel = <ClientApplicationStatusModel>{};
-    public clientApplicationStatusList:Array<ClientApplicationStatusModel>=[];
-    constructor(private http: HttpClientService,private toastr: ToastrCustomService) { }
-    
-
+    public clientApplicationStatusModel: ClientApplicationStatusModel = <ClientApplicationStatusModel>{};
+    public clientApplicationStatusList: Array<ClientApplicationStatusModel> = [];
+    private urlConstants = new URLConstants();
+    constructor(private http: HttpClientService, private toastr: ToastrCustomService) {
+    }
     ngOnInit() {
         this.init();
     }
-    init(){
-        this.http.get('admin/getAllClientApplicationStatus').subscribe(resp => {
-            this.clientApplicationStatusList = resp as [];
+    init() {
+        this.http.get(this.urlConstants.clientApplicationStatusGetAll).subscribe(resp => {
+            this.clientApplicationStatusList = resp as any;
         })
     }
-    formReset(){
+    formReset() {
         this.clientApplicationStatusModel = <ClientApplicationStatusModel>{};
     }
     createClientApplicationStatus(): void {
-        this.http.create(this.clientApplicationStatusModel, 'admin/addClientApplicationStatus').subscribe(resp => {
+        this.http.create(this.clientApplicationStatusModel, this.urlConstants.clientApplicationStatusCreate).subscribe(resp => {
             this.toastr.success("Form Submitted Successfully", "Client Application Status");
             this.init();
             this.formReset();
