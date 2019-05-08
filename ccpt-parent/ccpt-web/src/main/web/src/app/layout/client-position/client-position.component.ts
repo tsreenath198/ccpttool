@@ -59,8 +59,8 @@ export class ClientPositionComponent implements OnInit {
         this.clientPositionModel = <ClientPositionModel>{};
     }
     createClientPosition(): void {
-        if (this.clientPositionModel.code) {
-            this.validateCPCode(this.clientPositionModel.code);
+        if (this.clientPositionModel.clientPositionCode) {
+            this.validateCPCode(this.clientPositionModel.clientPositionCode);
         }
         if (!this.invalidAppCode) {
             this.http.create(this.clientPositionModel, this.urlConstants.CPCreate).subscribe(resp => {
