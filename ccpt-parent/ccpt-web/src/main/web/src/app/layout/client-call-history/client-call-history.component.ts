@@ -5,6 +5,7 @@ import { HttpClientService } from 'src/app/shared/services/http.service';
 import { ClientpositionStatusModel } from '../client-position-status/client-position-status.model';
 import { ClientPositionModel } from '../client-position/client-position.model';
 import { ToastrCustomService } from 'src/app/shared/services/toastr.service';
+import { URLConstants } from '../components/constants/url-constants';
 
 @Component({
     selector: 'app-client-call-history',
@@ -19,6 +20,7 @@ export class ClientCallHistoryComponent implements OnInit {
     public readOnlyForm :boolean=false;
     public formButtonsToggler :boolean=true;
     public editButtonToggler:boolean=true;
+    public urlConstants = new URLConstants();
     constructor(private http: HttpClientService,private toastr: ToastrCustomService) { }
 
     ngOnInit() {
