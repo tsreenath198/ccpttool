@@ -1,5 +1,10 @@
 export interface ConsultantModel{
-    name:string,
+    fullname:string,
+    dob:string,
+    gender:string,
+    experienceMonths:string,
+    experienceYrs:string
+    currentLocation:string,
     email:string,
     phone:string,
     skills:string,

@@ -4,14 +4,14 @@
         <div class="col-md-6 table-fixed">
             <div class="table-responsive">
                 <table class="table table-hover table-striped">
-                    <thead>
+                    <!-- <thead>
                         <tr>
-                            <th>name</th>
+                            <th>Full Name</th>
                         </tr>
-                    </thead>
+                    </thead> -->
                     <tbody class="overflow-ele-scroll">
                         <tr *ngFor="let cl of consultantList">
-                            <td (click)="readOnlyEnable(cl)" (dblclick)="consultantEdit(cl)">{{cl.name}}</td>
+                            <td (click)="readOnlyEnable(cl)" (dblclick)="consultantEdit(cl)">{{cl.fullname}}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -21,8 +21,8 @@
             <div class="row">
                 <div class="col-md-8">
                     <div class="form-group">
-                        <label>Name</label>
-                        <input class="form-control" [readonly]="readOnlyForm" [(ngModel)]="consultantModel.name">
+                        <label>Full Name</label>
+                        <input class="form-control" [readonly]="readOnlyForm" [(ngModel)]="consultantModel.fullname">
                     </div>
                 </div>
                 <div class="col-md-8">
@@ -37,8 +37,59 @@
                         <input class="form-control" [readonly]="readOnlyForm" [(ngModel)]="consultantModel.phone">
                     </div>
                 </div>
-            </div>
-            <div class="row">
+                <div class="col-md-8">
+                    <div class="form-group">
+                        <label>Gender</label>
+                        <div *ngIf="readOnlyForm; else elseBlock3">
+                            <input class="form-control" readonly [(ngModel)]="consultantModel.gender">
+                        </div>
+                        <ng-template #elseBlock3>
+                            <select class="form-control" [(ngModel)]="consultantModel.gender">
+                                <option *ngFor="let gl of genderList" [ngValue]="gl">{{gl}}</option>
+                            </select>
+                        </ng-template>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="form-group" data-provide="datepicker">
+                        <label>Date of Birth</label>
+                        <div *ngIf="readOnlyForm; else elseBlock4">
+                            <input class="form-control" readonly [(ngModel)]="consultantModel.dob">
+                        </div>
+                        <ng-template #elseBlock4>
+                            <input type="date" class="form-control" [(ngModel)]="consultantModel.dob">
+                            <div class="input-group-addon">
+                                <span class="glyphicon glyphicon-th"></span>
+                            </div>
+                        </ng-template>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="form-group">
+                        <label>Expected CTC</label>
+                        <input type="number" [readonly]="readOnlyForm" class="form-control"
+                            [(ngModel)]="consultantModel.expectedSalary">
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="form-group">
+                        <label>Qualification</label>
+                        <textarea rows="8" class="form-control" [readonly]="readOnlyForm"
+                            [(ngModel)]="consultantModel.qualification"></textarea>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="form-group">
+                        <label>Experience</label>
+                        <div class="form-inline">
+                            <input type="number" class="form-control col-md-2" [readonly]="readOnlyForm"
+                                [(ngModel)]="consultantModel.experienceYrs"
+                                placeholder="years">&nbsp;<span>/</span>&nbsp;<input type="number"
+                                class="form-control col-md-3" [readonly]="readOnlyForm"
+                                [(ngModel)]="consultantModel.experienceMonths" placeholder="months">
+                        </div>
+                    </div>
+                </div>
                 <div class="col-md-8">
                     <div class="form-group">
                         <label>Skills</label>
@@ -54,25 +105,9 @@
                 </div>
                 <div class="col-md-8">
                     <div class="form-group">
-                        <label>Qualification</label>
+                        <label>Current Location</label>
                         <input class="form-control" [readonly]="readOnlyForm"
-                            [(ngModel)]="consultantModel.qualification">
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-8">
-                    <div class="form-group">
-                        <label>Expected Salary</label>
-                        <input type="number" [readonly]="readOnlyForm" class="form-control"
-                            [(ngModel)]="consultantModel.expectedSalary">
-                    </div>
-                </div>
-                <div class="col-md-8">
-                    <div class="form-group">
-                        <label>Description</label>
-                        <input class="form-control" [readonly]="readOnlyForm"
-                            [(ngModel)]="consultantModel.description">
+                            [(ngModel)]="consultantModel.currentLocation">
                     </div>
                 </div>
                 <div class="col-md-8">
@@ -89,21 +124,29 @@
                         </ng-template>
                     </div>
                 </div>
+
             </div>
+            <div class="row">
+
+            </div>
+
             <div class="row">
                 <div class="col-md-8">
                     <div class="form-group">
-                        <label>Experience</label>
-                        <input class="form-control" [readonly]="readOnlyForm" type="number"
-                            [(ngModel)]="consultantModel.experience">
+                        <label>Description</label>
+                        <textarea class="form-control" [readonly]="readOnlyForm"
+                            [(ngModel)]="consultantModel.description" rows="10"></textarea>
                     </div>
                 </div>
+
             </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <div *ngIf="formButtonsToggler;else toggleButtons">
-                        <button type="button" id="add" class="btn btn-secondary ml-3" (click)="createConsultant()">Add</button>
-                    </div>
+
+            <div class="row text-center">
+                <div class="col-md-8">
+                    <span *ngIf="formButtonsToggler;else toggleButtons">
+                        <button type="button" id="add" class="btn btn-secondary ml-3"
+                            (click)="createConsultant()">Add</button>
+                    </span>
                     <ng-template #toggleButtons>
                         <span *ngIf="editButtonToggler;else toggleEdit">
                             <button type="button" id="update" class="btn btn-secondary ml-2"
@@ -116,8 +159,6 @@
                         <button type="button" id="delete" class="btn btn-secondary ml-2"
                             (click)="deleteConsultant()">Delete</button>
                     </ng-template>
-                </div>
-                <div class="col-md-6">
                     <button type="button" id="cancel" (click)="cancelForm()"
                         class="btn btn-secondary ml-3">Cancel</button>
                 </div>

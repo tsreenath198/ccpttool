@@ -4,6 +4,7 @@ import { ConsultantModel } from './consultant.model';
 import { HttpClientService } from 'src/app/shared/services/http.service';
 import { ConsultantStatusModel } from '../consultant-status/consultant-status.model';
 import { ToastrCustomService } from 'src/app/shared/services/toastr.service';
+import { URLConstants } from '../components/constants/url-constants';
 
 @Component({
     selector: 'app-consultant',
@@ -18,16 +19,18 @@ export class ConsultantComponent implements OnInit {
     public readOnlyForm: boolean = false;
     public formButtonsToggler: boolean = true;
     public editButtonToggler: boolean = true;
+    public genderList=['MALE','FEMALE','OTHER'];
+    public urlConstants = new URLConstants();
     constructor(private http: HttpClientService, private toastr: ToastrCustomService) { }
 
     ngOnInit() {
-        this.http.get('admin/getAllConsultantStatus').subscribe(resp => {
+        this.http.get(this.urlConstants.CSGetAll).subscribe(resp => {
             this.consultantStatusList = resp as any;
         });
         this.init();
     }
     init(): void {
-        this.http.get('consultant/getAll').subscribe(resp => {
+        this.http.get(this.urlConstants.CGetAll).subscribe(resp => {
             this.consultantList = resp as any;
         })
     }
@@ -56,7 +59,7 @@ export class ConsultantComponent implements OnInit {
         this.consultantModel = <ConsultantModel>{};
     }
     updateConsultant() {
-        this.http.update(this.consultantModel, 'consultant/update').subscribe(resp => {
+        this.http.update(this.consultantModel, this.urlConstants.CUpdate).subscribe(resp => {
             this.formButtonsToggler = true;
             this.formReset();
             this.toastr.success("Form Updated Successfully", "Consultant");
@@ -66,7 +69,7 @@ export class ConsultantComponent implements OnInit {
         })
     }
     createConsultant(): void {
-        this.http.create(this.consultantModel, 'consultant/create').subscribe(resp => {
+        this.http.create(this.consultantModel, this.urlConstants.CCreate).subscribe(resp => {
             this.toastr.success("Form Submitted Successfully", "Consultant");
             this.init();
             this.formReset();
@@ -75,7 +78,7 @@ export class ConsultantComponent implements OnInit {
         })
     }
     deleteConsultant() {
-        this.http.delete('consultant/id/' + this.consultantModel.id).subscribe(resp => {
+        this.http.delete(this.urlConstants.CDelete + this.consultantModel.id).subscribe(resp => {
             this.toastr.success("Form Deleted Successfully", "Consultant");
             this.init();
             this.formReset();
