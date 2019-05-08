@@ -3,6 +3,7 @@ import { routerTransition } from '../../router.animations';
 import { RecruiterModel, Roles } from './recruiter.model';
 import { HttpClientService } from 'src/app/shared/services/http.service';
 import { ToastrCustomService } from 'src/app/shared/services/toastr.service';
+import { URLConstants } from '../components/constants/url-constants';
 
 @Component({
     selector: 'app-recruiter',
@@ -18,13 +19,17 @@ export class RecruiterComponent implements OnInit {
     public recruiterList: Array<RecruiterModel> = [];
     public rolesModel = new Roles();
     public rolesList: any = [];
+    public urlConstants = new URLConstants();
+    public genderList=['MALE','FEMALE','OTHER'];
+
+    
     constructor(private http: HttpClientService, private toastr: ToastrCustomService) { }
     ngOnInit() {
         this.init();
         this.rolesList = this.rolesModel.roles;
     }
     init() {
-        this.http.get('recruiter/getAll').subscribe(resp => {
+        this.http.get(this.urlConstants.RGetAll).subscribe(resp => {
             this.recruiterList = resp as any;
         })
     }
@@ -53,7 +58,7 @@ export class RecruiterComponent implements OnInit {
         this.recruiterModel = <RecruiterModel>{};
     }
     createRecruiter(): void {
-        this.http.create(this.recruiterModel, 'recruiter/create').subscribe(resp => {
+        this.http.create(this.recruiterModel, this.urlConstants.RCreate).subscribe(resp => {
             this.toastr.success("Form Submitted Successfully", "Recruiter");
             this.init();
             this.formReset();
@@ -62,7 +67,7 @@ export class RecruiterComponent implements OnInit {
         })
     }
     updateRecruiter() {
-        this.http.update(this.recruiterModel, 'recruiter/update').subscribe(resp => {
+        this.http.update(this.recruiterModel, this.urlConstants.RUpdate).subscribe(resp => {
             this.toastr.success("Form Updated Successfully", "Recruiter");
             this.init();
             this.formButtonsToggler = true;

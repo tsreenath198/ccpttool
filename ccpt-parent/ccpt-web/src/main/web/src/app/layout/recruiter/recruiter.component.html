@@ -4,14 +4,14 @@
     <div class="col-md-6 table-fixed">
       <div class="table-responsive">
         <table class="table table-hover table-striped">
-          <thead>
+          <!-- <thead>
             <tr>
               <th>Recruiter</th>
             </tr>
-          </thead>
+          </thead> -->
           <tbody class="overflow-ele-scroll">
             <tr *ngFor="let rl of recruiterList">
-              <td (click)="readOnlyEnable(rl)" (dblclick)="recruiterEdit(rl)">{{rl.firstname}}</td>
+              <td (click)="readOnlyEnable(rl)" (dblclick)="recruiterEdit(rl)">{{rl.fullname}}</td>
             </tr>
           </tbody>
         </table>
@@ -25,7 +25,6 @@
             <input class="form-control" [readonly]="readOnlyForm" [(ngModel)]="recruiterModel.fullname">
           </div>
         </div>
-        
         <div class="col-md-8">
           <div class="form-group" data-provide="datepicker">
             <label>Date of Birth</label>
@@ -40,6 +39,19 @@
             </ng-template>
           </div>
         </div>
+        <div class="col-md-8">
+                <div class="form-group">
+                    <label>Gender</label>
+                    <div *ngIf="readOnlyForm; else elseBlock3">
+                        <input class="form-control" readonly [(ngModel)]="recruiterModel.gender">
+                    </div>
+                    <ng-template #elseBlock3>
+                        <select class="form-control" [(ngModel)]="recruiterModel.gender">
+                            <option *ngFor="let gl of genderList" [ngValue]="gl">{{gl}}</option>
+                        </select>
+                    </ng-template>
+                </div>
+            </div>
       </div>
       <div class="row">
         <div class="col-md-8">
@@ -72,11 +84,11 @@
           </div>
         </div>
       </div>
-      <div class="row">
-        <div class="col-md-6">
-          <div *ngIf="formButtonsToggler;else toggleButtons">
+      <div class="row text-center">
+        <div class="col-md-8">
+          <span *ngIf="formButtonsToggler;else toggleButtons">
             <button type="button" id="add" class="btn btn-secondary ml-3" (click)="createRecruiter()">Add</button>
-          </div>
+          </span>
           <ng-template #toggleButtons>
             <span *ngIf="editButtonToggler;else toggleEdit">
               <button type="button" id="update" class="btn btn-secondary ml-2" (click)="editableForm()">Edit</button>
@@ -87,8 +99,6 @@
             </ng-template>
             <button type="button" id="delete" class="btn btn-secondary ml-2" (click)="deleteRecruiter()">Delete</button>
           </ng-template>
-        </div>
-        <div class="col-md-6">
           <button type="button" id="cancel" (click)="cancelForm()" class="btn btn-secondary ml-3">Cancel</button>
         </div>
       </div>
