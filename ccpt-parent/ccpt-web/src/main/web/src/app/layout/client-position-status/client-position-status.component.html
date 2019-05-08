@@ -4,11 +4,11 @@
         <div class="col-md-6">
             <div class="table-responsive">
                 <table class="table table-hover table-striped">
-                    <thead>
+                    <!-- <thead>
                         <tr>
                             <th>name</th>
                         </tr>
-                    </thead>
+                    </thead> -->
                     <tbody>
                         <tr *ngFor="let cpsl of clientPositionStatusList">
                             <td>{{cpsl.description}}</td>
@@ -28,14 +28,16 @@
                 <div class="col-md-8">
                     <div class="form-group">
                         <label>Description</label>
-                        <input class="form-control"  [(ngModel)]="clientPositionStatusModel.description">
+                        <input class="form-control" [(ngModel)]="clientPositionStatusModel.description">
                     </div>
                 </div>
-                <div class="col-md-8 mt-4">
-                    <button type="button" class="btn btn-secondary"  (click)="createClientPositionStatus()">Add</button>
+
+            </div>
+            <div class="row text-center">
+                <div class="col-md-8">
+                    <button type="button" class="btn btn-secondary" (click)="createClientPositionStatus()">Add</button>
                 </div>
             </div>
-
         </div>
     </div>
 
