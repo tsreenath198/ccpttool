@@ -4,6 +4,7 @@ import { ConsultantCallHistoryModel } from './consultant-call-history.model';
 import { HttpClientService } from 'src/app/shared/services/http.service';
 import { ConsultantModel } from '../consultant/consultant.model';
 import { ToastrCustomService } from 'src/app/shared/services/toastr.service';
+import { URLConstants } from '../components/constants/url-constants';
 
 @Component({
     selector: 'app-consultant-call-history',
@@ -18,17 +19,18 @@ export class ConsultantCallHistoryComponent implements OnInit {
     public formButtonsToggler :boolean=true;
     public editButtonToggler:boolean=true;
     public consultantList: Array<ConsultantModel> = [];
+    public urlConstants = new URLConstants();
 
     constructor(private http: HttpClientService,private toastr: ToastrCustomService) { }
     ngOnInit() {
         this.init();
-        this.http.get('consultant/getAll').subscribe(resp => {
+        this.http.get(this.urlConstants.CGetAll).subscribe(resp => {
             this.consultantList = resp as any;
         })
 
     }
     init(){
-        this.http.get('consultantCallHistory/getAll').subscribe(resp => {
+        this.http.get(this.urlConstants.CoCHGetAll).subscribe(resp => {
             this.consultantCallHistoryList = resp as any;
         })
     }
@@ -57,7 +59,7 @@ export class ConsultantCallHistoryComponent implements OnInit {
         this.consultantCallHistoryModel = <ConsultantCallHistoryModel>{};
     }
     createConsultantCallHistory(): void {
-        this.http.create(this.consultantCallHistoryModel, 'consultantCallHistory/create').subscribe(resp => {
+        this.http.create(this.consultantCallHistoryModel, this.urlConstants.CoCHCreate).subscribe(resp => {
             this.toastr.success("Form Submitted Successfully", "Consultant Call History");
             this.init();
             this.formReset();
@@ -67,7 +69,7 @@ export class ConsultantCallHistoryComponent implements OnInit {
     
     }
     updateConsultantCallHistory() {
-        this.http.update(this.consultantCallHistoryModel, 'consultantCallHistory/update').subscribe(resp => {
+        this.http.update(this.consultantCallHistoryModel, this.urlConstants.CoCHUpdate).subscribe(resp => {
             this.formButtonsToggler = true;
             this.formReset();
             this.toastr.success("Form Updated Successfully", "Consultant Call History");
@@ -77,7 +79,7 @@ export class ConsultantCallHistoryComponent implements OnInit {
         })
     }
     deleteConsultantCallHistory() {
-        this.http.delete('consultantCallHistory/id/' + this.consultantCallHistoryModel.id).subscribe(resp => {
+        this.http.delete(this.urlConstants.CoCHDelete + this.consultantCallHistoryModel.id).subscribe(resp => {
             this.toastr.success("Form Deleted Successfully", "Consultant Call History");
             this.init();
             this.formReset();
