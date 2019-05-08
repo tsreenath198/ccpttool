@@ -19,48 +19,64 @@
             </div>
         </div>
         <div class="col-md-6">
-            <div class="row">
-                <div class="col-md-8">
-                    <div class="form-group">
-                        <label>Consultant</label>
-                        <div *ngIf="readOnlyForm; else elseBlock">
-                            <input class="form-control" readonly [(ngModel)]="consultantCallHistoryModel.consultantId">
+            <form name="form" id="clientPositionForm" (ngSubmit)="f.form.valid&&createConsultantCallHistory()"
+                #f="ngForm" novalidate>
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="form-group">
+                            <label>Consultant<span class="required">*</span></label>
+                            <div *ngIf="readOnlyForm; else elseBlock">
+                                <input class="form-control" name="consultant" readonly
+                                    [(ngModel)]="consultantCallHistoryModel.consultantId">
+                            </div>
+                            <ng-template #elseBlock>
+                                <select class="form-control" name="consultant"
+                                    [(ngModel)]="consultantCallHistoryModel.consultantId"
+                                    [ngClass]="{'is-invalid': f.submitted && consultant.invalid}" #consultant="ngModel"
+                                    required>
+                                    <option *ngFor="let cl of consultantList" [ngValue]="cl.id">{{cl.fullname}}</option>
+                                </select>
+                                <div class="invalid-feedback">
+                                    consultant is mandatory
+                                </div>
+                            </ng-template>
                         </div>
-                        <ng-template #elseBlock>
-                            <select class="form-control" [(ngModel)]="consultantCallHistoryModel.consultantId">
-                                <option *ngFor="let cl of consultantList" [ngValue]="cl.id">{{cl.fullname}}</option>
-                            </select>
-                        </ng-template>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="form-group">
+                            <label>Description<span class="required">*</span></label>
+                            <input class="form-control" name="description" [readonly]="readOnlyForm"
+                                [(ngModel)]="consultantCallHistoryModel.description"
+                                [ngClass]="{'is-invalid': f.submitted && description.invalid}" #description="ngModel"
+                                required>
+                            <div class="invalid-feedback">
+                                description is mandatory
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="col-md-8">
-                    <div class="form-group">
-                        <label>Description</label>
-                        <input class="form-control" [readonly]="readOnlyForm" [(ngModel)]="consultantCallHistoryModel.description">
-                    </div>
-                </div>
-            </div>
-            <div class="row text-center">
-                <div class="col-md-8">
-                    <span *ngIf="formButtonsToggler;else toggleButtons">
-                        <button type="button" id="add" class="btn btn-secondary ml-3" (click)="createConsultantCallHistory()">Add</button>
-                    </span>
-                    <ng-template #toggleButtons>
-                        <span *ngIf="editButtonToggler;else toggleEdit">
-                            <button type="button" id="update" class="btn btn-secondary ml-2"
-                                (click)="editableForm()">Edit</button>
+                <div class="row text-center">
+                    <div class="col-md-8">
+                        <span *ngIf="formButtonsToggler;else toggleButtons">
+                            <button type="submit" id="add" class="btn btn-secondary ml-3">Add</button>
                         </span>
-                        <ng-template #toggleEdit>
-                            <button type="button" id="update" class="btn btn-secondary ml-2"
-                                (click)="updateConsultantCallHistory()">Update</button>
+                        <ng-template #toggleButtons>
+                            <span *ngIf="editButtonToggler;else toggleEdit">
+                                <button type="button" id="update" class="btn btn-secondary ml-2"
+                                    (click)="editableForm()">Edit</button>
+                            </span>
+                            <ng-template #toggleEdit>
+                                <button type="button" id="update" class="btn btn-secondary ml-2"
+                                    (click)="updateConsultantCallHistory()">Update</button>
+                            </ng-template>
+                            <button type="button" id="delete" class="btn btn-secondary ml-2"
+                                (click)="deleteConsultantCallHistory()">Delete</button>
                         </ng-template>
-                        <button type="button" id="delete" class="btn btn-secondary ml-2"
-                            (click)="deleteConsultantCallHistory()">Delete</button>
-                    </ng-template>
-                    <button type="button" id="cancel" (click)="cancelForm()"
-                        class="btn btn-secondary ml-3">Cancel</button>
+                        <button type="button" id="cancel" (click)="cancelForm()"
+                            class="btn btn-secondary ml-3">Cancel</button>
+                    </div>
                 </div>
-            </div>
+            </form>
         </div>
     </div>
 

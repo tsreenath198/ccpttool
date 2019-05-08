@@ -18,90 +18,128 @@
       </div>
     </div>
     <div class="col-md-6">
-      <div class="row">
-        <div class="col-md-8">
-          <div class="form-group">
-            <label>Full Name</label>
-            <input class="form-control" [readonly]="readOnlyForm" [(ngModel)]="recruiterModel.fullname">
-          </div>
-        </div>
-        <div class="col-md-8">
-          <div class="form-group" data-provide="datepicker">
-            <label>Date of Birth</label>
-            <div *ngIf="readOnlyForm; else elseBlock4">
-              <input class="form-control" readonly [(ngModel)]="recruiterModel.dob">
-            </div>
-            <ng-template #elseBlock4>
-              <input type="date" class="form-control" [(ngModel)]="recruiterModel.dob">
-              <div class="input-group-addon">
-                <span class="glyphicon glyphicon-th"></span>
+      <form name="form" id="clientPositionForm" (ngSubmit)="f.form.valid&&createRecruiter()" #f="ngForm" novalidate>
+        <div class="row">
+          <div class="col-md-8">
+            <div class="form-group">
+              <label>Full Name<span class="required">*</span></label>
+              <input class="form-control" name="fullname" [readonly]="readOnlyForm"
+                [(ngModel)]="recruiterModel.fullname" [ngClass]="{'is-invalid': f.submitted && fullname.invalid}"
+                #fullname="ngModel" required>
+              <div class="invalid-feedback">
+                fullname is mandatory
               </div>
-            </ng-template>
-          </div>
-        </div>
-        <div class="col-md-8">
-                <div class="form-group">
-                    <label>Gender</label>
-                    <div *ngIf="readOnlyForm; else elseBlock3">
-                        <input class="form-control" readonly [(ngModel)]="recruiterModel.gender">
-                    </div>
-                    <ng-template #elseBlock3>
-                        <select class="form-control" [(ngModel)]="recruiterModel.gender">
-                            <option *ngFor="let gl of genderList" [ngValue]="gl">{{gl}}</option>
-                        </select>
-                    </ng-template>
-                </div>
             </div>
-      </div>
-      <div class="row">
-        <div class="col-md-8">
-          <div class="form-group">
-            <label>Role</label>
-            <!-- <input class="form-control" [readonly]="readOnlyForm" [(ngModel)]="recruiterModel.role"> -->
-            <select class="form-control" [(ngModel)]="recruiterModel.role">
-              <option *ngFor="let role of rolesList" [ngValue]="role">{{role}}</option>
-            </select>
+          </div>
+          <div class="col-md-8">
+            <div class="form-group" data-provide="datepicker">
+              <label>Date of Birth<span class="required">*</span></label>
+              <div *ngIf="readOnlyForm; else elseBlock4">
+                <input class="form-control" name="dob" readonly [(ngModel)]="recruiterModel.dob">
+              </div>
+              <ng-template #elseBlock4>
+                <input type="date" class="form-control" name="dob" [(ngModel)]="recruiterModel.dob"
+                  [ngClass]="{'is-invalid': f.submitted && dob.invalid}" #dob="ngModel" required>
+                <div class="input-group-addon">
+                  <span class="glyphicon glyphicon-th"></span>
+                </div>
+                <div class="invalid-feedback">
+                  date of birth is mandatory
+                </div>
+              </ng-template>
+            </div>
+          </div>
+          <div class="col-md-8">
+            <div class="form-group">
+              <label>Gender<span class="required">*</span></label>
+              <div *ngIf="readOnlyForm; else elseBlock3">
+                <input class="form-control" name="gender" readonly [(ngModel)]="recruiterModel.gender">
+              </div>
+              <ng-template #elseBlock3>
+                <select class="form-control" name="gender" [(ngModel)]="recruiterModel.gender"
+                  [ngClass]="{'is-invalid': f.submitted && gender.invalid}" #gender="ngModel" required>
+                  <option *ngFor="let gl of genderList" [ngValue]="gl">{{gl}}</option>
+                </select>
+                <div class="invalid-feedback">
+                  gender is mandatory
+                </div>
+              </ng-template>
+            </div>
           </div>
         </div>
-        <div class="col-md-8">
-          <div class="form-group">
-            <label>Phone</label>
-            <input class="form-control" [readonly]="readOnlyForm" [(ngModel)]="recruiterModel.phone">
+        <div class="row">
+          <div class="col-md-8">
+            <div class="form-group">
+              <label>Role<span class="required">*</span></label>
+              <div *ngIf="readOnlyForm; else elseBlock4">
+                <input class="form-control" name="role" readonly [(ngModel)]="recruiterModel.role">
+              </div>
+              <ng-template #elseBlock4>
+                <select class="form-control" name="role" [(ngModel)]="recruiterModel.role"
+                  [ngClass]="{'is-invalid': f.submitted && role.invalid}" #role="ngModel" required>
+                  <option *ngFor="let role of rolesList" [ngValue]="role">{{role}}</option>
+                </select>
+                <div class="invalid-feedback">
+                  role is mandatory
+                </div>
+              </ng-template>
+
+            </div>
+          </div>
+          <div class="col-md-8">
+            <div class="form-group">
+              <label>Phone<span class="required">*</span></label>
+              <input class="form-control" name="phone" [readonly]="readOnlyForm" [(ngModel)]="recruiterModel.phone"
+                [ngClass]="{'is-invalid': f.submitted && phone.invalid}" #phone="ngModel" required>
+              <div class="invalid-feedback">
+                phone is mandatory
+              </div>
+            </div>
+          </div>
+          <div class="col-md-8">
+            <div class="form-group">
+              <label>E-Mail<span class="required">*</span></label>
+              <input class="form-control" name="email" type="email" [readonly]="readOnlyForm"
+                [(ngModel)]="recruiterModel.email" [ngClass]="{'is-invalid': f.submitted && email.invalid}"
+                #email="ngModel" required>
+              <div class="invalid-feedback">
+                phone is mandatory
+              </div>
+            </div>
           </div>
         </div>
-        <div class="col-md-8">
-          <div class="form-group">
-            <label>E-Mail</label>
-            <input class="form-control" type="email" [readonly]="readOnlyForm" [(ngModel)]="recruiterModel.email">
+        <div class="row">
+          <div class="col-md-8">
+            <div class="form-group">
+              <label>Address<span class="required">*</span></label>
+              <input class="form-control" name="address" [readonly]="readOnlyForm" [(ngModel)]="recruiterModel.address"
+                [ngClass]="{'is-invalid': f.submitted && address.invalid}" #address="ngModel" required>
+              <div class="invalid-feedback">
+                address is mandatory
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="row">
-        <div class="col-md-8">
-          <div class="form-group">
-            <label>Address</label>
-            <input class="form-control" [readonly]="readOnlyForm" [(ngModel)]="recruiterModel.address">
-          </div>
-        </div>
-      </div>
-      <div class="row text-center">
-        <div class="col-md-8">
-          <span *ngIf="formButtonsToggler;else toggleButtons">
-            <button type="button" id="add" class="btn btn-secondary ml-3" (click)="createRecruiter()">Add</button>
-          </span>
-          <ng-template #toggleButtons>
-            <span *ngIf="editButtonToggler;else toggleEdit">
-              <button type="button" id="update" class="btn btn-secondary ml-2" (click)="editableForm()">Edit</button>
+        <div class="row text-center">
+          <div class="col-md-8">
+            <span *ngIf="formButtonsToggler;else toggleButtons">
+              <button type="submit" id="add" class="btn btn-secondary ml-3">Add</button>
             </span>
-            <ng-template #toggleEdit>
-              <button type="button" id="update" class="btn btn-secondary ml-2"
-                (click)="updateRecruiter()">Update</button>
+            <ng-template #toggleButtons>
+              <span *ngIf="editButtonToggler;else toggleEdit">
+                <button type="button" id="update" class="btn btn-secondary ml-2" (click)="editableForm()">Edit</button>
+              </span>
+              <ng-template #toggleEdit>
+                <button type="button" id="update" class="btn btn-secondary ml-2"
+                  (click)="updateRecruiter()">Update</button>
+              </ng-template>
+              <button type="button" id="delete" class="btn btn-secondary ml-2"
+                (click)="deleteRecruiter()">Delete</button>
             </ng-template>
-            <button type="button" id="delete" class="btn btn-secondary ml-2" (click)="deleteRecruiter()">Delete</button>
-          </ng-template>
-          <button type="button" id="cancel" (click)="cancelForm()" class="btn btn-secondary ml-3">Cancel</button>
+            <button type="button" id="cancel" (click)="cancelForm()" class="btn btn-secondary ml-3">Cancel</button>
+          </div>
         </div>
-      </div>
+      </form>
     </div>
   </div>
 

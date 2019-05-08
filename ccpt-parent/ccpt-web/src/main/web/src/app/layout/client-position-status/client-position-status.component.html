@@ -18,26 +18,39 @@
             </div>
         </div>
         <div class="col-md-6">
-            <div class="row">
-                <div class="col-md-8">
-                    <div class="form-group">
-                        <label>Code</label>
-                        <input class="form-control" maxlength="3" [(ngModel)]="clientPositionStatusModel.code">
+            <form name="form" id="clientPositionStatusForm" (ngSubmit)="f.form.valid&&createClientPositionStatus()"
+                #f="ngForm" novalidate>
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="form-group">
+                            <label>Code<span class="required">*</span></label>
+                            <input class="form-control" maxlength="3" [(ngModel)]="clientPositionStatusModel.code"
+                                name="code" [ngClass]="{'is-invalid': f.submitted && code.invalid}" #code="ngModel"
+                                required>
+                            <div class="invalid-feedback">
+                                code is mandatory
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div class="col-md-8">
-                    <div class="form-group">
-                        <label>Description</label>
-                        <input class="form-control" [(ngModel)]="clientPositionStatusModel.description">
+                    <div class="col-md-8">
+                        <div class="form-group">
+                            <label>Description<span class="required">*</span></label>
+                            <input class="form-control" [(ngModel)]="clientPositionStatusModel.description"
+                                name="decription" [ngClass]="{'is-invalid': f.submitted && description.invalid}"
+                                #description="ngModel" required>
+                            <div class="invalid-feedback">
+                                description is mandatory
+                            </div>
+                        </div>
                     </div>
-                </div>
 
-            </div>
-            <div class="row text-center">
-                <div class="col-md-8">
-                    <button type="button" class="btn btn-secondary" (click)="createClientPositionStatus()">Add</button>
                 </div>
-            </div>
+                <div class="row text-center">
+                    <div class="col-md-8">
+                        <button type="submit" class="btn btn-secondary">Add</button>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 
