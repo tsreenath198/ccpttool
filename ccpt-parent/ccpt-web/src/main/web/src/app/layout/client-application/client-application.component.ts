@@ -65,7 +65,7 @@ export class ClientApplicationComponent implements OnInit {
         }
     }
     createClientApplication(): void {
-        this.http.create(this.clientApplicationModel, 'clientApplication/create').subscribe(resp => {
+        this.http.create(this.clientApplicationModel, this.urlConstants.CACreate).subscribe(resp => {
             this.toastr.success("Form Submitted Successfully", "Client Application");
             this.init();
             this.formReset()
@@ -88,7 +88,7 @@ export class ClientApplicationComponent implements OnInit {
         }
     }
     updateClientApplication() {
-        this.http.update(this.clientApplicationModel, 'clientApplication/update').subscribe(resp => {
+        this.http.update(this.clientApplicationModel, this.urlConstants.CAUpdate).subscribe(resp => {
             this.toastr.success("Form Updated Successfully", "Client Application");
             this.formButtonsToggler = true;
             this.formReset();
@@ -99,7 +99,7 @@ export class ClientApplicationComponent implements OnInit {
         this.formReset();
     }
     deleteClientApplication() {
-        this.http.delete('clientApplication/id/' + this.clientApplicationModel.id).subscribe(resp => {
+        this.http.delete(this.urlConstants.CADelete + this.clientApplicationModel.id).subscribe(resp => {
             this.toastr.success("Form Deleted Successfully", "Client Application");
             this.init();
             this.formReset();
