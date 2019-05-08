@@ -4,11 +4,11 @@
         <div class="col-md-6">
             <div class="table-responsive">
                 <table class="table table-hover table-striped">
-                    <thead>
+                    <!-- <thead>
                         <tr>
                             <th>name</th>
                         </tr>
-                    </thead>
+                    </thead> -->
                     <tbody>
                         <tr *ngFor="let csl of consultantStatusList">
                             <td>{{csl.description}}</td>
@@ -31,11 +31,12 @@
                         <input class="form-control" [(ngModel)]="consultantStatusModel.description">
                     </div>
                 </div>
-                <div class="col-md-8 mt-4">
-                    <button type="button" class="btn btn-secondary"  (click)="submit()">Add</button>
+            </div>
+            <div class="row text-center">
+                <div class="col-md-8">
+                    <button type="button" class="btn btn-secondary" (click)="submit()">Add</button>
                 </div>
             </div>
-
         </div>
     </div>
 

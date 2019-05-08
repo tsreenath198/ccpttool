@@ -3,6 +3,7 @@ import { routerTransition } from '../../router.animations';
 import { ConsultantStatusModel } from './consultant-status.model';
 import { HttpClientService } from 'src/app/shared/services/http.service';
 import { ToastrCustomService } from 'src/app/shared/services/toastr.service';
+import { URLConstants } from '../components/constants/url-constants';
 
 @Component({
     selector: 'app-consultant-status',
@@ -13,12 +14,13 @@ import { ToastrCustomService } from 'src/app/shared/services/toastr.service';
 export class ConsultantStatusComponent implements OnInit {
     public consultantStatusModel:ConsultantStatusModel = <ConsultantStatusModel>{};
     public consultantStatusList:Array<ConsultantStatusModel>=[];
+    private urlConstants = new URLConstants();
     constructor(private http: HttpClientService,private toastr: ToastrCustomService) { }
     ngOnInit() {
         this.init();
     }
     init(){
-        this.http.get('admin/getAllConsultantStatus').subscribe(resp => {
+        this.http.get(this.urlConstants.CSGetAll).subscribe(resp => {
             
             this.consultantStatusList = resp as [];
         })
@@ -27,13 +29,12 @@ export class ConsultantStatusComponent implements OnInit {
         this.consultantStatusModel = <ConsultantStatusModel>{};
     }
     submit(): void {
-        this.http.create(this.consultantStatusModel, 'admin/addConsultantStatus').subscribe(resp => {
+        this.http.create(this.consultantStatusModel,this.urlConstants.CSCreate ).subscribe(resp => {
             this.toastr.success("Form Submitted Successfully", "Consultant Status");
             this.init();
             this.formReset();
         }, err => {
             this.toastr.error(err.statusText, "Consultant Status");
         })
-
     }
 }
