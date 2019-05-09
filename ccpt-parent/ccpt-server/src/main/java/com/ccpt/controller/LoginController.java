@@ -36,6 +36,7 @@ public class LoginController {
 		String token = uuid.toString();
 		login.setToken(token);
 		login.setCreatedDate(new Date());
+		login.setUpdatedDate(new Date());
 		loginService.register(login);
 		return new ResponseEntity<Void>(HttpStatus.CREATED);
 	}
