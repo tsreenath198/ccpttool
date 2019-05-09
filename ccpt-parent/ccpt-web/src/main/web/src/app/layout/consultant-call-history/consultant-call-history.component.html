@@ -45,10 +45,10 @@
                     <div class="col-md-8">
                         <div class="form-group">
                             <label>Description<span class="required">*</span></label>
-                            <input class="form-control" name="description" [readonly]="readOnlyForm"
+                            <textarea class="form-control" name="description" [readonly]="readOnlyForm"
                                 [(ngModel)]="consultantCallHistoryModel.description"
                                 [ngClass]="{'is-invalid': f.submitted && description.invalid}" #description="ngModel"
-                                required>
+                                cols="10" rows="10" required></textarea>
                             <div class="invalid-feedback">
                                 description is mandatory
                             </div>
