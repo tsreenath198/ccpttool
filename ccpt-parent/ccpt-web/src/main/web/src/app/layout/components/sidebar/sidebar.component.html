@@ -32,6 +32,10 @@
             <i class="fa fa-fw fa-graduation-cap"></i>&nbsp;
             <span>{{ 'Consultants' | translate }}</span>
         </a>
+        <a [routerLink]="['/layout/client']" [routerLinkActive]="['router-link-active']" class="list-group-item">
+            <i class="fa fa-fw fa-black-tie"></i>&nbsp;
+            <span>{{ 'Clients' | translate }}</span>
+        </a>
         <a [routerLink]="['/layout/client-position']" [routerLinkActive]="['router-link-active']"
             class="list-group-item">
             <i class="fa fa-fw fa-bar-chart-o"></i>&nbsp;
@@ -80,6 +84,7 @@
                                 <span>{{ 'Users' | translate }}</span>
                             </a>
                     </li>
+                    
                 </ul>
             </li>
         </div>

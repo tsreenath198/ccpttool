@@ -93,12 +93,11 @@ export class ConsultantComponent implements OnInit {
             this.http.upload(this.urlConstants.CUpload + '?refId=10&refType=doc&comments=doc', formData);
         }
     }*/
-    deleteConsultant(consultantForm: NgForm) {
+    deleteConsultant() {
         this.http.delete(this.urlConstants.CDelete + this.consultantModel.id).subscribe(resp => {
             this.toastr.success("Form Deleted Successfully", "Consultant");
             this.init();
             this.formReset();
-            consultantForm.resetForm();
         })
     }
     editableForm() {
@@ -119,5 +118,10 @@ export class ConsultantComponent implements OnInit {
             this.formButtonsToggler = true;
         }
 
+    }
+    deleteConfirmation(){
+        if (confirm("Are you sure you want to delete the row!")) {
+            this.deleteConsultant();
+          } 
     }
 }

@@ -11,10 +11,10 @@
                         </tr>
                     </thead> -->
           <tbody class="overflow-ele-scroll">
-            <tr *ngFor="let cl of consultantList ">
+            <tr *ngFor="let cl of consultantList |  filter : 'fullname' :currSearchTxt ; let i = index">
               <td (click)="readOnlyEnable(cl)" (dblclick)="consultantEdit(cl)">{{cl.fullname}}</td>
               <!--  <input type="file" (change)="fileChange($event)" > <span class="fa fa-upload pull-right"></span> -->
-              <td><span class="fa fa-trash pull-right"></span></td>
+              <td (click)="deleteConfirmation()"><span class="fa fa-trash pull-right"></span></td>
             </tr>
           </tbody>
         </table>
@@ -32,12 +32,12 @@
               <div class="invalid-feedback">
                 fullname is mandatory
               </div>
-                    <tbody class="overflow-ele-scroll">
-                        <tr *ngFor="let cl of consultantList |  filter : 'fullname' :currSearchTxt ; let i = index">
+                    <!-- <tbody class="overflow-ele-scroll">
+                        <tr *ngFor="let cl of consultantList ">
                             <td (click)="readOnlyEnable(cl)" (dblclick)="consultantEdit(cl)">{{cl.fullname}}</td>
                         </tr>
                     </tbody>
-                </table>
+                </table> -->
             </div>
           </div>
           <div class="col-md-8">

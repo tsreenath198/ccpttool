@@ -46,5 +46,8 @@ export class URLConstants {
     RCreate:string = 'recruiter/create';
     RGetAll:string = 'recruiter/getAll';
     RUpdate:string = 'recruiter/update';
-    RDelete:string = 'recruiter/delete'
+    RDelete:string = 'recruiter/delete';
+    /*Client*/
+    ClientCreate:string ='client/create';
+    ClientGetAll:string ='client/getAll'
 }
