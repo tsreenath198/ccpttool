@@ -8,4 +8,6 @@ public interface IClientService {
 	List<Client> getAllClients();
 
 	boolean addClient(Client client);
+
+	Client getClientById(Integer id);
 }

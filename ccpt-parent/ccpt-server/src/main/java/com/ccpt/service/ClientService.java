@@ -24,6 +24,12 @@ public class ClientService implements IClientService {
 	@Override
 	public boolean addClient(Client client) {
 		clientRepository.save(client);
-		return true;		
+		return true;
+	}
+
+	@Override
+	public Client getClientById(Integer id) {
+		Client obj = clientRepository.findById(id).get();
+		return obj;
 	}
 }
