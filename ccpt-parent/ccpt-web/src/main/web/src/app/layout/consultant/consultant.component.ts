@@ -24,7 +24,7 @@ export class ConsultantComponent implements OnInit {
     public editButtonToggler: boolean = true;
     public genderList=['MALE','FEMALE','OTHER'];
     public urlConstants = new URLConstants();
-    public currSearchTxt: string = "";
+    public currSearchTxt: string ;
     constructor(private http: HttpClientService, private toastr: ToastrCustomService) { }
 
     ngOnInit() {

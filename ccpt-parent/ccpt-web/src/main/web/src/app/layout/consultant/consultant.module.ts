@@ -5,9 +5,10 @@ import  {FormsModule} from '@angular/forms';
 import { PageHeaderModule } from '../../shared';
 import { ConsultantRoutingModule } from './consultant-routing.module';
 import { ConsultantComponent } from './consultant.component';
+import { FilterPipe } from 'src/app/shared/pipes/filter.pipe';
 
 @NgModule({
     imports: [CommonModule, ConsultantRoutingModule,FormsModule, PageHeaderModule],
-    declarations: [ConsultantComponent]
+    declarations: [ConsultantComponent,FilterPipe]
 })
 export class ConsultantModule {}
