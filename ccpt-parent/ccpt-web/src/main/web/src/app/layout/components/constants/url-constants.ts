@@ -21,7 +21,8 @@ export class URLConstants {
     CCreate: string = 'consultant/create';
     CGetAll: string = 'consultant/getAll';
     CUpdate: string = 'consultant/update';
-    CDelete: string = 'consultant/id/'
+    CDelete: string = 'consultant/id/';
+    CUpload:string = 'uploadFile/create';
 
     /* Client Application */
     CACreate: string = 'clientApplication/create';
