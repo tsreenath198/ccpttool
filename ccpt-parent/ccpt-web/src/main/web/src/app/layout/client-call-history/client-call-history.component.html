@@ -24,7 +24,7 @@
             </div>
         </div>
         <div class="col-md-6">
-            <form name="form" id="clientCallHistoryForm" (ngSubmit)="f.form.valid&&createClientCallHistory()" #f="ngForm"
+            <form name="form" id="clientCallHistoryForm" (ngSubmit)="f.form.valid&&createClientCallHistory(f)" #f="ngForm"
                 novalidate>
                 <div class="row">
                     <div class="col-md-8">
@@ -73,12 +73,12 @@
                             </span>
                             <ng-template #toggleEdit>
                                 <button type="button" id="update" class="btn btn-secondary ml-2"
-                                    (click)="updateClientCallHistory()">Update</button>
+                                    (click)="updateClientCallHistory(f)">Update</button>
                             </ng-template>
                             <button type="button" id="delete" class="btn btn-secondary ml-2"
-                                (click)="deleteClientCallHistory()">Delete</button>
+                                (click)="deleteClientCallHistory(f)">Delete</button>
                         </ng-template>
-                        <button type="button" id="cancel" (click)="cancelForm()"
+                        <button type="button" id="cancel" (click)="cancelForm(f)"
                             class="btn btn-secondary ml-3">Cancel</button>
                     </div>
                 </div>

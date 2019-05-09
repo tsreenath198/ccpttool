@@ -5,6 +5,8 @@ import { ClientPositionModel } from './client-position.model';
 import { HttpClientService } from 'src/app/shared/services/http.service';
 import { ClientpositionStatusModel } from '../client-position-status/client-position-status.model';
 import { ToastrCustomService } from 'src/app/shared/services/toastr.service';
+import { NgForm } from '@angular/forms';
+
 
 @Component({
     selector: 'app-client-position',
@@ -58,7 +60,7 @@ export class ClientPositionComponent implements OnInit {
     formReset() {
         this.clientPositionModel = <ClientPositionModel>{};
     }
-    createClientPosition(): void {
+    createClientPosition(clientPositionForm:NgForm): void {
         if (this.clientPositionModel.clientPositionCode) {
             this.validateCPCode(this.clientPositionModel.clientPositionCode);
         }
@@ -67,6 +69,7 @@ export class ClientPositionComponent implements OnInit {
                 this.toastr.success("Form Submitted Successfully", "Client Position");
                 this.init();
                 this.formReset();
+                clientPositionForm.resetForm();
             }, err => {
                 this.toastr.error(err.statusText, "Client Position");
             })
@@ -102,21 +105,25 @@ export class ClientPositionComponent implements OnInit {
         }
         return isStr
     }
-    updateClientPosition() {
+    updateClientPosition(clientPositionForm:NgForm) {
         this.http.update(this.clientPositionModel, this.urlConstants.CPUpdate).subscribe(resp => {
             this.toastr.success("Form Updated Successfully", "Client Position");
             this.formButtonsToggler = true;
             this.formReset();
             this.init();
+            clientPositionForm.resetForm();
+
         }, err => {
             this.toastr.error(err.statusText, "Client Position");
         })
     }
-    deleteClientPosition() {
+    deleteClientPosition(clientPositionForm:NgForm) {
         this.http.delete(this.urlConstants.CPDelete + this.clientPositionModel.id).subscribe(resp => {
             this.toastr.success("Form Deleted Successfully", "Client Position");
             this.init();
             this.formReset();
+            clientPositionForm.resetForm();
+
         })
     }
     editableForm() {
@@ -127,8 +134,9 @@ export class ClientPositionComponent implements OnInit {
             this.editButtonToggler = false;
         }
     }
-    cancelForm() {
+    cancelForm(clientPositionForm:NgForm) {
         this.formReset();
+        clientPositionForm.resetForm();
         if (this.readOnlyForm == true) {
             this.readOnlyForm = false;
         }

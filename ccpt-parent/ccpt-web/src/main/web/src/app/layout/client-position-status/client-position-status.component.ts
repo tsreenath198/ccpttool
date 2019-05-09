@@ -3,7 +3,9 @@ import { routerTransition } from '../../router.animations';
 import { ClientpositionStatusModel } from './client-position-status.model';
 import { HttpClientService } from 'src/app/shared/services/http.service';
 import { ToastrCustomService } from 'src/app/shared/services/toastr.service';
-import{URLConstants} from '../components/constants/url-constants'
+import{URLConstants} from '../components/constants/url-constants';
+import { NgForm } from '@angular/forms';
+
 
 @Component({
     selector: 'app-client-position-status',
@@ -28,11 +30,12 @@ export class ClientPositionStatusComponent implements OnInit {
     formReset() {
         this.clientPositionStatusModel = <ClientpositionStatusModel>{};
     }
-    createClientPositionStatus(): void {
+    createClientPositionStatus(clientPositionStatusForm:NgForm): void {
         this.http.create(this.clientPositionStatusModel, this.urlConstants.CPSCreate).subscribe(resp => {
             this.toastr.success("Form Submitted Successfully", "Client Position Status");
             this.init();
             this.formReset();
+            clientPositionStatusForm.resetForm();
         }, err => {
             this.toastr.error(err.statusText, "Client Position Status");
         })

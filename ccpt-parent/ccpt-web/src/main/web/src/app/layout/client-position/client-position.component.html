@@ -19,7 +19,7 @@
       </div>
     </div>
     <div class="col-md-6">
-      <form name="form" id="clientPositionForm" (ngSubmit)="f.form.valid&&createClientPosition()" #f="ngForm" novalidate>
+      <form name="form" id="clientPositionForm" (ngSubmit)="f.form.valid&&createClientPosition(f)" #f="ngForm" novalidate>
         <div class="row">
           <div class="col-md-8">
             <div class="form-group">
@@ -149,12 +149,12 @@
               </span>
               <ng-template #toggleEdit>
                 <button type="button" id="update" class="btn btn-secondary ml-2"
-                  (click)="updateClientPosition()">Update</button>
+                  (click)="updateClientPosition(f)">Update</button>
               </ng-template>
               <button type="button" id="delete" class="btn btn-secondary ml-2"
-                (click)="deleteClientPosition()">Delete</button>
+                (click)="deleteClientPosition(f)">Delete</button>
             </ng-template>
-            <button type="button" id="cancel" (click)="cancelForm()" class="btn btn-secondary ml-3">Cancel</button>
+            <button type="button" id="cancel" (click)="cancelForm(f)" class="btn btn-secondary ml-3">Cancel</button>
           </div>
         </div>
       </form>

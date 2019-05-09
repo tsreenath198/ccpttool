@@ -9,6 +9,8 @@ import { ClientApplicationStatusModel } from '../client-application-status/clien
 import { ConsultantModel } from '../consultant/consultant.model';
 import { ClientPositionModel } from '../client-position/client-position.model';
 import { ToastrCustomService } from 'src/app/shared/services/toastr.service';
+import { NgForm } from '@angular/forms';
+
 
 @Component({
     selector: 'app-client-application',
@@ -64,12 +66,12 @@ export class ClientApplicationComponent implements OnInit {
             this.formButtonsToggler = false;
         }
     }
-    createClientApplication(): void {
+    createClientApplication(clientApplicationForm:NgForm): void {
         this.http.create(this.clientApplicationModel, this.urlConstants.CACreate).subscribe(resp => {
             this.toastr.success("Form Submitted Successfully", "Client Application");
             this.init();
             this.formReset()
-
+            clientApplicationForm.resetForm();
         }, err => {
             this.toastr.error(err.statusText, "Client Application");
         })
@@ -87,23 +89,24 @@ export class ClientApplicationComponent implements OnInit {
             this.editButtonToggler = false;
         }
     }
-    updateClientApplication() {
+    updateClientApplication(clientApplicationForm:NgForm) {
         this.http.update(this.clientApplicationModel, this.urlConstants.CAUpdate).subscribe(resp => {
             this.toastr.success("Form Updated Successfully", "Client Application");
             this.formButtonsToggler = true;
             this.formReset();
             this.init();
+            clientApplicationForm.resetForm();
         }, err => {
             this.toastr.error(err.statusText, "Client Application");
         })
         this.formReset();
     }
-    deleteClientApplication() {
+    deleteClientApplication(clientApplicationForm:NgForm) {
         this.http.delete(this.urlConstants.CADelete + this.clientApplicationModel.id).subscribe(resp => {
             this.toastr.success("Form Deleted Successfully", "Client Application");
             this.init();
             this.formReset();
-
+            clientApplicationForm.resetForm();
         })
         this.formReset();
     }
@@ -115,8 +118,9 @@ export class ClientApplicationComponent implements OnInit {
             this.editButtonToggler = false;
         }
     }
-    cancelForm() {
+    cancelForm(clientApplicationForm:NgForm) {
         this.formReset();
+        clientApplicationForm.resetForm();
         if (this.readOnlyForm == true) {
             this.readOnlyForm = false;
         }

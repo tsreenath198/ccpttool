@@ -5,6 +5,8 @@ import { HttpClientService } from 'src/app/shared/services/http.service';
 import { ConsultantModel } from '../consultant/consultant.model';
 import { ToastrCustomService } from 'src/app/shared/services/toastr.service';
 import { URLConstants } from '../components/constants/url-constants';
+import { NgForm } from '@angular/forms';
+
 
 @Component({
     selector: 'app-consultant-call-history',
@@ -58,31 +60,34 @@ export class ConsultantCallHistoryComponent implements OnInit {
     formReset(){
         this.consultantCallHistoryModel = <ConsultantCallHistoryModel>{};
     }
-    createConsultantCallHistory(): void {
+    createConsultantCallHistory(consultantCallHistory:NgForm): void {
         this.http.create(this.consultantCallHistoryModel, this.urlConstants.CoCHCreate).subscribe(resp => {
             this.toastr.success("Form Submitted Successfully", "Consultant Call History");
             this.init();
             this.formReset();
+            consultantCallHistory.resetForm();
         }, err => {
             this.toastr.error(err.statusText, "Consultant Call History");
         })
     
     }
-    updateConsultantCallHistory() {
+    updateConsultantCallHistory(consultantCallHistory:NgForm) {
         this.http.update(this.consultantCallHistoryModel, this.urlConstants.CoCHUpdate).subscribe(resp => {
             this.formButtonsToggler = true;
             this.formReset();
             this.toastr.success("Form Updated Successfully", "Consultant Call History");
             this.init();
+            consultantCallHistory.resetForm();
         }, err => {
             this.toastr.error(err.statusText, "Consultant Call History");
         })
     }
-    deleteConsultantCallHistory() {
+    deleteConsultantCallHistory(consultantCallHistory:NgForm) {
         this.http.delete(this.urlConstants.CoCHDelete + this.consultantCallHistoryModel.id).subscribe(resp => {
             this.toastr.success("Form Deleted Successfully", "Consultant Call History");
             this.init();
             this.formReset();
+            consultantCallHistory.resetForm();
         })
     }
     editableForm(){
@@ -93,8 +98,9 @@ export class ConsultantCallHistoryComponent implements OnInit {
             this.editButtonToggler=false;
         }
     }
-    cancelForm(){
+    cancelForm(consultantCallHistory:NgForm){
         this.formReset();
+        consultantCallHistory.resetForm();
         if(this.readOnlyForm==true){
             this.readOnlyForm=false;
         }

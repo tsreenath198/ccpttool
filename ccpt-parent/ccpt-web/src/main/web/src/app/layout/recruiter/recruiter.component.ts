@@ -4,6 +4,7 @@ import { RecruiterModel, Roles } from './recruiter.model';
 import { HttpClientService } from 'src/app/shared/services/http.service';
 import { ToastrCustomService } from 'src/app/shared/services/toastr.service';
 import { URLConstants } from '../components/constants/url-constants';
+import { NgForm } from '@angular/forms';
 
 @Component({
     selector: 'app-recruiter',
@@ -57,30 +58,33 @@ export class RecruiterComponent implements OnInit {
     formReset() {
         this.recruiterModel = <RecruiterModel>{};
     }
-    createRecruiter(): void {
+    createRecruiter(recruiterForm:NgForm): void {
         this.http.create(this.recruiterModel, this.urlConstants.RCreate).subscribe(resp => {
             this.toastr.success("Form Submitted Successfully", "Recruiter");
             this.init();
             this.formReset();
+            recruiterForm.resetForm();
         }, err => {
             this.toastr.error(err.error.error + err.status, "Recruiter");
         })
     }
-    updateRecruiter() {
+    updateRecruiter(recruiterForm:NgForm) {
         this.http.update(this.recruiterModel, this.urlConstants.RUpdate).subscribe(resp => {
             this.toastr.success("Form Updated Successfully", "Recruiter");
             this.init();
             this.formButtonsToggler = true;
             this.formReset();
+            recruiterForm.resetForm();
         }, err => {
             this.toastr.error(err.statusText, "Recruiter");
         })
     }
-    deleteRecruiter() {
+    deleteRecruiter(recruiterForm:NgForm) {
         this.http.delete('recruiter/id/' + this.recruiterModel.id).subscribe(resp => {
             this.toastr.success("Form Deleted Successfully", "Recruiter");
             this.init();
             this.formReset();
+            recruiterForm.resetForm();
         })
     }
     editableForm() {
@@ -91,8 +95,9 @@ export class RecruiterComponent implements OnInit {
             this.editButtonToggler = false;
         }
     }
-    cancelForm() {
+    cancelForm(recruiterForm:NgForm) {
         this.formReset();
+        recruiterForm.resetForm();
         if (this.readOnlyForm == true) {
             this.readOnlyForm = false;
         }

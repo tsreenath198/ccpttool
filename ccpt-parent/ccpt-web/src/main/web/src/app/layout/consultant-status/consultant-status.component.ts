@@ -4,6 +4,7 @@ import { ConsultantStatusModel } from './consultant-status.model';
 import { HttpClientService } from 'src/app/shared/services/http.service';
 import { ToastrCustomService } from 'src/app/shared/services/toastr.service';
 import { URLConstants } from '../components/constants/url-constants';
+import { NgForm } from '@angular/forms';
 
 @Component({
     selector: 'app-consultant-status',
@@ -28,11 +29,12 @@ export class ConsultantStatusComponent implements OnInit {
     formReset(){
         this.consultantStatusModel = <ConsultantStatusModel>{};
     }
-    createClientApplicationStatus(): void {
+    createClientApplicationStatus(clientApplicationStatusForm:NgForm): void {
         this.http.create(this.consultantStatusModel,this.urlConstants.CSCreate ).subscribe(resp => {
             this.toastr.success("Form Submitted Successfully", "Consultant Status");
             this.init();
             this.formReset();
+            clientApplicationStatusForm.resetForm();
         }, err => {
             this.toastr.error(err.statusText, "Consultant Status");
         })

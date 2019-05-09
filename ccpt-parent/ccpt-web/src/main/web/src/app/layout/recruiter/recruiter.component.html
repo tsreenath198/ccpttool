@@ -18,7 +18,7 @@
       </div>
     </div>
     <div class="col-md-6">
-      <form name="form" id="clientPositionForm" (ngSubmit)="f.form.valid&&createRecruiter()" #f="ngForm" novalidate>
+      <form name="form" id="clientPositionForm" (ngSubmit)="f.form.valid&&createRecruiter(f)"  #f="ngForm" novalidate>
         <div class="row">
           <div class="col-md-8">
             <div class="form-group">
@@ -71,10 +71,10 @@
           <div class="col-md-8">
             <div class="form-group">
               <label>Role<span class="required">*</span></label>
-              <div *ngIf="readOnlyForm; else elseBlock4">
+              <div *ngIf="readOnlyForm; else elseBlock5">
                 <input class="form-control" name="role" readonly [(ngModel)]="recruiterModel.role">
               </div>
-              <ng-template #elseBlock4>
+              <ng-template #elseBlock5>
                 <select class="form-control" name="role" [(ngModel)]="recruiterModel.role"
                   [ngClass]="{'is-invalid': f.submitted && role.invalid}" #role="ngModel" required>
                   <option *ngFor="let role of rolesList" [ngValue]="role">{{role}}</option>
@@ -131,12 +131,12 @@
               </span>
               <ng-template #toggleEdit>
                 <button type="button" id="update" class="btn btn-secondary ml-2"
-                  (click)="updateRecruiter()">Update</button>
+                  (click)="updateRecruiter(f)">Update</button>
               </ng-template>
               <button type="button" id="delete" class="btn btn-secondary ml-2"
-                (click)="deleteRecruiter()">Delete</button>
+                (click)="deleteRecruiter(f)">Delete</button>
             </ng-template>
-            <button type="button" id="cancel" (click)="cancelForm()" class="btn btn-secondary ml-3">Cancel</button>
+            <button type="button" id="cancel" (click)="cancelForm(f)" class="btn btn-secondary ml-3">Cancel</button>
           </div>
         </div>
       </form>

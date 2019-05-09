@@ -6,6 +6,8 @@ import { ClientpositionStatusModel } from '../client-position-status/client-posi
 import { ClientPositionModel } from '../client-position/client-position.model';
 import { ToastrCustomService } from 'src/app/shared/services/toastr.service';
 import { URLConstants } from '../components/constants/url-constants';
+import { NgForm } from '@angular/forms';
+
 
 @Component({
     selector: 'app-client-call-history',
@@ -58,27 +60,29 @@ export class ClientCallHistoryComponent implements OnInit {
     formReset() {
         this.clientCallHistoryModel = <ClientCallHistoryModel>{};
     }
-    createClientCallHistory(): void {
+    createClientCallHistory(clientCallHistoryForm:NgForm): void {
         this.http.create(this.clientCallHistoryModel, 'clientCallHistory/create').subscribe(resp => {
             this.toastr.success("Form Submitted Successfully", "Client Call History");
             this.init();
             this.formReset();
+            clientCallHistoryForm.resetForm();
         }, err => {
             this.toastr.error(err.statusText, "Client Call History");
         })
 
     }
-    updateClientCallHistory() {
+    updateClientCallHistory(clientCallHistoryForm:NgForm) {
         this.http.update(this.clientCallHistoryModel, 'clientCallHistory/update').subscribe(resp => {
             this.toastr.success("Form Updated Successfully", "Client Call History");
             this.formButtonsToggler = true;
             this.formReset();
             this.init();
+            clientCallHistoryForm.resetForm();
         }, err => {
             this.toastr.error(err.statusText, "Client Call History");
         })
     }
-    deleteClientCallHistory() {
+    deleteClientCallHistory(clientCallHistoryForm:NgForm) {
         this.http.delete('clientCallHistory/id/' + this.clientCallHistoryModel.id).subscribe(resp => {
             this.toastr.success("Form Deleted Successfully", "Client Call History");
             this.init();
@@ -93,8 +97,9 @@ export class ClientCallHistoryComponent implements OnInit {
             this.editButtonToggler=false;
         }
     }
-    cancelForm(){
+    cancelForm(clientCallHistoryForm:NgForm){
         this.formReset();
+        clientCallHistoryForm.resetForm();
         if(this.readOnlyForm==true){
             this.readOnlyForm=false;
         }
