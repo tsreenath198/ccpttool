@@ -12,7 +12,7 @@ export class HttpClientService {
   public getLogin(URL: string) {
     return this.http.get(URL);
   }
-  create(data: any, url) {
+  create(data: any, url: string) {
     const httpOptions = {
       headers: new HttpHeaders({
         'X-TOKEN': sessionStorage.getItem("access_token")
@@ -28,5 +28,15 @@ export class HttpClientService {
   }
   delete(URL:string){
     return this.http.delete(this.base_url + URL)
+  }
+  upload(URL:string,formData:any){
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'X-TOKEN': sessionStorage.getItem("access_token"),
+        'Content-Type':'multipart/form-data',
+        'Accept': 'application/json'
+      })
+    };
+    return this.http.post(this.base_url + URL, formData, httpOptions)
   }
 }
