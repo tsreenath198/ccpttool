@@ -40,6 +40,13 @@ public class ClientPosition {
 	private char activeFlag;
 	@Column(name = "client_position_code")
 	private String clientPositionCode;
+
+	@Column(name = "client_id")
+	private Integer clientId;
+	
+	@Transient
+	private String clientName;
+	
 	@Transient
 	private String clientPositionsStatus;
 
@@ -162,6 +169,22 @@ public class ClientPosition {
 
 	public void setClientPositionCode(String clientPositionCode) {
 		this.clientPositionCode = clientPositionCode;
+	}
+
+	public Integer getClientId() {
+		return clientId;
+	}
+
+	public void setClientId(Integer clientId) {
+		this.clientId = clientId;
+	}
+
+	public String getClientName() {
+		return clientName;
+	}
+
+	public void setClientName(String clientName) {
+		this.clientName = clientName;
 	}
 
 }

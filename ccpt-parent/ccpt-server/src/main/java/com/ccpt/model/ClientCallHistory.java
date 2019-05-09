@@ -26,6 +26,9 @@ public class ClientCallHistory {
 	private Date updatedDate;
 	@Transient
 	private String clientName;
+	
+	@Transient
+	private String clientPositionCode;
 
 	public int getId() {
 		return id;
@@ -79,6 +82,14 @@ public class ClientCallHistory {
 	public String toString() {
 		return "ClientCallHistory [id=" + id + ", clientPositionId=" + clientPositionId + ", notes=" + notes
 				+ ", createdDate=" + createdDate + ", updatedDate=" + updatedDate + ", clientName=" + clientName + "]";
+	}
+
+	public String getClientPositionCode() {
+		return clientPositionCode;
+	}
+
+	public void setClientPositionCode(String clientPositionCode) {
+		this.clientPositionCode = clientPositionCode;
 	}
 
 }
