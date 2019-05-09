@@ -11,7 +11,7 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td>Infosys</td>
+                            <td>Controller not ready yet</td>
                         </tr>
                     </tbody>
                 </table>
@@ -22,31 +22,25 @@
                 <div class="col-md-8">
                     <div class="form-group">
                         <label>Username</label>
-                        <input class="form-control" [(ngModel)]="loginSetupModel.username">
+                        
+                        <select class="form-control" name="cp" [(ngModel)]="loginSetupModel.username">
+                            <option *ngFor="let gar of getAllR" [ngValue]="gar.email">{{gar.fullname}}
+                            </option>
+                        </select>
                     </div>
                 </div>
                 <div class="col-md-8">
                     <div class="form-group">
                         <label>Password</label>
-                        <input class="form-control" [(ngModel)]="loginSetupModel.password">
+                        <input type="password" class="form-control" [(ngModel)]="loginSetupModel.password">
                     </div>
                 </div>
-                <div class="col-md-8">
-                    <div class="form-group">
-                        <label>Token</label>
-                        <input class="form-control" [(ngModel)]="loginSetupModel.token">
-                    </div>
-                </div>
+
             </div>
             <div class="row">
-                <div class="col-md-8">
-                    <div class="form-group">
-                        <label>Role</label>
-                        <input class="form-control" [(ngModel)]="loginSetupModel.role">
-                    </div>
-                </div>
+
                 <div class="col-md-8 mt-4">
-                    <button type="button" class="btn btn-secondary"  (click)="submit()">Add</button>
+                    <button type="button" class="btn btn-secondary" (click)="submit()">Add</button>
                 </div>
             </div>
 
