@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.ccpt.constants.CCPTConstants;
 import com.ccpt.model.Client;
@@ -30,10 +31,16 @@ public class ClientController {
 		return new ResponseEntity<List<Client>>(clientList, HttpStatus.OK);
 	}
 
+	@GetMapping(CCPTConstants.GET_BY_ID)
+	public ResponseEntity<Client> getClientById(@RequestParam Integer id) {
+		Client client = clientService.getClientById(id);
+		return new ResponseEntity<Client>(client, HttpStatus.OK);
+	}
+
 	@PostMapping(CCPTConstants.CREATE)
 	public ResponseEntity<Void> addClient(@RequestBody Client client) {
-
 		clientService.addClient(client);
 		return new ResponseEntity<Void>(HttpStatus.CREATED);
 	}
+
 }

@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.ccpt.constants.CCPTConstants;
 import com.ccpt.model.ClientCallHistory;
 import com.ccpt.service.IClientCallHistoryService;
+import com.ccpt.service.IClientPositionService;
 
 @Controller
 @CrossOrigin
@@ -27,10 +28,17 @@ public class ClientCallHistoryController {
 
 	@Autowired
 	private IClientCallHistoryService clientCallHistoryService;
+	
+	@Autowired
+	private IClientPositionService  clientPositionService;
 
 	@GetMapping(CCPTConstants.GET_ALL)
 	public ResponseEntity<List<ClientCallHistory>> getAllClientCallHistorys() {
 		List<ClientCallHistory> clientCallHistoryList = clientCallHistoryService.getAllClientCallHistorys();
+		
+		for(ClientCallHistory cchList:clientCallHistoryList){
+			cchList.setClientPositionCode(clientPositionService.getClientPositionById(cchList.getClientPositionId()).getClientPositionCode());
+		}
 		return new ResponseEntity<List<ClientCallHistory>>(clientCallHistoryList, HttpStatus.OK);
 	}
 
