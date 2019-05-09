@@ -12,4 +12,9 @@ public interface IClientApplicationStatusService {
 
 	ClientApplicationStatus getClientApplicationStatusById(String code);
 
+	void updateClientApplicationStatus(ClientApplicationStatus clientApplicationStatus);
+
+	void deleteClientApplicationStatus(String code);
+
+	ClientApplicationStatus getConsultantCallHistoryByCode(String code);
 }

@@ -31,4 +31,20 @@ public class ClientApplicationStatusService implements IClientApplicationStatusS
 		ClientApplicationStatus obj = clientApplicationStatusRepository.findById(code).get();
 		return obj;
 	}
+	@Override
+	public void updateClientApplicationStatus(ClientApplicationStatus clientApplicationStatus) {
+		clientApplicationStatusRepository.save(clientApplicationStatus);
+
+	}
+
+	@Override
+	public void deleteClientApplicationStatus(String code) {
+		clientApplicationStatusRepository.delete(getConsultantCallHistoryByCode(code));
+	}
+
+	@Override
+	public ClientApplicationStatus getConsultantCallHistoryByCode(String code) {
+		ClientApplicationStatus obj = clientApplicationStatusRepository.findById(code).get();
+		return obj;
+	}
 }

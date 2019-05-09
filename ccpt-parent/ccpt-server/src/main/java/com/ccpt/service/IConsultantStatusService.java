@@ -10,4 +10,10 @@ public interface IConsultantStatusService {
 	List<ConsultantStatus> getAllConsultantStatus();
 
 	ConsultantStatus getConsultantStatusById(String code);
+	
+	void updateClientPositionStatus(ConsultantStatus consultantStatus);
+
+	void deleteClientPositionStatus(String code);
+
+	ConsultantStatus getConsultantCallHistoryByCode(String code);
 }
