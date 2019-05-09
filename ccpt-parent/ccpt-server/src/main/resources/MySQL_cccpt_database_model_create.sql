@@ -11,6 +11,8 @@ DROP TABLE IF EXISTS consultant_status;
 DROP TABLE IF EXISTS login;
 DROP TABLE IF EXISTS upload_file;
 DROP TABLE IF EXISTS recruiter;
+DROP TABLE IF EXISTS client;
+DROP TABLE IF EXISTS client_contact;
 
 -- Table: client_application
 CREATE TABLE client_application (
@@ -19,9 +21,9 @@ CREATE TABLE client_application (
     client_position_id int NOT NULL,
     consultant_id int NOT NULL,
     notes text,
-    interview_date date NULL,
-    created_date date NOT NULL,
-    updated_date date NOT NULL,  
+    interview_date datetime NULL,
+    created_date datetime NOT NULL,
+    updated_date datetime NOT NULL,  
     active_flag char(1) NOT NULL DEFAULT 'Y',
     CONSTRAINT client_application_pk PRIMARY KEY (id)
 );
@@ -29,7 +31,7 @@ CREATE TABLE client_application (
 -- Table: client_application_status
 CREATE TABLE client_application_status (
     code varchar(3) NOT NULL,
-    description varchar(30) NOT NULL,
+    description text NOT NULL,
     active_flag char(1) NOT NULL DEFAULT 'Y',
     CONSTRAINT client_application_status_pk PRIMARY KEY (code)
 );
@@ -39,8 +41,8 @@ CREATE TABLE client_call_history (
     id int NOT NULL AUTO_INCREMENT,
     client_position_id int NOT NULL,
     notes text NOT NULL,
-    created_date date NOT NULL ,
-    updated_date date NOT NULL,
+    created_date datetime NOT NULL ,
+    updated_date datetime NOT NULL,
     CONSTRAINT client_call_history_pk PRIMARY KEY (id)
 );
 
@@ -56,8 +58,8 @@ CREATE TABLE client_position (
     closed_by varchar(50) NULL,
     additional_comments text NOT NULL,
     client_position_code varchar(30)  NOT NULL,
-    created_date date NOT NULL ,
-    updated_date date NOT NULL,
+    created_date datetime NOT NULL ,
+    updated_date datetime NOT NULL,
     active_flag char(1) NOT NULL DEFAULT 'Y',
     CONSTRAINT client_position_pk PRIMARY KEY (id)
 );
@@ -65,7 +67,7 @@ CREATE TABLE client_position (
 -- Table: client_positions_status
 CREATE TABLE client_positions_status (
     code varchar(3) NOT NULL,
-    description varchar(30) NOT NULL,
+    description text NOT NULL,
     active_flag char(1) NOT NULL DEFAULT 'Y',
     CONSTRAINT client_positions_status_pk PRIMARY KEY (code)
 );
@@ -75,7 +77,7 @@ CREATE TABLE consultant (
     id int NOT NULL AUTO_INCREMENT,
     fullname varchar(50) NOT NULL,
     gender varchar(15) NOT NULL,
-    dob DATE NOT NULL ,
+    dob datetime NOT NULL ,
     email varchar(50) NULL,
     phone varchar(20) NULL,
     current_location varchar(30) NULL,
@@ -83,9 +85,9 @@ CREATE TABLE consultant (
     qualification varchar(50) NULL,
     passout_year int NULL,
     expected_ctc double(10,2) NULL,
-    description varchar(100) NULL,
-    created_date date NOT NULL  ,
-    updated_date date NOT NULL,
+    description text NULL,
+    created_date datetime NOT NULL  ,
+    updated_date datetime NOT NULL,
     consultant_status_code varchar(3) NOT NULL,
     experience_yrs int NULL,
     experience_months int  NULL,
@@ -97,16 +99,16 @@ CREATE TABLE consultant (
 CREATE TABLE consultant_call_history (
     id int NOT NULL AUTO_INCREMENT,
     consultant_id int NOT NULL,
-    description varchar(20) NOT NULL,
-    created_date date NOT NULL ,
-    updated_date date NOT NULL,
+    description text NOT NULL,
+    created_date datetime NOT NULL ,
+    updated_date datetime NOT NULL,
     CONSTRAINT consultant_call_history_pk PRIMARY KEY (id)
 );
 
 -- Table: consultant_status
 CREATE TABLE consultant_status (
     code varchar(3) NOT NULL,
-    description varchar(30) NOT NULL,
+    description text) NOT NULL,
     active_flag char(1) NOT NULL DEFAULT 'Y',
     CONSTRAINT consultant_status_pk PRIMARY KEY (code)
 );
@@ -118,8 +120,8 @@ CREATE TABLE login (
     token varchar(50) NOT NULL,
     role varchar(20) NOT NULL,
     description text NULL,
-    created_date date NOT NULL ,
-    updated_date date NOT NULL,
+    created_date datetime NOT NULL ,
+    updated_date datetime NOT NULL,
     active_flag char(1) NOT NULL DEFAULT 'Y',
     CONSTRAINT login_pk PRIMARY KEY (username)
 );
@@ -139,16 +141,43 @@ CREATE TABLE recruiter(
 id INT NOT NULL AUTO_INCREMENT ,
 fullname VARCHAR(50) NOT NULL , 
 gender VARCHAR(15) NOT NULL ,
-dob DATE NOT NULL ,
+dob datetime NOT NULL ,
 phone VARCHAR(20) NOT NULL ,
 email VARCHAR(30) NOT NULL ,
 address TEXT NOT NULL, 
 role VARCHAR(20) NOT NULL,
-created_date date NOT NULL ,
-updated_date date NOT NULL,
+created_date datetime NOT NULL ,
+updated_date datetime NOT NULL,
 active_flag char(1) NOT NULL DEFAULT 'Y',
 CONSTRAINT recruter_pk PRIMARY KEY (id)
 );
+
+-- Table: Client
+CREATE TABLE client(
+client_id INT NOT NULL AUTO_INCREMENT , 
+name VARCHAR(50) NOT NULL  , 
+address TEXT NOT NULL , 
+created_date datetime NOT NULL ,
+updated_date datetime NOT NULL,
+active_flag char(1) NOT NULL DEFAULT 'Y',
+PRIMARY KEY (client_id));
+
+-- Table: client_contact
+CREATE TABLE client_contact( 
+contact_id INT NOT NULL AUTO_INCREMENT ,
+fullname VARCHAR(50) NOT NULL,
+phone VARCHAR(20) NOT NULL , 
+email VARCHAR(50) NOT NULL , 
+client_id INT  NULL , 
+created_date datetime NOT NULL ,
+updated_date datetime NOT NULL,
+active_flag char(1) NOT NULL DEFAULT 'Y',
+PRIMARY KEY (contact_id));
+
+ALTER TABLE client_contact ADD INDEX(client_id);
+
+ALTER TABLE client_contact ADD CONSTRAINT client_id_fk FOREIGN KEY (client_id) REFERENCES client(client_id) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
 
 -- foreign keys
 -- Reference: client_application_client_application_status (table: client_application)
