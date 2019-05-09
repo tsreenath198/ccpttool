@@ -7,10 +7,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.ccpt.constants.CCPTConstants;
 import com.ccpt.model.ClientApplicationStatus;
@@ -32,40 +35,78 @@ public class AdminController {
 	@Autowired
 	private IConsultantStatusService consultantStatusService;
 
-	@PostMapping("addClientApplicationStatus")
+	@PostMapping("cAStatus" + CCPTConstants.CREATE)
 	public ResponseEntity<Void> addClientApplicationStatus(
 			@RequestBody ClientApplicationStatus clientApplicationStatus) {
 		clientApplicationStatusService.addClientApplicationStatus(clientApplicationStatus);
 		return new ResponseEntity<Void>(HttpStatus.CREATED);
 	}
 
-	@GetMapping("getAllClientApplicationStatus")
+	@GetMapping("cAStatus" + CCPTConstants.GET_ALL)
 	public ResponseEntity<List<ClientApplicationStatus>> getAllClientApplicationStatus() {
 		List<ClientApplicationStatus> clientApplicationList = clientApplicationStatusService.getAllClientApplications();
 		return new ResponseEntity<List<ClientApplicationStatus>>(clientApplicationList, HttpStatus.OK);
 	}
 
-	@PostMapping("addClientPositionStatus")
+	@PutMapping("cAStatus" + CCPTConstants.UPDATE)
+	public ResponseEntity<ClientApplicationStatus> updateClientApplicationStatus(
+			@RequestBody ClientApplicationStatus clientApplicationStatus) {
+		clientApplicationStatusService.updateClientApplicationStatus(clientApplicationStatus);
+		return new ResponseEntity<ClientApplicationStatus>(clientApplicationStatus, HttpStatus.OK);
+	}
+
+	@DeleteMapping("cAStatus" + CCPTConstants.DELETE_BY_ID)
+	public ResponseEntity<Void> deleteClientApplication(@RequestParam String code) {
+		clientApplicationStatusService.deleteClientApplicationStatus(code);
+		return new ResponseEntity<Void>(HttpStatus.OK);
+	}
+
+	@PostMapping("cPStatus" + CCPTConstants.CREATE)
 	public ResponseEntity<Void> addClientPositionStatus(@RequestBody ClientPositionStatus clientPositionStatus) {
 		clientPositionStatusService.addClientPositionStatus(clientPositionStatus);
 		return new ResponseEntity<Void>(HttpStatus.CREATED);
 	}
 
-	@GetMapping("getAllClientPositionStatus")
+	@GetMapping("cPStatus" + CCPTConstants.GET_ALL)
 	public ResponseEntity<List<ClientPositionStatus>> getAllClientPositionStatus() {
 		List<ClientPositionStatus> clientPositionList = clientPositionStatusService.getAllClientPositionStatus();
 		return new ResponseEntity<List<ClientPositionStatus>>(clientPositionList, HttpStatus.OK);
 	}
 
-	@PostMapping("addConsultantStatus")
+	@PutMapping("cPStatus" + CCPTConstants.UPDATE)
+	public ResponseEntity<ClientPositionStatus> updateClientPositionStatus(
+			@RequestBody ClientPositionStatus clientPositionStatus) {
+		clientPositionStatusService.updateClientPositionStatus(clientPositionStatus);
+		return new ResponseEntity<ClientPositionStatus>(clientPositionStatus, HttpStatus.OK);
+	}
+
+	@DeleteMapping("cPStatus" + CCPTConstants.DELETE_BY_ID)
+	public ResponseEntity<Void> deleteClientPositionStatus(@RequestParam String code) {
+		clientPositionStatusService.deleteClientPositionStatus(code);
+		return new ResponseEntity<Void>(HttpStatus.OK);
+	}
+
+	@PostMapping("consultantStatus" + CCPTConstants.CREATE)
 	public ResponseEntity<Void> addConsultantStatus(@RequestBody ConsultantStatus consultantStatus) {
 		consultantStatusService.addConsultantStatus(consultantStatus);
 		return new ResponseEntity<Void>(HttpStatus.CREATED);
 	}
 
-	@GetMapping("getAllConsultantStatus")
+	@GetMapping("consultantStatus" + CCPTConstants.GET_ALL)
 	public ResponseEntity<List<ConsultantStatus>> getAllConsultantStatus() {
 		List<ConsultantStatus> clientPositionList = consultantStatusService.getAllConsultantStatus();
 		return new ResponseEntity<List<ConsultantStatus>>(clientPositionList, HttpStatus.OK);
+	}
+
+	@PutMapping("consultantStatus" + CCPTConstants.UPDATE)
+	public ResponseEntity<ConsultantStatus> updateConsultantStatus(@RequestBody ConsultantStatus consultantStatus) {
+		consultantStatusService.updateClientPositionStatus(consultantStatus);
+		return new ResponseEntity<ConsultantStatus>(consultantStatus, HttpStatus.OK);
+	}
+
+	@DeleteMapping("consultantStatus" + CCPTConstants.DELETE_BY_ID)
+	public ResponseEntity<Void> deleteConsultantStatus(@RequestParam String code) {
+		consultantStatusService.deleteClientPositionStatus(code);
+		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 }
