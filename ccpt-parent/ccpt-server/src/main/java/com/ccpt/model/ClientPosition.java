@@ -16,28 +16,40 @@ public class ClientPosition {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
+	
 	@Column(name = "technology")
 	private String technology;
+	
 	@Column(name = "experience")
 	private String experience;
+	
 	@Column(name = "required_skills")
 	private String requiredSkills;
+	
 	@Column(name = "min_ctc")
 	private double minCtc;
+	
 	@Column(name = "max_ctc")
 	private double maxCtc;
+	
 	@Column(name = "client_positions_status_code")
 	private String clientPositionsStatusCode;
+	
 	@Column(name = "closed_by")
 	private String closedBy;
+	
 	@Column(name = "additional_comments")
 	private String additionalComments;
+	
 	@Column(name = "created_date")
 	private Date createdDate;
+	
 	@Column(name = "updated_date")
 	private Date updatedDate;
+	
 	@Column(name = "active_flag")
 	private char activeFlag;
+	
 	@Column(name = "client_position_code")
 	private String clientPositionCode;
 

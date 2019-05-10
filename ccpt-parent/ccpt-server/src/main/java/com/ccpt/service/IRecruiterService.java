@@ -15,4 +15,6 @@ public interface IRecruiterService {
 	void updateRecruiter(Recruiter recruiter);
 
 	void deleteRecruiter(int id);
+
+	List<Recruiter> getActiveRecruiters();
 }

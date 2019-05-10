@@ -17,40 +17,58 @@ public class Consultant {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
+	
 	@Column(name = "fullname")
 	private String fullname;
+	
 	@Column(name = "gender")
 	private String gender;
+	
 	@Column(name = "dob")
 	private Date dob;
+	
 	@Column(name = "email")
 	private String email;
+	
 	@Column(name = "phone")
 	private String phone;
+	
 	@Column(name = "skills")
 	private String skills;
+	
 	@Column(name = "current_location")
 	private String currentLocation;
+	
 	@Column(name = "passout_year")
 	private int passoutYear;
+	
 	@Column(name = "qualification")
 	private String qualification;
+	
 	@Column(name = "expected_ctc")
 	private double expectedCTC;
+	
 	@Column(name = "description")
 	private String description;
+	
 	@Column(name = "created_date")
 	private Date createdDate;
+	
 	@Column(name = "updated_date")
 	private Date updatedDate;
+	
 	@Column(name = "consultant_status_code")
 	private String consultantStatusCode;
+	
 	@Column(name = "experience_yrs")
 	private int experienceYrs;
+	
 	@Column(name = "experience_months")
 	private int experienceMonths;
+	
 	@Column(name = "activeFlag")
 	private char activeFlag;
+	
 	@Transient
 	private String consultantStatus;
 

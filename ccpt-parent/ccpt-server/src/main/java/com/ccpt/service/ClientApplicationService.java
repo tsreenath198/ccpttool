@@ -17,7 +17,7 @@ public class ClientApplicationService implements IClientApplicationService {
 	@Override
 	public List<ClientApplication> getAllClientApplications() {
 		List<ClientApplication> list = new ArrayList<>();
-		clientApplicationRepository.findAllByOrderByUpdatedDateAsc().forEach(e -> list.add(e));
+		clientApplicationRepository.findByActiveFlagAllIgnoreCaseOrderByUpdatedDateDesc("Y").forEach(e -> list.add(e));
 		return list;
 	}
 

@@ -8,6 +8,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "recruiter")
@@ -23,6 +25,7 @@ public class Recruiter {
 	private String gender;
 
 	@Column(name = "dob")
+	@Temporal(TemporalType.DATE)
 	private Date dob;
 
 	@Column(name = "role")
@@ -45,6 +48,9 @@ public class Recruiter {
 
 	@Column(name = "updated_date")
 	private Date updatedDate;
+	
+	@Column(name = "status")
+	private String status;
 
 	public int getId() {
 		return id;
@@ -132,6 +138,21 @@ public class Recruiter {
 
 	public void setGender(String gender) {
 		this.gender = gender;
+	}
+
+	@Override
+	public String toString() {
+		return "Recruiter [id=" + id + ", fullname=" + fullname + ", gender=" + gender + ", dob=" + dob + ", role="
+				+ role + ", phone=" + phone + ", email=" + email + ", address=" + address + ", activeFlag=" + activeFlag
+				+ ", createdDate=" + createdDate + ", updatedDate=" + updatedDate + "]";
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
 }

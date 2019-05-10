@@ -13,5 +13,5 @@ public interface ConsultantCallHistoryRepository extends CrudRepository<Consulta
 	@Query("SELECT c FROM ConsultantCallHistory c WHERE created_date   BETWEEN  :sdate AND  :edate")
 	List<ConsultantCallHistory> getAllConsultantCallHistorysFromLastGivenDays(@Param(value = "sdate") Date sdate,
 			@Param(value = "edate") Date edate);
-
+	public List<ConsultantCallHistory> findAllByOrderByUpdatedDateDesc();
 }

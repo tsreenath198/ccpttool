@@ -56,8 +56,10 @@ public class ClientPositionController {
 
 	@PostMapping(CCPTConstants.CREATE)
 	public ResponseEntity<Void> addClientPosition(@RequestBody ClientPosition clientPosition) {
+		clientPosition.setActiveFlag('Y');
 		clientPosition.setCreatedDate(new Date());
 		clientPosition.setUpdatedDate(new Date());
+		clientPosition.setActiveFlag('Y');
 		clientPositionService.addClientPosition(clientPosition);
 		return new ResponseEntity<Void>(HttpStatus.CREATED);
 	}

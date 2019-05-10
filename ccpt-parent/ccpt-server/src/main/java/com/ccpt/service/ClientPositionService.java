@@ -17,7 +17,7 @@ public class ClientPositionService implements IClientPositionService {
 	@Override
 	public List<ClientPosition> getAllClientPositions() {
 		List<ClientPosition> list = new ArrayList<>();
-		clientPositionRepository.findAll().forEach(e -> list.add(e));
+		clientPositionRepository.findByActiveFlagAllIgnoreCaseOrderByUpdatedDateDesc("Y").forEach(e -> list.add(e));
 		return list;
 	}
 

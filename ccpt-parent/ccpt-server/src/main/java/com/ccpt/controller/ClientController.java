@@ -7,8 +7,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -41,6 +43,16 @@ public class ClientController {
 	public ResponseEntity<Void> addClient(@RequestBody Client client) {
 		clientService.addClient(client);
 		return new ResponseEntity<Void>(HttpStatus.CREATED);
+	}
+	@PutMapping(CCPTConstants.UPDATE)
+	public ResponseEntity<Client> updateClient(@RequestBody Client client) {
+		clientService.updateClient(client);
+		return new ResponseEntity<Client>(client, HttpStatus.OK);
+	}
+	@DeleteMapping(CCPTConstants.DELETE_BY_ID)
+	public ResponseEntity<Void> deleteClient(@RequestParam Integer id) {
+		clientService.deleteClient(id);
+		return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
 	}
 
 }

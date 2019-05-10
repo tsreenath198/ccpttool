@@ -13,18 +13,25 @@ public class Login {
 	@Id
 	@Column(name = "username")
 	private String username;
+	
 	@Column(name = "password")
 	private String password;
+	
 	@Column(name = "token")
 	private String token;
+	
 	@Column(name = "role")
 	private String role;
+	
 	@Column(name = "description")
 	private String description;
+	
 	@Column(name = "created_date")
 	private Date createdDate;
+	
 	@Column(name = "updated_date")
 	private Date updatedDate;
+	
 	@Column(name = "active_flag")
 	private char activeFlag;
 

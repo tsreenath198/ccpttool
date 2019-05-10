@@ -16,14 +16,19 @@ public class ClientCallHistory {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
+	
 	@Column(name = "client_position_id")
 	private int clientPositionId;
+	
 	@Column(name = "notes")
 	private String notes;
+	
 	@Column(name = "created_date")
 	private Date createdDate;
+	
 	@Column(name = "updated_date")
 	private Date updatedDate;
+	
 	@Transient
 	private String clientName;
 	

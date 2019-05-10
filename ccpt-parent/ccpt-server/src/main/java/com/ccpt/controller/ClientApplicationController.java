@@ -64,6 +64,7 @@ public class ClientApplicationController {
 
 	@PostMapping(CCPTConstants.CREATE)
 	public ResponseEntity<Void> addClientApplication(@RequestBody ClientApplication clientApplication) {
+		clientApplication.setActiveFlag('Y');
 		clientApplication.setCreatedDate(new Date());
 		clientApplication.setUpdatedDate(new Date());
 		clientApplicationService.addClientApplication(clientApplication);

@@ -16,26 +16,37 @@ public class ClientApplication {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
+	
 	@Column(name = "client_application_status_code")
 	private String clientApplicationStatusCode;
+	
 	@Column(name = "client_position_id")
 	private int clientPositionId;
+	
 	@Column(name = "consultant_id")
 	private int consultantId;
+	
 	@Column(name = "notes")
 	private String notes;
+	
 	@Column(name = "interview_date")
 	private Date interviewDate;
+	
 	@Column(name = "active_flag")
 	private char activeFlag;
+	
 	@Column(name = "created_date")
 	private Date createdDate;
+	
 	@Column(name = "updated_date")
 	private Date updatedDate;
+	
 	@Transient
 	private String consultantName;
+	
 	@Transient
 	private String clientApplicationStatus;
+	
 	@Transient
 	private String clientPositionCode;
 

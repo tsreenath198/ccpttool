@@ -1,5 +1,7 @@
 package com.ccpt.repository;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -10,5 +12,5 @@ public interface LoginRepository extends CrudRepository<Login, String> {
 	@Query("select token from Login l where l.username = :username and l.password=:password")
 	String getTokenByUsernameAndPassword(@Param(value = "username") String username,
 			@Param(value = "password") String password);
-
+	 List<Login> findByActiveFlagAllIgnoreCaseOrderByUpdatedDateDesc(String ActiveFlag);
 }

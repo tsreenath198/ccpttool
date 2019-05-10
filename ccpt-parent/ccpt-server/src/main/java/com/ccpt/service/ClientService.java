@@ -32,4 +32,14 @@ public class ClientService implements IClientService {
 		Client obj = clientRepository.findById(id).get();
 		return obj;
 	}
+
+	@Override
+	public void updateClient(Client client) {
+		clientRepository.save(client);
+	}
+
+	@Override
+	public void deleteClient(Integer id) {
+		clientRepository.delete(getClientById(id));
+	}
 }

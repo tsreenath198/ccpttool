@@ -51,6 +51,7 @@ public class ConsultantController {
 
 	@PostMapping(CCPTConstants.CREATE)
 	public ResponseEntity<Void> addConsultant(@RequestBody Consultant consultant) {
+		consultant.setActiveFlag('Y');
 		consultant.setCreatedDate(new Date());
 		consultant.setUpdatedDate(new Date());
 		consultantService.addConsultant(consultant);

@@ -38,6 +38,7 @@ public class AdminController {
 	@PostMapping("cAStatus" + CCPTConstants.CREATE)
 	public ResponseEntity<Void> addClientApplicationStatus(
 			@RequestBody ClientApplicationStatus clientApplicationStatus) {
+		clientApplicationStatus.setActiveFlag('Y');
 		clientApplicationStatusService.addClientApplicationStatus(clientApplicationStatus);
 		return new ResponseEntity<Void>(HttpStatus.CREATED);
 	}
@@ -63,6 +64,7 @@ public class AdminController {
 
 	@PostMapping("cPStatus" + CCPTConstants.CREATE)
 	public ResponseEntity<Void> addClientPositionStatus(@RequestBody ClientPositionStatus clientPositionStatus) {
+		clientPositionStatus.setActiveFlag('Y');
 		clientPositionStatusService.addClientPositionStatus(clientPositionStatus);
 		return new ResponseEntity<Void>(HttpStatus.CREATED);
 	}
@@ -88,6 +90,7 @@ public class AdminController {
 
 	@PostMapping("consultantStatus" + CCPTConstants.CREATE)
 	public ResponseEntity<Void> addConsultantStatus(@RequestBody ConsultantStatus consultantStatus) {
+		consultantStatus.setActiveFlag('Y');
 		consultantStatusService.addConsultantStatus(consultantStatus);
 		return new ResponseEntity<Void>(HttpStatus.CREATED);
 	}

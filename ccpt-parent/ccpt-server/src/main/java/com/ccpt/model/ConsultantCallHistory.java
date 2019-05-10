@@ -16,6 +16,7 @@ public class ConsultantCallHistory {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
+	
 	@Column(name = "consultant_id")
 	private int consultantId;
 	@Column(name = "description")

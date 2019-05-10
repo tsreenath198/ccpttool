@@ -37,6 +37,7 @@ public class LoginController {
 		login.setToken(token);
 		login.setCreatedDate(new Date());
 		login.setUpdatedDate(new Date());
+		login.setActiveFlag('Y');
 		loginService.register(login);
 		return new ResponseEntity<Void>(HttpStatus.CREATED);
 	}

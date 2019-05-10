@@ -18,7 +18,7 @@ public class ConsultantCallHistoryService implements IConsultantCallHistoryServi
 	@Override
 	public List<ConsultantCallHistory> getAllConsultantCallHistorys() {
 		List<ConsultantCallHistory> list = new ArrayList<>();
-		consultantCallHistoryRepository.findAll().forEach(e -> list.add(e));
+		consultantCallHistoryRepository.findAllByOrderByUpdatedDateDesc().forEach(e -> list.add(e));
 		return list;
 	}
 
