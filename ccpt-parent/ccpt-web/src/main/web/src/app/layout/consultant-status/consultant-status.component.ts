@@ -13,24 +13,23 @@ import { NgForm } from '@angular/forms';
     animations: [routerTransition()]
 })
 export class ConsultantStatusComponent implements OnInit {
-    public consultantStatusModel:ConsultantStatusModel = <ConsultantStatusModel>{};
-    public consultantStatusList:Array<ConsultantStatusModel>=[];
+    public consultantStatusModel: ConsultantStatusModel = <ConsultantStatusModel>{};
+    public consultantStatusList: Array<ConsultantStatusModel> = [];
     private urlConstants = new URLConstants();
-    constructor(private http: HttpClientService,private toastr: ToastrCustomService) { }
+    constructor(private http: HttpClientService, private toastr: ToastrCustomService) { }
     ngOnInit() {
         this.init();
     }
-    init(){
+    public init() {
         this.http.get(this.urlConstants.CSGetAll).subscribe(resp => {
-            
-            this.consultantStatusList = resp as [];
+            this.consultantStatusList = resp as Array<any>;
         })
     }
-    formReset(){
+    public formReset() {
         this.consultantStatusModel = <ConsultantStatusModel>{};
     }
-    createClientApplicationStatus(clientApplicationStatusForm:NgForm): void {
-        this.http.create(this.consultantStatusModel,this.urlConstants.CSCreate ).subscribe(resp => {
+    public createClientApplicationStatus(clientApplicationStatusForm: NgForm): void {
+        this.http.create(this.consultantStatusModel, this.urlConstants.CSCreate).subscribe(resp => {
             this.toastr.success("Form Submitted Successfully", "Consultant Status");
             this.init();
             this.formReset();

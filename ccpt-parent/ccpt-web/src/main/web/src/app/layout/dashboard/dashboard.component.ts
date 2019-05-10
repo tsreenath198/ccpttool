@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { HttpClientService } from 'src/app/shared/services/http.service';
+import { ToastrCustomService } from 'src/app/shared/services/toastr.service';
+import { URLConstants } from '../components/constants/url-constants';
 import { routerTransition } from '../../router.animations';
 
 @Component({
@@ -10,8 +13,9 @@ import { routerTransition } from '../../router.animations';
 export class DashboardComponent implements OnInit {
     public alerts: Array<any> = [];
     public sliders: Array<any> = [];
-
-    constructor() {
+    public ccptReportData: Object = {};
+    private urlConstants = new URLConstants();
+    constructor(private http: HttpClientService, private toastr: ToastrCustomService) {
         this.sliders.push(
             {
                 imagePath: 'assets/images/slider1.jpg',
@@ -52,7 +56,13 @@ export class DashboardComponent implements OnInit {
         );
     }
 
-    ngOnInit() {}
+    ngOnInit() { this.init() }
+
+    public init() {
+        this.http.get(this.urlConstants.ReportingGetAll).subscribe(resp => {
+            this.ccptReportData = resp;
+        })
+    }
 
     public closeAlert(alert: any) {
         const index: number = this.alerts.indexOf(alert);
