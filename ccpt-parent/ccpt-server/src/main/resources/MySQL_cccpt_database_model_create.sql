@@ -215,3 +215,7 @@ ALTER TABLE consultant ADD CONSTRAINT consultant_consultant_status FOREIGN KEY c
 -- End of file.
 
 SET foreign_key_checks = 1;
+
+ALTER TABLE client_position ADD client_id INT NOT NULL ;
+ALTER TABLE client_position ADD INDEX(client_id);
+ALTER TABLE client_position ADD CONSTRAINT client_position_client_id_fk FOREIGN KEY (client_id) REFERENCES client(client_id) ON DELETE RESTRICT ON UPDATE RESTRICT;
