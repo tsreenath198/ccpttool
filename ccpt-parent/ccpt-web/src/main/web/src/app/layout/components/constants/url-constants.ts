@@ -2,20 +2,26 @@ export class URLConstants {
     /*Client Application Status*/
     CASCreate: string = 'admin/cAStatus/create';
     CASGetAll: string = 'admin/cAStatus/getAll';
+    CASUpdate: string = 'admin/cAStatus/update';
+    CASDelete: string = 'admin/cAStatus/id/'
 
     /*Client Postion Status*/
     CPSCreate: string = 'admin/cPStatus/create';
     CPSGetAll: string = 'admin/cPStatus/getAll';
+    CPSUpdate: string = 'admin/cPStatus/update';
+    CPSDelete: string = 'admin/cPStatus/id/'
 
-    /*Consultant Status */
+    /*Consultant Status*/
     CSCreate: string = 'admin/consultantStatus/create';
     CSGetAll: string = 'admin/consultantStatus/getAll';
+    CSUpdate: string = 'admin/consultantStatus/update';
+    CSDelete: string = 'admin/consultantStatus/id/'
 
     /*Client Position */
     CPCreate: string = 'clientPosition/create';
     CPGetAll: string = 'clientPosition/getAll';
     CPUpdate: string = 'clientPosition/update';
-    CPDelete: string = 'clientPosition/delete?';
+    CPDelete: string = 'clientPosition/id/';
 
     /*Consultant */
     CCreate: string = 'consultant/create';
@@ -47,12 +53,14 @@ export class URLConstants {
     RCreate: string = 'recruiter/create';
     RGetAll: string = 'recruiter/getAll';
     RUpdate: string = 'recruiter/update';
-    RDelete: string = 'recruiter/delete';
+    RDelete: string = 'recruiter/id/';
 
     /*Client*/
     ClientCreate: string = 'client/create';
     ClientGetAll: string = 'client/getAll';
-    
+    ClientUpdate: string = 'client/getAll';
+    ClientDelete: string = 'client/getAll';
+
     /** Reporting */
-    ReportingGetAll:string = 'report/getAll';
+    ReportingGetAll: string = 'report/getAll';
 }

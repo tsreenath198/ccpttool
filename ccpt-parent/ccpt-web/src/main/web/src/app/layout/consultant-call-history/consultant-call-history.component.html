@@ -2,7 +2,8 @@
     <app-page-header [icon]="'fa-bar-chart-o'" [heading]="'Consultant Call History'"></app-page-header>
     <div class="row">
         <div class="col-md-6">
-            <div class="table-responsive table-fixed">
+            <input type="text" class="form-control" placeholder="search..." [(ngModel)]="currSearchTxt" />
+            <div class="table-responsive">
                 <table class="table table-hover table-striped">
                     <!-- <thead>
                         <tr>
@@ -10,9 +11,11 @@
                         </tr>
                     </thead> -->
                     <tbody class="overflow-ele-scroll">
-                        <tr *ngFor="let cchl of consultantCallHistoryList">
-                            <td (click)="readOnlyEnable(cchl)" (dblclick)="consultantCallHistoryEdit(cchl)">{{cchl.consultantName}}
+                        <tr *ngFor="let cchl of consultantCallHistoryList  |  filter : 'consultantName' :currSearchTxt ; let i = index">
+                            <td class="table-data-padding" (click)="readOnlyEnable(cchl)" (dblclick)="consultantCallHistoryEdit(cchl)">
+                                {{cchl.consultantName}}
                             </td>
+                            <td class="table-data-padding" (click)="deleteConfirmation(cchl)"><span class="fa fa-trash pull-right"></span></td>
                         </tr>
                     </tbody>
                 </table>
@@ -27,7 +30,7 @@
                             <label>Consultant<span class="required">*</span></label>
                             <div *ngIf="readOnlyForm; else elseBlock">
                                 <input class="form-control" name="consultant" readonly
-                                    [(ngModel)]="consultantCallHistoryModel.consultantId">
+                                    [(ngModel)]="consultantCallHistoryModel.consultantName">
                             </div>
                             <ng-template #elseBlock>
                                 <select class="form-control" name="consultant"
@@ -69,8 +72,6 @@
                                 <button type="button" id="update" class="btn btn-secondary ml-2"
                                     (click)="updateConsultantCallHistory(f)">Update</button>
                             </ng-template>
-                            <button type="button" id="delete" class="btn btn-secondary ml-2"
-                                (click)="deleteConsultantCallHistory(f)">Delete</button>
                         </ng-template>
                         <button type="button" id="cancel" (click)="cancelForm(f)"
                             class="btn btn-secondary ml-3">Cancel</button>

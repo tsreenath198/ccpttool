@@ -1,7 +1,7 @@
 export interface ClientModel{
     name:string,
     address:string,
-    clientContacts:ClientContactsModel[]
+    clientContacts:Array<ClientContactsModel>
  
 }
 export interface ClientContactsModel{

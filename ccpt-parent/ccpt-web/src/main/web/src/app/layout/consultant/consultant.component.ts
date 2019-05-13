@@ -93,8 +93,8 @@ export class ConsultantComponent implements OnInit {
             this.http.upload(this.urlConstants.CUpload + '?refId=10&refType=doc&comments=doc', formData);
         }
     }*/
-    deleteConsultant() {
-        this.http.delete(this.urlConstants.CDelete + this.consultantModel.id).subscribe(resp => {
+    deleteConsultant(id) {
+        this.http.delete(this.urlConstants.CDelete + id).subscribe(resp => {
             this.toastr.success("Form Deleted Successfully", "Consultant");
             this.init();
             this.formReset();
@@ -119,9 +119,9 @@ export class ConsultantComponent implements OnInit {
         }
 
     }
-    deleteConfirmation(){
+    deleteConfirmation(toDelete){
         if (confirm("Are you sure you want to delete the row!")) {
-            this.deleteConsultant();
+            this.deleteConsultant(toDelete.id);
           } 
     }
 }

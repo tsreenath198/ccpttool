@@ -6,6 +6,7 @@ import { HttpClientService } from 'src/app/shared/services/http.service';
 import { ClientpositionStatusModel } from '../client-position-status/client-position-status.model';
 import { ToastrCustomService } from 'src/app/shared/services/toastr.service';
 import { NgForm } from '@angular/forms';
+import { ClientModel } from '../client/client.model';
 
 
 @Component({
@@ -18,16 +19,21 @@ export class ClientPositionComponent implements OnInit {
     public clientPositionModel: ClientPositionModel = <ClientPositionModel>{};
     public clientPositionList: Array<ClientPositionModel> = [];
     public clientPositionStatusList: Array<ClientpositionStatusModel> = [];
+    public clientList:Array<ClientModel>=[];
     public readOnlyForm: boolean = false;
     public formButtonsToggler: boolean = true;
     public editButtonToggler: boolean = true;
     public invalidAppCode: boolean = false;
     public urlConstants = new URLConstants();
+    public currSearchTxt: string ;
     constructor(private http: HttpClientService, private toastr: ToastrCustomService) { }
 
     ngOnInit() {
         this.http.get(this.urlConstants.CPSGetAll).subscribe(resp => {
             this.clientPositionStatusList = resp as any;
+        });
+        this.http.get(this.urlConstants.ClientGetAll).subscribe(resp=>{
+            this.clientList=resp as any;
         })
         this.init();
     }
@@ -117,13 +123,11 @@ export class ClientPositionComponent implements OnInit {
             this.toastr.error(err.statusText, "Client Position");
         })
     }
-    deleteClientPosition(clientPositionForm:NgForm) {
-        this.http.delete(this.urlConstants.CPDelete + this.clientPositionModel.id).subscribe(resp => {
+    deleteClientPosition(deleteId) {
+        this.http.delete(this.urlConstants.CPDelete + deleteId).subscribe(resp => {
             this.toastr.success("Form Deleted Successfully", "Client Position");
             this.init();
             this.formReset();
-            clientPositionForm.resetForm();
-
         })
     }
     editableForm() {
@@ -144,5 +148,10 @@ export class ClientPositionComponent implements OnInit {
             this.formButtonsToggler = true;
         }
 
+    }
+    deleteConfirmation(toDelete){
+        if (confirm("Are you sure you want to delete the row!")) {
+            this.deleteClientPosition(toDelete.id);
+          } 
     }
 }

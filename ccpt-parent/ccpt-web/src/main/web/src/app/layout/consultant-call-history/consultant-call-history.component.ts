@@ -82,12 +82,11 @@ export class ConsultantCallHistoryComponent implements OnInit {
             this.toastr.error(err.statusText, "Consultant Call History");
         })
     }
-    deleteConsultantCallHistory(consultantCallHistory:NgForm) {
-        this.http.delete(this.urlConstants.CoCHDelete + this.consultantCallHistoryModel.id).subscribe(resp => {
+    deleteConsultantCallHistory(deleteId) {
+        this.http.delete(this.urlConstants.CoCHDelete + deleteId).subscribe(resp => {
             this.toastr.success("Form Deleted Successfully", "Consultant Call History");
             this.init();
             this.formReset();
-            consultantCallHistory.resetForm();
         })
     }
     editableForm(){
@@ -108,5 +107,10 @@ export class ConsultantCallHistoryComponent implements OnInit {
             this.formButtonsToggler=true;
         }
         
+    }
+    deleteConfirmation(toDelete){
+        if (confirm("Are you sure you want to delete the row!")) {
+            this.deleteConsultantCallHistory(toDelete.id);
+          } 
     }
 }

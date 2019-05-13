@@ -5,16 +5,11 @@
       <input type="text" class="form-control" placeholder="search..." [(ngModel)]="currSearchTxt" />
       <div class="table-responsive">
         <table class="table table-hover table-striped">
-          <!-- <thead>
-                        <tr>
-                            <th>Full Name</th>
-                        </tr>
-                    </thead> -->
           <tbody class="overflow-ele-scroll">
             <tr *ngFor="let cl of consultantList |  filter : 'fullname' :currSearchTxt ; let i = index">
-              <td (click)="readOnlyEnable(cl)" (dblclick)="consultantEdit(cl)">{{cl.fullname}}</td>
+              <td class="table-data-padding" (click)="readOnlyEnable(cl)" (dblclick)="consultantEdit(cl)">{{cl.fullname}}</td>
               <!--  <input type="file" (change)="fileChange($event)" > <span class="fa fa-upload pull-right"></span> -->
-              <td (click)="deleteConfirmation()"><span class="fa fa-trash pull-right"></span></td>
+              <td class="table-data-padding" (click)="deleteConfirmation(cl)"><span class="fa fa-trash pull-right"></span></td>
             </tr>
           </tbody>
         </table>
@@ -32,7 +27,7 @@
               <div class="invalid-feedback">
                 fullname is mandatory
               </div>
-                   
+ 
             </div>
           </div>
           <div class="col-md-8">
@@ -183,8 +178,6 @@
                 <button type="button" id="update" class="btn btn-secondary ml-2"
                   (click)="updateConsultant(f)">Update</button>
               </ng-template>
-              <button type="button" id="delete" class="btn btn-secondary ml-2"
-                (click)="deleteConsultant(f)">Delete</button>
             </ng-template>
             <button type="button" id="cancel" (click)="cancelForm(f)" class="btn btn-secondary ml-3">Cancel</button>
           </div>

@@ -22,8 +22,8 @@ export class RecruiterComponent implements OnInit {
     public rolesList: any = [];
     public urlConstants = new URLConstants();
     public genderList=['MALE','FEMALE','OTHER'];
+    public currSearchTxt: string ;
 
-    
     constructor(private http: HttpClientService, private toastr: ToastrCustomService) { }
     ngOnInit() {
         this.init();
@@ -79,12 +79,11 @@ export class RecruiterComponent implements OnInit {
             this.toastr.error(err.statusText, "Recruiter");
         })
     }
-    deleteRecruiter(recruiterForm:NgForm) {
-        this.http.delete('recruiter/id/' + this.recruiterModel.id).subscribe(resp => {
+    deleteRecruiter(deleteId) {
+        this.http.delete(this.urlConstants.RDelete + deleteId).subscribe(resp => {
             this.toastr.success("Form Deleted Successfully", "Recruiter");
             this.init();
             this.formReset();
-            recruiterForm.resetForm();
         })
     }
     editableForm() {
@@ -105,5 +104,11 @@ export class RecruiterComponent implements OnInit {
             this.formButtonsToggler = true;
         }
 
+    
+    }
+    deleteConfirmation(toDelete){
+        if (confirm("Are you sure you want to delete the row!")) {
+            this.deleteRecruiter(toDelete.id);
+          } 
     }
 }

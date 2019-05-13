@@ -101,12 +101,11 @@ export class ClientApplicationComponent implements OnInit {
         })
         this.formReset();
     }
-    deleteClientApplication(clientApplicationForm:NgForm) {
-        this.http.delete(this.urlConstants.CADelete + this.clientApplicationModel.id).subscribe(resp => {
+    deleteClientApplication(deleteId) {
+        this.http.delete(this.urlConstants.CADelete + deleteId).subscribe(resp => {
             this.toastr.success("Form Deleted Successfully", "Client Application");
             this.init();
             this.formReset();
-            clientApplicationForm.resetForm();
         })
         this.formReset();
     }
@@ -128,5 +127,10 @@ export class ClientApplicationComponent implements OnInit {
             this.formButtonsToggler = true;
         }
 
+    }
+    deleteConfirmation(toDelete){
+        if (confirm("Are you sure you want to delete the row!")) {
+            this.deleteClientApplication(toDelete.id);
+          } 
     }
 }

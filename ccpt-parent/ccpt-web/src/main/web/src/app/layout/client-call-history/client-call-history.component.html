@@ -1,7 +1,8 @@
 <div [@routerTransition]>
   <app-page-header [icon]="'fa-bar-chart-o'" [heading]="'Client Call History'"></app-page-header>
   <div class="row">
-    <div class="col-md-6 table-fixed">
+    <div class="col-md-6 ">
+      <input type="text" class="form-control" placeholder="search..." [(ngModel)]="currSearchTxt" />
       <div class="table-responsive">
         <div *ngIf="clientCallHistoryList; else tableElse">
           <table class="table table-hover table-striped">
@@ -12,8 +13,10 @@
                         </thead> -->
             <tbody class="overflow-ele-scroll">
               <tr *ngFor="let cchl of clientCallHistoryList">
-                <td (click)="readOnlyEnable(cchl)" (dblclick)="editClientCallHistory(cchl)">
+                <td class="table-data-padding" (click)="readOnlyEnable(cchl)" (dblclick)="editClientCallHistory(cchl)">
                   {{cchl.clientPositionCode}}</td>
+                <td class="table-data-padding" (click)="deleteConfirmation(cchl)"><span
+                    class="fa fa-trash pull-right"></span></td>
               </tr>
             </tbody>
           </table>
@@ -24,19 +27,38 @@
       </div>
     </div>
     <div class="col-md-6">
-      <form name="form" id="clientCallHistoryForm" (ngSubmit)="f.form.valid&&createClientCallHistory(f)" #f="ngForm"
-        novalidate>
+      <form name="form" id="clientCallHistoryForm" (ngSubmit)="f.form.valid&&createClientCallHistory(f)" #f="ngForm" novalidate>
         <div class="row">
+            <div class="col-md-8">
+                <div class="form-group">
+                  <label>Client Name<span class="required">*</span></label>
+                  <div *ngIf="readOnlyForm; else elseBlock1">
+                    <input class="form-control" readonly name="cn" [(ngModel)]="clientCallHistoryModel.clientName">
+                  </div>
+                  <ng-template #elseBlock1>
+                    <select class="form-control" name="cn" [(ngModel)]="clientCallHistoryModel.clientId"
+                      [ngClass]="{'is-invalid': f.submitted && cn.invalid}" #cn="ngModel" required>
+                      <option *ngFor="let cl of clientList" [ngValue]="cl.id">
+                        {{cl.name}}
+                      </option>
+                    </select>
+                    <div class="invalid-feedback">
+                      Client Position is mandatory
+                    </div>
+                  </ng-template>
+                </div>
+              </div>
           <div class="col-md-8">
             <div class="form-group">
               <label>Client Position<span class="required">*</span></label>
               <div *ngIf="readOnlyForm; else elseBlock">
-                <input class="form-control" readonly name="cp" [(ngModel)]="clientCallHistoryModel.clientPositionId">
+                <input class="form-control" readonly name="cp" [(ngModel)]="clientCallHistoryModel.clientPositionCode">
               </div>
               <ng-template #elseBlock>
                 <select class="form-control" name="cp" [(ngModel)]="clientCallHistoryModel.clientPositionId"
                   [ngClass]="{'is-invalid': f.submitted && cp.invalid}" #cp="ngModel" required>
-                  <option *ngFor="let cpl of clientPositionList" [ngValue]="cpl.clientPositionCode">{{cpl.clientPositionCode}}
+                  <option *ngFor="let cpl of clientPositionList" [ngValue]="cpl.id">
+                    {{cpl.clientPositionCode}}
                   </option>
                 </select>
                 <div class="invalid-feedback">
@@ -69,11 +91,9 @@
                 <button type="button" id="update" class="btn btn-secondary ml-2" (click)="editableForm()">Edit</button>
               </span>
               <ng-template #toggleEdit>
-                <button type="button" id="update" class="btn btn-secondary ml-2"
+                <button type="submit" id="update" class="btn btn-secondary ml-2"
                   (click)="updateClientCallHistory(f)">Update</button>
               </ng-template>
-              <button type="button" id="delete" class="btn btn-secondary ml-2"
-                (click)="deleteClientCallHistory(f)">Delete</button>
             </ng-template>
             <button type="button" id="cancel" (click)="cancelForm(f)" class="btn btn-secondary ml-3">Cancel</button>
           </div>

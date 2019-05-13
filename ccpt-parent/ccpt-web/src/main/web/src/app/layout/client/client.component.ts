@@ -16,11 +16,15 @@ import { ClientModel, ClientContactsModel } from './client.model';
 export class ClientComponent implements OnInit {
     public clientModel: ClientModel = <ClientModel>{};
     public clientList: any = [];
+
     private urlConstants = new URLConstants();
+    public readOnlyForm: boolean = false;
+    public formButtonsToggler: boolean = true;
+    public editButtonToggler: boolean = true;
     constructor(private http: HttpClientService, private toastr: ToastrCustomService) {
     }
     ngOnInit() {
-        this.clientModel.clientContacts=[{"fullname":"","email":"","phone":""}]
+        this.clientModel.clientContacts = [{ "fullname": "", "email": "", "phone": "" }]
         this.init();
     }
     init() {
@@ -28,17 +32,80 @@ export class ClientComponent implements OnInit {
             this.clientList = resp as any;
         })
     }
+    editClientPosition(data) {
+        this.clientModel = data;
+        if (this.readOnlyForm == true) {
+            this.readOnlyForm = false;
+        }
+        if (this.formButtonsToggler == true) {
+            this.formButtonsToggler = false;
+        }
+        if (this.editButtonToggler == true) {
+            this.editButtonToggler = false;
+        }
+    }
+    readOnlyEnable(data) {
+        this.clientModel = data;
+        if (this.readOnlyForm == false) {
+            this.readOnlyForm = true;
+        }
+        if (this.formButtonsToggler == true) {
+            this.formButtonsToggler = false;
+        }
+    }
     formReset() {
         this.clientModel = <ClientModel>{};
     }
-  clientCreate(clientForm:NgForm):void{
-      this.http.create(this.clientModel,this.urlConstants.ClientCreate).subscribe(resp => {
-        this.toastr.success("Form Submitted Successfully", "Client Component");
-        this.init();
+    clientCreate(clientForm: NgForm): void {
+        this.http.create(this.clientModel, this.urlConstants.ClientCreate).subscribe(resp => {
+            this.toastr.success("Form Submitted Successfully", "Client");
+            this.init();
+            this.formReset();
+            clientForm.resetForm();
+        }, err => {
+            this.toastr.error(err.statusText, "Client");
+        });
+    }
+    updateClient(consultantCallHistory: NgForm) {
+        this.http.update(this.clientModel, this.urlConstants.ClientUpdate).subscribe(resp => {
+            this.formButtonsToggler = true;
+            this.formReset();
+            this.toastr.success("Form Updated Successfully", "Client ");
+            this.init();
+            consultantCallHistory.resetForm();
+        }, err => {
+            this.toastr.error(err.statusText, "Client");
+        })
+    }
+    deleteClient(deleteId) {
+        this.http.delete(this.urlConstants.ClientDelete + deleteId).subscribe(resp => {
+            this.toastr.success("Form Deleted Successfully", "Consultant Call History");
+            this.init();
+            this.formReset();
+        })
+    }
+    editableForm(){
+        if(this.readOnlyForm==true){
+            this.readOnlyForm=false;
+        }
+        if(this.editButtonToggler==true){
+            this.editButtonToggler=false;
+        }
+    }
+    cancelForm(consultantCallHistory:NgForm){
         this.formReset();
-        clientForm.resetForm();
-    }, err => {
-        this.toastr.error(err.statusText, "Client Component");
-    });
-  }
+        consultantCallHistory.resetForm();
+        if(this.readOnlyForm==true){
+            this.readOnlyForm=false;
+        }
+        if(this.formButtonsToggler==false){
+            this.formButtonsToggler=true;
+        }
+        
+    }
+    deleteConfirmation(toDelete){
+        if (confirm("Are you sure you want to delete the row!")) {
+            this.deleteClient(toDelete.id);
+          } 
+    }
 }

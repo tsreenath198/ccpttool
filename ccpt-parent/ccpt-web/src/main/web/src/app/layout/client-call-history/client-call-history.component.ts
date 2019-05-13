@@ -7,6 +7,7 @@ import { ClientPositionModel } from '../client-position/client-position.model';
 import { ToastrCustomService } from 'src/app/shared/services/toastr.service';
 import { URLConstants } from '../components/constants/url-constants';
 import { NgForm } from '@angular/forms';
+import { ClientModel } from '../client/client.model';
 
 
 @Component({
@@ -19,15 +20,20 @@ export class ClientCallHistoryComponent implements OnInit {
     public clientCallHistoryModel: ClientCallHistoryModel = <ClientCallHistoryModel>{};
     public clientCallHistoryList: Array<ClientCallHistoryModel> = [];
     public clientPositionList: Array<ClientPositionModel> = [];
+    public clientList:Array<ClientModel>=[];
     public readOnlyForm :boolean=false;
     public formButtonsToggler :boolean=true;
     public editButtonToggler:boolean=true;
     public urlConstants = new URLConstants();
+    public currSearchTxt: string ;
     constructor(private http: HttpClientService,private toastr: ToastrCustomService) { }
 
     ngOnInit() {
         this.http.get('clientPosition/getAll').subscribe(resp => {
             this.clientPositionList = resp as any;
+        })
+        this.http.get(this.urlConstants.ClientGetAll).subscribe(resp=>{
+            this.clientList=resp as any;
         })
         this.init();
     }
@@ -82,8 +88,8 @@ export class ClientCallHistoryComponent implements OnInit {
             this.toastr.error(err.statusText, "Client Call History");
         })
     }
-    deleteClientCallHistory(clientCallHistoryForm:NgForm) {
-        this.http.delete('clientCallHistory/id/' + this.clientCallHistoryModel.id).subscribe(resp => {
+    deleteClientCallHistory(deleteId) {
+        this.http.delete('clientCallHistory/id/' + deleteId).subscribe(resp => {
             this.toastr.success("Form Deleted Successfully", "Client Call History");
             this.init();
             this.formReset();
@@ -107,5 +113,10 @@ export class ClientCallHistoryComponent implements OnInit {
             this.formButtonsToggler=true;
         }
         
+    }
+    deleteConfirmation(toDelete){
+        if (confirm("Are you sure you want to delete the row!")) {
+            this.deleteClientCallHistory(toDelete.id);
+          } 
     }
 }
