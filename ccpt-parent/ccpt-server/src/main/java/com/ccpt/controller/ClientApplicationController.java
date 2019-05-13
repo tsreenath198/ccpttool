@@ -78,9 +78,14 @@ public class ClientApplicationController {
 		return new ResponseEntity<ClientApplication>(clientApplication, HttpStatus.OK);
 	}
 
+
 	@DeleteMapping(CCPTConstants.DELETE_BY_ID)
 	public ResponseEntity<Void> deleteClientApplication(@RequestParam Integer id) {
-		clientApplicationService.deleteClientApplication(id);
+		ClientApplication clientApplication = clientApplicationService.getClientApplicationById(id);
+		clientApplication.setActiveFlag('N');
+		clientApplication.setUpdatedDate(new Date());
+		clientApplicationService.addClientApplication(clientApplication);
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
+
 }

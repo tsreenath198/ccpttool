@@ -57,11 +57,6 @@ public class RecruiterController {
 		return new ResponseEntity<Recruiter>(recruiter, HttpStatus.OK);
 	}
 
-	/*@DeleteMapping("id/{id}")
-	public ResponseEntity<Void> deleteRecruiter(@PathVariable("id") Integer id) {
-		recruiterService.deleteRecruiter(id);
-		return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
-	}*/
 
 	@GetMapping("getActiveRecruiters")
 	public ResponseEntity<List<Recruiter>> getActiveRecruiters() {
@@ -76,6 +71,6 @@ public class RecruiterController {
 		recruiter.setActiveFlag('N');
 		recruiter.setUpdatedDate(new Date());
 		recruiterService.addRecruiter(recruiter);
-		return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 }

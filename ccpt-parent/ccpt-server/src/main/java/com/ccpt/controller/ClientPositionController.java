@@ -73,7 +73,10 @@ public class ClientPositionController {
 
 	@DeleteMapping(CCPTConstants.DELETE_BY_ID)
 	public ResponseEntity<Void> deleteClientPosition(@RequestParam Integer id) {
-		clientPositionService.deleteClientPosition(id);
-		return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+		ClientPosition clientPosition = clientPositionService.getClientPositionById(id);
+		clientPosition.setActiveFlag('N');
+		clientPosition.setUpdatedDate(new Date());
+		clientPositionService.addClientPosition(clientPosition);
+		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 }

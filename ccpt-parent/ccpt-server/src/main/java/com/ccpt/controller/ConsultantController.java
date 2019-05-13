@@ -67,7 +67,11 @@ public class ConsultantController {
 
 	@DeleteMapping(CCPTConstants.DELETE_BY_ID)
 	public ResponseEntity<Void> deleteConsultant(@RequestParam Integer id) {
-		consultantService.deleteConsultant(id);
-		return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+		Consultant  consultant= consultantService.getConsultantById(id);
+		consultant.setActiveFlag('N');
+		consultant.setUpdatedDate(new Date());
+		consultantService.addConsultant(consultant);
+		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
+	
 }

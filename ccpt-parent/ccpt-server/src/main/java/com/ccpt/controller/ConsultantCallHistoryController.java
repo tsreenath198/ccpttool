@@ -67,6 +67,6 @@ public class ConsultantCallHistoryController {
 	@DeleteMapping(CCPTConstants.DELETE_BY_ID)
 	public ResponseEntity<Void> deleteConsultantCallHistory(@RequestParam Integer id) {
 		consultantCallHistoryService.deleteConsultantCallHistory(id);
-		return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 }

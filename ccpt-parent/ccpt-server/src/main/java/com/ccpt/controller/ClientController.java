@@ -52,7 +52,7 @@ public class ClientController {
 	@DeleteMapping(CCPTConstants.DELETE_BY_ID)
 	public ResponseEntity<Void> deleteClient(@RequestParam Integer id) {
 		clientService.deleteClient(id);
-		return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 
 }
