@@ -21,6 +21,7 @@ import com.ccpt.constants.CCPTConstants;
 import com.ccpt.model.ClientCallHistory;
 import com.ccpt.service.IClientCallHistoryService;
 import com.ccpt.service.IClientPositionService;
+import com.ccpt.service.IClientService;
 
 @Controller
 @CrossOrigin
@@ -31,6 +32,9 @@ public class ClientCallHistoryController {
 	private IClientCallHistoryService clientCallHistoryService;
 	
 	@Autowired
+	private IClientService clientService;
+	
+	@Autowired
 	private IClientPositionService  clientPositionService;
 
 	@GetMapping(CCPTConstants.GET_ALL)
@@ -39,6 +43,7 @@ public class ClientCallHistoryController {
 		
 		for(ClientCallHistory cchList:clientCallHistoryList){
 			cchList.setClientPositionCode(clientPositionService.getClientPositionById(cchList.getClientPositionId()).getClientPositionCode());
+			cchList.setClientName(clientService.getClientById(cchList.getClientId()).getName());
 		}
 		return new ResponseEntity<List<ClientCallHistory>>(clientCallHistoryList, HttpStatus.OK);
 	}

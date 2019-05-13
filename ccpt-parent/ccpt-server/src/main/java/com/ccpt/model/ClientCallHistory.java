@@ -34,6 +34,9 @@ public class ClientCallHistory {
 	
 	@Transient
 	private String clientPositionCode;
+	
+	@Column(name = "client_id")
+	private int clientId;
 
 	public int getId() {
 		return id;
@@ -95,6 +98,14 @@ public class ClientCallHistory {
 
 	public void setClientPositionCode(String clientPositionCode) {
 		this.clientPositionCode = clientPositionCode;
+	}
+
+	public int getClientId() {
+		return clientId;
+	}
+
+	public void setClientId(int clientId) {
+		this.clientId = clientId;
 	}
 
 }
