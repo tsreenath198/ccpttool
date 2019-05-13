@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -63,8 +64,8 @@ public class ClientCallHistoryController {
 		return new ResponseEntity<ClientCallHistory>(clientCallHistory, HttpStatus.OK);
 	}
 
-	@DeleteMapping(CCPTConstants.DELETE_BY_ID)
-	public ResponseEntity<Void> deleteClientCallHistory(@RequestParam Integer id) {
+	@DeleteMapping(CCPTConstants.DELETE_BY_ID+"/{id}")
+	public ResponseEntity<Void> deleteClientCallHistory(@PathVariable Integer id) {
 		clientCallHistoryService.deleteClientCallHistory(id);
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}

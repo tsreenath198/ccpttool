@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -79,8 +80,8 @@ public class ClientApplicationController {
 	}
 
 
-	@DeleteMapping(CCPTConstants.DELETE_BY_ID)
-	public ResponseEntity<Void> deleteClientApplication(@RequestParam Integer id) {
+	@DeleteMapping(CCPTConstants.DELETE_BY_ID+"/{id}")
+	public ResponseEntity<Void> deleteClientApplication(@PathVariable Integer id) {
 		ClientApplication clientApplication = clientApplicationService.getClientApplicationById(id);
 		clientApplication.setActiveFlag('N');
 		clientApplication.setUpdatedDate(new Date());

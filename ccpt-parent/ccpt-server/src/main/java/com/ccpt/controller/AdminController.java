@@ -9,11 +9,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.ccpt.constants.CCPTConstants;
 import com.ccpt.model.ClientApplicationStatus;
@@ -56,8 +56,8 @@ public class AdminController {
 		return new ResponseEntity<ClientApplicationStatus>(clientApplicationStatus, HttpStatus.OK);
 	}
 
-	@DeleteMapping("cAStatus" + CCPTConstants.DELETE_BY_ID)
-	public ResponseEntity<Void> deleteClientApplication(@RequestParam String code) {
+	@DeleteMapping("cAStatus" + CCPTConstants.DELETE_BY_ID+"/{code}")
+	public ResponseEntity<Void> deleteClientApplication(@PathVariable String code) {
 		clientApplicationStatusService.deleteClientApplicationStatus(code);
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
@@ -82,8 +82,8 @@ public class AdminController {
 		return new ResponseEntity<ClientPositionStatus>(clientPositionStatus, HttpStatus.OK);
 	}
 
-	@DeleteMapping("cPStatus" + CCPTConstants.DELETE_BY_ID)
-	public ResponseEntity<Void> deleteClientPositionStatus(@RequestParam String code) {
+	@DeleteMapping("cPStatus" + CCPTConstants.DELETE_BY_ID+"/{code}")
+	public ResponseEntity<Void> deleteClientPositionStatus(@PathVariable String code) {
 		clientPositionStatusService.deleteClientPositionStatus(code);
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
@@ -107,8 +107,8 @@ public class AdminController {
 		return new ResponseEntity<ConsultantStatus>(consultantStatus, HttpStatus.OK);
 	}
 
-	@DeleteMapping("consultantStatus" + CCPTConstants.DELETE_BY_ID)
-	public ResponseEntity<Void> deleteConsultantStatus(@RequestParam String code) {
+	@DeleteMapping("consultantStatus" + CCPTConstants.DELETE_BY_ID+"/{code}")
+	public ResponseEntity<Void> deleteConsultantStatus(@PathVariable String code) {
 		consultantStatusService.deleteClientPositionStatus(code);
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}

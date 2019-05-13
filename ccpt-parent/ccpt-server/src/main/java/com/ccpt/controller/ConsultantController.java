@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -65,8 +66,8 @@ public class ConsultantController {
 		return new ResponseEntity<Consultant>(consultant, HttpStatus.OK);
 	}
 
-	@DeleteMapping(CCPTConstants.DELETE_BY_ID)
-	public ResponseEntity<Void> deleteConsultant(@RequestParam Integer id) {
+	@DeleteMapping(CCPTConstants.DELETE_BY_ID+"/{id}")
+	public ResponseEntity<Void> deleteConsultant(@PathVariable Integer id) {
 		Consultant  consultant= consultantService.getConsultantById(id);
 		consultant.setActiveFlag('N');
 		consultant.setUpdatedDate(new Date());
