@@ -54,7 +54,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                              <tr *ngFor="let cl for tempClientContact">
+                              <tr >
                                   <td>
                                         <input class="form-control" [(ngModel)]="cl.name" name="fullname"
                                         [ngClass]="{'is-invalid': f.submitted && name.invalid}"
@@ -86,5 +86,4 @@
             </form>
         </div>
     </div>
-
 </div>
