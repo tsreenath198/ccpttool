@@ -212,10 +212,17 @@ ALTER TABLE consultant_call_history ADD CONSTRAINT consultant_call_history_consu
 ALTER TABLE consultant ADD CONSTRAINT consultant_consultant_status FOREIGN KEY consultant_consultant_status (consultant_status_code)
     REFERENCES consultant_status (code);
 
+    ALTER TABLE recruiter ADD status VARCHAR(30) NOT NULL AFTER updated_date;
+    
+    ALTER TABLE client_position ADD client_id INT NOT NULL ;
+ALTER TABLE client_position ADD INDEX(client_id);
+ALTER TABLE client_position ADD CONSTRAINT client_position_client_id_fk FOREIGN KEY (client_id) REFERENCES client(client_id) ON DELETE RESTRICT ON UPDATE RESTRICT;
+  
+ALTER TABLE client_call_history ADD client_id INT(11) NOT NULL AFTER updated_date;
+ALTER TABLE client_call_history ADD INDEX(client_id);
+ALTER TABLE client_call_history ADD CONSTRAINT client_id_fk FOREIGN KEY (client_id) REFERENCES client(client_id) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
 -- End of file.
 
 SET foreign_key_checks = 1;
 
-ALTER TABLE client_position ADD client_id INT NOT NULL ;
-ALTER TABLE client_position ADD INDEX(client_id);
-ALTER TABLE client_position ADD CONSTRAINT client_position_client_id_fk FOREIGN KEY (client_id) REFERENCES client(client_id) ON DELETE RESTRICT ON UPDATE RESTRICT;
