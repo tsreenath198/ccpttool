@@ -11,7 +11,7 @@
                     </thead> -->
                     <tbody class="overflow-ele-scroll">
                         <tr *ngFor="let cchl of consultantCallHistoryList">
-                            <td (click)="readOnlyEnable(cchl)" (dblclick)="consultantCallHistoryEdit(cchl)">{{cchl.id}}
+                            <td (click)="readOnlyEnable(cchl)" (dblclick)="consultantCallHistoryEdit(cchl)">{{cchl.consultantName}}
                             </td>
                         </tr>
                     </tbody>
