@@ -30,6 +30,7 @@ export class URLConstants {
     CAUpdate: string = 'clientApplication/update';
     CADelete: string = 'clientApplication/id/'
 
+
     /* Client Call History */
     CCHCreate: string = 'clientCallHistory/create';
     CCHGetAll: string = 'clientCallHistory/getAll';
@@ -47,9 +48,11 @@ export class URLConstants {
     RGetAll: string = 'recruiter/getAll';
     RUpdate: string = 'recruiter/update';
     RDelete: string = 'recruiter/delete';
+
     /*Client*/
     ClientCreate: string = 'client/create';
     ClientGetAll: string = 'client/getAll';
+    
     /** Reporting */
     ReportingGetAll:string = 'report/getAll';
 }
