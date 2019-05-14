@@ -10,4 +10,6 @@ public interface ClientApplicationRepository extends CrudRepository<ClientApplic
 	public List<ClientApplication> findAllByOrderByUpdatedDateAsc();
 
 	List<ClientApplication> findByActiveFlagAllIgnoreCaseOrderByUpdatedDateDesc(String ActiveFlag);
+	
+	ClientApplication findByIdAndActiveFlag(int id, Character status);
 }

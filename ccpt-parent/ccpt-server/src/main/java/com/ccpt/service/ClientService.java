@@ -17,7 +17,7 @@ public class ClientService implements IClientService {
 	@Override
 	public List<Client> getAllClients() {
 		List<Client> list = new ArrayList<>();
-		clientRepository.findAll().forEach(e -> list.add(e));
+		clientRepository.findByActiveFlagAllIgnoreCaseOrderByUpdatedDateDesc("Y").forEach(e -> list.add(e));
 		return list;
 	}
 
@@ -29,7 +29,7 @@ public class ClientService implements IClientService {
 
 	@Override
 	public Client getClientById(Integer id) {
-		Client obj = clientRepository.findById(id).get();
+		Client obj = clientRepository.findByIdAndActiveFlag(id, 'Y');
 		return obj;
 	}
 

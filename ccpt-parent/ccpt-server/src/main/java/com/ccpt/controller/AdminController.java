@@ -51,13 +51,14 @@ public class AdminController {
 
 	@PutMapping("cAStatus" + CCPTConstants.UPDATE)
 	public ResponseEntity<ClientApplicationStatus> updateClientApplicationStatus(
-			@RequestBody ClientApplicationStatus clientApplicationStatus) {
+			@RequestBody ClientApplicationStatus clientApplicationStatus) throws Exception {
+		clientApplicationStatus.setActiveFlag('Y');
 		clientApplicationStatusService.updateClientApplicationStatus(clientApplicationStatus);
 		return new ResponseEntity<ClientApplicationStatus>(clientApplicationStatus, HttpStatus.OK);
 	}
 
-	@DeleteMapping("cAStatus" + CCPTConstants.DELETE_BY_ID+"/{code}")
-	public ResponseEntity<Void> deleteClientApplication(@PathVariable String code) {
+	@DeleteMapping("cAStatus" + CCPTConstants.DELETE_BY_ID + "/{code}")
+	public ResponseEntity<Void> deleteClientApplication(@PathVariable String code) throws Exception {
 		clientApplicationStatusService.deleteClientApplicationStatus(code);
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
@@ -77,13 +78,14 @@ public class AdminController {
 
 	@PutMapping("cPStatus" + CCPTConstants.UPDATE)
 	public ResponseEntity<ClientPositionStatus> updateClientPositionStatus(
-			@RequestBody ClientPositionStatus clientPositionStatus) {
+			@RequestBody ClientPositionStatus clientPositionStatus) throws Exception {
+		clientPositionStatus.setActiveFlag('Y');
 		clientPositionStatusService.updateClientPositionStatus(clientPositionStatus);
 		return new ResponseEntity<ClientPositionStatus>(clientPositionStatus, HttpStatus.OK);
 	}
 
-	@DeleteMapping("cPStatus" + CCPTConstants.DELETE_BY_ID+"/{code}")
-	public ResponseEntity<Void> deleteClientPositionStatus(@PathVariable String code) {
+	@DeleteMapping("cPStatus" + CCPTConstants.DELETE_BY_ID + "/{code}")
+	public ResponseEntity<Void> deleteClientPositionStatus(@PathVariable String code) throws Exception {
 		clientPositionStatusService.deleteClientPositionStatus(code);
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
@@ -102,14 +104,16 @@ public class AdminController {
 	}
 
 	@PutMapping("consultantStatus" + CCPTConstants.UPDATE)
-	public ResponseEntity<ConsultantStatus> updateConsultantStatus(@RequestBody ConsultantStatus consultantStatus) {
-		consultantStatusService.updateClientPositionStatus(consultantStatus);
+	public ResponseEntity<ConsultantStatus> updateConsultantStatus(@RequestBody ConsultantStatus consultantStatus)
+			throws Exception {
+		consultantStatus.setActiveFlag('Y');
+		consultantStatusService.updateConsultantStatus(consultantStatus);
 		return new ResponseEntity<ConsultantStatus>(consultantStatus, HttpStatus.OK);
 	}
 
-	@DeleteMapping("consultantStatus" + CCPTConstants.DELETE_BY_ID+"/{code}")
-	public ResponseEntity<Void> deleteConsultantStatus(@PathVariable String code) {
-		consultantStatusService.deleteClientPositionStatus(code);
+	@DeleteMapping("consultantStatus" + CCPTConstants.DELETE_BY_ID + "/{code}")
+	public ResponseEntity<Void> deleteConsultantStatus(@PathVariable String code) throws Exception {
+		consultantStatusService.deleteConsultantStatus(code);
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 }

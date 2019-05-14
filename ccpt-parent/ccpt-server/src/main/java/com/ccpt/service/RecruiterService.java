@@ -23,7 +23,7 @@ public class RecruiterService implements IRecruiterService {
 
 	@Override
 	public Recruiter getRecruiterById(int id) {
-		Recruiter obj = recruiterRepository.findById(id).get();
+		Recruiter obj = recruiterRepository.findByIdAndActiveFlag(id, 'Y');
 		return obj;
 	}
 

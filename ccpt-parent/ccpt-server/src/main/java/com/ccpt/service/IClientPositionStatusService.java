@@ -12,10 +12,10 @@ public interface IClientPositionStatusService {
 
 	ClientPositionStatus getClientPositionStatusById(String code);
 	
-	void updateClientPositionStatus(ClientPositionStatus clientPositionStatus);
+	void updateClientPositionStatus(ClientPositionStatus clientPositionStatus) throws Exception;
 
-	void deleteClientPositionStatus(String code);
+	void deleteClientPositionStatus(String code) throws Exception;
 
-	ClientPositionStatus getClientPositionByCode(String code);
+//	ClientPositionStatus getClientPositionByCode(String code);
 
 }

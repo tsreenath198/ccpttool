@@ -13,4 +13,5 @@ public interface RecruiterRepository extends CrudRepository<Recruiter, Integer> 
 	 List<Recruiter> findByActiveFlagAndStatusAllIgnoreCaseOrderByUpdatedDateDesc(String activeFlag, String status);
 	 
 	 List<Recruiter> findByActiveFlagAllIgnoreCaseOrderByUpdatedDateDesc(String ActiveFlag);
+	Recruiter findByIdAndActiveFlag(int id, Character status);
 }

@@ -22,24 +22,40 @@ public class ClientApplicationStatusService implements IClientApplicationStatusS
 	@Override
 	public List<ClientApplicationStatus> getAllClientApplications() {
 		List<ClientApplicationStatus> list = new ArrayList<>();
-		clientApplicationStatusRepository.findAll().forEach(e -> list.add(e));
+		clientApplicationStatusRepository.findByActiveFlagAllIgnoreCase("Y").forEach(e -> list.add(e));
 		return list;
 	}
-	
+
 	@Override
-	public ClientApplicationStatus getClientApplicationStatusById(String  code) {
-		ClientApplicationStatus obj = clientApplicationStatusRepository.findById(code).get();
+	public ClientApplicationStatus getClientApplicationStatusById(String code) {
+		ClientApplicationStatus obj = clientApplicationStatusRepository.findByCodeAndActiveFlag(code, 'Y');
 		return obj;
 	}
+
 	@Override
-	public void updateClientApplicationStatus(ClientApplicationStatus clientApplicationStatus) {
-		clientApplicationStatusRepository.save(clientApplicationStatus);
+	public void updateClientApplicationStatus(ClientApplicationStatus clientApplicationStatus) throws Exception {
+		try {
+			getClientApplicationStatusById(clientApplicationStatus.getCode());
+			clientApplicationStatusRepository.save(clientApplicationStatus);
+		} catch (Exception e) {
+			throw new Exception("id not available");
+		}
+		
+//		clientApplicationStatusRepository.save(clientApplicationStatus);
 
 	}
 
 	@Override
-	public void deleteClientApplicationStatus(String code) {
-		clientApplicationStatusRepository.delete(getConsultantCallHistoryByCode(code));
+	public void deleteClientApplicationStatus(String code) throws Exception {
+		ClientApplicationStatus cas = null;
+		try {
+			cas = getClientApplicationStatusById(code);
+			cas.setActiveFlag('N');
+			clientApplicationStatusRepository.save(cas);
+		} catch (Exception e) {
+			throw new Exception("id not available");
+		}
+
 	}
 
 	@Override

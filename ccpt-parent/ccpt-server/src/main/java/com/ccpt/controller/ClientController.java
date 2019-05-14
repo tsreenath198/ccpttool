@@ -1,5 +1,6 @@
 package com.ccpt.controller;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,17 +43,26 @@ public class ClientController {
 
 	@PostMapping(CCPTConstants.CREATE)
 	public ResponseEntity<Void> addClient(@RequestBody Client client) {
+		client.setActiveFlag('Y');
+		client.setCreatedDate(new Date());
+		client.setUpdatedDate(new Date());
 		clientService.addClient(client);
 		return new ResponseEntity<Void>(HttpStatus.CREATED);
 	}
+
 	@PutMapping(CCPTConstants.UPDATE)
 	public ResponseEntity<Client> updateClient(@RequestBody Client client) {
+		client.setUpdatedDate(new Date());
 		clientService.updateClient(client);
 		return new ResponseEntity<Client>(client, HttpStatus.OK);
 	}
-	@DeleteMapping(CCPTConstants.DELETE_BY_ID+"/{id}")
+
+	@DeleteMapping(CCPTConstants.DELETE_BY_ID + "/{id}")
 	public ResponseEntity<Void> deleteClient(@PathVariable Integer id) {
-		clientService.deleteClient(id);
+		Client client = clientService.getClientById(id);
+		client.setActiveFlag('N');
+		client.setUpdatedDate(new Date());
+		clientService.addClient(client);
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 

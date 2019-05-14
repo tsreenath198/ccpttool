@@ -23,29 +23,38 @@ public class ClientPositionStatusService implements IClientPositionStatusService
 	@Override
 	public List<ClientPositionStatus> getAllClientPositionStatus() {
 		List<ClientPositionStatus> list = new ArrayList<>();
-		clientPositionStatusRepository.findAll().forEach(e -> list.add(e));
+		clientPositionStatusRepository.findByActiveFlagAllIgnoreCase("Y").forEach(e -> list.add(e));
 		return list;
 	}
 
 	@Override
 	public ClientPositionStatus getClientPositionStatusById(String code) {
-		ClientPositionStatus obj = clientPositionStatusRepository.findById(code).get();
+		ClientPositionStatus obj = clientPositionStatusRepository.findByCodeAndActiveFlag(code, 'Y');
 		return obj;
 	}
 
 	@Override
-	public void updateClientPositionStatus(ClientPositionStatus clientPositionStatus) {
-		clientPositionStatusRepository.save(clientPositionStatus);
+	public void updateClientPositionStatus(ClientPositionStatus clientPositionStatus) throws Exception {
+
+		try {
+			getClientPositionStatusById(clientPositionStatus.getCode());
+			clientPositionStatusRepository.save(clientPositionStatus);
+		} catch (Exception e) {
+			throw new Exception("id not available");
+		}
 	}
 
 	@Override
-	public void deleteClientPositionStatus(String code) {
-		clientPositionStatusRepository.delete(getClientPositionByCode(code));
+	public void deleteClientPositionStatus(String code) throws Exception {
+		ClientPositionStatus cps = null;
+		try {
+			cps = getClientPositionStatusById(code);
+			cps.setActiveFlag('N');
+			clientPositionStatusRepository.save(cps);
+		} catch (Exception e) {
+			throw new Exception("id not available");
+		}
+
 	}
 
-	@Override
-	public ClientPositionStatus getClientPositionByCode(String code) {
-		ClientPositionStatus obj = clientPositionStatusRepository.findById(code).get();
-		return obj;
-	}
 }

@@ -23,29 +23,46 @@ public class ConsultantStatusService implements IConsultantStatusService {
 	@Override
 	public List<ConsultantStatus> getAllConsultantStatus() {
 		List<ConsultantStatus> list = new ArrayList<>();
-		consultantStatusRepository.findAll().forEach(e -> list.add(e));
+		consultantStatusRepository.findByActiveFlagAllIgnoreCase("Y").forEach(e -> list.add(e));
 		return list;
 	}
 
 	@Override
 	public ConsultantStatus getConsultantStatusById(String code) {
-		ConsultantStatus obj = consultantStatusRepository.findById(code).get();
+		ConsultantStatus obj = consultantStatusRepository.findByCodeAndActiveFlag(code, 'Y');
 		return obj;
 	}
 
 	@Override
-	public void updateClientPositionStatus(ConsultantStatus consultantStatus) {
-		consultantStatusRepository.save(consultantStatus);
+	public void updateConsultantStatus(ConsultantStatus consultantStatus) throws Exception {
+		
+		try {
+			getConsultantStatusById(consultantStatus.getCode());
+			consultantStatusRepository.save(consultantStatus);
+		} catch (Exception e) {
+			throw new Exception("id not available");
+		}
+		
 	}
 
 	@Override
-	public void deleteClientPositionStatus(String code) {
-		consultantStatusRepository.delete(getConsultantCallHistoryByCode(code));
+	public void deleteConsultantStatus(String code) throws Exception {
+		
+		ConsultantStatus cs = null;
+		try {
+			cs = getConsultantStatusById(code);
+			cs.setActiveFlag('N');
+			consultantStatusRepository.save(cs);
+		} catch (Exception e) {
+			throw new Exception("id not available");
+		}
+		
+//		consultantStatusRepository.delete(getConsultantCallHistoryByCode(code));
 	}
 
-	@Override
+	/*@Override
 	public ConsultantStatus getConsultantCallHistoryByCode(String code) {
 		ConsultantStatus obj = consultantStatusRepository.findById(code).get();
 		return obj;
-	}
+	}*/
 }

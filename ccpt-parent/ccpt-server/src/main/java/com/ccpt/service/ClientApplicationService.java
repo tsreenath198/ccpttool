@@ -23,7 +23,7 @@ public class ClientApplicationService implements IClientApplicationService {
 
 	@Override
 	public ClientApplication getClientApplicationById(int id) {
-		ClientApplication obj = clientApplicationRepository.findById(id).get();
+		ClientApplication obj = clientApplicationRepository.findByIdAndActiveFlag(id, 'Y');
 		return obj;
 	}
 
