@@ -224,6 +224,11 @@ ALTER TABLE client_call_history ADD CONSTRAINT client_id_fk FOREIGN KEY (client_
 
 
 ALTER TABLE client ADD created_date DATETIME NOT NULL AFTER address, ADD updated_date DATETIME NOT NULL AFTER created_date, ADD active_flag CHAR(1) NOT NULL DEFAULT 'Y' AFTER updated_date;
+ALTER TABLE consultant ADD UNIQUE(fullname);
+ALTER TABLE consultant ADD UNIQUE(email);
+ALTER TABLE consultant ADD UNIQUE(phone);
+ALTER TABLE consultant ADD current_company VARCHAR(50) NULL AFTER active_flag, ADD current_ctc DOUBLE NULL AFTER current_company, ADD preffered_location VARCHAR(50) NULL AFTER current_ctc;
+
 -- End of file.
 
 SET foreign_key_checks = 1;
