@@ -56,7 +56,7 @@ CREATE TABLE client_position (
     max_ctc double(10,2) NULL,
     client_positions_status_code varchar(3) NOT NULL,
     closed_by varchar(50) NULL,
-    additional_comments text NOT NULL,
+    additional_comments text NULL,
     client_position_code varchar(30)  NOT NULL,
     created_date datetime NOT NULL ,
     updated_date datetime NOT NULL,
@@ -222,6 +222,8 @@ ALTER TABLE client_call_history ADD client_id INT(11) NOT NULL AFTER updated_dat
 ALTER TABLE client_call_history ADD INDEX(client_id);
 ALTER TABLE client_call_history ADD CONSTRAINT client_id_fk FOREIGN KEY (client_id) REFERENCES client(client_id) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
+
+ALTER TABLE client ADD created_date DATETIME NOT NULL AFTER address, ADD updated_date DATETIME NOT NULL AFTER created_date, ADD active_flag CHAR(1) NOT NULL DEFAULT 'Y' AFTER updated_date;
 -- End of file.
 
 SET foreign_key_checks = 1;
