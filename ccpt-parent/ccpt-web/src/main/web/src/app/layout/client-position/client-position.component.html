@@ -13,7 +13,7 @@
           <tbody class="overflow-ele-scroll">
             <tr *ngFor="let cpl of clientPositionList |  filter : 'technology' :currSearchTxt ; let i = index ">
               <td class="table-data-padding" (click)="readOnlyEnable(cpl)" (dblclick)="editClientPosition(cpl)">
-                {{cpl.technology}}</td>
+                {{cpl.clientPositionCode}}</td>
               <td class="table-data-padding" (click)="deleteConfirmation(cpl)"><span
                   class="fa fa-trash pull-right"></span></td>
             </tr>
