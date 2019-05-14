@@ -24,13 +24,16 @@ export class ClientComponent implements OnInit {
     constructor(private http: HttpClientService, private toastr: ToastrCustomService) {
     }
     ngOnInit() {
-        this.clientModel.clientContacts = [{ "fullname": "", "email": "", "phone": "" }]
+        this.clientContactDeclare();
         this.init();
     }
     init() {
         this.http.get(this.urlConstants.ClientGetAll).subscribe(resp => {
             this.clientList = resp as any;
         })
+    }
+    clientContactDeclare() {
+        this.clientModel.clientContacts = [{ "fullname": "", "email": "", "phone": "" }]
     }
     editClientPosition(data) {
         this.clientModel = data;
@@ -62,6 +65,7 @@ export class ClientComponent implements OnInit {
             this.init();
             this.formReset();
             clientForm.resetForm();
+            this.clientContactDeclare();
         }, err => {
             this.toastr.error(err.statusText, "Client");
         });
@@ -73,6 +77,7 @@ export class ClientComponent implements OnInit {
             this.toastr.success("Form Updated Successfully", "Client ");
             this.init();
             consultantCallHistory.resetForm();
+            this.clientContactDeclare();
         }, err => {
             this.toastr.error(err.statusText, "Client");
         })
@@ -84,28 +89,43 @@ export class ClientComponent implements OnInit {
             this.formReset();
         })
     }
-    editableForm(){
-        if(this.readOnlyForm==true){
-            this.readOnlyForm=false;
+    editableForm() {
+        if (this.readOnlyForm == true) {
+            this.readOnlyForm = false;
         }
-        if(this.editButtonToggler==true){
-            this.editButtonToggler=false;
+        if (this.editButtonToggler == true) {
+            this.editButtonToggler = false;
         }
     }
-    cancelForm(consultantCallHistory:NgForm){
+    cancelForm(consultantCallHistory: NgForm) {
         this.formReset();
         consultantCallHistory.resetForm();
-        if(this.readOnlyForm==true){
-            this.readOnlyForm=false;
+        if (this.readOnlyForm == true) {
+            this.readOnlyForm = false;
         }
-        if(this.formButtonsToggler==false){
-            this.formButtonsToggler=true;
+        if (this.formButtonsToggler == false) {
+            this.formButtonsToggler = true;
         }
-        
+        this.clientContactDeclare();
     }
-    deleteConfirmation(toDelete){
+    deleteConfirmation(toDelete) {
         if (confirm("Are you sure you want to delete the row!")) {
             this.deleteClient(toDelete.id);
-          } 
+        }
     }
+    // clientContactListIncrement() {
+    //     this.clientModel.clientContacts.length += 1;
+    // }
+    clientContactListIncrement(event, i: number) {
+        switch (event.id) {
+          case "decrease": {
+            this.clientModel.clientContacts.splice(i, 1);
+            break;
+          }
+          case "increase": {
+            this.clientModel.clientContacts.push({ "fullname": "", "email": "", "phone": "" });
+            break;
+          }
+        }
+      }
 }
