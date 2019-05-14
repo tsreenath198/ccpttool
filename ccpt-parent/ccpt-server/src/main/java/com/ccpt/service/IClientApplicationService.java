@@ -2,16 +2,16 @@ package com.ccpt.service;
 
 import java.util.List;
 
+import com.ccpt.exception.ResourceNotFoundException;
 import com.ccpt.model.ClientApplication;
 
 public interface IClientApplicationService {
 	List<ClientApplication> getAllClientApplications();
 
-	ClientApplication getClientApplicationById(int id);
+	ClientApplication getClientApplicationById(int id) throws ResourceNotFoundException;
 
 	void addClientApplication(ClientApplication clientApplication);
 
 	void updateClientApplication(ClientApplication clientApplication);
 
-	void deleteClientApplication(int id);
 }

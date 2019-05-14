@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ccpt.exception.ResourceNotFoundException;
 import com.ccpt.model.ClientCallHistory;
 import com.ccpt.repository.ClientCallHistoryRepository;
 
@@ -23,8 +24,9 @@ public class ClientCallHistoryService implements IClientCallHistoryService {
 	}
 
 	@Override
-	public ClientCallHistory getClientCallHistoryById(int id) {
-		ClientCallHistory obj = clientCallHistoryRepository.findById(id).get();
+	public ClientCallHistory getClientCallHistoryById(int id) throws ResourceNotFoundException {
+		ClientCallHistory obj = clientCallHistoryRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("No data found on id:: " + id));
 		return obj;
 	}
 
@@ -35,7 +37,7 @@ public class ClientCallHistoryService implements IClientCallHistoryService {
 	}
 
 	@Override
-	public void deleteClientCallHistory(int id) {
+	public void deleteClientCallHistory(int id) throws ResourceNotFoundException {
 		clientCallHistoryRepository.delete(getClientCallHistoryById(id));
 
 	}

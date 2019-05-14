@@ -11,7 +11,7 @@ public interface IClientPositionStatusService {
 	List<ClientPositionStatus> getAllClientPositionStatus();
 
 	ClientPositionStatus getClientPositionStatusById(String code);
-	
+
 	void updateClientPositionStatus(ClientPositionStatus clientPositionStatus) throws Exception;
 
 	void deleteClientPositionStatus(String code) throws Exception;

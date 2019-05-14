@@ -17,7 +17,6 @@ public class ConsultantStatusService implements IConsultantStatusService {
 	@Override
 	public void addConsultantStatus(ConsultantStatus consultantStatus) {
 		consultantStatusRepository.save(consultantStatus);
-
 	}
 
 	@Override
