@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.ccpt.constants.CCPTConstants;
+import com.ccpt.exception.ResourceNotFoundException;
 import com.ccpt.model.ConsultantCallHistory;
 import com.ccpt.service.IConsultantCallHistoryService;
 import com.ccpt.service.IConsultantService;
@@ -34,7 +35,7 @@ public class ConsultantCallHistoryController {
 	private IConsultantService consultantService;
 
 	@GetMapping("getAll")
-	public ResponseEntity<List<ConsultantCallHistory>> getAllConsultantCallHistorys() {
+	public ResponseEntity<List<ConsultantCallHistory>> getAllConsultantCallHistorys() throws ResourceNotFoundException {
 		List<ConsultantCallHistory> consultantCallHistoryList = consultantCallHistoryService
 				.getAllConsultantCallHistorys();
 		for (ConsultantCallHistory cch : consultantCallHistoryList) {
@@ -44,7 +45,7 @@ public class ConsultantCallHistoryController {
 	}
 
 	@GetMapping(CCPTConstants.GET_BY_ID)
-	public ResponseEntity<ConsultantCallHistory> getConsultantCallHistoryById(@RequestParam Integer id) {
+	public ResponseEntity<ConsultantCallHistory> getConsultantCallHistoryById(@RequestParam Integer id) throws ResourceNotFoundException {
 		ConsultantCallHistory consultantCallHistory = consultantCallHistoryService.getConsultantCallHistoryById(id);
 		return new ResponseEntity<ConsultantCallHistory>(consultantCallHistory, HttpStatus.OK);
 	}
@@ -66,7 +67,7 @@ public class ConsultantCallHistoryController {
 	}
 
 	@DeleteMapping(CCPTConstants.DELETE_BY_ID+"/{id}")
-	public ResponseEntity<Void> deleteConsultantCallHistory(@PathVariable Integer id) {
+	public ResponseEntity<Void> deleteConsultantCallHistory(@PathVariable Integer id) throws ResourceNotFoundException {
 		consultantCallHistoryService.deleteConsultantCallHistory(id);
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}

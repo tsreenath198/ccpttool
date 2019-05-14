@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.ccpt.exception.ResourceNotFoundException;
 import com.ccpt.model.Recruiter;
 import com.ccpt.service.IRecruiterService;
 
@@ -35,7 +36,7 @@ public class RecruiterController {
 	}
 
 	@GetMapping("id/{id}")
-	public ResponseEntity<Recruiter> getRecruiterById(@PathVariable("id") Integer id) {
+	public ResponseEntity<Recruiter> getRecruiterById(@PathVariable("id") Integer id) throws ResourceNotFoundException {
 		Recruiter recruiter = recruiterService.getRecruiterById(id);
 		return new ResponseEntity<Recruiter>(recruiter, HttpStatus.OK);
 	}
@@ -66,7 +67,7 @@ public class RecruiterController {
 	}
 
 	@DeleteMapping("id/{id}")
-	public ResponseEntity<Void> deleteRecruiter(@PathVariable("id") Integer id) {
+	public ResponseEntity<Void> deleteRecruiter(@PathVariable("id") Integer id) throws ResourceNotFoundException {
 		Recruiter  recruiter= recruiterService.getRecruiterById(id);
 		recruiter.setActiveFlag('N');
 		recruiter.setUpdatedDate(new Date());

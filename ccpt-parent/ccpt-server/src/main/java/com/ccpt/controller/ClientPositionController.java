@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.ccpt.constants.CCPTConstants;
+import com.ccpt.exception.ResourceNotFoundException;
 import com.ccpt.model.ClientPosition;
 import com.ccpt.service.IClientPositionService;
 import com.ccpt.service.IClientPositionStatusService;
@@ -38,7 +39,7 @@ public class ClientPositionController {
 	private IClientPositionStatusService clientPositionStatusService;
 
 	@GetMapping(CCPTConstants.GET_ALL)
-	public ResponseEntity<List<ClientPosition>> getAllClientPositions() {
+	public ResponseEntity<List<ClientPosition>> getAllClientPositions() throws ResourceNotFoundException {
 		List<ClientPosition> clientPositionList = clientPositionService.getAllClientPositions();
 
 		for (ClientPosition clientPosition : clientPositionList) {
@@ -50,7 +51,7 @@ public class ClientPositionController {
 	}
 
 	@GetMapping(CCPTConstants.GET_BY_ID)
-	public ResponseEntity<ClientPosition> getClientPositionById(@RequestParam Integer id) {
+	public ResponseEntity<ClientPosition> getClientPositionById(@RequestParam Integer id) throws ResourceNotFoundException {
 		ClientPosition clientPosition = clientPositionService.getClientPositionById(id);
 		return new ResponseEntity<ClientPosition>(clientPosition, HttpStatus.OK);
 	}
@@ -73,7 +74,7 @@ public class ClientPositionController {
 	}
 
 	@DeleteMapping(CCPTConstants.DELETE_BY_ID+"/{id}")
-	public ResponseEntity<Void> deleteClientPosition(@PathVariable Integer id) {
+	public ResponseEntity<Void> deleteClientPosition(@PathVariable Integer id) throws ResourceNotFoundException {
 		ClientPosition clientPosition = clientPositionService.getClientPositionById(id);
 		clientPosition.setActiveFlag('N'); 
 		clientPosition.setUpdatedDate(new Date());

@@ -40,9 +40,6 @@ public class ClientApplicationStatusService implements IClientApplicationStatusS
 		} catch (Exception e) {
 			throw new Exception("id not available");
 		}
-		
-//		clientApplicationStatusRepository.save(clientApplicationStatus);
-
 	}
 
 	@Override

@@ -12,6 +12,7 @@ public interface IClientApplicationService {
 
 	void addClientApplication(ClientApplication clientApplication);
 
-	void updateClientApplication(ClientApplication clientApplication);
+	void updateClientApplication(ClientApplication clientApplication) throws Exception;
+
 
 }

@@ -28,16 +28,16 @@ public class ClientApplicationService implements IClientApplicationService {
 	}
 
 	@Override
-	public void updateClientApplication(ClientApplication clientApplication) {
-		clientApplicationRepository.save(clientApplication);
-
+	public void updateClientApplication(ClientApplication clientApplication) throws Exception {
+		
+		try {
+			getClientApplicationById(clientApplication.getId());
+			clientApplicationRepository.save(clientApplication);
+		} catch (Exception e) {
+			throw new Exception("id not available");
+		}
 	}
 
-	@Override
-	public void deleteClientApplication(int id) {
-		clientApplicationRepository.delete(getClientApplicationById(id));
-
-	}
 
 	@Override
 	public void addClientApplication(ClientApplication clientApplication) {

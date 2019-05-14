@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.ccpt.constants.CCPTConstants;
+import com.ccpt.exception.ResourceNotFoundException;
 import com.ccpt.model.ClientApplication;
 import com.ccpt.service.IClientApplicationService;
 import com.ccpt.service.IClientApplicationStatusService;
@@ -41,7 +42,7 @@ public class ClientApplicationController {
 	private IClientPositionService clientPositionService;
 
 	@GetMapping(CCPTConstants.GET_ALL)
-	public ResponseEntity<List<ClientApplication>> getAllClientApplications() {
+	public ResponseEntity<List<ClientApplication>> getAllClientApplications() throws ResourceNotFoundException {
 		List<ClientApplication> clientApplicationList = clientApplicationService.getAllClientApplications();
 
 		for (ClientApplication clientApplication : clientApplicationList) {
@@ -58,7 +59,7 @@ public class ClientApplicationController {
 	}
 
 	@GetMapping(CCPTConstants.GET_BY_ID)
-	public ResponseEntity<ClientApplication> getClientApplicationById(@RequestParam Integer id) {
+	public ResponseEntity<ClientApplication> getClientApplicationById(@RequestParam Integer id) throws ResourceNotFoundException {
 		ClientApplication clientApplication = clientApplicationService.getClientApplicationById(id);
 		return new ResponseEntity<ClientApplication>(clientApplication, HttpStatus.OK);
 	}
@@ -73,7 +74,7 @@ public class ClientApplicationController {
 	}
 
 	@PutMapping(CCPTConstants.UPDATE)
-	public ResponseEntity<ClientApplication> updateClientApplication(@RequestBody ClientApplication clientApplication) {
+	public ResponseEntity<ClientApplication> updateClientApplication(@RequestBody ClientApplication clientApplication) throws Exception {
 		clientApplication.setUpdatedDate(new Date());
 		clientApplicationService.updateClientApplication(clientApplication);
 		return new ResponseEntity<ClientApplication>(clientApplication, HttpStatus.OK);
@@ -81,7 +82,7 @@ public class ClientApplicationController {
 
 
 	@DeleteMapping(CCPTConstants.DELETE_BY_ID+"/{id}")
-	public ResponseEntity<Void> deleteClientApplication(@PathVariable Integer id) {
+	public ResponseEntity<Void> deleteClientApplication(@PathVariable Integer id) throws ResourceNotFoundException {
 		ClientApplication clientApplication = clientApplicationService.getClientApplicationById(id);
 		clientApplication.setActiveFlag('N');
 		clientApplication.setUpdatedDate(new Date());
