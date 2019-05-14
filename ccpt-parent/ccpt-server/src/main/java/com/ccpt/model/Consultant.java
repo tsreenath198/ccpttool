@@ -9,68 +9,76 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "consultant")
+@Table(name = "consultant", uniqueConstraints = { @UniqueConstraint(columnNames = { "fullname", "email", "phone" }) })
 public class Consultant {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	
+
 	@Column(name = "fullname")
 	private String fullname;
-	
+
 	@Column(name = "gender")
 	private String gender;
-	
+
 	@Column(name = "dob")
 	private Date dob;
-	
+
 	@Column(name = "email")
 	private String email;
-	
+
 	@Column(name = "phone")
 	private String phone;
-	
+
 	@Column(name = "skills")
 	private String skills;
-	
+
 	@Column(name = "current_location")
 	private String currentLocation;
-	
+
 	@Column(name = "passout_year")
 	private int passoutYear;
-	
+
 	@Column(name = "qualification")
 	private String qualification;
-	
+
 	@Column(name = "expected_ctc")
 	private double expectedCTC;
-	
+
 	@Column(name = "description")
 	private String description;
-	
+
 	@Column(name = "created_date")
 	private Date createdDate;
-	
+
 	@Column(name = "updated_date")
 	private Date updatedDate;
-	
+
 	@Column(name = "consultant_status_code")
 	private String consultantStatusCode;
-	
+
 	@Column(name = "experience_yrs")
 	private int experienceYrs;
-	
+
 	@Column(name = "experience_months")
 	private int experienceMonths;
-	
+
 	@Column(name = "activeFlag")
 	private char activeFlag;
-	
+
 	@Transient
 	private String consultantStatus;
+
+	@Column(name = "current_company")
+	private String currentCompany;
+	@Column(name = "current_ctc")
+	private double currentCTC;
+	@Column(name = "preffered_location")
+	private String prefferedLocation;
 
 	public int getId() {
 		return id;
@@ -224,6 +232,30 @@ public class Consultant {
 		this.consultantStatus = consultantStatus;
 	}
 
+	public String getCurrentCompany() {
+		return currentCompany;
+	}
+
+	public void setCurrentCompany(String currentCompany) {
+		this.currentCompany = currentCompany;
+	}
+
+	public double getCurrentCTC() {
+		return currentCTC;
+	}
+
+	public void setCurrentCTC(double currentCTC) {
+		this.currentCTC = currentCTC;
+	}
+
+	public String getPrefferedLocation() {
+		return prefferedLocation;
+	}
+
+	public void setPrefferedLocation(String prefferedLocation) {
+		this.prefferedLocation = prefferedLocation;
+	}
+
 	@Override
 	public String toString() {
 		return "Consultant [id=" + id + ", fullname=" + fullname + ", gender=" + gender + ", dob=" + dob + ", email="
@@ -232,7 +264,8 @@ public class Consultant {
 				+ ", description=" + description + ", createdDate=" + createdDate + ", updatedDate=" + updatedDate
 				+ ", consultantStatusCode=" + consultantStatusCode + ", experienceYrs=" + experienceYrs
 				+ ", experienceMonths=" + experienceMonths + ", activeFlag=" + activeFlag + ", consultantStatus="
-				+ consultantStatus + "]";
+				+ consultantStatus + ", currentCompany=" + currentCompany + ", currentCTC=" + currentCTC
+				+ ", prefferedLocation=" + prefferedLocation + "]";
 	}
 
 }
