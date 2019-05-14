@@ -229,6 +229,11 @@ ALTER TABLE consultant ADD UNIQUE(email);
 ALTER TABLE consultant ADD UNIQUE(phone);
 ALTER TABLE consultant ADD current_company VARCHAR(50) NULL AFTER active_flag, ADD current_ctc DOUBLE NULL AFTER current_company, ADD preffered_location VARCHAR(50) NULL AFTER current_ctc;
 
+
+ALTER TABLE consultant_call_history ADD client_position_code VARCHAR(30) NOT NULL AFTER updated_date, ADD called_date DATETIME NOT NULL AFTER client_position_code;
+ALTER TABLE consultant_call_history ADD INDEX(client_position_code);
+ALTER TABLE client_position ADD INDEX(client_position_code);
+ALTER TABLE consultant_call_history ADD CONSTRAINT client_position_code_fk FOREIGN KEY (client_position_code) REFERENCES client_position(client_positions_code) ON DELETE RESTRICT ON UPDATE RESTRICT;
 -- End of file.
 
 SET foreign_key_checks = 1;
