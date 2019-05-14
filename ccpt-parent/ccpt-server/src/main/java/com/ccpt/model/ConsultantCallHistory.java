@@ -16,7 +16,7 @@ public class ConsultantCallHistory {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	
+
 	@Column(name = "consultant_id")
 	private int consultantId;
 	@Column(name = "description")
@@ -25,9 +25,13 @@ public class ConsultantCallHistory {
 	private Date createdDate;
 	@Column(name = "updated_date")
 	private Date updatedDate;
-	
+	@Column(name = "called_date")
+	private Date calledDate;
+
 	@Transient
 	private String consultantName;
+	@Column(name = "client_position_code")
+	private String clientPositionCode;
 
 	public int getId() {
 		return id;
@@ -77,13 +81,27 @@ public class ConsultantCallHistory {
 		this.consultantName = consultantName;
 	}
 
+	public Date getCalledDate() {
+		return calledDate;
+	}
+
+	public void setCalledDate(Date calledDate) {
+		this.calledDate = calledDate;
+	}
+
+	public String getClientPositionCode() {
+		return clientPositionCode;
+	}
+
+	public void setClientPositionCode(String clientPositionCode) {
+		this.clientPositionCode = clientPositionCode;
+	}
+
 	@Override
 	public String toString() {
 		return "ConsultantCallHistory [id=" + id + ", consultantId=" + consultantId + ", description=" + description
-				+ ", createdDate=" + createdDate + ", updatedDate=" + updatedDate + ", consultantName=" + consultantName
-				+ "]";
+				+ ", createdDate=" + createdDate + ", updatedDate=" + updatedDate + ", calledDate=" + calledDate
+				+ ", consultantName=" + consultantName + ", clientPositionCode=" + clientPositionCode + "]";
 	}
-
-	
 
 }
