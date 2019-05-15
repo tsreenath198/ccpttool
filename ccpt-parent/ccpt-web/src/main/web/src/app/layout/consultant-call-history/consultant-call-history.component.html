@@ -2,14 +2,13 @@
   <app-page-header [icon]="'fa-bar-chart-o'" [heading]="'Consultant Call History'"></app-page-header>
   <div class="row">
     <div class="col-md-6">
-      <input type="text" class="form-control" placeholder="search..." [(ngModel)]="currSearchTxt" />
-      <div class="table-responsive">
+        <div class="row">
+            <div class="col-md-3"><strong>Total No of records : {{consultantCallHistoryList.length}}</strong></div>
+            <div class="col-md-6"> <input type="text" class="form-control" placeholder="search..."
+                [(ngModel)]="currSearchTxt" /></div>
+          </div>
+      <div class="table-responsive mt-2">
         <table class="table table-hover table-striped">
-          <!-- <thead>
-                        <tr>
-                            <th>name</th>
-                        </tr>
-                    </thead> -->
           <tbody class="overflow-ele-scroll">
             <tr
               *ngFor="let cchl of consultantCallHistoryList  |  filter : 'consultantName' :currSearchTxt ; let i = index">
