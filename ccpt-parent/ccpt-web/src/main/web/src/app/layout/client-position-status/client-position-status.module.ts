@@ -5,9 +5,11 @@ import  {FormsModule} from '@angular/forms';
 import { PageHeaderModule, SharedPipesModule } from '../../shared';
 import { ClientPositionStatusRoutingModule } from './client-position-status-routing.module';
 import { ClientPositionStatusComponent } from './client-position-status.component';
+import { NgbModule, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
-    imports: [CommonModule, ClientPositionStatusRoutingModule,FormsModule, PageHeaderModule,SharedPipesModule],
-    declarations: [ClientPositionStatusComponent]
+    imports: [CommonModule, ClientPositionStatusRoutingModule,FormsModule, PageHeaderModule,NgbModule,SharedPipesModule],
+    declarations: [ClientPositionStatusComponent],
+    providers: [NgbActiveModal]
 })
 export class ClientPositionStatusModule {}
