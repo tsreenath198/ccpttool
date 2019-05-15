@@ -2,15 +2,14 @@
   <app-page-header [icon]="'fa-bar-chart-o'" [heading]="'Client Call History'"></app-page-header>
   <div class="row">
     <div class="col-md-6 ">
-      <input type="text" class="form-control" placeholder="search..." [(ngModel)]="currSearchTxt" />
-      <div class="table-responsive">
+      <div class="row">
+        <div class="col-md-3"><strong>Total No of records : {{clientCallHistoryList.length}}</strong></div>
+        <div class="col-md-6"> <input type="text" class="form-control" placeholder="search..."
+            [(ngModel)]="currSearchTxt" /></div>
+      </div>
+      <div class="table-responsive mt-2">
         <div *ngIf="clientCallHistoryList; else tableElse">
           <table class="table table-hover table-striped">
-            <!-- <thead>
-                            <tr>
-                                <th>name</th>
-                            </tr>
-                        </thead> -->
             <tbody class="overflow-ele-scroll">
               <tr *ngFor="let cchl of clientCallHistoryList">
                 <td class="table-data-padding" (click)="readOnlyEnable(cchl)" (dblclick)="editClientCallHistory(cchl)">
@@ -27,27 +26,28 @@
       </div>
     </div>
     <div class="col-md-6">
-      <form name="form" id="clientCallHistoryForm" (ngSubmit)="f.form.valid&&createClientCallHistory(f)" #f="ngForm" novalidate>
+      <form name="form" id="clientCallHistoryForm" (ngSubmit)="f.form.valid&&createClientCallHistory(f)" #f="ngForm"
+        novalidate>
         <div class="row">
-            <div class="col-md-8">
-                <div class="form-group">
-                  <label>Client Name<span class="required">*</span></label>
-                  <div *ngIf="readOnlyForm; else elseBlock1">
-                    <input class="form-control" readonly name="cn" [(ngModel)]="clientCallHistoryModel.clientName">
-                  </div>
-                  <ng-template #elseBlock1>
-                    <select class="form-control" name="cn" [(ngModel)]="clientCallHistoryModel.clientId"
-                      [ngClass]="{'is-invalid': f.submitted && cn.invalid}" #cn="ngModel" required>
-                      <option *ngFor="let cl of clientList" [ngValue]="cl.id">
-                        {{cl.name}}
-                      </option>
-                    </select>
-                    <div class="invalid-feedback">
-                      Client Position is mandatory
-                    </div>
-                  </ng-template>
-                </div>
+          <div class="col-md-8">
+            <div class="form-group">
+              <label>Client Name<span class="required">*</span></label>
+              <div *ngIf="readOnlyForm; else elseBlock1">
+                <input class="form-control" readonly name="cn" [(ngModel)]="clientCallHistoryModel.clientName">
               </div>
+              <ng-template #elseBlock1>
+                <select class="form-control" name="cn" [(ngModel)]="clientCallHistoryModel.clientId"
+                  [ngClass]="{'is-invalid': f.submitted && cn.invalid}" #cn="ngModel" required>
+                  <option *ngFor="let cl of clientList" [ngValue]="cl.id">
+                    {{cl.name}}
+                  </option>
+                </select>
+                <div class="invalid-feedback">
+                  Client Position is mandatory
+                </div>
+              </ng-template>
+            </div>
+          </div>
           <div class="col-md-8">
             <div class="form-group">
               <label>Client Position<span class="required">*</span></label>
