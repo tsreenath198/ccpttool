@@ -13,7 +13,11 @@
             <tr
               *ngFor="let cal of clientApplicationList |  filter : 'clientPositionId' : currSearchTxt ; let i = index">
               <td class="table-data-padding" (click)="readOnlyEnable(cal)" (dblclick)="editClientApplication(cal)">
-                {{cal.clientPositionCode}}</td>
+                <dl>
+                  <dt> {{cal.clientPositionCode}}</dt>
+                  <dd>{{cal.notes}}</dd>
+                </dl>
+              </td>
               <td class="table-data-padding"><span (click)="deleteConfirmation(cal)"
                   class="fa fa-trash pull-right"></span></td>
             </tr>
