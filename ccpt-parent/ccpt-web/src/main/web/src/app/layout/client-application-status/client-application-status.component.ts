@@ -4,7 +4,7 @@ import { URLConstants } from '../components/constants/url-constants';
 import { ClientApplicationStatusModel } from './client-application-status.model';
 import { HttpClientService } from 'src/app/shared/services/http.service';
 import { ToastrCustomService } from 'src/app/shared/services/toastr.service';
-import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, ModalDismissReasons, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { NgForm } from '@angular/forms';
 
 
@@ -21,8 +21,11 @@ export class ClientApplicationStatusComponent implements OnInit {
     public readOnlyForm: string = '';
     public enableButtonType: string = '';
     public currSearchTxt: string;
+    private selectedRecrdToDel: string = '';
     closeResult: string;
-    constructor(private http: HttpClientService, private toastr: ToastrCustomService,private modalService: NgbModal) {
+    private modalRef: NgbModalRef;
+    constructor(private http: HttpClientService, private toastr: ToastrCustomService, private modalService: NgbModal
+    ) {
     }
     ngOnInit() {
         this.init();
@@ -32,6 +35,9 @@ export class ClientApplicationStatusComponent implements OnInit {
             this.clientApplicationStatusList = resp as any;
         })
     }
+    /**
+     * @param data consists the  table current selected row data
+     */
     editClientApplicationStatus(data): void {
         this.clientApplicationStatusModel = JSON.parse(JSON.stringify(data));
         this.readOnlyForm = 'U';
@@ -41,7 +47,9 @@ export class ClientApplicationStatusComponent implements OnInit {
         this.readOnlyForm = 'U';
         this.enableButtonType = 'U';
     }
-
+    /**
+     * @param data consists the  table current selected row data
+     */
     readOnlyEnable(data): void {
         this.clientApplicationStatusModel = JSON.parse(JSON.stringify(data));
         this.readOnlyForm = 'R';
@@ -50,51 +58,69 @@ export class ClientApplicationStatusComponent implements OnInit {
     formReset(): void {
         this.clientApplicationStatusModel = <ClientApplicationStatusModel>{};
     }
-    createClientApplicationStatus(clientApplicationStatusForm: NgForm): void {
+    /**
+    * @param CASForm consists the form instance
+    */
+    createClientApplicationStatus(CASForm: NgForm): void {
         this.http.create(this.clientApplicationStatusModel, this.urlConstants.CASCreate).subscribe(resp => {
             this.toastr.success("Form Submitted Successfully", "Client Application Status");
             this.init();
             this.formReset();
-            clientApplicationStatusForm.resetForm();
+            CASForm.resetForm();
         }, err => {
             this.toastr.error(err.statusText, "Client Application Status");
         });
     }
-    updateClientApplicationStatus(clientApplicationStatusForm: NgForm): void {
+    /**
+     * @param CASForm consists the form instance
+     */
+    updateClientApplicationStatus(CASForm: NgForm): void {
         this.http.update(this.clientApplicationStatusModel, this.urlConstants.CASUpdate).subscribe(resp => {
             this.toastr.success("Form Updated Successfully", "Client Application Status");
             this.formReset();
             this.init();
-            clientApplicationStatusForm.resetForm();
+            CASForm.resetForm();
             this.readOnlyForm = '';
             this.enableButtonType = '';
         }, err => {
             this.toastr.error(err.statusText, "Client Application Status");
         })
     }
-    deleteClientApplicationStatus(deleteId): void {
-        this.http.delete(this.urlConstants.CASDelete + deleteId).subscribe(resp => {
-            this.toastr.success("Form Deleted Successfully", "Client Application Status");
-            this.init();
-            this.formReset();
-        })
-    }
-    cancelForm(clientApplicationStatusForm: NgForm): void {
+    /**
+     * @param CASForm consists the form instance
+     */
+    cancelForm(CASForm: NgForm): void {
         this.formReset();
-        clientApplicationStatusForm.resetForm();
+        CASForm.resetForm();
         this.readOnlyForm = '';
         this.enableButtonType = '';
     }
-    deleteCASRecord(toDelete): void {
-            this.deleteClientApplicationStatus(toDelete.code);
+    deleteCASRecord(): void {
+        this.http.delete(this.urlConstants.CASDelete + this.selectedRecrdToDel).subscribe(resp => {
+            this.toastr.success("Form Deleted Successfully", "Client Application Status");
+            this.init();
+            this.close();
+            this.formReset();
+        })
     }
-
-    open(content) {
-        this.modalService.open(content).result.then((result) => {
+    /**
+     * @param 
+     * 1) content consists the modal instance
+     * 2) Selected contains the code of selected row
+     */
+    open(content, selected: string) {
+        if (selected) {
+            this.selectedRecrdToDel = selected;
+        }
+        this.modalRef = this.modalService.open(content);
+        this.modalRef.result.then((result) => {
             this.closeResult = `Closed with: ${result}`;
         }, (reason) => {
             this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
         });
+    }
+    close() {
+        this.modalRef.close();
     }
     private getDismissReason(reason: any): string {
         if (reason === ModalDismissReasons.ESC) {
@@ -102,7 +128,7 @@ export class ClientApplicationStatusComponent implements OnInit {
         } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
             return 'by clicking on a backdrop';
         } else {
-            return  `with: ${reason}`;
+            return `with: ${reason}`;
         }
     }
 }

@@ -24,23 +24,23 @@
                   <dd style="padding-left: 15px">{{casl.code}}</dd>
                 </dl>
               </td>
-              <td class="table-data-padding" ><span
-                  class="fa fa-trash pull-right" (click)="open(content)"></span>
-                  <ng-template #content let-c="close" let-d="dismiss">
-                      <div class="modal-header">
-                          <h4 class="modal-title">Client Application Status</h4>
-                          <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
-                              <span aria-hidden="true">&times;</span>
-                          </button>
-                      </div>
-                      <div class="modal-body">
-                          <p>Are you sure you want to delete ? &hellip;</p>
-                      </div>
-                      <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" (click)="deleteCASRecord(casl)">Ok</button>
-                          <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
-                      </div>
-                  </ng-template></td>
+              <td class="table-data-padding"><span class="fa fa-trash pull-right" (click)="open(content,casl.code)"></span>
+                <ng-template #content let-c="close" let-d="dismiss">
+                  <div class="modal-header">
+                    <h4 class="modal-title">Client Application Status</h4>
+                    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <p>Are you sure you want to delete ? &hellip;</p>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" (click)="deleteCASRecord()">Ok</button>
+                    <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
+                  </div>
+                </ng-template>
+              </td>
             </tr>
           </tbody>
         </table>
@@ -79,10 +79,10 @@
             <button type="submit" *ngIf="enableButtonType == ''" class="btn btn-secondary ml-3">Add</button>
             <button type="submit" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2"
               (click)="updateClientApplicationStatus(f)">Update</button>
-              <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button"
+            <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button"
               (click)="enableFormEditable()">Edit</button>
             <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3">Cancel</button>
-<!--             
+            <!--             
             <span *ngIf="formButtonsToggler;else toggleButtons">
 
             </span>
