@@ -26,13 +26,15 @@ public class ClientCallHistoryService implements IClientCallHistoryService {
 
 	@Override
 	public ClientCallHistory getClientCallHistoryById(int id) {
-		ClientCallHistory obj = clientCallHistoryRepository.findById(id)
-				.orElseThrow(() -> new EntityNotFoundException("No data found on id:: " + id));
-		return obj;
+		ClientCallHistory obj = clientCallHistoryRepository.findByIdAndActiveFlag(id, 'Y');
+		if (obj != null)
+			return obj;
+		throw new EntityNotFoundException("No data found on id:: " + id);
 	}
 
 	@Override
 	public void updateClientCallHistory(ClientCallHistory clientCallHistory) {
+		getClientCallHistoryById(clientCallHistory.getId());
 		clientCallHistoryRepository.save(clientCallHistory);
 
 	}

@@ -37,13 +37,13 @@ public class ClientApplicationStatusService implements IClientApplicationStatusS
 	}
 
 	@Override
-	public void updateClientApplicationStatus(ClientApplicationStatus clientApplicationStatus) throws Exception {
+	public void updateClientApplicationStatus(ClientApplicationStatus clientApplicationStatus) {
 		getClientApplicationStatusById(clientApplicationStatus.getCode());
 		clientApplicationStatusRepository.save(clientApplicationStatus);
 	}
 
 	@Override
-	public void deleteClientApplicationStatus(String code) throws Exception {
+	public void deleteClientApplicationStatus(String code) {
 		ClientApplicationStatus cas = getClientApplicationStatusById(code);
 		cas.setActiveFlag('N');
 		clientApplicationStatusRepository.save(cas);

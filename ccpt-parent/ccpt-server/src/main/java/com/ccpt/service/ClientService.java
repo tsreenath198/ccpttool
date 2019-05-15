@@ -3,6 +3,8 @@ package com.ccpt.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.EntityNotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,11 +32,14 @@ public class ClientService implements IClientService {
 	@Override
 	public Client getClientById(Integer id) {
 		Client obj = clientRepository.findByIdAndActiveFlag(id, 'Y');
-		return obj;
+		if (obj != null)
+			return obj;
+		throw new EntityNotFoundException("No data found on id:: " + id);
 	}
 
 	@Override
 	public void updateClient(Client client) {
+		getClientById(client.getId());
 		clientRepository.save(client);
 	}
 }

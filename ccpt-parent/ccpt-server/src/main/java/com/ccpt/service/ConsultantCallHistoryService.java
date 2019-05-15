@@ -26,13 +26,15 @@ public class ConsultantCallHistoryService implements IConsultantCallHistoryServi
 
 	@Override
 	public ConsultantCallHistory getConsultantCallHistoryById(int id) {
-		ConsultantCallHistory obj = consultantCallHistoryRepository.findById(id)
-				.orElseThrow(() -> new EntityNotFoundException("No data found on id:: " + id));
-		return obj;
+		ConsultantCallHistory obj = consultantCallHistoryRepository.findByIdAndActiveFlag(id, 'Y');
+		if (obj != null)
+			return obj;
+		throw new EntityNotFoundException("No data found on id:: " + id);
 	}
 
 	@Override
 	public void updateConsultantCallHistory(ConsultantCallHistory consultantCallHistory) {
+		getConsultantCallHistoryById(consultantCallHistory.getId()) ;
 		consultantCallHistoryRepository.save(consultantCallHistory);
 
 	}

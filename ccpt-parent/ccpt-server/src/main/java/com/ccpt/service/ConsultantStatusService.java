@@ -3,6 +3,8 @@ package com.ccpt.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.EntityNotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,39 +31,24 @@ public class ConsultantStatusService implements IConsultantStatusService {
 	@Override
 	public ConsultantStatus getConsultantStatusById(String code) {
 		ConsultantStatus obj = consultantStatusRepository.findByCodeAndActiveFlag(code, 'Y');
-		return obj;
+		if (obj != null)
+			return obj;
+		throw new EntityNotFoundException("No data found on code:: " + code);
 	}
 
 	@Override
-	public void updateConsultantStatus(ConsultantStatus consultantStatus) throws Exception {
-		
-		try {
-			getConsultantStatusById(consultantStatus.getCode());
-			consultantStatusRepository.save(consultantStatus);
-		} catch (Exception e) {
-			throw new Exception("id not available");
-		}
-		
+	public void updateConsultantStatus(ConsultantStatus consultantStatus) {
+
+		getConsultantStatusById(consultantStatus.getCode());
+		consultantStatusRepository.save(consultantStatus);
 	}
 
 	@Override
-	public void deleteConsultantStatus(String code) throws Exception {
-		
-		ConsultantStatus cs = null;
-		try {
-			cs = getConsultantStatusById(code);
-			cs.setActiveFlag('N');
-			consultantStatusRepository.save(cs);
-		} catch (Exception e) {
-			throw new Exception("id not available");
-		}
-		
-//		consultantStatusRepository.delete(getConsultantCallHistoryByCode(code));
+	public void deleteConsultantStatus(String code){
+
+		ConsultantStatus cs = getConsultantStatusById(code);
+		cs.setActiveFlag('N');
+		consultantStatusRepository.save(cs);
 	}
 
-	/*@Override
-	public ConsultantStatus getConsultantCallHistoryByCode(String code) {
-		ConsultantStatus obj = consultantStatusRepository.findById(code).get();
-		return obj;
-	}*/
 }

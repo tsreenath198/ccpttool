@@ -13,9 +13,9 @@ public interface ClientCallHistoryRepository extends CrudRepository<ClientCallHi
 	@Query("SELECT c FROM ClientCallHistory c WHERE created_date   BETWEEN  :sdate AND  :edate")
 	List<ClientCallHistory> getAllConsultantCallHistorysFromLastGivenDays(@Param(value = "sdate") Date sdate,
 			@Param(value = "edate") Date edate);
-	
+
 	public List<ClientCallHistory> findAllByOrderByUpdatedDateDesc();
-//	@Query("SELECT c FROM ClientCallHistory c WHERE c.name=:name")
-//	List<ClientCallHistory> getAllConsultantCallHistorysFromRecruiter(@Param(value = "name") String name);
+
+	ClientCallHistory findByIdAndActiveFlag(int id, char status);
 
 }

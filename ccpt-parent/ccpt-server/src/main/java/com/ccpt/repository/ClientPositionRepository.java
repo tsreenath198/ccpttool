@@ -8,4 +8,6 @@ import com.ccpt.model.ClientPosition;
 
 public interface ClientPositionRepository extends CrudRepository<ClientPosition, Integer> {
 	 List<ClientPosition> findByActiveFlagAllIgnoreCaseOrderByUpdatedDateDesc(String ActiveFlag);
+
+	ClientPosition findByIdAndActiveFlag(int id, char status);
 }

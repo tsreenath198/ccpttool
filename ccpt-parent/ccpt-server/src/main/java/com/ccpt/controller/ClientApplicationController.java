@@ -41,7 +41,7 @@ public class ClientApplicationController {
 	private IClientPositionService clientPositionService;
 
 	@GetMapping(CCPTConstants.GET_ALL)
-	public ResponseEntity<List<ClientApplication>> getAllClientApplications()  {
+	public ResponseEntity<List<ClientApplication>> getAllClientApplications() {
 		List<ClientApplication> clientApplicationList = clientApplicationService.getAllClientApplications();
 
 		for (ClientApplication clientApplication : clientApplicationList) {
@@ -58,7 +58,7 @@ public class ClientApplicationController {
 	}
 
 	@GetMapping(CCPTConstants.GET_BY_ID)
-	public ResponseEntity<ClientApplication> getClientApplicationById(@RequestParam Integer id)  {
+	public ResponseEntity<ClientApplication> getClientApplicationById(@RequestParam Integer id) {
 		ClientApplication clientApplication = clientApplicationService.getClientApplicationById(id);
 		return new ResponseEntity<ClientApplication>(clientApplication, HttpStatus.OK);
 	}
@@ -73,15 +73,14 @@ public class ClientApplicationController {
 	}
 
 	@PutMapping(CCPTConstants.UPDATE)
-	public ResponseEntity<ClientApplication> updateClientApplication(@RequestBody ClientApplication clientApplication) throws Exception {
+	public ResponseEntity<ClientApplication> updateClientApplication(@RequestBody ClientApplication clientApplication) {
 		clientApplication.setUpdatedDate(new Date());
 		clientApplicationService.updateClientApplication(clientApplication);
 		return new ResponseEntity<ClientApplication>(clientApplication, HttpStatus.OK);
 	}
 
-
-	@DeleteMapping(CCPTConstants.DELETE_BY_ID+"/{id}")
-	public ResponseEntity<Void> deleteClientApplication(@PathVariable Integer id)  {
+	@DeleteMapping(CCPTConstants.DELETE_BY_ID + "/{id}")
+	public ResponseEntity<Void> deleteClientApplication(@PathVariable Integer id) {
 		ClientApplication clientApplication = clientApplicationService.getClientApplicationById(id);
 		clientApplication.setActiveFlag('N');
 		clientApplication.setUpdatedDate(new Date());

@@ -32,8 +32,11 @@ public class ClientCallHistory {
 	@Transient
 	private String clientName;
 
-	@Transient
+	@Column(name = "client_position_code")
 	private String clientPositionCode;
+	
+	@Column(name = "called_date")
+	private Date calledDate;
 
 	@Column(name = "client_id")
 	private int clientId;
@@ -89,14 +92,6 @@ public class ClientCallHistory {
 		this.clientName = clientName;
 	}
 
-	public String getClientPositionCode() {
-		return clientPositionCode;
-	}
-
-	public void setClientPositionCode(String clientPositionCode) {
-		this.clientPositionCode = clientPositionCode;
-	}
-
 	public int getClientId() {
 		return clientId;
 	}
@@ -113,12 +108,22 @@ public class ClientCallHistory {
 		this.activeFlag = activeFlag;
 	}
 
-	@Override
-	public String toString() {
-		return "ClientCallHistory [id=" + id + ", clientPositionId=" + clientPositionId + ", notes=" + notes
-				+ ", createdDate=" + createdDate + ", updatedDate=" + updatedDate + ", clientName=" + clientName
-				+ ", clientPositionCode=" + clientPositionCode + ", clientId=" + clientId + ", activeFlag=" + activeFlag
-				+ "]";
+	public String getClientPositionCode() {
+		return clientPositionCode;
 	}
+
+	public void setClientPositionCode(String clientPositionCode) {
+		this.clientPositionCode = clientPositionCode;
+	}
+
+	public Date getCalledDate() {
+		return calledDate;
+	}
+
+	public void setCalledDate(Date calledDate) {
+		this.calledDate = calledDate;
+	}
+
+	
 
 }

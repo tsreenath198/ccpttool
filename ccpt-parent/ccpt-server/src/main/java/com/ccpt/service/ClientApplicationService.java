@@ -32,7 +32,7 @@ public class ClientApplicationService implements IClientApplicationService {
 	}
 
 	@Override
-	public void updateClientApplication(ClientApplication clientApplication) throws Exception {
+	public void updateClientApplication(ClientApplication clientApplication) {
 		getClientApplicationById(clientApplication.getId());
 		clientApplicationRepository.save(clientApplication);
 	}

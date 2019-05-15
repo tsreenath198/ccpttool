@@ -25,13 +25,15 @@ public class ConsultantService implements IConsultantService {
 
 	@Override
 	public Consultant getConsultantById(int id) {
-		Consultant obj = consultantRepository.findById(id)
-				.orElseThrow(() -> new EntityNotFoundException("No data found on id:: " + id));
-		return obj;
+		Consultant obj = consultantRepository.findByIdAndActiveFlag(id, 'Y');
+		if (obj != null)
+			return obj;
+		throw new EntityNotFoundException("No data found on id:: " + id);
 	}
 
 	@Override
 	public void updateConsultant(Consultant consultant) {
+		getConsultantById(consultant.getId());
 		consultantRepository.save(consultant);
 
 	}

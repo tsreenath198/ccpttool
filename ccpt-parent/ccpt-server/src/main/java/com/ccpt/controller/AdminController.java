@@ -51,14 +51,14 @@ public class AdminController {
 
 	@PutMapping("cAStatus" + CCPTConstants.UPDATE)
 	public ResponseEntity<ClientApplicationStatus> updateClientApplicationStatus(
-			@RequestBody ClientApplicationStatus clientApplicationStatus) throws Exception {
+			@RequestBody ClientApplicationStatus clientApplicationStatus) {
 		clientApplicationStatus.setActiveFlag('Y');
 		clientApplicationStatusService.updateClientApplicationStatus(clientApplicationStatus);
 		return new ResponseEntity<ClientApplicationStatus>(clientApplicationStatus, HttpStatus.OK);
 	}
 
 	@DeleteMapping("cAStatus" + CCPTConstants.DELETE_BY_ID + "/{code}")
-	public ResponseEntity<Void> deleteClientApplication(@PathVariable String code) throws Exception {
+	public ResponseEntity<Void> deleteClientApplication(@PathVariable String code) {
 		clientApplicationStatusService.deleteClientApplicationStatus(code);
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
@@ -78,14 +78,14 @@ public class AdminController {
 
 	@PutMapping("cPStatus" + CCPTConstants.UPDATE)
 	public ResponseEntity<ClientPositionStatus> updateClientPositionStatus(
-			@RequestBody ClientPositionStatus clientPositionStatus) throws Exception {
+			@RequestBody ClientPositionStatus clientPositionStatus) {
 		clientPositionStatus.setActiveFlag('Y');
 		clientPositionStatusService.updateClientPositionStatus(clientPositionStatus);
 		return new ResponseEntity<ClientPositionStatus>(clientPositionStatus, HttpStatus.OK);
 	}
 
 	@DeleteMapping("cPStatus" + CCPTConstants.DELETE_BY_ID + "/{code}")
-	public ResponseEntity<Void> deleteClientPositionStatus(@PathVariable String code) throws Exception {
+	public ResponseEntity<Void> deleteClientPositionStatus(@PathVariable String code) {
 		clientPositionStatusService.deleteClientPositionStatus(code);
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
@@ -104,15 +104,14 @@ public class AdminController {
 	}
 
 	@PutMapping("consultantStatus" + CCPTConstants.UPDATE)
-	public ResponseEntity<ConsultantStatus> updateConsultantStatus(@RequestBody ConsultantStatus consultantStatus)
-			throws Exception {
+	public ResponseEntity<ConsultantStatus> updateConsultantStatus(@RequestBody ConsultantStatus consultantStatus) {
 		consultantStatus.setActiveFlag('Y');
 		consultantStatusService.updateConsultantStatus(consultantStatus);
 		return new ResponseEntity<ConsultantStatus>(consultantStatus, HttpStatus.OK);
 	}
 
 	@DeleteMapping("consultantStatus" + CCPTConstants.DELETE_BY_ID + "/{code}")
-	public ResponseEntity<Void> deleteConsultantStatus(@PathVariable String code) throws Exception {
+	public ResponseEntity<Void> deleteConsultantStatus(@PathVariable String code) {
 		consultantStatusService.deleteConsultantStatus(code);
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}

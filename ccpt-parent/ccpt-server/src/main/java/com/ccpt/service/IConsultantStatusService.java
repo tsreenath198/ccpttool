@@ -12,8 +12,8 @@ public interface IConsultantStatusService {
 
 	ConsultantStatus getConsultantStatusById(String code);
 
-	void updateConsultantStatus(ConsultantStatus consultantStatus) throws Exception;
+	void updateConsultantStatus(ConsultantStatus consultantStatus);
 
-	void deleteConsultantStatus(String code) throws Exception;
+	void deleteConsultantStatus(String code);
 
 }

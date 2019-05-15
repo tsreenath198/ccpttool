@@ -3,6 +3,8 @@ package com.ccpt.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.EntityNotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,31 +32,22 @@ public class ClientPositionStatusService implements IClientPositionStatusService
 	@Override
 	public ClientPositionStatus getClientPositionStatusById(String code) {
 		ClientPositionStatus obj = clientPositionStatusRepository.findByCodeAndActiveFlag(code, 'Y');
-		return obj;
+		if (obj != null)
+			return obj;
+		throw new EntityNotFoundException("No data found on code:: " + code);
 	}
 
 	@Override
-	public void updateClientPositionStatus(ClientPositionStatus clientPositionStatus) throws Exception {
-
-		try {
-			getClientPositionStatusById(clientPositionStatus.getCode());
-			clientPositionStatusRepository.save(clientPositionStatus);
-		} catch (Exception e) {
-			throw new Exception("id not available");
-		}
+	public void updateClientPositionStatus(ClientPositionStatus clientPositionStatus) {
+		getClientPositionStatusById(clientPositionStatus.getCode());
+		clientPositionStatusRepository.save(clientPositionStatus);
 	}
 
 	@Override
-	public void deleteClientPositionStatus(String code) throws Exception {
+	public void deleteClientPositionStatus(String code) {
 		ClientPositionStatus cps = null;
-		try {
-			cps = getClientPositionStatusById(code);
-			cps.setActiveFlag('N');
-			clientPositionStatusRepository.save(cps);
-		} catch (Exception e) {
-			throw new Exception("id not available");
-		}
-
+		cps = getClientPositionStatusById(code);
+		cps.setActiveFlag('N');
+		clientPositionStatusRepository.save(cps);
 	}
-
 }

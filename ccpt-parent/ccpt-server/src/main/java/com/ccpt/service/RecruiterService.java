@@ -3,6 +3,8 @@ package com.ccpt.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.EntityNotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,25 +19,22 @@ public class RecruiterService implements IRecruiterService {
 	@Override
 	public List<Recruiter> getAllRecruiters() {
 		List<Recruiter> list = new ArrayList<>();
-		recruiterRepository.findByActiveFlagAllIgnoreCaseOrderByUpdatedDateDesc("y").forEach(e -> list.add(e));
+		recruiterRepository.findByActiveFlagAllIgnoreCaseOrderByUpdatedDateDesc("Y").forEach(e -> list.add(e));
 		return list;
 	}
 
 	@Override
 	public Recruiter getRecruiterById(int id) {
 		Recruiter obj = recruiterRepository.findByIdAndActiveFlag(id, 'Y');
-		return obj;
+		if (obj != null)
+			return obj;
+		throw new EntityNotFoundException("No data found on id:: " + id);
 	}
 
 	@Override
 	public void updateRecruiter(Recruiter recruiter) {
+		getRecruiterById(recruiter.getId());
 		recruiterRepository.save(recruiter);
-
-	}
-
-	@Override
-	public void deleteRecruiter(int id) {
-		recruiterRepository.deleteById(id);
 
 	}
 
@@ -48,9 +47,8 @@ public class RecruiterService implements IRecruiterService {
 	@Override
 	public List<Recruiter> getActiveRecruiters() {
 		List<Recruiter> list = new ArrayList<>();
-//		recruiterRepository.findByStatus("ACTIVE").forEach(e -> list.add(e));
-//		recruiterRepository.findByActiveFlagAndStatusAllIgnoreCase("Y", "Active").forEach(e -> list.add(e));
-		recruiterRepository.findByActiveFlagAndStatusAllIgnoreCaseOrderByUpdatedDateDesc("Y", "Active").forEach(e -> list.add(e));
+		recruiterRepository.findByActiveFlagAndStatusAllIgnoreCaseOrderByUpdatedDateDesc("Y", "Active")
+				.forEach(e -> list.add(e));
 		return list;
 	}
 

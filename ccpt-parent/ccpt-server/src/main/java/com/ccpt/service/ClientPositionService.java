@@ -25,13 +25,15 @@ public class ClientPositionService implements IClientPositionService {
 
 	@Override
 	public ClientPosition getClientPositionById(int id) {
-		ClientPosition obj = clientPositionRepository.findById(id)
-				.orElseThrow(() -> new EntityNotFoundException("No data found for id:: " + id));
-		return obj;
+		ClientPosition obj = clientPositionRepository.findByIdAndActiveFlag(id, 'Y');
+		if (obj != null)
+			return obj;
+		throw new EntityNotFoundException("No data found on id:: " + id);
 	}
 
 	@Override
 	public void updateClientPosition(ClientPosition clientPosition) {
+		getClientPositionById(clientPosition.getId());
 		clientPositionRepository.save(clientPosition);
 
 	}
