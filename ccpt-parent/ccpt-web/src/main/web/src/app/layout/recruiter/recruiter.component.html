@@ -11,7 +11,12 @@
         <table class="table table-hover table-striped">
           <tbody class="overflow-ele-scroll">
             <tr *ngFor="let rl of recruiterList |  filter : 'fullname' :currSearchTxt ; let i = index">
-              <td (click)="readOnlyEnable(rl)" (dblclick)="recruiterEdit(rl)">{{rl.fullname}}</td>
+              <td (click)="readOnlyEnable(rl)" (dblclick)="recruiterEdit(rl)">
+                <dl>
+                  <dt> {{rl.fullname}}</dt>
+                  <dd>{{rl.address || 'NA'}}</dd>
+                </dl>
+              </td>
               <td (click)="deleteConfirmation(rl)"><span class="fa fa-trash pull-right"></span></td>
             </tr>
           </tbody>

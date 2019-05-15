@@ -12,7 +12,6 @@
           <tbody class="overflow-ele-scroll">
             <tr *ngFor="let cpl of clientPositionList |  filter : 'technology' :currSearchTxt ; let i = index ">
               <td class="table-data-padding" (click)="readOnlyEnable(cpl)" (dblclick)="editClientPosition(cpl)">
-                {{cpl.clientPositionCode}}
                 <dl>
                   <dt> {{cpl.clientPositionCode}}</dt>
                   <dd>{{cpl.additionalComments}}</dd>
