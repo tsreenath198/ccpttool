@@ -22,7 +22,7 @@ export class ConsultantComponent implements OnInit {
     public readOnlyForm: boolean = false;
     public formButtonsToggler: boolean = true;
     public editButtonToggler: boolean = true;
-    public genderList = ['MALE', 'FEMALE', 'OTHER'];
+    public genderList = ['Male', 'Female', 'Other'];
     public urlConstants = new URLConstants();
     public currSearchTxt: string ;
     constructor(private http: HttpClientService, private toastr: ToastrCustomService) { }
