@@ -41,7 +41,7 @@
               <label>E-Mail<span class="required">*</span></label>
               <input class="form-control" placeholder="E-mail" name="email" [readonly]="readOnlyForm"
                 [(ngModel)]="consultantModel.email" [ngClass]="{'is-invalid': f.submitted && email.invalid}"
-                #email="ngModel" required>
+                #email="ngModel" type="email" required>
               <div class="invalid-feedback">
                 email is mandatory
               </div>

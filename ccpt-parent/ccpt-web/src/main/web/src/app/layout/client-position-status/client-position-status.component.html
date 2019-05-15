@@ -13,7 +13,11 @@
           <tbody>
             <tr *ngFor="let cpsl of clientPositionStatusList |  filter : 'description' :currSearchTxt ; let i = index">
               <td class="table-data-padding" (click)="readOnlyEnable(cpsl)" (dblclick)="editClientPositionStatus(casl)">
-                {{cpsl.description}}</td>
+                <dl>
+                  <dt> {{cpsl.description}}</dt>
+                  <dd>{{cpsl.code}}</dd>
+                </dl>
+              </td>
               <td class="table-data-padding" (click)="deleteConfirmation(cpsl)"><span
                   class="fa fa-trash pull-right"></span></td>
             </tr>

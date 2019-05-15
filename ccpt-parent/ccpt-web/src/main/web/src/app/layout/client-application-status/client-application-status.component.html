@@ -14,9 +14,9 @@
               *ngFor="let casl of clientApplicationStatusList |  filter : 'description' :currSearchTxt ; let i = index">
               <td class="table-data-padding" (click)="readOnlyEnable(casl)"
                 (dblclick)="editClientApplicationStatus(casl)">
-                <dl style="margin-bottom: -6px !important">
+                <dl>
                   <dt> {{casl.description}}</dt>
-                  <dd style="padding-left: 15px">{{casl.code}}</dd>
+                  <dd>{{casl.code}}</dd>
                 </dl>
               </td>
               <td class="table-data-padding"><span class="fa fa-trash pull-right"

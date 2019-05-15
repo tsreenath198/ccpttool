@@ -12,7 +12,11 @@
           <tbody>
             <tr *ngFor="let csl of consultantStatusList |  filter : 'description' :currSearchTxt ; let i = index">
               <td class="table-data-padding" (click)="readOnlyEnable(csl)"
-                (dblclick)="editClientApplicationStatus(csl)">{{csl.description}}</td>
+                (dblclick)="editClientApplicationStatus(csl)">
+                <dl>
+                    <dt> {{csl.description}}</dt>
+                    <dd>{{csl.code}}</dd>
+                  </dl></td>
               <td class="table-data-padding" (click)="deleteConfirmation(csl)"><span
                   class="fa fa-trash pull-right"></span></td>
             </tr>
