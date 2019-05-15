@@ -38,7 +38,7 @@ export class ConsultantCallHistoryComponent implements OnInit {
     }
     init() {
         this.http.get(this.urlConstants.CoCHGetAll).subscribe(resp => {
-            this.consultantCallHistoryList = resp as any;
+            this.consultantCallHistoryList = resp as Array<ConsultantCallHistoryModel>;
         })
     }
     consultantCallHistoryEdit(data) {

@@ -38,25 +38,27 @@
               <ng-template #elseBlock>
                 <select class="form-control" name="consultant" [(ngModel)]="consultantCallHistoryModel.consultantId"
                   [ngClass]="{'is-invalid': f.submitted && consultant.invalid}" #consultant="ngModel" required>
-                  <option *ngFor="let cl of consultantList" [ngValue]="cl.id">{{cl.fullname}}</option>
+                  <option *ngFor="let consultant of consultantList" [ngValue]="consultant.id">{{consultant.fullname}}
+                  </option>
                 </select>
                 <div class="invalid-feedback">
-                  consultant is mandatory
+                  Consultant is mandatory
                 </div>
               </ng-template>
             </div>
           </div>
           <div class="col-md-8">
             <div class="form-group">
-              <label>Client Position Code </label>
-              <div *ngIf="readOnlyForm; else elseBlock">
+              <label>Client Position Code <span class="required">*</span></label>
+              <div *ngIf="readOnlyForm; else cpcElseBlock">
                 <input class="form-control" readonly name="cps"
                   [(ngModel)]="consultantCallHistoryModel.clientPositionCode">
               </div>
-              <ng-template #elseBlock>
-                <select class="form-control" name="cps" [(ngModel)]="consultantCallHistoryModel.clientPositionCode" required>
-                  <option *ngFor="let cpl of clientPositionList" [ngValue]="cpsl.clientPositionCode">
-                    {{cpl.clientPositionCode}}</option>
+              <ng-template #cpcElseBlock>
+                <select class="form-control" name="cps" [(ngModel)]="consultantCallHistoryModel.clientPositionCode"
+                  required>
+                  <option *ngFor="let cp of clientPositionList" [ngValue]="cp.clientPositionCode">
+                    {{cp.clientPositionCode}}</option>
                 </select>
               </ng-template>
             </div>
@@ -64,8 +66,8 @@
           <div class="col-md-8">
             <div class="form-group">
               <label>Called Date </label>
-              <input class="form-control" name="calledDate" placeholder="Called Date"
-              [(ngModel)]="consultantCallHistoryModel.calledDate" required>
+              <input class="form-control" type="date" name="calledDate" placeholder="Called Date"
+                [(ngModel)]="consultantCallHistoryModel.calledDate" required>
             </div>
           </div>
           <div class="col-md-8">

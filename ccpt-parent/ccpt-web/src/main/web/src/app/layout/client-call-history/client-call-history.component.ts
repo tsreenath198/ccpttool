@@ -20,53 +20,53 @@ export class ClientCallHistoryComponent implements OnInit {
     public clientCallHistoryModel: ClientCallHistoryModel = <ClientCallHistoryModel>{};
     public clientCallHistoryList: Array<ClientCallHistoryModel> = [];
     public clientPositionList: Array<ClientPositionModel> = [];
-    public clientList:Array<ClientModel>=[];
-    public readOnlyForm :boolean=false;
-    public formButtonsToggler :boolean=true;
-    public editButtonToggler:boolean=true;
+    public clientList: Array<ClientModel> = [];
+    public readOnlyForm: boolean = false;
+    public formButtonsToggler: boolean = true;
+    public editButtonToggler: boolean = true;
     public urlConstants = new URLConstants();
-    public currSearchTxt: string ;
-    constructor(private http: HttpClientService,private toastr: ToastrCustomService) { }
+    public currSearchTxt: string;
+    constructor(private http: HttpClientService, private toastr: ToastrCustomService) { }
 
     ngOnInit() {
-        this.http.get('clientPosition/getAll').subscribe(resp => {
-            this.clientPositionList = resp as any;
+        this.http.get(this.urlConstants.CPGetAll).subscribe(resp => {
+            this.clientPositionList = resp as Array<ClientPositionModel>;
         })
-        this.http.get(this.urlConstants.ClientGetAll).subscribe(resp=>{
-            this.clientList=resp as any;
+        this.http.get(this.urlConstants.ClientGetAll).subscribe(resp => {
+            this.clientList = resp as Array<ClientModel>;
         })
         this.init();
     }
     init() {
         this.http.get('clientCallHistory/getAll').subscribe(resp => {
-            this.clientCallHistoryList = resp as any;
+            this.clientCallHistoryList = resp as Array<ClientCallHistoryModel>;
         })
     }
     editClientCallHistory(data) {
         this.clientCallHistoryModel = data;
-        if(this.readOnlyForm==true){
-            this.readOnlyForm=false;
+        if (this.readOnlyForm == true) {
+            this.readOnlyForm = false;
         }
-        if(this.formButtonsToggler==true){
-            this.formButtonsToggler=false;
+        if (this.formButtonsToggler == true) {
+            this.formButtonsToggler = false;
         }
-        if(this.editButtonToggler==true){
-            this.editButtonToggler=false;
+        if (this.editButtonToggler == true) {
+            this.editButtonToggler = false;
         }
     }
-    readOnlyEnable(data){
+    readOnlyEnable(data) {
         this.clientCallHistoryModel = data;
-        if(this.readOnlyForm==false){
-            this.readOnlyForm=true;
+        if (this.readOnlyForm == false) {
+            this.readOnlyForm = true;
         }
-        if(this.formButtonsToggler==true){
-            this.formButtonsToggler=false;
+        if (this.formButtonsToggler == true) {
+            this.formButtonsToggler = false;
         }
     }
     formReset() {
         this.clientCallHistoryModel = <ClientCallHistoryModel>{};
     }
-    createClientCallHistory(clientCallHistoryForm:NgForm): void {
+    createClientCallHistory(clientCallHistoryForm: NgForm): void {
         this.http.create(this.clientCallHistoryModel, 'clientCallHistory/create').subscribe(resp => {
             this.toastr.success("Form Submitted Successfully", "Client Call History");
             this.init();
@@ -77,7 +77,7 @@ export class ClientCallHistoryComponent implements OnInit {
         })
 
     }
-    updateClientCallHistory(clientCallHistoryForm:NgForm) {
+    updateClientCallHistory(clientCallHistoryForm: NgForm) {
         this.http.update(this.clientCallHistoryModel, 'clientCallHistory/update').subscribe(resp => {
             this.toastr.success("Form Updated Successfully", "Client Call History");
             this.formButtonsToggler = true;
@@ -95,28 +95,28 @@ export class ClientCallHistoryComponent implements OnInit {
             this.formReset();
         })
     }
-    editableForm(){
-        if(this.readOnlyForm==true){
-            this.readOnlyForm=false;
+    editableForm() {
+        if (this.readOnlyForm == true) {
+            this.readOnlyForm = false;
         }
-        if(this.editButtonToggler==true){
-            this.editButtonToggler=false;
+        if (this.editButtonToggler == true) {
+            this.editButtonToggler = false;
         }
     }
-    cancelForm(clientCallHistoryForm:NgForm){
+    cancelForm(clientCallHistoryForm: NgForm) {
         this.formReset();
         clientCallHistoryForm.resetForm();
-        if(this.readOnlyForm==true){
-            this.readOnlyForm=false;
+        if (this.readOnlyForm == true) {
+            this.readOnlyForm = false;
         }
-        if(this.formButtonsToggler==false){
-            this.formButtonsToggler=true;
+        if (this.formButtonsToggler == false) {
+            this.formButtonsToggler = true;
         }
-        
+
     }
-    deleteConfirmation(toDelete){
+    deleteConfirmation(toDelete) {
         if (confirm("Are you sure you want to delete the row!")) {
             this.deleteClientCallHistory(toDelete.id);
-          } 
+        }
     }
 }
