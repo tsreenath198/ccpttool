@@ -32,6 +32,8 @@ public class ConsultantCallHistory {
 	private String consultantName;
 	@Column(name = "client_position_code")
 	private String clientPositionCode;
+	@Column(name = "active_flag")
+	private char activeFlag;
 
 	public int getId() {
 		return id;
@@ -97,11 +99,20 @@ public class ConsultantCallHistory {
 		this.clientPositionCode = clientPositionCode;
 	}
 
+	public char getActiveFlag() {
+		return activeFlag;
+	}
+
+	public void setActiveFlag(char activeFlag) {
+		this.activeFlag = activeFlag;
+	}
+
 	@Override
 	public String toString() {
 		return "ConsultantCallHistory [id=" + id + ", consultantId=" + consultantId + ", description=" + description
 				+ ", createdDate=" + createdDate + ", updatedDate=" + updatedDate + ", calledDate=" + calledDate
-				+ ", consultantName=" + consultantName + ", clientPositionCode=" + clientPositionCode + "]";
+				+ ", consultantName=" + consultantName + ", clientPositionCode=" + clientPositionCode + ", activeFlag="
+				+ activeFlag + "]";
 	}
 
 }

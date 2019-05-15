@@ -3,6 +3,8 @@ package com.ccpt.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.EntityNotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,20 +26,16 @@ public class ClientApplicationService implements IClientApplicationService {
 	@Override
 	public ClientApplication getClientApplicationById(int id) {
 		ClientApplication obj = clientApplicationRepository.findByIdAndActiveFlag(id, 'Y');
-		return obj;
+		if (obj != null)
+			return obj;
+		throw new EntityNotFoundException("No data found on id:: " + id);
 	}
 
 	@Override
 	public void updateClientApplication(ClientApplication clientApplication) throws Exception {
-		
-		try {
-			getClientApplicationById(clientApplication.getId());
-			clientApplicationRepository.save(clientApplication);
-		} catch (Exception e) {
-			throw new Exception("id not available");
-		}
+		getClientApplicationById(clientApplication.getId());
+		clientApplicationRepository.save(clientApplication);
 	}
-
 
 	@Override
 	public void addClientApplication(ClientApplication clientApplication) {

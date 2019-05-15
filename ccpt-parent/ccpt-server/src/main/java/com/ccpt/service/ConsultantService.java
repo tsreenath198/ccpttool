@@ -3,10 +3,11 @@ package com.ccpt.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.EntityNotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.ccpt.exception.ResourceNotFoundException;
 import com.ccpt.model.Consultant;
 import com.ccpt.repository.ConsultantRepository;
 
@@ -23,20 +24,15 @@ public class ConsultantService implements IConsultantService {
 	}
 
 	@Override
-	public Consultant getConsultantById(int id) throws ResourceNotFoundException {
-		Consultant obj = consultantRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("No data found on id:: " + id));
+	public Consultant getConsultantById(int id) {
+		Consultant obj = consultantRepository.findById(id)
+				.orElseThrow(() -> new EntityNotFoundException("No data found on id:: " + id));
 		return obj;
 	}
 
 	@Override
 	public void updateConsultant(Consultant consultant) {
 		consultantRepository.save(consultant);
-
-	}
-
-	@Override
-	public void deleteConsultant(int id) throws ResourceNotFoundException {
-		consultantRepository.delete(getConsultantById(id));
 
 	}
 

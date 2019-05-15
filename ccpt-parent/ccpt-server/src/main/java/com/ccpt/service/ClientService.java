@@ -37,9 +37,4 @@ public class ClientService implements IClientService {
 	public void updateClient(Client client) {
 		clientRepository.save(client);
 	}
-
-	@Override
-	public void deleteClient(Integer id) {
-		clientRepository.delete(getClientById(id));
-	}
 }

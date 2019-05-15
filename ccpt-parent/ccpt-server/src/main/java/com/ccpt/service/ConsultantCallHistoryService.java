@@ -4,10 +4,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.EntityNotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.ccpt.exception.ResourceNotFoundException;
 import com.ccpt.model.ConsultantCallHistory;
 import com.ccpt.repository.ConsultantCallHistoryRepository;
 
@@ -24,21 +25,15 @@ public class ConsultantCallHistoryService implements IConsultantCallHistoryServi
 	}
 
 	@Override
-	public ConsultantCallHistory getConsultantCallHistoryById(int id) throws ResourceNotFoundException {
+	public ConsultantCallHistory getConsultantCallHistoryById(int id) {
 		ConsultantCallHistory obj = consultantCallHistoryRepository.findById(id)
-				.orElseThrow(() -> new ResourceNotFoundException("No data found on id:: " + id));
+				.orElseThrow(() -> new EntityNotFoundException("No data found on id:: " + id));
 		return obj;
 	}
 
 	@Override
 	public void updateConsultantCallHistory(ConsultantCallHistory consultantCallHistory) {
 		consultantCallHistoryRepository.save(consultantCallHistory);
-
-	}
-
-	@Override
-	public void deleteConsultantCallHistory(int id) throws ResourceNotFoundException {
-		consultantCallHistoryRepository.delete(getConsultantCallHistoryById(id));
 
 	}
 

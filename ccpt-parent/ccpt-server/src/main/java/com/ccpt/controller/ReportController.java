@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.ccpt.constants.CCPTConstants;
-import com.ccpt.exception.ResourceNotFoundException;
 import com.ccpt.model.ClientCallHistory;
 import com.ccpt.model.ConsultantCallHistory;
 import com.ccpt.service.IClientCallHistoryService;
@@ -46,7 +45,7 @@ public class ReportController {
 
 	@SuppressWarnings("rawtypes")
 	@GetMapping(CCPTConstants.GET_ALL)
-	public ResponseEntity<Map<String, List>> getAllConsultantCallHistorys() throws ResourceNotFoundException {
+	public ResponseEntity<Map<String, List>> getAllConsultantCallHistorys() {
 		List<ConsultantCallHistory> consultantCallHistoryList = consultantCallHistoryService
 				.getAllConsultantCallHistorys();
 		for (ConsultantCallHistory cch : consultantCallHistoryList) {
@@ -70,7 +69,7 @@ public class ReportController {
 	@SuppressWarnings("rawtypes")
 	@GetMapping("getAllConsultantCallHistorysFromLastGivenDays")
 	public ResponseEntity<Map<String, List>> getAllConsultantCallHistorysFromLastGivenDays(@RequestParam int days)
-			throws ParseException, ResourceNotFoundException {
+			throws ParseException {
 		Calendar cal = Calendar.getInstance();
 		cal.add(Calendar.DATE, -days);
 		Date startDate = cal.getTime();

@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.ccpt.constants.CCPTConstants;
-import com.ccpt.exception.ResourceNotFoundException;
 import com.ccpt.model.ClientCallHistory;
 import com.ccpt.service.IClientCallHistoryService;
 import com.ccpt.service.IClientPositionService;
@@ -31,26 +30,27 @@ public class ClientCallHistoryController {
 
 	@Autowired
 	private IClientCallHistoryService clientCallHistoryService;
-	
+
 	@Autowired
 	private IClientService clientService;
-	
+
 	@Autowired
-	private IClientPositionService  clientPositionService;
+	private IClientPositionService clientPositionService;
 
 	@GetMapping(CCPTConstants.GET_ALL)
-	public ResponseEntity<List<ClientCallHistory>> getAllClientCallHistorys() throws ResourceNotFoundException {
+	public ResponseEntity<List<ClientCallHistory>> getAllClientCallHistorys() {
 		List<ClientCallHistory> clientCallHistoryList = clientCallHistoryService.getAllClientCallHistorys();
-		
-		for(ClientCallHistory cchList:clientCallHistoryList){
-			cchList.setClientPositionCode(clientPositionService.getClientPositionById(cchList.getClientPositionId()).getClientPositionCode());
+
+		for (ClientCallHistory cchList : clientCallHistoryList) {
+			cchList.setClientPositionCode(
+					clientPositionService.getClientPositionById(cchList.getClientPositionId()).getClientPositionCode());
 			cchList.setClientName(clientService.getClientById(cchList.getClientId()).getName());
 		}
 		return new ResponseEntity<List<ClientCallHistory>>(clientCallHistoryList, HttpStatus.OK);
 	}
 
 	@GetMapping(CCPTConstants.GET_BY_ID)
-	public ResponseEntity<ClientCallHistory> getClientCallHistoryById(@RequestParam Integer id) throws ResourceNotFoundException {
+	public ResponseEntity<ClientCallHistory> getClientCallHistoryById(@RequestParam Integer id) {
 		ClientCallHistory clientCallHistory = clientCallHistoryService.getClientCallHistoryById(id);
 		return new ResponseEntity<ClientCallHistory>(clientCallHistory, HttpStatus.OK);
 	}
@@ -70,9 +70,12 @@ public class ClientCallHistoryController {
 		return new ResponseEntity<ClientCallHistory>(clientCallHistory, HttpStatus.OK);
 	}
 
-	@DeleteMapping(CCPTConstants.DELETE_BY_ID+"/{id}")
-	public ResponseEntity<Void> deleteClientCallHistory(@PathVariable Integer id) throws ResourceNotFoundException {
-		clientCallHistoryService.deleteClientCallHistory(id);
+	@DeleteMapping(CCPTConstants.DELETE_BY_ID + "/{id}")
+	public ResponseEntity<Void> deleteClientCallHistory(@PathVariable Integer id) {
+		ClientCallHistory clientCallHistory = clientCallHistoryService.getClientCallHistoryById(id);
+		clientCallHistory.setActiveFlag('N');
+		clientCallHistory.setUpdatedDate(new Date());
+		clientCallHistoryService.addClientCallHistory(clientCallHistory);
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 }

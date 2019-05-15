@@ -4,10 +4,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.EntityNotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.ccpt.exception.ResourceNotFoundException;
 import com.ccpt.model.ClientCallHistory;
 import com.ccpt.repository.ClientCallHistoryRepository;
 
@@ -24,21 +25,15 @@ public class ClientCallHistoryService implements IClientCallHistoryService {
 	}
 
 	@Override
-	public ClientCallHistory getClientCallHistoryById(int id) throws ResourceNotFoundException {
+	public ClientCallHistory getClientCallHistoryById(int id) {
 		ClientCallHistory obj = clientCallHistoryRepository.findById(id)
-				.orElseThrow(() -> new ResourceNotFoundException("No data found on id:: " + id));
+				.orElseThrow(() -> new EntityNotFoundException("No data found on id:: " + id));
 		return obj;
 	}
 
 	@Override
 	public void updateClientCallHistory(ClientCallHistory clientCallHistory) {
 		clientCallHistoryRepository.save(clientCallHistory);
-
-	}
-
-	@Override
-	public void deleteClientCallHistory(int id) throws ResourceNotFoundException {
-		clientCallHistoryRepository.delete(getClientCallHistoryById(id));
 
 	}
 

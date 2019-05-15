@@ -16,5 +16,4 @@ public interface IConsultantStatusService {
 
 	void deleteConsultantStatus(String code) throws Exception;
 
-//	ConsultantStatus getConsultantCallHistoryByCode(String code);
 }

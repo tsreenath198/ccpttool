@@ -3,10 +3,11 @@ package com.ccpt.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.EntityNotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.ccpt.exception.ResourceNotFoundException;
 import com.ccpt.model.ClientPosition;
 import com.ccpt.repository.ClientPositionRepository;
 
@@ -23,8 +24,9 @@ public class ClientPositionService implements IClientPositionService {
 	}
 
 	@Override
-	public ClientPosition getClientPositionById(int id) throws ResourceNotFoundException {
-		ClientPosition obj = clientPositionRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("No data found on id:: " + id));
+	public ClientPosition getClientPositionById(int id) {
+		ClientPosition obj = clientPositionRepository.findById(id)
+				.orElseThrow(() -> new EntityNotFoundException("No data found for id:: " + id));
 		return obj;
 	}
 
@@ -35,7 +37,7 @@ public class ClientPositionService implements IClientPositionService {
 	}
 
 	@Override
-	public void deleteClientPosition(int id) throws ResourceNotFoundException {
+	public void deleteClientPosition(int id) {
 		clientPositionRepository.delete(getClientPositionById(id));
 
 	}

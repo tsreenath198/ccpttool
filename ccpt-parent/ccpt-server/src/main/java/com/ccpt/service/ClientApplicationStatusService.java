@@ -3,6 +3,8 @@ package com.ccpt.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.EntityNotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,30 +31,22 @@ public class ClientApplicationStatusService implements IClientApplicationStatusS
 	@Override
 	public ClientApplicationStatus getClientApplicationStatusById(String code) {
 		ClientApplicationStatus obj = clientApplicationStatusRepository.findByCodeAndActiveFlag(code, 'Y');
-		return obj;
+		if (obj != null)
+			return obj;
+		throw new EntityNotFoundException("No data found on code:: " + code);
 	}
 
 	@Override
 	public void updateClientApplicationStatus(ClientApplicationStatus clientApplicationStatus) throws Exception {
-		try {
-			getClientApplicationStatusById(clientApplicationStatus.getCode());
-			clientApplicationStatusRepository.save(clientApplicationStatus);
-		} catch (Exception e) {
-			throw new Exception("id not available");
-		}
+		getClientApplicationStatusById(clientApplicationStatus.getCode());
+		clientApplicationStatusRepository.save(clientApplicationStatus);
 	}
 
 	@Override
 	public void deleteClientApplicationStatus(String code) throws Exception {
-		ClientApplicationStatus cas = null;
-		try {
-			cas = getClientApplicationStatusById(code);
-			cas.setActiveFlag('N');
-			clientApplicationStatusRepository.save(cas);
-		} catch (Exception e) {
-			throw new Exception("id not available");
-		}
-
+		ClientApplicationStatus cas = getClientApplicationStatusById(code);
+		cas.setActiveFlag('N');
+		clientApplicationStatusRepository.save(cas);
 	}
 
 	@Override

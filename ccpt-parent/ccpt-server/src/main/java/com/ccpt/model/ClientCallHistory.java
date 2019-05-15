@@ -16,27 +16,30 @@ public class ClientCallHistory {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	
+
 	@Column(name = "client_position_id")
 	private int clientPositionId;
-	
+
 	@Column(name = "notes")
 	private String notes;
-	
+
 	@Column(name = "created_date")
 	private Date createdDate;
-	
+
 	@Column(name = "updated_date")
 	private Date updatedDate;
-	
+
 	@Transient
 	private String clientName;
-	
+
 	@Transient
 	private String clientPositionCode;
-	
+
 	@Column(name = "client_id")
 	private int clientId;
+
+	@Column(name = "active_flag")
+	private char activeFlag;
 
 	public int getId() {
 		return id;
@@ -86,12 +89,6 @@ public class ClientCallHistory {
 		this.clientName = clientName;
 	}
 
-	@Override
-	public String toString() {
-		return "ClientCallHistory [id=" + id + ", clientPositionId=" + clientPositionId + ", notes=" + notes
-				+ ", createdDate=" + createdDate + ", updatedDate=" + updatedDate + ", clientName=" + clientName + "]";
-	}
-
 	public String getClientPositionCode() {
 		return clientPositionCode;
 	}
@@ -106,6 +103,22 @@ public class ClientCallHistory {
 
 	public void setClientId(int clientId) {
 		this.clientId = clientId;
+	}
+
+	public char getActiveFlag() {
+		return activeFlag;
+	}
+
+	public void setActiveFlag(char activeFlag) {
+		this.activeFlag = activeFlag;
+	}
+
+	@Override
+	public String toString() {
+		return "ClientCallHistory [id=" + id + ", clientPositionId=" + clientPositionId + ", notes=" + notes
+				+ ", createdDate=" + createdDate + ", updatedDate=" + updatedDate + ", clientName=" + clientName
+				+ ", clientPositionCode=" + clientPositionCode + ", clientId=" + clientId + ", activeFlag=" + activeFlag
+				+ "]";
 	}
 
 }

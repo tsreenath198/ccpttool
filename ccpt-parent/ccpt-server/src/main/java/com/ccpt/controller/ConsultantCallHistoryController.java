@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.ccpt.constants.CCPTConstants;
-import com.ccpt.exception.ResourceNotFoundException;
 import com.ccpt.model.ConsultantCallHistory;
 import com.ccpt.service.IConsultantCallHistoryService;
 import com.ccpt.service.IConsultantService;
@@ -30,12 +29,12 @@ public class ConsultantCallHistoryController {
 
 	@Autowired
 	private IConsultantCallHistoryService consultantCallHistoryService;
-	
+
 	@Autowired
 	private IConsultantService consultantService;
 
 	@GetMapping("getAll")
-	public ResponseEntity<List<ConsultantCallHistory>> getAllConsultantCallHistorys() throws ResourceNotFoundException {
+	public ResponseEntity<List<ConsultantCallHistory>> getAllConsultantCallHistorys() {
 		List<ConsultantCallHistory> consultantCallHistoryList = consultantCallHistoryService
 				.getAllConsultantCallHistorys();
 		for (ConsultantCallHistory cch : consultantCallHistoryList) {
@@ -45,7 +44,7 @@ public class ConsultantCallHistoryController {
 	}
 
 	@GetMapping(CCPTConstants.GET_BY_ID)
-	public ResponseEntity<ConsultantCallHistory> getConsultantCallHistoryById(@RequestParam Integer id) throws ResourceNotFoundException {
+	public ResponseEntity<ConsultantCallHistory> getConsultantCallHistoryById(@RequestParam Integer id) {
 		ConsultantCallHistory consultantCallHistory = consultantCallHistoryService.getConsultantCallHistoryById(id);
 		return new ResponseEntity<ConsultantCallHistory>(consultantCallHistory, HttpStatus.OK);
 	}
@@ -66,9 +65,12 @@ public class ConsultantCallHistoryController {
 		return new ResponseEntity<ConsultantCallHistory>(consultantCallHistory, HttpStatus.OK);
 	}
 
-	@DeleteMapping(CCPTConstants.DELETE_BY_ID+"/{id}")
-	public ResponseEntity<Void> deleteConsultantCallHistory(@PathVariable Integer id) throws ResourceNotFoundException {
-		consultantCallHistoryService.deleteConsultantCallHistory(id);
+	@DeleteMapping(CCPTConstants.DELETE_BY_ID + "/{id}")
+	public ResponseEntity<Void> deleteConsultantCallHistory(@PathVariable Integer id) {
+		ConsultantCallHistory consultantCallHistory = consultantCallHistoryService.getConsultantCallHistoryById(id);
+		consultantCallHistory.setActiveFlag('N');
+		consultantCallHistory.setUpdatedDate(new Date());
+		consultantCallHistoryService.addConsultantCallHistory(consultantCallHistory);
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 }

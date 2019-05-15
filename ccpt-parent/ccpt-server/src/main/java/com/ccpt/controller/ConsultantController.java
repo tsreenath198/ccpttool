@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.ccpt.constants.CCPTConstants;
-import com.ccpt.exception.ResourceNotFoundException;
 import com.ccpt.model.Consultant;
 import com.ccpt.service.IConsultantService;
 import com.ccpt.service.IConsultantStatusService;
@@ -46,7 +45,7 @@ public class ConsultantController {
 	}
 
 	@GetMapping(CCPTConstants.GET_BY_ID)
-	public ResponseEntity<Consultant> getConsultantById(@RequestParam Integer id) throws ResourceNotFoundException {
+	public ResponseEntity<Consultant> getConsultantById(@RequestParam Integer id) {
 		Consultant consultant = consultantService.getConsultantById(id);
 		return new ResponseEntity<Consultant>(consultant, HttpStatus.OK);
 	}
@@ -67,13 +66,13 @@ public class ConsultantController {
 		return new ResponseEntity<Consultant>(consultant, HttpStatus.OK);
 	}
 
-	@DeleteMapping(CCPTConstants.DELETE_BY_ID+"/{id}")
-	public ResponseEntity<Void> deleteConsultant(@PathVariable Integer id) throws ResourceNotFoundException {
-		Consultant  consultant= consultantService.getConsultantById(id);
+	@DeleteMapping(CCPTConstants.DELETE_BY_ID + "/{id}")
+	public ResponseEntity<Void> deleteConsultant(@PathVariable Integer id) {
+		Consultant consultant = consultantService.getConsultantById(id);
 		consultant.setActiveFlag('N');
 		consultant.setUpdatedDate(new Date());
 		consultantService.addConsultant(consultant);
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
-	
+
 }
