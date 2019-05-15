@@ -58,8 +58,8 @@ export class URLConstants {
     /*Client*/
     ClientCreate: string = 'client/create';
     ClientGetAll: string = 'client/getAll';
-    ClientUpdate: string = 'client/getAll';
-    ClientDelete: string = 'client/getAll';
+    ClientUpdate: string = 'client/update';
+    ClientDelete: string = 'client/id/';
 
     /** Reporting */
     ReportingGetAll: string = 'report/getAll';
