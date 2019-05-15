@@ -38,9 +38,9 @@
                     <div class="col-md-8">
                         <div class="form-group">
                             <label>Address<span class="required">*</span></label>
-                            <input class="form-control" [readonly]="readOnlyForm" [(ngModel)]="clientModel.address"
+                            <textarea class="form-control" cols="10" rows="10" [readonly]="readOnlyForm" [(ngModel)]="clientModel.address"
                                 name="decription" [ngClass]="{'is-invalid': f.submitted && description.invalid}"
-                                #description="ngModel" required>
+                                #description="ngModel" required></textarea>
                             <div class="invalid-feedback">
                                 address is mandatory
                             </div>
