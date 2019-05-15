@@ -9,11 +9,6 @@
       </div>
       <div class="table-responsive mt-2">
         <table class="table table-hover table-striped">
-          <!-- <thead>
-                        <tr>
-                            <th>name</th>
-                        </tr>
-                    </thead> -->
           <tbody>
             <tr
               *ngFor="let casl of clientApplicationStatusList |  filter : 'description' :currSearchTxt ; let i = index">
@@ -24,7 +19,8 @@
                   <dd style="padding-left: 15px">{{casl.code}}</dd>
                 </dl>
               </td>
-              <td class="table-data-padding"><span class="fa fa-trash pull-right" (click)="open(content,casl.code)"></span>
+              <td class="table-data-padding"><span class="fa fa-trash pull-right"
+                  (click)="open(content,casl.code)"></span>
                 <ng-template #content let-c="close" let-d="dismiss">
                   <div class="modal-header">
                     <h4 class="modal-title">Client Application Status</h4>
