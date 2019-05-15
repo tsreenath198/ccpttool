@@ -114,8 +114,8 @@
           <div class="col-md-8">
             <div class="form-group">
               <label>Address<span class="required">*</span></label>
-              <input class="form-control" name="address" [readonly]="readOnlyForm" [(ngModel)]="recruiterModel.address"
-                [ngClass]="{'is-invalid': f.submitted && address.invalid}" #address="ngModel" required>
+              <textarea class="form-control" cols="10" rows="10" name="address" [readonly]="readOnlyForm" [(ngModel)]="recruiterModel.address"
+                [ngClass]="{'is-invalid': f.submitted && address.invalid}" #address="ngModel" required></textarea>
               <div class="invalid-feedback">
                 address is mandatory
               </div>
