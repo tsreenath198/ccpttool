@@ -2,17 +2,21 @@
   <app-page-header [icon]="'fa-bar-chart-o'" [heading]="'Consultant'"></app-page-header>
   <div class="row">
     <div class="col-md-6">
-        <div class="row">
-            <div class="col-md-3"><strong>Total No of records : {{consultantList.length}}</strong></div>
-            <div class="col-md-6"> <input type="text" class="form-control" placeholder="search..."
-                [(ngModel)]="currSearchTxt" /></div>
-          </div>
+      <div class="row">
+        <div class="col-md-3"><strong>Total No of records : {{consultantList.length}}</strong></div>
+        <div class="col-md-6"> <input type="text" class="form-control" placeholder="search..."
+            [(ngModel)]="currSearchTxt" /></div>
+      </div>
       <div class="table-responsive mt-2">
         <table class="table table-hover table-striped">
           <tbody class="overflow-ele-scroll">
             <tr *ngFor="let cl of consultantList |  filter : 'fullname' :currSearchTxt ; let i = index">
               <td class="table-data-padding" (click)="readOnlyEnable(cl)" (dblclick)="consultantEdit(cl)">
-                {{cl.fullname}}</td>
+                <dl>
+                  <dt> {{cl.fullname}}</dt>
+                  <dd>{{cl.description || 'NA'}}</dd>
+                </dl>
+              </td>
               <!--  <input type="file" (change)="fileChange($event)" > <span class="fa fa-upload pull-right"></span> -->
               <td class="table-data-padding" (click)="deleteConfirmation(cl)"><span
                   class="fa fa-trash pull-right"></span></td>

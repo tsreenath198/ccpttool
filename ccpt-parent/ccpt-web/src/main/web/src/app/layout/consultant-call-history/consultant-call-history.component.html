@@ -14,7 +14,10 @@
               *ngFor="let cchl of consultantCallHistoryList  |  filter : 'consultantName' :currSearchTxt ; let i = index">
               <td class="table-data-padding" (click)="readOnlyEnable(cchl)"
                 (dblclick)="consultantCallHistoryEdit(cchl)">
-                {{cchl.consultantName}}
+                <dl>
+                    <dt> {{cchl.consultantName}}</dt>
+                    <dd>{{cchl.description}}</dd>
+                  </dl>
               </td>
               <td class="table-data-padding" (click)="deleteConfirmation(cchl)"><span
                   class="fa fa-trash pull-right"></span></td>
