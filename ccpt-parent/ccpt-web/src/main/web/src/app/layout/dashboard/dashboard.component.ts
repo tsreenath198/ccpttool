@@ -13,7 +13,7 @@ import { routerTransition } from '../../router.animations';
 export class DashboardComponent implements OnInit {
     public alerts: Array<any> = [];
     public sliders: Array<any> = [];
-    public ccptReportData: Object = { "consultantCallHistoryList": [], "clientCallHistoryList": [] };
+    public ccptReportData: any = { "consultantCallHistoryList": [], "clientCallHistoryList": [] };
     private urlConstants = new URLConstants();
     constructor(private http: HttpClientService, private toastr: ToastrCustomService) {
         this.sliders.push(
