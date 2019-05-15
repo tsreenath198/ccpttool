@@ -1,56 +1,55 @@
 <div [@routerTransition]>
-    <app-page-header [icon]="'fa-bar-chart-o'" [heading]="'Client Details'"></app-page-header>
-    <div class="row">
-        <div class="col-md-6">
-            <input type="text" class="form-control" placeholder="search..." [(ngModel)]="currSearchTxt" />
-            <div class="table-responsive">
-                <table class="table table-hover table-striped">
-                    <!-- <thead>
-                        <tr>
-                            <th>name</th>
-                        </tr>
-                    </thead> -->
-                    <tbody>
-                        <tr *ngFor="let cl of clientList |  filter : 'name' : currSearchTxt ; let i = index">
-                            <td class="table-data-padding" (click)="readOnlyEnable(cl)" (dblclick)="editClient(cl)">
-                                {{cl.name}}</td>
-                            <td class="table-data-padding"><span (click)="deleteConfirmation(cl)"
-                                    class="fa fa-trash pull-right"></span></td>
-                        </tr>
-                    </tbody>
-                </table>
+  <app-page-header [icon]="'fa-bar-chart-o'" [heading]="'Client Details'"></app-page-header>
+  <div class="row">
+    <div class="col-md-6">
+      <div class="row">
+        <div class="col-md-3"><strong>Total No of records : {{clientList.length}}</strong></div>
+        <div class="col-md-6"> <input type="text" class="form-control" placeholder="search..."
+            [(ngModel)]="currSearchTxt" /></div>
+      </div>
+      <div class="table-responsive">
+        <table class="table table-hover table-striped">
+          <tbody>
+            <tr *ngFor="let cl of clientList |  filter : 'name' : currSearchTxt ; let i = index">
+              <td class="table-data-padding" (click)="readOnlyEnable(cl)" (dblclick)="editClient(cl)">
+                {{cl.name}}</td>
+              <td class="table-data-padding"><span (click)="deleteConfirmation(cl)"
+                  class="fa fa-trash pull-right"></span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class=" col-md-6">
+      <form name="form" id="clientForm" (ngSubmit)="f.form.valid&&clientCreate(f)" #f="ngForm" novalidate>
+        <div class="row">
+          <div class="col-md-8">
+            <div class="form-group">
+              <label>Client Name<span class="required">*</span></label>
+              <input class="form-control" [readonly]="readOnlyForm" [(ngModel)]="clientModel.name" name="code"
+                [ngClass]="{'is-invalid': f.submitted && code.invalid}" #code="ngModel" required>
+              <div class="invalid-feedback">
+                client name is mandatory
+              </div>
             </div>
+          </div>
+          <div class="col-md-8">
+            <div class="form-group">
+              <label>Address<span class="required">*</span></label>
+              <textarea class="form-control" cols="10" rows="10" [readonly]="readOnlyForm"
+                [(ngModel)]="clientModel.address" name="decription"
+                [ngClass]="{'is-invalid': f.submitted && description.invalid}" #description="ngModel"
+                required></textarea>
+              <div class="invalid-feedback">
+                address is mandatory
+              </div>
+            </div>
+          </div>
         </div>
-        <div class=" col-md-6">
-            <form name="form" id="clientForm" (ngSubmit)="f.form.valid&&clientCreate(f)" #f="ngForm" novalidate>
-                <div class="row">
-                    <div class="col-md-8">
-                        <div class="form-group">
-                            <label>Client Name<span class="required">*</span></label>
-                            <input class="form-control" [readonly]="readOnlyForm" [(ngModel)]="clientModel.name"
-                                name="code" [ngClass]="{'is-invalid': f.submitted && code.invalid}" #code="ngModel"
-                                required>
-                            <div class="invalid-feedback">
-                                client name is mandatory
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-8">
-                        <div class="form-group">
-                            <label>Address<span class="required">*</span></label>
-                            <textarea class="form-control" cols="10" rows="10" [readonly]="readOnlyForm" [(ngModel)]="clientModel.address"
-                                name="decription" [ngClass]="{'is-invalid': f.submitted && description.invalid}"
-                                #description="ngModel" required></textarea>
-                            <div class="invalid-feedback">
-                                address is mandatory
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="table-responsive">
-                        <table class="table table-hover table-striped">
-                            <!-- <thead>
+        <div class="row">
+          <div class="table-responsive">
+            <table class="table table-hover table-striped">
+              <!-- <thead>
                                 <tr>
                                     <th>Name</th>
                                     <th>E-mail</th>
@@ -58,67 +57,65 @@
                                     <th>Action</th>
                                 </tr>
                             </thead> -->
-                            <tbody>
-                                <tr *ngFor="let cc of clientModel.clientContacts;let i=index">
-                                    <td>
-                                        <input class="form-control" [readonly]="readOnlyForm" [(ngModel)]="cc.fullname"
-                                             name="fullname{{i}}" [ngClass]="{'is-invalid': f.submitted && fullname.invalid}" placeholder="fullname"
-                                            #fullname="ngModel" required>
-                                            <div class="invalid-feedback">
-                                                    name is mandatory
-                                                </div>
-                                    </td>
-                                    <td>
-                                        <input class="form-control" [readonly]="readOnlyForm" [(ngModel)]="cc.email"
-                                            name="email{{i}}" [ngClass]="{'is-invalid': f.submitted && email.invalid}" placeholder="email"
-                                            #email="ngModel" required>
-                                            <div class="invalid-feedback">
-                                                    email is mandatory
-                                                </div>
-                                    </td>
-                                    <td>
-                                        <input class="form-control" [readonly]="readOnlyForm" [(ngModel)]="cc.phone"
-                                            name="phone{{i}}" [ngClass]="{'is-invalid': f.submitted && phone.invalid}"placeholder="phone"
-                                            #phone="ngModel" required>
-                                            <div class="invalid-feedback">
-                                                    phone is mandatory
-                                                </div>
-                                    </td>
-                                    <td>
-                                        <div class="value-button " id="decrease"
-                                            (click)="clientContactListIncrement($event.target,i)" value="Decrease Value">_</div>
-                                        <div *ngIf="(i+1)==clientModel.clientContacts.length">
-                                            <div class="value-button " id="increase"
-                                                (click)="clientContactListIncrement($event.target,i)" value="Increase Value">+
-                                            </div>
-                                        </div>
-                                        <!-- <span (click)="clientContactListIncrement()">+</span> -->
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+              <tbody>
+                <tr *ngFor="let cc of clientModel.clientContacts;let i=index">
+                  <td>
+                    <input class="form-control" [readonly]="readOnlyForm" [(ngModel)]="cc.fullname" name="fullname{{i}}"
+                      [ngClass]="{'is-invalid': f.submitted && fullname.invalid}" placeholder="fullname"
+                      #fullname="ngModel" required>
+                    <div class="invalid-feedback">
+                      name is mandatory
                     </div>
-                </div>
-                <div class="row text-center">
-                    <div class="col-md-8">
-                        <span *ngIf="formButtonsToggler;else toggleButtons">
-                            <button type="submit" id="add" class="btn btn-secondary ml-3">Add</button>
-                        </span>
-                        <ng-template #toggleButtons>
-                            <span *ngIf="editButtonToggler;else toggleEdit">
-                                <button type="button" id="update" class="btn btn-secondary ml-2"
-                                    (click)="editableForm()">Edit</button>
-                            </span>
-                            <ng-template #toggleEdit>
-                                <button type="button" id="update" class="btn btn-secondary ml-2"
-                                    (click)="updateClient(f)">Update</button>
-                            </ng-template>
-                        </ng-template>
-                        <button type="button" id="cancel" (click)="cancelForm(f)"
-                            class="btn btn-secondary ml-3">Cancel</button>
+                  </td>
+                  <td>
+                    <input class="form-control" [readonly]="readOnlyForm" [(ngModel)]="cc.email" name="email{{i}}"
+                      [ngClass]="{'is-invalid': f.submitted && email.invalid}" placeholder="email" #email="ngModel"
+                      required>
+                    <div class="invalid-feedback">
+                      email is mandatory
                     </div>
-                </div>
-            </form>
+                  </td>
+                  <td>
+                    <input class="form-control" [readonly]="readOnlyForm" [(ngModel)]="cc.phone" name="phone{{i}}"
+                      [ngClass]="{'is-invalid': f.submitted && phone.invalid}" placeholder="phone" #phone="ngModel"
+                      required>
+                    <div class="invalid-feedback">
+                      phone is mandatory
+                    </div>
+                  </td>
+                  <td>
+                    <div class="value-button " id="decrease" (click)="clientContactListIncrement($event.target,i)"
+                      value="Decrease Value">_</div>
+                    <div *ngIf="(i+1)==clientModel.clientContacts.length">
+                      <div class="value-button " id="increase" (click)="clientContactListIncrement($event.target,i)"
+                        value="Increase Value">+
+                      </div>
+                    </div>
+                    <!-- <span (click)="clientContactListIncrement()">+</span> -->
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
+        <div class="row text-center">
+          <div class="col-md-8">
+            <span *ngIf="formButtonsToggler;else toggleButtons">
+              <button type="submit" id="add" class="btn btn-secondary ml-3">Add</button>
+            </span>
+            <ng-template #toggleButtons>
+              <span *ngIf="editButtonToggler;else toggleEdit">
+                <button type="button" id="update" class="btn btn-secondary ml-2" (click)="editableForm()">Edit</button>
+              </span>
+              <ng-template #toggleEdit>
+                <button type="button" id="update" class="btn btn-secondary ml-2"
+                  (click)="updateClient(f)">Update</button>
+              </ng-template>
+            </ng-template>
+            <button type="button" id="cancel" (click)="cancelForm(f)" class="btn btn-secondary ml-3">Cancel</button>
+          </div>
+        </div>
+      </form>
     </div>
+  </div>
 </div>

@@ -2,14 +2,13 @@
   <app-page-header [icon]="'fa-bar-chart-o'" [heading]="'Recruiter'"></app-page-header>
   <div class="row">
     <div class="col-md-6 ">
-      <input type="text" class="form-control" placeholder="search..." [(ngModel)]="currSearchTxt" />
-      <div class="table-responsive">
+      <div class="row">
+        <div class="col-md-3"><strong>Total No of records : {{recruiterList.length}}</strong></div>
+        <div class="col-md-6"> <input type="text" class="form-control" placeholder="search..."
+            [(ngModel)]="currSearchTxt" /></div>
+      </div>
+      <div class="table-responsive mt-2">
         <table class="table table-hover table-striped">
-          <!-- <thead>
-            <tr>
-              <th>Recruiter</th>
-            </tr>
-          </thead> -->
           <tbody class="overflow-ele-scroll">
             <tr *ngFor="let rl of recruiterList |  filter : 'fullname' :currSearchTxt ; let i = index">
               <td (click)="readOnlyEnable(rl)" (dblclick)="recruiterEdit(rl)">{{rl.fullname}}</td>
@@ -114,8 +113,9 @@
           <div class="col-md-8">
             <div class="form-group">
               <label>Address<span class="required">*</span></label>
-              <textarea class="form-control" cols="10" rows="10" name="address" [readonly]="readOnlyForm" [(ngModel)]="recruiterModel.address"
-                [ngClass]="{'is-invalid': f.submitted && address.invalid}" #address="ngModel" required></textarea>
+              <textarea class="form-control" cols="10" rows="10" name="address" [readonly]="readOnlyForm"
+                [(ngModel)]="recruiterModel.address" [ngClass]="{'is-invalid': f.submitted && address.invalid}"
+                #address="ngModel" required></textarea>
               <div class="invalid-feedback">
                 address is mandatory
               </div>

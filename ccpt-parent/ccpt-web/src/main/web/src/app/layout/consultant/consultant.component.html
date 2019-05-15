@@ -2,8 +2,12 @@
   <app-page-header [icon]="'fa-bar-chart-o'" [heading]="'Consultant'"></app-page-header>
   <div class="row">
     <div class="col-md-6">
-      <input type="text" class="form-control" placeholder="search..." [(ngModel)]="currSearchTxt" />
-      <div class="table-responsive">
+        <div class="row">
+            <div class="col-md-3"><strong>Total No of records : {{consultantList.length}}</strong></div>
+            <div class="col-md-6"> <input type="text" class="form-control" placeholder="search..."
+                [(ngModel)]="currSearchTxt" /></div>
+          </div>
+      <div class="table-responsive mt-2">
         <table class="table table-hover table-striped">
           <tbody class="overflow-ele-scroll">
             <tr *ngFor="let cl of consultantList |  filter : 'fullname' :currSearchTxt ; let i = index">
