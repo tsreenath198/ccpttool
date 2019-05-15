@@ -7,10 +7,20 @@
 @import '~ngx-toastr/toastr.css';
 
 @media print {
-    .breadcrumb {
-        display: none !important;
-    }
+  .breadcrumb {
+    display: none !important;
+  }
 }
-.table-data-padding{
-    padding: 0.2em !important;
+
+.table-data-padding {
+  padding: 0.2em !important;
+}
+
+td {
+  dl {
+    margin-bottom: -6px !important;
+    dd {
+      padding-left: 15px !important
+    }
+  }
 }
