@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { NgbModal, ModalDismissReasons, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { routerTransition } from '../../router.animations';
 import { ConsultantStatusModel } from './consultant-status.model';
 import { HttpClientService } from 'src/app/shared/services/http.service';
@@ -16,11 +17,14 @@ export class ConsultantStatusComponent implements OnInit {
     public consultantStatusModel: ConsultantStatusModel = <ConsultantStatusModel>{};
     public consultantStatusList: Array<ConsultantStatusModel> = [];
     private urlConstants = new URLConstants();
-    public readOnlyForm :boolean=false;
-    public formButtonsToggler :boolean=true;
-    public editButtonToggler:boolean=true;
-    public currSearchTxt: string ;
-    constructor(private http: HttpClientService, private toastr: ToastrCustomService) { }
+    public readOnlyForm: boolean = false;
+    public formButtonsToggler: boolean = true;
+    public editButtonToggler: boolean = true;
+    public currSearchTxt: string = '';
+    private selectedRecrdToDel: string = '';
+    public closeResult:string = '';
+    private modalRef: NgbModalRef;
+    constructor(private http: HttpClientService, private toastr: ToastrCustomService, private modalService: NgbModal) { }
     ngOnInit() {
         this.init();
     }
@@ -31,23 +35,23 @@ export class ConsultantStatusComponent implements OnInit {
     }
     editClientApplicationStatus(data) {
         this.consultantStatusModel = data;
-        if(this.readOnlyForm==true){
-            this.readOnlyForm=false;
+        if (this.readOnlyForm == true) {
+            this.readOnlyForm = false;
         }
-        if(this.formButtonsToggler==true){
-            this.formButtonsToggler=false;
+        if (this.formButtonsToggler == true) {
+            this.formButtonsToggler = false;
         }
-        if(this.editButtonToggler==true){
-            this.editButtonToggler=false;
+        if (this.editButtonToggler == true) {
+            this.editButtonToggler = false;
         }
     }
-    readOnlyEnable(data){
+    readOnlyEnable(data) {
         this.consultantStatusModel = data;
-        if(this.readOnlyForm==false){
-            this.readOnlyForm=true;
+        if (this.readOnlyForm == false) {
+            this.readOnlyForm = true;
         }
-        if(this.formButtonsToggler==true){
-            this.formButtonsToggler=false;
+        if (this.formButtonsToggler == true) {
+            this.formButtonsToggler = false;
         }
     }
     public formReset() {
@@ -63,7 +67,7 @@ export class ConsultantStatusComponent implements OnInit {
             this.toastr.error(err.statusText, "Consultant Status");
         })
     }
-    updateClientApplicationStatus(consultantStatusForm:NgForm) {
+    public updateClientApplicationStatus(consultantStatusForm: NgForm) {
         this.http.update(this.consultantStatusModel, this.urlConstants.CSUpdate).subscribe(resp => {
             this.toastr.success("Form Updated Successfully", "Consultant Status");
             this.formButtonsToggler = true;
@@ -74,35 +78,55 @@ export class ConsultantStatusComponent implements OnInit {
             this.toastr.error(err.statusText, "Consultant Status");
         })
     }
-    deleteClientApplicationStatus(deleteId) {
-        this.http.delete(this.urlConstants.CSDelete + deleteId).subscribe(resp => {
-            this.toastr.success("Form Deleted Successfully", "Client Application Status");
+    
+    public editableForm() {
+        if (this.readOnlyForm == true) {
+            this.readOnlyForm = false;
+        }
+        if (this.editButtonToggler == true) {
+            this.editButtonToggler = false;
+        }
+    }
+    public cancelForm(consultantStatusForm: NgForm) {
+        this.formReset();
+        consultantStatusForm.resetForm();
+        if (this.readOnlyForm == true) {
+            this.readOnlyForm = false;
+        }
+        if (this.formButtonsToggler == false) {
+            this.formButtonsToggler = true;
+        }
+
+    }
+    deleteCSRecord(): void {
+        this.http.delete(this.urlConstants.CSDelete + this.selectedRecrdToDel).subscribe(resp => {
+            this.toastr.success("Record Deleted Successfully", "Consultant Status");
             this.init();
+            this.close();
             this.formReset();
         })
     }
-    editableForm(){
-        if(this.readOnlyForm==true){
-            this.readOnlyForm=false;
+    open(content, selected: string) {
+        if (selected) {
+            this.selectedRecrdToDel = selected;
         }
-        if(this.editButtonToggler==true){
-            this.editButtonToggler=false;
-        }
+        this.modalRef = this.modalService.open(content);
+        this.modalRef.result.then((result) => {
+            this.closeResult = `Closed with: ${result}`;
+        }, (reason) => {
+            this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+        });
     }
-    cancelForm(consultantStatusForm:NgForm){
-        this.formReset();
-        consultantStatusForm.resetForm();
-        if(this.readOnlyForm==true){
-            this.readOnlyForm=false;
-        }
-        if(this.formButtonsToggler==false){
-            this.formButtonsToggler=true;
-        }
-        
+    close() {
+        this.modalRef.close();
     }
-    deleteConfirmation(toDelete){
-        if (confirm("Are you sure you want to delete the row!")) {
-            this.deleteClientApplicationStatus(toDelete.code);
-          } 
+    private getDismissReason(reason: any): string {
+        if (reason === ModalDismissReasons.ESC) {
+            return 'by pressing ESC';
+        } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+            return 'by clicking on a backdrop';
+        } else {
+            return `with: ${reason}`;
+        }
     }
 }

@@ -22,7 +22,7 @@ export class ClientApplicationStatusComponent implements OnInit {
     public enableButtonType: string = '';
     public currSearchTxt: string;
     private selectedRecrdToDel: string = '';
-    closeResult: string;
+    public closeResult: string = '';
     private modalRef: NgbModalRef;
     constructor(private http: HttpClientService, private toastr: ToastrCustomService, private modalService: NgbModal
     ) {
