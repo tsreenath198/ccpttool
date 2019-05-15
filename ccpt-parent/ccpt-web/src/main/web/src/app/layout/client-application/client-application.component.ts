@@ -25,6 +25,7 @@ export class ClientApplicationComponent implements OnInit {
     public clientApplicationStatusList: Array<ClientApplicationStatusModel> = [];
     public clientPositionList: Array<ClientPositionModel> = [];
     private urlConstants = new URLConstants();
+    public currSearchTxt:string = "";
     public readOnlyForm: boolean = false;
     public formButtonsToggler: boolean = true;
     public editButtonToggler: boolean = true;

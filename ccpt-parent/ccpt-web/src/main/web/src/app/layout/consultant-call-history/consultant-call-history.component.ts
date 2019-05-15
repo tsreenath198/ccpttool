@@ -18,6 +18,7 @@ import { ClientPositionModel } from '../client-position/client-position.model';
 export class ConsultantCallHistoryComponent implements OnInit {
     public consultantCallHistoryModel: ConsultantCallHistoryModel = <ConsultantCallHistoryModel>{};
     public consultantCallHistoryList: Array<ConsultantCallHistoryModel> = [];
+    public currSearchTxt:string = "";
     public readOnlyForm: boolean = false;
     public formButtonsToggler: boolean = true;
     public editButtonToggler: boolean = true;

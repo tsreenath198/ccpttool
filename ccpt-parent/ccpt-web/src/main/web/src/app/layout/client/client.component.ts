@@ -16,7 +16,7 @@ import { ClientModel, ClientContactsModel } from './client.model';
 export class ClientComponent implements OnInit {
     public clientModel: ClientModel = <ClientModel>{};
     public clientList: any = [];
-
+public currSearchTxt:string = "";
     private urlConstants = new URLConstants();
     public readOnlyForm: boolean = false;
     public formButtonsToggler: boolean = true;
