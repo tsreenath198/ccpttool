@@ -13,7 +13,11 @@
             <tbody class="overflow-ele-scroll">
               <tr *ngFor="let cchl of clientCallHistoryList">
                 <td class="table-data-padding" (click)="readOnlyEnable(cchl)" (dblclick)="editClientCallHistory(cchl)">
-                  {{cchl.clientPositionCode}}</td>
+                  <dl>
+                    <dt> {{cchl.clientPositionCode}}</dt>
+                    <dd>{{cchl.notes || 'NA'}}</dd>
+                  </dl>
+                </td>
                 <td class="table-data-padding" (click)="deleteConfirmation(cchl)"><span
                     class="fa fa-trash pull-right"></span></td>
               </tr>
