@@ -7,7 +7,7 @@
         <div class="col-md-6"> <input type="text" class="form-control" placeholder="search..."
             [(ngModel)]="currSearchTxt" /></div>
       </div>
-      <div class="table-responsive">
+      <div class="table-responsive mt-2">
         <table class="table table-hover table-striped">
           <tbody>
             <tr *ngFor="let cl of clientList |  filter : 'name' : currSearchTxt ; let i = index">
@@ -50,6 +50,7 @@
             </div>
           </div>
         </div>
+        <strong>Add To Contacts</strong>
         <div class="row">
           <div class="table-responsive">
             <table class="table table-hover table-striped">
@@ -72,7 +73,7 @@
                     </div>
                   </td>
                   <td>
-                    <input class="form-control" [readonly]="readOnlyForm" [(ngModel)]="cc.email" name="email{{i}}"
+                    <input class="form-control" type="email" [readonly]="readOnlyForm" [(ngModel)]="cc.email" name="email{{i}}"
                       [ngClass]="{'is-invalid': f.submitted && email.invalid}" placeholder="email" #email="ngModel"
                       required>
                     <div class="invalid-feedback">
@@ -80,9 +81,9 @@
                     </div>
                   </td>
                   <td>
-                    <input class="form-control" [readonly]="readOnlyForm" [(ngModel)]="cc.phone" name="phone{{i}}"
+                    <input class="form-control" type="number" [readonly]="readOnlyForm" [(ngModel)]="cc.phone" name="phone{{i}}"
                       [ngClass]="{'is-invalid': f.submitted && phone.invalid}" placeholder="phone" #phone="ngModel"
-                      required>
+                      pattern="/^-?\d+\.?\d*$/" onKeyPress="if(this.value.length==12) return false;" required>
                     <div class="invalid-feedback">
                       phone is mandatory
                     </div>
