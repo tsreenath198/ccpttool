@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
-import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDropdownModule, NgbModule, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { LayoutRoutingModule } from './layout-routing.module';
 import { LayoutComponent } from './layout.component';
@@ -12,8 +12,10 @@ import { HeaderComponent } from './components/header/header.component';
         CommonModule,
         LayoutRoutingModule,
         TranslateModule,
-        NgbDropdownModule
+        NgbDropdownModule,
+        NgbModule
     ],
-    declarations: [LayoutComponent, SidebarComponent, HeaderComponent]
+    declarations: [LayoutComponent, SidebarComponent, HeaderComponent], 
+    providers: [NgbActiveModal]
 })
 export class LayoutModule { }
