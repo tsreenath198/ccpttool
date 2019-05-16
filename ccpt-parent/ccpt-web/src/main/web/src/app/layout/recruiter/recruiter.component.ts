@@ -39,7 +39,7 @@ export class RecruiterComponent implements OnInit {
         })
     }
     recruiterEdit(data) {
-        this.recruiterModel = data;
+        this.recruiterModel =  JSON.parse(JSON.stringify(data));;
         if (this.readOnlyForm == true) {
             this.readOnlyForm = false;
         }
@@ -51,7 +51,7 @@ export class RecruiterComponent implements OnInit {
         }
     }
     readOnlyEnable(data) {
-        this.recruiterModel = data;
+        this.recruiterModel = JSON.parse(JSON.stringify(data));
         if (this.readOnlyForm == false) {
             this.readOnlyForm = true;
         }

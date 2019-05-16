@@ -56,19 +56,14 @@
           <div class="col-md-8">
             <div class="form-group" data-provide="datepicker">
               <label>Date of Birth<span class="required">*</span></label>
-              <div *ngIf="readOnlyForm; else elseBlock4">
-                <input class="form-control" name="dob" readonly [(ngModel)]="recruiterModel.dob">
-              </div>
-              <ng-template #elseBlock4>
                 <input type="date" class="form-control" name="dob" [(ngModel)]="recruiterModel.dob"
-                  [ngClass]="{'is-invalid': f.submitted && dob.invalid}" #dob="ngModel" required>
+                  [ngClass]="{'is-invalid': f.submitted && dob.invalid}" #dob="ngModel" [readonly]="readOnlyForm" required>
                 <div class="input-group-addon">
                   <span class="glyphicon glyphicon-th"></span>
                 </div>
                 <div class="invalid-feedback">
                   date of birth is mandatory
                 </div>
-              </ng-template>
             </div>
           </div>
           <div class="col-md-8">
