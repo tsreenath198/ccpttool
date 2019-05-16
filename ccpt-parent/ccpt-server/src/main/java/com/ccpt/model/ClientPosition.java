@@ -16,49 +16,58 @@ public class ClientPosition {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	
+
 	@Column(name = "technology")
 	private String technology;
-	
+
 	@Column(name = "experience")
 	private String experience;
-	
+
 	@Column(name = "required_skills")
 	private String requiredSkills;
-	
+
 	@Column(name = "min_ctc")
 	private double minCtc;
-	
+
 	@Column(name = "max_ctc")
 	private double maxCtc;
-	
+
 	@Column(name = "client_positions_status_code")
 	private String clientPositionsStatusCode;
-	
+
 	@Column(name = "closed_by")
 	private String closedBy;
-	
+
 	@Column(name = "additional_comments")
 	private String additionalComments;
-	
+
 	@Column(name = "created_date")
 	private Date createdDate;
-	
+
 	@Column(name = "updated_date")
 	private Date updatedDate;
-	
+
 	@Column(name = "active_flag")
 	private char activeFlag;
-	
+
 	@Column(name = "client_position_code")
 	private String clientPositionCode;
 
 	@Column(name = "client_id")
 	private Integer clientId;
-	
+
+	@Column(name = "job_code")
+	private String jobCode;
+
+	@Column(name = "location")
+	private String location;
+
+	@Column(name = "no_of_positions")
+	private Integer numberOfPositions;
+
 	@Transient
 	private String clientName;
-	
+
 	@Transient
 	private String clientPositionsStatus;
 
@@ -166,15 +175,6 @@ public class ClientPosition {
 		this.clientPositionsStatus = clientPositionsStatus;
 	}
 
-	@Override
-	public String toString() {
-		return "ClientPosition [id=" + id + ", technology=" + technology + ", experience=" + experience
-				+ ", requiredSkills=" + requiredSkills + ", minCtc=" + minCtc + ", maxCtc=" + maxCtc
-				+ ", clientPositionsStatusCode=" + clientPositionsStatusCode + ", closedBy=" + closedBy
-				+ ", additionalComments=" + additionalComments + ", createdDate=" + createdDate + ", updatedDate="
-				+ updatedDate + ", activeFlag=" + activeFlag + ", clientPositionsStatus=" + clientPositionsStatus + "]";
-	}
-
 	public String getClientPositionCode() {
 		return clientPositionCode;
 	}
@@ -197,6 +197,42 @@ public class ClientPosition {
 
 	public void setClientName(String clientName) {
 		this.clientName = clientName;
+	}
+
+	public String getJobCode() {
+		return jobCode;
+	}
+
+	public void setJobCode(String jobCode) {
+		this.jobCode = jobCode;
+	}
+
+	public String getLocation() {
+		return location;
+	}
+
+	public void setLocation(String location) {
+		this.location = location;
+	}
+
+	public Integer getNumberOfPositions() {
+		return numberOfPositions;
+	}
+
+	public void setNumberOfPositions(Integer numberOfPositions) {
+		this.numberOfPositions = numberOfPositions;
+	}
+
+	@Override
+	public String toString() {
+		return "ClientPosition [id=" + id + ", technology=" + technology + ", experience=" + experience
+				+ ", requiredSkills=" + requiredSkills + ", minCtc=" + minCtc + ", maxCtc=" + maxCtc
+				+ ", clientPositionsStatusCode=" + clientPositionsStatusCode + ", closedBy=" + closedBy
+				+ ", additionalComments=" + additionalComments + ", createdDate=" + createdDate + ", updatedDate="
+				+ updatedDate + ", activeFlag=" + activeFlag + ", clientPositionCode=" + clientPositionCode
+				+ ", clientId=" + clientId + ", jobCode=" + jobCode + ", location=" + location + ", numberOfPositions="
+				+ numberOfPositions + ", clientName=" + clientName + ", clientPositionsStatus=" + clientPositionsStatus
+				+ "]";
 	}
 
 }
