@@ -94,9 +94,10 @@
           </div>
           <div class="col-md-8">
             <div class="form-group">
+              <!--pattern="/^-?\d+\.?\d*$/" onKeyPress="if(this.value.length==12) return false;" -->
               <label>Phone<span class="required">*</span></label>
               <input class="form-control" name="phone" [readonly]="readOnlyForm" [(ngModel)]="recruiterModel.phone"
-                [ngClass]="{'is-invalid': f.submitted && phone.invalid}" type="number" pattern="/^-?\d+\.?\d*$/" onKeyPress="if(this.value.length==12) return false;" #phone="ngModel" required>
+                [ngClass]="{'is-invalid': f.submitted && phone.invalid}" type="number" #phone="ngModel" required>
               <div class="invalid-feedback">
                 phone is mandatory
               </div>

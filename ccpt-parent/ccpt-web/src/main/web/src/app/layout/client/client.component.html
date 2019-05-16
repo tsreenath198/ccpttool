@@ -97,9 +97,10 @@
                     </div>
                   </td>
                   <td>
+                    <!--pattern="/^-?\d+\.?\d*$/" onKeyPress="if(this.value.length==12) return false;"-->
                     <input class="form-control" type="number" [readonly]="readOnlyForm" [(ngModel)]="cc.phone"
                       name="phone{{i}}" [ngClass]="{'is-invalid': f.submitted && phone.invalid}" placeholder="phone"
-                      #phone="ngModel" pattern="/^-?\d+\.?\d*$/" onKeyPress="if(this.value.length==12) return false;"
+                      #phone="ngModel" 
                       required>
                     <div class="invalid-feedback">
                       phone is mandatory
