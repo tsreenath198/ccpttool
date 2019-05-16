@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { routerTransition } from '../../router.animations';
+import { NgbModal, ModalDismissReasons, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ConsultantCallHistoryModel } from './consultant-call-history.model';
 import { HttpClientService } from 'src/app/shared/services/http.service';
 import { ConsultantModel } from '../consultant/consultant.model';
@@ -26,7 +27,11 @@ export class ConsultantCallHistoryComponent implements OnInit {
     public clientPositionList: Array<ClientPositionModel> = [];
     public urlConstants = new URLConstants();
 
-    constructor(private http: HttpClientService, private toastr: ToastrCustomService) { }
+    private selectedRecrdToDel: number = 0;
+    public closeResult: string = '';
+    private modalRef: NgbModalRef;
+
+    constructor(private http: HttpClientService, private toastr: ToastrCustomService, private modalService: NgbModal) { }
     ngOnInit() {
         this.init();
         this.http.get(this.urlConstants.CGetAll).subscribe(resp => {
@@ -87,13 +92,6 @@ export class ConsultantCallHistoryComponent implements OnInit {
             this.toastr.error(err.statusText, "Consultant Call History");
         })
     }
-    deleteConsultantCallHistory(deleteId) {
-        this.http.delete(this.urlConstants.CoCHDelete + deleteId).subscribe(resp => {
-            this.toastr.success("Form Deleted Successfully", "Consultant Call History");
-            this.init();
-            this.formReset();
-        })
-    }
     editableForm() {
         if (this.readOnlyForm == true) {
             this.readOnlyForm = false;
@@ -113,9 +111,40 @@ export class ConsultantCallHistoryComponent implements OnInit {
         }
 
     }
-    deleteConfirmation(toDelete) {
-        if (confirm("Are you sure you want to delete the row!")) {
-            this.deleteConsultantCallHistory(toDelete.id);
+    deleteCoCHRecord(): void {
+        this.http.delete(this.urlConstants.CoCHDelete + this.selectedRecrdToDel).subscribe(resp => {
+            this.toastr.success("Form Deleted Successfully", "Consultant Call History");
+            this.init();
+            this.close();
+            this.formReset();
+        })
+    }
+    /**
+     * @param 
+     * 1) content consists the modal instance
+     * 2) Selected contains the code of selected row
+     */
+    open(content, selected: number) {
+        if (selected) {
+            this.selectedRecrdToDel = selected;
+        }
+        this.modalRef = this.modalService.open(content);
+        this.modalRef.result.then((result) => {
+            this.closeResult = `Closed with: ${result}`;
+        }, (reason) => {
+            this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+        });
+    }
+    close() {
+        this.modalRef.close();
+    }
+    private getDismissReason(reason: any): string {
+        if (reason === ModalDismissReasons.ESC) {
+            return 'by pressing ESC';
+        } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+            return 'by clicking on a backdrop';
+        } else {
+            return `with: ${reason}`;
         }
     }
 }
