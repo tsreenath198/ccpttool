@@ -60,9 +60,13 @@ public class ClientController {
 	@DeleteMapping(CCPTConstants.DELETE_BY_ID + "/{id}")
 	public ResponseEntity<Void> deleteClient(@PathVariable Integer id) {
 		Client client = clientService.getClientById(id);
+		clientService.updateClientAll(client);
+		
 		client.setActiveFlag('N');
 		client.setUpdatedDate(new Date());
+		
 		clientService.addClient(client);
+		
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 

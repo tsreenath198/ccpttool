@@ -22,6 +22,9 @@ public class ClientContact {
 
     @Column(name = "client_id")
     private Integer clientId;
+    
+    @Column(name = "active_flag")
+   	private char activeFlag;
 
 	public Integer getId() {
 		return id;
@@ -61,6 +64,14 @@ public class ClientContact {
 
 	public void setClientId(Integer clientId) {
 		this.clientId = clientId;
+	}
+
+	public char getActiveFlag() {
+		return activeFlag;
+	}
+
+	public void setActiveFlag(char activeFlag) {
+		this.activeFlag = activeFlag;
 	}
     
     

@@ -13,4 +13,6 @@ public interface IClientService {
 
 	void updateClient(Client client);
 
+	void updateClientAll(Client client);
+
 }
