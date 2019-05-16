@@ -84,7 +84,7 @@
           <div class="col-md-8">
             <div class="form-group">
               <label>Called Date </label>
-              <input class="form-control" type="date" name="calledDate" placeholder="Called Date"
+              <input class="form-control" type="date" name="calledDate" [readonly]="readOnlyForm" placeholder="Called Date"
                 [(ngModel)]="consultantCallHistoryModel.calledDate" required>
             </div>
           </div>

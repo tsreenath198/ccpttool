@@ -18,24 +18,23 @@
                   <dd>{{cal.notes}}</dd>
                 </dl>
               </td>
-              <td class="table-data-padding"><span class="fa fa-trash pull-right"
-                (click)="open(content,cal.id)"></span>
-              <ng-template #content let-c="close" let-d="dismiss">
-                <div class="modal-header">
-                  <h4 class="modal-title">Client Application Status</h4>
-                  <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <div class="modal-body">
-                  <p>Are you sure you want to delete ? &hellip;</p>
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" (click)="deleteCARecord()">Ok</button>
-                  <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
-                </div>
-              </ng-template>
-            </td>
+              <td class="table-data-padding"><span class="fa fa-trash pull-right" (click)="open(content,cal.id)"></span>
+                <ng-template #content let-c="close" let-d="dismiss">
+                  <div class="modal-header">
+                    <h4 class="modal-title">Client Application Status</h4>
+                    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <p>Are you sure you want to delete ? &hellip;</p>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" (click)="deleteCARecord()">Ok</button>
+                    <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
+                  </div>
+                </ng-template>
+              </td>
             </tr>
           </tbody>
         </table>
@@ -48,56 +47,42 @@
           <div class="col-md-8">
             <div class="form-group">
               <label>Client Position<span class="required">*</span></label>
-              <div *ngIf="readOnlyForm; else elseBlock2">
-                <input class="form-control" readonly name="cp" [(ngModel)]="clientApplicationModel.clientPositionId">
+              <select class="form-control" name="cp" [disabled]="readOnlyForm"
+                [(ngModel)]="clientApplicationModel.clientPositionId"
+                [ngClass]="{'is-invalid': f.submitted && cp.invalid}" #cp="ngModel" required>
+                <option *ngFor="let cpl of clientPositionList" [ngValue]="cpl.id">{{cpl.technology}}
+                </option>
+              </select>
+              <div class="invalid-feedback">
+                Client Position is mandatory
               </div>
-              <ng-template #elseBlock2>
-                <select class="form-control" name="cp" [(ngModel)]="clientApplicationModel.clientPositionId"
-                  [ngClass]="{'is-invalid': f.submitted && cp.invalid}" #cp="ngModel" required>
-                  <option *ngFor="let cpl of clientPositionList" [ngValue]="cpl.id">{{cpl.technology}}
-                  </option>
-                </select>
-                <div class="invalid-feedback">
-                  Client Position is mandatory
-                </div>
-              </ng-template>
             </div>
           </div>
           <div class="col-md-8">
             <div class="form-group">
               <label>Consultant<span class="required">*</span></label>
-              <div *ngIf="readOnlyForm; else elseBlock3">
-                <input class="form-control" name="con" readonly [(ngModel)]="clientApplicationModel.consultantId">
+              <select class="form-control" [disabled]="readOnlyForm" [(ngModel)]="clientApplicationModel.consultantId"
+                name="con" [ngClass]="{'is-invalid': f.submitted && con.invalid}" #con="ngModel" required>
+                <option *ngFor="let cl of consultantList" [ngValue]="cl.id">{{cl.fullname}}</option>
+              </select>
+              <div class="invalid-feedback">
+                Consultant is mandatory
               </div>
-              <ng-template #elseBlock3>
-                <select class="form-control" [(ngModel)]="clientApplicationModel.consultantId" name="con"
-                  [ngClass]="{'is-invalid': f.submitted && con.invalid}" #con="ngModel" required>
-                  <option *ngFor="let cl of consultantList" [ngValue]="cl.id">{{cl.fullname}}</option>
-                </select>
-                <div class="invalid-feedback">
-                  Consultant is mandatory
-                </div>
-              </ng-template>
             </div>
           </div>
           <div class="col-md-8">
             <div class="form-group">
               <label>Client Application Status<span class="required">*</span></label>
-              <div *ngIf="readOnlyForm; else elseBlock">
-                <input class="form-control" readonly name="cas"
-                  [(ngModel)]="clientApplicationModel.clientApplicationStatusCode">
+              <select class="form-control" name="cas" [disabled]="readOnlyForm"
+                [(ngModel)]="clientApplicationModel.clientApplicationStatusCode"
+                [ngClass]="{'is-invalid': f.submitted && cas.invalid}" #cas="ngModel" required>
+                <option *ngFor="let casl of clientApplicationStatusList" [ngValue]="casl.code">
+                  {{casl.description}}
+                </option>
+              </select>
+              <div class="invalid-feedback">
+                Client Apllication Status is mandatory
               </div>
-              <ng-template #elseBlock>
-                <select class="form-control" name="cas" [(ngModel)]="clientApplicationModel.clientApplicationStatusCode"
-                  [ngClass]="{'is-invalid': f.submitted && cas.invalid}" #cas="ngModel" required>
-                  <option *ngFor="let casl of clientApplicationStatusList" [ngValue]="casl.code">
-                    {{casl.description}}
-                  </option>
-                </select>
-                <div class="invalid-feedback">
-                  Client Apllication Status is mandatory
-                </div>
-              </ng-template>
             </div>
           </div>
         </div>
@@ -105,16 +90,11 @@
           <div class="col-md-8">
             <div class="form-group" data-provide="datepicker">
               <label>Interview Date</label>
-              <div *ngIf="readOnlyForm; else elseBlock4">
-                <input class="form-control" name="date" readonly [(ngModel)]="clientApplicationModel.interviewDate">
+              <input type="date" class="form-control" name="date" [readonly]="readOnlyForm"
+                [(ngModel)]="clientApplicationModel.interviewDate">
+              <div class="input-group-addon">
+                <span class="glyphicon glyphicon-th"></span>
               </div>
-              <ng-template #elseBlock4>
-                <input type="date" class="form-control" name="date" [(ngModel)]="clientApplicationModel.interviewDate">
-                <div class="input-group-addon">
-                  <span class="glyphicon glyphicon-th"></span>
-                </div>
-
-              </ng-template>
             </div>
           </div>
           <div class="col-md-8">

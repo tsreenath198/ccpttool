@@ -70,7 +70,7 @@ export class ConsultantComponent implements OnInit {
     }
     createConsultant(consultantForm: NgForm): void {
         this.http.create(this.consultantModel, this.urlConstants.CCreate).subscribe(resp => {
-            this.toastr.success("Form Submitted Successfully", "Consultant");
+            this.toastr.success(this.urlConstants.SuccessMsg, "Consultant");
             this.init();
             this.formReset();
             consultantForm.resetForm();
@@ -82,7 +82,7 @@ export class ConsultantComponent implements OnInit {
         this.http.update(this.consultantModel, this.urlConstants.CUpdate).subscribe(resp => {
             this.formButtonsToggler = true;
             this.formReset();
-            this.toastr.success("Form Updated Successfully", "Consultant");
+            this.toastr.success(this.urlConstants.UpdateMsg, "Consultant");
             this.init();
             consultantForm.resetForm();
         }, err => {
@@ -110,7 +110,7 @@ export class ConsultantComponent implements OnInit {
     }
     deleteConsultantRecord(): void {
         this.http.delete(this.urlConstants.CDelete + this.selectedRecrdToDel).subscribe(resp => {
-            this.toastr.success("Form Deleted Successfully", "Consultant");
+            this.toastr.success(this.urlConstants.DeleteMsg, "Consultant");
             this.init();
             this.close();
             this.formReset();

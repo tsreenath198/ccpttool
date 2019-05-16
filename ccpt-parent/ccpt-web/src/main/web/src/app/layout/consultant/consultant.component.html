@@ -18,24 +18,23 @@
                 </dl>
               </td>
               <!--  <input type="file" (change)="fileChange($event)" > <span class="fa fa-upload pull-right"></span> -->
-              <td class="table-data-padding"><span class="fa fa-trash pull-right"
-                (click)="open(content,cl.id)"></span>
-              <ng-template #content let-c="close" let-d="dismiss">
-                <div class="modal-header">
-                  <h4 class="modal-title">Consultant</h4>
-                  <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <div class="modal-body">
-                  <p>Are you sure you want to delete ? &hellip;</p>
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" (click)="deleteConsultantRecord()">Ok</button>
-                  <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
-                </div>
-              </ng-template>
-            </td>
+              <td class="table-data-padding"><span class="fa fa-trash pull-right" (click)="open(content,cl.id)"></span>
+                <ng-template #content let-c="close" let-d="dismiss">
+                  <div class="modal-header">
+                    <h4 class="modal-title">Consultant</h4>
+                    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <p>Are you sure you want to delete ? &hellip;</p>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" (click)="deleteConsultantRecord()">Ok</button>
+                    <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
+                  </div>
+                </ng-template>
+              </td>
             </tr>
           </tbody>
         </table>
@@ -100,19 +99,15 @@
           <div class="col-md-8">
             <div class="form-group" data-provide="datepicker">
               <label>Date of Birth<span class="required">*</span></label>
-              <div *ngIf="readOnlyForm; else elseBlock4">
-                <input class="form-control" name="dob" readonly [(ngModel)]="consultantModel.dob">
+              <input type="date" class="form-control" name="dob" [(ngModel)]="consultantModel.dob"
+                [ngClass]="{'is-invalid': f.submitted && dob.invalid}" #dob="ngModel" [readonly]="readOnlyForm"
+                required>
+              <div class="input-group-addon">
+                <span class="glyphicon glyphicon-th"></span>
               </div>
-              <ng-template #elseBlock4>
-                <input type="date" class="form-control" name="dob" [(ngModel)]="consultantModel.dob"
-                  [ngClass]="{'is-invalid': f.submitted && dob.invalid}" #dob="ngModel" required>
-                <div class="input-group-addon">
-                  <span class="glyphicon glyphicon-th"></span>
-                </div>
-                <div class="invalid-feedback">
-                  date of birth is mandatory
-                </div>
-              </ng-template>
+              <div class="invalid-feedback">
+                date of birth is mandatory
+              </div>
             </div>
           </div>
           <div class="col-md-8">
