@@ -24,9 +24,8 @@ public class ClientService implements IClientService {
 	}
 
 	@Override
-	public boolean addClient(Client client) {
+	public void addClient(Client client) {
 		clientRepository.save(client);
-		return true;
 	}
 
 	@Override

@@ -9,7 +9,7 @@ public interface IClientPositionService {
 
 	ClientPosition getClientPositionById(int id);
 
-	boolean addClientPosition(ClientPosition clientPosition);
+	void addClientPosition(ClientPosition clientPosition);
 
 	void updateClientPosition(ClientPosition clientPosition);
 

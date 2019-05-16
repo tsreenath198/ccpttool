@@ -6,6 +6,7 @@ import javax.persistence.EntityNotFoundException;
 
 import org.springframework.beans.ConversionNotSupportedException;
 import org.springframework.beans.TypeMismatchException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,14 +31,14 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
-	@ExceptionHandler(Exception.class)
-	public ResponseEntity<?> globleExcpetionHandler(Exception ex, WebRequest request) {
+	@ExceptionHandler(DataIntegrityViolationException.class)
+	public ResponseEntity<Object> globleExcpetionHandler(DataIntegrityViolationException ex, WebRequest request) {
 		ErrorDetails errorDetails = new ErrorDetails(new Date(), ex.getMessage(), request.getDescription(false));
-		return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
+		return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
 	}
 
 	@ExceptionHandler(EntityNotFoundException.class)
-	public ResponseEntity<?> entityNotFoundExcpetionHandler(Exception ex, WebRequest request) {
+	public ResponseEntity<Object> entityNotFoundExcpetionHandler(EntityNotFoundException ex, WebRequest request) {
 		ErrorDetails errorDetails = new ErrorDetails(new Date(), ex.getMessage(), request.getDescription(false));
 		return new ResponseEntity<>(errorDetails, HttpStatus.NO_CONTENT);
 	}

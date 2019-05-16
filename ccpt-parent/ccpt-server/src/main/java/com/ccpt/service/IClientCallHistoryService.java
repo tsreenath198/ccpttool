@@ -10,7 +10,7 @@ public interface IClientCallHistoryService {
 
 	ClientCallHistory getClientCallHistoryById(int id);
 
-	boolean addClientCallHistory(ClientCallHistory clientCallHistory);
+	void addClientCallHistory(ClientCallHistory clientCallHistory);
 
 	void updateClientCallHistory(ClientCallHistory clientCallHistory);
 

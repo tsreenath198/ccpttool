@@ -9,7 +9,7 @@ public interface IConsultantService {
 
 	Consultant getConsultantById(int id);
 
-	boolean addConsultant(Consultant consultant);
+	void addConsultant(Consultant consultant);
 
 	void updateConsultant(Consultant consultant);
 

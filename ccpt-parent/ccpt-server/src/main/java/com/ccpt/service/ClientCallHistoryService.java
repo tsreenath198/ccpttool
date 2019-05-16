@@ -40,9 +40,8 @@ public class ClientCallHistoryService implements IClientCallHistoryService {
 	}
 
 	@Override
-	public boolean addClientCallHistory(ClientCallHistory clientCallHistory) {
+	public void addClientCallHistory(ClientCallHistory clientCallHistory) {
 		clientCallHistoryRepository.save(clientCallHistory);
-		return true;
 	}
 
 	@Override

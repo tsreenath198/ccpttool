@@ -44,7 +44,7 @@ public class ConsultantStatusService implements IConsultantStatusService {
 	}
 
 	@Override
-	public void deleteConsultantStatus(String code){
+	public void deleteConsultantStatus(String code) {
 
 		ConsultantStatus cs = getConsultantStatusById(code);
 		cs.setActiveFlag('N');

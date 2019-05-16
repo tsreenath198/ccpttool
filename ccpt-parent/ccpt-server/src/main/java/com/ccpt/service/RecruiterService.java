@@ -39,9 +39,8 @@ public class RecruiterService implements IRecruiterService {
 	}
 
 	@Override
-	public boolean addRecruiter(Recruiter recruiter) {
+	public void addRecruiter(Recruiter recruiter) {
 		recruiterRepository.save(recruiter);
-		return true;
 	}
 
 	@Override

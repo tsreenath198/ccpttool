@@ -7,7 +7,7 @@ import com.ccpt.model.Client;
 public interface IClientService {
 	List<Client> getAllClients();
 
-	boolean addClient(Client client);
+	void addClient(Client client);
 
 	Client getClientById(Integer id);
 

@@ -40,9 +40,8 @@ public class ConsultantCallHistoryService implements IConsultantCallHistoryServi
 	}
 
 	@Override
-	public boolean addConsultantCallHistory(ConsultantCallHistory consultantCallHistory) {
+	public void addConsultantCallHistory(ConsultantCallHistory consultantCallHistory) {
 		consultantCallHistoryRepository.save(consultantCallHistory);
-		return true;
 	}
 
 	@Override

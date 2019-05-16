@@ -10,7 +10,7 @@ public interface IConsultantCallHistoryService {
 
 	ConsultantCallHistory getConsultantCallHistoryById(int id);
 
-	boolean addConsultantCallHistory(ConsultantCallHistory consultantCallHistory);
+	void addConsultantCallHistory(ConsultantCallHistory consultantCallHistory);
 
 	void updateConsultantCallHistory(ConsultantCallHistory consultantCallHistory);
 

@@ -38,7 +38,7 @@ public class ClientPositionController {
 	private IClientPositionStatusService clientPositionStatusService;
 
 	@GetMapping(CCPTConstants.GET_ALL)
-	public ResponseEntity<List<ClientPosition>> getAllClientPositions()  {
+	public ResponseEntity<List<ClientPosition>> getAllClientPositions() {
 		List<ClientPosition> clientPositionList = clientPositionService.getAllClientPositions();
 
 		for (ClientPosition clientPosition : clientPositionList) {
@@ -50,7 +50,7 @@ public class ClientPositionController {
 	}
 
 	@GetMapping(CCPTConstants.GET_BY_ID)
-	public ResponseEntity<ClientPosition> getClientPositionById(@RequestParam Integer id)  {
+	public ResponseEntity<ClientPosition> getClientPositionById(@RequestParam Integer id) {
 		ClientPosition clientPosition = clientPositionService.getClientPositionById(id);
 		return new ResponseEntity<ClientPosition>(clientPosition, HttpStatus.OK);
 	}
@@ -60,7 +60,6 @@ public class ClientPositionController {
 		clientPosition.setActiveFlag('Y');
 		clientPosition.setCreatedDate(new Date());
 		clientPosition.setUpdatedDate(new Date());
-		clientPosition.setActiveFlag('Y');
 		clientPositionService.addClientPosition(clientPosition);
 		return new ResponseEntity<Void>(HttpStatus.CREATED);
 	}
@@ -72,10 +71,10 @@ public class ClientPositionController {
 		return new ResponseEntity<ClientPosition>(clientPosition, HttpStatus.OK);
 	}
 
-	@DeleteMapping(CCPTConstants.DELETE_BY_ID+"/{id}")
+	@DeleteMapping(CCPTConstants.DELETE_BY_ID + "/{id}")
 	public ResponseEntity<Void> deleteClientPosition(@PathVariable Integer id) {
 		ClientPosition clientPosition = clientPositionService.getClientPositionById(id);
-		clientPosition.setActiveFlag('N'); 
+		clientPosition.setActiveFlag('N');
 		clientPosition.setUpdatedDate(new Date());
 		clientPositionService.addClientPosition(clientPosition);
 		return new ResponseEntity<Void>(HttpStatus.OK);

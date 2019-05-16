@@ -45,9 +45,8 @@ public class ClientPositionService implements IClientPositionService {
 	}
 
 	@Override
-	public boolean addClientPosition(ClientPosition clientPosition) {
+	public void addClientPosition(ClientPosition clientPosition) {
 		clientPositionRepository.save(clientPosition);
-		return true;
 	}
 
 }

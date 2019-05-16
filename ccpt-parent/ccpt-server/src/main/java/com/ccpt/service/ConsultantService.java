@@ -39,9 +39,8 @@ public class ConsultantService implements IConsultantService {
 	}
 
 	@Override
-	public boolean addConsultant(Consultant consultant) {
+	public void addConsultant(Consultant consultant) {
 		consultantRepository.save(consultant);
-		return true;
 	}
 
 }

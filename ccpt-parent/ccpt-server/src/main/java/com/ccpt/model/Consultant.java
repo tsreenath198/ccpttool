@@ -67,7 +67,7 @@ public class Consultant {
 	@Column(name = "experience_months")
 	private int experienceMonths;
 
-	@Column(name = "activeFlag")
+	@Column(name = "active_flag")
 	private char activeFlag;
 
 	@Transient

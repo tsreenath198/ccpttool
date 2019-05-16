@@ -10,7 +10,7 @@ public interface IRecruiterService {
 
 	Recruiter getRecruiterById(int id);
 
-	boolean addRecruiter(Recruiter recruiter);
+	void addRecruiter(Recruiter recruiter);
 
 	void updateRecruiter(Recruiter recruiter);
 
