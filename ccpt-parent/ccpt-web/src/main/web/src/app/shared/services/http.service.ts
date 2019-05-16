@@ -18,7 +18,7 @@ export class HttpClientService {
         'X-TOKEN': sessionStorage.getItem("access_token")
       })
     };
-    return this.http.post(this.base_url + url, data, httpOptions);
+    return this.http.post(this.base_url + url, data);
   }
   get(URL: string) {
     return this.http.get(this.base_url + URL);
