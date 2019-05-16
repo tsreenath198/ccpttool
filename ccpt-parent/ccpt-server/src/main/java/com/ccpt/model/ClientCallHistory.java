@@ -8,6 +8,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 @Entity
@@ -34,7 +36,8 @@ public class ClientCallHistory {
 
 	@Column(name = "client_position_code")
 	private String clientPositionCode;
-	
+
+	@Temporal(TemporalType.DATE)
 	@Column(name = "called_date")
 	private Date calledDate;
 
@@ -123,7 +126,5 @@ public class ClientCallHistory {
 	public void setCalledDate(Date calledDate) {
 		this.calledDate = calledDate;
 	}
-
-	
 
 }

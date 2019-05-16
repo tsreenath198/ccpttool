@@ -18,4 +18,5 @@ public interface CCPTConstants {
 	String REPORT = "/report";
 	String UPLOAD_FILE = "/uploadFile";
 	String CLIENT = "/client";
+	String CONTACT = "/contact";
 }
