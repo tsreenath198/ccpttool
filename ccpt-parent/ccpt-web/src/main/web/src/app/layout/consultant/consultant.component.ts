@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { NgbModal, ModalDismissReasons, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { routerTransition } from '../../router.animations';
 import { ConsultantModel } from './consultant.model';
 import { HttpClientService } from 'src/app/shared/services/http.service';
@@ -23,9 +24,13 @@ export class ConsultantComponent implements OnInit {
     public formButtonsToggler: boolean = true;
     public editButtonToggler: boolean = true;
     public genderList = ['Male', 'Female', 'Other'];
+    
+    private selectedRecrdToDel: number = 0;
+    public closeResult: string = '';
+    private modalRef: NgbModalRef;
     public urlConstants = new URLConstants();
     public currSearchTxt: string ;
-    constructor(private http: HttpClientService, private toastr: ToastrCustomService) { }
+    constructor(private http: HttpClientService, private toastr: ToastrCustomService, private modalService: NgbModal) { }
 
     ngOnInit() {
         this.http.get(this.urlConstants.CSGetAll).subscribe(resp => {
@@ -84,22 +89,6 @@ export class ConsultantComponent implements OnInit {
             this.toastr.error(err.statusText, "Client Position");
         })
     }
-   /* fileChange(event) {
-        let fileList: FileList = event.target.files;
-        if (fileList.length > 0) {
-            let file: File = fileList[0];
-            let formData: FormData = new FormData();
-            formData.append('uploadFile', file, file.name);
-            this.http.upload(this.urlConstants.CUpload + '?refId=10&refType=doc&comments=doc', formData);
-        }
-    }*/
-    deleteConsultant(id) {
-        this.http.delete(this.urlConstants.CDelete + id).subscribe(resp => {
-            this.toastr.success("Form Deleted Successfully", "Consultant");
-            this.init();
-            this.formReset();
-        })
-    }
     editableForm() {
         if (this.readOnlyForm == true) {
             this.readOnlyForm = false;
@@ -119,9 +108,40 @@ export class ConsultantComponent implements OnInit {
         }
 
     }
-    deleteConfirmation(toDelete){
-        if (confirm("Are you sure you want to delete the row!")) {
-            this.deleteConsultant(toDelete.id);
-          } 
+    deleteConsultantRecord(): void {
+        this.http.delete(this.urlConstants.CDelete + this.selectedRecrdToDel).subscribe(resp => {
+            this.toastr.success("Form Deleted Successfully", "Consultant");
+            this.init();
+            this.close();
+            this.formReset();
+        })
+    }
+    /**
+     * @param 
+     * 1) content consists the modal instance
+     * 2) Selected contains the code of selected row
+     */
+    open(content, selected: number) {
+        if (selected) {
+            this.selectedRecrdToDel = selected;
+        }
+        this.modalRef = this.modalService.open(content);
+        this.modalRef.result.then((result) => {
+            this.closeResult = `Closed with: ${result}`;
+        }, (reason) => {
+            this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+        });
+    }
+    close() {
+        this.modalRef.close();
+    }
+    private getDismissReason(reason: any): string {
+        if (reason === ModalDismissReasons.ESC) {
+            return 'by pressing ESC';
+        } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+            return 'by clicking on a backdrop';
+        } else {
+            return `with: ${reason}`;
+        }
     }
 }
