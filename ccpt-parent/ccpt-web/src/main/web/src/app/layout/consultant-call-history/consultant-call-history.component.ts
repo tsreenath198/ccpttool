@@ -20,7 +20,6 @@ export class ConsultantCallHistoryComponent implements OnInit {
     public consultantCallHistoryModel: ConsultantCallHistoryModel = <ConsultantCallHistoryModel>{};
     public consultantCallHistoryList: Array<ConsultantCallHistoryModel> = [];
     public currSearchTxt:string = "";
-    public readOnlyForm: boolean = false;
     public formButtonsToggler: boolean = true;
     public editButtonToggler: boolean = true;
     public consultantList: Array<ConsultantModel> = [];
@@ -30,6 +29,9 @@ export class ConsultantCallHistoryComponent implements OnInit {
     private selectedRecrdToDel: number = 0;
     public closeResult: string = '';
     private modalRef: NgbModalRef;
+    
+    public readOnlyForm: string = '';
+    public enableButtonType: string = '';
 
     constructor(private http: HttpClientService, private toastr: ToastrCustomService, private modalService: NgbModal) { }
     ngOnInit() {
@@ -47,32 +49,25 @@ export class ConsultantCallHistoryComponent implements OnInit {
         })
     }
     consultantCallHistoryEdit(data) {
-        this.consultantCallHistoryModel = data;
-        if (this.readOnlyForm == true) {
-            this.readOnlyForm = false;
-        }
-        if (this.formButtonsToggler == true) {
-            this.formButtonsToggler = false;
-        }
-        if (this.editButtonToggler == true) {
-            this.editButtonToggler = false;
-        }
+        this.consultantCallHistoryModel = JSON.parse(JSON.stringify(data));;
+        this.readOnlyForm = 'U';
+        this.enableButtonType = 'U';
     }
     readOnlyEnable(data) {
-        this.consultantCallHistoryModel = data;
-        if (this.readOnlyForm == false) {
-            this.readOnlyForm = true;
-        }
-        if (this.formButtonsToggler == true) {
-            this.formButtonsToggler = false;
-        }
+        this.consultantCallHistoryModel = JSON.parse(JSON.stringify(data));
+        this.readOnlyForm = 'R';
+        this.enableButtonType = 'E';
+    }
+    enableFormEditable(): void {
+        this.readOnlyForm = 'U';
+        this.enableButtonType = 'U';
     }
     formReset() {
         this.consultantCallHistoryModel = <ConsultantCallHistoryModel>{};
     }
     createConsultantCallHistory(consultantCallHistory: NgForm): void {
         this.http.create(this.consultantCallHistoryModel, this.urlConstants.CoCHCreate).subscribe(resp => {
-            this.toastr.success("Form Submitted Successfully", "Consultant Call History");
+            this.toastr.success(this.urlConstants.SuccessMsg, "Consultant Call History");
             this.init();
             this.formReset();
             consultantCallHistory.resetForm();
@@ -83,32 +78,22 @@ export class ConsultantCallHistoryComponent implements OnInit {
     }
     updateConsultantCallHistory(consultantCallHistory: NgForm) {
         this.http.update(this.consultantCallHistoryModel, this.urlConstants.CoCHUpdate).subscribe(resp => {
-            this.formButtonsToggler = true;
             this.formReset();
-            this.toastr.success("Form Updated Successfully", "Consultant Call History");
+            this.toastr.success(this.urlConstants.UpdateMsg, "Consultant Call History");
             this.init();
             consultantCallHistory.resetForm();
+            
+            this.readOnlyForm = '';
+            this.enableButtonType = '';
         }, err => {
             this.toastr.error(err.statusText, "Consultant Call History");
         })
     }
-    editableForm() {
-        if (this.readOnlyForm == true) {
-            this.readOnlyForm = false;
-        }
-        if (this.editButtonToggler == true) {
-            this.editButtonToggler = false;
-        }
-    }
     cancelForm(consultantCallHistory: NgForm) {
         this.formReset();
         consultantCallHistory.resetForm();
-        if (this.readOnlyForm == true) {
-            this.readOnlyForm = false;
-        }
-        if (this.formButtonsToggler == false) {
-            this.formButtonsToggler = true;
-        }
+        this.readOnlyForm = '';
+        this.enableButtonType = ''; 
 
     }
     deleteCoCHRecord(): void {

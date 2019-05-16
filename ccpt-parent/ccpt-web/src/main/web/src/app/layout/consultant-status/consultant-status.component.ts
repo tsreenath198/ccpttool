@@ -17,13 +17,15 @@ export class ConsultantStatusComponent implements OnInit {
     public consultantStatusModel: ConsultantStatusModel = <ConsultantStatusModel>{};
     public consultantStatusList: Array<ConsultantStatusModel> = [];
     private urlConstants = new URLConstants();
-    public readOnlyForm: boolean = false;
     public formButtonsToggler: boolean = true;
     public editButtonToggler: boolean = true;
     public currSearchTxt: string = '';
     private selectedRecrdToDel: string = '';
     public closeResult:string = '';
     private modalRef: NgbModalRef;
+    
+    public readOnlyForm: string = '';
+    public enableButtonType: string = '';
     constructor(private http: HttpClientService, private toastr: ToastrCustomService, private modalService: NgbModal) { }
     ngOnInit() {
         this.init();
@@ -34,25 +36,18 @@ export class ConsultantStatusComponent implements OnInit {
         })
     }
     editClientApplicationStatus(data) {
-        this.consultantStatusModel = data;
-        if (this.readOnlyForm == true) {
-            this.readOnlyForm = false;
-        }
-        if (this.formButtonsToggler == true) {
-            this.formButtonsToggler = false;
-        }
-        if (this.editButtonToggler == true) {
-            this.editButtonToggler = false;
-        }
+        this.consultantStatusModel = JSON.parse(JSON.stringify(data));;
+        this.readOnlyForm = 'U';
+        this.enableButtonType = 'U';
+    }
+    enableFormEditable(): void {
+        this.readOnlyForm = 'U';
+        this.enableButtonType = 'U';
     }
     readOnlyEnable(data) {
-        this.consultantStatusModel = data;
-        if (this.readOnlyForm == false) {
-            this.readOnlyForm = true;
-        }
-        if (this.formButtonsToggler == true) {
-            this.formButtonsToggler = false;
-        }
+        this.consultantStatusModel = JSON.parse(JSON.stringify(data));;
+        this.readOnlyForm = 'R';
+        this.enableButtonType = 'E';
     }
     public formReset() {
         this.consultantStatusModel = <ConsultantStatusModel>{};
@@ -67,36 +62,25 @@ export class ConsultantStatusComponent implements OnInit {
             this.toastr.error(err.statusText, "Consultant Status");
         })
     }
-    public updateClientApplicationStatus(consultantStatusForm: NgForm) {
+    public updateConsultantStatus(consultantStatusForm: NgForm) {
         this.http.update(this.consultantStatusModel, this.urlConstants.CSUpdate).subscribe(resp => {
             this.toastr.success("Form Updated Successfully", "Consultant Status");
             this.formButtonsToggler = true;
             this.formReset();
             this.init();
             consultantStatusForm.resetForm();
+            this.readOnlyForm = '';
+            this.enableButtonType = '';
         }, err => {
             this.toastr.error(err.statusText, "Consultant Status");
         })
     }
     
-    public editableForm() {
-        if (this.readOnlyForm == true) {
-            this.readOnlyForm = false;
-        }
-        if (this.editButtonToggler == true) {
-            this.editButtonToggler = false;
-        }
-    }
     public cancelForm(consultantStatusForm: NgForm) {
         this.formReset();
         consultantStatusForm.resetForm();
-        if (this.readOnlyForm == true) {
-            this.readOnlyForm = false;
-        }
-        if (this.formButtonsToggler == false) {
-            this.formButtonsToggler = true;
-        }
-
+        this.readOnlyForm = '';
+        this.enableButtonType = ''; 
     }
     deleteCSRecord(): void {
         this.http.delete(this.urlConstants.CSDelete + this.selectedRecrdToDel).subscribe(resp => {

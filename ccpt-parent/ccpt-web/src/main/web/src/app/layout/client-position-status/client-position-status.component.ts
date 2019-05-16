@@ -18,13 +18,14 @@ export class ClientPositionStatusComponent implements OnInit {
     public clientPositionStatusModel: ClientpositionStatusModel = <ClientpositionStatusModel>{};
     public clientPositionStatusList: Array<ClientpositionStatusModel> = [];
     private urlConstants = new URLConstants();  
-    public readOnlyForm :boolean=false;
     public formButtonsToggler :boolean=true;
     public editButtonToggler:boolean=true;
     private selectedRecrdToDel: string = '';
     public closeResult: string = '';
     private modalRef: NgbModalRef;
     public currSearchTxt: string ;
+    public readOnlyForm: string = '';
+    public enableButtonType: string = '';
 
     constructor(private http: HttpClientService, private toastr: ToastrCustomService,private modalService: NgbModal) { }
     ngOnInit() {
@@ -36,32 +37,25 @@ export class ClientPositionStatusComponent implements OnInit {
         })
     }
     editClientPositionStatus(data) {
-        this.clientPositionStatusModel = data;
-        if(this.readOnlyForm==true){
-            this.readOnlyForm=false;
-        }
-        if(this.formButtonsToggler==true){
-            this.formButtonsToggler=false;
-        }
-        if(this.editButtonToggler==true){
-            this.editButtonToggler=false;
-        }
+        this.clientPositionStatusModel = JSON.parse(JSON.stringify(data));;
+        this.readOnlyForm = 'U';
+        this.enableButtonType = 'U';
+    }
+    enableFormEditable(): void {
+        this.readOnlyForm = 'U';
+        this.enableButtonType = 'U';
     }
     readOnlyEnable(data){
-        this.clientPositionStatusModel = data;
-        if(this.readOnlyForm==false){
-            this.readOnlyForm=true;
-        }
-        if(this.formButtonsToggler==true){
-            this.formButtonsToggler=false;
-        }
+        this.clientPositionStatusModel = JSON.parse(JSON.stringify(data));
+        this.readOnlyForm = 'R';
+        this.enableButtonType = 'E';
     }
     formReset() {
         this.clientPositionStatusModel = <ClientpositionStatusModel>{};
     }
     createClientPositionStatus(clientPositionStatusForm:NgForm): void {
         this.http.create(this.clientPositionStatusModel, this.urlConstants.CPSCreate).subscribe(resp => {
-            this.toastr.success("Form Submitted Successfully", "Client Position Status");
+            this.toastr.success(this.urlConstants.SuccessMsg, "Client Position Status");
             this.init();
             this.formReset();
             clientPositionStatusForm.resetForm();
@@ -71,37 +65,35 @@ export class ClientPositionStatusComponent implements OnInit {
     }
     updateClientPositionStatus(clientApplicationStatusForm:NgForm) {
         this.http.update(this.clientPositionStatusModel, this.urlConstants.CPSUpdate).subscribe(resp => {
-            this.toastr.success("Form Updated Successfully", "Client Position Status");
-            this.formButtonsToggler = true;
+            this.toastr.success(this.urlConstants.UpdateMsg, "Client Position Status");
             this.formReset();
             this.init();
             clientApplicationStatusForm.resetForm();
+            this.readOnlyForm = '';
+            this.enableButtonType = '';
         }, err => {
             this.toastr.error(err.statusText, "Client Position Status");
         })
     }
-    editableForm(){
-        if(this.readOnlyForm==true){
-            this.readOnlyForm=false;
-        }
-        if(this.editButtonToggler==true){
-            this.editButtonToggler=false;
-        }
-    }
+    // editableForm(){
+    //     if(this.readOnlyForm==true){
+    //         this.readOnlyForm=false;
+    //     }
+    //     if(this.editButtonToggler==true){
+    //         this.editButtonToggler=false;
+    //     }
+    // }
     cancelForm(clientApplicationStatusForm:NgForm){
         this.formReset();
         clientApplicationStatusForm.resetForm();
-        if(this.readOnlyForm==true){
-            this.readOnlyForm=false;
-        }
-        if(this.formButtonsToggler==false){
-            this.formButtonsToggler=true;
-        }       
+        
+        this.readOnlyForm = '';
+        this.enableButtonType = '';     
     }
     
     deleteCPSRecord(): void {
         this.http.delete(this.urlConstants.CPSDelete + this.selectedRecrdToDel).subscribe(resp => {
-            this.toastr.success("Form Deleted Successfully", "Client Position Status");
+            this.toastr.success(this.urlConstants.DeleteMsg, "Client Position Status");
             this.init();
             this.close();
             this.formReset();

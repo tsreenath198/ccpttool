@@ -52,11 +52,8 @@
           <div class="col-md-8">
             <div class="form-group">
               <label>Client Name<span class="required">*</span></label>
-              <div *ngIf="readOnlyForm; else elseBlock1">
-                <input class="form-control" readonly name="cn" [(ngModel)]="clientCallHistoryModel.clientName">
-              </div>
-              <ng-template #elseBlock1>
-                <select class="form-control" name="cn" [(ngModel)]="clientCallHistoryModel.clientId"
+              
+                <select class="form-control"  [disabled]="readOnlyForm == 'R'" name="cn" [(ngModel)]="clientCallHistoryModel.clientId"
                   [ngClass]="{'is-invalid': f.submitted && cn.invalid}" #cn="ngModel" required>
                   <option *ngFor="let cl of clientList" [ngValue]="cl.id">
                     {{cl.name}}
@@ -65,17 +62,13 @@
                 <div class="invalid-feedback">
                   Client Position is mandatory
                 </div>
-              </ng-template>
             </div>
           </div>
           <div class="col-md-8">
             <div class="form-group">
               <label>Client Position<span class="required">*</span></label>
-              <div *ngIf="readOnlyForm; else elseBlock">
-                <input class="form-control" readonly name="cp" [(ngModel)]="clientCallHistoryModel.clientPositionCode">
-              </div>
-              <ng-template #elseBlock>
-                <select class="form-control" name="cp" [(ngModel)]="clientCallHistoryModel.clientPositionId"
+             
+                <select class="form-control"  [disabled]="readOnlyForm == 'R'" name="cp" [(ngModel)]="clientCallHistoryModel.clientPositionId"
                   [ngClass]="{'is-invalid': f.submitted && cp.invalid}" #cp="ngModel" required>
                   <option *ngFor="let cpl of clientPositionList" [ngValue]="cpl.id">
                     {{cpl.clientPositionCode}}
@@ -84,15 +77,21 @@
                 <div class="invalid-feedback">
                   Client Position is mandatory
                 </div>
-              </ng-template>
             </div>
           </div>
+          <div class="col-md-8">
+              <div class="form-group">
+                <label>Called Date </label>
+                <input class="form-control" type="date" name="calledDate" [readonly]="readOnlyForm == 'R'" placeholder="Called Date"
+                  [(ngModel)]="clientCallHistoryModel.calledDate" required>
+              </div>
+            </div>
         </div>
         <div class="row">
           <div class="col-md-8">
             <div class="form-group">
               <label>Notes<span class="required">*</span></label>
-              <textarea class="form-control" name="note" cols="10" rows="10" [readonly]="readOnlyForm"
+              <textarea class="form-control" name="note" cols="10" rows="10" [readonly]="readOnlyForm == 'R'"
                 [(ngModel)]="clientCallHistoryModel.notes" [ngClass]="{'is-invalid': f.submitted && note.invalid}"
                 #note="ngModel" required></textarea>
               <div class="invalid-feedback">
@@ -103,19 +102,12 @@
         </div>
         <div class="row text-center">
           <div class="col-md-8">
-            <span *ngIf="formButtonsToggler;else toggleButtons">
-              <button type="submit" id="add" class="btn btn-secondary ml-3">Add</button>
-            </span>
-            <ng-template #toggleButtons>
-              <span *ngIf="editButtonToggler;else toggleEdit">
-                <button type="button" id="update" class="btn btn-secondary ml-2" (click)="editableForm()">Edit</button>
-              </span>
-              <ng-template #toggleEdit>
-                <button type="submit" id="update" class="btn btn-secondary ml-2"
-                  (click)="updateClientCallHistory(f)">Update</button>
-              </ng-template>
-            </ng-template>
-            <button type="button" id="cancel" (click)="cancelForm(f)" class="btn btn-secondary ml-3">Cancel</button>
+              <button type="submit" *ngIf="enableButtonType == ''" class="btn btn-secondary ml-3">Add</button>
+              <button type="submit" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2"
+                (click)="updateClientCallHistory(f)">Update</button>
+              <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button"
+                (click)="enableFormEditable()">Edit</button>
+              <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3">Cancel</button>
           </div>
         </div>
       </form>

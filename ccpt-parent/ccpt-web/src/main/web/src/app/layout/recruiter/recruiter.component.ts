@@ -15,7 +15,6 @@ import { NgForm } from '@angular/forms';
 })
 export class RecruiterComponent implements OnInit {
     public recruiterModel: RecruiterModel = <RecruiterModel>{};
-    public readOnlyForm: boolean = false;
     public formButtonsToggler: boolean = true;
     public editButtonToggler: boolean = true;
     public recruiterList: Array<RecruiterModel> = [];
@@ -27,6 +26,9 @@ export class RecruiterComponent implements OnInit {
     private modalRef: NgbModalRef;
     public genderList=['MALE','FEMALE','OTHER'];
     public currSearchTxt: string ;
+    
+    public readOnlyForm: string = '';
+    public enableButtonType: string = '';
 
     constructor(private http: HttpClientService, private toastr: ToastrCustomService, private modalService: NgbModal) { }
     ngOnInit() {
@@ -40,24 +42,17 @@ export class RecruiterComponent implements OnInit {
     }
     recruiterEdit(data) {
         this.recruiterModel =  JSON.parse(JSON.stringify(data));;
-        if (this.readOnlyForm == true) {
-            this.readOnlyForm = false;
-        }
-        if (this.formButtonsToggler == true) {
-            this.formButtonsToggler = false;
-        }
-        if (this.editButtonToggler == true) {
-            this.editButtonToggler = false;
-        }
+        this.readOnlyForm = 'U';
+        this.enableButtonType = 'U';
+    }
+    enableFormEditable(): void {
+        this.readOnlyForm = 'U';
+        this.enableButtonType = 'U';
     }
     readOnlyEnable(data) {
         this.recruiterModel = JSON.parse(JSON.stringify(data));
-        if (this.readOnlyForm == false) {
-            this.readOnlyForm = true;
-        }
-        if (this.formButtonsToggler == true) {
-            this.formButtonsToggler = false;
-        }
+        this.readOnlyForm = 'R';
+        this.enableButtonType = 'E';
     }
     formReset() {
         this.recruiterModel = <RecruiterModel>{};
@@ -76,30 +71,20 @@ export class RecruiterComponent implements OnInit {
         this.http.update(this.recruiterModel, this.urlConstants.RUpdate).subscribe(resp => {
             this.toastr.success(this.urlConstants.UpdateMsg, "Recruiter");
             this.init();
-            this.formButtonsToggler = true;
             this.formReset();
             recruiterForm.resetForm();
+            
+            this.readOnlyForm = '';
+            this.enableButtonType = '';
         }, err => {
             this.toastr.error(err.statusText, "Recruiter");
         })
     }
-    editableForm() {
-        if (this.readOnlyForm == true) {
-            this.readOnlyForm = false;
-        }
-        if (this.editButtonToggler == true) {
-            this.editButtonToggler = false;
-        }
-    }
     cancelForm(recruiterForm:NgForm) {
         this.formReset();
         recruiterForm.resetForm();
-        if (this.readOnlyForm == true) {
-            this.readOnlyForm = false;
-        }
-        if (this.formButtonsToggler == false) {
-            this.formButtonsToggler = true;
-        }
+        this.readOnlyForm = '';
+        this.enableButtonType = ''; 
     }
     deleteRecruiterRecord(): void {
         this.http.delete(this.urlConstants.RDelete + this.selectedRecrdToDel).subscribe(resp => {

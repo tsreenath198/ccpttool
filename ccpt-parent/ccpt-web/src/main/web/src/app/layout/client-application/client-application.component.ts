@@ -27,16 +27,20 @@ export class ClientApplicationComponent implements OnInit {
     public clientPositionList: Array<ClientPositionModel> = [];
     private urlConstants = new URLConstants();
     public currSearchTxt:string = "";
-    public readOnlyForm: boolean = false;
     public formButtonsToggler: boolean = true;
     public editButtonToggler: boolean = true;
+    public isInterviewScheduled:boolean = false;
     private selectedRecrdToDel: number = 0;
     public closeResult: string = '';
     private modalRef: NgbModalRef;
+    public readOnlyForm: string = '';
+    public enableButtonType: string = '';
+
     constructor(private http: HttpClientService, private toastr: ToastrCustomService, private modalService: NgbModal) { }
     private getAllCAS = this.http.get(this.urlConstants.CASGetAll);
     private getAllC = this.http.get(this.urlConstants.CGetAll);
     private getAllCP = this.http.get(this.urlConstants.CPGetAll);
+
     ngOnInit() {
         this.init();
         this.getAllDropdowns();
@@ -62,18 +66,19 @@ export class ClientApplicationComponent implements OnInit {
     formReset() {
         this.clientApplicationModel = <ClientApplicationModel>{};
     }
+    enableFormEditable(): void {
+        this.readOnlyForm = 'U';
+        this.enableButtonType = 'U';
+    }
     readOnlyEnable(data) {
-        this.clientApplicationModel = data;
-        if (this.readOnlyForm == false) {
-            this.readOnlyForm = true;
-        }
-        if (this.formButtonsToggler == true) {
-            this.formButtonsToggler = false;
-        }
+        this.isInterviewScheduled = true;
+        this.clientApplicationModel = JSON.parse(JSON.stringify(data));
+        this.readOnlyForm = 'R';
+        this.enableButtonType = 'E';
     }
     createClientApplication(clientApplicationForm:NgForm): void {
         this.http.create(this.clientApplicationModel, this.urlConstants.CACreate).subscribe(resp => {
-            this.toastr.success("Form Submitted Successfully", "Client Application");
+            this.toastr.success(this.urlConstants.SuccessMsg, "Client Application");
             this.init();
             this.formReset()
             clientApplicationForm.resetForm();
@@ -83,52 +88,35 @@ export class ClientApplicationComponent implements OnInit {
 
     }
     editClientApplication(data) {
-        this.clientApplicationModel = data;
-        if (this.readOnlyForm == true) {
-            this.readOnlyForm = false;
-        }
-        if (this.formButtonsToggler == true) {
-            this.formButtonsToggler = false;
-        }
-        if (this.editButtonToggler == true) {
-            this.editButtonToggler = false;
-        }
+        this.isInterviewScheduled = true;
+        this.clientApplicationModel = JSON.parse(JSON.stringify(data));;
+        this.readOnlyForm = 'U';
+        this.enableButtonType = 'U';
     }
     updateClientApplication(clientApplicationForm:NgForm) {
         this.http.update(this.clientApplicationModel, this.urlConstants.CAUpdate).subscribe(resp => {
-            this.toastr.success("Form Updated Successfully", "Client Application");
-            this.formButtonsToggler = true;
+            this.toastr.success(this.urlConstants.UpdateMsg, "Client Application");
             this.formReset();
             this.init();
             clientApplicationForm.resetForm();
+            this.readOnlyForm = '';
+            this.enableButtonType = '';
         }, err => {
             this.toastr.error(err.statusText, "Client Application");
         })
         this.formReset();
     }
     
-    editableForm() {
-        if (this.readOnlyForm == true) {
-            this.readOnlyForm = false;
-        }
-        if (this.editButtonToggler == true) {
-            this.editButtonToggler = false;
-        }
-    }
     cancelForm(clientApplicationForm:NgForm) {
         this.formReset();
         clientApplicationForm.resetForm();
-        if (this.readOnlyForm == true) {
-            this.readOnlyForm = false;
-        }
-        if (this.formButtonsToggler == false) {
-            this.formButtonsToggler = true;
-        }
+        this.readOnlyForm = '';
+        this.enableButtonType = '';   
 
     }
     deleteCARecord(): void {
         this.http.delete(this.urlConstants.CADelete + this.selectedRecrdToDel).subscribe(resp => {
-            this.toastr.success("Record Deleted Successfully", "Client Application");
+            this.toastr.success(this.urlConstants.DeleteMsg, "Client Application");
             this.init();
             this.close();
             this.formReset();

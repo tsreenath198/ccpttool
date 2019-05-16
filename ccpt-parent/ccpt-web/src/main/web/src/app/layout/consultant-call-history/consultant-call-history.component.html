@@ -49,12 +49,8 @@
           <div class="col-md-8">
             <div class="form-group">
               <label>Consultant<span class="required">*</span></label>
-              <div *ngIf="readOnlyForm; else elseBlock">
-                <input class="form-control" name="consultant" readonly
-                  [(ngModel)]="consultantCallHistoryModel.consultantName">
-              </div>
-              <ng-template #elseBlock>
-                <select class="form-control" name="consultant" [(ngModel)]="consultantCallHistoryModel.consultantId"
+            
+                <select class="form-control" name="consultant" [disabled]="readOnlyForm == 'R'" [(ngModel)]="consultantCallHistoryModel.consultantId"
                   [ngClass]="{'is-invalid': f.submitted && consultant.invalid}" #consultant="ngModel" required>
                   <option *ngFor="let consultant of consultantList" [ngValue]="consultant.id">{{consultant.fullname}}
                   </option>
@@ -62,36 +58,29 @@
                 <div class="invalid-feedback">
                   Consultant is mandatory
                 </div>
-              </ng-template>
             </div>
           </div>
           <div class="col-md-8">
             <div class="form-group">
-              <label>Client Position Code <span class="required">*</span></label>
-              <div *ngIf="readOnlyForm; else cpcElseBlock">
-                <input class="form-control" readonly name="cps"
-                  [(ngModel)]="consultantCallHistoryModel.clientPositionCode">
-              </div>
-              <ng-template #cpcElseBlock>
-                <select class="form-control" name="cps" [(ngModel)]="consultantCallHistoryModel.clientPositionCode"
+              <label>Client Position  <span class="required">*</span></label>               
+                <select class="form-control" name="cps" [disabled]="readOnlyForm == 'R'" [(ngModel)]="consultantCallHistoryModel.clientPositionCode"
                   required>
                   <option *ngFor="let cp of clientPositionList" [ngValue]="cp.clientPositionCode">
                     {{cp.clientPositionCode}}</option>
                 </select>
-              </ng-template>
             </div>
           </div>
           <div class="col-md-8">
             <div class="form-group">
               <label>Called Date </label>
-              <input class="form-control" type="date" name="calledDate" [readonly]="readOnlyForm" placeholder="Called Date"
+              <input class="form-control" type="date" name="calledDate" [readonly]="readOnlyForm == 'R'" placeholder="Called Date"
                 [(ngModel)]="consultantCallHistoryModel.calledDate" required>
             </div>
           </div>
           <div class="col-md-8">
             <div class="form-group">
               <label>Description<span class="required">*</span></label>
-              <textarea class="form-control" name="description" [readonly]="readOnlyForm"
+              <textarea class="form-control" name="description" [readonly]="readOnlyForm == 'R'"
                 [(ngModel)]="consultantCallHistoryModel.description"
                 [ngClass]="{'is-invalid': f.submitted && description.invalid}" #description="ngModel" cols="10"
                 rows="10" required></textarea>
@@ -103,19 +92,13 @@
         </div>
         <div class="row text-center">
           <div class="col-md-8">
-            <span *ngIf="formButtonsToggler;else toggleButtons">
-              <button type="submit" id="add" class="btn btn-secondary ml-3">Add</button>
-            </span>
-            <ng-template #toggleButtons>
-              <span *ngIf="editButtonToggler;else toggleEdit">
-                <button type="button" id="update" class="btn btn-secondary ml-2" (click)="editableForm()">Edit</button>
-              </span>
-              <ng-template #toggleEdit>
-                <button type="button" id="update" class="btn btn-secondary ml-2"
-                  (click)="updateConsultantCallHistory(f)">Update</button>
-              </ng-template>
-            </ng-template>
-            <button type="button" id="cancel" (click)="cancelForm(f)" class="btn btn-secondary ml-3">Cancel</button>
+              <button type="submit" *ngIf="enableButtonType == ''" class="btn btn-secondary ml-3">Add</button>
+              <button type="submit" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2"
+                (click)="updateConsultantCallHistory(f)">Update</button>
+              <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button"
+                (click)="enableFormEditable()">Edit</button>
+              <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3">Cancel</button>
+
           </div>
         </div>
       </form>

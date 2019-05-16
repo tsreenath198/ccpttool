@@ -19,9 +19,11 @@ export class ClientComponent implements OnInit {
     public clientList: any = [];
     public currSearchTxt: string = "";
     private urlConstants = new URLConstants();
-    public readOnlyForm: boolean = false;
     public formButtonsToggler: boolean = true;
-    public editButtonToggler: boolean = true;
+    public editButtonToggler: boolean = true;    
+    public readOnlyForm: string = '';
+    public enableButtonType: string = '';
+
 
     private selectedRecrdToDel: number = 0;
     public closeResult: string = '';
@@ -41,32 +43,25 @@ export class ClientComponent implements OnInit {
         this.clientModel.clientContacts = [{ "fullname": "", "email": "", "phone": "" }]
     }
     editClientPosition(data) {
-        this.clientModel = data;
-        if (this.readOnlyForm == true) {
-            this.readOnlyForm = false;
-        }
-        if (this.formButtonsToggler == true) {
-            this.formButtonsToggler = false;
-        }
-        if (this.editButtonToggler == true) {
-            this.editButtonToggler = false;
-        }
+        this.clientModel = JSON.parse(JSON.stringify(data));;
+        this.readOnlyForm = 'U';
+        this.enableButtonType = 'U';
+    }
+    enableFormEditable(): void {
+        this.readOnlyForm = 'U';
+        this.enableButtonType = 'U';
     }
     readOnlyEnable(data) {
-        this.clientModel = data;
-        if (this.readOnlyForm == false) {
-            this.readOnlyForm = true;
-        }
-        if (this.formButtonsToggler == true) {
-            this.formButtonsToggler = false;
-        }
+        this.clientModel = JSON.parse(JSON.stringify(data));
+        this.readOnlyForm = 'R';
+        this.enableButtonType = 'E';
     }
     formReset() {
         this.clientModel = <ClientModel>{};
     }
     clientCreate(clientForm: NgForm): void {
         this.http.create(this.clientModel, this.urlConstants.ClientCreate).subscribe(resp => {
-            this.toastr.success("Form Submitted Successfully", "Client");
+            this.toastr.success(this.urlConstants.SuccessMsg, "Client");
             this.init();
             this.formReset();
             clientForm.resetForm();
@@ -77,33 +72,23 @@ export class ClientComponent implements OnInit {
     }
     updateClient(consultantCallHistory: NgForm) {
         this.http.update(this.clientModel, this.urlConstants.ClientUpdate).subscribe(resp => {
-            this.formButtonsToggler = true;
             this.formReset();
-            this.toastr.success("Form Updated Successfully", "Client ");
+            this.toastr.success(this.urlConstants.UpdateMsg, "Client ");
             this.init();
             consultantCallHistory.resetForm();
             this.clientContactDeclare();
+            
+            this.readOnlyForm = '';
+            this.enableButtonType = '';
         }, err => {
             this.toastr.error(err.statusText, "Client");
         })
     }
-    editableForm() {
-        if (this.readOnlyForm == true) {
-            this.readOnlyForm = false;
-        }
-        if (this.editButtonToggler == true) {
-            this.editButtonToggler = false;
-        }
-    }
     cancelForm(consultantCallHistory: NgForm) {
         this.formReset();
         consultantCallHistory.resetForm();
-        if (this.readOnlyForm == true) {
-            this.readOnlyForm = false;
-        }
-        if (this.formButtonsToggler == false) {
-            this.formButtonsToggler = true;
-        }
+        this.readOnlyForm = '';
+        this.enableButtonType = ''; 
         this.clientContactDeclare();
     }
     clientContactListIncrement(event, i: number) {
@@ -120,7 +105,7 @@ export class ClientComponent implements OnInit {
     }
     deleteClientRecord(): void {
         this.http.delete(this.urlConstants.ClientDelete + this.selectedRecrdToDel).subscribe(resp => {
-            this.toastr.success("Form Deleted Successfully", "Client");
+            this.toastr.success(this.urlConstants.DeleteMsg, "Client");
             this.init();
             this.close();
             this.formReset();

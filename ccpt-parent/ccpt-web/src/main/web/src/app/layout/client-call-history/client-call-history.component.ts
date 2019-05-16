@@ -22,7 +22,6 @@ export class ClientCallHistoryComponent implements OnInit {
     public clientCallHistoryList: Array<ClientCallHistoryModel> = [];
     public clientPositionList: Array<ClientPositionModel> = [];
     public clientList: Array<ClientModel> = [];
-    public readOnlyForm: boolean = false;
     public formButtonsToggler: boolean = true;
     public editButtonToggler: boolean = true;
     public urlConstants = new URLConstants();
@@ -30,6 +29,9 @@ export class ClientCallHistoryComponent implements OnInit {
     public closeResult: string = '';
     private modalRef: NgbModalRef;
     public currSearchTxt: string;
+    public readOnlyForm: string = '';
+    public enableButtonType: string = '';
+   
     constructor(private http: HttpClientService, private toastr: ToastrCustomService, private modalService: NgbModal) { }
 
     ngOnInit() {
@@ -47,32 +49,25 @@ export class ClientCallHistoryComponent implements OnInit {
         })
     }
     editClientCallHistory(data) {
-        this.clientCallHistoryModel = data;
-        if (this.readOnlyForm == true) {
-            this.readOnlyForm = false;
-        }
-        if (this.formButtonsToggler == true) {
-            this.formButtonsToggler = false;
-        }
-        if (this.editButtonToggler == true) {
-            this.editButtonToggler = false;
-        }
+        this.clientCallHistoryModel =JSON.parse(JSON.stringify(data));;
+        this.readOnlyForm = 'U';
+        this.enableButtonType = 'U';
     }
     readOnlyEnable(data) {
-        this.clientCallHistoryModel = data;
-        if (this.readOnlyForm == false) {
-            this.readOnlyForm = true;
-        }
-        if (this.formButtonsToggler == true) {
-            this.formButtonsToggler = false;
-        }
+        this.clientCallHistoryModel = JSON.parse(JSON.stringify(data));
+        this.readOnlyForm = 'R';
+        this.enableButtonType = 'E';
+    }
+    enableFormEditable(): void {
+        this.readOnlyForm = 'U';
+        this.enableButtonType = 'U';
     }
     formReset() {
         this.clientCallHistoryModel = <ClientCallHistoryModel>{};
     }
     createClientCallHistory(clientCallHistoryForm: NgForm): void {
         this.http.create(this.clientCallHistoryModel, 'clientCallHistory/create').subscribe(resp => {
-            this.toastr.success("Form Submitted Successfully", "Client Call History");
+            this.toastr.success(this.urlConstants.SuccessMsg, "Client Call History");
             this.init();
             this.formReset();
             clientCallHistoryForm.resetForm();
@@ -83,7 +78,7 @@ export class ClientCallHistoryComponent implements OnInit {
     }
     updateClientCallHistory(clientCallHistoryForm: NgForm) {
         this.http.update(this.clientCallHistoryModel, 'clientCallHistory/update').subscribe(resp => {
-            this.toastr.success("Form Updated Successfully", "Client Call History");
+            this.toastr.success(this.urlConstants.UpdateMsg, "Client Call History");
             this.formButtonsToggler = true;
             this.formReset();
             this.init();
@@ -92,28 +87,17 @@ export class ClientCallHistoryComponent implements OnInit {
             this.toastr.error(err.statusText, "Client Call History");
         })
     }
-    editableForm() {
-        if (this.readOnlyForm == true) {
-            this.readOnlyForm = false;
-        }
-        if (this.editButtonToggler == true) {
-            this.editButtonToggler = false;
-        }
-    }
+   
     cancelForm(clientCallHistoryForm: NgForm) {
         this.formReset();
         clientCallHistoryForm.resetForm();
-        if (this.readOnlyForm == true) {
-            this.readOnlyForm = false;
-        }
-        if (this.formButtonsToggler == false) {
-            this.formButtonsToggler = true;
-        }
+        this.readOnlyForm = '';
+        this.enableButtonType = ''; 
 
     }
     deleteCCHRecord(): void {
         this.http.delete(this.urlConstants.CCHDelete + this.selectedRecrdToDel).subscribe(resp => {
-            this.toastr.success("Form Deleted Successfully", "Client");
+            this.toastr.success(this.urlConstants.DeleteMsg, "Client");
             this.init();
             this.close();
             this.formReset();

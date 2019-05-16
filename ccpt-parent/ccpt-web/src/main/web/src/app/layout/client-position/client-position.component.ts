@@ -21,7 +21,6 @@ export class ClientPositionComponent implements OnInit {
     public clientPositionList: Array<ClientPositionModel> = [];
     public clientPositionStatusList: Array<ClientpositionStatusModel> = [];
     public clientList:Array<ClientModel>=[];
-    public readOnlyForm: boolean = false;
     public formButtonsToggler: boolean = true;
     public editButtonToggler: boolean = true;
     public invalidAppCode: boolean = false;
@@ -31,6 +30,8 @@ export class ClientPositionComponent implements OnInit {
     private modalRef: NgbModalRef;
     public urlConstants = new URLConstants();
     public currSearchTxt: string ;
+    public readOnlyForm: string = '';
+    public enableButtonType: string = '';
     constructor(private http: HttpClientService, private toastr: ToastrCustomService, private modalService: NgbModal) { }
 
     ngOnInit() {
@@ -48,25 +49,18 @@ export class ClientPositionComponent implements OnInit {
         })
     }
     editClientPosition(data) {
-        this.clientPositionModel = data;
-        if (this.readOnlyForm == true) {
-            this.readOnlyForm = false;
-        }
-        if (this.formButtonsToggler == true) {
-            this.formButtonsToggler = false;
-        }
-        if (this.editButtonToggler == true) {
-            this.editButtonToggler = false;
-        }
+        this.clientPositionModel = JSON.parse(JSON.stringify(data));;
+        this.readOnlyForm = 'U';
+        this.enableButtonType = 'U';
+    }
+    enableFormEditable(): void {
+        this.readOnlyForm = 'U';
+        this.enableButtonType = 'U';
     }
     readOnlyEnable(data) {
-        this.clientPositionModel = data;
-        if (this.readOnlyForm == false) {
-            this.readOnlyForm = true;
-        }
-        if (this.formButtonsToggler == true) {
-            this.formButtonsToggler = false;
-        }
+        this.clientPositionModel = JSON.parse(JSON.stringify(data));
+        this.readOnlyForm = 'R';
+        this.enableButtonType = 'E';
     }
     formReset() {
         this.clientPositionModel = <ClientPositionModel>{};
@@ -119,32 +113,21 @@ export class ClientPositionComponent implements OnInit {
     updateClientPosition(clientPositionForm:NgForm) {
         this.http.update(this.clientPositionModel, this.urlConstants.CPUpdate).subscribe(resp => {
             this.toastr.success("Form Updated Successfully", "Client Position");
-            this.formButtonsToggler = true;
             this.formReset();
             this.init();
             clientPositionForm.resetForm();
+            this.readOnlyForm = '';
+            this.enableButtonType = '';
 
         }, err => {
             this.toastr.error(err.statusText, "Client Position");
         })
     }
-    editableForm() {
-        if (this.readOnlyForm == true) {
-            this.readOnlyForm = false;
-        }
-        if (this.editButtonToggler == true) {
-            this.editButtonToggler = false;
-        }
-    }
     cancelForm(clientPositionForm:NgForm) {
         this.formReset();
         clientPositionForm.resetForm();
-        if (this.readOnlyForm == true) {
-            this.readOnlyForm = false;
-        }
-        if (this.formButtonsToggler == false) {
-            this.formButtonsToggler = true;
-        }
+        this.readOnlyForm = '';
+        this.enableButtonType = '';
 
     }
     deleteCPRecord(): void {

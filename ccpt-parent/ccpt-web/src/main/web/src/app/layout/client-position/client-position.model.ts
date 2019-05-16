@@ -10,5 +10,8 @@ export interface ClientPositionModel{
     maxCtc:number,
     clientPositionsStatusCode:string,
     closedBy:string,
-    additionalComments:string
+    additionalComments:string,
+    jobCode:string,
+    location:string,
+    numberOfPositions
 }

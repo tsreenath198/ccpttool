@@ -4,5 +4,6 @@ export interface ClientCallHistoryModel{
     clientPositionCode:string,
     clientPositionId:number,
     notes:string,
-    id:number
+    id:number,
+    calledDate:string
 }
