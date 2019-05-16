@@ -65,7 +65,7 @@ export class URLConstants {
     ReportingGetAll: string = 'report/getAll';
 
     /** Messages */
-    DeleteMsg: string = "Record Deleted Successfully";
-    SuccessMsg: string = "Record Successfully Created";
-    UpdateMsg:string = "Record Updated Successfully";
+    DeleteMsg: string = "Deleted Successfully";
+    SuccessMsg: string = "Created Successfully ";
+    UpdateMsg: string = "Updated Successfully";
 }
