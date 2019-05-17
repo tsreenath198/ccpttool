@@ -2,7 +2,7 @@
     <div class="list-group">
 
         <a routerLink="/layout/dashboard" [routerLinkActive]="['router-link-active']" class="list-group-item">
-            <i class="fa fa-fw fa-dashboard"></i>&nbsp;
+            <i class="fa fa-fw fa-home"></i>&nbsp;
             <span>{{ 'Dashboard' | translate }}</span>
         </a>
         <div class="nested-menu">
@@ -13,43 +13,43 @@
             <li class="nested" [class.expand]="showMenu === 'page'">
                 <ul class="submenu">
                     <li>
-                        <a [routerLink]="['/layout/consultant-call-history']"
-                            [routerLinkActive]="['router-link-active']" class="list-group-item">
-                            <span>{{ 'Consultants' | translate }}</span>
+                        <a class="list-group-item ">
+                            <span class="fa fa-fw fa-users"></span><span class="fa fa-fw fa-phone"></span>
+                            <span [routerLink]="['/layout/consultant-call-history']"
+                                [routerLinkActive]="['router-link-active']">{{ 'Consultants' | translate }}</span>
                         </a>
                     </li>
                     <li>
-                        <a [routerLink]="['/layout/client-call-history']" [routerLinkActive]="['router-link-active']"
-                            class="list-group-item">
-                            <span>{{ 'Clients' | translate }}</span>
+                        <a class="list-group-item ">
+                            <span class="fa fa-fw fa-building"></span><span class="fa fa-fw fa-phone"></span>
+                            <span [routerLink]="['/layout/client-call-history']"
+                                [routerLinkActive]="['router-link-active']">{{ 'Clients' | translate }}</span>
                         </a>
+
                     </li>
 
                 </ul>
             </li>
         </div>
         <a [routerLink]="['/layout/consultant']" [routerLinkActive]="['router-link-active']" class="list-group-item">
-            <i class="fa fa-fw fa-graduation-cap"></i>&nbsp;
+            <i class="fa fa-fw fa-users"></i>&nbsp;
             <span>{{ 'Consultants' | translate }}</span>
         </a>
         <a [routerLink]="['/layout/client']" [routerLinkActive]="['router-link-active']" class="list-group-item">
-            <i class="fa fa-fw fa-black-tie"></i>&nbsp;
+            <i class="fa fa-fw fa-building"></i>&nbsp;
             <span>{{ 'Clients' | translate }}</span>
         </a>
         <a [routerLink]="['/layout/client-position']" [routerLinkActive]="['router-link-active']"
             class="list-group-item">
-            <i class="fa fa-fw fa-bar-chart-o"></i>&nbsp;
+            <i class="fa fa-fw fa-briefcase"></i>&nbsp;
             <span>{{ 'Client Positions' | translate }}</span>
         </a>
         <a [routerLink]="['/layout/client-application']" [routerLinkActive]="['router-link-active']"
             class="list-group-item">
-            <i class="fa fa-fw fa-list-alt"></i>&nbsp;
+            <i class="fa fa-fw fa-paper-plane"></i>&nbsp;
             <span>{{ 'Client Applications' | translate }}</span>
         </a>
-        <a [routerLink]="['/layout/recruiter']" [routerLinkActive]="['router-link-active']" class="list-group-item">
-            <i class="fa fa-fw fa-black-tie"></i>&nbsp;
-            <span>{{ 'Recruiters' | translate }}</span>
-        </a>
+
         <!-- <a [routerLink]="['/layout/upload-file']" [routerLinkActive]="['router-link-active']" class="list-group-item">
             <i class="fa fa-fw fa-bar-chart-o"></i>&nbsp;
             <span>{{ 'Upload File' | translate }}</span>
@@ -62,29 +62,38 @@
             <li class="nested" [class.expand]="showMenu === 'pages'">
                 <ul class="submenu">
                     <li>
+                        <a [routerLink]="['/layout/recruiter']" [routerLinkActive]="['router-link-active']"
+                            class="list-group-item">
+                            <i class="fa fa-fw fa-id-card"></i>&nbsp;
+                            <span>{{ 'Recruiters' | translate }}</span>
+                        </a>
+                    </li>
+                    <li>
                         <a [routerLink]="['/layout/client-application-status']"
                             [routerLinkActive]="['router-link-active']" class="list-group-item">
+                            <i class="fa fa-fw fa-filter"></i>&nbsp;
                             <span>{{ 'Client Application Status' | translate }}</span>
                         </a>
                     </li>
                     <li>
                         <a [routerLink]="['/layout/client-position-status']" [routerLinkActive]="['router-link-active']"
-                            class="list-group-item">
+                            class="list-group-item"><i class="fa fa-fw fa-filter"></i>&nbsp;
                             <span>{{ 'Client Position Status' | translate }}</span>
                         </a>
                     </li>
                     <li>
                         <a [routerLink]="['/layout/consultant-status']" [routerLinkActive]="['router-link-active']"
-                            class="list-group-item">
+                            class="list-group-item"><i class="fa fa-fw fa-filter"></i>&nbsp;
                             <span>{{ 'Consultant Status' | translate }}</span>
                         </a>
                     </li>
                     <li>
-                            <a [routerLink]="['/layout/login-setup']" [routerLinkActive]="['router-link-active']" class="list-group-item">
-                                <span>{{ 'Users' | translate }}</span>
-                            </a>
+                        <a [routerLink]="['/layout/login-setup']" [routerLinkActive]="['router-link-active']"
+                            class="list-group-item"><i class="fa fa-fw fa-user-circle"></i>&nbsp;
+                            <span>{{ 'Users' | translate }}</span>
+                        </a>
                     </li>
-                    
+
                 </ul>
             </li>
         </div>
