@@ -23,6 +23,7 @@ export class ConsultantComponent implements OnInit {
     public readOnlyForm: boolean = false;
     public formButtonsToggler: boolean = true;
     public editButtonToggler: boolean = true;
+    public isFresher:boolean=false;
     public genderList = ['Male', 'Female', 'Other'];
     
     private selectedRecrdToDel: number = 0;

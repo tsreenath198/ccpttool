@@ -76,14 +76,14 @@
                 name="jobcode" [ngClass]="{'is-invalid': f.submitted && jobcode.invalid}" #jobcode="ngModel"
                 required />
               <div class="invalid-feedback">
-                Role is mandatory
+                job code is mandatory
               </div>
             </div>
           </div>
           <div class="col-md-8">
               <div class="form-group">
                 <label>Number Of Positions<span class="required">*</span></label>
-                <input class="form-control" type="number"  [readonly]="readOnlyForm == 'R'" [(ngModel)]="clientPositionModel.numberOfPositions"
+                <input class="form-control" type="number" min="0" [readonly]="readOnlyForm == 'R'" [(ngModel)]="clientPositionModel.numberOfPositions"
                   name="nofpos" [ngClass]="{'is-invalid': f.submitted && nofpos.invalid}" #nofpos="ngModel"
                   required />
                 <div class="invalid-feedback">

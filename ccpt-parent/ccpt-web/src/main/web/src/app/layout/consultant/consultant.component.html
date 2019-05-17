@@ -14,7 +14,7 @@
               <td class="table-data-padding" (click)="readOnlyEnable(cl)" (dblclick)="consultantEdit(cl)">
                 <dl>
                   <dt> {{cl.fullname}}</dt>
-                  <dd>{{cl.description || 'NA'}}</dd>
+                  <dd>{{cl.skills || 'NA'}}</dd>
                 </dl>
               </td>
               <!--  <input type="file" (change)="fileChange($event)" > <span class="fa fa-upload pull-right"></span> -->
@@ -61,10 +61,10 @@
               <input class="form-control" placeholder="E-mail" name="email" [readonly]="readOnlyForm"
                 [(ngModel)]="consultantModel.email" ng-pattern="/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/"
                 [ngClass]="{'is-invalid': f.submitted && email.invalid}" #email="ngModel" type="email" required>
-               <div class="invalid-feedback">
+              <div class="invalid-feedback">
                 email is mandatory
-              </div> 
-            
+              </div>
+
             </div>
           </div>
           <div class="col-md-8">
@@ -111,29 +111,44 @@
               </div>
             </div>
           </div>
-          <div class="col-md-8">
-            <div class="form-group">
-              <label>Current Company<span class="required">*</span></label>
-              <input type="text" name="currentCompany" placeholder="Current Company" [readonly]="readOnlyForm"
-                class="form-control"  [ngClass]="{'is-invalid': f.submitted && currentCompany.invalid}" #currentCompany="ngModel" [readonly]="readOnlyForm"
-                required [(ngModel)]="consultantModel.currentCompany">
-                <div class="invalid-feedback">
-                    Current Company is mandatory
-                  </div>
-            </div>
+          <div class="col-md-8 pb-2">
+            <input type="checkbox" class="" [(ngModel)]="isFresher" name="interviewCheckbox">&nbsp;<label>Fresher</label>
           </div>
-          <div class="col-md-8">
-            <div class="form-group">
-              <label>Current Location<span class="required">*</span></label>
-              <input type="text" name="currentLocation" placeholder="Current Location" [readonly]="readOnlyForm"
-                class="form-control" [(ngModel)]="consultantModel.currentLocation">
+          <div *ngIf="!isFresher" class="col-md-8">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label>Current Company</label>
+                <input type="text" name="currentCompany" placeholder="Current Company" [readonly]="readOnlyForm"
+                  class="form-control" 
+                   [readonly]="readOnlyForm" 
+                  [(ngModel)]="consultantModel.currentCompany">
+              
+              </div>
             </div>
-          </div>
-          <div class="col-md-8">
-            <div class="form-group">
-              <label>Current CTC</label>
-              <input type="number" name="currentCTC" placeholder="Current CTC" [readonly]="readOnlyForm"
-                class="form-control" [(ngModel)]="consultantModel.currentCTC">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label>Current Location</label>
+                <input type="text" name="currentLocation" placeholder="Current Location" [readonly]="readOnlyForm"
+                  class="form-control" [(ngModel)]="consultantModel.currentLocation">
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="form-group">
+                <label>Current CTC</label>
+                <input type="number" name="currentCTC" placeholder="Current CTC" [readonly]="readOnlyForm"
+                  class="form-control" [(ngModel)]="consultantModel.currentCTC">
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="form-group">
+                <label>Experience</label>
+                <div class="form-inline">
+                  <input type="number" name="expyears" class="form-control col-md-3" [readonly]="readOnlyForm"
+                    [(ngModel)]="consultantModel.experienceYrs" min="0" placeholder="Years">&nbsp;<span>/</span>&nbsp;<input
+                    type="number" class="form-control col-md-3" name="expmonths" [readonly]="readOnlyForm"
+                    [(ngModel)]="consultantModel.experienceMonths" min="0" max="12" placeholder="Months">
+                </div>
+              </div>
             </div>
           </div>
           <div class="col-md-8">
@@ -143,20 +158,10 @@
                 class="form-control" [(ngModel)]="consultantModel.expectedCTC">
             </div>
           </div>
+
           <div class="col-md-8">
             <div class="form-group">
-              <label>Experience</label>
-              <div class="form-inline">
-                <input type="number" name="expyears" class="form-control col-md-2" [readonly]="readOnlyForm"
-                  [(ngModel)]="consultantModel.experienceYrs" placeholder="Years">&nbsp;<span>/</span>&nbsp;<input
-                  type="number" class="form-control col-md-3" name="expmonths" [readonly]="readOnlyForm"
-                  [(ngModel)]="consultantModel.experienceMonths" placeholder="Months">
-              </div>
-            </div>
-          </div>
-          <div class="col-md-8">
-            <div class="form-group">
-              <label>Preffered Location</label>
+              <label>Prefer Location</label>
               <input class="form-control" name="prefferedLocation" placeholder="Preffered Location"
                 [readonly]="readOnlyForm" [(ngModel)]="consultantModel.prefferedLocation">
             </div>

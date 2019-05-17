@@ -68,9 +68,9 @@
             <div class="form-group">
               <label>Client Position<span class="required">*</span></label>
              
-                <select class="form-control"  [disabled]="readOnlyForm == 'R'" name="cp" [(ngModel)]="clientCallHistoryModel.clientPositionId"
+                <select class="form-control"  [disabled]="readOnlyForm == 'R'" name="cp" [(ngModel)]="clientCallHistoryModel.clientPositionCode"
                   [ngClass]="{'is-invalid': f.submitted && cp.invalid}" #cp="ngModel" required>
-                  <option *ngFor="let cpl of clientPositionList" [ngValue]="cpl.id">
+                  <option *ngFor="let cpl of clientPositionList" [ngValue]="cpl.clientPositionCode">
                     {{cpl.clientPositionCode}}
                   </option>
                 </select>
