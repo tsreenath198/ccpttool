@@ -47,7 +47,11 @@
             <i class="fa fa-fw fa-paper-plane"></i>&nbsp;
             <span>{{ 'Client Applications' | translate }}</span>
         </a>
-
+        <a [routerLink]="['/layout/other-contacts']" [routerLinkActive]="['router-link-active']"
+            class="list-group-item">
+            <i class="fa fa-fw fa-address-book"></i>&nbsp;
+            <span>{{ 'Contacts' | translate }}</span>
+        </a>
         <!-- <a [routerLink]="['/layout/upload-file']" [routerLinkActive]="['router-link-active']" class="list-group-item">
             <i class="fa fa-fw fa-bar-chart-o"></i>&nbsp;
             <span>{{ 'Upload File' | translate }}</span>

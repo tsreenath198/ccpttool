@@ -61,6 +61,12 @@ export class URLConstants {
     ClientUpdate: string = 'client/update';
     ClientDelete: string = 'client/id/';
 
+    /*Other Contacts */
+    OCCreate: string = 'contact/create';
+    OCGetAll: string = 'contact/getAll';
+    OCUpdate: string = 'contact/update';
+    OCDelete: string = 'contact/id/'
+
     /** Reporting */
     ReportingGetAll: string = 'report/getAll';
 

@@ -15,11 +15,14 @@
             <tbody class="overflow-ele-scroll">
               <tr *ngFor="let cchl of clientCallHistoryList">
                 <td  (click)="readOnlyEnable(cchl)" (dblclick)="editClientCallHistory(cchl)">
+                  {{cchl.clientName}}
+                </td>
+                <td>
                   {{cchl.clientPositionCode}}
                 </td>
                 <td>
-                  {{cchl.notes || 'NA'}}
-                </td>
+                    {{cchl.calledDate}}
+                  </td>
                 <td><span class="fa fa-trash pull-right"
                     (click)="open(content,cchl.id)"></span>
                   <ng-template #content let-c="close" let-d="dismiss">

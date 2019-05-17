@@ -19,7 +19,7 @@ const routes: Routes = [
             { path:'consultant-status', loadChildren:'./consultant-status/consultant-status.module#ConsultantStatusModule'},
             { path:'recruiter', loadChildren:'./recruiter/recruiter.module#RecruiterModule'},
             { path:'login-setup', loadChildren:'./login-setup/login-setup.module#LoginSetupModule'},
-            // { path:'other-contacts',loadChildren:'./other-contacts/other-contacts.module#OtherContactsModule'},
+            { path:'other-contacts',loadChildren:'./other-contacts/other-contacts.module#OtherContactsModule'},
             { path:'client', loadChildren:'./client/client.module#ClientModule'},
             { path: 'charts', loadChildren: './charts/charts.module#ChartsModule' },
             { path: 'tables', loadChildren: './tables/tables.module#TablesModule' },

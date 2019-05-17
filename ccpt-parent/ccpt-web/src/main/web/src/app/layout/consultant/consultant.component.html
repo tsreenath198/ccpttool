@@ -73,7 +73,7 @@
                 onKeyPress="if(this.value.length==12) return false;" -->
               <label>Phone<span class="required">*</span></label>
               <input class="form-control" placeholder="Phone" name="phone" [readonly]="readOnlyForm == 'R'"
-                [(ngModel)]="consultantModel.phone" pattern="/^-?\d+\.?\d*$/"
+                [(ngModel)]="consultantModel.phone" maxlength="12"
                 onKeyPress="if(this.value.length==12) return false;" [ngClass]="{'is-invalid': f.submitted && phone.invalid}"
                 #phone="ngModel" type="number" required>
               <div class="invalid-feedback">

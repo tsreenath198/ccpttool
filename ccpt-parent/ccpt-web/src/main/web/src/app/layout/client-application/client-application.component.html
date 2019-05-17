@@ -1,7 +1,7 @@
 <div [@routerTransition]>
   <app-page-header [icon1]="'fa-paper-plane'" [heading1]="'Client Applications'"></app-page-header>
   <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-7">
       <div class="row">
         <div class="col-md-3"><strong>Total No of records : {{clientApplicationList.length}}</strong></div>
         <div class="col-md-6"> <input type="text" class="form-control" placeholder="search..."
@@ -41,7 +41,7 @@
         </table>
       </div>
     </div>
-    <div class="col-md-6">
+    <div class="col-md-5">
       <form name="form" id="clientApplicationForm" (ngSubmit)="f.form.valid&&createClientApplication(f)" #f="ngForm"
         novalidate>
         <div class="row">

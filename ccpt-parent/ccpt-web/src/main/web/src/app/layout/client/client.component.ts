@@ -18,9 +18,7 @@ export class ClientComponent implements OnInit {
     public clientModel: ClientModel = <ClientModel>{};
     public clientList: any = [];
     public currSearchTxt: string = "";
-    private urlConstants = new URLConstants();
-    public formButtonsToggler: boolean = true;
-    public editButtonToggler: boolean = true;    
+    private urlConstants = new URLConstants();    
     public readOnlyForm: string = '';
     public enableButtonType: string = '';
 
@@ -70,12 +68,12 @@ export class ClientComponent implements OnInit {
             this.toastr.error(err.statusText, "Client");
         });
     }
-    updateClient(consultantCallHistory: NgForm) {
+    updateClient(clientForm: NgForm) {
         this.http.update(this.clientModel, this.urlConstants.ClientUpdate).subscribe(resp => {
             this.formReset();
             this.toastr.success(this.urlConstants.UpdateMsg, "Client ");
             this.init();
-            consultantCallHistory.resetForm();
+            clientForm.resetForm();
             this.clientContactDeclare();
             
             this.readOnlyForm = '';
