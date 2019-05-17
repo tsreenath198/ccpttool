@@ -21,6 +21,9 @@ public interface ClientApplicationRepository extends CrudRepository<ClientApplic
 	@Query("SELECT c FROM ClientApplication c WHERE clientPositionId=:clientPositionId")
 	List<ClientApplication> getClientApplicationByClientPositionId(@Param(value = "clientPositionId") int clientPositionId);
 	
+	@Query("SELECT c FROM ClientApplication c WHERE consultantId=:consultantId")
+	List<ClientApplication> getClientApplicationByConsultantId(@Param(value = "consultantId") int consultantId);
+	
 
 	/*@Modifying(clearAutomatically = true)
 	@Query("UPDATE ClientApplication c SET c.activeFlag = :activeFlag WHERE c.clientPositionId = :clientPositionId")

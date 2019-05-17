@@ -19,8 +19,8 @@ public class ClientCallHistory {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 
-	@Column(name = "client_position_id")
-	private int clientPositionId;
+	/*@Column(name = "client_position_id")
+	private int clientPositionId;*/
 
 	@Column(name = "notes")
 	private String notes;
@@ -55,13 +55,13 @@ public class ClientCallHistory {
 		this.id = id;
 	}
 
-	public int getClientPositionId() {
+	/*public int getClientPositionId() {
 		return clientPositionId;
 	}
 
 	public void setClientPositionId(int clientPositionId) {
 		this.clientPositionId = clientPositionId;
-	}
+	}*/
 
 	public String getNotes() {
 		return notes;

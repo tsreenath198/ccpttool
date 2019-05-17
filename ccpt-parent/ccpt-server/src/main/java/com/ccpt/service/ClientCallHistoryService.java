@@ -20,7 +20,7 @@ public class ClientCallHistoryService implements IClientCallHistoryService {
 	@Override
 	public List<ClientCallHistory> getAllClientCallHistorys() {
 		List<ClientCallHistory> list = new ArrayList<>();
-		clientCallHistoryRepository.findAllByOrderByUpdatedDateDesc().forEach(e -> list.add(e));
+		clientCallHistoryRepository.findByActiveFlagAllIgnoreCaseOrderByUpdatedDateDesc("Y").forEach(e -> list.add(e));
 		return list;
 	}
 

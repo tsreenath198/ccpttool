@@ -22,4 +22,8 @@ public interface ConsultantCallHistoryRepository extends CrudRepository<Consulta
 	List<ConsultantCallHistory> getConsultantCallHistoryFromClientPositionCode(
 			@Param(value = "clientPositionCode") String clientPositionCode);
 
+	@Query("SELECT c FROM ConsultantCallHistory c WHERE consultantId=:consultantId")
+	List<ConsultantCallHistory> getConsultantCallHistoryFromConsultantId(@Param(value = "consultantId") Integer consultantId);
+
+	List<ConsultantCallHistory> findByActiveFlagAllIgnoreCaseOrderByUpdatedDateDesc(String ActiveFlag);
 }

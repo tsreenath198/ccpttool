@@ -20,7 +20,8 @@ public class ConsultantCallHistoryService implements IConsultantCallHistoryServi
 	@Override
 	public List<ConsultantCallHistory> getAllConsultantCallHistorys() {
 		List<ConsultantCallHistory> list = new ArrayList<>();
-		consultantCallHistoryRepository.findAllByOrderByUpdatedDateDesc().forEach(e -> list.add(e));
+		consultantCallHistoryRepository.findByActiveFlagAllIgnoreCaseOrderByUpdatedDateDesc("Y")
+				.forEach(e -> list.add(e));
 		return list;
 	}
 
@@ -34,7 +35,7 @@ public class ConsultantCallHistoryService implements IConsultantCallHistoryServi
 
 	@Override
 	public void updateConsultantCallHistory(ConsultantCallHistory consultantCallHistory) {
-		getConsultantCallHistoryById(consultantCallHistory.getId()) ;
+		getConsultantCallHistoryById(consultantCallHistory.getId());
 		consultantCallHistoryRepository.save(consultantCallHistory);
 
 	}
@@ -46,7 +47,7 @@ public class ConsultantCallHistoryService implements IConsultantCallHistoryServi
 
 	@Override
 	public List<ConsultantCallHistory> getAllConsultantCallHistorysFromLastGivenDays(Date sdate, Date edate) {
-		return consultantCallHistoryRepository.getAllConsultantCallHistorysFromLastGivenDays(sdate, edate,"Y");
+		return consultantCallHistoryRepository.getAllConsultantCallHistorysFromLastGivenDays(sdate, edate, "Y");
 	}
 
 }

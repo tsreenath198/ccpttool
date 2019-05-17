@@ -69,6 +69,7 @@ public class ConsultantController {
 	@DeleteMapping(CCPTConstants.DELETE_BY_ID + "/{id}")
 	public ResponseEntity<Void> deleteConsultant(@PathVariable Integer id) {
 		Consultant consultant = consultantService.getConsultantById(id);
+		consultantService.deleteConsulatantRefs(consultant);
 		consultant.setActiveFlag('N');
 		consultant.setUpdatedDate(new Date());
 		consultantService.addConsultant(consultant);

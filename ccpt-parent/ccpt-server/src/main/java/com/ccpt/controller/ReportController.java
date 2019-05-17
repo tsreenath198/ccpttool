@@ -20,7 +20,6 @@ import com.ccpt.constants.CCPTConstants;
 import com.ccpt.model.ClientCallHistory;
 import com.ccpt.model.ConsultantCallHistory;
 import com.ccpt.service.IClientCallHistoryService;
-import com.ccpt.service.IClientPositionService;
 import com.ccpt.service.IClientService;
 import com.ccpt.service.IConsultantCallHistoryService;
 import com.ccpt.service.IConsultantService;
@@ -35,8 +34,8 @@ public class ReportController {
 	@Autowired
 	private IClientCallHistoryService clientCallHistoryService;
 
-	@Autowired
-	private IClientPositionService clientPositionService;
+	// @Autowired
+	// private IClientPositionService clientPositionService;
 
 	@Autowired
 	private IConsultantService consultantService;
@@ -53,12 +52,7 @@ public class ReportController {
 		}
 		List<ClientCallHistory> clientCallHistoryList = clientCallHistoryService.getAllClientCallHistorys();
 		for (ClientCallHistory cchl : clientCallHistoryList) {
-			cchl.setClientPositionCode(
-					clientPositionService.getClientPositionById(cchl.getClientPositionId()).getClientPositionCode());
-			cchl.setClientName(clientService
-					.getClientById(
-							clientPositionService.getClientPositionById(cchl.getClientPositionId()).getClientId())
-					.getName());
+			cchl.setClientName(clientService.getClientById(cchl.getClientId()).getName());
 		}
 		Map<String, List> map = new HashMap<>();
 		map.put("consultantCallHistoryList", consultantCallHistoryList);
@@ -82,12 +76,7 @@ public class ReportController {
 			cch.setConsultantName(consultantService.getConsultantById(cch.getConsultantId()).getFullname());
 		}
 		for (ClientCallHistory cchl : clientCallHistoryList) {
-			cchl.setClientPositionCode(
-					clientPositionService.getClientPositionById(cchl.getClientPositionId()).getClientPositionCode());
-			cchl.setClientName(clientService
-					.getClientById(
-							clientPositionService.getClientPositionById(cchl.getClientPositionId()).getClientId())
-					.getName());
+			cchl.setClientName(clientService.getClientById(cchl.getClientId()).getName());
 		}
 		Map<String, List> map = new HashMap<>();
 		map.put("consultantCallHistoryList", consultantCallHistoryList);

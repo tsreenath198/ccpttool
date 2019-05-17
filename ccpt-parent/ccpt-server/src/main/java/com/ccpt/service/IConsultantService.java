@@ -13,4 +13,6 @@ public interface IConsultantService {
 
 	void updateConsultant(Consultant consultant);
 
+	void deleteConsulatantRefs(Consultant consultant);
+
 }
