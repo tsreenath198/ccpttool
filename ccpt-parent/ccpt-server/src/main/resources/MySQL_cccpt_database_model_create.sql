@@ -245,6 +245,8 @@ ALTER TABLE client_contact ADD active_flag CHAR(1) NOT NULL DEFAULT 'Y' AFTER cl
 CREATE TABLE other_contact ( id INT(11) NOT NULL AUTO_INCREMENT , name VARCHAR(30) NOT NULL , phone VARCHAR(30) NOT NULL , email VARCHAR(50) NOT NULL , notes TEXT NOT NULL , created_date DATETIME NOT NULL , updated_date DATETIME NOT NULL , active_flag CHAR(1) NOT NULL DEFAULT 'Y' , PRIMARY KEY (id)) ;
 ALTER TABLE client_position ADD job_code VARCHAR(30) NOT NULL , ADD location VARCHAR(50) NOT NULL, ADD no_of_positions INT NOT NULL;
 
+ALTER TABLE client_call_history DROP FOREIGN KEY client_call_history_client_position;
+ALTER TABLE client_call_history DROP client_position_id;
 
 -- End of file.
 
