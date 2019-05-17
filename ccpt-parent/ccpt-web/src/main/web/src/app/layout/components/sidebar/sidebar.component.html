@@ -13,21 +13,19 @@
             <li class="nested" [class.expand]="showMenu === 'page'">
                 <ul class="submenu">
                     <li>
-                        <a class="list-group-item ">
+                        <a class="list-group-item " [routerLink]="['/layout/consultant-call-history']"
+                            [routerLinkActive]="['router-link-active']">
                             <span class="fa fa-fw fa-users"></span>
-                            <span [routerLink]="['/layout/consultant-call-history']"
-                                [routerLinkActive]="['router-link-active']">{{ 'Consultants' | translate }}</span>
+                            <span>{{ 'Consultants' | translate }}</span>
                         </a>
                     </li>
                     <li>
-                        <a class="list-group-item ">
+                        <a class="list-group-item " [routerLink]="['/layout/client-call-history']"
+                            [routerLinkActive]="['router-link-active']">
                             <span class="fa fa-fw fa-building"></span>
-                            <span [routerLink]="['/layout/client-call-history']"
-                                [routerLinkActive]="['router-link-active']">{{ 'Clients' | translate }}</span>
+                            <span>{{ 'Clients' | translate }}</span>
                         </a>
-
                     </li>
-
                 </ul>
             </li>
         </div>
@@ -72,13 +70,13 @@
                         <a [routerLink]="['/layout/client-application-status']"
                             [routerLinkActive]="['router-link-active']" class="list-group-item">
                             <i class="fa fa-fw fa-filter"></i>&nbsp;
-                            <span>{{ 'Client Application Status' | translate }}</span>
+                            <span>{{ 'Application Status' | translate }}</span>
                         </a>
                     </li>
                     <li>
                         <a [routerLink]="['/layout/client-position-status']" [routerLinkActive]="['router-link-active']"
                             class="list-group-item"><i class="fa fa-fw fa-filter"></i>&nbsp;
-                            <span>{{ 'Client Position Status' | translate }}</span>
+                            <span>{{ 'Position Status' | translate }}</span>
                         </a>
                     </li>
                     <li>
