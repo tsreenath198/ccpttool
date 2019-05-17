@@ -1,5 +1,6 @@
 <div [@routerTransition]>
-  <app-page-header [icon2]="'fa-filter'" [heading2]="'Consultant Status'"[icon1]="'fa-user'" [heading1]="'Administration'"></app-page-header>
+  <app-page-header [icon2]="'fa-filter'" [heading2]="'Consultant Status'" [icon1]="'fa-user'"
+    [heading1]="'Administration'"></app-page-header>
   <div class="row">
     <div class="col-md-6">
       <div class="row">
@@ -11,12 +12,10 @@
         <table class="table table-hover table-striped">
           <tbody>
             <tr *ngFor="let csl of consultantStatusList |  filter : 'description' :currSearchTxt ; let i = index">
-              <td class="table-data-padding" (click)="readOnlyEnable(csl)"
-                (dblclick)="editClientApplicationStatus(csl)">
-                <dl>
-                  <dt> {{csl.description}}</dt>
-                  <dd>{{csl.code}}</dd>
-                </dl>
+              <td (click)="readOnlyEnable(csl)" (dblclick)="editClientApplicationStatus(csl)">
+                {{csl.description}}</td>
+              <td>
+                {{csl.code}}
               </td>
               <td class="table-data-padding"><span class="fa fa-trash pull-right"
                   (click)="open(content,csl.code)"></span>
@@ -59,8 +58,9 @@
           <div class="col-md-8">
             <div class="form-group">
               <label>Description<span class="required">*</span></label>
-              <textarea cols="10" rows="10"  class="form-control" [readonly]="readOnlyForm == 'R'" [(ngModel)]="consultantStatusModel.description"
-                name="decription" [ngClass]="{'is-invalid': f.submitted && description.invalid}" #description="ngModel"
+              <textarea cols="10" rows="10" class="form-control" [readonly]="readOnlyForm == 'R'"
+                [(ngModel)]="consultantStatusModel.description" name="decription"
+                [ngClass]="{'is-invalid': f.submitted && description.invalid}" #description="ngModel"
                 required></textarea>
               <div class="invalid-feedback">
                 description is mandatory
