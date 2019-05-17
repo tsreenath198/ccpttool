@@ -8,6 +8,8 @@ import { ClientpositionStatusModel } from '../client-position-status/client-posi
 import { ToastrCustomService } from 'src/app/shared/services/toastr.service';
 import { NgForm } from '@angular/forms';
 import { ClientModel } from '../client/client.model';
+import { forkJoin } from 'rxjs';
+import { RecruiterModel } from '../recruiter/recruiter.model';
 
 
 @Component({
@@ -21,10 +23,9 @@ export class ClientPositionComponent implements OnInit {
     public clientPositionList: Array<ClientPositionModel> = [];
     public clientPositionStatusList: Array<ClientpositionStatusModel> = [];
     public clientList:Array<ClientModel>=[];
-    public formButtonsToggler: boolean = true;
-    public editButtonToggler: boolean = true;
+    public recruiterList:Array<RecruiterModel>=[]
     public invalidAppCode: boolean = false;
-    
+    public closedByEnable:boolean=false;
     private selectedRecrdToDel: number = 0;
     public closeResult: string = '';
     private modalRef: NgbModalRef;
@@ -32,15 +33,13 @@ export class ClientPositionComponent implements OnInit {
     public currSearchTxt: string ;
     public readOnlyForm: string = '';
     public enableButtonType: string = '';
+    public getAllCPS=this.http.get(this.urlConstants.CPSGetAll) ;
+    public getAllR=this.http.get(this.urlConstants.RGetAll);
+    public getAllC=this.http.get(this.urlConstants.ClientGetAll)
     constructor(private http: HttpClientService, private toastr: ToastrCustomService, private modalService: NgbModal) { }
 
     ngOnInit() {
-        this.http.get(this.urlConstants.CPSGetAll).subscribe(resp => {
-            this.clientPositionStatusList = resp as any;
-        });
-        this.http.get(this.urlConstants.ClientGetAll).subscribe(resp=>{
-            this.clientList=resp as any;
-        })
+        this.getAllDropdowns();
         this.init();
     }
     init() {
@@ -48,10 +47,23 @@ export class ClientPositionComponent implements OnInit {
             this.clientPositionList = resp as any;
         })
     }
+    getAllDropdowns(){
+        forkJoin(
+            this.getAllCPS,
+            this.getAllR,
+            this.getAllC
+            // forkJoin on works for observables that complete
+        ).subscribe(listofrecords => {
+            this.clientPositionStatusList = listofrecords[0] as any;
+            this.recruiterList = listofrecords[1] as any;
+            this.clientList = listofrecords[2] as any;
+        });
+    }
     editClientPosition(data) {
         this.clientPositionModel = JSON.parse(JSON.stringify(data));;
         this.readOnlyForm = 'U';
         this.enableButtonType = 'U';
+        this.closedByEnable=true;
     }
     enableFormEditable(): void {
         this.readOnlyForm = 'U';
@@ -118,7 +130,7 @@ export class ClientPositionComponent implements OnInit {
             clientPositionForm.resetForm();
             this.readOnlyForm = '';
             this.enableButtonType = '';
-
+            this.closedByEnable=false;
         }, err => {
             this.toastr.error(err.statusText, "Client Position");
         })
@@ -128,7 +140,7 @@ export class ClientPositionComponent implements OnInit {
         clientPositionForm.resetForm();
         this.readOnlyForm = '';
         this.enableButtonType = '';
-
+        this.closedByEnable=false;
     }
     deleteCPRecord(): void {
         this.http.delete(this.urlConstants.CPDelete + this.selectedRecrdToDel).subscribe(resp => {

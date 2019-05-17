@@ -64,7 +64,7 @@
           <div class="col-md-8">
             <div class="form-group">
               <label>Role<span class="required">*</span></label>
-              <input class="form-control" [readonly]="readOnlyForm == 'R'" [(ngModel)]="clientPositionModel.technology"
+              <input class="form-control" [readonly]="readOnlyForm == 'R'" [(ngModel)]="clientPositionModel.role"
                 name="technology" placeholder="Role" [ngClass]="{'is-invalid': f.submitted && technology.invalid}"
                 #technology="ngModel" required />
               <div class="invalid-feedback">
@@ -191,14 +191,16 @@
         </div>
 
         <div class="row">
-          <!-- <div class="col-md-8">
+          <div *ngIf="closedByEnable" class="col-md-8">
             <div class="form-group">
               <label>Closed By</label>
-              <input class="form-control" [readonly]="readOnlyForm" name="closedBy"
+              <select class="form-control" name="closedBy" [disabled]="readOnlyForm == 'R'"
                 [(ngModel)]="clientPositionModel.closedBy">
-              Should get dropdown of usernames will done later and present give input admin or pavan
+                <option *ngFor="let rl of recruiterList" [ngValue]="rl.id">
+                  {{rl.fullname}}</option>
+              </select>
             </div>
-          </div> -->
+          </div>
         </div>
         <div class="row">
           <div class="col-md-8">

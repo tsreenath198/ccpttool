@@ -2,7 +2,7 @@ export interface ClientPositionModel{
     clientName:string,
     clientId:string,
     id:number,
-    technology:string,
+    role:string,
     experience:string,
     clientPositionCode:string,
     requiredSkills:string,
