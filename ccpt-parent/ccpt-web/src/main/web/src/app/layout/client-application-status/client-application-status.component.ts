@@ -63,7 +63,7 @@ export class ClientApplicationStatusComponent implements OnInit {
     */
     createClientApplicationStatus(CASForm: NgForm): void {
         this.http.create(this.clientApplicationStatusModel, this.urlConstants.CASCreate).subscribe(resp => {
-            this.toastr.success("Form Submitted Successfully", "Client Application Status");
+            this.toastr.success(this.urlConstants.SuccessMsg, "Client Application Status");
             this.init();
             this.formReset();
             CASForm.resetForm();
@@ -76,7 +76,7 @@ export class ClientApplicationStatusComponent implements OnInit {
      */
     updateClientApplicationStatus(CASForm: NgForm): void {
         this.http.update(this.clientApplicationStatusModel, this.urlConstants.CASUpdate).subscribe(resp => {
-            this.toastr.success("Form Updated Successfully", "Client Application Status");
+            this.toastr.success(this.urlConstants.UpdateMsg, "Client Application Status");
             this.formReset();
             this.init();
             CASForm.resetForm();
@@ -97,7 +97,7 @@ export class ClientApplicationStatusComponent implements OnInit {
     }
     deleteCASRecord(): void {
         this.http.delete(this.urlConstants.CASDelete + this.selectedRecrdToDel).subscribe(resp => {
-            this.toastr.success("Form Deleted Successfully", "Client Application Status");
+            this.toastr.success(this.urlConstants.DeleteMsg, "Client Application Status");
             this.init();
             this.close();
             this.formReset();
