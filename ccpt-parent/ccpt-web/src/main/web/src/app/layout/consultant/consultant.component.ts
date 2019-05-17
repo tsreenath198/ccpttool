@@ -20,10 +20,10 @@ export class ConsultantComponent implements OnInit {
     public consultantList: Array<ConsultantModel> = [];
     public copyConList: Array<ConsultantModel> = [];
     public consultantStatusList: Array<ConsultantStatusModel> = [];
-    public readOnlyForm: boolean = false;
     public formButtonsToggler: boolean = true;
-    public editButtonToggler: boolean = true;
-    public isFresher:boolean=false;
+    
+    public readOnlyForm: string = '';
+    public enableButtonType: string = '';
     public genderList = ['Male', 'Female', 'Other'];
     
     private selectedRecrdToDel: number = 0;
@@ -46,25 +46,18 @@ export class ConsultantComponent implements OnInit {
         })
     }
     consultantEdit(data) {
-        this.consultantModel = data;
-        if (this.readOnlyForm == true) {
-            this.readOnlyForm = false;
-        }
-        if (this.formButtonsToggler == true) {
-            this.formButtonsToggler = false;
-        }
-        if (this.editButtonToggler == true) {
-            this.editButtonToggler = false;
-        }
+        this.consultantModel = JSON.parse(JSON.stringify(data));;
+        this.readOnlyForm = 'U';
+        this.enableButtonType = 'U';
     }
     readOnlyEnable(data) {
-        this.consultantModel = data;
-        if (this.readOnlyForm == false) {
-            this.readOnlyForm = true;
-        }
-        if (this.formButtonsToggler == true) {
-            this.formButtonsToggler = false;
-        }
+        this.consultantModel = JSON.parse(JSON.stringify(data));
+        this.readOnlyForm = 'R';
+        this.enableButtonType = 'E';
+    }
+    enableFormEditable(): void {
+        this.readOnlyForm = 'U';
+        this.enableButtonType = 'U';
     }
     formReset() {
         this.consultantModel = <ConsultantModel>{};
@@ -81,32 +74,22 @@ export class ConsultantComponent implements OnInit {
     }
     updateConsultant(consultantForm: NgForm) {
         this.http.update(this.consultantModel, this.urlConstants.CUpdate).subscribe(resp => {
-            this.formButtonsToggler = true;
             this.formReset();
             this.toastr.success(this.urlConstants.UpdateMsg, "Consultant");
             this.init();
             consultantForm.resetForm();
+            this.readOnlyForm = '';
+            this.enableButtonType = '';
         }, err => {
             this.toastr.error(err.statusText, "Client Position");
         })
     }
-    editableForm() {
-        if (this.readOnlyForm == true) {
-            this.readOnlyForm = false;
-        }
-        if (this.editButtonToggler == true) {
-            this.editButtonToggler = false;
-        }
-    }
+  
     cancelForm(consultantForm: NgForm) {
         this.formReset();
         consultantForm.resetForm();
-        if (this.readOnlyForm == true) {
-            this.readOnlyForm = false;
-        }
-        if (this.formButtonsToggler == false) {
-            this.formButtonsToggler = true;
-        }
+        this.readOnlyForm = '';
+        this.enableButtonType = ''; 
 
     }
     deleteConsultantRecord(): void {
