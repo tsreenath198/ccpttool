@@ -239,7 +239,13 @@ ALTER TABLE client_call_history ADD active_flag CHAR(1) NOT NULL DEFAULT 'Y' AFT
 ALTER TABLE client_call_history ADD called_date DATETIME NOT NULL AFTER active_flag, ADD client_position_code VARCHAR(30) NOT NULL AFTER called_date;
 ALTER TABLE client_call_history ADD INDEX(client_position_code);
 ALTER TABLE client_call_history ADD CONSTRAINT client_position_code_fk_ch FOREIGN KEY (client_position_code) REFERENCES client_position(client_position_code) ON DELETE RESTRICT ON UPDATE RESTRICT;
-ALTER TABLE client_position ADD job_code VARCHAR(30) NOT NULL AFTER client_id, ADD location VARCHAR(30) NOT NULL AFTER job_code, ADD no_of_positions INT NOT NULL AFTER location;
+<<<<<<< .mine
+ALTER TABLE consultant_call_history ADD active_flag CHAR(1) NOT NULL DEFAULT 'Y' AFTER called_date;
+ALTER TABLE client_contact ADD active_flag CHAR(1) NOT NULL DEFAULT 'Y' AFTER client_id;
+CREATE TABLE other_contact ( id INT(11) NOT NULL AUTO_INCREMENT , name VARCHAR(30) NOT NULL , phone VARCHAR(30) NOT NULL , email VARCHAR(50) NOT NULL , notes TEXT NOT NULL , created_date DATETIME NOT NULL , updated_date DATETIME NOT NULL , active_flag CHAR(1) NOT NULL DEFAULT 'Y' , PRIMARY KEY (id)) ;
+ALTER TABLE client_position ADD job_code VARCHAR(30) NOT NULL , ADD location VARCHAR(50) NOT NULL, ADD no_of_positions INT NOT NULL;
+
+
 -- End of file.
 
 SET foreign_key_checks = 1;
