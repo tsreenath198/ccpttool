@@ -9,6 +9,8 @@ import { RouterModule } from '@angular/router';
 export class PageHeaderComponent implements OnInit {
     @Input() heading: string;
     @Input() icon: string;
+    @Input() heading1: string;
+    @Input() icon1: string;
     constructor() { }
 
     ngOnInit() { }
