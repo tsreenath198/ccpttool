@@ -58,6 +58,7 @@ public class ClientCallHistoryController {
 	public ResponseEntity<Void> addClientCallHistory(@RequestBody ClientCallHistory clientCallHistory) {
 		clientCallHistory.setCreatedDate(new Date());
 		clientCallHistory.setUpdatedDate(new Date());
+		clientCallHistory.setActiveFlag('Y');
 		clientCallHistoryService.addClientCallHistory(clientCallHistory);
 		return new ResponseEntity<Void>(HttpStatus.CREATED);
 	}
