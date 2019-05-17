@@ -1,5 +1,7 @@
 <div [@routerTransition]>
-    <app-page-header [icon2]="'fa-users'" [icon1]="'fa-phone'" [heading1]="'calls'" [heading2]="'Consultant Call History'"></app-page-header>  <div class="row">
+  <app-page-header [icon2]="'fa-users'" [icon1]="'fa-phone'" [heading1]="'calls'"
+    [heading2]="'Consultant Call History'"></app-page-header>
+  <div class="row">
     <div class="col-md-6">
       <div class="row">
         <div class="col-md-3"><strong>Total No of records : {{consultantCallHistoryList.length}}</strong></div>
@@ -11,31 +13,30 @@
           <tbody class="overflow-ele-scroll">
             <tr
               *ngFor="let cchl of consultantCallHistoryList  |  filter : 'consultantName' :currSearchTxt ; let i = index">
-              <td class="table-data-padding" (click)="readOnlyEnable(cchl)"
-                (dblclick)="consultantCallHistoryEdit(cchl)">
-                <dl>
-                    <dt> {{cchl.consultantName}}</dt>
-                    <dd>{{cchl.description}}</dd>
-                  </dl>
+              <td (click)="readOnlyEnable(cchl)" (dblclick)="consultantCallHistoryEdit(cchl)">
+                {{cchl.consultantName}}
+              </td>
+              <td>
+                {{cchl.description}}
               </td>
               <td class="table-data-padding"><span class="fa fa-trash pull-right"
-                (click)="open(content,cchl.id)"></span>
-              <ng-template #content let-c="close" let-d="dismiss">
-                <div class="modal-header">
-                  <h4 class="modal-title">Consultant Call History</h4>
-                  <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <div class="modal-body">
-                  <p>Are you sure you want to delete ? &hellip;</p>
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" (click)="deleteCoCHRecord()">Ok</button>
-                  <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
-                </div>
-              </ng-template>
-            </td>
+                  (click)="open(content,cchl.id)"></span>
+                <ng-template #content let-c="close" let-d="dismiss">
+                  <div class="modal-header">
+                    <h4 class="modal-title">Consultant Call History</h4>
+                    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <p>Are you sure you want to delete ? &hellip;</p>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" (click)="deleteCoCHRecord()">Ok</button>
+                    <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
+                  </div>
+                </ng-template>
+              </td>
             </tr>
           </tbody>
         </table>
@@ -48,32 +49,33 @@
           <div class="col-md-8">
             <div class="form-group">
               <label>Consultant<span class="required">*</span></label>
-            
-                <select class="form-control" name="consultant" [disabled]="readOnlyForm == 'R'" [(ngModel)]="consultantCallHistoryModel.consultantId"
-                  [ngClass]="{'is-invalid': f.submitted && consultant.invalid}" #consultant="ngModel" required>
-                  <option *ngFor="let consultant of consultantList" [ngValue]="consultant.id">{{consultant.fullname}}
-                  </option>
-                </select>
-                <div class="invalid-feedback">
-                  Consultant is mandatory
-                </div>
+
+              <select class="form-control" name="consultant" [disabled]="readOnlyForm == 'R'"
+                [(ngModel)]="consultantCallHistoryModel.consultantId"
+                [ngClass]="{'is-invalid': f.submitted && consultant.invalid}" #consultant="ngModel" required>
+                <option *ngFor="let consultant of consultantList" [ngValue]="consultant.id">{{consultant.fullname}}
+                </option>
+              </select>
+              <div class="invalid-feedback">
+                Consultant is mandatory
+              </div>
             </div>
           </div>
           <div class="col-md-8">
             <div class="form-group">
-              <label>Client Position  <span class="required">*</span></label>               
-                <select class="form-control" name="cps" [disabled]="readOnlyForm == 'R'" [(ngModel)]="consultantCallHistoryModel.clientPositionCode"
-                  required>
-                  <option *ngFor="let cp of clientPositionList" [ngValue]="cp.clientPositionCode">
-                    {{cp.clientPositionCode}}</option>
-                </select>
+              <label>Client Position <span class="required">*</span></label>
+              <select class="form-control" name="cps" [disabled]="readOnlyForm == 'R'"
+                [(ngModel)]="consultantCallHistoryModel.clientPositionCode" required>
+                <option *ngFor="let cp of clientPositionList" [ngValue]="cp.clientPositionCode">
+                  {{cp.clientPositionCode}}</option>
+              </select>
             </div>
           </div>
           <div class="col-md-8">
             <div class="form-group">
               <label>Called Date </label>
-              <input class="form-control" type="date" name="calledDate" [readonly]="readOnlyForm == 'R'" placeholder="Called Date"
-                [(ngModel)]="consultantCallHistoryModel.calledDate" required>
+              <input class="form-control" type="date" name="calledDate" [readonly]="readOnlyForm == 'R'"
+                placeholder="Called Date" [(ngModel)]="consultantCallHistoryModel.calledDate" required>
             </div>
           </div>
           <div class="col-md-8">
@@ -91,12 +93,12 @@
         </div>
         <div class="row text-center">
           <div class="col-md-8">
-              <button type="submit" *ngIf="enableButtonType == ''" class="btn btn-secondary ml-3">Add</button>
-              <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2"
-                (click)="updateConsultantCallHistory(f)">Update</button>
-              <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button"
-                (click)="enableFormEditable()">Edit</button>
-              <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3">Cancel</button>
+            <button type="submit" *ngIf="enableButtonType == ''" class="btn btn-secondary ml-3">Add</button>
+            <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2"
+              (click)="updateConsultantCallHistory(f)">Update</button>
+            <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button"
+              (click)="enableFormEditable()">Edit</button>
+            <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3">Cancel</button>
 
           </div>
         </div>
