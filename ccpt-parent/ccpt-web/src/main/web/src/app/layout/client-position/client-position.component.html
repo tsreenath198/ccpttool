@@ -14,7 +14,10 @@
               <td class="table-data-padding" (click)="readOnlyEnable(cpl)" (dblclick)="editClientPosition(cpl)">
                 <dl>
                   <dt> {{cpl.clientPositionCode}}</dt>
-                  <dd>{{cpl.additionalComments}}</dd>
+                  <dd>Need {{cpl.technology || 'N/A'}} for {{cpl.clientName || 'NA'}} with minimun
+                    {{cpl.experience || 'N/A'}} yrs ({{cpl.minCtc || 'N/A'}} - {{cpl.maxCtc || 'N/A'}} ) at
+                    {{cpl.location || 'N/A'}}
+                  </dd>
                 </dl>
               </td>
               <td class="table-data-padding"><span class="fa fa-trash pull-right pointer"
