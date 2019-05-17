@@ -3,6 +3,7 @@ package com.ccpt.service;
 import java.util.Date;
 import java.util.List;
 
+import com.ccpt.model.ClientPosition;
 import com.ccpt.model.ConsultantCallHistory;
 
 public interface IConsultantCallHistoryService {
