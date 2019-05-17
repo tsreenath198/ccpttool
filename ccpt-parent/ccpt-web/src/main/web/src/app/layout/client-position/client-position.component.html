@@ -62,8 +62,8 @@
             <div class="form-group">
               <label>Role<span class="required">*</span></label>
               <input class="form-control" [readonly]="readOnlyForm == 'R'" [(ngModel)]="clientPositionModel.technology"
-                name="technology" [ngClass]="{'is-invalid': f.submitted && technology.invalid}" #technology="ngModel"
-                required />
+                name="technology" placeholder="Role" [ngClass]="{'is-invalid': f.submitted && technology.invalid}"
+                #technology="ngModel" required />
               <div class="invalid-feedback">
                 Role is mandatory
               </div>
@@ -73,45 +73,45 @@
             <div class="form-group">
               <label>Job Code<span class="required">*</span></label>
               <input class="form-control" [readonly]="readOnlyForm == 'R'" [(ngModel)]="clientPositionModel.jobCode"
-                name="jobcode" [ngClass]="{'is-invalid': f.submitted && jobcode.invalid}" #jobcode="ngModel"
-                required />
+                name="jobcode" placeholder="Job Code" [ngClass]="{'is-invalid': f.submitted && jobcode.invalid}"
+                #jobcode="ngModel" required />
               <div class="invalid-feedback">
                 job code is mandatory
               </div>
             </div>
           </div>
           <div class="col-md-8">
-              <div class="form-group">
-                <label>Number Of Positions<span class="required">*</span></label>
-                <input class="form-control" type="number" min="0" [readonly]="readOnlyForm == 'R'" [(ngModel)]="clientPositionModel.numberOfPositions"
-                  name="nofpos" [ngClass]="{'is-invalid': f.submitted && nofpos.invalid}" #nofpos="ngModel"
-                  required />
-                <div class="invalid-feedback">
-                  Role is mandatory
-                </div>
+            <div class="form-group">
+              <label>Number Of Positions<span class="required">*</span></label>
+              <input class="form-control" placeholder="Number Of Positions" type="number" min="0"
+                [readonly]="readOnlyForm == 'R'" [(ngModel)]="clientPositionModel.numberOfPositions" name="nofpos"
+                [ngClass]="{'is-invalid': f.submitted && nofpos.invalid}" #nofpos="ngModel" required />
+              <div class="invalid-feedback">
+                Number of Positions is mandatory
               </div>
             </div>
-            <div class="col-md-8">
-                <div class="form-group">
-                  <label>location<span class="required">*</span></label>
-                  <input class="form-control"  [readonly]="readOnlyForm == 'R'" [(ngModel)]="clientPositionModel.location"
-                    name="loc" [ngClass]="{'is-invalid': f.submitted && loc.invalid}" #loc="ngModel"
-                    required />
-                  <div class="invalid-feedback">
-                    Role is mandatory
-                  </div>
-                </div>
+          </div>
+          <div class="col-md-8">
+            <div class="form-group">
+              <label>location<span class="required">*</span></label>
+              <input class="form-control" placeholder="Location" [readonly]="readOnlyForm == 'R'"
+                [(ngModel)]="clientPositionModel.location" name="loc"
+                [ngClass]="{'is-invalid': f.submitted && loc.invalid}" #loc="ngModel" required />
+              <div class="invalid-feedback">
+                Location is mandatory
               </div>
+            </div>
+          </div>
         </div>
         <div class="row">
           <div class="col-md-8">
             <div class="form-group">
-              <label>Required Experience<span class="required">*</span></label>
-              <input class="form-control" [readonly]="readOnlyForm == 'R'" [(ngModel)]="clientPositionModel.experience"
-                name="experience" [ngClass]="{'is-invalid': f.submitted && experience.invalid}" #experience="ngModel"
-                required />
+              <label>Minimum Experience<span class="required">*</span></label>
+              <input class="form-control" placeholder="Minimum" [readonly]="readOnlyForm == 'R'"
+                [(ngModel)]="clientPositionModel.experience" name="experience"
+                [ngClass]="{'is-invalid': f.submitted && experience.invalid}" #experience="ngModel" required />
               <div class="invalid-feedback">
-                Required Experience is mandatory
+                Minimum Experience is mandatory
               </div>
             </div>
           </div>
@@ -128,29 +128,29 @@
                 Application Code is mandatory
               </div>
               <div class="text-danger" *ngIf="invalidAppCode === true">
-                Please Application Code like 123456-abcd-abcd-LOC
+                Application Code should be like Eg : 123456-abcd-abcd-LOC
               </div>
             </div>
           </div>
         </div>
         <div class="row">
-            <div class="col-md-8">
-              <div class="form-group">
-                <label>Max CTC<span class="required">*</span></label>
-                <input class="form-control" [readonly]="readOnlyForm == 'R'" type="number"
-                  [(ngModel)]="clientPositionModel.maxCtc" name="maxctc"
-                  [ngClass]="{'is-invalid': f.submitted && maxctc.invalid}" #maxctc="ngModel" required />
-                <div class="invalid-feedback">
-                  Max CTC is mandatory
-                </div>
+          <div class="col-md-8">
+            <div class="form-group">
+              <label>Max CTC<span class="required">*</span></label>
+              <input class="form-control" [readonly]="readOnlyForm == 'R'" type="number"
+                [(ngModel)]="clientPositionModel.maxCtc" name="maxctc" placeholder="Max CTC"
+                [ngClass]="{'is-invalid': f.submitted && maxctc.invalid}" #maxctc="ngModel" required />
+              <div class="invalid-feedback">
+                Max CTC is mandatory
               </div>
             </div>
           </div>
+        </div>
         <div class="row">
           <div class="col-md-8">
             <div class="form-group">
               <label>Min CTC<span class="required">*</span></label>
-              <input class="form-control" [readonly]="readOnlyForm == 'R'" type="number"
+              <input class="form-control" [readonly]="readOnlyForm == 'R'" type="number" placeholder="Min CTC"
                 [(ngModel)]="clientPositionModel.minCtc" name="minctc" max="clientPositionModel.maxCtc"
                 [ngClass]="{'is-invalid': f.submitted && minctc.invalid}" #minctc="ngModel" required />
               <div class="invalid-feedback">
@@ -176,9 +176,10 @@
           <div class="col-md-8">
             <div class="form-group">
               <label>Required Skills<span class="required">*</span></label>
-              <textarea class="form-control" cols="10" rows="10" [(ngModel)]="clientPositionModel.requiredSkills"
-                name="requiredskills" [ngClass]="{'is-invalid': f.submitted && requiredskills.invalid}"
-                #requiredskills="ngModel" required [readonly]="readOnlyForm == 'R'"></textarea>
+              <textarea class="form-control" placeholder="Required Skills" cols="10" rows="10"
+                [(ngModel)]="clientPositionModel.requiredSkills" name="requiredskills"
+                [ngClass]="{'is-invalid': f.submitted && requiredskills.invalid}" #requiredskills="ngModel" required
+                [readonly]="readOnlyForm == 'R'"></textarea>
               <div class="invalid-feedback">
                 Required Skills are mandatory
               </div>
@@ -200,8 +201,8 @@
           <div class="col-md-8">
             <div class="form-group">
               <label>Additional Comments</label>
-              <textarea rows="8" class="form-control" [readonly]="readOnlyForm == 'R'" name="additionalComments"
-                [(ngModel)]="clientPositionModel.additionalComments"></textarea>
+              <textarea rows="8" class="form-control" placeholder="Additional Comments" [readonly]="readOnlyForm == 'R'"
+                name="additionalComments" [(ngModel)]="clientPositionModel.additionalComments"></textarea>
             </div>
           </div>
         </div>
@@ -213,25 +214,9 @@
             <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button"
               (click)="enableFormEditable()">Edit</button>
             <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3">Cancel</button>
-
-            <!-- <span *ngIf="formButtonsToggler;else toggleButtons">
-              <button type="submit" id="add" class="btn btn-secondary ml-3">Add</button>
-            </span>
-            <ng-template #toggleButtons>
-              <span *ngIf="editButtonToggler;else toggleEdit">
-                <button type="button" id="update" class="btn btn-secondary ml-2" (click)="editableForm()">Edit</button>
-              </span>
-              <ng-template #toggleEdit>
-                <button type="button" id="update" class="btn btn-secondary ml-2"
-                  (click)="updateClientPosition(f)">Update</button>
-              </ng-template>
-            </ng-template>
-            <button type="button" id="cancel" (click)="cancelForm(f)" class="btn btn-secondary ml-3">Cancel</button> -->
           </div>
         </div>
       </form>
-
     </div>
   </div>
-
 </div>
