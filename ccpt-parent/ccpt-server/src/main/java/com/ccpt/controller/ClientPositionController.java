@@ -22,6 +22,7 @@ import com.ccpt.model.ClientPosition;
 import com.ccpt.service.IClientPositionService;
 import com.ccpt.service.IClientPositionStatusService;
 import com.ccpt.service.IClientService;
+import com.ccpt.service.IRecruiterService;
 
 @Controller
 @CrossOrigin
@@ -37,6 +38,9 @@ public class ClientPositionController {
 	@Autowired
 	private IClientPositionStatusService clientPositionStatusService;
 
+	@Autowired
+	private IRecruiterService recruiterService;
+
 	@GetMapping(CCPTConstants.GET_ALL)
 	public ResponseEntity<List<ClientPosition>> getAllClientPositions() {
 		List<ClientPosition> clientPositionList = clientPositionService.getAllClientPositions();
@@ -45,6 +49,11 @@ public class ClientPositionController {
 			clientPosition.setClientPositionsStatus(clientPositionStatusService
 					.getClientPositionStatusById(clientPosition.getClientPositionsStatusCode()).getDescription());
 			clientPosition.setClientName(clientService.getClientById(clientPosition.getClientId()).getName());
+
+			if (clientPosition.getClosedBy() != null) {
+				clientPosition.setClosedByRecruiter(
+						recruiterService.getRecruiterById(clientPosition.getClosedBy()).getFullname());
+			}
 		}
 		return new ResponseEntity<List<ClientPosition>>(clientPositionList, HttpStatus.OK);
 	}
@@ -52,6 +61,14 @@ public class ClientPositionController {
 	@GetMapping(CCPTConstants.GET_BY_ID)
 	public ResponseEntity<ClientPosition> getClientPositionById(@RequestParam Integer id) {
 		ClientPosition clientPosition = clientPositionService.getClientPositionById(id);
+		clientPosition.setClientPositionsStatus(clientPositionStatusService
+				.getClientPositionStatusById(clientPosition.getClientPositionsStatusCode()).getDescription());
+		clientPosition.setClientName(clientService.getClientById(clientPosition.getClientId()).getName());
+
+		if (clientPosition.getClosedBy() != null) {
+			clientPosition.setClosedByRecruiter(
+					recruiterService.getRecruiterById(clientPosition.getClosedBy()).getFullname());
+		}
 		return new ResponseEntity<ClientPosition>(clientPosition, HttpStatus.OK);
 	}
 

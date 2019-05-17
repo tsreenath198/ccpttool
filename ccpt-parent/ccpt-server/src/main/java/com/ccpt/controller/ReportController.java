@@ -1,6 +1,7 @@
 package com.ccpt.controller;
 
 import java.text.ParseException;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -61,8 +62,8 @@ public class ReportController {
 	}
 
 	@SuppressWarnings("rawtypes")
-	@GetMapping("getAllConsultantCallHistorysFromLastGivenDays")
-	public ResponseEntity<Map<String, List>> getAllConsultantCallHistorysFromLastGivenDays(@RequestParam int days)
+	@GetMapping("getAllCallHistorysFromLastGivenDays")
+	public ResponseEntity<Map<String, List>> getAllCallHistorysFromLastGivenDays(@RequestParam int days)
 			throws ParseException {
 		Calendar cal = Calendar.getInstance();
 		cal.add(Calendar.DATE, -days);
@@ -83,5 +84,27 @@ public class ReportController {
 		map.put("clientCallHistoryList", clientCallHistoryList);
 		return new ResponseEntity<>(map, HttpStatus.OK);
 	}
+
+	/*@GetMapping("getClosedCountOfAllRecruitersFromLastGivenDays")
+	public ResponseEntity<Map<String, Integer>> getClosedCountOfAllRecruitersFromLastGivenDays(@RequestParam int days) {
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.DATE, -days);
+		Date startDate = cal.getTime();
+		Date endDate = new Date();
+		Map<Object, Object> map = new HashMap<>();
+		List<Object[]> results = consultantCallHistoryService.getClosedCountOfAllRecruitersFromLastGivenDays(startDate,
+				endDate);
+		Integer cnt=1;
+		for (Object[] objects : results) {
+			
+			Object  o=objects;
+			map.put(cnt, o);
+			cnt++;
+		}
+		
+		results.forEach(r -> System.out.println(Arrays.toString(r)));
+
+		return new ResponseEntity<>(map, HttpStatus.OK);
+	}*/
 
 }
