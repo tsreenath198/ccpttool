@@ -98,7 +98,7 @@ export class ConsultantCallHistoryComponent implements OnInit {
     }
     deleteCoCHRecord(): void {
         this.http.delete(this.urlConstants.CoCHDelete + this.selectedRecrdToDel).subscribe(resp => {
-            this.toastr.success("Form Deleted Successfully", "Consultant Call History");
+            this.toastr.success(this.urlConstants.DeleteMsg, "Consultant Call History");
             this.init();
             this.close();
             this.formReset();

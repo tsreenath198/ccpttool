@@ -134,27 +134,27 @@
           </div>
         </div>
         <div class="row">
+            <div class="col-md-8">
+              <div class="form-group">
+                <label>Max CTC<span class="required">*</span></label>
+                <input class="form-control" [readonly]="readOnlyForm == 'R'" type="number"
+                  [(ngModel)]="clientPositionModel.maxCtc" name="maxctc"
+                  [ngClass]="{'is-invalid': f.submitted && maxctc.invalid}" #maxctc="ngModel" required />
+                <div class="invalid-feedback">
+                  Max CTC is mandatory
+                </div>
+              </div>
+            </div>
+          </div>
+        <div class="row">
           <div class="col-md-8">
             <div class="form-group">
               <label>Min CTC<span class="required">*</span></label>
               <input class="form-control" [readonly]="readOnlyForm == 'R'" type="number"
-                [(ngModel)]="clientPositionModel.minCtc" name="minctc"
+                [(ngModel)]="clientPositionModel.minCtc" name="minctc" max="clientPositionModel.maxCtc"
                 [ngClass]="{'is-invalid': f.submitted && minctc.invalid}" #minctc="ngModel" required />
               <div class="invalid-feedback">
                 Min CTC is mandatory
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-8">
-            <div class="form-group">
-              <label>Max CTC<span class="required">*</span></label>
-              <input class="form-control" [readonly]="readOnlyForm == 'R'" type="number"
-                [(ngModel)]="clientPositionModel.maxCtc" name="maxctc"
-                [ngClass]="{'is-invalid': f.submitted && maxctc.invalid}" #maxctc="ngModel" required />
-              <div class="invalid-feedback">
-                Max CTC is mandatory
               </div>
             </div>
           </div>
@@ -208,7 +208,7 @@
         <div class="row text-center">
           <div class="col-md-8">
             <button type="submit" *ngIf="enableButtonType == ''" class="btn btn-secondary ml-3">Add</button>
-            <button type="submit" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2"
+            <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2"
               (click)="updateClientPosition(f)">Update</button>
             <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button"
               (click)="enableFormEditable()">Edit</button>

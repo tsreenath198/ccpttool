@@ -15,7 +15,7 @@
               <td class="table-data-padding" (click)="readOnlyEnable(cal)" (dblclick)="editClientApplication(cal)">
                 <dl>
                   <dt> {{cal.clientPositionCode}}</dt>
-                  <dd>{{cal.notes}}</dd>
+                  <dd>{{cal.consultantName}}</dd>
                 </dl>
               </td>
               <td class="table-data-padding"><span class="fa fa-trash pull-right" (click)="open(content,cal.id)"></span>
@@ -111,7 +111,7 @@
         <div class="row text-center">
           <div class="col-md-8">
               <button type="submit" *ngIf="enableButtonType == ''" class="btn btn-secondary ml-3">Add</button>
-              <button type="submit" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2"
+              <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2"
                 (click)="updateClientApplication(f)">Update</button>
               <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button"
                 (click)="enableFormEditable()">Edit</button>

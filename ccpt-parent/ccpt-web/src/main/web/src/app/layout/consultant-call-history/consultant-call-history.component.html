@@ -23,7 +23,7 @@
                 (click)="open(content,cchl.id)"></span>
               <ng-template #content let-c="close" let-d="dismiss">
                 <div class="modal-header">
-                  <h4 class="modal-title">Client Application Status</h4>
+                  <h4 class="modal-title">Consultant Call History</h4>
                   <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
                     <span aria-hidden="true">&times;</span>
                   </button>
@@ -93,7 +93,7 @@
         <div class="row text-center">
           <div class="col-md-8">
               <button type="submit" *ngIf="enableButtonType == ''" class="btn btn-secondary ml-3">Add</button>
-              <button type="submit" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2"
+              <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2"
                 (click)="updateConsultantCallHistory(f)">Update</button>
               <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button"
                 (click)="enableFormEditable()">Edit</button>

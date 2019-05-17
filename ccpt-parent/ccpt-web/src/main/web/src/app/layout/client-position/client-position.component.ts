@@ -71,7 +71,7 @@ export class ClientPositionComponent implements OnInit {
         }
         if (!this.invalidAppCode) {
             this.http.create(this.clientPositionModel, this.urlConstants.CPCreate).subscribe(resp => {
-                this.toastr.success("Form Submitted Successfully", "Client Position");
+                this.toastr.success(this.urlConstants.SuccessMsg, "Client Position");
                 this.init();
                 this.formReset();
                 clientPositionForm.resetForm();
@@ -112,7 +112,7 @@ export class ClientPositionComponent implements OnInit {
     }
     updateClientPosition(clientPositionForm:NgForm) {
         this.http.update(this.clientPositionModel, this.urlConstants.CPUpdate).subscribe(resp => {
-            this.toastr.success("Form Updated Successfully", "Client Position");
+            this.toastr.success(this.urlConstants.UpdateMsg, "Client Position");
             this.formReset();
             this.init();
             clientPositionForm.resetForm();
@@ -132,7 +132,7 @@ export class ClientPositionComponent implements OnInit {
     }
     deleteCPRecord(): void {
         this.http.delete(this.urlConstants.CPDelete + this.selectedRecrdToDel).subscribe(resp => {
-            this.toastr.success("Record Deleted Successfully", "Client Position");
+            this.toastr.success(this.urlConstants.DeleteMsg, "Client Position");
             this.init();
             this.close();
             this.formReset();

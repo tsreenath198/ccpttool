@@ -54,7 +54,7 @@ export class ConsultantStatusComponent implements OnInit {
     }
     public createConsultantStatus(consultantStatusForm: NgForm): void {
         this.http.create(this.consultantStatusModel, this.urlConstants.CSCreate).subscribe(resp => {
-            this.toastr.success("Form Submitted Successfully", "Consultant Status");
+            this.toastr.success(this.urlConstants.SuccessMsg, "Consultant Status");
             this.init();
             this.formReset();
             consultantStatusForm.resetForm();
@@ -64,7 +64,7 @@ export class ConsultantStatusComponent implements OnInit {
     }
     public updateConsultantStatus(consultantStatusForm: NgForm) {
         this.http.update(this.consultantStatusModel, this.urlConstants.CSUpdate).subscribe(resp => {
-            this.toastr.success("Form Updated Successfully", "Consultant Status");
+            this.toastr.success(this.urlConstants.UpdateMsg, "Consultant Status");
             this.formButtonsToggler = true;
             this.formReset();
             this.init();
@@ -84,7 +84,7 @@ export class ConsultantStatusComponent implements OnInit {
     }
     deleteCSRecord(): void {
         this.http.delete(this.urlConstants.CSDelete + this.selectedRecrdToDel).subscribe(resp => {
-            this.toastr.success("Record Deleted Successfully", "Consultant Status");
+            this.toastr.success(this.urlConstants.DeleteMsg,"Consultant Status");
             this.init();
             this.close();
             this.formReset();
