@@ -1,5 +1,5 @@
 <div [@routerTransition]>
-  <app-page-header [icon2]="'fa-users'" [icon1]="'fa-phone'" [heading1]="'calls'"
+  <app-page-header [icon2]="'fa-users'" [icon1]="'fa-phone'" [heading1]="'Calls'"
     [heading2]="'Consultant Call History'"></app-page-header>
   <div class="row">
     <div class="col-md-6">
@@ -19,7 +19,7 @@
               <td>
                 {{cchl.description}}
               </td>
-              <td class="table-data-padding"><span class="fa fa-trash pull-right"
+              <td><span class="fa fa-trash pull-right"
                   (click)="open(content,cchl.id)"></span>
                 <ng-template #content let-c="close" let-d="dismiss">
                   <div class="modal-header">
