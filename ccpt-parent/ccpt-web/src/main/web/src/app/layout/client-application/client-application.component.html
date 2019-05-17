@@ -12,13 +12,14 @@
           <tbody class="overflow-ele-scroll">
             <tr
               *ngFor="let cal of clientApplicationList |  filter : 'clientPositionId' : currSearchTxt ; let i = index">
-              <td class="table-data-padding" (click)="readOnlyEnable(cal)" (dblclick)="editClientApplication(cal)">
-                <dl>
-                  <dt> {{cal.clientPositionCode}}</dt>
-                  <dd>{{cal.consultantName}}</dd>
-                </dl>
+              <td (click)="readOnlyEnable(cal)" (dblclick)="editClientApplication(cal)">
+                {{cal.clientPositionCode}}
               </td>
-              <td class="table-data-padding"><span class="fa fa-trash pull-right" (click)="open(content,cal.id)"></span>
+              <td>{{cal.consultantName}}</td>
+              <td>{{cal.clientApplicationStatus}}</td>
+              <td>{{cal.interviewDate || 'N/A'}}</td>
+              <td>{{cal.notes || 'N/A'}}</td>
+              <td><span class="fa fa-trash pull-right" (click)="open(content,cal.id)"></span>
                 <ng-template #content let-c="close" let-d="dismiss">
                   <div class="modal-header">
                     <h4 class="modal-title">Client Application Status</h4>
@@ -61,8 +62,9 @@
           <div class="col-md-8">
             <div class="form-group">
               <label>Consultant<span class="required">*</span></label>
-              <select class="form-control" [disabled]="readOnlyForm == 'R'" [(ngModel)]="clientApplicationModel.consultantId"
-                name="con" [ngClass]="{'is-invalid': f.submitted && con.invalid}" #con="ngModel" required>
+              <select class="form-control" [disabled]="readOnlyForm == 'R'"
+                [(ngModel)]="clientApplicationModel.consultantId" name="con"
+                [ngClass]="{'is-invalid': f.submitted && con.invalid}" #con="ngModel" required>
                 <option *ngFor="let cl of consultantList" [ngValue]="cl.id">{{cl.fullname}}</option>
               </select>
               <div class="invalid-feedback">
@@ -89,14 +91,15 @@
         <div class="row">
           <div class="col-md-8">
             <div class="form-group" data-provide="datepicker">
-              <input type="checkbox" [(ngModel)]="isInterviewScheduled" name="interviewCheckbox">&nbsp;<small>Interview Scheduled</small>
+              <input type="checkbox" [(ngModel)]="isInterviewScheduled" name="interviewCheckbox">&nbsp;<small>Interview
+                Scheduled</small>
               <div *ngIf="isInterviewScheduled">
-                  <label>Interview Date</label>
-                  <input type="date" class="form-control" name="date" [readonly]="readOnlyForm == 'R'"
-                    [(ngModel)]="clientApplicationModel.interviewDate">
-                  <div class="input-group-addon">
-                    <span class="glyphicon glyphicon-th"></span>
-                  </div>
+                <label>Interview Date</label>
+                <input type="date" class="form-control" name="date" [readonly]="readOnlyForm == 'R'"
+                  [(ngModel)]="clientApplicationModel.interviewDate">
+                <div class="input-group-addon">
+                  <span class="glyphicon glyphicon-th"></span>
+                </div>
               </div>
             </div>
           </div>
@@ -110,12 +113,12 @@
         </div>
         <div class="row text-center">
           <div class="col-md-8">
-              <button type="submit" *ngIf="enableButtonType == ''" class="btn btn-secondary ml-3">Add</button>
-              <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2"
-                (click)="updateClientApplication(f)">Update</button>
-              <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button"
-                (click)="enableFormEditable()">Edit</button>
-              <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3">Cancel</button>
+            <button type="submit" *ngIf="enableButtonType == ''" class="btn btn-secondary ml-3">Add</button>
+            <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2"
+              (click)="updateClientApplication(f)">Update</button>
+            <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button"
+              (click)="enableFormEditable()">Edit</button>
+            <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3">Cancel</button>
 
           </div>
         </div>
