@@ -102,8 +102,8 @@ export class ClientComponent implements OnInit {
         }
     }
     deleteClientRecord(): void {
-        this.http.delete(this.urlConstants.ClientDelete + this.selectedRecrdToDel).subscribe(resp => {
-            this.toastr.success(this.urlConstants.DeleteMsg, "Client");
+        this.http.delete(this.urlConstants.OCDelete + this.selectedRecrdToDel).subscribe(resp => {
+            this.toastr.success(this.urlConstants.DeleteMsg, "Contact");
             this.init();
             this.close();
             this.formReset();
