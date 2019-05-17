@@ -1,7 +1,6 @@
 package com.ccpt.controller;
 
 import java.text.ParseException;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -85,26 +84,20 @@ public class ReportController {
 		return new ResponseEntity<>(map, HttpStatus.OK);
 	}
 
-	/*@GetMapping("getClosedCountOfAllRecruitersFromLastGivenDays")
-	public ResponseEntity<Map<String, Integer>> getClosedCountOfAllRecruitersFromLastGivenDays(@RequestParam int days) {
+	@GetMapping("getClosedCountOfAllRecruitersFromLastGivenDays")
+	public ResponseEntity<Map<String, Long>> getClosedCountOfAllRecruitersFromLastGivenDays(@RequestParam int days) {
 		Calendar cal = Calendar.getInstance();
 		cal.add(Calendar.DATE, -days);
 		Date startDate = cal.getTime();
 		Date endDate = new Date();
-		Map<Object, Object> map = new HashMap<>();
+		Map<String, Long> map = new HashMap<>();
 		List<Object[]> results = consultantCallHistoryService.getClosedCountOfAllRecruitersFromLastGivenDays(startDate,
 				endDate);
-		Integer cnt=1;
-		for (Object[] objects : results) {
-			
-			Object  o=objects;
-			map.put(cnt, o);
-			cnt++;
-		}
-		
-		results.forEach(r -> System.out.println(Arrays.toString(r)));
+		for (Object[] object : results) {
 
+			map.put(((String) object[0]), (Long) object[1]);
+		}
 		return new ResponseEntity<>(map, HttpStatus.OK);
-	}*/
+	}
 
 }
