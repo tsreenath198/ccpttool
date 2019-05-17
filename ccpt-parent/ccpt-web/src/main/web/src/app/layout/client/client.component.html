@@ -1,5 +1,5 @@
 <div [@routerTransition]>
-  <app-page-header [icon1]="'fa-building'" [heading1]="'Client Details'" ></app-page-header>
+  <app-page-header [icon1]="'fa-building'" [heading1]="'Client Details'"></app-page-header>
   <div class="row">
     <div class="col-md-6">
       <div class="row">
@@ -11,14 +11,13 @@
         <table class="table table-hover table-striped">
           <tbody>
             <tr *ngFor="let cl of clientList |  filter : 'name' : currSearchTxt ; let i = index">
-              <td class="table-data-padding" (click)="readOnlyEnable(cl)" (dblclick)="editClient(cl)">
-                <dl>
-                  <dt> {{cl.name}}</dt>
-                  <dd>{{cl.address}}</dd>
-                </dl>
+              <td  (click)="readOnlyEnable(cl)" (dblclick)="editClient(cl)">
+                {{cl.name}}
               </td>
-              <td class="table-data-padding"><span class="fa fa-trash pull-right"
-                  (click)="open(content,cl.id)"></span>
+              <td>
+                {{cl.address}}
+              </td>
+              <td class="table-data-padding"><span class="fa fa-trash pull-right" (click)="open(content,cl.id)"></span>
                 <ng-template #content let-c="close" let-d="dismiss">
                   <div class="modal-header">
                     <h4 class="modal-title">Client Application Status</h4>
@@ -81,9 +80,9 @@
               <tbody>
                 <tr *ngFor="let cc of clientModel.clientContacts;let i=index">
                   <td>
-                    <input class="form-control" [readonly]="readOnlyForm == 'R'" [(ngModel)]="cc.fullname" name="fullname{{i}}"
-                      [ngClass]="{'is-invalid': f.submitted && fullname.invalid}" placeholder="fullname"
-                      #fullname="ngModel" required>
+                    <input class="form-control" [readonly]="readOnlyForm == 'R'" [(ngModel)]="cc.fullname"
+                      name="fullname{{i}}" [ngClass]="{'is-invalid': f.submitted && fullname.invalid}"
+                      placeholder="fullname" #fullname="ngModel" required>
                     <div class="invalid-feedback">
                       name is mandatory
                     </div>
@@ -100,8 +99,7 @@
                     <!--pattern="/^-?\d+\.?\d*$/" onKeyPress="if(this.value.length==12) return false;"-->
                     <input class="form-control" type="number" [readonly]="readOnlyForm == 'R'" [(ngModel)]="cc.phone"
                       name="phone{{i}}" [ngClass]="{'is-invalid': f.submitted && phone.invalid}" placeholder="phone"
-                      #phone="ngModel" 
-                      required>
+                      #phone="ngModel" required>
                     <div class="invalid-feedback">
                       phone is mandatory
                     </div>
@@ -123,12 +121,12 @@
         </div>
         <div class="row text-center">
           <div class="col-md-8">
-              <button type="submit" *ngIf="enableButtonType == ''" class="btn btn-secondary ml-3">Add</button>
-              <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2"
-                (click)="updateClient(f)">Update</button>
-              <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button"
-                (click)="enableFormEditable()">Edit</button>
-              <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3">Cancel</button>
+            <button type="submit" *ngIf="enableButtonType == ''" class="btn btn-secondary ml-3">Add</button>
+            <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2"
+              (click)="updateClient(f)">Update</button>
+            <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button"
+              (click)="enableFormEditable()">Edit</button>
+            <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3">Cancel</button>
 
 
 
