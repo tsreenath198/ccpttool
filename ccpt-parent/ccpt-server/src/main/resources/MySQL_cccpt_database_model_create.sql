@@ -239,7 +239,6 @@ ALTER TABLE client_call_history ADD active_flag CHAR(1) NOT NULL DEFAULT 'Y' AFT
 ALTER TABLE client_call_history ADD called_date DATETIME NOT NULL AFTER active_flag, ADD client_position_code VARCHAR(30) NOT NULL AFTER called_date;
 ALTER TABLE client_call_history ADD INDEX(client_position_code);
 ALTER TABLE client_call_history ADD CONSTRAINT client_position_code_fk_ch FOREIGN KEY (client_position_code) REFERENCES client_position(client_position_code) ON DELETE RESTRICT ON UPDATE RESTRICT;
-<<<<<<< .mine
 ALTER TABLE consultant_call_history ADD active_flag CHAR(1) NOT NULL DEFAULT 'Y' AFTER called_date;
 ALTER TABLE client_contact ADD active_flag CHAR(1) NOT NULL DEFAULT 'Y' AFTER client_id;
 CREATE TABLE other_contact ( id INT(11) NOT NULL AUTO_INCREMENT , name VARCHAR(30) NOT NULL , phone VARCHAR(30) NOT NULL , email VARCHAR(50) NOT NULL , notes TEXT NOT NULL , created_date DATETIME NOT NULL , updated_date DATETIME NOT NULL , active_flag CHAR(1) NOT NULL DEFAULT 'Y' , PRIMARY KEY (id)) ;
@@ -247,8 +246,13 @@ ALTER TABLE client_position ADD job_code VARCHAR(30) NOT NULL , ADD location VAR
 
 ALTER TABLE client_call_history DROP FOREIGN KEY client_call_history_client_position;
 ALTER TABLE client_call_history DROP client_position_id;
-
+ALTER TABLE client_position CHANGE closed_by closed_by INT NULL DEFAULT NULL;
+ALTER TABLE client_position ADD INDEX(closed_by);
+ALTER TABLE client_position ADD CONSTRAINT recruiter_fk FOREIGN KEY (closed_by) REFERENCES recruiter(id) ON DELETE RESTRICT ON UPDATE RESTRICT;
+ALTER TABLE client_position CHANGE technology role TEXT CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL;
 -- End of file.
 
 SET foreign_key_checks = 1;
-
+-- SELECT COUNT(*) , r.fullname as 'recruitername' from client_position,recruiter r WHERE closed_by=1 and r.id=1
+-- SELECT recruiter.fullname,COUNT(client_position.closed_by) FROM client_position LEFT JOIN recruiter on client_position.closed_by = recruiter.id GROUP BY fullname
+--SELECT recruiter.fullname,COUNT(client_position.closed_by) FROM client_position LEFT JOIN recruiter on client_position.closed_by = recruiter.id GROUP BY fullname
