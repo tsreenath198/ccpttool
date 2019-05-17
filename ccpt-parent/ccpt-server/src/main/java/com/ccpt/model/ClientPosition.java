@@ -17,8 +17,8 @@ public class ClientPosition {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 
-	@Column(name = "technology")
-	private String technology;
+	@Column(name = "role")
+	private String role;
 
 	@Column(name = "experience")
 	private String experience;
@@ -35,8 +35,8 @@ public class ClientPosition {
 	@Column(name = "client_positions_status_code")
 	private String clientPositionsStatusCode;
 
-	@Column(name = "closed_by")
-	private String closedBy;
+	@Column(name = "closed_by") 
+	private Integer closedBy;
 
 	@Column(name = "additional_comments")
 	private String additionalComments;
@@ -67,6 +67,9 @@ public class ClientPosition {
 
 	@Transient
 	private String clientName;
+	
+	@Transient
+	private String closedByRecruiter;
 
 	@Transient
 	private String clientPositionsStatus;
@@ -77,14 +80,6 @@ public class ClientPosition {
 
 	public void setId(int id) {
 		this.id = id;
-	}
-
-	public String getTechnology() {
-		return technology;
-	}
-
-	public void setTechnology(String technology) {
-		this.technology = technology;
 	}
 
 	public String getExperience() {
@@ -127,11 +122,11 @@ public class ClientPosition {
 		this.clientPositionsStatusCode = clientPositionsStatusCode;
 	}
 
-	public String getClosedBy() {
+	public Integer getClosedBy() {
 		return closedBy;
 	}
 
-	public void setClosedBy(String closedBy) {
+	public void setClosedBy(Integer closedBy) {
 		this.closedBy = closedBy;
 	}
 
@@ -223,16 +218,31 @@ public class ClientPosition {
 		this.numberOfPositions = numberOfPositions;
 	}
 
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
+
 	@Override
 	public String toString() {
-		return "ClientPosition [id=" + id + ", technology=" + technology + ", experience=" + experience
-				+ ", requiredSkills=" + requiredSkills + ", minCtc=" + minCtc + ", maxCtc=" + maxCtc
-				+ ", clientPositionsStatusCode=" + clientPositionsStatusCode + ", closedBy=" + closedBy
-				+ ", additionalComments=" + additionalComments + ", createdDate=" + createdDate + ", updatedDate="
-				+ updatedDate + ", activeFlag=" + activeFlag + ", clientPositionCode=" + clientPositionCode
-				+ ", clientId=" + clientId + ", jobCode=" + jobCode + ", location=" + location + ", numberOfPositions="
-				+ numberOfPositions + ", clientName=" + clientName + ", clientPositionsStatus=" + clientPositionsStatus
-				+ "]";
+		return "ClientPosition [id=" + id + ", role=" + role + ", experience=" + experience + ", requiredSkills="
+				+ requiredSkills + ", minCtc=" + minCtc + ", maxCtc=" + maxCtc + ", clientPositionsStatusCode="
+				+ clientPositionsStatusCode + ", closedBy=" + closedBy + ", additionalComments=" + additionalComments
+				+ ", createdDate=" + createdDate + ", updatedDate=" + updatedDate + ", activeFlag=" + activeFlag
+				+ ", clientPositionCode=" + clientPositionCode + ", clientId=" + clientId + ", jobCode=" + jobCode
+				+ ", location=" + location + ", numberOfPositions=" + numberOfPositions + ", clientName=" + clientName
+				+ ", clientPositionsStatus=" + clientPositionsStatus + "]";
+	}
+
+	public String getClosedByRecruiter() {
+		return closedByRecruiter;
+	}
+
+	public void setClosedByRecruiter(String closedByRecruiter) {
+		this.closedByRecruiter = closedByRecruiter;
 	}
 
 }
