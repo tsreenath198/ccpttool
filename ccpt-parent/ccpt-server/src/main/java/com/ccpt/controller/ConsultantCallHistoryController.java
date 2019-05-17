@@ -53,6 +53,7 @@ public class ConsultantCallHistoryController {
 	public ResponseEntity<Void> addConsultantCallHistory(@RequestBody ConsultantCallHistory consultantCallHistory) {
 		consultantCallHistory.setCreatedDate(new Date());
 		consultantCallHistory.setUpdatedDate(new Date());
+		consultantCallHistory.setActiveFlag('Y');
 		consultantCallHistoryService.addConsultantCallHistory(consultantCallHistory);
 		return new ResponseEntity<Void>(HttpStatus.CREATED);
 	}
