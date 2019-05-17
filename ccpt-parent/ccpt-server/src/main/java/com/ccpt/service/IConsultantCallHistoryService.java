@@ -15,4 +15,6 @@ public interface IConsultantCallHistoryService {
 	void updateConsultantCallHistory(ConsultantCallHistory consultantCallHistory);
 
 	List<ConsultantCallHistory> getAllConsultantCallHistorysFromLastGivenDays(Date sdate, Date edate);
+
+	List<Object[]> getClosedCountOfAllRecruitersFromLastGivenDays(Date startDate, Date endDate);
 }

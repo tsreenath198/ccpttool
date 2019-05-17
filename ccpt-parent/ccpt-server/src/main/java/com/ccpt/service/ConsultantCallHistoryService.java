@@ -50,4 +50,9 @@ public class ConsultantCallHistoryService implements IConsultantCallHistoryServi
 		return consultantCallHistoryRepository.getAllConsultantCallHistorysFromLastGivenDays(sdate, edate, "Y");
 	}
 
+	@Override
+	public List<Object[]> getClosedCountOfAllRecruitersFromLastGivenDays(Date startDate, Date endDate) {
+		return consultantCallHistoryRepository.getClosedCountOfAllRecruitersFromLastGivenDays(startDate, endDate);
+	}
+
 }

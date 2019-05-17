@@ -23,7 +23,22 @@ public interface ConsultantCallHistoryRepository extends CrudRepository<Consulta
 			@Param(value = "clientPositionCode") String clientPositionCode);
 
 	@Query("SELECT c FROM ConsultantCallHistory c WHERE consultantId=:consultantId")
-	List<ConsultantCallHistory> getConsultantCallHistoryFromConsultantId(@Param(value = "consultantId") Integer consultantId);
+	List<ConsultantCallHistory> getConsultantCallHistoryFromConsultantId(
+			@Param(value = "consultantId") Integer consultantId);
 
 	List<ConsultantCallHistory> findByActiveFlagAllIgnoreCaseOrderByUpdatedDateDesc(String ActiveFlag);
+
+	/*
+	 * @Query("SELECT closedBy, COUNT(closed_by) FROM ClientPosition  WHERE created_date  BETWEEN  :sdate AND  :edate GROUP BY closed_by"
+	 * ) List<Object[]>
+	 * getClosedCountOfAllRecruitersFromLastGivenDays(@Param(value = "sdate")
+	 * Date sdate,
+	 * 
+	 * @Param(value = "edate") Date edate);
+	 */
+
+	@Query(value = "SELECT recruiter.fullname,COUNT(client_position.closed_by) FROM client_position LEFT JOIN recruiter on client_position.closed_by = recruiter.id GROUP BY fullname", nativeQuery = true)
+	List<Object[]> getClosedCountOfAllRecruitersFromLastGivenDays(@Param(value = "sdate") Date sdate,
+			@Param(value = "edate") Date edate);
+
 }
