@@ -1,6 +1,7 @@
 <div [@routerTransition]>
-    <!-- <span class="fa fa-fw fa-building"></span><span class="fa fa-fw fa-phone"></span> -->
-  <app-page-header [icon2]="'fa-building'" [icon1]="'fa-phone'" [heading1]="'calls'" [heading2]="'Client Call History'"></app-page-header>
+  <!-- <span class="fa fa-fw fa-building"></span><span class="fa fa-fw fa-phone"></span> -->
+  <app-page-header [icon2]="'fa-building'" [icon1]="'fa-phone'" [heading1]="'calls'" [heading2]="'Client Call History'">
+  </app-page-header>
   <div class="row">
     <div class="col-md-6 ">
       <div class="row">
@@ -13,30 +14,30 @@
           <table class="table table-hover table-striped">
             <tbody class="overflow-ele-scroll">
               <tr *ngFor="let cchl of clientCallHistoryList">
-                <td class="table-data-padding" (click)="readOnlyEnable(cchl)" (dblclick)="editClientCallHistory(cchl)">
-                  <dl>
-                    <dt> {{cchl.clientPositionCode}}</dt>
-                    <dd>{{cchl.notes || 'NA'}}</dd>
-                  </dl>
+                <td  (click)="readOnlyEnable(cchl)" (dblclick)="editClientCallHistory(cchl)">
+                  {{cchl.clientPositionCode}}
+                </td>
+                <td>
+                  {{cchl.notes || 'NA'}}
                 </td>
                 <td class="table-data-padding"><span class="fa fa-trash pull-right"
-                  (click)="open(content,cchl.id)"></span>
-                <ng-template #content let-c="close" let-d="dismiss">
-                  <div class="modal-header">
-                    <h4 class="modal-title">Client Call History</h4>
-                    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                  <div class="modal-body">
-                    <p>Are you sure you want to delete ? &hellip;</p>
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" (click)="deleteCCHRecord()">Ok</button>
-                    <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
-                  </div>
-                </ng-template>
-              </td>
+                    (click)="open(content,cchl.id)"></span>
+                  <ng-template #content let-c="close" let-d="dismiss">
+                    <div class="modal-header">
+                      <h4 class="modal-title">Client Call History</h4>
+                      <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      <p>Are you sure you want to delete ? &hellip;</p>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" (click)="deleteCCHRecord()">Ok</button>
+                      <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
+                    </div>
+                  </ng-template>
+                </td>
               </tr>
             </tbody>
           </table>
@@ -53,40 +54,42 @@
           <div class="col-md-8">
             <div class="form-group">
               <label>Client Name<span class="required">*</span></label>
-              
-                <select class="form-control"  [disabled]="readOnlyForm == 'R'" name="cn" [(ngModel)]="clientCallHistoryModel.clientId"
-                  [ngClass]="{'is-invalid': f.submitted && cn.invalid}" #cn="ngModel" required>
-                  <option *ngFor="let cl of clientList" [ngValue]="cl.id">
-                    {{cl.name}}
-                  </option>
-                </select>
-                <div class="invalid-feedback">
-                  Client Position is mandatory
-                </div>
+
+              <select class="form-control" [disabled]="readOnlyForm == 'R'" name="cn"
+                [(ngModel)]="clientCallHistoryModel.clientId" [ngClass]="{'is-invalid': f.submitted && cn.invalid}"
+                #cn="ngModel" required>
+                <option *ngFor="let cl of clientList" [ngValue]="cl.id">
+                  {{cl.name}}
+                </option>
+              </select>
+              <div class="invalid-feedback">
+                Client Position is mandatory
+              </div>
             </div>
           </div>
           <div class="col-md-8">
             <div class="form-group">
               <label>Client Position<span class="required">*</span></label>
-             
-                <select class="form-control"  [disabled]="readOnlyForm == 'R'" name="cp" [(ngModel)]="clientCallHistoryModel.clientPositionCode"
-                  [ngClass]="{'is-invalid': f.submitted && cp.invalid}" #cp="ngModel" required>
-                  <option *ngFor="let cpl of clientPositionList" [ngValue]="cpl.clientPositionCode">
-                    {{cpl.clientPositionCode}}
-                  </option>
-                </select>
-                <div class="invalid-feedback">
-                  Client Position is mandatory
-                </div>
+
+              <select class="form-control" [disabled]="readOnlyForm == 'R'" name="cp"
+                [(ngModel)]="clientCallHistoryModel.clientPositionCode"
+                [ngClass]="{'is-invalid': f.submitted && cp.invalid}" #cp="ngModel" required>
+                <option *ngFor="let cpl of clientPositionList" [ngValue]="cpl.clientPositionCode">
+                  {{cpl.clientPositionCode}}
+                </option>
+              </select>
+              <div class="invalid-feedback">
+                Client Position is mandatory
+              </div>
             </div>
           </div>
           <div class="col-md-8">
-              <div class="form-group">
-                <label>Called Date </label>
-                <input class="form-control" type="date" name="calledDate" [readonly]="readOnlyForm == 'R'" placeholder="Called Date"
-                  [(ngModel)]="clientCallHistoryModel.calledDate" required>
-              </div>
+            <div class="form-group">
+              <label>Called Date </label>
+              <input class="form-control" type="date" name="calledDate" [readonly]="readOnlyForm == 'R'"
+                placeholder="Called Date" [(ngModel)]="clientCallHistoryModel.calledDate" required>
             </div>
+          </div>
         </div>
         <div class="row">
           <div class="col-md-8">
@@ -103,12 +106,12 @@
         </div>
         <div class="row text-center">
           <div class="col-md-8">
-              <button type="submit" *ngIf="enableButtonType == ''" class="btn btn-secondary ml-3">Add</button>
-              <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2"
-                (click)="updateClientCallHistory(f)">Update</button>
-              <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button"
-                (click)="enableFormEditable()">Edit</button>
-              <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3">Cancel</button>
+            <button type="submit" *ngIf="enableButtonType == ''" class="btn btn-secondary ml-3">Add</button>
+            <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2"
+              (click)="updateClientCallHistory(f)">Update</button>
+            <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button"
+              (click)="enableFormEditable()">Edit</button>
+            <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3">Cancel</button>
           </div>
         </div>
       </form>
