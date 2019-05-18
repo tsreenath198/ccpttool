@@ -12,8 +12,9 @@
         <table class="table table-hover table-striped">
           <tbody class="overflow-ele-scroll">
             <tr
-              *ngFor="let cchl of consultantCallHistoryList  |  filter : 'consultantName' :currSearchTxt ; let i = index">
-              <td (click)="readOnlyEnable(cchl)" (dblclick)="consultantCallHistoryEdit(cchl)">
+              *ngFor="let cchl of consultantCallHistoryList  |  filter : 'consultantName' :currSearchTxt ; let i = index"
+              (click)="readOnlyEnable(cchl)" (dblclick)="consultantCallHistoryEdit(cchl)">
+              <td>
                 {{cchl.consultantName}}
               </td>
               <td>

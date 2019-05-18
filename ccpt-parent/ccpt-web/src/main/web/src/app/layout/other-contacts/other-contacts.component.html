@@ -10,8 +10,9 @@
       <div class="table-responsive mt-2">
         <table class="table table-hover table-striped">
           <tbody>
-            <tr *ngFor="let ocl of otherContactList |  filter : 'name' : currSearchTxt ; let i = index">
-              <td (click)="readOnlyEnable(ocl)" (dblclick)="editOtherContact(ocl)">
+            <tr *ngFor="let ocl of otherContactList |  filter : 'name' : currSearchTxt ; let i = index"
+            (click)="readOnlyEnable(ocl)" (dblclick)="editOtherContact(ocl)">
+              <td >
                 {{ocl.name}}
               </td>
               <td>

@@ -12,8 +12,9 @@
         <table class="table table-hover table-striped">
 
           <tbody>
-            <tr *ngFor="let cpsl of clientPositionStatusList |  filter : 'description' :currSearchTxt ; let i = index">
-              <td (click)="readOnlyEnable(cpsl)" (dblclick)="editClientPositionStatus(casl)">
+            <tr *ngFor="let cpsl of clientPositionStatusList |  filter : 'description' :currSearchTxt ; let i = index"
+            (click)="readOnlyEnable(cpsl)" (dblclick)="editClientPositionStatus(casl)">
+              <td>
                 {{cpsl.description}}</td>
               <td>
                 {{cpsl.code}}

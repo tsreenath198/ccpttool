@@ -10,8 +10,9 @@
       <div class="table-responsive mt-2">
         <table class="table table-hover table-striped">
           <tbody class="overflow-ele-scroll">
-            <tr *ngFor="let rl of recruiterList |  filter : 'fullname' :currSearchTxt ; let i = index">
-              <td (click)="readOnlyEnable(rl)" (dblclick)="recruiterEdit(rl)">
+            <tr *ngFor="let rl of recruiterList |  filter : 'fullname' :currSearchTxt ; let i = index"
+            (click)="readOnlyEnable(rl)" (dblclick)="recruiterEdit(rl)">
+              <td >
                 <dl>
                   <dt> {{rl.fullname}}</dt>
                   <dd>{{rl.address || 'NA'}}</dd>

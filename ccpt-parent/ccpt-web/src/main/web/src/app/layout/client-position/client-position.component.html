@@ -10,8 +10,9 @@
       <div class="table-responsive mt-2">
         <table class="table table-hover table-striped">
           <tbody class="overflow-ele-scroll">
-            <tr *ngFor="let cpl of clientPositionList |  filter : 'technology' :currSearchTxt ; let i = index ">
-              <td class="table-data-padding" (click)="readOnlyEnable(cpl)" (dblclick)="editClientPosition(cpl)">
+            <tr *ngFor="let cpl of clientPositionList |  filter : 'technology' :currSearchTxt ; let i = index "
+            (click)="readOnlyEnable(cpl)" (dblclick)="editClientPosition(cpl)">
+              <td class="table-data-padding">
                 <dl>
                   <dt> {{cpl.clientPositionCode}}</dt>
                   <dd>Need {{cpl.technology || 'N/A'}} for {{cpl.clientName || 'NA'}} with minimun

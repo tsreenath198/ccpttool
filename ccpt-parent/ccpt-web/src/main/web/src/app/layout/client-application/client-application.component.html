@@ -11,8 +11,9 @@
         <table class="table table-hover table-striped">
           <tbody class="overflow-ele-scroll">
             <tr
-              *ngFor="let cal of clientApplicationList |  filter : 'clientPositionId' : currSearchTxt ; let i = index">
-              <td (click)="readOnlyEnable(cal)" (dblclick)="editClientApplication(cal)">
+              *ngFor="let cal of clientApplicationList |  filter : 'clientPositionId' : currSearchTxt ; let i = index"
+              (click)="readOnlyEnable(cal)" (dblclick)="editClientApplication(cal)">
+              <td >
                 {{cal.clientPositionCode}}
               </td>
               <td>{{cal.consultantName}}</td>
