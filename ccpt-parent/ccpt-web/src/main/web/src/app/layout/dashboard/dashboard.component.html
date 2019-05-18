@@ -21,14 +21,12 @@
         <table class="table table-sm">
           <thead>
             <tr>
-              <th>#</th>
               <th>Consultant Name</th>
               <th>Description</th>
             </tr>
           </thead>
           <tbody>
             <tr *ngFor="let cch of ccptReportData.consultantCallHistoryList">
-              <th scope="row">{{cch.id || 'NA'}}</th>
               <td>{{cch.consultantName || 'NA'}}</td>
               <td>{{cch.description || 'NA'}}</td>
             </tr>
@@ -42,7 +40,6 @@
         <table class="table table-sm">
           <thead>
             <tr>
-              <th>#</th>
               <th>Notes</th>
               <th>Client Name</th>
               <th>Client Position Code</th>
@@ -50,7 +47,6 @@
           </thead>
           <tbody>
             <tr *ngFor="let cch of ccptReportData.clientCallHistoryList">
-              <th scope="row">{{cch.id || 'NA'}}</th>
               <td>{{cch.notes || 'NA'}}</td>
               <td>{{cch.clientName || 'NA'}}</td>
               <td>{{cch.clientPositionCode || 'NA'}}</td>
