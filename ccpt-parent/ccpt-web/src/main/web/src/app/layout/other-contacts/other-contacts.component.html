@@ -1,0 +1,94 @@
+<div [@routerTransition]>
+  <app-page-header [icon1]="'fa-bar-chart-o'" [heading1]="'Upload File'"></app-page-header>
+  <div class="row">
+    <div class="col-md-6">
+      <div class="row">
+        <div class="col-md-3"><strong>Total No of records : {{otherContactList.length}}</strong></div>
+        <div class="col-md-6"> <input type="text" class="form-control" placeholder="search..."
+            [(ngModel)]="currSearchTxt" /></div>
+      </div>
+      <div class="table-responsive mt-2">
+        <table class="table table-hover table-striped">
+          <tbody>
+            <tr *ngFor="let ocl of otherContactList |  filter : 'name' : currSearchTxt ; let i = index">
+              <td (click)="readOnlyEnable(ocl)" (dblclick)="editOtherContact(ocl)">
+                {{ocl.name}}
+              </td>
+              <td>
+                {{ocl.email}}
+              </td>
+              <td>
+                {{ocl.phone}}
+              </td>
+              <td><span class="fa fa-trash pull-right" (click)="open(content,ocl.id)"></span>
+                <ng-template #content let-c="close" let-d="dismiss">
+                  <div class="modal-header">
+                    <h4 class="modal-title">COntact</h4>
+                    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <p>Are you sure you want to delete ? &hellip;</p>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" (click)="deleteClientRecord()">Ok</button>
+                    <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
+                  </div>
+                </ng-template>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class=" col-md-6">
+      <form name="form" id="otherContactForm" (ngSubmit)="f.form.valid&&otherContactCreate(f)" #f="ngForm" novalidate>
+        <div class="row">
+          <div class="col-md-8">
+            <div class="form-group">
+              <label>Name<span class="required">*</span></label>
+              <input class="form-control" [readonly]="readOnlyForm == 'R'" [(ngModel)]="otherContactsModel.name"
+                name="name" [ngClass]="{'is-invalid': f.submitted && name.invalid}" #name="ngModel" required>
+              <div class="invalid-feedback">
+                name is mandatory
+              </div>
+            </div>
+          </div>
+          <div class="col-md-8">
+            <div class="form-group">
+              <label>E-Mail</label>
+              <input class="form-control" [readonly]="readOnlyForm == 'R'" [(ngModel)]="otherContactsModel.email"
+                name="email">
+            </div>
+          </div>
+          <div class="col-md-8">
+            <div class="form-group">
+              <label>Phone</label>
+              <input class="form-control" [readonly]="readOnlyForm == 'R'" [(ngModel)]="otherContactsModel.phone"
+                name="phone">
+            </div>
+          </div>
+          <div class="col-md-8">
+            <div class="form-group">
+              <label>Notes</label>
+              <textarea class="form-control" cols="10" rows="10" [readonly]="readOnlyForm == 'R'"
+                [(ngModel)]="otherContactsModel.notes" name="notes"></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="row text-center">
+          <div class="col-md-8">
+            <button type="submit" *ngIf="enableButtonType == ''" class="btn btn-secondary ml-3">Add</button>
+            <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2"
+              (click)="updateOtherContacts(f)">Update</button>
+            <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button"
+              (click)="enableFormEditable()">Edit</button>
+            <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3">Cancel</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
