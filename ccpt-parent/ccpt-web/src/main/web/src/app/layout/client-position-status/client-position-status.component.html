@@ -2,7 +2,7 @@
   <app-page-header [icon1]="'fa-user'" [heading1]="'Administration'" [icon2]="'fa-filter'"
     [heading2]="'Client Position Status'"></app-page-header>
   <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-7">
       <div class="row">
         <div class="col-md-3"><strong>Total No of records : {{clientPositionStatusList.length}}</strong></div>
         <div class="col-md-6"> <input type="text" class="form-control" placeholder="search..."
@@ -41,11 +41,11 @@
         </table>
       </div>
     </div>
-    <div class="col-md-6">
+    <div class="col-md-5">
       <form name="form" id="clientPositionStatusForm" (ngSubmit)="f.form.valid&&createClientPositionStatus(f)"
         #f="ngForm" novalidate>
         <div class="row">
-          <div class="col-md-8">
+          <div class="col-md-12">
             <div class="form-group">
               <label>Code<span class="required">*</span></label>
               <input class="form-control" [readonly]="readOnlyForm == 'R' || readOnlyForm == 'U'" maxlength="3"
@@ -56,7 +56,7 @@
               </div>
             </div>
           </div>
-          <div class="col-md-8">
+          <div class="col-md-12">
             <div class="form-group">
               <label>Description<span class="required">*</span></label>
               <textarea cols="10" rows="10" class="form-control" [readonly]="readOnlyForm == 'R'"
@@ -71,7 +71,7 @@
 
         </div>
         <div class="row text-center">
-          <div class="col-md-8">
+          <div class="col-md-12">
             <button type="submit" *ngIf="enableButtonType == ''" class="btn btn-secondary ml-3">Add</button>
             <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2"
               (click)="updateClientPositionStatus(f)">Update</button>
