@@ -1,7 +1,7 @@
 <div [@routerTransition]>
   <app-page-header [icon1]="'fa-bar-chart-o'" [heading1]="'Upload File'"></app-page-header>
   <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-7">
       <div class="row">
         <div class="col-md-3"><strong>Total No of records : {{otherContactList.length}}</strong></div>
         <div class="col-md-6"> <input type="text" class="form-control" placeholder="search..."
@@ -42,10 +42,10 @@
         </table>
       </div>
     </div>
-    <div class=" col-md-6">
+    <div class=" col-md-5">
       <form name="form" id="otherContactForm" (ngSubmit)="f.form.valid&&otherContactCreate(f)" #f="ngForm" novalidate>
         <div class="row">
-          <div class="col-md-8">
+          <div class="col-md-12">
             <div class="form-group">
               <label>Name<span class="required">*</span></label>
               <input class="form-control" [readonly]="readOnlyForm == 'R'" [(ngModel)]="otherContactsModel.name"
@@ -55,21 +55,21 @@
               </div>
             </div>
           </div>
-          <div class="col-md-8">
+          <div class="col-md-12">
             <div class="form-group">
               <label>E-Mail</label>
               <input class="form-control" [readonly]="readOnlyForm == 'R'" [(ngModel)]="otherContactsModel.email"
                 name="email">
             </div>
           </div>
-          <div class="col-md-8">
+          <div class="col-md-12">
             <div class="form-group">
               <label>Phone</label>
               <input class="form-control" [readonly]="readOnlyForm == 'R'" [(ngModel)]="otherContactsModel.phone"
                 name="phone">
             </div>
           </div>
-          <div class="col-md-8">
+          <div class="col-md-12">
             <div class="form-group">
               <label>Notes</label>
               <textarea class="form-control" cols="10" rows="10" [readonly]="readOnlyForm == 'R'"
@@ -78,7 +78,7 @@
           </div>
         </div>
         <div class="row text-center">
-          <div class="col-md-8">
+          <div class="col-md-12">
             <button type="submit" *ngIf="enableButtonType == ''" class="btn btn-secondary ml-3">Add</button>
             <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2"
               (click)="updateOtherContacts(f)">Update</button>
