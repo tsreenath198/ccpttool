@@ -1,4 +1,5 @@
 export interface ClientModel{
+    id:number,
     name:string,
     address:string,
     clientContacts:Array<ClientContactsModel>
