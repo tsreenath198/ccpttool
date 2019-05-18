@@ -11,13 +11,13 @@
         <table class="table table-hover table-striped">
           <tbody>
             <tr *ngFor="let cl of clientList |  filter : 'name' : currSearchTxt ; let i = index">
-              <td  (click)="readOnlyEnable(cl)" (dblclick)="editClient(cl)">
+              <td (click)="readOnlyEnable(cl)" (dblclick)="editClient(cl)">
                 {{cl.name}}
               </td>
               <td>
                 {{cl.address}}
               </td>
-              <td ><span class="fa fa-trash pull-right" (click)="open(content,cl.id)"></span>
+              <td><span class="fa fa-trash pull-right" (click)="open(content,cl.id)"></span>
                 <ng-template #content let-c="close" let-d="dismiss">
                   <div class="modal-header">
                     <h4 class="modal-title">Client Application Status</h4>
@@ -55,7 +55,7 @@
           <div class="col-md-12">
             <div class="form-group">
               <label>Address<span class="required">*</span></label>
-              <textarea class="form-control" cols="10" rows="10" [readonly]="readOnlyForm == 'R'"
+              <textarea class="form-control" cols="5" rows="5" [readonly]="readOnlyForm == 'R'"
                 [(ngModel)]="clientModel.address" name="decription"
                 [ngClass]="{'is-invalid': f.submitted && description.invalid}" #description="ngModel"
                 required></textarea>
@@ -69,14 +69,6 @@
         <div class="row">
           <div class="table-responsive">
             <table class="table table-hover table-striped">
-              <!-- <thead>
-                                <tr>
-                                    <th>Name</th>
-                                    <th>E-mail</th>
-                                    <th>Phone</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead> -->
               <tbody>
                 <tr *ngFor="let cc of clientModel.clientContacts;let i=index">
                   <td>
@@ -105,14 +97,10 @@
                     </div>
                   </td>
                   <td>
-                    <div class="value-button " id="decrease" (click)="clientContactListIncrement($event.target,i)"
-                      value="Decrease Value">_</div>
-                    <div *ngIf="(i+1)==clientModel.clientContacts.length">
-                      <div class="value-button " id="increase" (click)="clientContactListIncrement($event.target,i)"
-                        value="Increase Value">+
-                      </div>
-                    </div>
-                    <!-- <span (click)="clientContactListIncrement()">+</span> -->
+                    <i class="fa fa-minus" aria-hidden="true" id="decrease"
+                      (click)="clientContactListIncrement($event.target,i)"></i>
+                    <i class="fa fa-plus" *ngIf="(i+1)==clientModel.clientContacts.length" aria-hidden="true"
+                      id="increase" (click)="clientContactListIncrement($event.target,i)"></i>
                   </td>
                 </tr>
               </tbody>
