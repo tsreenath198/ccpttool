@@ -94,7 +94,7 @@ public class ReportController {
 		List<Object[]> results = consultantCallHistoryService.getClosedCountOfAllRecruitersFromLastGivenDays(startDate,
 				endDate);
 		for (Object[] object : results) {
-
+   
 			map.put(((String) object[0]), (Long) object[1]);
 		}
 		return new ResponseEntity<>(map, HttpStatus.OK);
