@@ -1,7 +1,7 @@
 <div [@routerTransition]>
   <app-page-header [icon1]="'fa-building'" [heading1]="'Client Details'"></app-page-header>
   <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-7">
       <div class="row">
         <div class="col-md-3"><strong>Total No of records : {{clientList.length}}</strong></div>
         <div class="col-md-6"> <input type="text" class="form-control" placeholder="search..."
@@ -39,10 +39,10 @@
         </table>
       </div>
     </div>
-    <div class=" col-md-6">
+    <div class=" col-md-5">
       <form name="form" id="clientForm" (ngSubmit)="f.form.valid&&clientCreate(f)" #f="ngForm" novalidate>
         <div class="row">
-          <div class="col-md-8">
+          <div class="col-md-12">
             <div class="form-group">
               <label>Client Name<span class="required">*</span></label>
               <input class="form-control" [readonly]="readOnlyForm == 'R'" [(ngModel)]="clientModel.name" name="code"
@@ -52,7 +52,7 @@
               </div>
             </div>
           </div>
-          <div class="col-md-8">
+          <div class="col-md-12">
             <div class="form-group">
               <label>Address<span class="required">*</span></label>
               <textarea class="form-control" cols="10" rows="10" [readonly]="readOnlyForm == 'R'"
@@ -120,7 +120,7 @@
           </div>
         </div>
         <div class="row text-center">
-          <div class="col-md-8">
+          <div class="col-md-12">
             <button type="submit" *ngIf="enableButtonType == ''" class="btn btn-secondary ml-3">Add</button>
             <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2"
               (click)="updateClient(f)">Update</button>

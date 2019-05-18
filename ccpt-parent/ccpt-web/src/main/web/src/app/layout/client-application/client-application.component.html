@@ -45,7 +45,7 @@
       <form name="form" id="clientApplicationForm" (ngSubmit)="f.form.valid&&createClientApplication(f)" #f="ngForm"
         novalidate>
         <div class="row">
-          <div class="col-md-8">
+          <div class="col-md-12">
             <div class="form-group">
               <label>Client Position<span class="required">*</span></label>
               <select class="form-control" name="cp" [disabled]="readOnlyForm == 'R'"
@@ -59,7 +59,7 @@
               </div>
             </div>
           </div>
-          <div class="col-md-8">
+          <div class="col-md-12">
             <div class="form-group">
               <label>Consultant<span class="required">*</span></label>
               <select class="form-control" [disabled]="readOnlyForm == 'R'"
@@ -72,7 +72,7 @@
               </div>
             </div>
           </div>
-          <div class="col-md-8">
+          <div class="col-md-12">
             <div class="form-group">
               <label>Client Application Status<span class="required">*</span></label>
               <select class="form-control" name="cas" [disabled]="readOnlyForm == 'R'"
@@ -89,7 +89,7 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-md-8">
+          <div class="col-md-12">
             <div class="form-group" data-provide="datepicker">
               <input type="checkbox" [(ngModel)]="isInterviewScheduled" name="interviewCheckbox">&nbsp;<small>Interview
                 Scheduled</small>
@@ -103,7 +103,7 @@
               </div>
             </div>
           </div>
-          <div class="col-md-8">
+          <div class="col-md-12">
             <div class="form-group">
               <label>Notes</label>
               <textarea class="form-control" name="note" [readonly]="readOnlyForm == 'R'" rows="10"
@@ -112,7 +112,7 @@
           </div>
         </div>
         <div class="row text-center">
-          <div class="col-md-8">
+          <div class="col-md-12">
             <button type="submit" *ngIf="enableButtonType == ''" class="btn btn-secondary ml-3">Add</button>
             <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2"
               (click)="updateClientApplication(f)">Update</button>
