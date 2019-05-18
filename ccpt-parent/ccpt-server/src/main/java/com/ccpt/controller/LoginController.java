@@ -3,6 +3,7 @@ package com.ccpt.controller;
 import java.util.Date;
 import java.util.UUID;
 
+import javax.security.sasl.AuthenticationException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -55,4 +56,14 @@ public class LoginController {
 			return new ResponseEntity<Void>(HttpStatus.UNAUTHORIZED);
 		}
 	}
+
+	@PostMapping("loginDetails")
+	public ResponseEntity<Void> login(@RequestBody Login login) throws AuthenticationException {
+		String username = login.getUsername();
+		String password = login.getPassword();
+		if (username.equalsIgnoreCase("Admin") && password.equalsIgnoreCase("Admin"))
+			return new ResponseEntity<Void>(HttpStatus.OK);
+		throw new AuthenticationException("Invalid username or password");
+	}
+
 }

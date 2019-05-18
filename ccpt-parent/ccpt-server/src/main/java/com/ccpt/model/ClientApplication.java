@@ -44,6 +44,9 @@ public class ClientApplication {
 	@Column(name = "updated_date")
 	private Date updatedDate;
 
+	@Column(name = "closed_by")
+	private Integer closedBy;
+
 	@Transient
 	private String consultantName;
 
@@ -155,6 +158,14 @@ public class ClientApplication {
 
 	public void setClientPositionCode(String clientPositionCode) {
 		this.clientPositionCode = clientPositionCode;
+	}
+
+	public Integer getClosedBy() {
+		return closedBy;
+	}
+
+	public void setClosedBy(Integer closedBy) {
+		this.closedBy = closedBy;
 	}
 
 }
