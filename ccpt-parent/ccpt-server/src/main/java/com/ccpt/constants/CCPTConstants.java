@@ -19,4 +19,7 @@ public interface CCPTConstants {
 	String UPLOAD_FILE = "/uploadFile";
 	String CLIENT = "/client";
 	String CONTACT = "/contact";
+	String CLOSURE = "/closure";
+	String SEND_EMAIL = "/sendEmail";
+	String TEMPLATE = "/template";
 }
