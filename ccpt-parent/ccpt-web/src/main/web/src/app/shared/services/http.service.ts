@@ -37,6 +37,6 @@ export class HttpClientService {
         'Accept': 'application/json'
       })
     };
-    return this.http.post(this.base_url + URL, formData, httpOptions)
+    return this.http.post(this.base_url + URL, formData)
   }
 }

@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { NgbDropdownModule, NgbModule, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { FileUploadModule } from 'ng2-file-upload';
 
 import { LayoutRoutingModule } from './layout-routing.module';
 import { LayoutComponent } from './layout.component';
@@ -13,6 +14,7 @@ import { HeaderComponent } from './components/header/header.component';
         LayoutRoutingModule,
         TranslateModule,
         NgbDropdownModule,
+        FileUploadModule,
         NgbModule
     ],
     declarations: [LayoutComponent, SidebarComponent, HeaderComponent], 

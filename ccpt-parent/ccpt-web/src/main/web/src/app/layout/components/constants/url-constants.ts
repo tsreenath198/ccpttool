@@ -74,4 +74,7 @@ export class URLConstants {
     DeleteMsg: string = "Deleted Successfully";
     SuccessMsg: string = "Created Successfully ";
     UpdateMsg: string = "Updated Successfully";
+
+    UploadFilesMsg:string = 'Upload Files';
+    DownloadFilesMsg:string = 'Files';
 }

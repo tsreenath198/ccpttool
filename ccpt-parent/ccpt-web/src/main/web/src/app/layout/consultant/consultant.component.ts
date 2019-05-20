@@ -1,12 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbModal, ModalDismissReasons, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { FileUploader, FileLikeObject } from 'ng2-file-upload';
+import { NgForm } from '@angular/forms';
+
 import { routerTransition } from '../../router.animations';
 import { ConsultantModel } from './consultant.model';
 import { HttpClientService } from 'src/app/shared/services/http.service';
 import { ConsultantStatusModel } from '../consultant-status/consultant-status.model';
 import { ToastrCustomService } from 'src/app/shared/services/toastr.service';
 import { URLConstants } from '../components/constants/url-constants';
-import { NgForm } from '@angular/forms';
 
 
 @Component({
@@ -21,16 +23,21 @@ export class ConsultantComponent implements OnInit {
     public copyConList: Array<ConsultantModel> = [];
     public consultantStatusList: Array<ConsultantStatusModel> = [];
     public formButtonsToggler: boolean = true;
-    
+
     public readOnlyForm: string = '';
     public enableButtonType: string = '';
     public genderList = ['Male', 'Female', 'Other'];
-    
+    public uploadFileList: Array<any> = [];
+    public fileList: Array<any> = [];
+    public refType: string = '';
+    public comments: string = '';
+
+    public uploader: FileUploader = new FileUploader({});
     private selectedRecrdToDel: number = 0;
     public closeResult: string = '';
     private modalRef: NgbModalRef;
     public urlConstants = new URLConstants();
-    public currSearchTxt: string ;
+    public currSearchTxt: string;
     constructor(private http: HttpClientService, private toastr: ToastrCustomService, private modalService: NgbModal) { }
 
     ngOnInit() {
@@ -39,6 +46,7 @@ export class ConsultantComponent implements OnInit {
         });
         this.init();
     }
+
     init(): void {
         this.http.get(this.urlConstants.CGetAll).subscribe(resp => {
             this.consultantList = resp as any;
@@ -84,12 +92,17 @@ export class ConsultantComponent implements OnInit {
             this.toastr.error(err.statusText, "Client Position");
         })
     }
-  
+    getFilesById() {
+        this.http.get('/uploadFile/id?id=' + 2).subscribe(resp => {
+            this.fileList.push(resp);
+            console.log(this.fileList)
+        })
+    }
     cancelForm(consultantForm: NgForm) {
         this.formReset();
         consultantForm.resetForm();
         this.readOnlyForm = '';
-        this.enableButtonType = ''; 
+        this.enableButtonType = '';
 
     }
     deleteConsultantRecord(): void {
@@ -106,6 +119,7 @@ export class ConsultantComponent implements OnInit {
      * 2) Selected contains the code of selected row
      */
     open(content, selected: number) {
+        this.selectedRecrdToDel = 0;
         if (selected) {
             this.selectedRecrdToDel = selected;
         }
@@ -127,5 +141,38 @@ export class ConsultantComponent implements OnInit {
         } else {
             return `with: ${reason}`;
         }
+    }
+    /** Get Uploaded files */
+    getFiles(): FileLikeObject[] {
+        return this.uploader.queue.map((fileItem) => {
+            return fileItem.file;
+        });
+    }
+    /** Upload documents of respective consultant */
+    uploadFiles() {
+        let files = this.getFiles();
+        let formData = new FormData();
+        formData.append('file', files[0].rawFile, files[0].name);
+        let params = "refId=" + this.selectedRecrdToDel + "&refType= Consultant &comments=" + this.comments
+        this.http.upload('uploadFile/create?' + params, formData);
+        /* let requests = [];
+         files.forEach((file) => {
+             let formData = new FormData();
+             formData.append('file', file.rawFile, file.name);
+             console.log(formData);
+             this.http.upload('', formData[0]).subscribe(resp => {
+                 console.log("resp=====", resp);
+             })
+             // requests.push(this.uploadService.upload(formData));     
+         });*/
+
+        /*concat(...requests).subscribe(
+          (res) => {
+            console.log(res);
+          },
+          (err) => {  
+            console.log(err);
+          }
+        );*/
     }
 }
