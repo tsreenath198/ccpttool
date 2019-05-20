@@ -34,9 +34,6 @@ public class ReportController {
 	@Autowired
 	private IClientCallHistoryService clientCallHistoryService;
 
-	// @Autowired
-	// private IClientPositionService clientPositionService;
-
 	@Autowired
 	private IConsultantService consultantService;
 	@Autowired

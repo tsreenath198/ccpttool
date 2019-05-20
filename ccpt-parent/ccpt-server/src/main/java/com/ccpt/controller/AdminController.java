@@ -115,4 +115,5 @@ public class AdminController {
 		consultantStatusService.deleteConsultantStatus(code);
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
+
 }
