@@ -250,9 +250,10 @@ ALTER TABLE client_position CHANGE closed_by closed_by INT NULL DEFAULT NULL;
 ALTER TABLE client_position ADD INDEX(closed_by);
 ALTER TABLE client_position ADD CONSTRAINT recruiter_fk FOREIGN KEY (closed_by) REFERENCES recruiter(id) ON DELETE RESTRICT ON UPDATE RESTRICT;
 ALTER TABLE client_position CHANGE technology role TEXT CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL;
+
+ALTER TABLE client_application ADD closed_by INT NOT NULL AFTER active_flag;
+ALTER TABLE client_application ADD INDEX(closed_by);
+ALTER TABLE client_application ADD CONSTRAINT closed_by_fk FOREIGN KEY (closed_by) REFERENCES recruiter(id) ON DELETE RESTRICT ON UPDATE RESTRICT;
 -- End of file.
 
 SET foreign_key_checks = 1;
--- SELECT COUNT(*) , r.fullname as 'recruitername' from client_position,recruiter r WHERE closed_by=1 and r.id=1
--- SELECT recruiter.fullname,COUNT(client_position.closed_by) FROM client_position LEFT JOIN recruiter on client_position.closed_by = recruiter.id GROUP BY fullname
---SELECT recruiter.fullname,COUNT(client_position.closed_by) FROM client_position LEFT JOIN recruiter on client_position.closed_by = recruiter.id GROUP BY fullname
