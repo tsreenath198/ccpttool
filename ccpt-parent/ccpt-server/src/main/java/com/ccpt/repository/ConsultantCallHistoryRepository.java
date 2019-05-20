@@ -28,7 +28,7 @@ public interface ConsultantCallHistoryRepository extends CrudRepository<Consulta
 
 	List<ConsultantCallHistory> findByActiveFlagAllIgnoreCaseOrderByUpdatedDateDesc(String ActiveFlag);
 
-	@Query("SELECT  r.fullname, count(*) FROM ClientApplication ca left outer join Recruiter r on ca.closedBy = r.id where ca.closedBy is not null group by r.id, r.fullname ")
+	@Query("SELECT  r.fullname, count(*) FROM ClientApplication ca left outer join Recruiter r on ca.closedBy = r.id where ca.closedBy is not null AND (ca.createdDate   BETWEEN  :sdate AND  :edate) group by r.id, r.fullname ")
 	List<Object[]> getClosedCountOfAllRecruitersFromLastGivenDays(@Param(value = "sdate") Date sdate,
 			@Param(value = "edate") Date edate);
 
