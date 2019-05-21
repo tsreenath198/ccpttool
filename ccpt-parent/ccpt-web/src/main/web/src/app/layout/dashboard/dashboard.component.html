@@ -14,6 +14,14 @@
     </div>
   </div>
   <hr> -->
+  <div class="row pb-3">
+    <div class="col col-md-2">
+      <select class="form-control" name="cp" #t  (change)="getAllByDays(t.value)">
+        <option *ngFor="let nod of noOfDays" >{{nod}}
+        </option>
+      </select>
+    </div>
+  </div>
   <div class="row">
     <div class="col col-xl-6 col-lg-12">
       <div class="card mb-3">
@@ -95,3 +103,27 @@
     </div>
   </div> -->
   </div>
+  <div *ngIf="NumberOfDaysValue!='All'">
+      <div class="row">
+          <div class="col col-xl-6 col-lg-12">
+            <div class="card mb-3">
+              <div class="card-header">Recruiter Performance</div>
+              <table class="table table-sm">
+                <thead>
+                  <tr>
+                    <th>Recruiter</th>
+                    <th>No.of closures</th>
+                  </tr>
+                </thead>
+                <tbody>
+                   <tr *ngFor="let val of ccptClosureCount | keyvalue">
+                    <td>{{val.key}}</td>
+                    <td>{{val.value}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+  </div>
+</div>
