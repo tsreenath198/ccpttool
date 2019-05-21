@@ -16,7 +16,7 @@ export class LoginSetupComponent implements OnInit {
     public loginSetupModel: LoginSetupModel = <LoginSetupModel>{};
     public loginSetupList: Array<LoginSetupModel> = [];
     private urlConstants = new URLConstants();
-    private getAllR: any;
+    public getAllR: any;
 
     constructor(private http: HttpClientService, private toastr: ToastrCustomService) { }
 

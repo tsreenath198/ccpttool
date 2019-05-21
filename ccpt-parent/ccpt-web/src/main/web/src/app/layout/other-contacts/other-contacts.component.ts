@@ -20,7 +20,7 @@ export class OtherContactsComponent implements OnInit {
     private urlConstants = new URLConstants();    
     public readOnlyForm: string = '';
     public enableButtonType: string = '';
-
+    public currSearchTxt:string='';
 
     private selectedRecrdToDel: number = 0;
     public closeResult: string = '';

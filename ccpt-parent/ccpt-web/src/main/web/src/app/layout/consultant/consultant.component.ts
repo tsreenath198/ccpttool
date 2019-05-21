@@ -31,7 +31,7 @@ export class ConsultantComponent implements OnInit {
     public fileList: Array<any> = [];
     public refType: string = '';
     public comments: string = '';
-
+    public isFresher:boolean;
     public uploader: FileUploader = new FileUploader({});
     private selectedRecrdToDel: number = 0;
     public closeResult: string = '';
