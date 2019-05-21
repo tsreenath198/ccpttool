@@ -6,6 +6,8 @@ import { HttpClientService } from 'src/app/shared/services/http.service';
 import { ToastrCustomService } from 'src/app/shared/services/toastr.service';
 import { NgForm } from '@angular/forms';
 import { ClientModel, ClientContactsModel } from './client.model';
+import { FileUploader, FileLikeObject } from 'ng2-file-upload';
+
 
 
 @Component({
@@ -21,7 +23,9 @@ export class ClientComponent implements OnInit {
     private urlConstants = new URLConstants();    
     public readOnlyForm: string = '';
     public enableButtonType: string = '';
-
+    public comments: string = '';
+    public uploader: FileUploader = new FileUploader({});
+    public fileList: Array<any> = [];
 
     private selectedRecrdToDel: number = 0;
     public closeResult: string = '';
@@ -109,6 +113,12 @@ export class ClientComponent implements OnInit {
             this.formReset();
         })
     }
+    getFilesById() {
+        this.http.get('/uploadFile/id?id=' + 3).subscribe(resp => {
+            this.fileList.push(resp);
+            console.log(this.fileList)
+        })
+    }
     /**
      * @param 
      * 1) content consists the modal instance
@@ -136,5 +146,38 @@ export class ClientComponent implements OnInit {
         } else {
             return `with: ${reason}`;
         }
+    }
+    /** Get Uploaded files */
+    getFiles(): FileLikeObject[] {
+        return this.uploader.queue.map((fileItem) => {
+            return fileItem.file;
+        });
+    }
+    /** Upload documents of respective consultant */
+    uploadFiles() {
+        let files = this.getFiles();
+        let formData = new FormData();
+        formData.append('file', files[0].rawFile, files[0].name);
+        let params = "refId=" + this.selectedRecrdToDel + "&refType= Consultant &comments=" + this.comments
+        this.http.upload('uploadFile/create?' + params, formData);
+        /* let requests = [];
+         files.forEach((file) => {
+             let formData = new FormData();
+             formData.append('file', file.rawFile, file.name);
+             console.log(formData);
+             this.http.upload('', formData[0]).subscribe(resp => {
+                 console.log("resp=====", resp);
+             })
+             // requests.push(this.uploadService.upload(formData));     
+         });*/
+
+        /*concat(...requests).subscribe(
+          (res) => {
+            console.log(res);
+          },
+          (err) => {  
+            console.log(err);
+          }
+        );*/
     }
 }

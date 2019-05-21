@@ -1,7 +1,7 @@
 <div [@routerTransition]>
   <app-page-header [icon1]="'fa-building'" [heading1]="'Client Details'"></app-page-header>
   <div class="row">
-    <div class="col-md-7">
+    <div class="col-md-8">
       <div class="row">
         <div class="col-md-3"><strong>Total No of records : {{clientList.length}}</strong></div>
         <div class="col-md-6"> <input type="text" class="form-control" placeholder="search..."
@@ -11,7 +11,7 @@
         <table class="table table-hover table-striped">
           <tbody>
             <tr *ngFor="let cl of clientList |  filter : 'name' : currSearchTxt ; let i = index"
-            (click)="readOnlyEnable(cl)" (dblclick)="editClient(cl)">
+              (click)="readOnlyEnable(cl)" (dblclick)="editClient(cl)">
               <td>
                 {{cl.name}}
               </td>
@@ -34,91 +34,133 @@
                     <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
                   </div>
                 </ng-template>
-              </td>
-            </tr>
+                <span class="fa fa-upload pull-right px-2" data-toggle="tooltip" title="Upload"
+                  (click)="open(upload,cl.id)"></span>
+                <ng-template #upload let-c="close" let-d="dismiss">
+                  <div class="modal-header">
+                    <h4 class="modal-title">{{urlConstants.UploadFilesMsg}}</h4>
+                    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <input type="file" ng2FileSelect [uploader]="uploader">
+                    <button (click)="uploadFiles()">Upload All</button>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
+                  </div>
+                </ng-template>
+                <span class="fa fa-download pull-right" data-toggle="tooltip" title="Download"
+                  (click)="open(download,cl.id);getFilesById()"></span>
+                <ng-template #download let-c="close" let-d="dismiss">
+                  <div class="modal-header">
+                    <h4 class="modal-title">Consultant {{urlConstants.DownloadFilesMsg}}</h4>
+                    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <table class="table ">
+                      <thead>
+              <th>Reference Type</th>
+              <th>Comments</th>
+              </thead>
+          <tbody *ngFor="let fl of fileList">
+            <td>{{fl.refId}}</td>
+            <td>{{fl.refType}}</td>
+            <td>{{fl.comments}}</td>
           </tbody>
         </table>
       </div>
-    </div>
-    <div class=" col-md-5">
-      <form name="form" id="clientForm" (ngSubmit)="f.form.valid&&clientCreate(f)" #f="ngForm" novalidate>
-        <div class="row">
-          <div class="col-md-12">
-            <div class="form-group">
-              <label>Client Name<span class="required">*</span></label>
-              <input class="form-control" [readonly]="readOnlyForm == 'R'" [(ngModel)]="clientModel.name" name="code"
-                [ngClass]="{'is-invalid': f.submitted && code.invalid}" #code="ngModel" required>
-              <div class="invalid-feedback">
-                client name is mandatory
-              </div>
-            </div>
-          </div>
-          <div class="col-md-12">
-            <div class="form-group">
-              <label>Address<span class="required">*</span></label>
-              <textarea class="form-control" cols="5" rows="5" [readonly]="readOnlyForm == 'R'"
-                [(ngModel)]="clientModel.address" name="decription"
-                [ngClass]="{'is-invalid': f.submitted && description.invalid}" #description="ngModel"
-                required></textarea>
-              <div class="invalid-feedback">
-                address is mandatory
-              </div>
-            </div>
-          </div>
-        </div>
-        <strong>Add Contacts</strong>
-        <div class="row">
-          <div class="table-responsive">
-            <table class="table table-hover table-striped">
-              <tbody>
-                <tr *ngFor="let cc of clientModel.clientContacts;let i=index">
-                  <td>
-                    <input class="form-control" [readonly]="readOnlyForm == 'R'" [(ngModel)]="cc.fullname"
-                      name="fullname{{i}}" [ngClass]="{'is-invalid': f.submitted && fullname.invalid}"
-                      placeholder="fullname" #fullname="ngModel" required>
-                    <div class="invalid-feedback">
-                      name is mandatory
-                    </div>
-                  </td>
-                  <td>
-                    <input class="form-control" type="email" [readonly]="readOnlyForm == 'R'" [(ngModel)]="cc.email"
-                      name="email{{i}}" [ngClass]="{'is-invalid': f.submitted && email.invalid}" placeholder="email"
-                      #email="ngModel" required>
-                    <div class="invalid-feedback">
-                      email is mandatory
-                    </div>
-                  </td>
-                  <td>
-                    <!--pattern="/^-?\d+\.?\d*$/" onKeyPress="if(this.value.length==12) return false;"-->
-                    <input class="form-control" type="number" [readonly]="readOnlyForm == 'R'" [(ngModel)]="cc.phone"
-                      name="phone{{i}}" [ngClass]="{'is-invalid': f.submitted && phone.invalid}" placeholder="phone"
-                      #phone="ngModel" required>
-                    <div class="invalid-feedback">
-                      phone is mandatory
-                    </div>
-                  </td>
-                  <td>
-                    <i class="fa fa-minus" aria-hidden="true" id="decrease"
-                      (click)="clientContactListIncrement($event.target,i)"></i>
-                    <i class="fa fa-plus" *ngIf="(i+1)==clientModel.clientContacts.length" aria-hidden="true"
-                      id="increase" (click)="clientContactListIncrement($event.target,i)"></i>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-        <div class="row text-center">
-          <div class="col-md-12">
-            <button type="submit" *ngIf="enableButtonType == ''" class="btn btn-secondary ml-3">Add</button>
-            <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2"
-              (click)="updateClient(f)">Update</button>
-            <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button"
-              (click)="enableFormEditable()">Edit</button>
-            <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3">Cancel</button>
-          </div>
-        </div>
-      </form>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
+      </div>
+      </ng-template>
+      </td>
+      </tr>
+      </tbody>
+      </table>
     </div>
   </div>
+  <div class=" col-md-4">
+    <form name="form" id="clientForm" (ngSubmit)="f.form.valid&&clientCreate(f)" #f="ngForm" novalidate>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label>Client Name<span class="required">*</span></label>
+            <input class="form-control" [readonly]="readOnlyForm == 'R'" [(ngModel)]="clientModel.name" name="code"
+              [ngClass]="{'is-invalid': f.submitted && code.invalid}" #code="ngModel" required>
+            <div class="invalid-feedback">
+              client name is mandatory
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <div class="form-group">
+            <label>Address<span class="required">*</span></label>
+            <textarea class="form-control" cols="5" rows="5" [readonly]="readOnlyForm == 'R'"
+              [(ngModel)]="clientModel.address" name="decription"
+              [ngClass]="{'is-invalid': f.submitted && description.invalid}" #description="ngModel" required></textarea>
+            <div class="invalid-feedback">
+              address is mandatory
+            </div>
+          </div>
+        </div>
+      </div>
+      <strong>Add Contacts</strong>
+      <div class="row">
+        <div class="table-responsive">
+          <table class="table table-hover table-striped">
+            <tbody>
+              <tr *ngFor="let cc of clientModel.clientContacts;let i=index">
+                <td>
+                  <input class="form-control" [readonly]="readOnlyForm == 'R'" [(ngModel)]="cc.fullname"
+                    name="fullname{{i}}" [ngClass]="{'is-invalid': f.submitted && fullname.invalid}"
+                    placeholder="fullname" #fullname="ngModel" required>
+                  <div class="invalid-feedback">
+                    name is mandatory
+                  </div>
+                </td>
+                <td>
+                  <input class="form-control" type="email" [readonly]="readOnlyForm == 'R'" [(ngModel)]="cc.email"
+                    name="email{{i}}" [ngClass]="{'is-invalid': f.submitted && email.invalid}" placeholder="email"
+                    #email="ngModel" required>
+                  <div class="invalid-feedback">
+                    email is mandatory
+                  </div>
+                </td>
+                <td>
+                  <!--pattern="/^-?\d+\.?\d*$/" onKeyPress="if(this.value.length==12) return false;"-->
+                  <input class="form-control" type="number" [readonly]="readOnlyForm == 'R'" [(ngModel)]="cc.phone"
+                    name="phone{{i}}" [ngClass]="{'is-invalid': f.submitted && phone.invalid}" placeholder="phone"
+                    #phone="ngModel" required>
+                  <div class="invalid-feedback">
+                    phone is mandatory
+                  </div>
+                </td>
+                <td>
+                  <i class="fa fa-minus" aria-hidden="true" id="decrease"
+                    (click)="clientContactListIncrement($event.target,i)"></i>
+                  <i class="fa fa-plus" *ngIf="(i+1)==clientModel.clientContacts.length" aria-hidden="true"
+                    id="increase" (click)="clientContactListIncrement($event.target,i)"></i>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="row text-center">
+        <div class="col-md-12">
+          <button type="submit" *ngIf="enableButtonType == ''" class="btn btn-secondary ml-3">Add</button>
+          <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2"
+            (click)="updateClient(f)">Update</button>
+          <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button"
+            (click)="enableFormEditable()">Edit</button>
+          <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3">Cancel</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
 </div>
