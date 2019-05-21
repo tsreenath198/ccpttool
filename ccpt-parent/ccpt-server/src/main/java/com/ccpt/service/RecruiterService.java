@@ -19,7 +19,7 @@ public class RecruiterService implements IRecruiterService {
 	@Override
 	public List<Recruiter> getAllRecruiters() {
 		List<Recruiter> list = new ArrayList<>();
-		recruiterRepository.findByActiveFlagAllIgnoreCaseOrderByUpdatedDateDesc("Y").forEach(e -> list.add(e));
+		recruiterRepository.findByActiveFlagAllIgnoreCaseOrderByCreatedDateDesc("Y").forEach(e -> list.add(e));
 		return list;
 	}
 
@@ -46,7 +46,7 @@ public class RecruiterService implements IRecruiterService {
 	@Override
 	public List<Recruiter> getActiveRecruiters() {
 		List<Recruiter> list = new ArrayList<>();
-		recruiterRepository.findByActiveFlagAndStatusAllIgnoreCaseOrderByUpdatedDateDesc("Y", "Active")
+		recruiterRepository.findByActiveFlagAndStatusAllIgnoreCaseOrderByCreatedDateDesc("Y", "Active")
 				.forEach(e -> list.add(e));
 		return list;
 	}

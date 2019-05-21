@@ -14,7 +14,7 @@ import com.ccpt.model.ClientApplication;
 public interface ClientApplicationRepository extends CrudRepository<ClientApplication, Integer> {
 	public List<ClientApplication> findAllByOrderByUpdatedDateAsc();
 
-	List<ClientApplication> findByActiveFlagAllIgnoreCaseOrderByUpdatedDateDesc(String ActiveFlag);
+	List<ClientApplication> findByActiveFlagAllIgnoreCaseOrderByCreatedDateDesc(String ActiveFlag);
 
 	ClientApplication findByIdAndActiveFlag(int id, Character status);
 	
@@ -25,8 +25,5 @@ public interface ClientApplicationRepository extends CrudRepository<ClientApplic
 	List<ClientApplication> getClientApplicationByConsultantId(@Param(value = "consultantId") int consultantId);
 	
 
-	/*@Modifying(clearAutomatically = true)
-	@Query("UPDATE ClientApplication c SET c.activeFlag = :activeFlag WHERE c.clientPositionId = :clientPositionId")
-	int updateClientApplication(@Param("clientPositionId") int clientPositionId,
-			@Param("activeFlag") Character activeFlag);*/
+	
 }

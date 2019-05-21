@@ -9,7 +9,9 @@ import org.springframework.data.repository.query.Param;
 import com.ccpt.model.ClientPosition;
 
 public interface ClientPositionRepository extends CrudRepository<ClientPosition, Integer> {
-	 List<ClientPosition> findByActiveFlagAllIgnoreCaseOrderByUpdatedDateDesc(String ActiveFlag);
+	 List<ClientPosition> findByActiveFlagAllIgnoreCaseOrderByCreatedDateDesc(String ActiveFlag);
+	 
+	 List<ClientPosition> findTop5ByActiveFlagAllIgnoreCaseOrderByIdAsc(String activeFlag);
 
 	ClientPosition findByIdAndActiveFlag(int id, char status);
 	

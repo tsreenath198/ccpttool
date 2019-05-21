@@ -32,7 +32,7 @@ public class ConsultantService implements IConsultantService {
 	@Override
 	public List<Consultant> getAllConsultants() {
 		List<Consultant> list = new ArrayList<>();
-		consultantRepository.findByActiveFlagAllIgnoreCaseOrderByUpdatedDateDesc("Y").forEach(e -> list.add(e));
+		consultantRepository.findByActiveFlagAllIgnoreCaseOrderByCreatedDateDesc("Y").forEach(e -> list.add(e));
 		return list;
 	}
 

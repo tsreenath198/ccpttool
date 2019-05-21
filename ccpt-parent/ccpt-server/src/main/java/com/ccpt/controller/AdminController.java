@@ -35,6 +35,7 @@ public class AdminController {
 	@Autowired
 	private IConsultantStatusService consultantStatusService;
 
+	
 	@PostMapping("cAStatus" + CCPTConstants.CREATE)
 	public ResponseEntity<Void> addClientApplicationStatus(
 			@RequestBody ClientApplicationStatus clientApplicationStatus) {

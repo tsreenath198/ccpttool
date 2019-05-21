@@ -7,7 +7,7 @@ import org.springframework.data.repository.CrudRepository;
 import com.ccpt.model.OtherContact;
 
 public interface OtherContactRepository extends CrudRepository<OtherContact, Integer> {
-	List<OtherContact> findByActiveFlagAllIgnoreCaseOrderByUpdatedDateDesc(String ActiveFlag);
+	List<OtherContact> findByActiveFlagAllIgnoreCaseOrderByCreatedDateDesc(String ActiveFlag);
 
 	OtherContact findByIdAndActiveFlag(int id, Character status);
 }

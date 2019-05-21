@@ -8,7 +8,7 @@ import com.ccpt.model.Consultant;
 
 public interface ConsultantRepository extends CrudRepository<Consultant, Integer> {
 
-	List<Consultant> findByActiveFlagAllIgnoreCaseOrderByUpdatedDateDesc(String ActiveFlag);
+	List<Consultant> findByActiveFlagAllIgnoreCaseOrderByCreatedDateDesc(String ActiveFlag);
 
 	Consultant findByIdAndActiveFlag(int id, char status);
 }

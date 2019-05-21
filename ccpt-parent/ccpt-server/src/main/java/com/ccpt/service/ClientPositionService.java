@@ -19,7 +19,7 @@ public class ClientPositionService implements IClientPositionService {
 	@Override
 	public List<ClientPosition> getAllClientPositions() {
 		List<ClientPosition> list = new ArrayList<>();
-		clientPositionRepository.findByActiveFlagAllIgnoreCaseOrderByUpdatedDateDesc("Y").forEach(e -> list.add(e));
+		clientPositionRepository.findByActiveFlagAllIgnoreCaseOrderByCreatedDateDesc("Y").forEach(e -> list.add(e));
 		return list;
 	}
 
@@ -48,5 +48,10 @@ public class ClientPositionService implements IClientPositionService {
 	public void addClientPosition(ClientPosition clientPosition) {
 		clientPositionRepository.save(clientPosition);
 	}
-
+	@Override
+	public List<ClientPosition> getTop5ClientPositions() {
+		List<ClientPosition> list = new ArrayList<>();
+		clientPositionRepository.findTop5ByActiveFlagAllIgnoreCaseOrderByIdAsc("Y").forEach(e -> list.add(e));
+		return list;
+	}
 }

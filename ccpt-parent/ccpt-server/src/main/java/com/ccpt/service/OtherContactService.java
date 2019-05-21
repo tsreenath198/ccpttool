@@ -19,7 +19,7 @@ public class OtherContactService implements IOtherContactService {
 	@Override
 	public List<OtherContact> getAllOtherContacts() {
 		List<OtherContact> list = new ArrayList<>();
-		otherContactRepository.findByActiveFlagAllIgnoreCaseOrderByUpdatedDateDesc("Y").forEach(e -> list.add(e));
+		otherContactRepository.findByActiveFlagAllIgnoreCaseOrderByCreatedDateDesc("Y").forEach(e -> list.add(e));
 		return list;
 	}
 

@@ -14,4 +14,6 @@ public interface IClientPositionService {
 	void updateClientPosition(ClientPosition clientPosition);
 
 	void deleteClientPosition(int id);
+
+	List<ClientPosition> getTop5ClientPositions();
 }

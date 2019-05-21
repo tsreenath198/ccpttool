@@ -57,7 +57,7 @@ public class ClientService implements IClientService {
 	@Override
 	public List<Client> getAllClients() {
 		List<Client> list = new ArrayList<>();
-		clientRepository.findByActiveFlagAllIgnoreCaseOrderByUpdatedDateDesc("Y").forEach(e -> list.add(e));
+		clientRepository.findByActiveFlagAllIgnoreCaseOrderByCreatedDateDesc("Y").forEach(e -> list.add(e));
 		return list;
 	}
 

@@ -21,6 +21,6 @@ public interface ClientCallHistoryRepository extends CrudRepository<ClientCallHi
 	@Query("SELECT c FROM ClientCallHistory c WHERE clientId=:clientId")
 	List<ClientCallHistory> getClientCallHistorysFromClientId(@Param(value = "clientId") Integer clientId);
 
-	List<ClientCallHistory> findByActiveFlagAllIgnoreCaseOrderByUpdatedDateDesc(String ActiveFlag);
+	List<ClientCallHistory> findByActiveFlagAllIgnoreCaseOrderByCreatedDateDesc(String ActiveFlag);
 	
 }
