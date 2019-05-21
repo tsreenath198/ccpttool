@@ -1,6 +1,6 @@
 export interface LoginSetupModel{
     username:string,
     password:string,
-    token:string,
+    description:string,
     role:string
 }

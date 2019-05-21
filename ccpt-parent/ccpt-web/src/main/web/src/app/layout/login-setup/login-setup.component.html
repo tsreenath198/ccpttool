@@ -11,40 +11,67 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td>Controller not ready yet</td>
+                            <td>No get all</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
         </div>
-        <!-- <div class="col-md-6">
-            <div class="row">
-                <div class="col-md-8">
-                    <div class="form-group">
-                        <label>Username</label>
-                        
-                        <select class="form-control" name="cp" [(ngModel)]="loginSetupModel.username">
-                            <option *ngFor="let gar of getAllR" [ngValue]="gar.email">{{gar.fullname}}
-                            </option>
-                        </select>
+        <div class="col-md-6">
+            <form name="form" id="UserForm" (ngSubmit)="f.form.valid&&createUser(f)" #f="ngForm" novalidate>
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="form-group">
+                            <label>Username<span class="required">*</span></label>
+                            <select class="form-control" name="uname" [(ngModel)]="loginSetupModel.username"
+                                [ngClass]="{'is-invalid': f.submitted && uname.invalid}" #uname="ngModel" required>
+                                <option *ngFor="let gar of getAllR" [ngValue]="gar.email">{{gar.fullname}}
+                                </option>
+                            </select>
+                            <div class="invalid-feedback">
+                                username is mandatory
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="form-group">
+                            <label>Password<span class="required">*</span></label>
+                            <input type="password" class="form-control" [(ngModel)]="loginSetupModel.password"
+                                name="pwd" [ngClass]="{'is-invalid': f.submitted && pwd.invalid}" #pwd="ngModel"
+                                required>
+                            <div class="invalid-feedback">
+                                password is mandatory
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="form-group">
+                            <label>role<span class="required">*</span></label>
+                            <select class="form-control" name="role" [(ngModel)]="loginSetupModel.role"
+                                [ngClass]="{'is-invalid': f.submitted && role.invalid}" #role="ngModel" required>
+                                <option *ngFor="let gar of getAllR" [ngValue]="gar.role">{{gar.role}}
+                                </option>
+                            </select>
+                            <div class="invalid-feedback">
+                                role is mandatory
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="form-group">
+                            <label>Description</label>
+                            <textarea rows="5" cols="5" type="password" class="form-control" name="description"
+                                [(ngModel)]="loginSetupModel.description"></textarea>
+                        </div>
                     </div>
                 </div>
-                <div class="col-md-8">
-                    <div class="form-group">
-                        <label>Password</label>
-                        <input type="password" class="form-control" [(ngModel)]="loginSetupModel.password">
+                <div class="row text-center">
+                    <div class="col-md-8 mt-4">
+                        <button type="submit" class="btn btn-secondary">Add</button>
+                        <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3">Cancel</button>
                     </div>
                 </div>
-
-            </div>
-            <div class="row">
-
-                <div class="col-md-8 mt-4">
-                    <button type="button" class="btn btn-secondary" (click)="submit()">Add</button>
-                </div>
-            </div>
-
-        </div> -->
+            </form>
+        </div>
     </div>
-
 </div>
