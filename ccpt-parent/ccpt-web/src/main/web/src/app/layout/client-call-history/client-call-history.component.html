@@ -24,7 +24,7 @@
                 <td>
                   {{cchl.calledDate}}
                 </td>
-                <td><span class="fa fa-trash pull-right" (click)="open(content,cchl.id)"></span>
+                <td><span class="fa fa-trash pull-right" data-toggle="tooltip" title="Delete" (click)="open(content,cchl.id)"></span>
                   <ng-template #content let-c="close" let-d="dismiss">
                     <div class="modal-header">
                       <h4 class="modal-title">Client Call History</h4>

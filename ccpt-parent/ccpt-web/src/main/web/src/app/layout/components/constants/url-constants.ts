@@ -71,7 +71,10 @@ export class URLConstants {
     ReportingGetAll: string = 'report/getAll';
     ReportingGetAllLastGivenDays:string='report/getAllCallHistorysFromLastGivenDays?days=';
     ReportingGetClosures:string='report/getClosedCountOfAllRecruitersFromLastGivenDays?days='
-
+    
+    /**User setup */
+    UserCreate:string='/login';
+    
     /** Messages */
     DeleteMsg: string = "Deleted Successfully";
     SuccessMsg: string = "Created Successfully ";

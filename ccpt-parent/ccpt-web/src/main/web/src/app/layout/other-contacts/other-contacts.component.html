@@ -1,5 +1,5 @@
 <div [@routerTransition]>
-  <app-page-header [icon1]="'fa-bar-chart-o'" [heading1]="'Upload File'"></app-page-header>
+  <app-page-header [icon1]="'fa-address-book'" [heading1]="'Other Contacts'"></app-page-header>
   <div class="row">
     <div class="col-md-7">
       <div class="row">
@@ -21,11 +21,12 @@
               <td>
                 {{ocl.phone}}
               </td>
-              <td><span class="fa fa-trash pull-right" (click)="open(content,ocl.id)"></span>
+              <td>
+                <span class="fa fa-trash pull-right" data-toggle="tooltip" title="Delete" (click)="open(content,ocl.id)"></span>
                 <ng-template #content let-c="close" let-d="dismiss">
                   <div class="modal-header">
                     <h4 class="modal-title">Contact</h4>
-                    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+                    <button type="button"  class="close" aria-label="Close" (click)="d('Cross click')">
                       <span aria-hidden="true">&times;</span>
                     </button>
                   </div>

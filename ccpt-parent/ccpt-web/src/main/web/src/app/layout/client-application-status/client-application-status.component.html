@@ -20,7 +20,7 @@
               <td>
                 {{casl.code}}
               </td>
-              <td><span class="fa fa-trash pull-right"
+              <td><span class="fa fa-trash pull-right" data-toggle="tooltip" title="Delete"
                   (click)="open(content,casl.code)"></span>
                 <ng-template #content let-c="close" let-d="dismiss">
                   <div class="modal-header">

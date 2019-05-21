@@ -3,6 +3,7 @@ import { HttpClientService } from 'src/app/shared/services/http.service';
 import { ToastrCustomService } from 'src/app/shared/services/toastr.service';
 import { URLConstants } from '../components/constants/url-constants';
 import { routerTransition } from '../../router.animations';
+import { ClientPositionModel } from '../client-position/client-position.model';
 
 @Component({
     selector: 'app-dashboard',
@@ -13,10 +14,12 @@ import { routerTransition } from '../../router.animations';
 export class DashboardComponent implements OnInit {
     public alerts: Array<any> = [];
     public sliders: Array<any> = [];
-    public noOfDays: Array<any> = ["All", "0", "7", "30", "365"];
+    public noOfDays: any = {"All":"All" , "week":7, "month":30, "year":365};
     public ccptReportData: any = { "consultantCallHistoryList": [], "clientCallHistoryList": [] };
     public ccptClosureCount:any={};
+    public clientPositionList: Array<ClientPositionModel>=[] ;
     private urlConstants = new URLConstants();
+    public choosenDays:any="All";
     constructor(private http: HttpClientService, private toastr: ToastrCustomService) {
         // this.sliders.push(
         //     {
@@ -63,13 +66,18 @@ export class DashboardComponent implements OnInit {
     public init() {
         this.http.get(this.urlConstants.ReportingGetAll).subscribe(resp => {
             this.ccptReportData = resp;
-        })
+        }),
         this.http.get("report/getClosedCountOfAllRecruitersFromLastGivenDays?days=7").subscribe(resp => {
             this.ccptClosureCount=resp;
             console.log(this.ccptClosureCount);
+        }),
+        this.http.get(this.urlConstants.CPGetAll).subscribe(resp=> {
+            this.clientPositionList = resp as any;
+            console.log(this.clientPositionList);
         })
     }
-    public getAllByDays(numberOfDays: any) {
+    public getAllByDays() {
+        let numberOfDays = this.choosenDays;
         this.ccptReportData = { "consultantCallHistoryList": [], "clientCallHistoryList": [] };
         if (numberOfDays == "All") {
             this.init();

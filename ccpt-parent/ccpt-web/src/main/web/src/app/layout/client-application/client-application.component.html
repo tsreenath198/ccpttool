@@ -20,7 +20,7 @@
               <td>{{cal.clientApplicationStatus}}</td>
               <td>{{cal.interviewDate || 'N/A'}}</td>
               <td>{{cal.notes || 'N/A'}}</td>
-              <td><span class="fa fa-trash pull-right" (click)="open(content,cal.id)"></span>
+              <td><span class="fa fa-trash pull-right" data-toggle="tooltip" title="Delete" (click)="open(content,cal.id)"></span>
                 <ng-template #content let-c="close" let-d="dismiss">
                   <div class="modal-header">
                     <h4 class="modal-title">Client Application Status</h4>

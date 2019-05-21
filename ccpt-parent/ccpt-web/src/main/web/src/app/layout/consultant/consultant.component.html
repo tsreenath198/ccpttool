@@ -18,7 +18,9 @@
                 </dl>
               </td>
               <!--  <input type="file" (change)="fileChange($event)" > <span class="fa fa-upload pull-right"></span> -->
-              <td><span class="fa fa-trash pull-right" (click)="open(delete,cl.id)"></span>
+              <td>
+                <span class="fa fa-trash pull-right" data-toggle="tooltip" title="Delete"
+                  (click)="open(delete,cl.id)"></span>
                 <ng-template #delete let-c="close" let-d="dismiss">
                   <div class="modal-header">
                     <h4 class="modal-title">Consultant</h4>
@@ -34,7 +36,8 @@
                     <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
                   </div>
                 </ng-template>
-                <span class="fa fa-upload pull-right" (click)="open(upload,cl.id)"></span>
+                <span class="fa fa-upload pull-right px-2" data-toggle="tooltip" title="Upload"
+                  (click)="open(upload,cl.id)"></span>
                 <ng-template #upload let-c="close" let-d="dismiss">
                   <div class="modal-header">
                     <h4 class="modal-title">{{urlConstants.UploadFilesMsg}}</h4>
@@ -50,7 +53,8 @@
                     <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
                   </div>
                 </ng-template>
-                <span class="fa fa-download pull-right" (click)="open(download,cl.id);getFilesById()"></span>
+                <span class="fa fa-download pull-right" data-toggle="tooltip" title="Download"
+                  (click)="open(download,cl.id);getFilesById()"></span>
                 <ng-template #download let-c="close" let-d="dismiss">
                   <div class="modal-header">
                     <h4 class="modal-title">Consultant {{urlConstants.DownloadFilesMsg}}</h4>
@@ -61,212 +65,211 @@
                   <div class="modal-body">
                     <table class="table ">
                       <thead>
-                        <th>Reference Type</th>
-                        <th>Comments</th>
-                      </thead>
-                      <tbody *ngFor="let fl of fileList">
-                        <td>{{fl.refId}}</td>
-                        <td>{{fl.refType}}</td>
-                        <td>{{fl.comments}}</td>
-                      </tbody>
-                    </table>
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
-                  </div>
-                </ng-template>
-              </td>
-            </tr>
+              <th>Reference Type</th>
+              <th>Comments</th>
+              </thead>
+          <tbody *ngFor="let fl of fileList">
+            <td>{{fl.refId}}</td>
+            <td>{{fl.refType}}</td>
+            <td>{{fl.comments}}</td>
           </tbody>
         </table>
       </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
+      </div>
+      </ng-template>
+      </td>
+      </tr>
+      </tbody>
+      </table>
     </div>
-    <div class="col-md-5">
-      <form name="form" id="clientPositionForm" (ngSubmit)="f.form.valid&&createConsultant(f)" #f="ngForm" novalidate>
-        <div class="row">
-          <div class="col-md-12">
-            <div class="form-group">
-              <label>Full Name<span class="required">*</span></label>
-              <input class="form-control" name="fullname" [readonly]="readOnlyForm == 'R'" placeholder="Fullname"
-                [(ngModel)]="consultantModel.fullname" [ngClass]="{'is-invalid': f.submitted && fullname.invalid}"
-                #fullname="ngModel" required>
-              <div class="invalid-feedback">
-                fullname is mandatory
-              </div>
-
+  </div>
+  <div class="col-md-5">
+    <form name="form" id="clientPositionForm" (ngSubmit)="f.form.valid&&createConsultant(f)" #f="ngForm" novalidate>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label>Full Name<span class="required">*</span></label>
+            <input class="form-control" name="fullname" [readonly]="readOnlyForm == 'R'" placeholder="Fullname"
+              [(ngModel)]="consultantModel.fullname" [ngClass]="{'is-invalid': f.submitted && fullname.invalid}"
+              #fullname="ngModel" required>
+            <div class="invalid-feedback">
+              fullname is mandatory
             </div>
-          </div>
-          <div class="col-md-12">
-            <div class="form-group">
-              <label>E-Mail<span class="required">*</span></label>
-              <input class="form-control" placeholder="E-mail" name="email" [readonly]="readOnlyForm == 'R'"
-                [(ngModel)]="consultantModel.email" ng-pattern="/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/"
-                [ngClass]="{'is-invalid': f.submitted && email.invalid}" #email="ngModel" type="email" required>
-              <div class="invalid-feedback">
-                email is mandatory
-              </div>
 
-            </div>
           </div>
-          <div class="col-md-12">
-            <div class="form-group">
-              <!--pattern="/^-?\d+\.?\d*$/"
+        </div>
+        <div class="col-md-12">
+          <div class="form-group">
+            <label>E-Mail<span class="required">*</span></label>
+            <input class="form-control" placeholder="E-mail" name="email" [readonly]="readOnlyForm == 'R'"
+              [(ngModel)]="consultantModel.email" ng-pattern="/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/"
+              [ngClass]="{'is-invalid': f.submitted && email.invalid}" #email="ngModel" type="email" required>
+            <div class="invalid-feedback">
+              email is mandatory
+            </div>
+
+          </div>
+        </div>
+        <div class="col-md-12">
+          <div class="form-group">
+            <!--pattern="/^-?\d+\.?\d*$/"
                 onKeyPress="if(this.value.length==12) return false;" -->
-              <label>Phone<span class="required">*</span></label>
-              <input class="form-control" placeholder="Phone" name="phone" [readonly]="readOnlyForm == 'R'"
-                [(ngModel)]="consultantModel.phone" maxlength="12" onKeyPress="if(this.value.length==12) return false;"
-                [ngClass]="{'is-invalid': f.submitted && phone.invalid}" #phone="ngModel" type="number" required>
-              <div class="invalid-feedback">
-                phone is mandatory
-              </div>
+            <label>Phone<span class="required">*</span></label>
+            <input class="form-control" placeholder="Phone" name="phone" [readonly]="readOnlyForm == 'R'"
+              [(ngModel)]="consultantModel.phone" maxlength="12" onKeyPress="if(this.value.length==12) return false;"
+              [ngClass]="{'is-invalid': f.submitted && phone.invalid}" #phone="ngModel" type="number" required>
+            <div class="invalid-feedback">
+              phone is mandatory
             </div>
           </div>
+        </div>
+        <div class="col-md-12">
+          <div class="form-group">
+            <label>Gender<span class="required">*</span></label>
+            <select class="form-control" name="gender" [disabled]="readOnlyForm == 'R'"
+              [(ngModel)]="consultantModel.gender" [ngClass]="{'is-invalid': f.submitted && gender.invalid}"
+              #gender="ngModel" required>
+              <option *ngFor="let gl of genderList" [ngValue]="gl">{{gl}}</option>
+            </select>
+            <div class="invalid-feedback">
+              gender is mandatory
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <div class="form-group" data-provide="datepicker">
+            <label>Date of Birth<span class="required">*</span></label>
+            <input type="date" class="form-control" name="dob" [(ngModel)]="consultantModel.dob"
+              [ngClass]="{'is-invalid': f.submitted && dob.invalid}" #dob="ngModel" [readonly]="readOnlyForm == 'R'"
+              required>
+            <div class="input-group-addon">
+              <span class="glyphicon glyphicon-th"></span>
+            </div>
+            <div class="invalid-feedback">
+              date of birth is mandatory
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12 pb-2">
+          <input type="checkbox" class="" [(ngModel)]="isFresher" name="interviewCheckbox">&nbsp;<label>Fresher</label>
+        </div>
+        <div *ngIf="!isFresher" class="col-md-12">
           <div class="col-md-12">
             <div class="form-group">
-              <label>Gender<span class="required">*</span></label>
-              <select class="form-control" name="gender" [disabled]="readOnlyForm == 'R'"
-                [(ngModel)]="consultantModel.gender" [ngClass]="{'is-invalid': f.submitted && gender.invalid}"
-                #gender="ngModel" required>
-                <option *ngFor="let gl of genderList" [ngValue]="gl">{{gl}}</option>
-              </select>
-              <div class="invalid-feedback">
-                gender is mandatory
-              </div>
-            </div>
-          </div>
-          <div class="col-md-12">
-            <div class="form-group" data-provide="datepicker">
-              <label>Date of Birth<span class="required">*</span></label>
-              <input type="date" class="form-control" name="dob" [(ngModel)]="consultantModel.dob"
-                [ngClass]="{'is-invalid': f.submitted && dob.invalid}" #dob="ngModel" [readonly]="readOnlyForm == 'R'"
-                required>
-              <div class="input-group-addon">
-                <span class="glyphicon glyphicon-th"></span>
-              </div>
-              <div class="invalid-feedback">
-                date of birth is mandatory
-              </div>
-            </div>
-          </div>
-          <div class="col-md-12 pb-2">
-            <input type="checkbox" class="" [(ngModel)]="isFresher"
-              name="interviewCheckbox">&nbsp;<label>Fresher</label>
-          </div>
-          <div *ngIf="!isFresher" class="col-md-12">
-            <div class="col-md-12">
-              <div class="form-group">
-                <label>Current Company</label>
-                <input type="text" name="currentCompany" placeholder="Current Company" class="form-control"
-                  [readonly]="readOnlyForm == 'R'" [(ngModel)]="consultantModel.currentCompany">
+              <label>Current Company</label>
+              <input type="text" name="currentCompany" placeholder="Current Company" class="form-control"
+                [readonly]="readOnlyForm == 'R'" [(ngModel)]="consultantModel.currentCompany">
 
-              </div>
-            </div>
-            <div class="col-md-12">
-              <div class="form-group">
-                <label>Current Location</label>
-                <input type="text" name="currentLocation" placeholder="Current Location"
-                  [readonly]="readOnlyForm == 'R'" class="form-control" [(ngModel)]="consultantModel.currentLocation">
-              </div>
-            </div>
-            <div class="col-md-12">
-              <div class="form-group">
-                <label>Current CTC</label>
-                <input type="number" name="currentCTC" placeholder="Current CTC" [readonly]="readOnlyForm == 'R'"
-                  class="form-control" [(ngModel)]="consultantModel.currentCTC">
-              </div>
-            </div>
-            <div class="col-md-12">
-              <div class="form-group">
-                <label>Experience</label>
-                <div class="form-inline">
-                  <input type="number" name="expyears" class="form-control col-md-3" [readonly]="readOnlyForm == 'R'"
-                    [(ngModel)]="consultantModel.experienceYrs" min="0"
-                    placeholder="Years">&nbsp;<span>/</span>&nbsp;<input type="number" class="form-control col-md-3"
-                    name="expmonths" [readonly]="readOnlyForm == 'R'" [(ngModel)]="consultantModel.experienceMonths"
-                    min="0" max="12" placeholder="Months">
-                </div>
-              </div>
             </div>
           </div>
           <div class="col-md-12">
             <div class="form-group">
-              <label>Expected CTC</label>
-              <input type="number" name="expectedCTC" placeholder="Expected CTC" [readonly]="readOnlyForm == 'R'"
-                class="form-control" [(ngModel)]="consultantModel.expectedCTC">
+              <label>Current Location</label>
+              <input type="text" name="currentLocation" placeholder="Current Location" [readonly]="readOnlyForm == 'R'"
+                class="form-control" [(ngModel)]="consultantModel.currentLocation">
             </div>
           </div>
+          <div class="col-md-12">
+            <div class="form-group">
+              <label>Current CTC</label>
+              <input type="number" name="currentCTC" placeholder="Current CTC" [readonly]="readOnlyForm == 'R'"
+                class="form-control" [(ngModel)]="consultantModel.currentCTC">
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="form-group">
+              <label>Experience</label>
+              <div class="form-inline">
+                <input type="number" name="expyears" class="form-control col-md-3" [readonly]="readOnlyForm == 'R'"
+                  [(ngModel)]="consultantModel.experienceYrs" min="0"
+                  placeholder="Years">&nbsp;<span>/</span>&nbsp;<input type="number" class="form-control col-md-3"
+                  name="expmonths" [readonly]="readOnlyForm == 'R'" [(ngModel)]="consultantModel.experienceMonths"
+                  min="0" max="12" placeholder="Months">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <div class="form-group">
+            <label>Expected CTC</label>
+            <input type="number" name="expectedCTC" placeholder="Expected CTC" [readonly]="readOnlyForm == 'R'"
+              class="form-control" [(ngModel)]="consultantModel.expectedCTC">
+          </div>
+        </div>
 
-          <div class="col-md-12">
-            <div class="form-group">
-              <label>Prefer Location</label>
-              <input class="form-control" name="prefferedLocation" placeholder="Preffered Location"
-                [readonly]="readOnlyForm == 'R'" [(ngModel)]="consultantModel.prefferedLocation">
-            </div>
+        <div class="col-md-12">
+          <div class="form-group">
+            <label>Prefer Location</label>
+            <input class="form-control" name="prefferedLocation" placeholder="Preffered Location"
+              [readonly]="readOnlyForm == 'R'" [(ngModel)]="consultantModel.prefferedLocation">
           </div>
-          <div class="col-md-12">
-            <div class="form-group">
-              <label>Skills</label>
-              <textarea class="form-control" cols="10" rows="10" name="skills" [readonly]="readOnlyForm == 'R'"
-                [(ngModel)]="consultantModel.skills" placeholder="Skills">
+        </div>
+        <div class="col-md-12">
+          <div class="form-group">
+            <label>Skills</label>
+            <textarea class="form-control" cols="10" rows="10" name="skills" [readonly]="readOnlyForm == 'R'"
+              [(ngModel)]="consultantModel.skills" placeholder="Skills">
                 </textarea>
-            </div>
           </div>
-          <div class="col-md-12">
-            <div class="form-group">
-              <label>Qualification<span class="required">*</span></label>
-              <textarea rows="8" class="form-control" name="qualification" [readonly]="readOnlyForm == 'R'"
-                [(ngModel)]="consultantModel.qualification" placeholder="Qualification"
-                [ngClass]="{'is-invalid': f.submitted && qualification.invalid}" #qualification="ngModel"
-                required></textarea>
-              <div class="invalid-feedback">
-                qualification is mandatory
-              </div>
-            </div>
-          </div>
-
-          <div class="col-md-12">
-            <div class="form-group">
-              <label>Passout Year</label>
-              <input class="form-control" name="passoutyear" placeholder="Passout Year" [readonly]="readOnlyForm == 'R'"
-                type="number" [(ngModel)]="consultantModel.passoutYear">
-            </div>
-          </div>
-          <div class="col-md-12">
-            <div class="form-group">
-              <label>Consultant Status<span class="required">*</span></label>
-              <select class="form-control" name="constat" [disabled]="readOnlyForm == 'R'"
-                [(ngModel)]="consultantModel.consultantStatusCode"
-                [ngClass]="{'is-invalid': f.submitted && constat.invalid}" #constat="ngModel" required>
-                <option *ngFor="let consultantStatus of consultantStatusList" [ngValue]="consultantStatus.code">
-                  {{consultantStatus.description}}</option>
-              </select>
-              <div class="invalid-feedback">
-                consultant status is mandatory
-              </div>
+        </div>
+        <div class="col-md-12">
+          <div class="form-group">
+            <label>Qualification<span class="required">*</span></label>
+            <textarea rows="8" class="form-control" name="qualification" [readonly]="readOnlyForm == 'R'"
+              [(ngModel)]="consultantModel.qualification" placeholder="Qualification"
+              [ngClass]="{'is-invalid': f.submitted && qualification.invalid}" #qualification="ngModel"
+              required></textarea>
+            <div class="invalid-feedback">
+              qualification is mandatory
             </div>
           </div>
         </div>
-        <div class="row">
-          <div class="col-md-12">
-            <div class="form-group">
-              <label>Description</label>
-              <textarea class="form-control" name="description" placeholder="Description"
-                [readonly]="readOnlyForm == 'R'" [(ngModel)]="consultantModel.description" rows="10"></textarea>
+
+        <div class="col-md-12">
+          <div class="form-group">
+            <label>Passout Year</label>
+            <input class="form-control" name="passoutyear" placeholder="Passout Year" [readonly]="readOnlyForm == 'R'"
+              type="number" [(ngModel)]="consultantModel.passoutYear">
+          </div>
+        </div>
+        <div class="col-md-12">
+          <div class="form-group">
+            <label>Consultant Status<span class="required">*</span></label>
+            <select class="form-control" name="constat" [disabled]="readOnlyForm == 'R'"
+              [(ngModel)]="consultantModel.consultantStatusCode"
+              [ngClass]="{'is-invalid': f.submitted && constat.invalid}" #constat="ngModel" required>
+              <option *ngFor="let consultantStatus of consultantStatusList" [ngValue]="consultantStatus.code">
+                {{consultantStatus.description}}</option>
+            </select>
+            <div class="invalid-feedback">
+              consultant status is mandatory
             </div>
           </div>
-
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label>Description</label>
+            <textarea class="form-control" name="description" placeholder="Description" [readonly]="readOnlyForm == 'R'"
+              [(ngModel)]="consultantModel.description" rows="10"></textarea>
+          </div>
         </div>
 
-        <div class="row text-center">
-          <div class="col-md-12">
-            <button type="submit" *ngIf="enableButtonType == ''" class="btn btn-secondary ml-3">Add</button>
-            <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2"
-              (click)="updateConsultant(f)">Update</button>
-            <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button"
-              (click)="enableFormEditable()">Edit</button>
-            <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3">Cancel</button>
+      </div>
 
-            <!-- <span *ngIf="formButtonsToggler;else toggleButtons">
+      <div class="row text-center">
+        <div class="col-md-12">
+          <button type="submit" *ngIf="enableButtonType == ''" class="btn btn-secondary ml-3">Add</button>
+          <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2"
+            (click)="updateConsultant(f)">Update</button>
+          <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button"
+            (click)="enableFormEditable()">Edit</button>
+          <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3">Cancel</button>
+
+          <!-- <span *ngIf="formButtonsToggler;else toggleButtons">
               <button type="submit" id="add" class="btn btn-secondary ml-3">Add</button>
             </span>
             <ng-template #toggleButtons>
@@ -279,10 +282,10 @@
               </ng-template>
             </ng-template>
             <button type="button" id="cancel" (click)="cancelForm(f)" class="btn btn-secondary ml-3">Cancel</button> -->
-          </div>
         </div>
-      </form>
-    </div>
+      </div>
+    </form>
   </div>
+</div>
 
 </div>
