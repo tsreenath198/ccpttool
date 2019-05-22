@@ -26,6 +26,7 @@ export class ClientComponent implements OnInit {
     public comments: string = '';
     public uploader: FileUploader = new FileUploader({});
     public fileList: Array<any> = [];
+    public address:boolean=false;
 
     private selectedRecrdToDel: number = 0;
     public closeResult: string = '';
@@ -103,6 +104,14 @@ export class ClientComponent implements OnInit {
                 this.clientModel.clientContacts.push({ "fullname": "", "email": "", "phone": "" });
                 break;
             }
+        }
+    }
+    billngAddressMatch(){
+        if(this.address==true){
+            this.clientModel.billingAddress=this.clientModel.address
+        }
+        else{
+            this.clientModel.billingAddress="";
         }
     }
     deleteClientRecord(): void {

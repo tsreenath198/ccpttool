@@ -76,21 +76,7 @@
               (click)="updateConsultantStatus(f)">Update</button>
             <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button"
               (click)="enableFormEditable()">Edit</button>
-            <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3">Cancel</button>
-
-            <!-- <span *ngIf="formButtonsToggler;else toggleButtons">
-              <button type="submit" id="add" class="btn btn-secondary ml-3">Add</button>
-            </span>
-            <ng-template #toggleButtons>
-              <span *ngIf="editButtonToggler;else toggleEdit">
-                <button type="button" id="update" class="btn btn-secondary ml-2" (click)="editableForm()">Edit</button>
-              </span>
-              <ng-template #toggleEdit>
-                <button type="submit" id="update" class="btn btn-secondary ml-2"
-                  (click)="updateConsultantStatus(f)">Update</button>
-              </ng-template>
-            </ng-template>
-            <button type="button" id="cancel" (click)="cancelForm(f)" class="btn btn-secondary ml-3">Cancel</button> -->
+            <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3">Clear</button>
           </div>
         </div>
       </form>

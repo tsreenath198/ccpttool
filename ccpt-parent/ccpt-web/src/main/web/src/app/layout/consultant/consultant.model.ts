@@ -16,5 +16,12 @@ export interface ConsultantModel {
     passoutYear: number,
     consultantStatusCode: string,
     description: string,
-    id: string
+    id: string,
+    currentJobTitle:string,
+    currentFunctionalArea:string,
+    currentIndustry:string,
+    yearsInCurrentJob:number,
+    monthsInCurrentJob:number,
+    noticePeriod:number,
+    highestEducation:string
 }

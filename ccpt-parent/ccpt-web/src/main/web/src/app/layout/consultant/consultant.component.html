@@ -152,6 +152,17 @@
             </div>
           </div>
         </div>
+        <div class="col-md-12">
+          <div class="form-group">
+            <label>Highest Education<span class="required">*</span></label>
+            <input class="form-control" name="highesteducation" [readonly]="readOnlyForm == 'R'" placeholder="Highest Education"
+              [(ngModel)]="consultantModel.highestEducation" [ngClass]="{'is-invalid': f.submitted && highesteducation.invalid}"
+              #highesteducation="ngModel" required>
+            <div class="invalid-feedback">
+                highest education is mandatory
+            </div>
+          </div>
+        </div>
         <div class="col-md-12 pb-2">
           <input type="checkbox" class="" [(ngModel)]="isFresher" name="interviewCheckbox">&nbsp;<label>Fresher</label>
         </div>
@@ -161,7 +172,6 @@
               <label>Current Company</label>
               <input type="text" name="currentCompany" placeholder="Current Company" class="form-control"
                 [readonly]="readOnlyForm == 'R'" [(ngModel)]="consultantModel.currentCompany">
-
             </div>
           </div>
           <div class="col-md-12">
@@ -188,6 +198,47 @@
                   name="expmonths" [readonly]="readOnlyForm == 'R'" [(ngModel)]="consultantModel.experienceMonths"
                   min="0" max="12" placeholder="Months">
               </div>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="form-group">
+              <label>Current Job Title</label>
+              <input type="text" name="currentJobTitle" placeholder="Current Job Title" [readonly]="readOnlyForm == 'R'"
+                class="form-control" [(ngModel)]="consultantModel.currentJobTitle">
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="form-group">
+              <label>Current Functional Area</label>
+              <input type="text" name="currentFunctionalArea" placeholder="Current Functiional Area"
+                [readonly]="readOnlyForm == 'R'" class="form-control"
+                [(ngModel)]="consultantModel.currentFunctionalArea">
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="form-group">
+              <label>Current Industry</label>
+              <input type="text" name="currentIndustry" placeholder="Current Industry" [readonly]="readOnlyForm == 'R'"
+                class="form-control" [(ngModel)]="consultantModel.currentIndustry">
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="form-group">
+              <label>Experience in Current Job</label>
+              <div class="form-inline">
+                <input type="number" name="yearsInCurrentJob" class="form-control col-md-3" [readonly]="readOnlyForm == 'R'"
+                  [(ngModel)]="consultantModel.yearsInCurrentJob" min="0"
+                  placeholder="Years">&nbsp;<span>/</span>&nbsp;<input type="number" class="form-control col-md-3"
+                  name="monthsInCurrentJob" [readonly]="readOnlyForm == 'R'" [(ngModel)]="consultantModel.monthsInCurrentJob"
+                  min="0" max="12" placeholder="Months">
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="form-group">
+              <label>Notice period</label>
+              <input type="number" name="noticePeriod" placeholder="Notice Period" [readonly]="readOnlyForm == 'R'"
+                class="form-control" [(ngModel)]="consultantModel.noticePeriod">
             </div>
           </div>
         </div>
@@ -267,22 +318,7 @@
             (click)="updateConsultant(f)">Update</button>
           <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button"
             (click)="enableFormEditable()">Edit</button>
-          <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3">Cancel</button>
-
-          <!-- <span *ngIf="formButtonsToggler;else toggleButtons">
-              <button type="submit" id="add" class="btn btn-secondary ml-3">Add</button>
-            </span>
-            <ng-template #toggleButtons>
-              <span *ngIf="editButtonToggler;else toggleEdit">
-                <button type="button" id="update" class="btn btn-secondary ml-2" (click)="editableForm()">Edit</button>
-              </span>
-              <ng-template #toggleEdit>
-                <button type="button" id="update" class="btn btn-secondary ml-2"
-                  (click)="updateConsultant(f)">Update</button>
-              </ng-template>
-            </ng-template>
-            <button type="button" id="cancel" (click)="cancelForm(f)" class="btn btn-secondary ml-3">Cancel</button> -->
-        </div>
+          <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3">Clear</button> </div>
       </div>
     </form>
   </div>

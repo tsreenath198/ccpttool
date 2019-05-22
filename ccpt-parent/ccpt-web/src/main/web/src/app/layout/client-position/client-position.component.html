@@ -167,7 +167,6 @@
           <div class="col-md-12">
             <div class="form-group">
               <label>Client Position Status </label>
-
               <select class="form-control" name="cps" [disabled]="readOnlyForm == 'R'"
                 [(ngModel)]="clientPositionModel.clientPositionsStatusCode">
                 <option *ngFor="let cpsl of clientPositionStatusList" [ngValue]="cpsl.code">
@@ -219,7 +218,7 @@
               (click)="updateClientPosition(f)">Update</button>
             <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button"
               (click)="enableFormEditable()">Edit</button>
-            <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3">Cancel</button>
+            <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3">Clear</button>
           </div>
         </div>
       </form>

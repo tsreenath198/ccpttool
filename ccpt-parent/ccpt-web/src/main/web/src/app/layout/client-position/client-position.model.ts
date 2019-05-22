@@ -13,5 +13,6 @@ export interface ClientPositionModel{
     additionalComments:string,
     jobCode:string,
     location:string,
-    numberOfPositions
+    numberOfPositions:number,
+    createdDate:string
 }

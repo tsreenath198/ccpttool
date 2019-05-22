@@ -69,6 +69,7 @@
               <label>Client Position <span class="required">*</span></label>
               <select class="form-control" name="cps" [disabled]="readOnlyForm == 'R'"
                 [(ngModel)]="consultantCallHistoryModel.clientPositionCode" required>
+                <option  selected hidden>Client Position</option>
                 <option *ngFor="let cp of clientPositionList" [ngValue]="cp.clientPositionCode">
                   {{cp.clientPositionCode}}</option>
               </select>
@@ -101,7 +102,7 @@
               (click)="updateConsultantCallHistory(f)">Update</button>
             <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button"
               (click)="enableFormEditable()">Edit</button>
-            <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3">Cancel</button>
+            <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3">Clear</button>
 
           </div>
         </div>

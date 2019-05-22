@@ -98,12 +98,79 @@
         </div>
         <div class="col-md-12">
           <div class="form-group">
+            <label>Industry<span class="required">*</span></label>
+            <input class="form-control" [readonly]="readOnlyForm == 'R'" [(ngModel)]="clientModel.industry"
+              name="industry" [ngClass]="{'is-invalid': f.submitted && industry.invalid}" #industry="ngModel" required>
+            <div class="invalid-feedback">
+              Industry is mandatory
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <div class="form-group">
+            <label>Phone<span class="required">*</span></label>
+            <input class="form-control" [readonly]="readOnlyForm == 'R'" [(ngModel)]="clientModel.phone" name="phone"
+              [ngClass]="{'is-invalid': f.submitted && phone.invalid}" #phone="ngModel" required>
+            <div class="invalid-feedback">
+              phone is mandatory
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <div class="form-group">
+            <label>Guarantee Period<span class="required">*</span></label>
+            <input type="number" class="form-control" [readonly]="readOnlyForm == 'R'"
+              [(ngModel)]="clientModel.guaranteePeriod" name="guaranteePeriod"
+              [ngClass]="{'is-invalid': f.submitted && guaranteePeriod.invalid}" #guaranteePeriod="ngModel" required>
+            <div class="invalid-feedback">
+              guarantee period is mandatory
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <div class="form-group">
+            <label>Credit Period<span class="required">*</span></label>
+            <input class="form-control" [readonly]="readOnlyForm == 'R'" [(ngModel)]="clientModel.creditPeriod"
+              name="creditPeriod" [ngClass]="{'is-invalid': f.submitted && creditPeriod.invalid}"
+              #creditPeriod="ngModel" required>
+            <div class="invalid-feedback">
+              credit period is mandatory
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <div class="form-group">
+            <label>Srevice Tax no<span class="required">*</span></label>
+            <input class="form-control" [readonly]="readOnlyForm == 'R'" [(ngModel)]="clientModel.servicetaxNo"
+              name="servicetaxNo" [ngClass]="{'is-invalid': f.submitted && servicetaxNo.invalid}"
+              #servicetaxNo="ngModel" required>
+            <div class="invalid-feedback">
+              service tax no is mandatory
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <div class="form-group">
             <label>Address<span class="required">*</span></label>
             <textarea class="form-control" cols="5" rows="5" [readonly]="readOnlyForm == 'R'"
               [(ngModel)]="clientModel.address" name="decription"
               [ngClass]="{'is-invalid': f.submitted && description.invalid}" #description="ngModel" required></textarea>
             <div class="invalid-feedback">
               address is mandatory
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12 pb-2">
+            <input type="checkbox" class="" [(ngModel)]="address" (change)="billngAddressMatch()" name="interviewCheckbox">&nbsp;<label>Billing address is same as address</label>
+          </div>
+        <div class="col-md-12">
+          <div class="form-group">
+            <label>Billing Address<span class="required">*</span></label>
+            <textarea class="form-control" cols="5" rows="5" [readonly]="readOnlyForm == 'R'"
+              [(ngModel)]="clientModel.billingAddress" name="billingAddress"
+              [ngClass]="{'is-invalid': f.submitted && billingAddress.invalid}" #billingAddress="ngModel" required></textarea>
+            <div class="invalid-feedback">
+              billing address is mandatory
             </div>
           </div>
         </div>
@@ -157,7 +224,7 @@
             (click)="updateClient(f)">Update</button>
           <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button"
             (click)="enableFormEditable()">Edit</button>
-          <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3">Cancel</button>
+          <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3">Clear</button>
         </div>
       </div>
     </form>

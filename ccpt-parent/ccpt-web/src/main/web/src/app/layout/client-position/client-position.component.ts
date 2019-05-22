@@ -68,6 +68,7 @@ export class ClientPositionComponent implements OnInit {
     enableFormEditable(): void {
         this.readOnlyForm = 'U';
         this.enableButtonType = 'U';
+        this.closedByEnable=true;
     }
     readOnlyEnable(data) {
         this.clientPositionModel = JSON.parse(JSON.stringify(data));
