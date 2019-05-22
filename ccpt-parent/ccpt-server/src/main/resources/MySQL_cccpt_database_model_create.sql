@@ -129,7 +129,7 @@ CREATE TABLE login (
 -- Table: upload_file
 CREATE TABLE upload_file (
   id int(11) NOT NULL AUTO_INCREMENT,
-  file blob NOT NULL,
+  content longblob NOT NULL,
   ref_id int(11) NOT NULL,
   ref_type varchar(20) NOT NULL,
   comments text NOT NULL,
@@ -254,6 +254,9 @@ ALTER TABLE client_position CHANGE technology role TEXT CHARACTER SET latin1 COL
 ALTER TABLE client_application ADD closed_by INT NOT NULL AFTER active_flag;
 ALTER TABLE client_application ADD INDEX(closed_by);
 ALTER TABLE client_application ADD CONSTRAINT closed_by_fk FOREIGN KEY (closed_by) REFERENCES recruiter(id) ON DELETE RESTRICT ON UPDATE RESTRICT;
+CREATE TABLE email_template ( id INT NULL AUTO_INCREMENT , type VARCHAR(100) NOT NULL , subject TEXT NOT NULL , body TEXT NOT NULL , PRIMARY KEY (id), UNIQUE (type));
+ALTER TABLE client  ADD phone VARCHAR(20) NOT NULL  AFTER address,  ADD email VARCHAR(100) NOT NULL  AFTER phone,  ADD industry VARCHAR(100) NOT NULL  AFTER email,  ADD guarantee_period INT NOT NULL  AFTER industry,  ADD credit_period INT NOT NULL  AFTER guarantee_period,  ADD billing_address TEXT NOT NULL  AFTER credit_period,  ADD gst VARCHAR(100) NULL DEFAULT NULL  AFTER billing_address,  ADD servicetax_no VARCHAR(100) NOT NULL  AFTER gst,  ADD service_charge DOUBLE NOT NULL  AFTER servicetax_no;
+ALTER TABLE consultant  ADD current_job_title VARCHAR(100) NULL  AFTER preffered_location,  ADD current_functional_area VARCHAR(100) NULL  AFTER current_job_title,  ADD current_industry VARCHAR(100) NULL  AFTER current_functional_area,  ADD years_incurrent_job INT NULL  AFTER current_industry,  ADD months_incurrent_job INT NULL  AFTER years_incurrentjob,  ADD notice_period INT NULL  AFTER months_incurrentJob,  ADD highest_education VARCHAR(100) NOT NULL  AFTER notice_period;
 -- End of file.
 
 SET foreign_key_checks = 1;
