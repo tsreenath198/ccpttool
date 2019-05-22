@@ -45,7 +45,7 @@ public class ClientCallHistoryService implements IClientCallHistoryService {
 	}
 
 	@Override
-	public List<ClientCallHistory> getAllConsultantCallHistorysFromLastGivenDays(Date sdate, Date edate) {
+	public List<ClientCallHistory> getAllClientCallHistorysFromLastGivenDays(Date sdate, Date edate) {
 		return clientCallHistoryRepository.getAllClientCallHistorysFromLastGivenDays(sdate, edate, "Y");
 	}
 

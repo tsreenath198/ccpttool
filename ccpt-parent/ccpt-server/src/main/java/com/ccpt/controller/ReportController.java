@@ -42,10 +42,10 @@ public class ReportController {
 	private IConsultantService consultantService;
 	@Autowired
 	private IClientService clientService;
-	
+
 	@Autowired
 	private IClientPositionService clientPositionService;
-	
+
 	@Autowired
 	private IClientPositionStatusService clientPositionStatusService;
 
@@ -53,45 +53,39 @@ public class ReportController {
 	private IRecruiterService recruiterService;
 
 	@SuppressWarnings("rawtypes")
-	@GetMapping(CCPTConstants.GET_ALL)
-	public ResponseEntity<Map<String, List>> getAllConsultantCallHistorys() {
-		List<ConsultantCallHistory> consultantCallHistoryList = consultantCallHistoryService
-				.getAllConsultantCallHistorys();
-		for (ConsultantCallHistory cch : consultantCallHistoryList) {
-			cch.setConsultantName(consultantService.getConsultantById(cch.getConsultantId()).getFullname());
-		}
-		List<ClientCallHistory> clientCallHistoryList = clientCallHistoryService.getAllClientCallHistorys();
-		for (ClientCallHistory cchl : clientCallHistoryList) {
-			cchl.setClientName(clientService.getClientById(cchl.getClientId()).getName());
-		}
-		Map<String, List> map = new HashMap<>();
-		map.put("consultantCallHistoryList", consultantCallHistoryList);
-		map.put("clientCallHistoryList", clientCallHistoryList);
-		return new ResponseEntity<>(map, HttpStatus.OK);
-	}
-
-	@SuppressWarnings("rawtypes")
-	@GetMapping("getAllCallHistorysFromLastGivenDays")
-	public ResponseEntity<Map<String, List>> getAllCallHistorysFromLastGivenDays(@RequestParam int days)
+	@GetMapping("getAllClientCallHistorysByDays")
+	public ResponseEntity<List<ClientCallHistory>> getAllClientCallHistorysByDays(@RequestParam int days)
 			throws ParseException {
 		Calendar cal = Calendar.getInstance();
 		cal.add(Calendar.DATE, -days);
 		Date startDate = cal.getTime();
 		Date endDate = new Date();
-		List<ConsultantCallHistory> consultantCallHistoryList = consultantCallHistoryService
-				.getAllConsultantCallHistorysFromLastGivenDays(startDate, endDate);
+
 		List<ClientCallHistory> clientCallHistoryList = clientCallHistoryService
-				.getAllConsultantCallHistorysFromLastGivenDays(startDate, endDate);
-		for (ConsultantCallHistory cch : consultantCallHistoryList) {
-			cch.setConsultantName(consultantService.getConsultantById(cch.getConsultantId()).getFullname());
-		}
+				.getAllClientCallHistorysFromLastGivenDays(startDate, endDate);
+
 		for (ClientCallHistory cchl : clientCallHistoryList) {
 			cchl.setClientName(clientService.getClientById(cchl.getClientId()).getName());
 		}
-		Map<String, List> map = new HashMap<>();
-		map.put("consultantCallHistoryList", consultantCallHistoryList);
-		map.put("clientCallHistoryList", clientCallHistoryList);
-		return new ResponseEntity<>(map, HttpStatus.OK);
+		return new ResponseEntity<List<ClientCallHistory>>(clientCallHistoryList, HttpStatus.OK);
+	}
+
+	@SuppressWarnings("rawtypes")
+	@GetMapping("getAllConsultantCallHistorysByDays")
+	public ResponseEntity<List<ConsultantCallHistory>> getAllConsultantCallHistorysByDays(@RequestParam int days)
+			throws ParseException {
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.DATE, -days);
+		Date startDate = cal.getTime();
+		Date endDate = new Date();
+
+		List<ConsultantCallHistory> consultantCallHistoryList = consultantCallHistoryService
+				.getAllConsultantCallHistorysFromLastGivenDays(startDate, endDate);
+
+		for (ConsultantCallHistory cchl : consultantCallHistoryList) {
+			cchl.setConsultantName(consultantService.getConsultantById(cchl.getConsultantId()).getFullname());
+		}
+		return new ResponseEntity<List<ConsultantCallHistory>>(consultantCallHistoryList, HttpStatus.OK);
 	}
 
 	@GetMapping("getClosedCountOfAllRecruitersFromLastGivenDays")
@@ -104,11 +98,12 @@ public class ReportController {
 		List<Object[]> results = consultantCallHistoryService.getClosedCountOfAllRecruitersFromLastGivenDays(startDate,
 				endDate);
 		for (Object[] object : results) {
-   
+
 			map.put(((String) object[0]), (Long) object[1]);
 		}
 		return new ResponseEntity<>(map, HttpStatus.OK);
 	}
+
 	@GetMapping("getTop5CP")
 	public ResponseEntity<List<ClientPosition>> getAllClientPositions() {
 		List<ClientPosition> clientPositionList = clientPositionService.getTop5ClientPositions();

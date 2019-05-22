@@ -14,5 +14,5 @@ public interface IClientCallHistoryService {
 
 	void updateClientCallHistory(ClientCallHistory clientCallHistory);
 
-	List<ClientCallHistory> getAllConsultantCallHistorysFromLastGivenDays(Date sdate, Date edate);
+	List<ClientCallHistory> getAllClientCallHistorysFromLastGivenDays(Date sdate, Date edate);
 }
