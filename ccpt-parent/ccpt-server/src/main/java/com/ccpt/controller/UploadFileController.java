@@ -1,6 +1,13 @@
 package com.ccpt.controller;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,6 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.ccpt.constants.CCPTConstants;
 import com.ccpt.model.UploadFile;
 import com.ccpt.service.IUploadFileService;
+import com.ccpt.util.MyMultipleFileZip;
 
 @Controller
 @CrossOrigin
@@ -33,6 +41,36 @@ public class UploadFileController {
 		return new ResponseEntity<UploadFile>(uploadFile, HttpStatus.OK);
 	}
 
+	@GetMapping(CCPTConstants.GET_BY_REF_ID_AND_REF_TPYE)
+	public ResponseEntity<Void> getByRefIdAndTefType(@RequestParam String refType, @RequestParam Integer refId)
+			throws IOException {
+		byte[] content = null;
+		List<UploadFile> res = uploadFileService.getByRefIdAndTefType(refType, refId);
+		List<String> files = new ArrayList<String>();
+		for (int i = 0; i < res.size(); i++) {
+			content = res.get(i).getContent();
+			String filePath = writeByte(content, i);
+			files.add(filePath);
+		}
+		MyMultipleFileZip mfe = new MyMultipleFileZip();
+		mfe.zipFiles(files);
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+
+	static String writeByte(byte[] bytes, int iterNum) {
+		String FILEPATH = "d:\\test" + iterNum + ".txt";
+		File file = new File(FILEPATH);
+		try {
+			OutputStream os = new FileOutputStream(file);
+			os.write(bytes);
+			System.out.println("Successfully" + " byte inserted");
+			os.close();
+		} catch (Exception e) {
+			System.out.println("Exception: " + e);
+		}
+		return FILEPATH;
+	}
+
 	@PostMapping(CCPTConstants.CREATE)
 	public ResponseEntity<Void> uploadFile(@RequestParam("file") MultipartFile file, @RequestParam("refId") int refId,
 			@RequestParam("refType") String refType, @RequestParam("comments") String comments) throws IOException {
@@ -41,7 +79,23 @@ public class UploadFileController {
 		return new ResponseEntity<Void>(HttpStatus.CREATED);
 	}
 
-	@DeleteMapping(CCPTConstants.DELETE_BY_ID+"/{id}")
+	@PostMapping("/uploadMultipleFiles")
+	public ResponseEntity<Void> uploadMultipleFiles(@RequestParam("files") MultipartFile[] files,
+			@RequestParam("refId") int refId, @RequestParam("refType") String refType,
+			@RequestParam("comments") String comments) {
+		Arrays.asList(files).stream().map(file -> {
+			try {
+				return uploadFile(file, refId, refType, comments);
+			} catch (IOException e) {
+				e.printStackTrace();
+				return new ResponseEntity<Void>(HttpStatus.CREATED);
+			}
+		}).collect(Collectors.toList());
+		return null;
+
+	}
+
+	@DeleteMapping(CCPTConstants.DELETE_BY_ID + "/{id}")
 	public ResponseEntity<Void> deleteFile(@PathVariable Integer id) {
 		uploadFileService.deleteFile(id);
 		return new ResponseEntity<Void>(HttpStatus.OK);

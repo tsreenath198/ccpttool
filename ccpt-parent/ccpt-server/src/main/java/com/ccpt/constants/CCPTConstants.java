@@ -16,10 +16,12 @@ public interface CCPTConstants {
 	String LOGIN = "/admin";
 	String RECRUITER = "/recruiter";
 	String REPORT = "/report";
-	String UPLOAD_FILE = "/uploadFile";
 	String CLIENT = "/client";
 	String CONTACT = "/contact";
 	String CLOSURE = "/closure";
 	String SEND_EMAIL = "/sendEmail";
 	String TEMPLATE = "/template";
+	
+	String GET_BY_REF_ID_AND_REF_TPYE = "/download";
+	String UPLOAD_FILE = "/file";
 }

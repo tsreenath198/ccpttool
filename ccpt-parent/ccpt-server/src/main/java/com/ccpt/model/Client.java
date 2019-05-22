@@ -36,6 +36,34 @@ public class Client {
 
 	@Column(name = "updated_date")
 	private Date updatedDate;
+	
+	@Column(name = "billing_address")
+    private String billingAddress;
+	
+	@Column(name = "phone")
+    private String phone;
+	
+	@Column(name = "gst")
+    private String gst;
+	
+	@Column(name = "industry")
+    private String industry;
+	
+	@Column(name = "email")
+    private String email;
+	
+	@Column(name = "servicetax_no")
+    private String servicetaxNo;
+	
+	@Column(name = "service_charge")
+    private String serviceCharge;
+	
+	@Column(name = "guarantee_period")
+    private Integer guaranteePeriod;
+	
+	@Column(name = "credit_period")
+    private Integer creditPeriod;
+	
    
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "client_id", referencedColumnName = "client_id")
@@ -95,6 +123,78 @@ public class Client {
 
 	public void setUpdatedDate(Date updatedDate) {
 		this.updatedDate = updatedDate;
+	}
+
+	public String getBillingAddress() {
+		return billingAddress;
+	}
+
+	public void setBillingAddress(String billingAddress) {
+		this.billingAddress = billingAddress;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
+	public String getGst() {
+		return gst;
+	}
+
+	public void setGst(String gst) {
+		this.gst = gst;
+	}
+
+	public String getIndustry() {
+		return industry;
+	}
+
+	public void setIndustry(String industry) {
+		this.industry = industry;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getServicetaxNo() {
+		return servicetaxNo;
+	}
+
+	public void setServicetaxNo(String servicetaxNo) {
+		this.servicetaxNo = servicetaxNo;
+	}
+
+	public String getServiceCharge() {
+		return serviceCharge;
+	}
+
+	public void setServiceCharge(String serviceCharge) {
+		this.serviceCharge = serviceCharge;
+	}
+
+	public Integer getGuaranteePeriod() {
+		return guaranteePeriod;
+	}
+
+	public void setGuaranteePeriod(Integer guaranteePeriod) {
+		this.guaranteePeriod = guaranteePeriod;
+	}
+
+	public Integer getCreditPeriod() {
+		return creditPeriod;
+	}
+
+	public void setCreditPeriod(Integer creditPeriod) {
+		this.creditPeriod = creditPeriod;
 	}
 
     

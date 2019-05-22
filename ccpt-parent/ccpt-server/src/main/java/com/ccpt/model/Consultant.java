@@ -78,10 +78,34 @@ public class Consultant {
 
 	@Column(name = "current_company")
 	private String currentCompany;
+	
 	@Column(name = "current_ctc")
 	private double currentCTC;
+	
 	@Column(name = "preffered_location")
 	private String prefferedLocation;
+	
+	@Column(name = "current_job_title")
+	private String currentJobTitle;
+	
+	@Column(name = "current_functional_area")
+	private String currentFunctionalArea;
+	
+	@Column(name = "current_industry")
+	private String currentIndustry;
+	
+	@Column(name = "years_incurrent_job")
+	private Integer yearsInCurrentJob;
+	
+	@Column(name = "months_incurrent_job")
+	private Integer monthsInCurrentJob;
+	
+	@Column(name = "notice_period")
+	private Integer noticePeriod;
+	
+	@Column(name = "highest_education")
+	private String highestEducation;
+
 
 	public int getId() {
 		return id;
@@ -259,6 +283,62 @@ public class Consultant {
 		this.prefferedLocation = prefferedLocation;
 	}
 
+	public String getCurrentJobTitle() {
+		return currentJobTitle;
+	}
+
+	public void setCurrentJobTitle(String currentJobTitle) {
+		this.currentJobTitle = currentJobTitle;
+	}
+
+	public String getCurrentFunctionalArea() {
+		return currentFunctionalArea;
+	}
+
+	public void setCurrentFunctionalArea(String currentFunctionalArea) {
+		this.currentFunctionalArea = currentFunctionalArea;
+	}
+
+	public String getCurrentIndustry() {
+		return currentIndustry;
+	}
+
+	public void setCurrentIndustry(String currentIndustry) {
+		this.currentIndustry = currentIndustry;
+	}
+
+	public Integer getYearsInCurrentJob() {
+		return yearsInCurrentJob;
+	}
+
+	public void setYearsInCurrentJob(Integer yearsInCurrentJob) {
+		this.yearsInCurrentJob = yearsInCurrentJob;
+	}
+
+	public Integer getMonthsInCurrentJob() {
+		return monthsInCurrentJob;
+	}
+
+	public void setMonthsInCurrentJob(Integer monthsInCurrentJob) {
+		this.monthsInCurrentJob = monthsInCurrentJob;
+	}
+
+	public Integer getNoticePeriod() {
+		return noticePeriod;
+	}
+
+	public void setNoticePeriod(Integer noticePeriod) {
+		this.noticePeriod = noticePeriod;
+	}
+
+	public String getHighestEducation() {
+		return highestEducation;
+	}
+
+	public void setHighestEducation(String highestEducation) {
+		this.highestEducation = highestEducation;
+	}
+
 	@Override
 	public String toString() {
 		return "Consultant [id=" + id + ", fullname=" + fullname + ", gender=" + gender + ", dob=" + dob + ", email="
@@ -268,7 +348,10 @@ public class Consultant {
 				+ ", consultantStatusCode=" + consultantStatusCode + ", experienceYrs=" + experienceYrs
 				+ ", experienceMonths=" + experienceMonths + ", activeFlag=" + activeFlag + ", consultantStatus="
 				+ consultantStatus + ", currentCompany=" + currentCompany + ", currentCTC=" + currentCTC
-				+ ", prefferedLocation=" + prefferedLocation + "]";
+				+ ", prefferedLocation=" + prefferedLocation + ", currentJobTitle=" + currentJobTitle
+				+ ", currentFunctionalArea=" + currentFunctionalArea + ", currentIndustry=" + currentIndustry
+				+ ", yearsInCurrentJob=" + yearsInCurrentJob + ", monthsInCurrentJob=" + monthsInCurrentJob
+				+ ", noticePeriod=" + noticePeriod + ", highestEducation=" + highestEducation + "]";
 	}
 
 }

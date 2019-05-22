@@ -1,7 +1,11 @@
 package com.ccpt.model;
 
+import java.util.Arrays;
+
+import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -14,19 +18,32 @@ public class UploadFile {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	
-	@Lob
-	@Column(name = "file")
-	private byte[] file;
-	
+
 	@Column(name = "ref_id")
 	private int refId;
-	
+
 	@Column(name = "ref_type")
 	private String refType;
-	
+
 	@Column(name = "comments")
 	private String comments;
+
+	@Lob
+	@Basic(fetch = FetchType.LAZY)
+	@Column(name = "content", nullable = false)
+	private byte[] content;
+
+	public UploadFile(byte[] content, int refId, String refType, String comments) {
+		super();
+		this.refId = refId;
+		this.refType = refType;
+		this.comments = comments;
+		this.content = content;
+	}
+
+	public UploadFile() {
+		super();
+	}
 
 	public int getId() {
 		return id;
@@ -34,14 +51,6 @@ public class UploadFile {
 
 	public void setId(int id) {
 		this.id = id;
-	}
-
-	public byte[] getFile() {
-		return file;
-	}
-
-	public void setFile(byte[] file) {
-		this.file = file;
 	}
 
 	public int getRefId() {
@@ -68,23 +77,18 @@ public class UploadFile {
 		this.comments = comments;
 	}
 
+	public byte[] getContent() {
+		return content;
+	}
+
+	public void setContent(byte[] content) {
+		this.content = content;
+	}
+
 	@Override
 	public String toString() {
-		return "UploadFile [id=" + id + ", file=" + file + ", refId=" + refId + ", refType=" + refType + ", comments="
-				+ comments + "]";
-	}
-
-	public UploadFile( byte[] file, int refId, String refType, String comments) {
-		super();
-		
-		this.file = file;
-		this.refId = refId;
-		this.refType = refType;
-		this.comments = comments;
-	}
-
-	public UploadFile() {
-		super();
+		return "UploadFile [id=" + id + ", refId=" + refId + ", refType=" + refType + ", comments=" + comments
+				+ ", content=" + Arrays.toString(content) + "]";
 	}
 
 }
