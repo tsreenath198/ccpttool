@@ -51,7 +51,7 @@ public class ClientPositionService implements IClientPositionService {
 	@Override
 	public List<ClientPosition> getTop5ClientPositions() {
 		List<ClientPosition> list = new ArrayList<>();
-		clientPositionRepository.findTop5ByActiveFlagAllIgnoreCaseOrderByIdAsc("Y").forEach(e -> list.add(e));
+		clientPositionRepository.findTop5ByActiveFlagAllIgnoreCaseOrderByIdDesc("Y").forEach(e -> list.add(e));
 		return list;
 	}
 }

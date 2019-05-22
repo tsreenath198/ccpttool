@@ -11,7 +11,7 @@ import com.ccpt.model.ClientPosition;
 public interface ClientPositionRepository extends CrudRepository<ClientPosition, Integer> {
 	 List<ClientPosition> findByActiveFlagAllIgnoreCaseOrderByCreatedDateDesc(String ActiveFlag);
 	 
-	 List<ClientPosition> findTop5ByActiveFlagAllIgnoreCaseOrderByIdAsc(String activeFlag);
+	 List<ClientPosition> findTop5ByActiveFlagAllIgnoreCaseOrderByIdDesc(String activeFlag);
 
 	ClientPosition findByIdAndActiveFlag(int id, char status);
 	
