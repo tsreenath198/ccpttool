@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
+import com.ccpt.model.ClientPosition;
 import com.ccpt.model.ConsultantCallHistory;
 
 public interface ConsultantCallHistoryRepository extends CrudRepository<ConsultantCallHistory, Integer> {
@@ -31,5 +32,7 @@ public interface ConsultantCallHistoryRepository extends CrudRepository<Consulta
 	@Query("SELECT  r.fullname, count(*) FROM ClientApplication ca left outer join Recruiter r on ca.closedBy = r.id where ca.closedBy is not null AND (ca.createdDate   BETWEEN  :sdate AND  :edate) group by r.id, r.fullname ")
 	List<Object[]> getClosedCountOfAllRecruitersFromLastGivenDays(@Param(value = "sdate") Date sdate,
 			@Param(value = "edate") Date edate);
+	
+	
 
 }

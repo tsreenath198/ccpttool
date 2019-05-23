@@ -40,6 +40,7 @@ public class ReportController {
 
 	@Autowired
 	private IConsultantService consultantService;
+	
 	@Autowired
 	private IClientService clientService;
 
@@ -120,4 +121,22 @@ public class ReportController {
 		}
 		return new ResponseEntity<List<ClientPosition>>(clientPositionList, HttpStatus.OK);
 	}
+
+	@GetMapping("getAllOpenCP")
+	public ResponseEntity<List<ClientPosition>> getAllOpenCP() {
+		List<ClientPosition> clientPositionList = clientPositionService.getAllOpenCP();
+
+		for (ClientPosition clientPosition : clientPositionList) {
+			clientPosition.setClientPositionsStatus(clientPositionStatusService
+					.getClientPositionStatusById(clientPosition.getClientPositionsStatusCode()).getDescription());
+			clientPosition.setClientName(clientService.getClientById(clientPosition.getClientId()).getName());
+
+			if (clientPosition.getClosedBy() != null) {
+				clientPosition.setClosedByRecruiter(
+						recruiterService.getRecruiterById(clientPosition.getClosedBy()).getFullname());
+			}
+		}
+		return new ResponseEntity<List<ClientPosition>>(clientPositionList, HttpStatus.OK);
+	}
+
 }
