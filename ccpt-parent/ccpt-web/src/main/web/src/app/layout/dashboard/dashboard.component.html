@@ -22,6 +22,7 @@
           <span class="pull-right">
             <select class="form-control form-control-sm" name="cp" #t [(ngModel)]="rpChoosenDays"
               (change)="rpGetAllByDays()">
+              <option value="" disabled selected hidden>Please Choose...</option>
               <option *ngFor="let nod of noOfDays | keyvalue" [ngValue]="nod.value">{{nod.key}}
               </option>
             </select>
