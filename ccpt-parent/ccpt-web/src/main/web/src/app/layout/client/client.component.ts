@@ -19,17 +19,17 @@ import { FileUploader, FileLikeObject } from 'ng2-file-upload';
 export class ClientComponent implements OnInit {
     public clientModel: ClientModel = <ClientModel>{};
     public clientList: any = [];
-    public currSearchTxt: string = "";
-    private urlConstants = new URLConstants();    
-    public readOnlyForm: string = '';
-    public enableButtonType: string = '';
-    public comments: string = '';
+    public currSearchTxt = '';
+    public urlConstants = new URLConstants();
+    public readOnlyForm = '';
+    public enableButtonType = '';
+    public comments = '';
     public uploader: FileUploader = new FileUploader({});
     public fileList: Array<any> = [];
-    public address:boolean=false;
+    public address = false;
 
-    private selectedRecrdToDel: number = 0;
-    public closeResult: string = '';
+    private selectedRecrdToDel = 0;
+    public closeResult = '';
     private modalRef: NgbModalRef;
     constructor(private http: HttpClientService, private toastr: ToastrCustomService, private modalService: NgbModal) {
     }
@@ -40,13 +40,13 @@ export class ClientComponent implements OnInit {
     init() {
         this.http.get(this.urlConstants.ClientGetAll).subscribe(resp => {
             this.clientList = resp as any;
-        })
+        });
     }
     clientContactDeclare() {
-        this.clientModel.clientContacts = [{ "fullname": "", "email": "", "phone": "" }]
+        this.clientModel.clientContacts = [{ 'fullname': '', 'email': '', 'phone': '' }];
     }
-    editClientPosition(data) {
-        this.clientModel = JSON.parse(JSON.stringify(data));;
+    editClient(data) {
+        this.clientModel = JSON.parse(JSON.stringify(data));
         this.readOnlyForm = 'U';
         this.enableButtonType = 'U';
     }
@@ -64,72 +64,71 @@ export class ClientComponent implements OnInit {
     }
     clientCreate(clientForm: NgForm): void {
         this.http.create(this.clientModel, this.urlConstants.ClientCreate).subscribe(resp => {
-            this.toastr.success(this.urlConstants.SuccessMsg, "Client");
+            this.toastr.success(this.urlConstants.SuccessMsg, 'Client');
             this.init();
             this.formReset();
             clientForm.resetForm();
             this.clientContactDeclare();
         }, err => {
-            this.toastr.error(err.statusText, "Client");
+            this.toastr.error(err.statusText, 'Client');
         });
     }
     updateClient(clientForm: NgForm) {
         this.http.update(this.clientModel, this.urlConstants.ClientUpdate).subscribe(resp => {
             this.formReset();
-            this.toastr.success(this.urlConstants.UpdateMsg, "Client ");
+            this.toastr.success(this.urlConstants.UpdateMsg, 'Client');
             this.init();
             clientForm.resetForm();
             this.clientContactDeclare();
-            
+
             this.readOnlyForm = '';
             this.enableButtonType = '';
         }, err => {
-            this.toastr.error(err.statusText, "Client");
-        })
+            this.toastr.error(err.statusText, 'Client');
+        });
     }
     cancelForm(consultantCallHistory: NgForm) {
         this.formReset();
         consultantCallHistory.resetForm();
         this.readOnlyForm = '';
-        this.enableButtonType = ''; 
+        this.enableButtonType = '';
         this.clientContactDeclare();
     }
     clientContactListIncrement(event, i: number) {
         switch (event.id) {
-            case "decrease": {
+            case 'decrease': {
                 this.clientModel.clientContacts.splice(i, 1);
                 break;
             }
-            case "increase": {
-                this.clientModel.clientContacts.push({ "fullname": "", "email": "", "phone": "" });
+            case 'increase': {
+                this.clientModel.clientContacts.push({ 'fullname': '', 'email': '', 'phone': '' });
                 break;
             }
         }
     }
-    billngAddressMatch(){
-        if(this.address==true){
-            this.clientModel.billingAddress=this.clientModel.address
-        }
-        else{
-            this.clientModel.billingAddress="";
+    billngAddressMatch() {
+        if (this.address === true) {
+            this.clientModel.billingAddress = this.clientModel.address;
+        } else {
+            this.clientModel.billingAddress = '';
         }
     }
     deleteClientRecord(): void {
         this.http.delete(this.urlConstants.OCDelete + this.selectedRecrdToDel).subscribe(resp => {
-            this.toastr.success(this.urlConstants.DeleteMsg, "Contact");
+            this.toastr.success(this.urlConstants.DeleteMsg, 'Contact');
             this.init();
             this.close();
             this.formReset();
-        })
+        });
     }
     getFilesById() {
         this.http.get('/uploadFile/id?id=' + 3).subscribe(resp => {
             this.fileList.push(resp);
-            console.log(this.fileList)
-        })
+            console.log(this.fileList);
+        });
     }
     /**
-     * @param 
+     * @param
      * 1) content consists the modal instance
      * 2) Selected contains the code of selected row
      */
@@ -164,10 +163,10 @@ export class ClientComponent implements OnInit {
     }
     /** Upload documents of respective consultant */
     uploadFiles() {
-        let files = this.getFiles();
-        let formData = new FormData();
+        const files = this.getFiles();
+        const formData = new FormData();
         formData.append('file', files[0].rawFile, files[0].name);
-        let params = "refId=" + this.selectedRecrdToDel + "&refType= Consultant &comments=" + this.comments
+        const params = 'refId=' + this.selectedRecrdToDel + '&refType= Consultant &comments=' + this.comments;
         this.http.upload('uploadFile/create?' + params, formData);
         /* let requests = [];
          files.forEach((file) => {
@@ -177,14 +176,14 @@ export class ClientComponent implements OnInit {
              this.http.upload('', formData[0]).subscribe(resp => {
                  console.log("resp=====", resp);
              })
-             // requests.push(this.uploadService.upload(formData));     
+             // requests.push(this.uploadService.upload(formData));
          });*/
 
         /*concat(...requests).subscribe(
           (res) => {
             console.log(res);
           },
-          (err) => {  
+          (err) => {
             console.log(err);
           }
         );*/

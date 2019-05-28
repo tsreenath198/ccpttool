@@ -13,22 +13,15 @@
     </div>
   </div>
   <hr> -->
-  <div class="row pb-3">
-    <div class="col col-md-2">
-      <select class="form-control" name="cp" #t [(ngModel)]="choosenDays" (change)="getAllByDays()">
-        <option *ngFor="let nod of noOfDays | keyvalue" [ngValue]="nod.value">{{nod.key}}
-        </option>
-      </select>
-    </div>
-  </div>
+
 
   <div class="row">
     <div class="col col-xl-6 col-lg-12">
       <div class="card mb-3">
         <div class="card-header">Recruiter Performance
           <span class="pull-right">
-            <select class="form-control form-control-sm" name="cp" #t [(ngModel)]="choosenDays"
-              (change)="getAllByDays()">
+            <select class="form-control form-control-sm" name="cp" #t [(ngModel)]="rpChoosenDays"
+              (change)="rpGetAllByDays()">
               <option *ngFor="let nod of noOfDays | keyvalue" [ngValue]="nod.value">{{nod.key}}
               </option>
             </select>
@@ -43,7 +36,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let val of ccptClosureCount | keyvalue">
+              <tr *ngFor="let val of ccptReportCC | keyvalue">
                 <td>{{val.key}}</td>
                 <td>{{val.value}}</td>
               </tr>
@@ -54,29 +47,22 @@
     </div>
     <div class="col col-xl-6 col-lg-12">
       <div class="card mb-3">
-        <div class="card-header">Latest Required Client Positions
-          <span class="pull-right">
-            <select class="form-control form-control-sm" name="cp" #t [(ngModel)]="choosenDays"
-              (change)="getAllByDays()">
-              <option *ngFor="let nod of noOfDays | keyvalue" [ngValue]="nod.value">{{nod.key}}
-              </option>
-            </select>
-          </span>
+        <div class="card-header">Latest Client Positions
         </div>
         <div class="table-scroll">
           <table class="table table-sm">
             <thead>
               <tr>
-                <th>Recruiter</th>
-                <th>No.of closures</th>
+                <th>Client </th>
+                <th>Code</th>
                 <th>Date</th>
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let cpl of clientPositionList ;let i=index">
-                <td *ngIf="i<5">{{cpl.clientName}}</td>
-                <td *ngIf="i<5">{{cpl.clientPositionCode}}</td>
-                <td *ngIf="i<5">{{cpl.createdDate}}</td>
+              <tr *ngFor="let cpl of ccptReportCPL">
+                <td>{{cpl.clientName}}</td>
+                <td>{{cpl.clientPositionCode}}</td>
+                <td>{{cpl.createdDate | date}}</td>
               </tr>
             </tbody>
           </table>
@@ -87,17 +73,24 @@
   <div class="row">
     <div class="col col-xl-6 col-lg-12">
       <div class="card mb-3 ">
-        <div class="card-header">Consultant Call History</div>
+        <div class="card-header">Consultant Call History<span class="pull-right">
+            <select class="form-control form-control-sm" name="cp" #t [(ngModel)]="cochChoosenDays"
+              (change)="cochGetAllByDays()">
+              <option *ngFor="let nod of noOfDays | keyvalue" [ngValue]="nod.value">{{nod.key}}
+              </option>
+            </select>
+          </span>
+        </div>
         <div class="table-scroll">
           <table class="table table-sm ">
             <thead>
               <tr>
-                <th>Consultant Name</th>
+                <th>Consultant</th>
                 <th>Description</th>
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let cch of ccptReportData.consultantCallHistoryList">
+              <tr *ngFor="let cch of ccptReportCOCH ">
                 <td>{{cch.consultantName || 'NA'}}</td>
                 <td>{{cch.description || 'NA'}}</td>
               </tr>
@@ -108,7 +101,15 @@
     </div>
     <div class="col col-xl-6 col-lg-12">
       <div class="card mb-3">
-        <div class="card-header">Latest Client Positions</div>
+        <div class="card-header">Client Call History
+          <span class="pull-right">
+            <select class="form-control form-control-sm" name="cp" #t [(ngModel)]="clchChoosenDays"
+              (change)="clchGetAllByDays()">
+              <option *ngFor="let nod of noOfDays | keyvalue" [ngValue]="nod.value">{{nod.key}}
+              </option>
+            </select>
+          </span>
+        </div>
         <div class="table-scroll">
           <table class="table table-sm">
             <thead>
@@ -118,7 +119,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let cch of ccptReportData.clientCallHistoryList">
+              <tr *ngFor="let cch of ccptReportCLCH">
                 <td>{{cch.clientName || 'NA'}}</td>
                 <td>{{cch.clientPositionCode || 'NA'}}</td>
               </tr>

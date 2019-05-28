@@ -7,7 +7,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 export class HttpClientService {
 
   constructor(private http: HttpClient) { }
-  private base_url = "http://210.16.76.202:8081/";
+  private base_url = 'http://210.16.76.202:8081/';
 
   public getLogin(URL: string) {
     return this.http.get(URL);
@@ -15,7 +15,7 @@ export class HttpClientService {
   create(data: any, url: string) {
     const httpOptions = {
       headers: new HttpHeaders({
-        'X-TOKEN': sessionStorage.getItem("access_token")
+        'X-TOKEN': sessionStorage.getItem('access_token')
       })
     };
     return this.http.post(this.base_url + url, data);
@@ -23,20 +23,20 @@ export class HttpClientService {
   get(URL: string) {
     return this.http.get(this.base_url + URL);
   }
-  update(data:any,URL){
+  update(data: any, URL) {
     return this.http.put(this.base_url + URL, data);
   }
-  delete(URL:string){
-    return this.http.delete(this.base_url + URL)
+  delete(URL: string) {
+    return this.http.delete(this.base_url + URL);
   }
-  upload(URL:string,formData:any){
+  upload(URL: string, formData: any) {
     const httpOptions = {
       headers: new HttpHeaders({
-        'X-TOKEN': sessionStorage.getItem("access_token"),
-        'Content-Type':'multipart/form-data',
+        'X-TOKEN': sessionStorage.getItem('access_token'),
+        'Content-Type': 'multipart/form-data',
         'Accept': 'application/json'
       })
     };
-    return this.http.post(this.base_url + URL, formData)
+    return this.http.post(this.base_url + URL, formData);
   }
 }

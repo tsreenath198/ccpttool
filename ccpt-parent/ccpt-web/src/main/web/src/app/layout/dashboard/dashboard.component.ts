@@ -4,6 +4,7 @@ import { ToastrCustomService } from 'src/app/shared/services/toastr.service';
 import { URLConstants } from '../components/constants/url-constants';
 import { routerTransition } from '../../router.animations';
 import { ClientPositionModel } from '../client-position/client-position.model';
+import { forkJoin } from 'rxjs';
 
 @Component({
     selector: 'app-dashboard',
@@ -14,12 +15,19 @@ import { ClientPositionModel } from '../client-position/client-position.model';
 export class DashboardComponent implements OnInit {
     public alerts: Array<any> = [];
     public sliders: Array<any> = [];
-    public noOfDays: any = {"All":"All" , "week":7, "month":30, "year":365};
-    public ccptReportData: any = { "consultantCallHistoryList": [], "clientCallHistoryList": [] };
-    public ccptClosureCount:any={};
-    public clientPositionList: Array<ClientPositionModel>=[] ;
+    public noOfDays: any = {  'day': 1, 'week': 7, 'month': 30, 'year': 365, };
+    public ccptReportCLCH: Array<any> = [];
+    public ccptReportCOCH: Array<any> = [];
+    public ccptReportCC: any = {};
+    public ccptReportCPL: Array<ClientPositionModel> = [];
     private urlConstants = new URLConstants();
-    public choosenDays:any="All";
+    public rpChoosenDays: any = 'day';
+    public cochChoosenDays: any = 'day';
+    public clchChoosenDays: any = 'day';
+    public getAllReportCLCH = this.http.get(this.urlConstants.ReportingGetAllCLCH + '1');
+    public getAllReportCOCH = this.http.get(this.urlConstants.ReportingGetAllCOCH + '1');
+    public getAllReportCPL = this.http.get(this.urlConstants.ReportingGetAllTop5CP);
+    public getAllReportCC = this.http.get(this.urlConstants.ReportingGetClosures + '1');
     constructor(private http: HttpClientService, private toastr: ToastrCustomService) {
         // this.sliders.push(
         //     {
@@ -61,39 +69,54 @@ export class DashboardComponent implements OnInit {
         // );
     }
 
-    ngOnInit() { this.init() }
-
+    ngOnInit() {
+        this.init();
+    }
     public init() {
-        this.http.get(this.urlConstants.ReportingGetAll).subscribe(resp => {
-            this.ccptReportData = resp;
-        }),
-        this.http.get("report/getClosedCountOfAllRecruitersFromLastGivenDays?days=7").subscribe(resp => {
-            this.ccptClosureCount=resp;
-            console.log(this.ccptClosureCount);
-        }),
-        this.http.get(this.urlConstants.CPGetAll).subscribe(resp=> {
-            this.clientPositionList = resp as any;
-            console.log(this.clientPositionList);
-        })
+        forkJoin(
+            this.getAllReportCLCH,
+            this.getAllReportCOCH,
+            this.getAllReportCPL,
+            this.getAllReportCC
+        ).subscribe(listofrecords => {
+            this.ccptReportCLCH = listofrecords[0] as any;
+            this.ccptReportCOCH = listofrecords[1] as any;
+            this.ccptReportCPL = listofrecords[2] as any;
+            this.ccptReportCC = listofrecords[3] as any;
+        });
+        // this.http.get(this.urlConstants.ReportingGetAllCLCH).subscribe(resp => {
+        //     this.ccptReportCLCH = resp as any;
+        // }),
+        //     this.http.get("report/getClosedCountOfAllRecruitersFromLastGivenDays?days=7").subscribe(resp => {
+        //         this.ccptClosureCount = resp;
+        //         console.log(this.ccptClosureCount);
+        //     }),
+        //     this.http.get(this.urlConstants.CPGetAll).subscribe(resp => {
+        //         this.clientPositionList = resp as any;
+        //         console.log(this.clientPositionList);
+        //     })
     }
-    public getAllByDays() {
-        let numberOfDays = this.choosenDays;
-        this.ccptReportData = { "consultantCallHistoryList": [], "clientCallHistoryList": [] };
-        if (numberOfDays == "All") {
-            this.init();
-        }
-        else {
-            this.http.get(this.urlConstants.ReportingGetAllLastGivenDays + numberOfDays).subscribe(resp => {
-                this.ccptReportData = resp;
-            })
-            this.http.get(this.urlConstants.ReportingGetClosures + numberOfDays).subscribe(resp => {
-                this.ccptClosureCount=resp;
-                console.log(this.ccptClosureCount);
-            })
-        }
+    public rpGetAllByDays() {
+        const numberOfDays = this.rpChoosenDays;
+        this.http.get(this.urlConstants.ReportingGetClosures + numberOfDays).subscribe(resp => {
+            this.ccptReportCC = resp;
+        });
     }
-    public closeAlert(alert: any) {
-        const index: number = this.alerts.indexOf(alert);
-        this.alerts.splice(index, 1);
+    public cochGetAllByDays() {
+        const numberOfDays = this.cochChoosenDays;
+        this.http.get(this.urlConstants.ReportingGetAllCOCH  + numberOfDays).subscribe(resp => {
+            this.ccptReportCOCH = resp as any;
+        });
+    }
+    public clchGetAllByDays() {
+        const numberOfDays = this.clchChoosenDays;
+        this.http.get(this.urlConstants.ReportingGetAllCLCH  + numberOfDays).subscribe(resp => {
+            this.ccptReportCLCH = resp as any;
+        });
     }
 }
+    // public closeAlert(alert: any) {
+    //     const index: number = this.alerts.indexOf(alert);
+    //     this.alerts.splice(index, 1);
+    // }
+// }

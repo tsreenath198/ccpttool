@@ -1,85 +1,86 @@
 export class URLConstants {
     /*Client Application Status*/
-    CASCreate: string = 'admin/cAStatus/create';
-    CASGetAll: string = 'admin/cAStatus/getAll';
-    CASUpdate: string = 'admin/cAStatus/update';
-    CASDelete: string = 'admin/cAStatus/id/'
+    CASCreate = 'admin/cAStatus/create';
+    CASGetAll = 'admin/cAStatus/getAll';
+    CASUpdate = 'admin/cAStatus/update';
+    CASDelete = 'admin/cAStatus/id/';
 
     /*Client Postion Status*/
-    CPSCreate: string = 'admin/cPStatus/create';
-    CPSGetAll: string = 'admin/cPStatus/getAll';
-    CPSUpdate: string = 'admin/cPStatus/update';
-    CPSDelete: string = 'admin/cPStatus/id/'
+    CPSCreate = 'admin/cPStatus/create';
+    CPSGetAll = 'admin/cPStatus/getAll';
+    CPSUpdate = 'admin/cPStatus/update';
+    CPSDelete = 'admin/cPStatus/id/';
 
     /*Consultant Status*/
-    CSCreate: string = 'admin/consultantStatus/create';
-    CSGetAll: string = 'admin/consultantStatus/getAll';
-    CSUpdate: string = 'admin/consultantStatus/update';
-    CSDelete: string = 'admin/consultantStatus/id/'
+    CSCreate = 'admin/consultantStatus/create';
+    CSGetAll = 'admin/consultantStatus/getAll';
+    CSUpdate = 'admin/consultantStatus/update';
+    CSDelete = 'admin/consultantStatus/id/';
 
     /*Client Position */
-    CPCreate: string = 'clientPosition/create';
-    CPGetAll: string = 'clientPosition/getAll';
-    CPUpdate: string = 'clientPosition/update';
-    CPDelete: string = 'clientPosition/id/';
+    CPCreate = 'clientPosition/create';
+    CPGetAll = 'clientPosition/getAll';
+    CPUpdate = 'clientPosition/update';
+    CPDelete = 'clientPosition/id/';
 
     /*Consultant */
-    CCreate: string = 'consultant/create';
-    CGetAll: string = 'consultant/getAll';
-    CUpdate: string = 'consultant/update';
-    CDelete: string = 'consultant/id/';
-    CUpload: string = 'uploadFile/create';
+    CCreate = 'consultant/create';
+    CGetAll = 'consultant/getAll';
+    CUpdate = 'consultant/update';
+    CDelete = 'consultant/id/';
+    CUpload = 'uploadFile/create';
 
     /* Client Application */
-    CACreate: string = 'clientApplication/create';
-    CAGetAll: string = 'clientApplication/getAll';
-    CAUpdate: string = 'clientApplication/update';
-    CADelete: string = 'clientApplication/id/'
+    CACreate = 'clientApplication/create';
+    CAGetAll = 'clientApplication/getAll';
+    CAUpdate = 'clientApplication/update';
+    CADelete = 'clientApplication/id/';
 
 
     /* Client Call History */
-    CCHCreate: string = 'clientCallHistory/create';
-    CCHGetAll: string = 'clientCallHistory/getAll';
-    CCHUpdate: string = 'clientCallHistory/update';
-    CCHDelete: string = 'clientCallHistory/id/'
+    CCHCreate = 'clientCallHistory/create';
+    CCHGetAll = 'clientCallHistory/getAll';
+    CCHUpdate = 'clientCallHistory/update';
+    CCHDelete = 'clientCallHistory/id/';
 
     /* consultant Call History */
-    CoCHCreate: string = 'consultantCallHistory/create';
-    CoCHGetAll: string = 'consultantCallHistory/getAll';
-    CoCHUpdate: string = 'consultantCallHistory/update';
-    CoCHDelete: string = 'consultantCallHistory/id/'
+    CoCHCreate = 'consultantCallHistory/create';
+    CoCHGetAll = 'consultantCallHistory/getAll';
+    CoCHUpdate = 'consultantCallHistory/update';
+    CoCHDelete = 'consultantCallHistory/id/';
 
     /* Recruiter */
-    RCreate: string = 'recruiter/create';
-    RGetAll: string = 'recruiter/getAll';
-    RUpdate: string = 'recruiter/update';
-    RDelete: string = 'recruiter/id/';
+    RCreate = 'recruiter/create';
+    RGetAll = 'recruiter/getAll';
+    RUpdate = 'recruiter/update';
+    RDelete = 'recruiter/id/';
 
     /*Client*/
-    ClientCreate: string = 'client/create';
-    ClientGetAll: string = 'client/getAll';
-    ClientUpdate: string = 'client/update';
-    ClientDelete: string = 'client/id/';
+    ClientCreate = 'client/create';
+    ClientGetAll = 'client/getAll';
+    ClientUpdate = 'client/update';
+    ClientDelete = 'client/id/';
 
     /*Other Contacts */
-    OCCreate: string = 'contact/create';
-    OCGetAll: string = 'contact/getAll';
-    OCUpdate: string = 'contact/update';
-    OCDelete: string = 'contact/id/'
+    OCCreate = 'contact/create';
+    OCGetAll = 'contact/getAll';
+    OCUpdate = 'contact/update';
+    OCDelete = 'contact/id/';
 
     /** Reporting */
-    ReportingGetAll: string = 'report/getAll';
-    ReportingGetAllLastGivenDays:string='report/getAllCallHistorysFromLastGivenDays?days=';
-    ReportingGetClosures:string='report/getClosedCountOfAllRecruitersFromLastGivenDays?days='
-    
-    /**User setup */
-    UserCreate:string='/login';
-    
-    /** Messages */
-    DeleteMsg: string = "Deleted Successfully";
-    SuccessMsg: string = "Created Successfully ";
-    UpdateMsg: string = "Updated Successfully";
+    ReportingGetAllCLCH = 'report/getAllClientCallHistorysByDays?days=';
+    ReportingGetAllCOCH = 'report/getAllConsultantCallHistorysByDays?days=';
+    ReportingGetAllTop5CP = 'report/getTop5CP';
+    ReportingGetClosures = 'report/getClosedCountOfAllRecruitersFromLastGivenDays?days=';
 
-    UploadFilesMsg:string = 'Upload Files';
-    DownloadFilesMsg:string = 'Files';
+    /**User setup */
+    UserCreate = '/login';
+
+    /** Messages */
+    DeleteMsg = 'Deleted Successfully';
+    SuccessMsg = 'Created Successfully ';
+    UpdateMsg = 'Updated Successfully';
+
+    UploadFilesMsg = 'Upload Files';
+    DownloadFilesMsg = 'Files';
 }

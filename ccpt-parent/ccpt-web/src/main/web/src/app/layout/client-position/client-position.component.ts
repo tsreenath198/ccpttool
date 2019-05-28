@@ -22,20 +22,20 @@ export class ClientPositionComponent implements OnInit {
     public clientPositionModel: ClientPositionModel = <ClientPositionModel>{};
     public clientPositionList: Array<ClientPositionModel> = [];
     public clientPositionStatusList: Array<ClientpositionStatusModel> = [];
-    public clientList:Array<ClientModel>=[];
-    public recruiterList:Array<RecruiterModel>=[]
-    public invalidAppCode: boolean = false;
-    public closedByEnable:boolean=false;
-    private selectedRecrdToDel: number = 0;
-    public closeResult: string = '';
+    public clientList: Array<ClientModel> = [];
+    public recruiterList: Array<RecruiterModel> = [];
+    public invalidAppCode = false;
+    public closedByEnable = false;
+    private selectedRecrdToDel = 0;
+    public closeResult = '';
     private modalRef: NgbModalRef;
     public urlConstants = new URLConstants();
     public currSearchTxt: string ;
-    public readOnlyForm: string = '';
-    public enableButtonType: string = '';
-    public getAllCPS=this.http.get(this.urlConstants.CPSGetAll) ;
-    public getAllR=this.http.get(this.urlConstants.RGetAll);
-    public getAllC=this.http.get(this.urlConstants.ClientGetAll)
+    public readOnlyForm = '';
+    public enableButtonType = '';
+    public getAllCPS = this.http.get(this.urlConstants.CPSGetAll) ;
+    public getAllR = this.http.get(this.urlConstants.RGetAll);
+    public getAllC = this.http.get(this.urlConstants.ClientGetAll);
     constructor(private http: HttpClientService, private toastr: ToastrCustomService, private modalService: NgbModal) { }
 
     ngOnInit() {
@@ -45,9 +45,9 @@ export class ClientPositionComponent implements OnInit {
     init() {
         this.http.get(this.urlConstants.CPGetAll).subscribe(resp => {
             this.clientPositionList = resp as any;
-        })
+        });
     }
-    getAllDropdowns(){
+    getAllDropdowns() {
         forkJoin(
             this.getAllCPS,
             this.getAllR,
@@ -60,15 +60,15 @@ export class ClientPositionComponent implements OnInit {
         });
     }
     editClientPosition(data) {
-        this.clientPositionModel = JSON.parse(JSON.stringify(data));;
+        this.clientPositionModel = JSON.parse(JSON.stringify(data));
         this.readOnlyForm = 'U';
         this.enableButtonType = 'U';
-        this.closedByEnable=true;
+        this.closedByEnable = true;
     }
     enableFormEditable(): void {
         this.readOnlyForm = 'U';
         this.enableButtonType = 'U';
-        this.closedByEnable=true;
+        this.closedByEnable = true;
     }
     readOnlyEnable(data) {
         this.clientPositionModel = JSON.parse(JSON.stringify(data));
@@ -78,29 +78,29 @@ export class ClientPositionComponent implements OnInit {
     formReset() {
         this.clientPositionModel = <ClientPositionModel>{};
     }
-    createClientPosition(clientPositionForm:NgForm): void {
+    createClientPosition(clientPositionForm: NgForm): void {
         if (this.clientPositionModel.clientPositionCode) {
             this.validateCPCode(this.clientPositionModel.clientPositionCode);
         }
         if (!this.invalidAppCode) {
             this.http.create(this.clientPositionModel, this.urlConstants.CPCreate).subscribe(resp => {
-                this.toastr.success(this.urlConstants.SuccessMsg, "Client Position");
+                this.toastr.success(this.urlConstants.SuccessMsg, 'Client Position');
                 this.init();
                 this.formReset();
                 clientPositionForm.resetForm();
             }, err => {
-                this.toastr.error(err.statusText, "Client Position");
-            })
+                this.toastr.error(err.statusText, 'Client Position');
+            });
         }
     }
     /** Validate Client Position Code */
     private validateCPCode(code: string): void {
-        let arr = code.split("-");
+        const arr = code.split('-');
         if (arr.length === 4 && this.containsOnlyDigits(arr[0]) && arr[3].length === 3) {
-            for (var i = 1; i < arr.length - 1; i++) {
+            for (let i = 1; i < arr.length - 1; i++) {
                 if (!this.containsOnlyAlphabets(arr[i])) {
                     this.invalidAppCode = true;
-                    return
+                    return;
                 } else {
                     this.invalidAppCode = false;
                 }
@@ -112,47 +112,47 @@ export class ClientPositionComponent implements OnInit {
 
     /** Check contains Only Digits */
     private containsOnlyDigits(code): boolean {
-        let isnum = /^\d+$/.test(code);
-        return isnum
+        const isnum = /^\d+$/.test(code);
+        return isnum;
     }
     /** Check contains Only alphabets */
     private containsOnlyAlphabets(code): boolean {
-        let isStr = /^[a-zA-Z]+$/.test(code)
+        const isStr = /^[a-zA-Z]+$/.test(code);
         if (isStr === false) {
-            return false
+            return false;
         }
-        return isStr
+        return isStr;
     }
-    updateClientPosition(clientPositionForm:NgForm) {
+    updateClientPosition(clientPositionForm: NgForm) {
         this.http.update(this.clientPositionModel, this.urlConstants.CPUpdate).subscribe(resp => {
-            this.toastr.success(this.urlConstants.UpdateMsg, "Client Position");
+            this.toastr.success(this.urlConstants.UpdateMsg, 'Client Position');
             this.formReset();
             this.init();
             clientPositionForm.resetForm();
             this.readOnlyForm = '';
             this.enableButtonType = '';
-            this.closedByEnable=false;
+            this.closedByEnable = false;
         }, err => {
-            this.toastr.error(err.statusText, "Client Position");
-        })
+            this.toastr.error(err.statusText, 'Client Position');
+        });
     }
-    cancelForm(clientPositionForm:NgForm) {
+    cancelForm(clientPositionForm: NgForm) {
         this.formReset();
         clientPositionForm.resetForm();
         this.readOnlyForm = '';
         this.enableButtonType = '';
-        this.closedByEnable=false;
+        this.closedByEnable = false;
     }
     deleteCPRecord(): void {
         this.http.delete(this.urlConstants.CPDelete + this.selectedRecrdToDel).subscribe(resp => {
-            this.toastr.success(this.urlConstants.DeleteMsg, "Client Position");
+            this.toastr.success(this.urlConstants.DeleteMsg, 'Client Position');
             this.init();
             this.close();
             this.formReset();
-        })
+        });
     }
     /**
-     * @param 
+     * @param
      * 1) content consists the modal instance
      * 2) Selected contains the code of selected row
      */

@@ -22,34 +22,34 @@ export class ClientCallHistoryComponent implements OnInit {
     public clientCallHistoryList: Array<ClientCallHistoryModel> = [];
     public clientPositionList: Array<ClientPositionModel> = [];
     public clientList: Array<ClientModel> = [];
-    public formButtonsToggler: boolean = true;
-    public editButtonToggler: boolean = true;
+    public formButtonsToggler = true;
+    public editButtonToggler = true;
     public urlConstants = new URLConstants();
-    private selectedRecrdToDel: number = 0;
-    public closeResult: string = '';
+    private selectedRecrdToDel = 0;
+    public closeResult = '';
     private modalRef: NgbModalRef;
     public currSearchTxt: string;
-    public readOnlyForm: string = '';
-    public enableButtonType: string = '';
-   
+    public readOnlyForm = '';
+    public enableButtonType = '';
+
     constructor(private http: HttpClientService, private toastr: ToastrCustomService, private modalService: NgbModal) { }
 
     ngOnInit() {
         this.http.get(this.urlConstants.CPGetAll).subscribe(resp => {
             this.clientPositionList = resp as Array<ClientPositionModel>;
-        })
+        });
         this.http.get(this.urlConstants.ClientGetAll).subscribe(resp => {
             this.clientList = resp as Array<ClientModel>;
-        })
+        });
         this.init();
     }
     init() {
         this.http.get('clientCallHistory/getAll').subscribe(resp => {
             this.clientCallHistoryList = resp as Array<ClientCallHistoryModel>;
-        })
+        });
     }
     editClientCallHistory(data) {
-        this.clientCallHistoryModel =JSON.parse(JSON.stringify(data));;
+        this.clientCallHistoryModel = JSON.parse(JSON.stringify(data));
         this.readOnlyForm = 'U';
         this.enableButtonType = 'U';
     }
@@ -67,44 +67,44 @@ export class ClientCallHistoryComponent implements OnInit {
     }
     createClientCallHistory(clientCallHistoryForm: NgForm): void {
         this.http.create(this.clientCallHistoryModel, 'clientCallHistory/create').subscribe(resp => {
-            this.toastr.success(this.urlConstants.SuccessMsg, "Client Call History");
+            this.toastr.success(this.urlConstants.SuccessMsg, 'Client Call History');
             this.init();
             this.formReset();
             clientCallHistoryForm.resetForm();
         }, err => {
-            this.toastr.error(err.statusText, "Client Call History");
-        })
+            this.toastr.error(err.statusText, 'Client Call History');
+        });
 
     }
     updateClientCallHistory(clientCallHistoryForm: NgForm) {
         this.http.update(this.clientCallHistoryModel, 'clientCallHistory/update').subscribe(resp => {
-            this.toastr.success(this.urlConstants.UpdateMsg, "Client Call History");
+            this.toastr.success(this.urlConstants.UpdateMsg, 'Client Call History');
             this.formButtonsToggler = true;
             this.formReset();
             this.init();
             clientCallHistoryForm.resetForm();
         }, err => {
-            this.toastr.error(err.statusText, "Client Call History");
-        })
+            this.toastr.error(err.statusText, 'Client Call History');
+        });
     }
-   
+
     cancelForm(clientCallHistoryForm: NgForm) {
         this.formReset();
         clientCallHistoryForm.resetForm();
         this.readOnlyForm = '';
-        this.enableButtonType = ''; 
+        this.enableButtonType = '';
 
     }
     deleteCCHRecord(): void {
         this.http.delete(this.urlConstants.CCHDelete + this.selectedRecrdToDel).subscribe(resp => {
-            this.toastr.success(this.urlConstants.DeleteMsg, "Client");
+            this.toastr.success(this.urlConstants.DeleteMsg, 'Client');
             this.init();
             this.close();
             this.formReset();
-        })
+        });
     }
     /**
-     * @param 
+     * @param
      * 1) content consists the modal instance
      * 2) Selected contains the code of selected row
      */
