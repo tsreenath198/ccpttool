@@ -40,7 +40,7 @@ public class ReportController {
 
 	@Autowired
 	private IConsultantService consultantService;
-	
+
 	@Autowired
 	private IClientService clientService;
 
@@ -53,7 +53,6 @@ public class ReportController {
 	@Autowired
 	private IRecruiterService recruiterService;
 
-	@SuppressWarnings("rawtypes")
 	@GetMapping("getAllClientCallHistorysByDays")
 	public ResponseEntity<List<ClientCallHistory>> getAllClientCallHistorysByDays(@RequestParam int days)
 			throws ParseException {
@@ -71,7 +70,6 @@ public class ReportController {
 		return new ResponseEntity<List<ClientCallHistory>>(clientCallHistoryList, HttpStatus.OK);
 	}
 
-	@SuppressWarnings("rawtypes")
 	@GetMapping("getAllConsultantCallHistorysByDays")
 	public ResponseEntity<List<ConsultantCallHistory>> getAllConsultantCallHistorysByDays(@RequestParam int days)
 			throws ParseException {
