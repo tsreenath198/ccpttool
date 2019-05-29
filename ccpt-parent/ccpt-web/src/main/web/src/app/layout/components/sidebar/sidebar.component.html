@@ -91,7 +91,18 @@
                             <span>{{ 'Users' | translate }}</span>
                         </a>
                     </li>
-
+                    <li>
+                        <a [routerLink]="['/layout/email-template']" [routerLinkActive]="['router-link-active']"
+                            class="list-group-item"><i class="fa fa-fw fa-envelope"></i>&nbsp;
+                            <span>{{ 'Emails' | translate }}</span>
+                        </a>
+                    </li>
+                    <li>
+                            <a [routerLink]="['/layout/message-template']" [routerLinkActive]="['router-link-active']"
+                                class="list-group-item"><i class="fa fa-fw fa-comment"></i>&nbsp;
+                                <span>{{ 'Messages' | translate }}</span>
+                            </a>
+                        </li>
                 </ul>
             </li>
         </div>

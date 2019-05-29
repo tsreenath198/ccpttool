@@ -1,0 +1,82 @@
+<div [@routerTransition]>
+  
+    <app-page-header [icon2]="'fa-comment'" [heading2]="'Messages'" [icon1]="'fa-user'"
+    [heading1]="'Administration'"></app-page-header>
+  <div class="row">
+    <div class="col-md-5">
+      <div class="row">
+        <div class="col-md-3"><strong>Total No of records : {{messageTemplateList.length}}</strong></div>
+        <div class="col-md-6"> <input type="text" class="form-control" placeholder="search..."
+            [(ngModel)]="currSearchTxt" /></div>
+      </div>
+      <div class="table-responsive mt-2">
+        <table class="table table-hover table-striped">
+          <tbody>
+            <tr *ngFor="let mtl of messageTemplateList |  filter : 'type' : currSearchTxt ; let i = index"
+              (click)="readOnlyEnable(mtl)" (dblclick)="editMessageTemplate(mtl)">
+              <td>
+                {{mtl.type}}
+              </td>
+              <!-- <td>
+                <span class="fa fa-trash pull-right" data-toggle="tooltip" title="Delete" (click)="open(content,mtl.id)"></span>
+                <ng-template #content let-c="close" let-d="dismiss">
+                  <div class="modal-header">
+                    <h4 class="modal-title">Email Template</h4>
+                    <button type="button"  class="close" aria-label="Close" (click)="d('Cross click')">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <p>Are you sure you want to delete ? &hellip;</p>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" (click)="deleteClientRecord()">Ok</button>
+                    <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
+                  </div>
+                </ng-template>
+              </td> -->
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class=" col-md-7">
+        <!-- add this "emailTemplateCreate(f)"" in (ngSubmit) when we want to create  -->
+      <form name="form" id="messageTemplateForm" (ngSubmit)="f.form.valid" #f="ngForm" novalidate>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="form-group">
+              <label>Type<span class="required">*</span></label>
+              <input class="form-control" [readonly]="readOnlyForm == 'R'" [(ngModel)]="messageTemplateModel.type"
+                name="type" [ngClass]="{'is-invalid': f.submitted && type.invalid}" #type="ngModel" required>
+              <div class="invalid-feedback">
+                type is mandatory
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="form-group">
+              <label>Body<span class="required">*</span></label>
+              <textarea class="form-control" cols="5" rows="13" [readonly]="readOnlyForm == 'R'"
+                [(ngModel)]="messageTemplateModel.body" name="notes"
+                [ngClass]="{'is-invalid': f.submitted && notes.invalid}" #notes="ngModel" required></textarea>
+              <div class="invalid-feedback">
+                Body is mandatory
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row text-center">
+          <div class="col-md-12">
+            <!-- <button type="submit" *ngIf="enableButtonType == ''" class="btn btn-secondary ml-3">Add</button> -->
+            <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2"
+              (click)="updateMessageTemplate(f)">Update</button>
+            <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button"
+              (click)="enableFormEditable()">Edit</button>
+            <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3">Clear</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

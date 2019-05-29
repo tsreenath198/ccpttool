@@ -73,6 +73,12 @@ export class URLConstants {
     ReportingGetAllTop5CP = 'report/getTop5CP';
     ReportingGetClosures = 'report/getClosedCountOfAllRecruitersFromLastGivenDays?days=';
 
+    /**Email Template */
+    EmailTemplateGetAll = '/getAll';
+    EmailTemplateGetById = '/template/';
+    EmailTemplateUpdate = '/update';
+
+
     /**User setup */
     UserCreate = '/login';
 
