@@ -12,5 +12,9 @@ public interface LoginRepository extends CrudRepository<Login, String> {
 	@Query("select token from Login l where l.username = :username and l.password=:password")
 	String getTokenByUsernameAndPassword(@Param(value = "username") String username,
 			@Param(value = "password") String password);
-	 List<Login> findByActiveFlagAllIgnoreCaseOrderByCreatedDateDesc(String ActiveFlag);
+
+	List<Login> findByActiveFlagAllIgnoreCaseOrderByCreatedDateDesc(String ActiveFlag);
+
+	@Query("select l from Login l where l.username = :username and l.password=:password")
+	Login login(@Param(value = "username") String username, @Param(value = "password") String password);
 }

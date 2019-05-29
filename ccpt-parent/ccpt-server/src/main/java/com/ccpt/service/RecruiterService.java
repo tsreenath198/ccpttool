@@ -51,4 +51,12 @@ public class RecruiterService implements IRecruiterService {
 		return list;
 	}
 
+	@Override
+	public Recruiter getRecruiterByName(String name) {
+		Recruiter obj = recruiterRepository.getRecruiterFromName(name);
+		if (obj != null)
+			return obj;
+		throw new EntityNotFoundException("No data found on name:: " + name);
+	}
+
 }

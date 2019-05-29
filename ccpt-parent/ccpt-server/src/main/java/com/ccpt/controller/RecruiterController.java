@@ -72,4 +72,11 @@ public class RecruiterController {
 		recruiterService.addRecruiter(recruiter);
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
+
+	@GetMapping("name/{name}")
+	public ResponseEntity<Recruiter> getRecruiterByName(@PathVariable("name") String name) {
+		Recruiter recruiter = recruiterService.getRecruiterByName(name);
+		return new ResponseEntity<Recruiter>(recruiter, HttpStatus.OK);
+	}
+
 }

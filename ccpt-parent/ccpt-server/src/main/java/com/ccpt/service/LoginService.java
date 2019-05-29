@@ -18,9 +18,17 @@ public class LoginService implements ILoginService {
 
 	@Override
 	public String getTokenByUsernameAndPassword(String username, String password) {
-		/* return loginRepository.findById(login.getUsername()).get(); */
-
 		return loginRepository.getTokenByUsernameAndPassword(username, password);
+	}
+
+	@Override
+	public Login login(String username, String password) {
+		Login login = loginRepository.login(username, password);
+
+		if (login != null) {
+			return login;
+		}
+		return null;
 	}
 
 }

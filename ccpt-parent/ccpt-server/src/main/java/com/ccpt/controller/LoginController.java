@@ -30,8 +30,7 @@ public class LoginController {
 	@Autowired
 	private ILoginService loginService;
 
-	// @PostMapping("register")login
-	@PostMapping("login")
+	/*@PostMapping("login")
 	public ResponseEntity<Void> register(@RequestBody Login login, HttpServletRequest request) {
 		UUID uuid = Generators.timeBasedGenerator().generate();
 		String token = uuid.toString();
@@ -55,14 +54,18 @@ public class LoginController {
 		} else {
 			return new ResponseEntity<Void>(HttpStatus.UNAUTHORIZED);
 		}
-	}
+	}*/ 	
 
-	@PostMapping("loginDetails")
-	public ResponseEntity<Void> login(@RequestBody Login login) throws AuthenticationException {
+	@PostMapping("login")
+	public ResponseEntity<Void> login(@RequestBody Login login, HttpSession session) throws AuthenticationException {
 		String username = login.getUsername();
 		String password = login.getPassword();
-		if (username.equalsIgnoreCase("Admin") && password.equalsIgnoreCase("Admin"))
+		session.setAttribute("username", username);
+		session.setAttribute("password", password);
+		Login log = loginService.login(username, password);
+		if (log != null) {
 			return new ResponseEntity<Void>(HttpStatus.OK);
+		}
 		throw new AuthenticationException("Invalid username or password");
 	}
 

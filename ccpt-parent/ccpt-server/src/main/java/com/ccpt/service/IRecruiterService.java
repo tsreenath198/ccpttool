@@ -15,4 +15,6 @@ public interface IRecruiterService {
 	void updateRecruiter(Recruiter recruiter);
 
 	List<Recruiter> getActiveRecruiters();
+
+	Recruiter getRecruiterByName(String name);
 }

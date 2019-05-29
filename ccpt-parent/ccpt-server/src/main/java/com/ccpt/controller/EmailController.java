@@ -36,10 +36,9 @@ public class EmailController {
 		valuesMap.put("sector", "Finance");
 		valuesMap.put("jobDescription", "jobDescription");
 		valuesMap.put("jobSpecification", "jobSpecification");
-		StrSubstitutor sub = new StrSubstitutor(valuesMap);
 
-		String subject = sub.replace(template.getSubject());
-		String body = sub.replace(template.getText());
+		String subject = StrSubstitutor.replace(template.getSubject(), valuesMap);
+		String body = StrSubstitutor.replace(template.getText(), valuesMap);
 
 		sendmail("pavan.uskcorp@gmail.com", subject, body);
 		return new ResponseEntity<String>("Email sent successfully", HttpStatus.OK);
@@ -53,16 +52,17 @@ public class EmailController {
 		javaMailSender.send(msg);
 	}
 
-	/*void sendEmailWithAttachment(String to, String subject, String body) throws MessagingException, IOException {
-		MimeMessage msg = javaMailSender.createMimeMessage();
-		MimeMessageHelper helper = new MimeMessageHelper(msg, true);
-		helper.setTo(to);
-		helper.setSubject(subject);
-		helper.setText(body, true);
-		FileSystemResource file = new FileSystemResource(
-				new File("C:\\Users\\lenovo\\Desktop\\GIT Total Commands with examples.txt.docx"));
-		helper.addAttachment("GIT Total Commands with examples.txt.docx", file);
-		javaMailSender.send(msg);
-
-	}*/
+	/*
+	 * void sendEmailWithAttachment(String to, String subject, String body)
+	 * throws MessagingException, IOException { MimeMessage msg =
+	 * javaMailSender.createMimeMessage(); MimeMessageHelper helper = new
+	 * MimeMessageHelper(msg, true); helper.setTo(to);
+	 * helper.setSubject(subject); helper.setText(body, true);
+	 * FileSystemResource file = new FileSystemResource( new
+	 * File("C:\\Users\\lenovo\\Desktop\\GIT Total Commands with examples.txt.docx"
+	 * )); helper.addAttachment("GIT Total Commands with examples.txt.docx",
+	 * file); javaMailSender.send(msg);
+	 * 
+	 * }
+	 */
 }
