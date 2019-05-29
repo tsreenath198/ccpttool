@@ -21,7 +21,7 @@ public interface CCPTConstants {
 	String CLOSURE = "/closure";
 	String SEND_EMAIL = "/sendEmail";
 	String TEMPLATE = "/template";
-
+	String EMAIL = "/emailTemplate";
 	String GET_BY_REF_ID_AND_REF_TPYE = "/download";
 	String UPLOAD_FILE = "/file";
 	String SMS = "/sms";

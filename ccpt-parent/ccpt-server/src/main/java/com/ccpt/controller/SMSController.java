@@ -1,12 +1,16 @@
 package com.ccpt.controller;
 
-import java.net.URL;
+import java.net.URISyntaxException;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,20 +26,27 @@ import com.ccpt.model.SMS;
 public class SMSController {
 
 	@PostMapping(CCPTConstants.SEND)
-	public ResponseEntity<String> sendSMS(@RequestBody SMS sms) {
+	public ResponseEntity<String> sendSMS(@RequestBody SMS sms) throws URISyntaxException {
 		List<String> contactNumbers = sms.getContactNumbers();
 		String message = sms.getMessage();
 		RestTemplate restTemplate = new RestTemplate();
 		String contactsCommaSeparated = String.join(",", contactNumbers);
-		final String url = "http://sms.bulksmsserviceproviders.com/api/send_http.php?"
-				+ "authkey=7dc7c47175bbfd1b0b3286ee0e42acdd&sender=TLTCNR&route=4&mobiles=" + contactsCommaSeparated
-				+ "&message=" + message;
+		final String url = "http://sms.bulksmsserviceproviders.com/api/send_http.php";
 
-		Object request = null;
-		Class responseType = null;
-		restTemplate.postForEntity(url, request, responseType);
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 
-		return new ResponseEntity<String>(HttpStatus.OK);
+		MultiValueMap<String, String> map = new LinkedMultiValueMap<String, String>();
+		map.add("authkey", "7dc7c47175bbfd1b0b3286ee0e42acdd");
+		map.add("sender", "TLTCNR");
+		map.add("route", "4");
+		map.add("message", message);
+		map.add("mobiles", contactsCommaSeparated);
+
+		HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<MultiValueMap<String, String>>(map, headers);
+
+		ResponseEntity<String> response = restTemplate.postForEntity(url, request, String.class);
+		return new ResponseEntity<String>(response.getBody(), HttpStatus.OK);
 	}
 
 }
