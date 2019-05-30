@@ -2,30 +2,38 @@ package com.ccpt.config;
 
 import java.util.Properties;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 
-import com.ccpt.model.TemplateBean;
-import com.ccpt.repository.TemplateBeanRepository;
-
 @Configuration
 public class AppConfig {
+	
+	@Value("${spring.mail.host}")
+	private String mailHost;
 
-	@Autowired
-	private TemplateBeanRepository templateBeanRepository;
+	@Value("${spring.mail.port}")
+	private int port;
+
+	@Value("${spring.mail.username}")
+	private String username;
+
+	@Value("${spring.mail.password}")
+	private String password;
+
+//	@Autowired
+//	private TemplateBeanRepository templateBeanRepository;
 
 	@Bean
 	public JavaMailSender getJavaMailSender() {
 		JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
-		mailSender.setHost("smtp.gmail.com");
-		mailSender.setPort(587);
+		mailSender.setHost(mailHost);
+		mailSender.setPort(port);
 
-		mailSender.setUsername("pavan.uskcorp@gmail.com");
-		mailSender.setPassword("prasanna7761");
+		mailSender.setUsername(username);
+		mailSender.setPassword(password);
 
 		Properties props = mailSender.getJavaMailProperties();
 		props.put("mail.transport.protocol", "smtp");
@@ -36,7 +44,7 @@ public class AppConfig {
 		return mailSender;
 	}
 
-	@Bean
+	/*@Bean
 	public SimpleMailMessage templateSimpleMessage() {
 		SimpleMailMessage message = new SimpleMailMessage();
 		TemplateBean templateBean = templateBeanRepository.findById(1).get();
@@ -46,6 +54,6 @@ public class AppConfig {
 		message.setSubject(templateSubject);
 		message.setText(templateBody);
 		return message;
-	}
+	}*/
 
 }

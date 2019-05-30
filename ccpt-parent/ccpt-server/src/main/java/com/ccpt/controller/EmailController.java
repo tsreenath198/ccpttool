@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ccpt.constants.CCPTConstants;
+import com.ccpt.model.TemplateBean;
+import com.ccpt.repository.TemplateBeanRepository;
 import com.ccpt.util.StrSubstitutor;
 
 @RestController
@@ -23,22 +25,28 @@ public class EmailController {
 
 	@Autowired
 	public JavaMailSender javaMailSender;
-
+	
 	@Autowired
-	public SimpleMailMessage template;
+	private TemplateBeanRepository templateBeanRepository;
+
+//	@Autowired
+//	public SimpleMailMessage template;
 
 	@GetMapping(CCPTConstants.SEND_EMAIL)
 	public ResponseEntity<String> sendEmail() throws AddressException, MessagingException, IOException {
 
 		Map<String, String> valuesMap = new HashMap<String, String>();
+		valuesMap.put("emailid", "tsreenath1985@gmail.com");
+		valuesMap.put("phone", "9848071296");
 		valuesMap.put("role", "Accountant");
 		valuesMap.put("joblocation", "hyderabad");
 		valuesMap.put("sector", "Finance");
 		valuesMap.put("jobDescription", "jobDescription");
 		valuesMap.put("jobSpecification", "jobSpecification");
+		TemplateBean templateBean = templateBeanRepository.findById(1).get();
 
-		String subject = StrSubstitutor.replace(template.getSubject(), valuesMap);
-		String body = StrSubstitutor.replace(template.getText(), valuesMap);
+		String subject = StrSubstitutor.replace(templateBean.getSubject(), valuesMap);
+		String body = StrSubstitutor.replace(templateBean.getBody(), valuesMap);
 
 		sendmail("pavan.uskcorp@gmail.com", subject, body);
 		return new ResponseEntity<String>("Email sent successfully", HttpStatus.OK);
