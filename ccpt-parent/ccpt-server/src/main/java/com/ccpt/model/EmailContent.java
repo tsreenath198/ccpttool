@@ -1,8 +1,10 @@
 package com.ccpt.model;
 
+import java.util.List;
+
 public class EmailContent {
 	private int id;
-	private String to;
+	private List<String> to;
 	private String subject;
 	private String body;
 
@@ -14,11 +16,11 @@ public class EmailContent {
 		this.id = id;
 	}
 
-	public String getTo() {
+	public List<String> getTo() {
 		return to;
 	}
 
-	public void setTo(String to) {
+	public void setTo(List<String> to) {
 		this.to = to;
 	}
 

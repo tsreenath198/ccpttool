@@ -2,6 +2,7 @@ package com.ccpt.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.AddressException;
@@ -36,9 +37,10 @@ public class EmailController {
 		return new ResponseEntity<String>("Email sent successfully", HttpStatus.OK);
 	}
 
-	void sendmail(String to, String subject, String body) {
+	void sendmail(List<String> list, String subject, String body) {
 		SimpleMailMessage msg = new SimpleMailMessage();
-		msg.setTo(to);
+		String emailCommaSeparated = String.join(",", list);
+		msg.setTo(emailCommaSeparated);
 		msg.setSubject(subject);
 		msg.setText(body);
 		javaMailSender.send(msg);
