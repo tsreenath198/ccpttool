@@ -1,10 +1,7 @@
 package com.ccpt.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 public class EmailContent {
 	private int id;
-	@JsonIgnore
 	private String to;
 	private String subject;
 	private String body;

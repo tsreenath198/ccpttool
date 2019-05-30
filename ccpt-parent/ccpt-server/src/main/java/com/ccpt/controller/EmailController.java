@@ -1,54 +1,38 @@
 package com.ccpt.controller;
 
+import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.AddressException;
+import javax.mail.internet.MimeMessage;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import com.ccpt.constants.CCPTConstants;
-import com.ccpt.model.TemplateBean;
-import com.ccpt.repository.TemplateBeanRepository;
-import com.ccpt.util.StrSubstitutor;
+import com.ccpt.model.EmailContent;
 
-@RestController
+@Controller
+@CrossOrigin
 public class EmailController {
 
 	@Autowired
 	public JavaMailSender javaMailSender;
-	
-	@Autowired
-	private TemplateBeanRepository templateBeanRepository;
 
-//	@Autowired
-//	public SimpleMailMessage template;
-
-	@GetMapping(CCPTConstants.SEND_EMAIL)
-	public ResponseEntity<String> sendEmail() throws AddressException, MessagingException, IOException {
-
-		Map<String, String> valuesMap = new HashMap<String, String>();
-		valuesMap.put("emailid", "tsreenath1985@gmail.com");
-		valuesMap.put("phone", "9848071296");
-		valuesMap.put("role", "Accountant");
-		valuesMap.put("joblocation", "hyderabad");
-		valuesMap.put("sector", "Finance");
-		valuesMap.put("jobDescription", "jobDescription");
-		valuesMap.put("jobSpecification", "jobSpecification");
-		TemplateBean templateBean = templateBeanRepository.findById(1).get();
-
-		String subject = StrSubstitutor.replace(templateBean.getSubject(), valuesMap);
-		String body = StrSubstitutor.replace(templateBean.getBody(), valuesMap);
-
-		sendmail("pavan.uskcorp@gmail.com", subject, body);
+	@PostMapping(CCPTConstants.SEND_EMAIL)
+	public ResponseEntity<String> sendEmail(@RequestBody EmailContent emailContent)
+			throws AddressException, MessagingException, IOException {
+		sendmail(emailContent.getTo(), emailContent.getSubject(), emailContent.getBody());
 		return new ResponseEntity<String>("Email sent successfully", HttpStatus.OK);
 	}
 
@@ -60,17 +44,17 @@ public class EmailController {
 		javaMailSender.send(msg);
 	}
 
-	/*
-	 * void sendEmailWithAttachment(String to, String subject, String body)
-	 * throws MessagingException, IOException { MimeMessage msg =
-	 * javaMailSender.createMimeMessage(); MimeMessageHelper helper = new
-	 * MimeMessageHelper(msg, true); helper.setTo(to);
-	 * helper.setSubject(subject); helper.setText(body, true);
-	 * FileSystemResource file = new FileSystemResource( new
-	 * File("C:\\Users\\lenovo\\Desktop\\GIT Total Commands with examples.txt.docx"
-	 * )); helper.addAttachment("GIT Total Commands with examples.txt.docx",
-	 * file); javaMailSender.send(msg);
-	 * 
-	 * }
-	 */
+	void sendEmailWithAttachment(String to, String subject, String body) throws MessagingException, IOException {
+		MimeMessage msg = javaMailSender.createMimeMessage();
+		MimeMessageHelper helper = new MimeMessageHelper(msg, true);
+		helper.setTo(to);
+		helper.setSubject(subject);
+		helper.setText(body, true);
+		FileSystemResource file = new FileSystemResource(
+				new File("C:\\Users\\lenovo\\Desktop\\GIT Total Commands with examples.txt.docx"));
+		helper.addAttachment("GIT Total Commands with examples.txt.docx", file);
+		javaMailSender.send(msg);
+
+	}
+
 }
