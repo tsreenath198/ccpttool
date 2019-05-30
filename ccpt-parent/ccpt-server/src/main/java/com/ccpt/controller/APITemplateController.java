@@ -12,22 +12,27 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.ccpt.constants.CCPTConstants;
 import com.ccpt.exception.ResourceNotFoundException;
 import com.ccpt.model.ClientPosition;
+import com.ccpt.model.EmailContent;
 import com.ccpt.model.TemplateBean;
 import com.ccpt.repository.TemplateBeanRepository;
 import com.ccpt.service.IClientPositionService;
 import com.ccpt.service.IClientService;
 import com.ccpt.util.StrSubstitutor;
 
-@RestController
+@Controller
+@CrossOrigin
+@RequestMapping(CCPTConstants.EMAIL)
 public class APITemplateController {
 	@Autowired
 	private TemplateBeanRepository templateBeanRepository;
@@ -38,29 +43,33 @@ public class APITemplateController {
 	private IClientService clientService;
 
 	@GetMapping(CCPTConstants.TEMPLATE + "/{id}")
-	public ResponseEntity<String> massTemplateConsultantPosition(@PathVariable Integer id, HttpSession session)
+	public ResponseEntity<EmailContent> massTemplateClientPosition(@PathVariable Integer id, HttpSession session)
 			throws AddressException, MessagingException, IOException {
 		System.out.println("======" + session.getAttribute("username"));
-		ClientPosition consultantPosition = clientPositionService.getClientPositionById(id);
+		EmailContent emailContent = new EmailContent();
+
+		ClientPosition clientPosition = clientPositionService.getClientPositionById(id);
 
 		Map<String, String> valuesMap = new HashMap<String, String>();
 
 		valuesMap.put("emailid", "tsreenath1985@gmail.com");
 		valuesMap.put("phone", "9848071296");
-		valuesMap.put("role", consultantPosition.getRole());
-		valuesMap.put("joblocation", consultantPosition.getLocation());
-		valuesMap.put("sector", clientService.getClientById(consultantPosition.getClientId()).getIndustry());
-		valuesMap.put("jobDescription", consultantPosition.getAdditionalComments());
-		valuesMap.put("jobSpecification", consultantPosition.getRequiredSkills());
+		valuesMap.put("role", clientPosition.getRole());
+		valuesMap.put("joblocation", clientPosition.getLocation());
+		valuesMap.put("sector", clientService.getClientById(clientPosition.getClientId()).getIndustry());
+		valuesMap.put("jobDescription", clientPosition.getAdditionalComments());
+		valuesMap.put("jobSpecification", clientPosition.getRequiredSkills());
 
-		TemplateBean templateBean = templateBeanRepository.findById(1).get();
+		TemplateBean templateBean = templateBeanRepository.getTemplateByType("Mass Mailing");
 		String templateSubject = templateBean.getSubject();
 		String templateBody = templateBean.getBody();
 
 		String subject = StrSubstitutor.replace(templateSubject, valuesMap);
 		String body = StrSubstitutor.replace(templateBody, valuesMap);
+		emailContent.setBody(body);
+		emailContent.setSubject(subject);
 
-		return new ResponseEntity<String>(subject + body, HttpStatus.OK);
+		return new ResponseEntity<EmailContent>(emailContent, HttpStatus.OK);
 	}
 
 	@GetMapping(CCPTConstants.GET_ALL)
