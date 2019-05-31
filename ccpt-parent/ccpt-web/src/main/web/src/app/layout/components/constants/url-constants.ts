@@ -80,7 +80,7 @@ export class URLConstants {
 
 
     /**User setup */
-    UserCreate = '/login';
+    UserCreate = 'login';
 
     /** Messages */
     DeleteMsg = 'Deleted Successfully';
