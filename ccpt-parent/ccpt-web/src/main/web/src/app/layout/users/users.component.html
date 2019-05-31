@@ -23,7 +23,7 @@
                     <div class="col-md-8">
                         <div class="form-group">
                             <label>Username<span class="required">*</span></label>
-                            <select class="form-control" name="uname" [(ngModel)]="loginSetupModel.username"
+                            <select class="form-control" name="uname" [(ngModel)]="usersModel.username"
                                 [ngClass]="{'is-invalid': f.submitted && uname.invalid}" #uname="ngModel" required>
                                 <option *ngFor="let gar of getAllR" [ngValue]="gar.email">{{gar.fullname}}
                                 </option>
@@ -36,7 +36,7 @@
                     <div class="col-md-8">
                         <div class="form-group">
                             <label>Password<span class="required">*</span></label>
-                            <input type="password" class="form-control" [(ngModel)]="loginSetupModel.password"
+                            <input type="password" class="form-control" [(ngModel)]="usersModel.password"
                                 name="pwd" [ngClass]="{'is-invalid': f.submitted && pwd.invalid}" #pwd="ngModel"
                                 required>
                             <div class="invalid-feedback">
@@ -47,7 +47,7 @@
                     <div class="col-md-8">
                         <div class="form-group">
                             <label>role<span class="required">*</span></label>
-                            <select class="form-control" name="role" [(ngModel)]="loginSetupModel.role"
+                            <select class="form-control" name="role" [(ngModel)]="usersModel.role"
                                 [ngClass]="{'is-invalid': f.submitted && role.invalid}" #role="ngModel" required>
                                 <option *ngFor="let gar of getAllR" [ngValue]="gar.role">{{gar.role}}
                                 </option>
@@ -61,7 +61,7 @@
                         <div class="form-group">
                             <label>Description</label>
                             <textarea rows="5" cols="5" type="password" class="form-control" name="description"
-                                [(ngModel)]="loginSetupModel.description"></textarea>
+                                [(ngModel)]="usersModel.description"></textarea>
                         </div>
                     </div>
                 </div>

@@ -3,26 +3,33 @@
   <div class="row">
     <div class="col-md-7 ">
       <div class="row">
-        <div class="col-md-3"><strong>Total No of records : {{clientPositionList.length}}</strong></div>
-        <div class="col-md-6"> <input type="text" class="form-control" placeholder="search..."
+        <div class="col-md-3">
+          <strong>Total No of records : {{ clientPositionList.length }}</strong>
+        </div>
+        <div class="col-md-6"><input type="text" class="form-control" placeholder="search..."
             [(ngModel)]="currSearchTxt" /></div>
       </div>
       <div class="table-responsive mt-2">
         <table class="table table-hover table-striped">
           <tbody class="overflow-ele-scroll">
-            <tr *ngFor="let cpl of clientPositionList |  filter : 'technology' :currSearchTxt ; let i = index "
-            (click)="readOnlyEnable(cpl)" (dblclick)="editClientPosition(cpl)">
+            <tr *ngFor="let cpl of clientPositionList | filter: 'technology':currSearchTxt; let i = index"
+              (click)="readOnlyEnable(cpl)" (dblclick)="editClientPosition(cpl)">
               <td class="table-data-padding">
                 <dl>
-                  <dt> {{cpl.clientPositionCode}}</dt>
-                  <dd>Need {{cpl.role || 'N/A'}} for {{cpl.clientName || 'NA'}} with minimun
-                    {{cpl.experience || 'N/A'}} yrs ({{cpl.minCtc || 'N/A'}} - {{cpl.maxCtc || 'N/A'}} ) at
-                    {{cpl.location || 'N/A'}}
+                  <dt>{{ cpl.clientPositionCode }}</dt>
+                  <dd>
+                    Need {{ cpl.role || 'N/A' }} for {{ cpl.clientName || 'NA' }} with minimun
+                    {{ cpl.experience || 'N/A' }} yrs ({{
+                      cpl.minCtc || 'N/A'
+                    }}
+                    - {{ cpl.maxCtc || 'N/A' }} ) at
+                    {{ cpl.location || 'N/A' }}
                   </dd>
                 </dl>
               </td>
-              <td><span class="fa fa-trash pull-right pointer" data-toggle="tooltip" title="Delete"
-                  (click)="open(content,cpl.id)"></span>
+              <td>
+                <span class="fa fa-trash pull-right pointer" data-toggle="tooltip" title="Delete"
+                  (click)="open(content, cpl.id)"></span>
                 <ng-template #content let-c="close" let-d="dismiss">
                   <div class="modal-header">
                     <h4 class="modal-title">Client Position</h4>
@@ -38,6 +45,59 @@
                     <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
                   </div>
                 </ng-template>
+                <span class="fa fa-comment pull-right pointer" data-toggle="tooltip" title="SendSMS"
+                  (click)="open(sendSms, cpl.id)"></span>
+                <ng-template #sendSms let-c="close" let-d="dismiss">
+                  <div class="modal-header">
+                    <h4 class="modal-title">Send SMS</h4>
+                    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <label>Numbers</label>
+                    <ng-multiselect-dropdown [placeholder]="'choose numbers..'" [data]="numbersForSms"
+                      [(ngModel)]="sendSmsModel.contactNumbers" [settings]="dropdownSettings">
+                      <!-- (onSelect)="onItemSelect($event)"
+                    (onSelectAll)="onSelectAll($event)" -->
+                    </ng-multiselect-dropdown>
+                    <label>Message Body</label>
+                    <textarea class="form-control" cols="5" rows="8" [(ngModel)]="sendSmsModel.message"
+                      name="body"></textarea>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" (click)="sendSmsReq()">Send</button>
+                    <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
+                  </div>
+                </ng-template>
+                <span class="fa fa-envelope pull-right pointer" data-toggle="tooltip" title="SendMail"
+                  (click)="open(sendMail, cpl.id)"></span>
+                <ng-template #sendMail let-c="close" let-d="dismiss">
+                  <div class="modal-header">
+                    <h4 class="modal-title">Send SMS</h4>
+                    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <label>E-Mail's</label>
+                    <ng-multiselect-dropdown [placeholder]="'choose numbers..'" [data]="mailIdForMails"
+                      [(ngModel)]="sendEmailModel.emailIds" [settings]="dropdownSettings">
+                      <!-- (onSelect)="onItemSelect($event)"
+                    (onSelectAll)="onSelectAll($event)" -->
+                    </ng-multiselect-dropdown>
+                    <label>Subject</label>
+                    <input class="form-control" 
+                      [(ngModel)]="sendEmailModel.subject" name="sub"/>
+                    <label>Message Body</label>
+                    <textarea class="form-control" cols="5" rows="8" [(ngModel)]="sendEmailModel.body"
+                      name="body"></textarea>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" (click)="sendEmailReq()">Send</button>
+                    <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
+                  </div>
+                </ng-template>
               </td>
             </tr>
           </tbody>
@@ -45,17 +105,16 @@
       </div>
     </div>
     <div class="col-md-5">
-      <form name="form" id="clientPositionForm" (ngSubmit)="f.form.valid&&createClientPosition(f)" #f="ngForm"
+      <form name="form" id="clientPositionForm" (ngSubmit)="f.form.valid && createClientPosition(f)" #f="ngForm"
         novalidate>
         <div class="row">
           <div class="col-md-12">
             <div class="form-group">
               <label>Client Name<span class="required">*</span></label>
               <select class="form-control" name="cn" [disabled]="readOnlyForm == 'R'"
-                [(ngModel)]="clientPositionModel.clientId" [ngClass]="{'is-invalid': f.submitted && cn.invalid}"
+                [(ngModel)]="clientPositionModel.clientId" [ngClass]="{ 'is-invalid': f.submitted && cn.invalid }"
                 #cn="ngModel" required>
-                <option *ngFor="let cls of clientList" [ngValue]="cls.id">
-                  {{cls.name}}</option>
+                <option *ngFor="let cls of clientList" [ngValue]="cls.id"> {{ cls.name }}</option>
               </select>
               <div class="invalid-feedback">
                 Client Name is mandatory
@@ -66,7 +125,7 @@
             <div class="form-group">
               <label>Role<span class="required">*</span></label>
               <input class="form-control" [readonly]="readOnlyForm == 'R'" [(ngModel)]="clientPositionModel.role"
-                name="technology" placeholder="Role" [ngClass]="{'is-invalid': f.submitted && technology.invalid}"
+                name="technology" placeholder="Role" [ngClass]="{ 'is-invalid': f.submitted && technology.invalid }"
                 #technology="ngModel" required />
               <div class="invalid-feedback">
                 Role is mandatory
@@ -77,7 +136,7 @@
             <div class="form-group">
               <label>Job Code<span class="required">*</span></label>
               <input class="form-control" [readonly]="readOnlyForm == 'R'" [(ngModel)]="clientPositionModel.jobCode"
-                name="jobcode" placeholder="Job Code" [ngClass]="{'is-invalid': f.submitted && jobcode.invalid}"
+                name="jobcode" placeholder="Job Code" [ngClass]="{ 'is-invalid': f.submitted && jobcode.invalid }"
                 #jobcode="ngModel" required />
               <div class="invalid-feedback">
                 job code is mandatory
@@ -89,7 +148,7 @@
               <label>Number Of Positions<span class="required">*</span></label>
               <input class="form-control" placeholder="Number Of Positions" type="number" min="0"
                 [readonly]="readOnlyForm == 'R'" [(ngModel)]="clientPositionModel.numberOfPositions" name="nofpos"
-                [ngClass]="{'is-invalid': f.submitted && nofpos.invalid}" #nofpos="ngModel" required />
+                [ngClass]="{ 'is-invalid': f.submitted && nofpos.invalid }" #nofpos="ngModel" required />
               <div class="invalid-feedback">
                 Number of Positions is mandatory
               </div>
@@ -100,7 +159,7 @@
               <label>location<span class="required">*</span></label>
               <input class="form-control" placeholder="Location" [readonly]="readOnlyForm == 'R'"
                 [(ngModel)]="clientPositionModel.location" name="loc"
-                [ngClass]="{'is-invalid': f.submitted && loc.invalid}" #loc="ngModel" required />
+                [ngClass]="{ 'is-invalid': f.submitted && loc.invalid }" #loc="ngModel" required />
               <div class="invalid-feedback">
                 Location is mandatory
               </div>
@@ -113,7 +172,7 @@
               <label>Minimum Experience<span class="required">*</span></label>
               <input class="form-control" placeholder="Minimum" [readonly]="readOnlyForm == 'R'"
                 [(ngModel)]="clientPositionModel.experience" name="experience"
-                [ngClass]="{'is-invalid': f.submitted && experience.invalid}" #experience="ngModel" required />
+                [ngClass]="{ 'is-invalid': f.submitted && experience.invalid }" #experience="ngModel" required />
               <div class="invalid-feedback">
                 Minimum Experience is mandatory
               </div>
@@ -126,7 +185,7 @@
               <label>Application Code<span class="required">*</span></label>
               <input class="form-control" [readonly]="readOnlyForm == 'R'"
                 [(ngModel)]="clientPositionModel.clientPositionCode" name="code"
-                [ngClass]="{'is-invalid': f.submitted && code.invalid}" #code="ngModel" required
+                [ngClass]="{ 'is-invalid': f.submitted && code.invalid }" #code="ngModel" required
                 placeholder="Eg : 123456-abcd-abcd-LOC" />
               <div class="invalid-feedback">
                 Application Code is mandatory
@@ -143,7 +202,7 @@
               <label>Max CTC<span class="required">*</span></label>
               <input class="form-control" [readonly]="readOnlyForm == 'R'" type="number"
                 [(ngModel)]="clientPositionModel.maxCtc" name="maxctc" placeholder="Max CTC"
-                [ngClass]="{'is-invalid': f.submitted && maxctc.invalid}" #maxctc="ngModel" required />
+                [ngClass]="{ 'is-invalid': f.submitted && maxctc.invalid }" #maxctc="ngModel" required />
               <div class="invalid-feedback">
                 Max CTC is mandatory
               </div>
@@ -156,7 +215,7 @@
               <label>Min CTC<span class="required">*</span></label>
               <input class="form-control" [readonly]="readOnlyForm == 'R'" type="number" placeholder="Min CTC"
                 [(ngModel)]="clientPositionModel.minCtc" name="minctc" max="clientPositionModel.maxCtc"
-                [ngClass]="{'is-invalid': f.submitted && minctc.invalid}" #minctc="ngModel" required />
+                [ngClass]="{ 'is-invalid': f.submitted && minctc.invalid }" #minctc="ngModel" required />
               <div class="invalid-feedback">
                 Min CTC is mandatory
               </div>
@@ -169,8 +228,8 @@
               <label>Client Position Status </label>
               <select class="form-control" name="cps" [disabled]="readOnlyForm == 'R'"
                 [(ngModel)]="clientPositionModel.clientPositionsStatusCode">
-                <option *ngFor="let cpsl of clientPositionStatusList" [ngValue]="cpsl.code">
-                  {{cpsl.description}}</option>
+                <option *ngFor="let cpsl of clientPositionStatusList" [ngValue]="cpsl.code"> {{ cpsl.description }}
+                </option>
               </select>
             </div>
           </div>
@@ -181,7 +240,7 @@
               <label>Required Skills<span class="required">*</span></label>
               <textarea class="form-control" placeholder="Required Skills" cols="10" rows="10"
                 [(ngModel)]="clientPositionModel.requiredSkills" name="requiredskills"
-                [ngClass]="{'is-invalid': f.submitted && requiredskills.invalid}" #requiredskills="ngModel" required
+                [ngClass]="{ 'is-invalid': f.submitted && requiredskills.invalid }" #requiredskills="ngModel" required
                 [readonly]="readOnlyForm == 'R'"></textarea>
               <div class="invalid-feedback">
                 Required Skills are mandatory
@@ -196,8 +255,7 @@
               <label>Closed By</label>
               <select class="form-control" name="closedBy" [disabled]="readOnlyForm == 'R'"
                 [(ngModel)]="clientPositionModel.closedBy">
-                <option *ngFor="let rl of recruiterList" [ngValue]="rl.id">
-                  {{rl.fullname}}</option>
+                <option *ngFor="let rl of recruiterList" [ngValue]="rl.id"> {{ rl.fullname }}</option>
               </select>
             </div>
           </div>
@@ -215,9 +273,13 @@
           <div class="col-md-12">
             <button type="submit" *ngIf="enableButtonType == ''" class="btn btn-secondary ml-3">Add</button>
             <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2"
-              (click)="updateClientPosition(f)">Update</button>
+              (click)="updateClientPosition(f)">
+              Update
+            </button>
             <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button"
-              (click)="enableFormEditable()">Edit</button>
+              (click)="enableFormEditable()">
+              Edit
+            </button>
             <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3">Clear</button>
           </div>
         </div>

@@ -74,10 +74,16 @@ export class URLConstants {
     ReportingGetClosures = 'report/getClosedCountOfAllRecruitersFromLastGivenDays?days=';
 
     /**Email Template */
-    EmailTemplateGetAll = '/getAll';
-    EmailTemplateGetById = '/template/';
-    EmailTemplateUpdate = '/update';
+    EmailTemplateGetAll = 'emailTemplate/getAll';
+    EmailTemplateGetById = 'emailTemplate/template/';
+    EmailTemplateUpdate = 'emailTemplate/update';
+    EmailTemplateSend = 'sendEmail';
 
+    /**SMS template */
+    SMSTemplateGetAll = 'sms/getAll';
+    SMSTemplateSend = 'sms/send';
+    SMSTemplateGetById = 'sms/template/';
+    SMSTemplateUpdate = 'sms/update';
 
     /**User setup */
     UserCreate = 'login';

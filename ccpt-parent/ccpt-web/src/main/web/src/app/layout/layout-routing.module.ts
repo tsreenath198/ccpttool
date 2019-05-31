@@ -21,7 +21,7 @@ const routes: Routes = [
             { path: 'consultant-call-history', loadChildren: './consultant-call-history/consultant-call-history.module#ConsultantCallHistoryModule' },
             { path: 'consultant-status', loadChildren: './consultant-status/consultant-status.module#ConsultantStatusModule'},
             { path: 'recruiter', loadChildren: './recruiter/recruiter.module#RecruiterModule'},
-            { path: 'login-setup', loadChildren: './login-setup/login-setup.module#LoginSetupModule'},
+            { path: 'user', loadChildren: './users/users.module#UsersModule'},
             { path: 'other-contacts', loadChildren: './other-contacts/other-contacts.module#OtherContactsModule'},
             { path: 'client', loadChildren: './client/client.module#ClientModule'},
             { path: 'email-template', loadChildren: './email-template/email-template.module#EmailTemplateModule'},

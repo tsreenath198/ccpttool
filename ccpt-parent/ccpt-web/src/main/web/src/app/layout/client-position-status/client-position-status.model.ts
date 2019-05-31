@@ -1,5 +1,5 @@
 export interface ClientpositionStatusModel{
-    description:string,
-    code:string,
+    description: string;
+    code: string;
  
 }

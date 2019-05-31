@@ -29,7 +29,7 @@ export class MessageTemplateComponent implements OnInit {
         this.init();
     }
     init() {
-        this.http.get(this.urlConstants.EmailTemplateGetAll).subscribe(resp => {
+        this.http.get(this.urlConstants.SMSTemplateGetAll).subscribe(resp => {
             this.messageTemplateList = resp as any;
         });
     }
@@ -61,7 +61,7 @@ export class MessageTemplateComponent implements OnInit {
     //     });
     // }
     updateMessageTemplate(messageTemplateForm: NgForm) {
-        this.http.update(this.messageTemplateModel, this.urlConstants.EmailTemplateUpdate).subscribe(resp => {
+        this.http.update(this.messageTemplateModel, this.urlConstants.SMSTemplateUpdate).subscribe(resp => {
             this.formReset();
             this.toastr.success(this.urlConstants.UpdateMsg, 'Message Template ');
             this.init();

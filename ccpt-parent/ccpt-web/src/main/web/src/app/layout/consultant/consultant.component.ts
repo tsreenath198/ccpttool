@@ -33,8 +33,8 @@ export class ConsultantComponent implements OnInit {
     public comments: string = '';
     public isFresher:boolean;
     public uploader: FileUploader = new FileUploader({});
-    private selectedRecrdToDel: number = 0;
-    public closeResult: string = '';
+    private selectedRecrdToDel = 0;
+    public closeResult = '';
     private modalRef: NgbModalRef;
     public urlConstants = new URLConstants();
     public currSearchTxt: string;
@@ -51,10 +51,10 @@ export class ConsultantComponent implements OnInit {
         this.http.get(this.urlConstants.CGetAll).subscribe(resp => {
             this.consultantList = resp as any;
             this.copyConList = resp as any;
-        })
+        });
     }
     consultantEdit(data) {
-        this.consultantModel = JSON.parse(JSON.stringify(data));;
+        this.consultantModel = JSON.parse(JSON.stringify(data));
         this.readOnlyForm = 'U';
         this.enableButtonType = 'U';
     }
@@ -72,31 +72,31 @@ export class ConsultantComponent implements OnInit {
     }
     createConsultant(consultantForm: NgForm): void {
         this.http.create(this.consultantModel, this.urlConstants.CCreate).subscribe(resp => {
-            this.toastr.success(this.urlConstants.SuccessMsg, "Consultant");
+            this.toastr.success(this.urlConstants.SuccessMsg, 'Consultant');
             this.init();
             this.formReset();
             consultantForm.resetForm();
         }, err => {
-            this.toastr.error(err.statusText, "Consultant");
-        })
+            this.toastr.error(err.statusText, 'Consultant');
+        });
     }
     updateConsultant(consultantForm: NgForm) {
         this.http.update(this.consultantModel, this.urlConstants.CUpdate).subscribe(resp => {
             this.formReset();
-            this.toastr.success(this.urlConstants.UpdateMsg, "Consultant");
+            this.toastr.success(this.urlConstants.UpdateMsg, 'Consultant');
             this.init();
             consultantForm.resetForm();
             this.readOnlyForm = '';
             this.enableButtonType = '';
         }, err => {
-            this.toastr.error(err.statusText, "Client Position");
-        })
+            this.toastr.error(err.statusText, 'Client Position');
+        });
     }
     getFilesById() {
         this.http.get('/uploadFile/id?id=' + 2).subscribe(resp => {
             this.fileList.push(resp);
-            console.log(this.fileList)
-        })
+            console.log(this.fileList);
+        });
     }
     cancelForm(consultantForm: NgForm) {
         this.formReset();
@@ -107,14 +107,14 @@ export class ConsultantComponent implements OnInit {
     }
     deleteConsultantRecord(): void {
         this.http.delete(this.urlConstants.CDelete + this.selectedRecrdToDel).subscribe(resp => {
-            this.toastr.success(this.urlConstants.DeleteMsg, "Consultant");
+            this.toastr.success(this.urlConstants.DeleteMsg, 'Consultant');
             this.init();
             this.close();
             this.formReset();
-        })
+        });
     }
     /**
-     * @param 
+     * @param
      * 1) content consists the modal instance
      * 2) Selected contains the code of selected row
      */
@@ -150,10 +150,10 @@ export class ConsultantComponent implements OnInit {
     }
     /** Upload documents of respective consultant */
     uploadFiles() {
-        let files = this.getFiles();
-        let formData = new FormData();
+        const files = this.getFiles();
+        const formData = new FormData();
         formData.append('file', files[0].rawFile, files[0].name);
-        let params = "refId=" + this.selectedRecrdToDel + "&refType= Consultant &comments=" + this.comments
+        const params = 'refId=' + this.selectedRecrdToDel + '&refType= Consultant &comments=' + this.comments;
         this.http.upload('uploadFile/create?' + params, formData);
         /* let requests = [];
          files.forEach((file) => {
@@ -163,14 +163,14 @@ export class ConsultantComponent implements OnInit {
              this.http.upload('', formData[0]).subscribe(resp => {
                  console.log("resp=====", resp);
              })
-             // requests.push(this.uploadService.upload(formData));     
+             // requests.push(this.uploadService.upload(formData));
          });*/
 
         /*concat(...requests).subscribe(
           (res) => {
             console.log(res);
           },
-          (err) => {  
+          (err) => {
             console.log(err);
           }
         );*/

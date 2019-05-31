@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NgbModal, ModalDismissReasons, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { URLConstants } from '../components/constants/url-constants';
 import { routerTransition } from '../../router.animations';
-import { ClientPositionModel } from './client-position.model';
+import { ClientPositionModel, SendSmsModel, SendEmailModel } from './client-position.model';
 import { HttpClientService } from 'src/app/shared/services/http.service';
 import { ClientpositionStatusModel } from '../client-position-status/client-position-status.model';
 import { ToastrCustomService } from 'src/app/shared/services/toastr.service';
@@ -10,6 +10,9 @@ import { NgForm } from '@angular/forms';
 import { ClientModel } from '../client/client.model';
 import { forkJoin } from 'rxjs';
 import { RecruiterModel } from '../recruiter/recruiter.model';
+import { MessageTemplateModel } from '../message-template/message-template.model';
+import { ConsultantModel } from '../consultant/consultant.model';
+import { EmailTemplateModel } from '../email-template/email-template.model';
 
 
 @Component({
@@ -21,9 +24,17 @@ import { RecruiterModel } from '../recruiter/recruiter.model';
 export class ClientPositionComponent implements OnInit {
     public clientPositionModel: ClientPositionModel = <ClientPositionModel>{};
     public clientPositionList: Array<ClientPositionModel> = [];
+    public consultantList: Array<ConsultantModel> = [];
     public clientPositionStatusList: Array<ClientpositionStatusModel> = [];
     public clientList: Array<ClientModel> = [];
     public recruiterList: Array<RecruiterModel> = [];
+    public messageTemplateModel: MessageTemplateModel = <MessageTemplateModel>{};
+    public emailTemplateModel : EmailTemplateModel = <EmailTemplateModel>{};
+    public sendSmsModel: SendSmsModel = <SendSmsModel>{};
+    public sendEmailModel: SendEmailModel = <SendEmailModel>{};
+    public numbersForSms: Array<any> = [];
+    public mailIdForMails: Array<any> = [];
+    public dropdownSettings: any;
     public invalidAppCode = false;
     public closedByEnable = false;
     private selectedRecrdToDel = 0;
@@ -36,11 +47,22 @@ export class ClientPositionComponent implements OnInit {
     public getAllCPS = this.http.get(this.urlConstants.CPSGetAll) ;
     public getAllR = this.http.get(this.urlConstants.RGetAll);
     public getAllC = this.http.get(this.urlConstants.ClientGetAll);
+    public getAllCon = this.http.get(this.urlConstants.CGetAll);
     constructor(private http: HttpClientService, private toastr: ToastrCustomService, private modalService: NgbModal) { }
 
     ngOnInit() {
         this.getAllDropdowns();
         this.init();
+        this.dropdownSettings = {
+            singleSelection: false,
+            idField: 'item_id',
+            textField: 'item_text',
+            selectAllText: 'Select All',
+            unSelectAllText: 'UnSelect All',
+            itemsShowLimit: 3,
+            allowSearchFilter: true
+          };
+
     }
     init() {
         this.http.get(this.urlConstants.CPGetAll).subscribe(resp => {
@@ -51,12 +73,14 @@ export class ClientPositionComponent implements OnInit {
         forkJoin(
             this.getAllCPS,
             this.getAllR,
-            this.getAllC
+            this.getAllC,
+            this.getAllCon
             // forkJoin on works for observables that complete
         ).subscribe(listofrecords => {
             this.clientPositionStatusList = listofrecords[0] as any;
             this.recruiterList = listofrecords[1] as any;
             this.clientList = listofrecords[2] as any;
+            this.consultantList = listofrecords[3] as any;
         });
     }
     editClientPosition(data) {
@@ -151,6 +175,20 @@ export class ClientPositionComponent implements OnInit {
             this.formReset();
         });
     }
+    public sendSmsReq(): void {
+        this.http.create(this.sendSmsModel, this.urlConstants.SMSTemplateSend ).subscribe(resp => {
+            this.sendSmsModel = <SendSmsModel>{};
+            this.toastr.success('Message/Messages sent successfully', 'Sent!');
+            this.close();
+        });
+    }
+    public sendEmailReq(): void{
+        this.http.create(this.sendEmailModel, this.urlConstants.EmailTemplateSend).subscribe(resp => {
+            this.sendEmailModel = <SendEmailModel>{};
+            this.toastr.success('Email/Emails sent successfully', 'Sent!');
+            this.close();
+        })
+    }
     /**
      * @param
      * 1) content consists the modal instance
@@ -166,6 +204,25 @@ export class ClientPositionComponent implements OnInit {
         }, (reason) => {
             this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
         });
+        console.log(content);
+        if (content) {
+            this.http.get(this.urlConstants.SMSTemplateGetById + selected).subscribe( resp => {
+                this.messageTemplateModel = resp as any;
+                this.sendSmsModel.message = this.messageTemplateModel.body;
+            });
+            this.http.get(this.urlConstants.EmailTemplateGetById + selected).subscribe( resp => {
+                this.emailTemplateModel = resp as any;
+                this.sendEmailModel.subject = this.emailTemplateModel.subject;
+                this.sendEmailModel.body = this.emailTemplateModel.body;
+
+            })
+            for (let i = 0 ; i < this.consultantList.length ; i++) {
+                this.numbersForSms.push(this.consultantList[i].phone);
+            }
+            for (let i = 0 ; i < this.consultantList.length ; i++) {
+                this.mailIdForMails.push(this.consultantList[i].email);
+            }
+        }
     }
     close() {
         this.modalRef.close();
