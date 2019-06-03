@@ -44,8 +44,9 @@
                     </button>
                   </div>
                   <div class="modal-body">
-                    <input type="file" ng2FileSelect [uploader]="uploader">
-                    <button (click)="uploadFiles()">Upload All</button>
+                    <input class="form-control" type="file" ng2FileSelect [uploader]="uploader">
+                    <textarea class="form-control" cols="5" rows="5" [(ngModel)]="comments"></textarea>
+                    <button class="btn btn-default"(click)="uploadFiles()">Upload</button>
                   </div>
                   <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
