@@ -1,5 +1,7 @@
 package com.ccpt.service;
 
+import java.util.List;
+
 import com.ccpt.model.Login;
 
 public interface ILoginService {
@@ -8,4 +10,5 @@ public interface ILoginService {
 	public String getTokenByUsernameAndPassword(String username, String password);
 
 	public Login login(String username, String password);
+	List<Login> getAllActiveUsers();
 }

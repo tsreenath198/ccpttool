@@ -1,5 +1,7 @@
 package com.ccpt.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +31,12 @@ public class LoginService implements ILoginService {
 			return login;
 		}
 		return null;
+	}
+
+	@Override
+	public List<Login> getAllActiveUsers() {
+		
+		return loginRepository.findByActiveFlagAllIgnoreCaseOrderByCreatedDateDesc("Y");
 	}
 
 }

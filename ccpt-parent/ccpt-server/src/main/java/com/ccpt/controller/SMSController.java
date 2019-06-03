@@ -11,7 +11,6 @@ import java.util.Map;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.AddressException;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -39,7 +38,6 @@ import com.ccpt.model.SmsTemplate;
 import com.ccpt.repository.SmsTemplateRepository;
 import com.ccpt.service.IClientApplicationService;
 import com.ccpt.service.IClientPositionService;
-import com.ccpt.service.IClientService;
 import com.ccpt.util.StrSubstitutor;
 
 @Controller
@@ -70,8 +68,8 @@ public class SMSController {
 	@Autowired
 	private RestTemplate restTemplate;
 
-	@Autowired
-	private IClientService clientService;
+	/*@Autowired
+	private IClientService clientService;*/
 
 	@PostMapping(CCPTConstants.SEND)
 	public ResponseEntity<String> sendSMS(@RequestBody SMS sms) throws URISyntaxException {
@@ -87,7 +85,7 @@ public class SMSController {
 		return new ResponseEntity<String>(response.getBody(), HttpStatus.OK);
 	}
 
-	@GetMapping(CCPTConstants.TEMPLATE + "/bulkSMSForClientPosition/{id}")
+	/*@GetMapping(CCPTConstants.TEMPLATE + "/bulkSMSForClientPosition/{id}")
 	public ResponseEntity<SmsTemplate> bulkSMSForClientPosition(@PathVariable Integer id, HttpSession session)
 			throws AddressException, MessagingException, IOException {
 		ClientPosition clientPosition = clientPositionService.getClientPositionById(id);
@@ -101,7 +99,7 @@ public class SMSController {
 		String body = StrSubstitutor.replace(templateBody, valuesMap);
 		st.setBody(body);
 		return new ResponseEntity<SmsTemplate>(st, HttpStatus.OK);
-	}
+	}*/
 
 	@GetMapping(CCPTConstants.TEMPLATE + "/bulkSMSForClientRole/{id}")
 	public ResponseEntity<SmsTemplate> bulkSMSForClientRole(@PathVariable Integer id)
