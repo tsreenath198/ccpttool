@@ -1,0 +1,15 @@
+ol.breadcrumb {
+  background-color: #222;
+
+  li.breadcrumb-item {
+    a {
+      color: #ffffff;
+    }
+
+    color: #ffffff;
+  }
+
+  li.breadcrumb-item.active {
+    color: #999999;
+  }
+}
