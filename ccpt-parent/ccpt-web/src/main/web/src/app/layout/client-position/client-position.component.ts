@@ -13,7 +13,6 @@ import { RecruiterModel } from '../recruiter/recruiter.model';
 import { MessageTemplateModel } from '../message-template/message-template.model';
 import { ConsultantModel } from '../consultant/consultant.model';
 import { EmailTemplateModel } from '../email-template/email-template.model';
-import { AnyARecord } from 'dns';
 
 
 @Component({
