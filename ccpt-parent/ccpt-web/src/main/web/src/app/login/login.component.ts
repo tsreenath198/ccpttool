@@ -19,8 +19,7 @@ export class LoginComponent implements OnInit {
     public password = '';
     ngOnInit() { }
     onLoggedin() {
-        console.log('name', this.name);
-        this.http.create(this.loginDetails, this.urlConstants.UserCreate ).subscribe(resp => {
+        this.http.create(this.loginDetails, this.urlConstants.UserLogin ).subscribe(resp => {
             const response = resp as any;
             console.log(response);
                 this.toastr.success('User Logged In Successfully', 'Login');
