@@ -95,9 +95,21 @@
               <input type="checkbox" [(ngModel)]="isInterviewScheduled" name="interviewCheckbox">&nbsp;<small>Interview
                 Scheduled</small>
               <div *ngIf="isInterviewScheduled">
-                <label>Interview Date</label>
+                <label class='pt-2'>Interview Date</label>
                 <input type="date" class="form-control" name="date" [readonly]="readOnlyForm == 'R'"
                   [(ngModel)]="clientApplicationModel.interviewDate">
+                <div class="input-group-addon">
+                  <span class="glyphicon glyphicon-th"></span>
+                </div>
+                <label class='pt-2'>Interview Time</label>
+                <input type="time" class="form-control" name="date" [readonly]="readOnlyForm == 'R'"
+                  [(ngModel)]="clientApplicationModel.interviewTime">
+                <div class="input-group-addon">
+                  <span class="glyphicon glyphicon-th"></span>
+                </div>
+                <label class='pt-2'>Interview Location</label>
+                <input  class="form-control" name="date" [readonly]="readOnlyForm == 'R'"
+                  [(ngModel)]="clientApplicationModel.interviewLocation">
                 <div class="input-group-addon">
                   <span class="glyphicon glyphicon-th"></span>
                 </div>

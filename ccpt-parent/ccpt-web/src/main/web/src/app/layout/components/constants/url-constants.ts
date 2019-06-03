@@ -82,7 +82,7 @@ export class URLConstants {
     /**SMS template */
     SMSTemplateGetAll = 'sms/getAll';
     SMSTemplateSend = 'sms/send';
-    SMSTemplateGetById = 'sms/template/';
+    SMSTemplateGetById = 'sms/template/bulkSMSForClientRole/';
     SMSTemplateUpdate = 'sms/update';
 
     /**User setup */

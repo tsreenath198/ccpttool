@@ -13,6 +13,7 @@ import { RecruiterModel } from '../recruiter/recruiter.model';
 import { MessageTemplateModel } from '../message-template/message-template.model';
 import { ConsultantModel } from '../consultant/consultant.model';
 import { EmailTemplateModel } from '../email-template/email-template.model';
+import { AnyARecord } from 'dns';
 
 
 @Component({
@@ -24,7 +25,9 @@ import { EmailTemplateModel } from '../email-template/email-template.model';
 export class ClientPositionComponent implements OnInit {
     public clientPositionModel: ClientPositionModel = <ClientPositionModel>{};
     public clientPositionList: Array<ClientPositionModel> = [];
+    public consultantCreateList: Array<any> = [];
     public consultantList: Array<ConsultantModel> = [];
+    public smsList: Array<MessageTemplateModel>= [];
     public clientPositionStatusList: Array<ClientpositionStatusModel> = [];
     public clientList: Array<ClientModel> = [];
     public recruiterList: Array<RecruiterModel> = [];
@@ -34,10 +37,12 @@ export class ClientPositionComponent implements OnInit {
     public sendEmailModel: SendEmailModel = <SendEmailModel>{};
     public numbersForSms: Array<any> = [];
     public mailIdForMails: Array<any> = [];
+    public consultantNamesTocreate: Array<any> = [];
+    public consultantNames: Array<any> = [];
     public dropdownSettings: any;
     public invalidAppCode = false;
     public closedByEnable = false;
-    private selectedRecrdToDel = 0;
+    private selectedRecrd = 0;
     public closeResult = '';
     private modalRef: NgbModalRef;
     public urlConstants = new URLConstants();
@@ -48,6 +53,7 @@ export class ClientPositionComponent implements OnInit {
     public getAllR = this.http.get(this.urlConstants.RGetAll);
     public getAllC = this.http.get(this.urlConstants.ClientGetAll);
     public getAllCon = this.http.get(this.urlConstants.CGetAll);
+    public getAllSms = this.http.get(this.urlConstants.SMSTemplateGetAll)
     constructor(private http: HttpClientService, private toastr: ToastrCustomService, private modalService: NgbModal) { }
 
     ngOnInit() {
@@ -74,13 +80,15 @@ export class ClientPositionComponent implements OnInit {
             this.getAllCPS,
             this.getAllR,
             this.getAllC,
-            this.getAllCon
+            this.getAllCon,
+            this.getAllSms
             // forkJoin on works for observables that complete
         ).subscribe(listofrecords => {
             this.clientPositionStatusList = listofrecords[0] as any;
             this.recruiterList = listofrecords[1] as any;
             this.clientList = listofrecords[2] as any;
             this.consultantList = listofrecords[3] as any;
+            this.smsList = listofrecords[4] as any;
         });
     }
     editClientPosition(data) {
@@ -168,7 +176,7 @@ export class ClientPositionComponent implements OnInit {
         this.closedByEnable = false;
     }
     deleteCPRecord(): void {
-        this.http.delete(this.urlConstants.CPDelete + this.selectedRecrdToDel).subscribe(resp => {
+        this.http.delete(this.urlConstants.CPDelete + this.selectedRecrd).subscribe(resp => {
             this.toastr.success(this.urlConstants.DeleteMsg, 'Client Position');
             this.init();
             this.close();
@@ -189,6 +197,22 @@ export class ClientPositionComponent implements OnInit {
             this.close();
         });
     }
+    createClientApplication(data:any){
+        let dataToCreate={'clientPositionId': this.selectedRecrd , 'consultantId': data.item_id , 'clientApplicationStatusCode': 'com' , 'notes': data.notes }
+        this.http.create(dataToCreate, this.urlConstants.CACreate).subscribe(resp => {
+            this.toastr.success(this.urlConstants.SuccessMsg, "Client Application");
+            this.init();
+            this.formReset()
+        }, err => {
+            this.toastr.error(err.statusText, "Client Application");
+        })
+    }
+    // onItemSelect(data: any) {
+    //     for (let i = 0; i < data.length; i++) {
+    //         const temp =  {'clientPositionId': this.selectedRecrd , 'consultantId': data.item_id , 'clientApplicationStatusCode': 'com' , 'notes': '' , 'interviewDate': '', 'id': ''};
+    //         this.consultantCreateList.push(temp);
+    //     }
+    // }
     /**
      * @param
      * 1) content consists the modal instance
@@ -196,7 +220,7 @@ export class ClientPositionComponent implements OnInit {
      */
     open(content, selected: number) {
         if (selected) {
-            this.selectedRecrdToDel = selected;
+            this.selectedRecrd = selected;
         }
         this.modalRef = this.modalService.open(content);
         this.modalRef.result.then((result) => {
@@ -222,6 +246,12 @@ export class ClientPositionComponent implements OnInit {
             for (let i = 0 ; i < this.consultantList.length ; i++) {
                 this.mailIdForMails.push(this.consultantList[i].email);
             }
+            for (let i = 0 ; i < this.consultantList.length ; i++) {
+                const temp = {'item_id': this.consultantList[i].id, 'item_text': this.consultantList[i].fullname , 'notes':''};
+                 this.consultantNames.push(temp);
+                // this.consultantNames[i].item_text.push(this.consultantList[i].fullname);
+            }
+            console.log(this.consultantNames);
         }
     }
     close() {
