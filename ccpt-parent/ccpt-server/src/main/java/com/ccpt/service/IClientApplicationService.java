@@ -13,4 +13,6 @@ public interface IClientApplicationService {
 
 	void updateClientApplication(ClientApplication clientApplication);
 
+	List<ClientApplication> getClientApplicationByClientPositionId(Integer id);
+
 }

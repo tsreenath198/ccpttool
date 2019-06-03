@@ -35,6 +35,12 @@ public class ClientApplication {
 	@Column(name = "interview_date")
 	private Date interviewDate;
 
+	@Column(name = "interview_time")
+	private String interviewTime;
+
+	@Column(name = "interview_location")
+	private String interviewLocation;
+
 	@Column(name = "active_flag")
 	private char activeFlag;
 
@@ -128,14 +134,6 @@ public class ClientApplication {
 		this.updatedDate = updatedDate;
 	}
 
-	@Override
-	public String toString() {
-		return "ClientApplication [id=" + id + ", clientApplicationStatusCode=" + clientApplicationStatusCode
-				+ ", clientPositionId=" + clientPositionId + ", consultantId=" + consultantId + ", notes=" + notes
-				+ ", interviewDate=" + interviewDate + ", activeFlag=" + activeFlag + ", createdDate=" + createdDate
-				+ ", updatedDate=" + updatedDate + "]";
-	}
-
 	public String getConsultantName() {
 		return consultantName;
 	}
@@ -166,6 +164,22 @@ public class ClientApplication {
 
 	public void setClosedBy(Integer closedBy) {
 		this.closedBy = closedBy;
+	}
+
+	public String getInterviewTime() {
+		return interviewTime;
+	}
+
+	public void setInterviewTime(String interviewTime) {
+		this.interviewTime = interviewTime;
+	}
+
+	public String getInterviewLocation() {
+		return interviewLocation;
+	}
+
+	public void setInterviewLocation(String interviewLocation) {
+		this.interviewLocation = interviewLocation;
 	}
 
 }

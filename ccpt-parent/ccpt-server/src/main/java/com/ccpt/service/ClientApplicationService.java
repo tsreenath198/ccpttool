@@ -42,4 +42,9 @@ public class ClientApplicationService implements IClientApplicationService {
 		clientApplicationRepository.save(clientApplication);
 	}
 
+	@Override
+	public List<ClientApplication> getClientApplicationByClientPositionId(Integer id) {
+		return clientApplicationRepository.findByClientPositionId(id);
+	}
+
 }
