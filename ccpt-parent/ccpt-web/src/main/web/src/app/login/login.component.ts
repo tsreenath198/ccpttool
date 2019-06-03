@@ -22,17 +22,13 @@ export class LoginComponent implements OnInit {
         console.log('name', this.name);
         this.http.create(this.loginDetails, this.urlConstants.UserCreate ).subscribe(resp => {
             const response = resp as any;
-
-            // tslint:disable-next-line:comment-format
-            //if (response) {
+            console.log(response);
                 this.toastr.success('User Logged In Successfully', 'Login');
                 this.router.navigate(['/layout']);
                 localStorage.setItem('isLoggedin', 'false');
-                localStorage.setItem('username', response.username);
-            //   } else {
-            //     this.toastr.error('Invalid User name or password', 'Login');
-            //   }
-
+                //sessionStorage.setItem('username', response.username);
+        }, error => {
+            this.toastr.error(error.error.message, 'Login');
         });
         // const url = 'login?username=' + this.name + '&password=' + this.password;
         // this.http.get(url).subscribe(resp => {
