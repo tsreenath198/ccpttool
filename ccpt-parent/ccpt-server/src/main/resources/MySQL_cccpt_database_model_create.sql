@@ -55,7 +55,7 @@ CREATE TABLE client_position (
     min_ctc double(10,2) NULL,
     max_ctc double(10,2) NULL,
     client_positions_status_code varchar(3) NOT NULL,
-    closed_by varchar(50) NULL,
+    closed_by INT NULL DEFAULT NULL,
     additional_comments text NULL,
     client_position_code varchar(30)  NOT NULL,
     created_date datetime NOT NULL ,
@@ -108,7 +108,7 @@ CREATE TABLE consultant_call_history (
 -- Table: consultant_status
 CREATE TABLE consultant_status (
     code varchar(3) NOT NULL,
-    description text) NOT NULL,
+    description text NOT NULL,
     active_flag char(1) NOT NULL DEFAULT 'Y',
     CONSTRAINT consultant_status_pk PRIMARY KEY (code)
 );
@@ -201,8 +201,8 @@ ALTER TABLE client_position ADD CONSTRAINT client_position_client_positions_stat
     REFERENCES client_positions_status (code);
 
 -- Reference: client_position_login (table: client_position)
-ALTER TABLE client_position ADD CONSTRAINT client_position_login FOREIGN KEY client_position_login (closed_by)
-    REFERENCES login (username);
+-- ALTER TABLE client_position ADD CONSTRAINT client_position_login FOREIGN KEY client_position_login (closed_by)
+  --  REFERENCES login (username);
 
 -- Reference: consultant_call_history_consultant (table: consultant_call_history)
 ALTER TABLE consultant_call_history ADD CONSTRAINT consultant_call_history_consultant FOREIGN KEY consultant_call_history_consultant (consultant_id)
@@ -220,10 +220,9 @@ ALTER TABLE client_position ADD CONSTRAINT client_position_client_id_fk FOREIGN 
   
 ALTER TABLE client_call_history ADD client_id INT(11) NOT NULL AFTER updated_date;
 ALTER TABLE client_call_history ADD INDEX(client_id);
-ALTER TABLE client_call_history ADD CONSTRAINT client_id_fk FOREIGN KEY (client_id) REFERENCES client(client_id) ON DELETE RESTRICT ON UPDATE RESTRICT;
+ALTER TABLE client_call_history ADD CONSTRAINT client_call_history_client_id_fk FOREIGN KEY (client_id) REFERENCES client(client_id) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 
-ALTER TABLE client ADD created_date DATETIME NOT NULL AFTER address, ADD updated_date DATETIME NOT NULL AFTER created_date, ADD active_flag CHAR(1) NOT NULL DEFAULT 'Y' AFTER updated_date;
 ALTER TABLE consultant ADD UNIQUE(fullname);
 ALTER TABLE consultant ADD UNIQUE(email);
 ALTER TABLE consultant ADD UNIQUE(phone);
@@ -233,20 +232,18 @@ ALTER TABLE consultant ADD current_company VARCHAR(50) NULL AFTER active_flag, A
 ALTER TABLE consultant_call_history ADD client_position_code VARCHAR(30) NOT NULL AFTER updated_date, ADD called_date DATETIME NOT NULL AFTER client_position_code;
 ALTER TABLE consultant_call_history ADD INDEX(client_position_code);
 ALTER TABLE client_position ADD INDEX(client_position_code);
-ALTER TABLE consultant_call_history ADD CONSTRAINT client_position_code_fk FOREIGN KEY (client_position_code) REFERENCES client_position(client_positions_code) ON DELETE RESTRICT ON UPDATE RESTRICT;
+ALTER TABLE consultant_call_history ADD CONSTRAINT client_position_code_fk FOREIGN KEY (client_position_code) REFERENCES client_position(client_position_code) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 ALTER TABLE client_call_history ADD active_flag CHAR(1) NOT NULL DEFAULT 'Y' AFTER client_id;
 ALTER TABLE client_call_history ADD called_date DATETIME NOT NULL AFTER active_flag, ADD client_position_code VARCHAR(30) NOT NULL AFTER called_date;
 ALTER TABLE client_call_history ADD INDEX(client_position_code);
 ALTER TABLE client_call_history ADD CONSTRAINT client_position_code_fk_ch FOREIGN KEY (client_position_code) REFERENCES client_position(client_position_code) ON DELETE RESTRICT ON UPDATE RESTRICT;
 ALTER TABLE consultant_call_history ADD active_flag CHAR(1) NOT NULL DEFAULT 'Y' AFTER called_date;
-ALTER TABLE client_contact ADD active_flag CHAR(1) NOT NULL DEFAULT 'Y' AFTER client_id;
 CREATE TABLE other_contact ( id INT(11) NOT NULL AUTO_INCREMENT , name VARCHAR(30) NOT NULL , phone VARCHAR(30) NOT NULL , email VARCHAR(50) NOT NULL , notes TEXT NOT NULL , created_date DATETIME NOT NULL , updated_date DATETIME NOT NULL , active_flag CHAR(1) NOT NULL DEFAULT 'Y' , PRIMARY KEY (id)) ;
 ALTER TABLE client_position ADD job_code VARCHAR(30) NOT NULL , ADD location VARCHAR(50) NOT NULL, ADD no_of_positions INT NOT NULL;
 
 ALTER TABLE client_call_history DROP FOREIGN KEY client_call_history_client_position;
 ALTER TABLE client_call_history DROP client_position_id;
-ALTER TABLE client_position CHANGE closed_by closed_by INT NULL DEFAULT NULL;
 ALTER TABLE client_position ADD INDEX(closed_by);
 ALTER TABLE client_position ADD CONSTRAINT recruiter_fk FOREIGN KEY (closed_by) REFERENCES recruiter(id) ON DELETE RESTRICT ON UPDATE RESTRICT;
 ALTER TABLE client_position CHANGE technology role TEXT CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL;
@@ -257,6 +254,10 @@ ALTER TABLE client_application ADD CONSTRAINT closed_by_fk FOREIGN KEY (closed_b
 CREATE TABLE email_template ( id INT NULL AUTO_INCREMENT , type VARCHAR(100) NOT NULL , subject TEXT NOT NULL , body TEXT NOT NULL , PRIMARY KEY (id), UNIQUE (type));
 ALTER TABLE client  ADD phone VARCHAR(20) NOT NULL  AFTER address,  ADD email VARCHAR(100) NOT NULL  AFTER phone,  ADD industry VARCHAR(100) NOT NULL  AFTER email,  ADD guarantee_period INT NOT NULL  AFTER industry,  ADD credit_period INT NOT NULL  AFTER guarantee_period,  ADD billing_address TEXT NOT NULL  AFTER credit_period,  ADD gst VARCHAR(100) NULL DEFAULT NULL  AFTER billing_address,  ADD servicetax_no VARCHAR(100) NOT NULL  AFTER gst,  ADD service_charge DOUBLE NOT NULL  AFTER servicetax_no;
 ALTER TABLE consultant  ADD current_job_title VARCHAR(100) NULL  AFTER preffered_location,  ADD current_functional_area VARCHAR(100) NULL  AFTER current_job_title,  ADD current_industry VARCHAR(100) NULL  AFTER current_functional_area,  ADD years_incurrent_job INT NULL  AFTER current_industry,  ADD months_incurrent_job INT NULL  AFTER years_incurrent_job,  ADD notice_period INT NULL  AFTER months_incurrent_job,  ADD highest_education VARCHAR(100) NOT NULL  AFTER notice_period;
+
+CREATE TABLE sms_template ( id INT NOT NULL AUTO_INCREMENT , type VARCHAR(100) NOT NULL , body TEXT NOT NULL , PRIMARY KEY (id));
+ALTER TABLE client_application ADD 	interview_time VARCHAR(30)  NULL , ADD interview_location VARCHAR(30)  NULL;
+
 -- End of file.
 
 SET foreign_key_checks = 1;
