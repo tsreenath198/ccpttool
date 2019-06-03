@@ -21,15 +21,22 @@ export class UsersComponent implements OnInit {
     constructor(private http: HttpClientService, private toastr: ToastrCustomService) { }
 
     ngOnInit() {
+        this.http.get(this.urlConstants.RGetAll).subscribe(resp => {
+            this.getAllR = resp as any;
+        });
+        this.init();
+
+    }
+    init(){
         this.http.get(this.urlConstants.UserGetAll).subscribe(resp => {
             this.usersList = resp as any;
         });
-
     }
     createUser(usersForm: NgForm): void {
         this.http.create(this.usersModel, this.urlConstants.UserCreate).subscribe(resp => {
             this.toastr.success(this.urlConstants.SuccessMsg, 'Contact');
             usersForm.resetForm();
+            this.init();
         }, err => {
             this.toastr.error(err.statusText, 'Users');
         });
