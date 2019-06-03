@@ -10,8 +10,8 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>No get all</td>
+                        <tr *ngFor="let ul of usersList ">
+                            <td>{{ul.username}}</td>
                         </tr>
                     </tbody>
                 </table>

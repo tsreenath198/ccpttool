@@ -21,8 +21,8 @@ export class UsersComponent implements OnInit {
     constructor(private http: HttpClientService, private toastr: ToastrCustomService) { }
 
     ngOnInit() {
-        this.http.get(this.urlConstants.RGetAll).subscribe(resp => {
-            this.getAllR = resp as any;
+        this.http.get(this.urlConstants.UserGetAll).subscribe(resp => {
+            this.usersList = resp as any;
         });
 
     }
