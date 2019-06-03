@@ -15,31 +15,26 @@ export class LoginComponent implements OnInit {
     constructor(public router: Router, public http: HttpClientService, private toastr: ToastrCustomService) { }
     public loginDetails: LoginModel = <LoginModel>{};
     public urlConstants = new URLConstants();
-    public name = '';
-    public password = '';
-    ngOnInit() { }
+    
+    ngOnInit() { 
+        this.reset();
+    }
     onLoggedin() {
         this.http.create(this.loginDetails, this.urlConstants.UserLogin ).subscribe(resp => {
             const response = resp as any;
-            console.log(response);
                 this.toastr.success('User Logged In Successfully', 'Login');
                 this.router.navigate(['/layout']);
-                localStorage.setItem('isLoggedin', 'false');
-                //sessionStorage.setItem('username', response.username);
+                sessionStorage.setItem('username', response.username);
+                sessionStorage.setItem('token', response.username);
+                sessionStorage.setItem('role', response.username);
         }, error => {
             this.toastr.error(error.error.message, 'Login');
+            this.reset();
         });
-        // const url = 'login?username=' + this.name + '&password=' + this.password;
-        // this.http.get(url).subscribe(resp => {
-        //     console.log('dfff', resp);
-        //     this.toastr.success('User Logged In Successfully', 'Login');
-        // }, err => {
-        //     /*console.log("dfff", err);
-        //     sessionStorage.setItem("access_token",err.error.text);*/
-        //     sessionStorage.setItem('username', this.name);
-        //     this.toastr.error('Invalid User name or password', 'Login');
-        //     this.router.navigate(['/layout']);
-        // });
     }
-
+    reset():void{
+        sessionStorage.setItem('username', null);
+        sessionStorage.setItem('token', null);
+        sessionStorage.setItem('role', null);
+    }
 }
