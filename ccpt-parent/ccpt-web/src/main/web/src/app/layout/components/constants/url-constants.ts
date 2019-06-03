@@ -86,7 +86,7 @@ export class URLConstants {
     SMSTemplateUpdate = 'sms/update';
 
     /**User setup */
-    UserCreate = 'login';
+    UserLogin = 'user/login';
 
     /** Messages */
     DeleteMsg = 'Deleted Successfully';
