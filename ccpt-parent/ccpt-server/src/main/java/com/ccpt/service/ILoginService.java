@@ -11,4 +11,9 @@ public interface ILoginService {
 
 	public Login login(String username, String password);
 	List<Login> getAllActiveUsers();
+
+	void updateUser(Login login);
+
+
+	Login getUsersById(String string);
 }

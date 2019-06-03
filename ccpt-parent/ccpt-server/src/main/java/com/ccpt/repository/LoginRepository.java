@@ -17,4 +17,6 @@ public interface LoginRepository extends CrudRepository<Login, String> {
 
 	@Query("select l from Login l where l.username = :username and l.password=:password")
 	Login login(@Param(value = "username") String username, @Param(value = "password") String password);
+
+	Login findByUsernameAndActiveFlag(String username, char c);
 }

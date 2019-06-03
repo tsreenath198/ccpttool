@@ -42,7 +42,7 @@ public class UploadFileController {
 	}
 
 	@GetMapping(CCPTConstants.GET_BY_REF_ID_AND_REF_TPYE)
-	public ResponseEntity<Void> getByRefIdAndTefType(@RequestParam String refType, @RequestParam Integer refId)
+	public ResponseEntity<Void> getByRefIdAndRefType(@RequestParam String refType, @RequestParam Integer refId)
 			throws IOException {
 		byte[] content = null;
 		List<UploadFile> res = uploadFileService.getByRefIdAndTefType(refType, refId);
@@ -99,5 +99,12 @@ public class UploadFileController {
 	public ResponseEntity<Void> deleteFile(@PathVariable Integer id) {
 		uploadFileService.deleteFile(id);
 		return new ResponseEntity<Void>(HttpStatus.OK);
+	}
+
+	@GetMapping("/getAllfromRefIdAndType")
+	public ResponseEntity<List<UploadFile>> getAllfromRefIdAndType(@RequestParam String refType,
+			@RequestParam Integer refId) throws IOException {
+		List<UploadFile> res = uploadFileService.getByRefIdAndTefType(refType, refId);
+		return new ResponseEntity<List<UploadFile>>(res, HttpStatus.OK);
 	}
 }

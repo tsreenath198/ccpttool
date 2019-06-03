@@ -2,6 +2,8 @@ package com.ccpt.service;
 
 import java.util.List;
 
+import javax.persistence.EntityNotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,8 +37,22 @@ public class LoginService implements ILoginService {
 
 	@Override
 	public List<Login> getAllActiveUsers() {
-		
+
 		return loginRepository.findByActiveFlagAllIgnoreCaseOrderByCreatedDateDesc("Y");
+	}
+
+	@Override
+	public Login getUsersById(String username) {
+		Login obj = loginRepository.findByUsernameAndActiveFlag(username, 'Y');
+		if (obj != null)
+			return obj;
+		throw new EntityNotFoundException("No data found on id:: " + username);
+	}
+
+	@Override
+	public void updateUser(Login login) {
+		getUsersById(login.getUsername());
+		loginRepository.save(login);
 	}
 
 }
