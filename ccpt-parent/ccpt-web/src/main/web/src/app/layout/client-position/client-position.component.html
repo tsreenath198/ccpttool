@@ -82,7 +82,7 @@
                   <div class="modal-body">
                     <label>E-Mail's</label>
                     <ng-multiselect-dropdown [placeholder]="'choose numbers..'" [data]="mailIdForMails"
-                      [(ngModel)]="sendEmailModel.emailIds" [settings]="dropdownSettings">
+                      [(ngModel)]="sendEmailModel.to" [settings]="dropdownSettings">
                       <!-- (onSelect)="onItemSelect($event)"
                     (onSelectAll)="onSelectAll($event)" -->
                     </ng-multiselect-dropdown>

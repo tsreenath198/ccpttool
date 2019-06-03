@@ -2,7 +2,7 @@
     <app-page-header [icon2]="'fa-envelope'" [heading2]="'Emails'" [icon1]="'fa-user'"
     [heading1]="'Administration'"></app-page-header>
   <div class="row">
-    <div class="col-md-5">
+    <div class="col-md-7">
       <div class="row">
         <div class="col-md-3"><strong>Total No of records : {{emailTemplateList.length}}</strong></div>
         <div class="col-md-6"> <input type="text" class="form-control" placeholder="search..."
@@ -39,7 +39,7 @@
         </table>
       </div>
     </div>
-    <div class=" col-md-7">
+    <div class=" col-md-5">
         <!-- add this "emailTemplateCreate(f)"" in (ngSubmit) when we want to create  -->
       <form name="form" id="emailTemplateForm" (ngSubmit)="f.form.valid" #f="ngForm" novalidate>
         <div class="row">

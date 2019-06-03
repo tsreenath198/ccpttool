@@ -29,7 +29,7 @@ export class ClientPositionComponent implements OnInit {
     public clientList: Array<ClientModel> = [];
     public recruiterList: Array<RecruiterModel> = [];
     public messageTemplateModel: MessageTemplateModel = <MessageTemplateModel>{};
-    public emailTemplateModel : EmailTemplateModel = <EmailTemplateModel>{};
+    public emailTemplateModel: EmailTemplateModel = <EmailTemplateModel>{};
     public sendSmsModel: SendSmsModel = <SendSmsModel>{};
     public sendEmailModel: SendEmailModel = <SendEmailModel>{};
     public numbersForSms: Array<any> = [];
@@ -182,12 +182,12 @@ export class ClientPositionComponent implements OnInit {
             this.close();
         });
     }
-    public sendEmailReq(): void{
+    public sendEmailReq(): void {
         this.http.create(this.sendEmailModel, this.urlConstants.EmailTemplateSend).subscribe(resp => {
             this.sendEmailModel = <SendEmailModel>{};
             this.toastr.success('Email/Emails sent successfully', 'Sent!');
             this.close();
-        })
+        });
     }
     /**
      * @param
@@ -215,7 +215,7 @@ export class ClientPositionComponent implements OnInit {
                 this.sendEmailModel.subject = this.emailTemplateModel.subject;
                 this.sendEmailModel.body = this.emailTemplateModel.body;
 
-            })
+            });
             for (let i = 0 ; i < this.consultantList.length ; i++) {
                 this.numbersForSms.push(this.consultantList[i].phone);
             }

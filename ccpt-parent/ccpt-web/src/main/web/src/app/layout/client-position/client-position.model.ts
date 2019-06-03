@@ -23,7 +23,7 @@ export interface SendSmsModel {
 }
 
 export interface SendEmailModel {
-    emailIds: Array<string>;
+    to: Array<string>;
     subject: string;
     body: string;
 }
