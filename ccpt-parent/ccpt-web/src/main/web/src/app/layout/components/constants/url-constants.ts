@@ -87,6 +87,8 @@ export class URLConstants {
 
     /**User setup */
     UserLogin = 'user/login';
+    UserCreate = 'user/create';
+    UserGetAll = 'user/getAll'
 
     /** Messages */
     DeleteMsg = 'Deleted Successfully';
