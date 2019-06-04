@@ -18,11 +18,10 @@
   <div class="row">
     <div class="col col-xl-6 col-lg-12">
       <div class="card mb-3">
-        <div class="card-header">Recruiter Performance
+        <div class="card-header bg-dark text-clr-white" >Recruiter Performance
           <span class="pull-right">
             <select class="form-control form-control-sm" name="cp" #t [(ngModel)]="rpChoosenDays"
               (change)="rpGetAllByDays()">
-              <option [ngValue]="" disabled selected hidden>Please Choose...</option>
               <option *ngFor="let nod of noOfDays | keyvalue" [ngValue]="nod.value">{{nod.key}}
               </option>
             </select>
@@ -48,7 +47,7 @@
     </div>
     <div class="col col-xl-6 col-lg-12">
       <div class="card mb-3">
-        <div class="card-header">Latest Client Positions
+        <div class="card-header bg-dark text-clr-white">Latest Client Positions
         </div>
         <div class="table-scroll">
           <table class="table table-sm">
@@ -74,7 +73,7 @@
   <div class="row">
     <div class="col col-xl-6 col-lg-12">
       <div class="card mb-3 ">
-        <div class="card-header">Consultant Call History<span class="pull-right">
+        <div class="card-header bg-dark text-clr-white">Consultant Call History<span class="pull-right">
             <select class="form-control form-control-sm" name="cp" #t [(ngModel)]="cochChoosenDays"
               (change)="cochGetAllByDays()">
               <option *ngFor="let nod of noOfDays | keyvalue" [ngValue]="nod.value">{{nod.key}}
@@ -102,7 +101,7 @@
     </div>
     <div class="col col-xl-6 col-lg-12">
       <div class="card mb-3">
-        <div class="card-header">Client Call History
+        <div class="card-header bg-dark text-clr-white">Client Call History
           <span class="pull-right">
             <select class="form-control form-control-sm" name="cp" #t [(ngModel)]="clchChoosenDays"
               (change)="clchGetAllByDays()">

@@ -168,7 +168,7 @@ export class ClientComponent implements OnInit {
         formData.append('file', files[0].rawFile, files[0].name);
         const params = 'refId=' + this.selectedRecrdToDel + '&refType= Consultant &comments=' + this.comments;
         this.http.upload('file/create?' + params, formData).subscribe(resp => {
-            console.log("resp=====", resp);
+            console.log("resp =====", resp);
             this.close();
         });
         /* let requests = [];

@@ -15,19 +15,19 @@ import { forkJoin } from 'rxjs';
 export class DashboardComponent implements OnInit {
     public alerts: Array<any> = [];
     public sliders: Array<any> = [];
-    public noOfDays: any = {  'day': 1, 'week': 7, 'month': 30, 'year': 365, };
+    public noOfDays: any = {  'Day': 1, 'Week': 7, 'Month': 30, 'Year': 365, };
     public ccptReportCLCH: Array<any> = [];
     public ccptReportCOCH: Array<any> = [];
     public ccptReportCC: any = {};
     public ccptReportCPL: Array<ClientPositionModel> = [];
     private urlConstants = new URLConstants();
-    public rpChoosenDays: any = 'day';
-    public cochChoosenDays: any = 'day';
-    public clchChoosenDays: any = 'day';
-    public getAllReportCLCH = this.http.get(this.urlConstants.ReportingGetAllCLCH + '1');
-    public getAllReportCOCH = this.http.get(this.urlConstants.ReportingGetAllCOCH + '1');
+    public rpChoosenDays: any = 1;
+    public cochChoosenDays: any = 1;
+    public clchChoosenDays: any = 1;
+    public getAllReportCLCH = this.http.get(this.urlConstants.ReportingGetAllCLCH + this.clchChoosenDays);
+    public getAllReportCOCH = this.http.get(this.urlConstants.ReportingGetAllCOCH + this.cochChoosenDays);
     public getAllReportCPL = this.http.get(this.urlConstants.ReportingGetAllTop5CP);
-    public getAllReportCC = this.http.get(this.urlConstants.ReportingGetClosures + '1');
+    public getAllReportCC = this.http.get(this.urlConstants.ReportingGetClosures + this.rpChoosenDays);
     constructor(private http: HttpClientService, private toastr: ToastrCustomService) {
         // this.sliders.push(
         //     {

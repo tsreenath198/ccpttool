@@ -154,7 +154,10 @@ export class ConsultantComponent implements OnInit {
         const formData = new FormData();
         formData.append('file', files[0].rawFile, files[0].name);
         const params = 'refId=' + this.selectedRecrdToDel + '&refType= Consultant &comments=' + this.comments;
-        this.http.upload('uploadFile/create?' + params, formData);
+        this.http.upload('file/create?' + params, formData).subscribe(resp => {
+            console.log("resp =====", resp);
+            this.close();
+        });
         /* let requests = [];
          files.forEach((file) => {
              let formData = new FormData();
