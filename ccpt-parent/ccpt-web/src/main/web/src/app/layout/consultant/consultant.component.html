@@ -46,11 +46,11 @@
                     </button>
                   </div>
                   <div class="modal-body">
-                    <input type="file" ng2FileSelect [uploader]="uploader">
-                    <textarea class="form-control" cols="5" rows="5" [(ngModel)]="comments"></textarea>
-                    <button (click)="uploadFiles()">Upload All</button>
+                    <input class="form-control" type="file" ng2FileSelect [uploader]="uploader">
+                    <textarea class="form-control mt-3" placeholder="comments" cols="5" rows="5" [(ngModel)]="comments"></textarea>
                   </div>
                   <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary"(click)="uploadFiles()">Upload</button>
                     <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
                   </div>
                 </ng-template>

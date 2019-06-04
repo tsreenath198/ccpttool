@@ -45,10 +45,10 @@
                   </div>
                   <div class="modal-body">
                     <input class="form-control" type="file" ng2FileSelect [uploader]="uploader">
-                    <textarea class="form-control" cols="5" rows="5" [(ngModel)]="comments"></textarea>
-                    <button class="btn btn-default"(click)="uploadFiles()">Upload</button>
+                    <textarea class="form-control mt-3" placeholder="Comments" cols="5" rows="5" [(ngModel)]="comments"></textarea>
                   </div>
                   <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary"(click)="uploadFiles()">Upload</button>
                     <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
                   </div>
                 </ng-template>

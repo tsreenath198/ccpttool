@@ -52,59 +52,62 @@
             <i class="fa fa-fw fa-address-book"></i>&nbsp;
             <span>{{ 'Other Contacts' | translate }}</span>
         </a>
-        <div class="nested-menu">
-            <a class="list-group-item" (click)="addExpandClass('pages')">
-                <i class="fa fa-fw fa-user"></i>&nbsp;
-                <span>{{ 'Administration' | translate }}</span>
-            </a>
-            <li class="nested" [class.expand]="showMenu === 'pages'">
-                <ul class="submenu">
-                    <li>
-                        <a [routerLink]="['/layout/recruiter']" [routerLinkActive]="['router-link-active']"
-                            class="list-group-item">
-                            <i class="fa fa-fw fa-id-card"></i>&nbsp;
-                            <span>{{ 'Recruiters' | translate }}</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a [routerLink]="['/layout/client-application-status']"
-                            [routerLinkActive]="['router-link-active']" class="list-group-item">
-                            <i class="fa fa-fw fa-filter"></i>&nbsp;
-                            <span>{{ 'Application Status' | translate }}</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a [routerLink]="['/layout/client-position-status']" [routerLinkActive]="['router-link-active']"
-                            class="list-group-item"><i class="fa fa-fw fa-filter"></i>&nbsp;
-                            <span>{{ 'Position Status' | translate }}</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a [routerLink]="['/layout/consultant-status']" [routerLinkActive]="['router-link-active']"
-                            class="list-group-item"><i class="fa fa-fw fa-filter"></i>&nbsp;
-                            <span>{{ 'Consultant Status' | translate }}</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a [routerLink]="['/layout/user']" [routerLinkActive]="['router-link-active']"
-                            class="list-group-item"><i class="fa fa-fw fa-user-circle"></i>&nbsp;
-                            <span>{{ 'Users' | translate }}</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a [routerLink]="['/layout/email-template']" [routerLinkActive]="['router-link-active']"
-                            class="list-group-item"><i class="fa fa-fw fa-envelope"></i>&nbsp;
-                            <span>{{ 'Emails' | translate }}</span>
-                        </a>
-                    </li>
-                    <li>
+        <div *ngIf=showAdministration>
+            <div class="nested-menu">
+                <a class="list-group-item" (click)="addExpandClass('pages')">
+                    <i class="fa fa-fw fa-user"></i>&nbsp;
+                    <span>{{ 'Administration' | translate }}</span>
+                </a>
+                <li class="nested" [class.expand]="showMenu === 'pages'">
+                    <ul class="submenu">
+                        <li>
+                            <a [routerLink]="['/layout/recruiter']" [routerLinkActive]="['router-link-active']"
+                                class="list-group-item">
+                                <i class="fa fa-fw fa-id-card"></i>&nbsp;
+                                <span>{{ 'Recruiters' | translate }}</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a [routerLink]="['/layout/client-application-status']"
+                                [routerLinkActive]="['router-link-active']" class="list-group-item">
+                                <i class="fa fa-fw fa-filter"></i>&nbsp;
+                                <span>{{ 'Application Status' | translate }}</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a [routerLink]="['/layout/client-position-status']"
+                                [routerLinkActive]="['router-link-active']" class="list-group-item"><i
+                                    class="fa fa-fw fa-filter"></i>&nbsp;
+                                <span>{{ 'Position Status' | translate }}</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a [routerLink]="['/layout/consultant-status']" [routerLinkActive]="['router-link-active']"
+                                class="list-group-item"><i class="fa fa-fw fa-filter"></i>&nbsp;
+                                <span>{{ 'Consultant Status' | translate }}</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a [routerLink]="['/layout/user']" [routerLinkActive]="['router-link-active']"
+                                class="list-group-item"><i class="fa fa-fw fa-user-circle"></i>&nbsp;
+                                <span>{{ 'Users' | translate }}</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a [routerLink]="['/layout/email-template']" [routerLinkActive]="['router-link-active']"
+                                class="list-group-item"><i class="fa fa-fw fa-envelope"></i>&nbsp;
+                                <span>{{ 'Emails' | translate }}</span>
+                            </a>
+                        </li>
+                        <li>
                             <a [routerLink]="['/layout/message-template']" [routerLinkActive]="['router-link-active']"
                                 class="list-group-item"><i class="fa fa-fw fa-comment"></i>&nbsp;
                                 <span>{{ 'Messages' | translate }}</span>
                             </a>
                         </li>
-                </ul>
-            </li>
+                    </ul>
+                </li>
+            </div>
         </div>
         <!-- <a [routerLink]="['/charts']" [routerLinkActive]="['router-link-active']" class="list-group-item">
             <i class="fa fa-fw fa-bar-chart-o"></i>&nbsp;
