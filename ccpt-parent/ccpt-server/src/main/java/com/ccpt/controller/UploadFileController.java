@@ -24,7 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.ccpt.constants.CCPTConstants;
 import com.ccpt.model.UploadFile;
-import com.ccpt.service.IUploadFileService;
+import com.ccpt.service.UploadFileService;
 import com.ccpt.util.MyMultipleFileZip;
 
 @Controller
@@ -33,11 +33,11 @@ import com.ccpt.util.MyMultipleFileZip;
 public class UploadFileController {
 
 	@Autowired
-	private IUploadFileService uploadFileService;
+	private UploadFileService uploadFileService;
 
-	@GetMapping(CCPTConstants.GET_BY_ID)
+	@GetMapping(CCPTConstants.ID_PARAM)
 	public ResponseEntity<UploadFile> getUploadFileById(@RequestParam Integer id) {
-		UploadFile uploadFile = uploadFileService.getUploadFileById(id);
+		UploadFile uploadFile = uploadFileService.get(id);
 		return new ResponseEntity<UploadFile>(uploadFile, HttpStatus.OK);
 	}
 
@@ -71,11 +71,11 @@ public class UploadFileController {
 		return FILEPATH;
 	}
 
-	@PostMapping(CCPTConstants.CREATE)
+	@PostMapping("save")
 	public ResponseEntity<Void> uploadFile(@RequestParam("file") MultipartFile file, @RequestParam("refId") int refId,
 			@RequestParam("refType") String refType, @RequestParam("comments") String comments) throws IOException {
 		UploadFile uploadFile = new UploadFile(file.getBytes(), refId, refType, comments);
-		uploadFileService.uploadFile(uploadFile);
+		uploadFileService.save(uploadFile);
 		return new ResponseEntity<Void>(HttpStatus.CREATED);
 	}
 
@@ -95,9 +95,9 @@ public class UploadFileController {
 
 	}
 
-	@DeleteMapping(CCPTConstants.DELETE_BY_ID + "/{id}")
+	@DeleteMapping(CCPTConstants.ID_PARAM)
 	public ResponseEntity<Void> deleteFile(@PathVariable Integer id) {
-		uploadFileService.deleteFile(id);
+		uploadFileService.delete(id);
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 

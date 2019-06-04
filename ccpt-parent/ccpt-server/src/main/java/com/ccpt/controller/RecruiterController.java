@@ -1,82 +1,35 @@
 package com.ccpt.controller;
 
-import java.util.Date;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.ccpt.model.Recruiter;
-import com.ccpt.service.IRecruiterService;
+import com.ccpt.service.BaseService;
+import com.ccpt.service.RecruiterService;
 
 @Controller
 @CrossOrigin
 @RequestMapping("/recruiter")
-public class RecruiterController {
+public class RecruiterController extends BaseController<Recruiter, Integer> {
 
 	@Autowired
-	private IRecruiterService recruiterService;
-
-	@GetMapping("getAll")
-	public ResponseEntity<List<Recruiter>> getAllRecruiters() {
-		List<Recruiter> recruiterList = recruiterService.getAllRecruiters();
-
-		return new ResponseEntity<List<Recruiter>>(recruiterList, HttpStatus.OK);
-	}
-
-	@GetMapping("id/{id}")
-	public ResponseEntity<Recruiter> getRecruiterById(@PathVariable("id") Integer id) {
-		Recruiter recruiter = recruiterService.getRecruiterById(id);
-		return new ResponseEntity<Recruiter>(recruiter, HttpStatus.OK);
-	}
-
-	@PostMapping("create")
-	public ResponseEntity<Void> addRecruiter(@RequestBody Recruiter recruiter) {
-		recruiter.setActiveFlag('Y');
-		recruiter.setStatus("ACTIVE");
-		recruiter.setCreatedDate(new Date());
-		recruiter.setUpdatedDate(new Date());
-		recruiterService.addRecruiter(recruiter);
-		return new ResponseEntity<Void>(HttpStatus.CREATED);
-	}
-
-	@PutMapping("update")
-	public ResponseEntity<Recruiter> updateRecruiter(@RequestBody Recruiter recruiter) {
-		recruiter.setUpdatedDate(new Date());
-		recruiterService.updateRecruiter(recruiter);
-		return new ResponseEntity<Recruiter>(recruiter, HttpStatus.OK);
-	}
-
-	@GetMapping("getActiveRecruiters")
-	public ResponseEntity<List<Recruiter>> getActiveRecruiters() {
-		List<Recruiter> recruiterList = recruiterService.getActiveRecruiters();
-
-		return new ResponseEntity<List<Recruiter>>(recruiterList, HttpStatus.OK);
-	}
-
-	@DeleteMapping("id/{id}")
-	public ResponseEntity<Void> deleteRecruiter(@PathVariable("id") Integer id) {
-		Recruiter recruiter = recruiterService.getRecruiterById(id);
-		recruiter.setActiveFlag('N');
-		recruiter.setUpdatedDate(new Date());
-		recruiterService.addRecruiter(recruiter);
-		return new ResponseEntity<Void>(HttpStatus.OK);
-	}
+	private RecruiterService recruiterService;
 
 	@GetMapping("name/{name}")
 	public ResponseEntity<Recruiter> getRecruiterByName(@PathVariable("name") String name) {
 		Recruiter recruiter = recruiterService.getRecruiterByName(name);
 		return new ResponseEntity<Recruiter>(recruiter, HttpStatus.OK);
+	}
+
+	@Override
+	public BaseService<Recruiter, Integer> getService() {
+		return recruiterService;
 	}
 
 }

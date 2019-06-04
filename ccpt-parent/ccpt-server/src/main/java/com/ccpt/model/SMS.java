@@ -1,25 +1,27 @@
 package com.ccpt.model;
 
-import java.util.List;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
-public class SMS {
-	private List<String> contactNumbers;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
+@Entity
+@Table
+@Getter
+@Setter
+@ToString
+public class SMS extends IDEntity {
+
+	@Column
+	@NotNull
+	private String contactNumbers;
+
+	@Column
+	@NotNull
 	private String message;
-
-	public List<String> getContactNumbers() {
-		return contactNumbers;
-	}
-
-	public void setContactNumbers(List<String> contactNumbers) {
-		this.contactNumbers = contactNumbers;
-	}
-
-	public String getMessage() {
-		return message;
-	}
-
-	public void setMessage(String message) {
-		this.message = message;
-	}
 
 }

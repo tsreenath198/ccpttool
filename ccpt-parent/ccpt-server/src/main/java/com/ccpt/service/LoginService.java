@@ -1,58 +1,23 @@
 package com.ccpt.service;
 
-import java.util.List;
-
-import javax.persistence.EntityNotFoundException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ccpt.model.Login;
+import com.ccpt.repository.BaseRepository;
 import com.ccpt.repository.LoginRepository;
 
 @Service
-public class LoginService implements ILoginService {
+public class LoginService extends BaseService<Login, Integer> {
 	@Autowired
 	private LoginRepository loginRepository;
 
-	@Override
-	public void register(Login login) {
-		loginRepository.save(login);
-	}
-
-	@Override
-	public String getTokenByUsernameAndPassword(String username, String password) {
-		return loginRepository.getTokenByUsernameAndPassword(username, password);
-	}
-
-	@Override
 	public Login login(String username, String password) {
-		Login login = loginRepository.login(username, password);
-
-		if (login != null) {
-			return login;
-		}
-		return null;
+		return loginRepository.login(username, password);
 	}
 
 	@Override
-	public List<Login> getAllActiveUsers() {
-
-		return loginRepository.findByActiveFlagAllIgnoreCaseOrderByCreatedDateDesc("Y");
+	public BaseRepository<Login, Integer> getRepository() {
+		return loginRepository;
 	}
-
-	@Override
-	public Login getUsersById(String username) {
-		Login obj = loginRepository.findByUsernameAndActiveFlag(username, 'Y');
-		if (obj != null)
-			return obj;
-		throw new EntityNotFoundException("No data found on id:: " + username);
-	}
-
-	@Override
-	public void updateUser(Login login) {
-		getUsersById(login.getUsername());
-		loginRepository.save(login);
-	}
-
 }

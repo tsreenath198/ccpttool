@@ -10,7 +10,7 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 
 @Configuration
 public class AppConfig {
-	
+
 	@Value("${spring.mail.host}")
 	private String mailHost;
 
@@ -22,9 +22,6 @@ public class AppConfig {
 
 	@Value("${spring.mail.password}")
 	private String password;
-
-//	@Autowired
-//	private TemplateBeanRepository templateBeanRepository;
 
 	@Bean
 	public JavaMailSender getJavaMailSender() {
@@ -43,17 +40,4 @@ public class AppConfig {
 
 		return mailSender;
 	}
-
-	/*@Bean
-	public SimpleMailMessage templateSimpleMessage() {
-		SimpleMailMessage message = new SimpleMailMessage();
-		TemplateBean templateBean = templateBeanRepository.findById(1).get();
-
-		String templateSubject = templateBean.getSubject();
-		String templateBody = templateBean.getBody();
-		message.setSubject(templateSubject);
-		message.setText(templateBody);
-		return message;
-	}*/
-
 }

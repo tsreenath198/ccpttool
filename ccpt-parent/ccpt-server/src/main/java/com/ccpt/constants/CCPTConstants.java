@@ -1,13 +1,9 @@
 package com.ccpt.constants;
 
 public interface CCPTConstants {
-	String GET_ALL = "/getAll";
-	String GET_BY_ID = "/id";
-	String CREATE = "/create";
-	String UPDATE = "/update";
-	String DELETE_BY_ID = "/id";
+	String GET_ALL = "/";
+	String ID_PARAM = "/{id}";
 	String SEND = "/send";
-	String ADMIN = "/admin";
 	String CLIENT_APPLICATION = "/clientApplication";
 	String CLIENT_CALL_HISTORY = "/clientCallHistory";
 	String CLIENT_POSITION = "/clientPosition";
@@ -21,8 +17,12 @@ public interface CCPTConstants {
 	String CLOSURE = "/closure";
 	String SEND_EMAIL = "/sendEmail";
 	String TEMPLATE = "/template";
-	String EMAIL = "/emailTemplate";
+	String EMAIL = "/email";
 	String GET_BY_REF_ID_AND_REF_TPYE = "/download";
 	String UPLOAD_FILE = "/file";
 	String SMS = "/sms";
+
+	String CLIENT_APPLICATION_STATUS = "/caStatus";
+	String CLIENT_POSITION_STATUS = "/cpStatus";
+	String CONSULTANT_STATUS = "/consultantStatus";
 }

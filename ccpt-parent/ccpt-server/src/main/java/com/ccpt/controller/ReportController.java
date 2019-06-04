@@ -20,13 +20,9 @@ import com.ccpt.constants.CCPTConstants;
 import com.ccpt.model.ClientCallHistory;
 import com.ccpt.model.ClientPosition;
 import com.ccpt.model.ConsultantCallHistory;
-import com.ccpt.service.IClientCallHistoryService;
-import com.ccpt.service.IClientPositionService;
-import com.ccpt.service.IClientPositionStatusService;
-import com.ccpt.service.IClientService;
-import com.ccpt.service.IConsultantCallHistoryService;
-import com.ccpt.service.IConsultantService;
-import com.ccpt.service.IRecruiterService;
+import com.ccpt.service.ClientCallHistoryService;
+import com.ccpt.service.ClientPositionService;
+import com.ccpt.service.ConsultantCallHistoryService;
 
 @Controller
 @CrossOrigin
@@ -34,24 +30,13 @@ import com.ccpt.service.IRecruiterService;
 public class ReportController {
 
 	@Autowired
-	private IConsultantCallHistoryService consultantCallHistoryService;
-	@Autowired
-	private IClientCallHistoryService clientCallHistoryService;
+	private ConsultantCallHistoryService consultantCallHistoryService;
 
 	@Autowired
-	private IConsultantService consultantService;
+	private ClientCallHistoryService clientCallHistoryService;
 
 	@Autowired
-	private IClientService clientService;
-
-	@Autowired
-	private IClientPositionService clientPositionService;
-
-	@Autowired
-	private IClientPositionStatusService clientPositionStatusService;
-
-	@Autowired
-	private IRecruiterService recruiterService;
+	private ClientPositionService clientPositionService;
 
 	@GetMapping("getAllClientCallHistorysByDays")
 	public ResponseEntity<List<ClientCallHistory>> getAllClientCallHistorysByDays(@RequestParam int days)
@@ -64,9 +49,6 @@ public class ReportController {
 		List<ClientCallHistory> clientCallHistoryList = clientCallHistoryService
 				.getAllClientCallHistorysFromLastGivenDays(startDate, endDate);
 
-		for (ClientCallHistory cchl : clientCallHistoryList) {
-			cchl.setClientName(clientService.getClientById(cchl.getClientId()).getName());
-		}
 		return new ResponseEntity<List<ClientCallHistory>>(clientCallHistoryList, HttpStatus.OK);
 	}
 
@@ -81,9 +63,6 @@ public class ReportController {
 		List<ConsultantCallHistory> consultantCallHistoryList = consultantCallHistoryService
 				.getAllConsultantCallHistorysFromLastGivenDays(startDate, endDate);
 
-		for (ConsultantCallHistory cchl : consultantCallHistoryList) {
-			cchl.setConsultantName(consultantService.getConsultantById(cchl.getConsultantId()).getFullname());
-		}
 		return new ResponseEntity<List<ConsultantCallHistory>>(consultantCallHistoryList, HttpStatus.OK);
 	}
 
@@ -106,34 +85,12 @@ public class ReportController {
 	@GetMapping("getTop5CP")
 	public ResponseEntity<List<ClientPosition>> getAllClientPositions() {
 		List<ClientPosition> clientPositionList = clientPositionService.getTop5ClientPositions();
-
-		for (ClientPosition clientPosition : clientPositionList) {
-			clientPosition.setClientPositionsStatus(clientPositionStatusService
-					.getClientPositionStatusById(clientPosition.getClientPositionsStatusCode()).getDescription());
-			clientPosition.setClientName(clientService.getClientById(clientPosition.getClientId()).getName());
-
-			if (clientPosition.getClosedBy() != null) {
-				clientPosition.setClosedByRecruiter(
-						recruiterService.getRecruiterById(clientPosition.getClosedBy()).getFullname());
-			}
-		}
 		return new ResponseEntity<List<ClientPosition>>(clientPositionList, HttpStatus.OK);
 	}
 
 	@GetMapping("getAllOpenCP")
 	public ResponseEntity<List<ClientPosition>> getAllOpenCP() {
 		List<ClientPosition> clientPositionList = clientPositionService.getAllOpenCP();
-
-		for (ClientPosition clientPosition : clientPositionList) {
-			clientPosition.setClientPositionsStatus(clientPositionStatusService
-					.getClientPositionStatusById(clientPosition.getClientPositionsStatusCode()).getDescription());
-			clientPosition.setClientName(clientService.getClientById(clientPosition.getClientId()).getName());
-
-			if (clientPosition.getClosedBy() != null) {
-				clientPosition.setClosedByRecruiter(
-						recruiterService.getRecruiterById(clientPosition.getClosedBy()).getFullname());
-			}
-		}
 		return new ResponseEntity<List<ClientPosition>>(clientPositionList, HttpStatus.OK);
 	}
 

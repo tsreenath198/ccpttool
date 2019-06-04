@@ -2,7 +2,6 @@ package com.ccpt.controller;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.AddressException;
@@ -33,14 +32,14 @@ public class EmailController {
 	@PostMapping(CCPTConstants.SEND_EMAIL)
 	public ResponseEntity<String> sendEmail(@RequestBody EmailContent emailContent)
 			throws AddressException, MessagingException, IOException {
-		sendmail(emailContent.getTo(), emailContent.getSubject(), emailContent.getBody());
+		// TODO save email content to database
+		sendmail(emailContent.getToEmails(), emailContent.getSubject(), emailContent.getBody());
 		return new ResponseEntity<String>("Email sent successfully", HttpStatus.OK);
 	}
 
-	void sendmail(List<String> list, String subject, String body) {
+	void sendmail(String toCSV, String subject, String body) {
 		SimpleMailMessage msg = new SimpleMailMessage();
-		String emailCommaSeparated = String.join(",", list);
-		msg.setTo(emailCommaSeparated);
+		msg.setTo(toCSV);
 		msg.setSubject(subject);
 		msg.setText(body);
 		javaMailSender.send(msg);

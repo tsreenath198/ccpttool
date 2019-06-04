@@ -3,21 +3,13 @@ package com.ccpt.repository;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.data.repository.query.Param;
 
 import com.ccpt.model.ClientPosition;
 
-public interface ClientPositionRepository extends CrudRepository<ClientPosition, Integer> {
-	List<ClientPosition> findByActiveFlagAllIgnoreCaseOrderByCreatedDateDesc(String ActiveFlag);
+public interface ClientPositionRepository extends BaseRepository<ClientPosition, Integer> {
 
-	List<ClientPosition> findTop5ByActiveFlagAllIgnoreCaseOrderByIdDesc(String activeFlag);
+	List<ClientPosition> findTop5ByActiveFlagAllIgnoreCaseOrderByIdDesc(Boolean activeFlag);
 
-	ClientPosition findByIdAndActiveFlag(int id, char status);
-
-	@Query("SELECT c FROM ClientPosition c WHERE client_id=:clientId")
-	List<ClientPosition> getClientPositionFromClientId(@Param(value = "clientId") Integer clientId);
-
-	@Query("SELECT t1 FROM ClientPosition t1 LEFT JOIN ClientApplication t2 ON t1.id = t2.clientPositionId WHERE t2.clientPositionId is NULL AND t1.clientPositionsStatusCode = 'ACT' and t1.activeFlag = 'Y'")
+	@Query("SELECT t1 FROM ClientPosition t1 WHERE t1.id NOT IN (SELECT distinct t2.clientPosition.id FROM ClientApplication t2)")
 	List<ClientPosition> getAllOpenCP();
 }

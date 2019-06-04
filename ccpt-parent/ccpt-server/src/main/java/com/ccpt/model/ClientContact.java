@@ -1,80 +1,29 @@
 package com.ccpt.model;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
-@Table(name = "client_contact")
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
+@Table
 @Entity
-public class ClientContact {
+@Getter
+@Setter
+@ToString
+public class ClientContact extends IDEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "contact_id")
-    private Integer id;
-
-    @Column(name = "fullname")
+	@Column
+	@NotNull
 	private String fullname;
 
-	@Column(name = "phone")
+	@Column
 	private String phone;
 
-	@Column(name = "email")
+	@Column
 	private String email;
 
-    @Column(name = "client_id")
-    private Integer clientId;
-    
-    @Column(name = "active_flag")
-   	private char activeFlag;
-
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	public String getFullname() {
-		return fullname;
-	}
-
-	public void setFullname(String fullname) {
-		this.fullname = fullname;
-	}
-
-	public String getPhone() {
-		return phone;
-	}
-
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public Integer getClientId() {
-		return clientId;
-	}
-
-	public void setClientId(Integer clientId) {
-		this.clientId = clientId;
-	}
-
-	public char getActiveFlag() {
-		return activeFlag;
-	}
-
-	public void setActiveFlag(char activeFlag) {
-		this.activeFlag = activeFlag;
-	}
-    
-    
-
-   
 }

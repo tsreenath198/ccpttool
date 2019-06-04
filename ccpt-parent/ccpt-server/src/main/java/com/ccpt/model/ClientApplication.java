@@ -2,184 +2,54 @@ package com.ccpt.model;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.persistence.Transient;
+import javax.validation.constraints.NotNull;
+
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 @Entity
-@Table(name = "client_application")
-public class ClientApplication {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+@Table
+@Getter
+@Setter
+@ToString
+public class ClientApplication extends IDEntity {
 
-	@Column(name = "client_application_status_code")
-	private String clientApplicationStatusCode;
+	@OneToOne(cascade = CascadeType.PERSIST)
+	@JoinColumn(name = "status_code", updatable = false, insertable = false)
+	@NotNull
+	private ClientApplicationStatus status;
 
-	@Column(name = "client_position_id")
-	private int clientPositionId;
+	@ManyToOne(cascade = CascadeType.PERSIST, optional = false)
+	@JoinColumn(name = "client_position_id", updatable = false, insertable = false)
+	@NotNull
+	private ClientPosition clientPosition;
 
-	@Column(name = "consultant_id")
-	private int consultantId;
-
-	@Column(name = "notes")
-	private String notes;
+	@ManyToOne(cascade = CascadeType.PERSIST)
+	@JoinColumn(name = "consultant_id", updatable = false, insertable = false)
+	@NotNull
+	private Consultant consultant;
 
 	@Temporal(TemporalType.DATE)
-	@Column(name = "interview_date")
+	@Column
 	private Date interviewDate;
 
-	@Column(name = "interview_time")
+	@Column
 	private String interviewTime;
 
-	@Column(name = "interview_location")
+	@Column
 	private String interviewLocation;
 
-	@Column(name = "active_flag")
-	private char activeFlag;
-
-	@Column(name = "created_date")
-	private Date createdDate;
-
-	@Column(name = "updated_date")
-	private Date updatedDate;
-
-	@Column(name = "closed_by")
+	@Column
 	private Integer closedBy;
-
-	@Transient
-	private String consultantName;
-
-	@Transient
-	private String clientApplicationStatus;
-
-	@Transient
-	private String clientPositionCode;
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	public String getClientApplicationStatusCode() {
-		return clientApplicationStatusCode;
-	}
-
-	public void setClientApplicationStatusCode(String clientApplicationStatusCode) {
-		this.clientApplicationStatusCode = clientApplicationStatusCode;
-	}
-
-	public int getClientPositionId() {
-		return clientPositionId;
-	}
-
-	public void setClientPositionId(int clientPositionId) {
-		this.clientPositionId = clientPositionId;
-	}
-
-	public int getConsultantId() {
-		return consultantId;
-	}
-
-	public void setConsultantId(int consultantId) {
-		this.consultantId = consultantId;
-	}
-
-	public String getNotes() {
-		return notes;
-	}
-
-	public void setNotes(String notes) {
-		this.notes = notes;
-	}
-
-	public Date getInterviewDate() {
-		return interviewDate;
-	}
-
-	public void setInterviewDate(Date interviewDate) {
-		this.interviewDate = interviewDate;
-	}
-
-	public char getActiveFlag() {
-		return activeFlag;
-	}
-
-	public void setActiveFlag(char activeFlag) {
-		this.activeFlag = activeFlag;
-	}
-
-	public Date getCreatedDate() {
-		return createdDate;
-	}
-
-	public void setCreatedDate(Date createdDate) {
-		this.createdDate = createdDate;
-	}
-
-	public Date getUpdatedDate() {
-		return updatedDate;
-	}
-
-	public void setUpdatedDate(Date updatedDate) {
-		this.updatedDate = updatedDate;
-	}
-
-	public String getConsultantName() {
-		return consultantName;
-	}
-
-	public void setConsultantName(String consultantName) {
-		this.consultantName = consultantName;
-	}
-
-	public String getClientApplicationStatus() {
-		return clientApplicationStatus;
-	}
-
-	public void setClientApplicationStatus(String clientApplicationStatus) {
-		this.clientApplicationStatus = clientApplicationStatus;
-	}
-
-	public String getClientPositionCode() {
-		return clientPositionCode;
-	}
-
-	public void setClientPositionCode(String clientPositionCode) {
-		this.clientPositionCode = clientPositionCode;
-	}
-
-	public Integer getClosedBy() {
-		return closedBy;
-	}
-
-	public void setClosedBy(Integer closedBy) {
-		this.closedBy = closedBy;
-	}
-
-	public String getInterviewTime() {
-		return interviewTime;
-	}
-
-	public void setInterviewTime(String interviewTime) {
-		this.interviewTime = interviewTime;
-	}
-
-	public String getInterviewLocation() {
-		return interviewLocation;
-	}
-
-	public void setInterviewLocation(String interviewLocation) {
-		this.interviewLocation = interviewLocation;
-	}
 
 }
