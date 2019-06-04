@@ -20,7 +20,7 @@ export class LoginComponent implements OnInit {
         this.reset();
     }
     onLoggedin() {
-        this.http.create(this.loginDetails, this.urlConstants.UserLogin ).subscribe(resp => {
+        this.http.post(this.loginDetails, this.urlConstants.UserLogin ).subscribe(resp => {
             const response = resp as any;
                 this.toastr.success('User Logged In Successfully', 'Login');
                 this.router.navigate(['/layout']);

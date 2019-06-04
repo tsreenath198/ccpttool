@@ -54,7 +54,7 @@ export class ClientPositionStatusComponent implements OnInit {
         this.clientPositionStatusModel = <ClientpositionStatusModel>{};
     }
     createClientPositionStatus(clientPositionStatusForm:NgForm): void {
-        this.http.create(this.clientPositionStatusModel, this.urlConstants.CPSCreate).subscribe(resp => {
+        this.http.post(this.clientPositionStatusModel, this.urlConstants.CPSCreate).subscribe(resp => {
             this.toastr.success(this.urlConstants.SuccessMsg, "Client Position Status");
             this.init();
             this.formReset();

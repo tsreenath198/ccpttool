@@ -77,7 +77,7 @@ export class ClientApplicationComponent implements OnInit {
         this.enableButtonType = 'E';
     }
     createClientApplication(clientApplicationForm:NgForm): void {
-        this.http.create(this.clientApplicationModel, this.urlConstants.CACreate).subscribe(resp => {
+        this.http.post(this.clientApplicationModel, this.urlConstants.CACreate).subscribe(resp => {
             this.toastr.success(this.urlConstants.SuccessMsg, "Client Application");
             this.init();
             this.formReset()

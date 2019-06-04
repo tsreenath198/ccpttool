@@ -19,37 +19,37 @@ import { ClientPositionModel } from '../client-position/client-position.model';
 export class ConsultantCallHistoryComponent implements OnInit {
     public consultantCallHistoryModel: ConsultantCallHistoryModel = <ConsultantCallHistoryModel>{};
     public consultantCallHistoryList: Array<ConsultantCallHistoryModel> = [];
-    public currSearchTxt:string = "";
-    public formButtonsToggler: boolean = true;
-    public editButtonToggler: boolean = true;
+    public currSearchTxt = '';
+    public formButtonsToggler = true;
+    public editButtonToggler = true;
     public consultantList: Array<ConsultantModel> = [];
     public clientPositionList: Array<ClientPositionModel> = [];
     public urlConstants = new URLConstants();
 
-    private selectedRecrdToDel: number = 0;
-    public closeResult: string = '';
+    private selectedRecrdToDel = 0;
+    public closeResult = '';
     private modalRef: NgbModalRef;
-    
-    public readOnlyForm: string = '';
-    public enableButtonType: string = '';
+
+    public readOnlyForm = '';
+    public enableButtonType = '';
 
     constructor(private http: HttpClientService, private toastr: ToastrCustomService, private modalService: NgbModal) { }
     ngOnInit() {
         this.init();
         this.http.get(this.urlConstants.CGetAll).subscribe(resp => {
             this.consultantList = resp as Array<ConsultantModel>;
-        })
+        });
         this.http.get(this.urlConstants.CPGetAll).subscribe(resp => {
             this.clientPositionList = resp as Array<ClientPositionModel>;
-        })
+        });
     }
     init() {
         this.http.get(this.urlConstants.CoCHGetAll).subscribe(resp => {
             this.consultantCallHistoryList = resp as Array<ConsultantCallHistoryModel>;
-        })
+        });
     }
     consultantCallHistoryEdit(data) {
-        this.consultantCallHistoryModel = JSON.parse(JSON.stringify(data));;
+        this.consultantCallHistoryModel = JSON.parse(JSON.stringify(data));
         this.readOnlyForm = 'U';
         this.enableButtonType = 'U';
     }
@@ -66,46 +66,46 @@ export class ConsultantCallHistoryComponent implements OnInit {
         this.consultantCallHistoryModel = <ConsultantCallHistoryModel>{};
     }
     createConsultantCallHistory(consultantCallHistory: NgForm): void {
-        this.http.create(this.consultantCallHistoryModel, this.urlConstants.CoCHCreate).subscribe(resp => {
-            this.toastr.success(this.urlConstants.SuccessMsg, "Consultant Call History");
+        this.http.post(this.consultantCallHistoryModel, this.urlConstants.CoCHCreate).subscribe(resp => {
+            this.toastr.success(this.urlConstants.SuccessMsg, 'Consultant Call History');
             this.init();
             this.formReset();
             consultantCallHistory.resetForm();
         }, err => {
-            this.toastr.error(err.statusText, "Consultant Call History");
-        })
+            this.toastr.error(err.statusText, 'Consultant Call History');
+        });
 
     }
     updateConsultantCallHistory(consultantCallHistory: NgForm) {
         this.http.update(this.consultantCallHistoryModel, this.urlConstants.CoCHUpdate).subscribe(resp => {
             this.formReset();
-            this.toastr.success(this.urlConstants.UpdateMsg, "Consultant Call History");
+            this.toastr.success(this.urlConstants.UpdateMsg, 'Consultant Call History');
             this.init();
             consultantCallHistory.resetForm();
-            
+
             this.readOnlyForm = '';
             this.enableButtonType = '';
         }, err => {
-            this.toastr.error(err.statusText, "Consultant Call History");
-        })
+            this.toastr.error(err.statusText, 'Consultant Call History');
+        });
     }
     cancelForm(consultantCallHistory: NgForm) {
         this.formReset();
         consultantCallHistory.resetForm();
         this.readOnlyForm = '';
-        this.enableButtonType = ''; 
+        this.enableButtonType = '';
 
     }
     deleteCoCHRecord(): void {
         this.http.delete(this.urlConstants.CoCHDelete + this.selectedRecrdToDel).subscribe(resp => {
-            this.toastr.success(this.urlConstants.DeleteMsg, "Consultant Call History");
+            this.toastr.success(this.urlConstants.DeleteMsg, 'Consultant Call History');
             this.init();
             this.close();
             this.formReset();
-        })
+        });
     }
     /**
-     * @param 
+     * @param
      * 1) content consists the modal instance
      * 2) Selected contains the code of selected row
      */

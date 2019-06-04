@@ -51,7 +51,7 @@ export class OtherContactsComponent implements OnInit {
         this.otherContactsModel = <OtherContactsModel>{};
     }
     otherContactCreate(otherContactForm: NgForm): void {
-        this.http.create(this.otherContactsModel, this.urlConstants.OCCreate).subscribe(resp => {
+        this.http.post(this.otherContactsModel, this.urlConstants.OCCreate).subscribe(resp => {
             this.toastr.success(this.urlConstants.SuccessMsg, "Contact");
             this.init();
             this.formReset();

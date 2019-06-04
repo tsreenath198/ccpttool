@@ -114,7 +114,7 @@ export class ClientPositionComponent implements OnInit {
             this.validateCPCode(this.clientPositionModel.clientPositionCode);
         }
         if (!this.invalidAppCode) {
-            this.http.create(this.clientPositionModel, this.urlConstants.CPCreate).subscribe(resp => {
+            this.http.post(this.clientPositionModel, this.urlConstants.CPCreate).subscribe(resp => {
                 this.toastr.success(this.urlConstants.SuccessMsg, 'Client Position');
                 this.init();
                 this.formReset();

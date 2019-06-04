@@ -51,7 +51,7 @@ export class MessageTemplateComponent implements OnInit {
         this.messageTemplateModel = <MessageTemplateModel>{};
     }
     // otherContactCreate(messageTemplateForm: NgForm): void {
-    //     this.http.create(this.emailTemplateModel, this.urlConstants.OCCreate).subscribe(resp => {
+    //     this.http.post(this.messageTemplateModel, this.urlConstants.OCCreate).subscribe(resp => {
     //         this.toastr.success(this.urlConstants.SuccessMsg, 'Contact');
     //         this.init();
     //         this.formReset();

@@ -12,7 +12,7 @@ export class HttpClientService {
   public getLogin(URL: string) {
     return this.http.get(URL);
   }
-  create(data: any, url: string) {
+  post(data: any, url: string) {
     const httpOptions = {
       headers: new HttpHeaders({
         'X-TOKEN': sessionStorage.getItem('access_token')

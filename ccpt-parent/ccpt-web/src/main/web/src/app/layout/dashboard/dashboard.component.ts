@@ -84,17 +84,6 @@ export class DashboardComponent implements OnInit {
             this.ccptReportCPL = listofrecords[2] as any;
             this.ccptReportCC = listofrecords[3] as any;
         });
-        // this.http.get(this.urlConstants.ReportingGetAllCLCH).subscribe(resp => {
-        //     this.ccptReportCLCH = resp as any;
-        // }),
-        //     this.http.get("report/getClosedCountOfAllRecruitersFromLastGivenDays?days=7").subscribe(resp => {
-        //         this.ccptClosureCount = resp;
-        //         console.log(this.ccptClosureCount);
-        //     }),
-        //     this.http.get(this.urlConstants.CPGetAll).subscribe(resp => {
-        //         this.clientPositionList = resp as any;
-        //         console.log(this.clientPositionList);
-        //     })
     }
     public rpGetAllByDays() {
         const numberOfDays = this.rpChoosenDays;
@@ -115,8 +104,3 @@ export class DashboardComponent implements OnInit {
         });
     }
 }
-    // public closeAlert(alert: any) {
-    //     const index: number = this.alerts.indexOf(alert);
-    //     this.alerts.splice(index, 1);
-    // }
-// }

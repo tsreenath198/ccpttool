@@ -33,7 +33,7 @@ export class UsersComponent implements OnInit {
         });
     }
     createUser(usersForm: NgForm): void {
-        this.http.create(this.usersModel, this.urlConstants.UserCreate).subscribe(resp => {
+        this.http.post(this.usersModel, this.urlConstants.UserCreate).subscribe(resp => {
             this.toastr.success(this.urlConstants.SuccessMsg, 'Contact');
             usersForm.resetForm();
             this.init();

@@ -63,7 +63,7 @@ export class ClientComponent implements OnInit {
         this.clientModel = <ClientModel>{};
     }
     clientCreate(clientForm: NgForm): void {
-        this.http.create(this.clientModel, this.urlConstants.ClientCreate).subscribe(resp => {
+        this.http.post(this.clientModel, this.urlConstants.ClientCreate).subscribe(resp => {
             this.toastr.success(this.urlConstants.SuccessMsg, 'Client');
             this.init();
             this.formReset();

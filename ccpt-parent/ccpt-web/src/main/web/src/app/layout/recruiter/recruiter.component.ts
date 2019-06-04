@@ -58,7 +58,7 @@ export class RecruiterComponent implements OnInit {
         this.recruiterModel = <RecruiterModel>{};
     }
     createRecruiter(recruiterForm:NgForm): void {
-        this.http.create(this.recruiterModel, this.urlConstants.RCreate).subscribe(resp => {
+        this.http.post(this.recruiterModel, this.urlConstants.RCreate).subscribe(resp => {
             this.toastr.success(this.urlConstants.SuccessMsg, "Recruiter");
             this.init();
             this.formReset();

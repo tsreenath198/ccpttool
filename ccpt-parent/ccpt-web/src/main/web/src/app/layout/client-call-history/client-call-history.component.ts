@@ -66,7 +66,7 @@ export class ClientCallHistoryComponent implements OnInit {
         this.clientCallHistoryModel = <ClientCallHistoryModel>{};
     }
     createClientCallHistory(clientCallHistoryForm: NgForm): void {
-        this.http.create(this.clientCallHistoryModel, 'clientCallHistory/create').subscribe(resp => {
+        this.http.post(this.clientCallHistoryModel, 'clientCallHistory/create').subscribe(resp => {
             this.toastr.success(this.urlConstants.SuccessMsg, 'Client Call History');
             this.init();
             this.formReset();

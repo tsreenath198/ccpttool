@@ -71,7 +71,7 @@ export class ConsultantComponent implements OnInit {
         this.consultantModel = <ConsultantModel>{};
     }
     createConsultant(consultantForm: NgForm): void {
-        this.http.create(this.consultantModel, this.urlConstants.CCreate).subscribe(resp => {
+        this.http.post(this.consultantModel, this.urlConstants.CCreate).subscribe(resp => {
             this.toastr.success(this.urlConstants.SuccessMsg, 'Consultant');
             this.init();
             this.formReset();
