@@ -88,10 +88,6 @@
           <div class="col-md-12">
             <div class="form-group">
               <label>Role<span class="required">*</span></label>
-              <!-- <div *ngIf="readOnlyForm; else elseBlock5">
-                <input class="form-control" name="role" readonly [(ngModel)]="recruiterModel.role">
-              </div>
-              <ng-template #elseBlock5> -->
               <select class="form-control" name="role" [(ngModel)]="recruiterModel.role"
                 [disabled]="readOnlyForm == 'R'" [ngClass]="{'is-invalid': f.submitted && role.invalid}" #role="ngModel"
                 required>
@@ -100,8 +96,6 @@
               <div class="invalid-feedback">
                 role is mandatory
               </div>
-              <!-- </ng-template> -->
-
             </div>
           </div>
           <div class="col-md-12">

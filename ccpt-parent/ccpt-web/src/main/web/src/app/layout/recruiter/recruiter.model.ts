@@ -22,5 +22,5 @@ export interface RecruiterModel{
 //     "updatedDate": "2019-05-08T05:51:08.017Z"
 //   }
 export class Roles{
-    roles = ["Junior Recruiter","Senior Recruiter"];
+    roles = ["Junior Recruiter","Senior Recruiter","Admin"];
 }
