@@ -60,7 +60,7 @@ public class Consultant extends IDEntity {
 	@OneToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "status_code", updatable = false, insertable = false)
 	@NotNull
-	private ConsultantStatus consultantStatus;
+	private ConsultantStatus status;
 
 	@Column
 	private Integer experienceYrs;
