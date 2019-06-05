@@ -20,7 +20,7 @@ import { NgbModalRef,ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-boot
     animations: [routerTransition()]
 })
 export class ClientApplicationComponent implements OnInit {
-    public clientApplicationModel: ClientApplicationModel = <ClientApplicationModel>{};
+    public CAModel: ClientApplicationModel = <ClientApplicationModel>{};
     public clientApplicationList: Array<ClientApplicationModel> = [];
     public consultantList: Array<ConsultantModel> = [];
     public clientApplicationStatusList: Array<ClientApplicationStatusModel> = [];
@@ -64,7 +64,7 @@ export class ClientApplicationComponent implements OnInit {
     }
 
     formReset() {
-        this.clientApplicationModel = <ClientApplicationModel>{};
+        this.CAModel = <ClientApplicationModel>{};
     }
     enableFormEditable(): void {
         this.readOnlyForm = 'U';
@@ -72,12 +72,12 @@ export class ClientApplicationComponent implements OnInit {
     }
     readOnlyEnable(data) {
         this.isInterviewScheduled = true;
-        this.clientApplicationModel = JSON.parse(JSON.stringify(data));
+        this.CAModel = JSON.parse(JSON.stringify(data));
         this.readOnlyForm = 'R';
         this.enableButtonType = 'E';
     }
     createClientApplication(clientApplicationForm:NgForm): void {
-        this.http.post(this.clientApplicationModel, this.urlConstants.CACreate).subscribe(resp => {
+        this.http.post(this.CAModel, this.urlConstants.CACreate).subscribe(resp => {
             this.toastr.success(this.urlConstants.SuccessMsg, "Client Application");
             this.init();
             this.formReset()
@@ -89,12 +89,12 @@ export class ClientApplicationComponent implements OnInit {
     }
     editClientApplication(data) {
         this.isInterviewScheduled = true;
-        this.clientApplicationModel = JSON.parse(JSON.stringify(data));;
+        this.CAModel = JSON.parse(JSON.stringify(data));;
         this.readOnlyForm = 'U';
         this.enableButtonType = 'U';
     }
     updateClientApplication(clientApplicationForm:NgForm) {
-        this.http.update(this.clientApplicationModel, this.urlConstants.CAUpdate).subscribe(resp => {
+        this.http.update(this.CAModel, this.urlConstants.CAUpdate).subscribe(resp => {
             this.toastr.success(this.urlConstants.UpdateMsg, "Client Application");
             this.formReset();
             this.init();

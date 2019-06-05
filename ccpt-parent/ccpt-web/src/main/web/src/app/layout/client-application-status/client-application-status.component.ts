@@ -61,7 +61,7 @@ export class ClientApplicationStatusComponent implements OnInit {
     /**
     * @param CASForm consists the form instance
     */
-    createClientApplicationStatus(CASForm: NgForm): void {
+   createCAStatus(CASForm: NgForm): void {
         this.http.post(this.clientApplicationStatusModel, this.urlConstants.CASCreate).subscribe(resp => {
             this.toastr.success(this.urlConstants.SuccessMsg, "Client Application Status");
             this.init();

@@ -1,9 +1,10 @@
 export class URLConstants {
     /*Client Application Status*/
-    CASCreate = 'admin/cAStatus/create';
-    CASGetAll = 'admin/cAStatus/getAll';
-    CASUpdate = 'admin/cAStatus/update';
-    CASDelete = 'admin/cAStatus/id/';
+    CASCreate = 'caStatus';
+    CASGetAll = 'caStatus/';
+    CASUpdate = 'caStatus';
+    CASDelete = 'caStatus/';
+    CASGetById = 'caStatus/';
 
     /*Client Postion Status*/
     CPSCreate = 'admin/cPStatus/create';

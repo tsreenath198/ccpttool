@@ -50,7 +50,7 @@
             <div class="form-group">
               <label>Client Position<span class="required">*</span></label>
               <select class="form-control" name="cp" [disabled]="readOnlyForm == 'R'"
-                [(ngModel)]="clientApplicationModel.clientPositionId"
+                [(ngModel)]="CAModel.clientPosition.id"
                 [ngClass]="{'is-invalid': f.submitted && cp.invalid}" #cp="ngModel" required>
                 <option *ngFor="let cpl of clientPositionList" [ngValue]="cpl.id">{{cpl.role}}
                 </option>
@@ -64,7 +64,7 @@
             <div class="form-group">
               <label>Consultant<span class="required">*</span></label>
               <select class="form-control" [disabled]="readOnlyForm == 'R'"
-                [(ngModel)]="clientApplicationModel.consultantId" name="con"
+                [(ngModel)]="CAModel.consultant.id" name="con"
                 [ngClass]="{'is-invalid': f.submitted && con.invalid}" #con="ngModel" required>
                 <option *ngFor="let cl of consultantList" [ngValue]="cl.id">{{cl.fullname}}</option>
               </select>
@@ -77,7 +77,7 @@
             <div class="form-group">
               <label>Client Application Status<span class="required">*</span></label>
               <select class="form-control" name="cas" [disabled]="readOnlyForm == 'R'"
-                [(ngModel)]="clientApplicationModel.clientApplicationStatusCode"
+                [(ngModel)]="CAModel.status.code"
                 [ngClass]="{'is-invalid': f.submitted && cas.invalid}" #cas="ngModel" required>
                 <option *ngFor="let casl of clientApplicationStatusList" [ngValue]="casl.code">
                   {{casl.description}}
@@ -97,19 +97,19 @@
               <div *ngIf="isInterviewScheduled">
                 <label class='pt-2'>Interview Date</label>
                 <input type="date" class="form-control" name="date" [readonly]="readOnlyForm == 'R'"
-                  [(ngModel)]="clientApplicationModel.interviewDate">
+                  [(ngModel)]="CAModel.interviewDate">
                 <div class="input-group-addon">
                   <span class="glyphicon glyphicon-th"></span>
                 </div>
                 <label class='pt-2'>Interview Time</label>
                 <input type="time" class="form-control" name="date" [readonly]="readOnlyForm == 'R'"
-                  [(ngModel)]="clientApplicationModel.interviewTime">
+                  [(ngModel)]="CAModel.interviewTime">
                 <div class="input-group-addon">
                   <span class="glyphicon glyphicon-th"></span>
                 </div>
                 <label class='pt-2'>Interview Location</label>
                 <input  class="form-control" name="date" [readonly]="readOnlyForm == 'R'"
-                  [(ngModel)]="clientApplicationModel.interviewLocation">
+                  [(ngModel)]="CAModel.interviewLocation">
                 <div class="input-group-addon">
                   <span class="glyphicon glyphicon-th"></span>
                 </div>
@@ -120,7 +120,7 @@
             <div class="form-group">
               <label>Notes</label>
               <textarea class="form-control" name="note" [readonly]="readOnlyForm == 'R'" rows="10"
-                [(ngModel)]="clientApplicationModel.notes"></textarea>
+                [(ngModel)]="CAModel.description"></textarea>
             </div>
           </div>
         </div>

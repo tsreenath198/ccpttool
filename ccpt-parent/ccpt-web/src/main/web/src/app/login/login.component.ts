@@ -15,24 +15,26 @@ export class LoginComponent implements OnInit {
     constructor(public router: Router, public http: HttpClientService, private toastr: ToastrCustomService) { }
     public loginDetails: LoginModel = <LoginModel>{};
     public urlConstants = new URLConstants();
-    
-    ngOnInit() { 
+
+    ngOnInit() {
         this.reset();
     }
     onLoggedin() {
-        this.http.post(this.loginDetails, this.urlConstants.UserLogin ).subscribe(resp => {
-            const response = resp as any;
-                this.toastr.success('User Logged In Successfully', 'Login');
-                sessionStorage.setItem('username', response.username);
-                sessionStorage.setItem('token', response.token);
-                sessionStorage.setItem('role', response.role);
-                this.router.navigate(['/layout']);
-        }, error => {
-            this.toastr.error(error.error.message, 'Login');
-            this.reset();
-        });
+        this.router.navigate(['/layout']); //TODO:Need to fix once API done
+        
+        // this.http.post(this.loginDetails, this.urlConstants.UserLogin ).subscribe(resp => {
+        //     const response = resp as any;
+        //         this.toastr.success('User Logged In Successfully', 'Login');
+        //         sessionStorage.setItem('username', response.username);
+        //         sessionStorage.setItem('token', response.token);
+        //         sessionStorage.setItem('role', response.role);
+        //         this.router.navigate(['/layout']);
+        // }, error => {
+        //     this.toastr.error(error.error.message, 'Login');
+        //     this.reset();
+        // });
     }
-    reset():void{
+    reset(): void {
         sessionStorage.setItem('username', null);
         sessionStorage.setItem('token', null);
         sessionStorage.setItem('role', null);
