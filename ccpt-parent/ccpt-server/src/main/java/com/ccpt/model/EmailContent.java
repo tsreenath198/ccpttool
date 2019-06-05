@@ -2,6 +2,7 @@ package com.ccpt.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import lombok.Getter;
@@ -12,6 +13,7 @@ import lombok.ToString;
 @Setter
 @ToString
 @Entity
+@Table
 public class EmailContent extends IDEntity {
 
 	@Column
