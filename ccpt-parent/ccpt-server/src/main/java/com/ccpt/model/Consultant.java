@@ -57,8 +57,8 @@ public class Consultant extends IDEntity {
 	@Column
 	private Double expectedCTC;
 
-	@OneToOne(cascade = CascadeType.PERSIST)
-	@JoinColumn(name = "status_code", updatable = false, insertable = false)
+	@OneToOne(cascade = CascadeType.MERGE)
+	@JoinColumn(name = "status_code", referencedColumnName = "code")
 	@NotNull
 	private ConsultantStatus status;
 

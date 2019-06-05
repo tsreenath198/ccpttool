@@ -36,25 +36,25 @@ public class ClientPosition extends IDEntity {
 	@Column
 	private Double maxCtc;
 
-	@OneToOne(cascade = CascadeType.PERSIST)
-	@JoinColumn(name = "status_code", updatable = false, insertable = false)
+	@OneToOne(cascade = CascadeType.MERGE)
+	@JoinColumn(name = "status_code", referencedColumnName = "code")
 	@NotNull
 	private ClientPositionStatus status;
 
-	@ManyToOne(cascade = CascadeType.PERSIST)
-	@JoinColumn(name = "closed_by", updatable = false, insertable = false)
+	@ManyToOne(cascade = CascadeType.MERGE)
+	@JoinColumn(name = "closed_by")
 	private Recruiter closedBy;
 
-	@ManyToOne(cascade = CascadeType.PERSIST)
-	@JoinColumn(name = "assigned_to", updatable = false, insertable = false)
+	@ManyToOne(cascade = CascadeType.MERGE)
+	@JoinColumn(name = "assigned_to")
 	private Recruiter assignedTo;
 
 	@Column(unique = true)
 	@NotNull
 	private String generatedCode;
 
-	@ManyToOne(cascade = CascadeType.PERSIST)
-	@JoinColumn(name = "client_id", updatable = false, insertable = false)
+	@ManyToOne(cascade = CascadeType.MERGE)
+	@JoinColumn(name = "client_id")
 	@NotNull
 	private Client client;
 

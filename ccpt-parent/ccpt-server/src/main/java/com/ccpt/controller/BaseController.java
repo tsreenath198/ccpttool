@@ -17,33 +17,37 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.ccpt.dto.BaseEntityDTO;
+import com.ccpt.mapper.BaseMapper;
 import com.ccpt.model.BaseEntity;
 import com.ccpt.service.BaseService;
 
-public abstract class BaseController<T extends BaseEntity<ID>, ID> {
+public abstract class BaseController<DTO extends BaseEntityDTO<ID>, MODEL extends BaseEntity<ID>, ID> {
 
 	@GetMapping(GET_ALL)
 	@ResponseBody
-	List<T> getAll() {
+	List<MODEL> getAll() {
 		return getService().getAll();
 	}
 
 	@GetMapping(ID_PARAM)
 	@ResponseBody
-	T get(@PathVariable ID id) {
+	MODEL get(@PathVariable ID id) {
 		return getService().get(id);
 	}
 
 	@PostMapping
 	@ResponseBody
-	T create(@RequestBody @Valid T entity) {
-		return getService().save(entity);
+	MODEL create(@RequestBody @Valid DTO dto) {
+		MODEL model = getMapper().toModel(dto);
+		return getService().save(model);
 	}
 
 	@PutMapping
 	@ResponseBody
-	T update(@RequestBody @Valid T entity) {
-		return getService().update(entity);
+	MODEL update(@RequestBody @Valid DTO dto) {
+		MODEL model = getMapper().toModel(dto);
+		return getService().update(model);
 	}
 
 	@DeleteMapping(ID_PARAM)
@@ -52,5 +56,7 @@ public abstract class BaseController<T extends BaseEntity<ID>, ID> {
 		return new ResponseEntity<String>("Entity with id : " + id + " deleted", HttpStatus.OK);
 	}
 
-	public abstract BaseService<T, ID> getService();
+	public abstract BaseService<MODEL, ID> getService();
+
+	public abstract BaseMapper<DTO, MODEL, ID> getMapper();
 }

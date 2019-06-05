@@ -22,8 +22,8 @@ import lombok.ToString;
 @Setter
 @ToString
 public class ConsultantCallHistory extends IDEntity {
-	@ManyToOne(cascade = CascadeType.PERSIST)
-	@JoinColumn(name = "consultant_id", updatable = false, insertable = false)
+	@ManyToOne(cascade = CascadeType.MERGE)
+	@JoinColumn(name = "consultant_id")
 	@NotNull
 	private Consultant consultant;
 

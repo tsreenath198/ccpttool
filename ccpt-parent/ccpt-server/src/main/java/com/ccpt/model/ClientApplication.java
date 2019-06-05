@@ -24,18 +24,18 @@ import lombok.ToString;
 @ToString
 public class ClientApplication extends IDEntity {
 
-	@OneToOne(cascade = CascadeType.PERSIST)
-	@JoinColumn(name = "status_code", updatable = false, insertable = false)
+	@OneToOne(cascade = CascadeType.MERGE)
+	@JoinColumn(name = "status_code", referencedColumnName = "code")
 	@NotNull
 	private ClientApplicationStatus status;
 
 	@ManyToOne(cascade = CascadeType.PERSIST, optional = false)
-	@JoinColumn(name = "client_position_id", updatable = false, insertable = false)
+	@JoinColumn(name = "client_position_id")
 	@NotNull
 	private ClientPosition clientPosition;
 
 	@ManyToOne(cascade = CascadeType.PERSIST)
-	@JoinColumn(name = "consultant_id", updatable = false, insertable = false)
+	@JoinColumn(name = "consultant_id")
 	@NotNull
 	private Consultant consultant;
 

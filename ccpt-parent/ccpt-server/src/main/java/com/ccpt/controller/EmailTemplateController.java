@@ -2,6 +2,7 @@ package com.ccpt.controller;
 
 import java.util.Map;
 
+import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,7 +13,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ccpt.constants.CCPTConstants;
+import com.ccpt.dto.EmailTemplateDTO;
 import com.ccpt.factory.TemplateSubstitutorFactory;
+import com.ccpt.mapper.BaseMapper;
+import com.ccpt.mapper.EmailTemplateMapper;
 import com.ccpt.model.EmailContent;
 import com.ccpt.model.EmailTemplate;
 import com.ccpt.service.BaseService;
@@ -22,7 +26,7 @@ import com.ccpt.substitutor.ContentSubstitutor;
 @RestController
 @CrossOrigin
 @RequestMapping(CCPTConstants.TEMPLATE)
-public class EmailTemplateController extends BaseController<EmailTemplate, Integer> {
+public class EmailTemplateController extends BaseController<EmailTemplateDTO, EmailTemplate, Integer> {
 
 	@Autowired
 	private EmailTemplateService emailTemplateService;
@@ -41,5 +45,10 @@ public class EmailTemplateController extends BaseController<EmailTemplate, Integ
 	@Override
 	public BaseService<EmailTemplate, Integer> getService() {
 		return emailTemplateService;
+	}
+
+	@Override
+	public BaseMapper<EmailTemplateDTO, EmailTemplate, Integer> getMapper() {
+		return Mappers.getMapper(EmailTemplateMapper.class);
 	}
 }

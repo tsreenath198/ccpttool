@@ -3,6 +3,7 @@ package com.ccpt.controller;
 import javax.security.sasl.AuthenticationException;
 import javax.servlet.http.HttpSession;
 
+import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +13,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.ccpt.dto.LoginDTO;
+import com.ccpt.mapper.BaseMapper;
+import com.ccpt.mapper.LoginMapper;
 import com.ccpt.model.Login;
 import com.ccpt.service.BaseService;
 import com.ccpt.service.LoginService;
@@ -19,8 +23,7 @@ import com.ccpt.service.LoginService;
 @Controller
 @CrossOrigin
 @RequestMapping("/user")
-public class LoginController extends BaseController<Login, Integer> {
-
+public class LoginController extends BaseController<LoginDTO, Login, Integer> {
 	@Autowired
 	private LoginService loginService;
 
@@ -40,6 +43,11 @@ public class LoginController extends BaseController<Login, Integer> {
 	@Override
 	public BaseService<Login, Integer> getService() {
 		return loginService;
+	}
+
+	@Override
+	public BaseMapper<LoginDTO, Login, Integer> getMapper() {
+		return Mappers.getMapper(LoginMapper.class);
 	}
 
 }

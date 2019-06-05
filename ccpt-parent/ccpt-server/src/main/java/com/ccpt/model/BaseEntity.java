@@ -7,6 +7,7 @@ import javax.persistence.EmbeddedId;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -22,6 +23,7 @@ import lombok.ToString;
 public abstract class BaseEntity<ID> {
 
 	@Column
+	@NotNull
 	protected Boolean activeFlag = true;
 
 	@Column

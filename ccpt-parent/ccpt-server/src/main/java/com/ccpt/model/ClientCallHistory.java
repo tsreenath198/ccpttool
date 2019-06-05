@@ -23,8 +23,8 @@ import lombok.ToString;
 @ToString
 public class ClientCallHistory extends IDEntity {
 
-	@ManyToOne(cascade = CascadeType.PERSIST)
-	@JoinColumn(name = "client_position_id", updatable = false, insertable = false)
+	@ManyToOne(cascade = CascadeType.MERGE)
+	@JoinColumn(name = "client_position_id")
 	@NotNull
 	private ClientPosition clientPosition;
 
