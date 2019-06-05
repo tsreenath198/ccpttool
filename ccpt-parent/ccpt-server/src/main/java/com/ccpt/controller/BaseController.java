@@ -40,14 +40,18 @@ public abstract class BaseController<DTO extends BaseEntityDTO<ID>, MODEL extend
 	@ResponseBody
 	MODEL create(@RequestBody @Valid DTO dto) {
 		MODEL model = getMapper().toModel(dto);
-		return getService().save(model);
+		validateAndClean(model);
+		MODEL result = getService().save(model);
+		return get(result.getKey());
 	}
 
 	@PutMapping
 	@ResponseBody
 	MODEL update(@RequestBody @Valid DTO dto) {
 		MODEL model = getMapper().toModel(dto);
-		return getService().update(model);
+		validateAndClean(model);
+		MODEL result = getService().update(model);
+		return get(result.getKey());
 	}
 
 	@DeleteMapping(ID_PARAM)
@@ -59,4 +63,8 @@ public abstract class BaseController<DTO extends BaseEntityDTO<ID>, MODEL extend
 	public abstract BaseService<MODEL, ID> getService();
 
 	public abstract BaseMapper<DTO, MODEL, ID> getMapper();
+
+	protected void validateAndClean(MODEL model) {
+
+	}
 }

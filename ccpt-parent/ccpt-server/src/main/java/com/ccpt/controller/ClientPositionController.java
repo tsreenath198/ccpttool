@@ -1,5 +1,7 @@
 package com.ccpt.controller;
 
+import javax.validation.ValidationException;
+
 import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -30,5 +32,21 @@ public class ClientPositionController extends BaseController<ClientPositionDTO, 
 	@Override
 	public BaseMapper<ClientPositionDTO, ClientPosition, Integer> getMapper() {
 		return Mappers.getMapper(ClientPositionMapper.class);
+	}
+
+	@Override
+	protected void validateAndClean(ClientPosition model) {
+		if (model.getClosedBy().getId() == null) {
+			model.setClosedBy(null);
+		}
+		if (model.getAssignedTo().getId() == null) {
+			model.setAssignedTo(null);
+		}
+		if (model.getClient().getId() == null) {
+			throw new ValidationException("Client cannot be null");
+		}
+		if (model.getStatus().getCode() == null) {
+			throw new ValidationException("Client Position Status cannot be null");
+		}
 	}
 }
