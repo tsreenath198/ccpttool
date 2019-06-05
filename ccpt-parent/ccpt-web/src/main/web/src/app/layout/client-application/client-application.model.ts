@@ -11,4 +11,5 @@ export interface ClientApplicationModel {
     interviewLocation: string;
     interviewTime: string;
     id: number;
+    description: string;
 }
