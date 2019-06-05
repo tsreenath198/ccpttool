@@ -49,7 +49,4 @@ public class ClientApplication extends IDEntity {
 	@Column
 	private String interviewLocation;
 
-	@Column
-	private Integer closedBy;
-
 }
