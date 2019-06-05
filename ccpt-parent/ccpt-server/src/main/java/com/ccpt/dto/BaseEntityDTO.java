@@ -8,6 +8,5 @@ import lombok.ToString;
 @Setter
 @ToString
 public abstract class BaseEntityDTO<ID> {
-	protected Boolean activeFlag = true;
 	protected String description;
 }

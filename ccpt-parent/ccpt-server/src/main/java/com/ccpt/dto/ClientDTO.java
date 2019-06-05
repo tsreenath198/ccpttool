@@ -2,8 +2,6 @@ package com.ccpt.dto;
 
 import java.util.List;
 
-import com.ccpt.model.ClientContact;
-
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -24,5 +22,5 @@ public class ClientDTO extends IDEntityDTO {
 	private Integer guaranteePeriod;
 	private Integer creditPeriod;
 	private String website;
-	private List<ClientContact> clientContacts;
+	private List<ClientContactDTO> clientContacts;
 }

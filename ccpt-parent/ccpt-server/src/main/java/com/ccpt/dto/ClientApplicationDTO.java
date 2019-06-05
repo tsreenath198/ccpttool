@@ -10,11 +10,10 @@ import lombok.ToString;
 @Setter
 @ToString
 public class ClientApplicationDTO extends IDEntityDTO {
-	private String code;
+	private String caStatus;
 	private Integer cpId;
 	private Integer consultantId;
 	private Date interviewDate;
 	private String interviewTime;
 	private String interviewLocation;
-	private Integer closedBy;
 }
