@@ -26,7 +26,7 @@ export class ClientPositionComponent implements OnInit {
     public clientPositionList: Array<ClientPositionModel> = [];
     public consultantCreateList: Array<any> = [];
     public consultantList: Array<ConsultantModel> = [];
-    public smsList: Array<MessageTemplateModel>= [];
+    public smsList: Array<MessageTemplateModel> = [];
     public clientPositionStatusList: Array<ClientpositionStatusModel> = [];
     public clientList: Array<ClientModel> = [];
     public recruiterList: Array<RecruiterModel> = [];
@@ -34,7 +34,8 @@ export class ClientPositionComponent implements OnInit {
     public emailTemplateModel: EmailTemplateModel = <EmailTemplateModel>{};
     public sendSmsModel: SendSmsModel = <SendSmsModel>{};
     public sendEmailModel: SendEmailModel = <SendEmailModel>{};
-    public numbersForSms: Array<any> = [];
+    public numbersForSmsDropdown: Array<any> = [];
+    public numbersToSend: Array<any> = [];
     public mailIdForMails: Array<any> = [];
     public consultantNamesTocreate: Array<any> = [];
     public consultantNames: Array<any> = [];
@@ -52,7 +53,7 @@ export class ClientPositionComponent implements OnInit {
     public getAllR = this.http.get(this.urlConstants.RGetAll);
     public getAllC = this.http.get(this.urlConstants.ClientGetAll);
     public getAllCon = this.http.get(this.urlConstants.CGetAll);
-    public getAllSms = this.http.get(this.urlConstants.SMSTemplateGetAll)
+    public getAllSms = this.http.get(this.urlConstants.SMSTemplateGetAll);
     constructor(private http: HttpClientService, private toastr: ToastrCustomService, private modalService: NgbModal) { }
 
     ngOnInit() {
@@ -183,11 +184,16 @@ export class ClientPositionComponent implements OnInit {
         });
     }
     public sendSmsReq(): void {
-        this.http.post(this.sendSmsModel, this.urlConstants.SMSTemplateSend ).subscribe(resp => {
-            this.sendSmsModel = <SendSmsModel>{};
-            this.toastr.success('Message/Messages sent successfully', 'Sent!');
-            this.close();
-        });
+        for (let i = 0; i <= this.numbersToSend.length; i++) {
+            const temp = this.numbersToSend[i].item_id;
+            this.sendSmsModel.contactNumbers.push(temp);
+        }
+        // this.http.post(this.sendSmsModel, this.urlConstants.SMSTemplateSend ).subscribe(resp => {
+        //     this.sendSmsModel = <SendSmsModel>{};
+        //     this.toastr.success('Message/Messages sent successfully', 'Sent!');
+        //     this.close();
+        // });
+        console.log(this.sendSmsModel);
     }
     public sendEmailReq(): void {
         this.http.post(this.sendEmailModel, this.urlConstants.EmailTemplateSend).subscribe(resp => {
@@ -201,17 +207,12 @@ export class ClientPositionComponent implements OnInit {
         this.http.post(dataToCreate, this.urlConstants.CACreate).subscribe(resp => {
             this.toastr.success(this.urlConstants.SuccessMsg, "Client Application");
             this.init();
-            this.formReset()
+            this.formReset();
+
         }, err => {
-            this.toastr.error(err.statusText, "Client Application");
-        })
+            this.toastr.error(err.statusText, 'Client Application');
+        });
     }
-    // onItemSelect(data: any) {
-    //     for (let i = 0; i < data.length; i++) {
-    //         const temp =  {'clientPositionId': this.selectedRecrd , 'consultantId': data.item_id , 'clientApplicationStatusCode': 'com' , 'notes': '' , 'interviewDate': '', 'id': ''};
-    //         this.consultantCreateList.push(temp);
-    //     }
-    // }
     /**
      * @param
      * 1) content consists the modal instance
@@ -229,10 +230,10 @@ export class ClientPositionComponent implements OnInit {
         });
         console.log(content);
         if (content) {
-            this.http.get(this.urlConstants.SMSTemplateGetById + selected).subscribe( resp => {
-                this.messageTemplateModel = resp as any;
-                this.sendSmsModel.message = this.messageTemplateModel.body;
-            });
+            // this.http.get(this.urlConstants.SMSTemplateGetById + selected).subscribe( resp => {
+            //     this.messageTemplateModel = resp as any;
+            //     this.sendSmsModel.message = this.messageTemplateModel.body;
+            // });
             this.http.get(this.urlConstants.EmailTemplateGetById + selected).subscribe( resp => {
                 this.emailTemplateModel = resp as any;
                 this.sendEmailModel.subject = this.emailTemplateModel.subject;
@@ -240,13 +241,14 @@ export class ClientPositionComponent implements OnInit {
 
             });
             for (let i = 0 ; i < this.consultantList.length ; i++) {
-                this.numbersForSms.push(this.consultantList[i].phone);
+                const temp = {'item_id': this.consultantList[i].phone, 'item_text': this.consultantList[i].fullname , 'notes': ''};
+                this.numbersForSmsDropdown.push(temp);
             }
             for (let i = 0 ; i < this.consultantList.length ; i++) {
                 this.mailIdForMails.push(this.consultantList[i].email);
             }
             for (let i = 0 ; i < this.consultantList.length ; i++) {
-                const temp = {'item_id': this.consultantList[i].id, 'item_text': this.consultantList[i].fullname , 'notes':''};
+                const temp = {'item_id': this.consultantList[i].id, 'item_text': this.consultantList[i].fullname , 'notes': ''};
                  this.consultantNames.push(temp);
                 // this.consultantNames[i].item_text.push(this.consultantList[i].fullname);
             }

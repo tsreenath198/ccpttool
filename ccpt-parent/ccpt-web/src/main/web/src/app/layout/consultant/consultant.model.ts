@@ -1,3 +1,5 @@
+import { ConsultantStatusModel } from "../consultant-status/consultant-status.model";
+
 export interface ConsultantModel {
     fullname: string;
     email: string;
@@ -14,7 +16,7 @@ export interface ConsultantModel {
     skills: string;
     qualification: string;
     passoutYear: number;
-    consultantStatusCode: string;
+    cStatus: string;
     description: string;
     id: string;
     currentJobTitle: string;

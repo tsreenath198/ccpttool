@@ -22,23 +22,23 @@ export class ConsultantComponent implements OnInit {
     public consultantList: Array<ConsultantModel> = [];
     public copyConList: Array<ConsultantModel> = [];
     public consultantStatusList: Array<ConsultantStatusModel> = [];
-    public formButtonsToggler: boolean = true;
+    public formButtonsToggler = true;
 
-    public readOnlyForm: string = '';
-    public enableButtonType: string = '';
+    public readOnlyForm = '';
+    public enableButtonType = '';
     public genderList = ['Male', 'Female', 'Other'];
     public uploadFileList: Array<any> = [];
     public fileList: Array<any> = [];
-    public refType: string = '';
-    public comments: string = '';
-    public isFresher:boolean;
+    public refType = '';
+    public comments = '';
+    public isFresher: boolean;
     public uploader: FileUploader = new FileUploader({});
     private selectedRecrdToDel = 0;
     public closeResult = '';
     private modalRef: NgbModalRef;
     public urlConstants = new URLConstants();
     public currSearchTxt: string;
-    constructor(private http: HttpClientService, private toastr: ToastrCustomService, private modalService: NgbModal) { }
+    constructor(private http: HttpClientService, private toastr: ToastrCustomService, private modalService: NgbModal) {    }
 
     ngOnInit() {
         this.http.get(this.urlConstants.CSGetAll).subscribe(resp => {
@@ -113,6 +113,18 @@ export class ConsultantComponent implements OnInit {
             this.formReset();
         });
     }
+    imposeMinMax(el) {
+        if (el.value !== '') {
+          // tslint:disable-next-line:radix
+          if (parseInt(el.value) < parseInt(el.min)) {
+            el.value = el.min;
+          }
+          // tslint:disable-next-line:radix
+          if (parseInt(el.value) > parseInt(el.max)) {
+            el.value = el.max;
+          }
+        }
+      }
     /**
      * @param
      * 1) content consists the modal instance
@@ -155,7 +167,7 @@ export class ConsultantComponent implements OnInit {
         formData.append('file', files[0].rawFile, files[0].name);
         const params = 'refId=' + this.selectedRecrdToDel + '&refType= Consultant &comments=' + this.comments;
         this.http.upload('file/create?' + params, formData).subscribe(resp => {
-            console.log("resp =====", resp);
+            console.log('resp =====', resp);
             this.close();
         });
         /* let requests = [];

@@ -106,10 +106,10 @@
                         <option *ngFor="let sms of smsList" [ngValue]="sms.id"> {{ sms.type }}</option>
                       </select>
                     <label>Numbers</label>
-                    <ng-multiselect-dropdown [placeholder]="'choose numbers..'" [data]="numbersForSms"
-                      [(ngModel)]="sendSmsModel.contactNumbers" [settings]="dropdownSettings">
-                      <!-- (onSelect)="onItemSelect($event)"
-                    (onSelectAll)="onSelectAll($event)" -->
+                    <ng-multiselect-dropdown [placeholder]="'choose numbers..'" [data]="numbersForSmsDropdown"
+                      [(ngModel)]="numbersToSend" [settings]="dropdownSettings">
+                     <!-- (onSelect)="onItemSelect($event)"
+                     (onSelectAll)="onSelectAll($event)" -->
                     </ng-multiselect-dropdown>
                     <label>Message Body</label>
                     <textarea class="form-control" cols="5" rows="8" [(ngModel)]="sendSmsModel.message"
@@ -158,6 +158,19 @@
       <form name="form" id="clientPositionForm" (ngSubmit)="f.form.valid && createClientPosition(f)" #f="ngForm"
         novalidate>
         <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                  <label>Assign To<span class="required">*</span></label>
+                  <select class="form-control" name="assign" [disabled]="readOnlyForm == 'R'"
+                    [(ngModel)]="clientPositionModel.assignTo" [ngClass]="{ 'is-invalid': f.submitted && assign.invalid }"
+                    #assign="ngModel" required>
+                    <option *ngFor="let rl of recruiterList" [ngValue]="rl.id"> {{ rl.fullname }}</option>
+                  </select>
+                  <div class="invalid-feedback">
+                    Assign to is mandatory
+                  </div>
+                </div>
+              </div>
           <div class="col-md-12">
             <div class="form-group">
               <label>Client Name<span class="required">*</span></label>

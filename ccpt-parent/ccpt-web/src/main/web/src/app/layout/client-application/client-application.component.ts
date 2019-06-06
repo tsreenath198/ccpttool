@@ -36,7 +36,11 @@ export class ClientApplicationComponent implements OnInit {
     public readOnlyForm: string = '';
     public enableButtonType: string = '';
 
-    constructor(private http: HttpClientService, private toastr: ToastrCustomService, private modalService: NgbModal) { }
+    constructor(private http: HttpClientService, private toastr: ToastrCustomService, private modalService: NgbModal) {
+        this.CAModel['caStatus'] = <ClientApplicationStatusModel>{};
+        this.CAModel['clientPosition'] = <ClientPositionModel>{};
+        this.CAModel['consultant'] = <ConsultantModel>{};
+    }
     private getAllCAS = this.http.get(this.urlConstants.CASGetAll);
     private getAllC = this.http.get(this.urlConstants.CGetAll);
     private getAllCP = this.http.get(this.urlConstants.CPGetAll);

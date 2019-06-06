@@ -32,7 +32,10 @@ export class ClientCallHistoryComponent implements OnInit {
     public readOnlyForm = '';
     public enableButtonType = '';
 
-    constructor(private http: HttpClientService, private toastr: ToastrCustomService, private modalService: NgbModal) { }
+    constructor(private http: HttpClientService, private toastr: ToastrCustomService, private modalService: NgbModal) {
+        this.clientCallHistoryModel['clientId'] = <ClientModel>{};
+        this.clientCallHistoryModel['clientPositionCode'] = <ClientPositionModel>{};
+    }
 
     ngOnInit() {
         this.http.get(this.urlConstants.CPGetAll).subscribe(resp => {

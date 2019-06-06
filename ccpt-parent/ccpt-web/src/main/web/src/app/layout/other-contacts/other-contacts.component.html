@@ -59,34 +59,26 @@
           </div>
           <div class="col-md-12">
             <div class="form-group">
-              <label>E-Mail<span class="required">*</span></label>
+              <label>E-Mail</label>
               <input class="form-control" [readonly]="readOnlyForm == 'R'" [(ngModel)]="otherContactsModel.email"
-                name="email" [ngClass]="{'is-invalid': f.submitted && email.invalid}" #email="ngModel" required>
-
-              <div class="invalid-feedback">
-                email is mandatory
-              </div>
+                name="email"  #email="ngModel" >
             </div>
           </div>
+          <div class="col-md-12 text-center">
+              <span>(or)</span>
+            </div>
           <div class="col-md-12">
             <div class="form-group">
-              <label>Phone<span class="required">*</span></label>
+              <label>Phone</label>
               <input class="form-control" [readonly]="readOnlyForm == 'R'" [(ngModel)]="otherContactsModel.phone"
-                name="phone" [ngClass]="{'is-invalid': f.submitted && phone.invalid}" #phone="ngModel" required>
-              <div class="invalid-feedback">
-                phone is mandatory
-              </div>
+                name="phone" #phone="ngModel">
             </div>
           </div>
           <div class="col-md-12">
             <div class="form-group">
-              <label>Notes<span class="required">*</span></label>
+              <label>Notes</label>
               <textarea class="form-control" cols="5" rows="5" [readonly]="readOnlyForm == 'R'"
-                [(ngModel)]="otherContactsModel.notes" name="notes"
-                [ngClass]="{'is-invalid': f.submitted && notes.invalid}" #notes="ngModel" required></textarea>
-              <div class="invalid-feedback">
-                notes is mandatory
-              </div>
+                [(ngModel)]="otherContactsModel.notes" name="notes" #notes="ngModel"></textarea>
             </div>
           </div>
         </div>

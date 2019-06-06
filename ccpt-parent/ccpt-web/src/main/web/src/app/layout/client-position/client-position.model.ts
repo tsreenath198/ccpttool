@@ -1,4 +1,5 @@
 export interface ClientPositionModel {
+    assignTo: string;
     clientName: string;
     clientId: string;
     id: number;
@@ -17,13 +18,13 @@ export interface ClientPositionModel {
     createdDate: string;
 }
 
-export interface SendSmsModel {
-    contactNumbers: Array<string>;
+export class SendSmsModel {
+    contactNumbers: Array<string>= [];
     message: string;
 }
 
-export interface SendEmailModel {
-    to: Array<string>;
+export class SendEmailModel {
+    to: Array<string> = [];
     subject: string;
     body: string;
 }

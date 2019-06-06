@@ -7,89 +7,109 @@ export class URLConstants {
     CASGetById = 'caStatus/';
 
     /*Client Postion Status*/
-    CPSCreate = 'admin/cPStatus/create';
-    CPSGetAll = 'admin/cPStatus/getAll';
-    CPSUpdate = 'admin/cPStatus/update';
-    CPSDelete = 'admin/cPStatus/id/';
+    CPSCreate = 'cpStatus';
+    CPSGetAll = 'cpStatus/';
+    CPSUpdate = 'cpStatus';
+    CPSDelete = 'cpStatus/';
+    CPSGetById = 'cpStatus/';
 
     /*Consultant Status*/
-    CSCreate = 'admin/consultantStatus/create';
-    CSGetAll = 'admin/consultantStatus/getAll';
-    CSUpdate = 'admin/consultantStatus/update';
-    CSDelete = 'admin/consultantStatus/id/';
+    CSCreate = 'consultantStatus';
+    CSGetAll = 'consultantStatus/';
+    CSUpdate = 'consultantStatus';
+    CSDelete = 'consultantStatus/';
+    CSGetById = 'consultantStatus/';
 
     /*Client Position */
-    CPCreate = 'clientPosition/create';
-    CPGetAll = 'clientPosition/getAll';
-    CPUpdate = 'clientPosition/update';
-    CPDelete = 'clientPosition/id/';
+    CPCreate = 'clientPosition';
+    CPGetAll = 'clientPosition/';
+    CPUpdate = 'clientPosition';
+    CPDelete = 'clientPosition/';
+    CPGetById = 'clientPosition/';
 
     /*Consultant */
-    CCreate = 'consultant/create';
-    CGetAll = 'consultant/getAll';
-    CUpdate = 'consultant/update';
-    CDelete = 'consultant/id/';
-    CUpload = 'uploadFile/create';
+    CCreate = 'consultant';
+    CGetAll = 'consultant/';
+    CUpdate = 'consultant';
+    CDelete = 'consultant/';
+    CGetById = 'consultant/';
+    CUpload = 'file/save';
 
     /* Client Application */
-    CACreate = 'clientApplication/create';
-    CAGetAll = 'clientApplication/getAll';
-    CAUpdate = 'clientApplication/update';
-    CADelete = 'clientApplication/id/';
+    CACreate = 'clientApplication';
+    CAGetAll = 'clientApplication/';
+    CAUpdate = 'clientApplication';
+    CADelete = 'clientApplication/';
+    CAGetById = 'clientApplication/';
 
 
     /* Client Call History */
-    CCHCreate = 'clientCallHistory/create';
-    CCHGetAll = 'clientCallHistory/getAll';
-    CCHUpdate = 'clientCallHistory/update';
-    CCHDelete = 'clientCallHistory/id/';
+    CCHCreate = 'clientCallHistory';
+    CCHGetAll = 'clientCallHistory/';
+    CCHUpdate = 'clientCallHistory';
+    CCHDelete = 'clientCallHistory/';
+    CCHGetById = 'clientCallHistory/';
 
     /* consultant Call History */
-    CoCHCreate = 'consultantCallHistory/create';
-    CoCHGetAll = 'consultantCallHistory/getAll';
-    CoCHUpdate = 'consultantCallHistory/update';
-    CoCHDelete = 'consultantCallHistory/id/';
+    CoCHCreate = 'consultantCallHistory';
+    CoCHGetAll = 'consultantCallHistory/';
+    CoCHUpdate = 'consultantCallHistory';
+    CoCHDelete = 'consultantCallHistory/';
+    CoCHGetById = 'consultantCallHistory/';
 
     /* Recruiter */
-    RCreate = 'recruiter/create';
-    RGetAll = 'recruiter/getAll';
-    RUpdate = 'recruiter/update';
-    RDelete = 'recruiter/id/';
+    RCreate = 'recruiter';
+    RGetAll = 'recruiter/';
+    RUpdate = 'recruiter';
+    RDelete = 'recruiter/';
+    RGetById = 'recruiter/';
+    RGetByName = 'recruiter/name/';
+    
 
     /*Client*/
-    ClientCreate = 'client/create';
-    ClientGetAll = 'client/getAll';
-    ClientUpdate = 'client/update';
-    ClientDelete = 'client/id/';
+    ClientCreate = 'client';
+    ClientGetAll = 'client/';
+    ClientUpdate = 'client';
+    ClientDelete = 'client/';
+    ClientGetById = 'client/';
 
     /*Other Contacts */
-    OCCreate = 'contact/create';
-    OCGetAll = 'contact/getAll';
-    OCUpdate = 'contact/update';
-    OCDelete = 'contact/id/';
+    OCCreate = 'contact';
+    OCGetAll = 'contact/';
+    OCUpdate = 'contact';
+    OCDelete = 'contact/';
+    OCGetById = 'contact/';
 
     /** Reporting */
     ReportingGetAllCLCH = 'report/getAllClientCallHistorysByDays?days=';
     ReportingGetAllCOCH = 'report/getAllConsultantCallHistorysByDays?days=';
     ReportingGetAllTop5CP = 'report/getTop5CP';
     ReportingGetClosures = 'report/getClosedCountOfAllRecruitersFromLastGivenDays?days=';
+    ReportingGetAllOpenCP = 'report/getAllOpenCP'
 
     /**Email Template */
-    EmailTemplateGetAll = 'emailTemplate/getAll';
-    EmailTemplateGetById = 'emailTemplate/template/';
-    EmailTemplateUpdate = 'emailTemplate/update';
+    EmailTemplateCreate = 'template'
+    EmailTemplateGetAll = 'template/';
+    EmailTemplateDelete= 'template/';
+    EmailTemplateGetById = 'template/';
+    EmailTemplateUpdate = 'template';
+    EmailTemplateBuildContent = 'template/build/'
     EmailTemplateSend = 'sendEmail';
 
     /**SMS template */
     SMSTemplateGetAll = 'sms/getAll';
     SMSTemplateSend = 'sms/send';
-    SMSTemplateGetById = 'sms/template/bulkSMSForClientRole/';
+    SMSTemplateBulkSMSForClientRole = 'sms/template/bulkSMSForClientRole/';
+    SMSTemplatebulkSMSForClientPosition = 'sms/template/bulkSMSForClientPosition/';
     SMSTemplateUpdate = 'sms/update';
 
     /**User setup */
     UserLogin = 'user/login';
-    UserCreate = 'user/create';
-    UserGetAll = 'user/getAll'
+    UserCreate = 'user';
+    UserGetAll = 'user/';
+    UserUpdate = 'user';
+    UserDelete = 'user/';
+    UserGetById = 'user/';
 
     /** Messages */
     DeleteMsg = 'Deleted Successfully';

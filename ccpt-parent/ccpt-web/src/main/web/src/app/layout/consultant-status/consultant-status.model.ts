@@ -1,5 +1,4 @@
-export interface ConsultantStatusModel{
-    description:string,
-    code:string,
- 
+export interface ConsultantStatusModel {
+    description: string;
+    code: string;
 }
