@@ -1,5 +1,7 @@
 package com.ccpt.controller;
 
+import javax.validation.ValidationException;
+
 import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -30,6 +32,19 @@ public class ClientApplicationController extends BaseController<ClientApplicatio
 	@Override
 	public BaseMapper<ClientApplicationDTO, ClientApplication, Integer> getMapper() {
 		return Mappers.getMapper(ClientApplicationMapper.class);
+	}
+
+	@Override
+	protected void validateAndClean(ClientApplication model) {
+		if (model.getClientPosition() == null) {
+			throw new ValidationException("Client Position cannot be null");
+		}
+		if(model.getConsultant() == null) {
+			throw new ValidationException("Consultant cannot be null");
+		}
+		if(model.getStatus() == null) {
+			throw new ValidationException("Application Status cannot be null");
+		}
 	}
 
 }

@@ -1,5 +1,7 @@
 package com.ccpt.controller;
 
+import javax.validation.ValidationException;
+
 import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,6 +12,7 @@ import com.ccpt.constants.CCPTConstants;
 import com.ccpt.dto.ClientApplicationStatusDTO;
 import com.ccpt.mapper.BaseMapper;
 import com.ccpt.mapper.ClientApplicationStatusMapper;
+import com.ccpt.model.ClientApplication;
 import com.ccpt.model.ClientApplicationStatus;
 import com.ccpt.service.BaseService;
 import com.ccpt.service.ClientApplicationStatusService;
@@ -31,5 +34,12 @@ public class ClientApplicationStatusController
 	@Override
 	public BaseMapper<ClientApplicationStatusDTO, ClientApplicationStatus, String> getMapper() {
 		return Mappers.getMapper(ClientApplicationStatusMapper.class);
+	}
+
+	@Override
+	protected void validateAndClean(ClientApplicationStatus model) {
+		if (model.getCode() == null) {
+			throw new ValidationException("Client Application Status Code cannot be null");
+		}
 	}
 }

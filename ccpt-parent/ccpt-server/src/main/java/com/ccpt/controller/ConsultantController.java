@@ -1,5 +1,7 @@
 package com.ccpt.controller;
 
+import javax.validation.ValidationException;
+
 import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,6 +12,7 @@ import com.ccpt.constants.CCPTConstants;
 import com.ccpt.dto.ConsultantDTO;
 import com.ccpt.mapper.BaseMapper;
 import com.ccpt.mapper.ConsultantMapper;
+import com.ccpt.model.ClientPosition;
 import com.ccpt.model.Consultant;
 import com.ccpt.service.BaseService;
 import com.ccpt.service.ConsultantService;
@@ -30,6 +33,13 @@ public class ConsultantController extends BaseController<ConsultantDTO, Consulta
 	@Override
 	public BaseMapper<ConsultantDTO, Consultant, Integer> getMapper() {
 		return Mappers.getMapper(ConsultantMapper.class);
+	}
+
+	@Override
+	protected void validateAndClean(Consultant model) {
+		if (model.getStatus().getCode() == null) {
+			throw new ValidationException("Consultant Status cannot be null");
+		}
 	}
 
 }

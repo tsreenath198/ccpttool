@@ -1,5 +1,7 @@
 package com.ccpt.controller;
 
+import javax.validation.ValidationException;
+
 import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,6 +12,7 @@ import com.ccpt.constants.CCPTConstants;
 import com.ccpt.dto.ConsultantCallHistoryDTO;
 import com.ccpt.mapper.BaseMapper;
 import com.ccpt.mapper.ConsultantCallHistoryMapper;
+import com.ccpt.model.ClientCallHistory;
 import com.ccpt.model.ConsultantCallHistory;
 import com.ccpt.service.BaseService;
 import com.ccpt.service.ConsultantCallHistoryService;
@@ -31,6 +34,16 @@ public class ConsultantCallHistoryController
 	@Override
 	public BaseMapper<ConsultantCallHistoryDTO, ConsultantCallHistory, Integer> getMapper() {
 		return Mappers.getMapper(ConsultantCallHistoryMapper.class);
+	}
+
+	@Override
+	protected void validateAndClean(ConsultantCallHistory model) {
+		if (model.getConsultant() == null) {
+			throw new ValidationException("Client Position cannot be null");
+		}
+		if (model.getCalledDate() == null) {
+			throw new ValidationException("Called Date cannot be null");
+		}
 	}
 
 }
