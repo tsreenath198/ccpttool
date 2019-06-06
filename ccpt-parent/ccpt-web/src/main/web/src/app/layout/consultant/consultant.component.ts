@@ -38,7 +38,7 @@ export class ConsultantComponent implements OnInit {
     private modalRef: NgbModalRef;
     public urlConstants = new URLConstants();
     public currSearchTxt: string;
-    constructor(private http: HttpClientService, private toastr: ToastrCustomService, private modalService: NgbModal) {    }
+    constructor(private http: HttpClientService, private toastr: ToastrCustomService, private modalService: NgbModal) { }
 
     ngOnInit() {
         this.http.get(this.urlConstants.CSGetAll).subscribe(resp => {
@@ -53,12 +53,11 @@ export class ConsultantComponent implements OnInit {
             this.copyConList = resp as any;
         });
     }
-    consultantEdit(id:number) {
-       this.getConsultantById(id);
+    consultantEdit(id: number) {
         this.readOnlyForm = 'U';
         this.enableButtonType = 'U';
     }
-    readOnlyEnable(id:number) {
+    readOnlyEnable(id: number) {
         this.getConsultantById(id);
         this.readOnlyForm = 'R';
         this.enableButtonType = 'E';
@@ -92,9 +91,9 @@ export class ConsultantComponent implements OnInit {
             this.toastr.error(err.statusText, 'Client Position');
         });
     }
-    getConsultantById(id:number){
+    getConsultantById(id: number) {
         this.http.get(this.urlConstants.CGetById + id).subscribe(resp => {
-            this.consultantModel = resp as any;
+            this.consultantModel = this.mapToUpdateModel(resp);
         });
     }
     getFilesById() {
@@ -118,18 +117,24 @@ export class ConsultantComponent implements OnInit {
             this.formReset();
         });
     }
+    mapToUpdateModel(response): ConsultantModel {
+        let temp = response;
+        this.consultantModel = temp;
+        this.consultantModel['cstatus'] = temp.status.code;
+        return this.consultantModel
+    }
     imposeMinMax(el) {
         if (el.value !== '') {
-          // tslint:disable-next-line:radix
-          if (parseInt(el.value) < parseInt(el.min)) {
-            el.value = el.min;
-          }
-          // tslint:disable-next-line:radix
-          if (parseInt(el.value) > parseInt(el.max)) {
-            el.value = el.max;
-          }
+            // tslint:disable-next-line:radix
+            if (parseInt(el.value) < parseInt(el.min)) {
+                el.value = el.min;
+            }
+            // tslint:disable-next-line:radix
+            if (parseInt(el.value) > parseInt(el.max)) {
+                el.value = el.max;
+            }
         }
-      }
+    }
     /**
      * @param
      * 1) content consists the modal instance
