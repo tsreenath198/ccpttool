@@ -16,7 +16,7 @@ public class ConsultantCallHistoryService extends BaseService<ConsultantCallHist
 	private ConsultantCallHistoryRepository consultantCallHistoryRepository;
 
 	public List<ConsultantCallHistory> getAllConsultantCallHistorysFromLastGivenDays(Date sdate, Date edate) {
-		return consultantCallHistoryRepository.getAllConsultantCallHistorysFromLastGivenDays(sdate, edate, "Y");
+		return consultantCallHistoryRepository.getAllConsultantCallHistorysFromLastGivenDays(sdate, edate, true);
 	}
 
 	public List<Object[]> getClosedCountOfAllRecruitersFromLastGivenDays(Date startDate, Date endDate) {
