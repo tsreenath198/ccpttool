@@ -51,4 +51,5 @@ public class EmailTemplateController extends BaseController<EmailTemplateDTO, Em
 	public BaseMapper<EmailTemplateDTO, EmailTemplate, Integer> getMapper() {
 		return Mappers.getMapper(EmailTemplateMapper.class);
 	}
+
 }

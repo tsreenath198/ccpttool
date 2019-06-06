@@ -12,7 +12,6 @@ import com.ccpt.constants.CCPTConstants;
 import com.ccpt.dto.ConsultantStatusDTO;
 import com.ccpt.mapper.BaseMapper;
 import com.ccpt.mapper.ConsultantStatusMapper;
-import com.ccpt.model.ClientPositionStatus;
 import com.ccpt.model.ConsultantStatus;
 import com.ccpt.service.BaseService;
 import com.ccpt.service.ConsultantStatusService;
@@ -34,7 +33,7 @@ public class ConsultantStatusController extends BaseController<ConsultantStatusD
 	public BaseMapper<ConsultantStatusDTO, ConsultantStatus, String> getMapper() {
 		return Mappers.getMapper(ConsultantStatusMapper.class);
 	}
-	
+
 	@Override
 	protected void validateAndClean(ConsultantStatus model) {
 		if (model.getCode() == null) {

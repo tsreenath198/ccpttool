@@ -12,7 +12,6 @@ import com.ccpt.constants.CCPTConstants;
 import com.ccpt.dto.ConsultantDTO;
 import com.ccpt.mapper.BaseMapper;
 import com.ccpt.mapper.ConsultantMapper;
-import com.ccpt.model.ClientPosition;
 import com.ccpt.model.Consultant;
 import com.ccpt.service.BaseService;
 import com.ccpt.service.ConsultantService;

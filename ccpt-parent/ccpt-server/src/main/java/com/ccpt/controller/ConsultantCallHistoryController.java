@@ -12,7 +12,6 @@ import com.ccpt.constants.CCPTConstants;
 import com.ccpt.dto.ConsultantCallHistoryDTO;
 import com.ccpt.mapper.BaseMapper;
 import com.ccpt.mapper.ConsultantCallHistoryMapper;
-import com.ccpt.model.ClientCallHistory;
 import com.ccpt.model.ConsultantCallHistory;
 import com.ccpt.service.BaseService;
 import com.ccpt.service.ConsultantCallHistoryService;

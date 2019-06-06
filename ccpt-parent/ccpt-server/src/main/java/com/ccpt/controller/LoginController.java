@@ -2,6 +2,7 @@ package com.ccpt.controller;
 
 import javax.security.sasl.AuthenticationException;
 import javax.servlet.http.HttpSession;
+import javax.validation.ValidationException;
 
 import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +49,16 @@ public class LoginController extends BaseController<LoginDTO, Login, Integer> {
 	@Override
 	public BaseMapper<LoginDTO, Login, Integer> getMapper() {
 		return Mappers.getMapper(LoginMapper.class);
+	}
+
+	@Override
+	protected void validateAndClean(Login model) {
+		if (model.getUsername() == null) {
+			throw new ValidationException("username cannot be null");
+		}
+		if (model.getPassword() == null) {
+			throw new ValidationException("password cannot be null");
+		}
 	}
 
 }

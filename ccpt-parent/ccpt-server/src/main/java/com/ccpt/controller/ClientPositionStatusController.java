@@ -12,7 +12,6 @@ import com.ccpt.constants.CCPTConstants;
 import com.ccpt.dto.ClientPositionStatusDTO;
 import com.ccpt.mapper.BaseMapper;
 import com.ccpt.mapper.ClientPositionStatusMapper;
-import com.ccpt.model.ClientApplicationStatus;
 import com.ccpt.model.ClientPositionStatus;
 import com.ccpt.service.BaseService;
 import com.ccpt.service.ClientPositionStatusService;

@@ -1,5 +1,7 @@
 package com.ccpt.controller;
 
+import javax.validation.ValidationException;
+
 import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -41,4 +43,28 @@ public class RecruiterController extends BaseController<RecruiterDTO, Recruiter,
 		return Mappers.getMapper(RecruiterMapper.class);
 	}
 
+	@Override
+	protected void validateAndClean(Recruiter model) {
+		if (model.getFullname() == null) {
+			throw new ValidationException("Fullname cannot be null");
+		}
+		if (model.getPhone() == null) {
+			throw new ValidationException("Phone number cannot be null");
+		}
+		if (model.getEmail() == null) {
+			throw new ValidationException("Email cannot be null");
+		}
+		if (model.getGender() == null) {
+			throw new ValidationException("Gender cannot be null");
+		}
+		if (model.getDob() == null) {
+			throw new ValidationException("Date of birth cannot be null");
+		}
+		if (model.getRole() == null) {
+			throw new ValidationException("Role cannot be null");
+		}
+		if (model.getAddress() == null) {
+			throw new ValidationException("Address cannot be null");
+		}
+	}
 }

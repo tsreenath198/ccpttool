@@ -1,5 +1,7 @@
 package com.ccpt.controller;
 
+import javax.validation.ValidationException;
+
 import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -32,4 +34,13 @@ public class OtherContactController extends BaseController<OtherContactDTO, Othe
 		return Mappers.getMapper(OtherContactMapper.class);
 	}
 
+	@Override
+	protected void validateAndClean(OtherContact model) {
+		if (model.getName() == null) {
+			throw new ValidationException("Name cannot be null");
+		}
+		if (model.getPhone() == null) {
+			throw new ValidationException("Phone number cannot be null");
+		}
+	}
 }
