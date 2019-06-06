@@ -162,7 +162,7 @@
                 <div class="form-group">
                   <label>Assign To<span class="required">*</span></label>
                   <select class="form-control" name="assign" [disabled]="readOnlyForm == 'R'"
-                    [(ngModel)]="clientPositionModel.assignTo" [ngClass]="{ 'is-invalid': f.submitted && assign.invalid }"
+                    [(ngModel)]="clientPositionModel.assignedTo" [ngClass]="{ 'is-invalid': f.submitted && assign.invalid }"
                     #assign="ngModel" required>
                     <option *ngFor="let rl of recruiterList" [ngValue]="rl.id"> {{ rl.fullname }}</option>
                   </select>

@@ -6,7 +6,6 @@ export interface ClientApplicationModel {
     caStatus: string;
     cpId: string;
     consultantId: string;
-    notes: string;
     interviewDate: string;
     interviewLocation: string;
     interviewTime: string;

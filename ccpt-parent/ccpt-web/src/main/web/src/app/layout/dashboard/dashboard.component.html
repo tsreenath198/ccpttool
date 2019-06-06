@@ -168,4 +168,30 @@
       </div>
     </div> -->
   </div>
+  <div class="row">
+    <div class="col col-xl-6 col-lg-12">
+      <div class="card mb-3">
+        <div class="card-header bg-dark text-clr-white">Open Client Positions
+        </div>
+        <div class="table-scroll">
+          <table class="table table-sm">
+            <thead>
+              <tr>
+                <th>Client </th>
+                <th>Code</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let ocp of openCP">
+                <td>{{ocp.client.name}}</td>
+                <td>{{ocp.generatedCode}}</td>
+                <td>{{ocp.createdDate | date}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

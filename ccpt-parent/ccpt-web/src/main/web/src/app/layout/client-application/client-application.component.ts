@@ -96,6 +96,7 @@ export class ClientApplicationComponent implements OnInit {
             this.init();
             this.formReset();
             clientApplicationForm.resetForm();
+       
         }, err => {
             this.toastr.error(err.statusText, 'Client Application');
         });

@@ -54,7 +54,7 @@ export class ClientPositionComponent implements OnInit {
     public getAllR = this.http.get(this.urlConstants.RGetAll);
     public getAllC = this.http.get(this.urlConstants.ClientGetAll);
     public getAllCon = this.http.get(this.urlConstants.CGetAll);
-    //public getAllSms = this.http.get(this.urlConstants.SMSTemplateGetAll);
+    // public getAllSms = this.http.get(this.urlConstants.SMSTemplateGetAll);
     constructor(private http: HttpClientService, private toastr: ToastrCustomService, private modalService: NgbModal) { }
 
     ngOnInit() {
@@ -69,7 +69,7 @@ export class ClientPositionComponent implements OnInit {
             itemsShowLimit: 3,
             allowSearchFilter: true
         };
-
+        this.dropdownModals();
     }
     init() {
         this.http.get(this.urlConstants.CPGetAll).subscribe(resp => {
@@ -89,7 +89,7 @@ export class ClientPositionComponent implements OnInit {
             this.recruiterList = listofrecords[1] as any;
             this.clientList = listofrecords[2] as any;
             this.consultantList = listofrecords[3] as any;
-            //this.smsList = listofrecords[4] as any;
+            // this.smsList = listofrecords[4] as any;
         });
     }
     editClientPosition(data) {
@@ -103,35 +103,52 @@ export class ClientPositionComponent implements OnInit {
         this.enableButtonType = 'U';
         this.closedByEnable = true;
     }
-    readOnlyEnable(data) {
-        this.clientPositionModel = JSON.parse(JSON.stringify(data));
+    readOnlyEnable(id: number) {
+        this.getCPById(id);
         this.readOnlyForm = 'R';
         this.enableButtonType = 'E';
+    }
+    getCPById(id: number) {
+        this.http.get(this.urlConstants.CPGetById + id).subscribe(resp => {
+            this.clientPositionModel = this.mapToUpdateModel(resp);
+        });
+    }
+    mapToUpdateModel(response): ClientPositionModel {
+        const temp = response;
+        this.clientPositionModel = temp;
+        this.clientPositionModel['clientId'] = temp.client.id;
+        this.clientPositionModel['assignedTo'] = temp.assignedTo.id;
+        this.clientPositionModel['cpstatus'] = temp.status.code;
+        this.clientPositionModel['closedBy'] = (temp.closedBy) ? temp.closedBy.id : null;
+        return this.clientPositionModel;
     }
     formReset() {
         this.clientPositionModel = <ClientPositionModel>{};
     }
     createClientPosition(clientPositionForm: NgForm): void {
-        this.clientPositionModel.generatedCode = (this.clientPositionModel.jobCode + '-' + this.getClientNameById(this.clientPositionModel.clientId) + '-' + this.clientPositionModel.location)
+        this.clientPositionModel.generatedCode = this.generateCPCode(this.clientPositionModel.jobCode, this.clientPositionModel.clientId, this.clientPositionModel.location);
         if (this.clientPositionModel.generatedCode) {
             if (!this.invalidAppCode) {
                 let i = 0;
                 while (i < this.numberOfPositions) {
-                    const temp = this.clientPositionModel.generatedCode; //Storing Original value
-                    this.clientPositionModel.generatedCode += ("-" + i); // Updating with the count
-                   // this.createCP(clientPositionForm);
+                    const temp = this.clientPositionModel.generatedCode; // Storing Original value
+                    this.clientPositionModel.generatedCode += ('-' + i); // Updating with the count
+                    // this.createCP(clientPositionForm);
                     this.getTranslations().then(success => {
                         this.toastr.success(this.urlConstants.SuccessMsg, 'Client Position');
                         this.init();
                         this.formReset();
                         clientPositionForm.resetForm();
-                       
+
                     });
                     i++;
                     this.clientPositionModel.generatedCode = temp; // replacing with original value
                 }
             }
         }
+    }
+    private generateCPCode(code, cnt, loc): string {
+        return code + "-" + this.getClientNameById(cnt) + "-" + loc;
     }
     private getTranslations(): Promise<any> {
         return new Promise((resolve, reject) => {
@@ -140,20 +157,10 @@ export class ClientPositionComponent implements OnInit {
             });
         });
     }
-
-    private createCP(clientPositionForm: NgForm) {
-        this.http.post(this.clientPositionModel, this.urlConstants.CPCreate).subscribe(resp => {
-            this.toastr.success(this.urlConstants.SuccessMsg, 'Client Position');
-            this.init();
-            this.formReset();
-            clientPositionForm.resetForm();
-        }, err => {
-            this.toastr.error(err.statusText, 'Client Position');
-        });
-    }
+    
     private getClientNameById(clientId: number) {
-        let temp = this.clientList.filter(c => c.id === clientId);
-        return temp[0].name
+        const temp = this.clientList.filter(c => c.id === clientId);
+        return temp[0].name;
     }
     /** Validate Client Position Code */
     /* private validateCPCode(code: string): void {
@@ -186,6 +193,7 @@ export class ClientPositionComponent implements OnInit {
         return isStr;
     }
     updateClientPosition(clientPositionForm: NgForm) {
+        this.clientPositionModel.generatedCode = this.generateCPCode(this.clientPositionModel.jobCode, this.clientPositionModel.clientId, this.clientPositionModel.location);
         this.http.update(this.clientPositionModel, this.urlConstants.CPUpdate).subscribe(resp => {
             this.toastr.success(this.urlConstants.UpdateMsg, 'Client Position');
             this.formReset();
@@ -233,12 +241,13 @@ export class ClientPositionComponent implements OnInit {
         });
     }
     createClientApplication(data: any) {
-        let dataToCreate = { 'clientPositionId': this.selectedRecrd, 'consultantId': data.item_id, 'clientApplicationStatusCode': 'com', 'notes': data.notes }
+        const dataToCreate = { 'cpId': this.selectedRecrd, 'consultantId': data.item_id, 'caStatus': 'ACT', 'description': data.notes };
         this.http.post(dataToCreate, this.urlConstants.CACreate).subscribe(resp => {
-            this.toastr.success(this.urlConstants.SuccessMsg, "Client Application");
+            this.toastr.success(this.urlConstants.SuccessMsg, 'Client Application');
             this.init();
             this.formReset();
-
+            this.close();
+            this.consultantNamesTocreate = [];
         }, err => {
             this.toastr.error(err.statusText, 'Client Application');
         });
@@ -270,19 +279,22 @@ export class ClientPositionComponent implements OnInit {
                 this.sendEmailModel.body = this.emailTemplateModel.body;
 
             });
-            for (let i = 0; i < this.consultantList.length; i++) {
-                const temp = { 'item_id': this.consultantList[i].phone, 'item_text': this.consultantList[i].fullname, 'notes': '' };
-                this.numbersForSmsDropdown.push(temp);
-            }
-            for (let i = 0; i < this.consultantList.length; i++) {
-                this.mailIdForMails.push(this.consultantList[i].email);
-            }
-            for (let i = 0; i < this.consultantList.length; i++) {
-                const temp = { 'item_id': this.consultantList[i].id, 'item_text': this.consultantList[i].fullname, 'notes': '' };
-                this.consultantNames.push(temp);
-                // this.consultantNames[i].item_text.push(this.consultantList[i].fullname);
-            }
+
             console.log(this.consultantNames);
+        }
+    }
+    dropdownModals() {
+        for (let i = 0; i < this.consultantList.length; i++) {
+            const temp = { 'item_id': this.consultantList[i].phone, 'item_text': this.consultantList[i].fullname, 'notes': '' };
+            this.numbersForSmsDropdown.push(temp);
+        }
+        for (let i = 0; i < this.consultantList.length; i++) {
+            this.mailIdForMails.push(this.consultantList[i].email);
+        }
+        for (let i = 0; i < this.consultantList.length; i++) {
+            const temp = { 'item_id': this.consultantList[i].id, 'item_text': this.consultantList[i].fullname, 'notes': '' };
+            this.consultantNames.push(temp);
+            // this.consultantNames[i].item_text.push(this.consultantList[i].fullname);
         }
     }
     close() {

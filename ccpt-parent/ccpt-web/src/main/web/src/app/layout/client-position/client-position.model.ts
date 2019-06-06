@@ -1,5 +1,5 @@
 export interface ClientPositionModel {
-    assignTo: string;
+    assignedTo: string;
     clientName: string;
     clientId: number;
     id: number;
