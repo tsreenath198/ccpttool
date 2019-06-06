@@ -210,7 +210,7 @@
             <div class="form-group">
               <label>Number Of Positions<span class="required">*</span></label>
               <input class="form-control" placeholder="Number Of Positions" type="number" min="0"
-                [readonly]="readOnlyForm == 'R'" [(ngModel)]="clientPositionModel.numberOfPositions" name="nofpos"
+                [readonly]="readOnlyForm == 'R'" [(ngModel)]="numberOfPositions" name="nofpos"
                 [ngClass]="{ 'is-invalid': f.submitted && nofpos.invalid }" #nofpos="ngModel" required />
               <div class="invalid-feedback">
                 Number of Positions is mandatory
@@ -242,7 +242,7 @@
             </div>
           </div>
         </div>
-        <div class="row">
+        <!-- <div class="row">
           <div class="col-md-12">
             <div class="form-group">
               <label>Application Code<span class="required">*</span></label>
@@ -258,7 +258,7 @@
               </div>
             </div>
           </div>
-        </div>
+        </div> -->
         <div class="row">
           <div class="col-md-12">
             <div class="form-group">

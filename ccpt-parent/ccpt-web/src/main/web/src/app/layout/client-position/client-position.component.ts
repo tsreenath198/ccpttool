@@ -46,10 +46,11 @@ export class ClientPositionComponent implements OnInit {
     public closeResult = '';
     private modalRef: NgbModalRef;
     public urlConstants = new URLConstants();
-    public currSearchTxt: string ;
+    public currSearchTxt: string;
     public readOnlyForm = '';
     public enableButtonType = '';
-    public getAllCPS = this.http.get(this.urlConstants.CPSGetAll) ;
+    public numberOfPositions = 0;
+    public getAllCPS = this.http.get(this.urlConstants.CPSGetAll);
     public getAllR = this.http.get(this.urlConstants.RGetAll);
     public getAllC = this.http.get(this.urlConstants.ClientGetAll);
     public getAllCon = this.http.get(this.urlConstants.CGetAll);
@@ -67,7 +68,7 @@ export class ClientPositionComponent implements OnInit {
             unSelectAllText: 'UnSelect All',
             itemsShowLimit: 3,
             allowSearchFilter: true
-          };
+        };
 
     }
     init() {
@@ -81,7 +82,7 @@ export class ClientPositionComponent implements OnInit {
             this.getAllR,
             this.getAllC,
             this.getAllCon,
-           // this.getAllSms
+            // this.getAllSms
             // forkJoin on works for observables that complete
         ).subscribe(listofrecords => {
             this.clientPositionStatusList = listofrecords[0] as any;
@@ -111,36 +112,65 @@ export class ClientPositionComponent implements OnInit {
         this.clientPositionModel = <ClientPositionModel>{};
     }
     createClientPosition(clientPositionForm: NgForm): void {
-        if (this.clientPositionModel.clientPositionCode) {
-            this.validateCPCode(this.clientPositionModel.clientPositionCode);
-        }
-        if (!this.invalidAppCode) {
-            this.http.post(this.clientPositionModel, this.urlConstants.CPCreate).subscribe(resp => {
-                this.toastr.success(this.urlConstants.SuccessMsg, 'Client Position');
-                this.init();
-                this.formReset();
-                clientPositionForm.resetForm();
-            }, err => {
-                this.toastr.error(err.statusText, 'Client Position');
-            });
-        }
-    }
-    /** Validate Client Position Code */
-    private validateCPCode(code: string): void {
-        const arr = code.split('-');
-        if (arr.length === 4 && this.containsOnlyDigits(arr[0]) && arr[3].length === 3) {
-            for (let i = 1; i < arr.length - 1; i++) {
-                if (!this.containsOnlyAlphabets(arr[i])) {
-                    this.invalidAppCode = true;
-                    return;
-                } else {
-                    this.invalidAppCode = false;
+        this.clientPositionModel.generatedCode = (this.clientPositionModel.jobCode + '-' + this.getClientNameById(this.clientPositionModel.clientId) + '-' + this.clientPositionModel.location)
+        if (this.clientPositionModel.generatedCode) {
+            if (!this.invalidAppCode) {
+                let i = 0;
+                while (i < this.numberOfPositions) {
+                    const temp = this.clientPositionModel.generatedCode; //Storing Original value
+                    this.clientPositionModel.generatedCode += ("-" + i); // Updating with the count
+                   // this.createCP(clientPositionForm);
+                    this.getTranslations().then(success => {
+                        this.toastr.success(this.urlConstants.SuccessMsg, 'Client Position');
+                        this.init();
+                        this.formReset();
+                        clientPositionForm.resetForm();
+                       
+                    });
+                    i++;
+                    this.clientPositionModel.generatedCode = temp; // replacing with original value
                 }
             }
-        } else {
-            this.invalidAppCode = true;
         }
     }
+    private getTranslations(): Promise<any> {
+        return new Promise((resolve, reject) => {
+            this.http.post(this.clientPositionModel, this.urlConstants.CPCreate).subscribe(resp => {
+                resolve(resp);
+            });
+        });
+    }
+
+    private createCP(clientPositionForm: NgForm) {
+        this.http.post(this.clientPositionModel, this.urlConstants.CPCreate).subscribe(resp => {
+            this.toastr.success(this.urlConstants.SuccessMsg, 'Client Position');
+            this.init();
+            this.formReset();
+            clientPositionForm.resetForm();
+        }, err => {
+            this.toastr.error(err.statusText, 'Client Position');
+        });
+    }
+    private getClientNameById(clientId: number) {
+        let temp = this.clientList.filter(c => c.id === clientId);
+        return temp[0].name
+    }
+    /** Validate Client Position Code */
+    /* private validateCPCode(code: string): void {
+         const arr = code.split('-');
+         if (arr.length === 4 && this.containsOnlyDigits(arr[0]) && arr[3].length === 3) {
+             for (let i = 1; i < arr.length - 1; i++) {
+                 if (!this.containsOnlyAlphabets(arr[i])) {
+                     this.invalidAppCode = true;
+                     return;
+                 } else {
+                     this.invalidAppCode = false;
+                 }
+             }
+         } else {
+             this.invalidAppCode = true;
+         }
+     }*/
 
     /** Check contains Only Digits */
     private containsOnlyDigits(code): boolean {
@@ -202,8 +232,8 @@ export class ClientPositionComponent implements OnInit {
             this.close();
         });
     }
-    createClientApplication(data:any){
-        let dataToCreate={'clientPositionId': this.selectedRecrd , 'consultantId': data.item_id , 'clientApplicationStatusCode': 'com' , 'notes': data.notes }
+    createClientApplication(data: any) {
+        let dataToCreate = { 'clientPositionId': this.selectedRecrd, 'consultantId': data.item_id, 'clientApplicationStatusCode': 'com', 'notes': data.notes }
         this.http.post(dataToCreate, this.urlConstants.CACreate).subscribe(resp => {
             this.toastr.success(this.urlConstants.SuccessMsg, "Client Application");
             this.init();
@@ -234,22 +264,22 @@ export class ClientPositionComponent implements OnInit {
             //     this.messageTemplateModel = resp as any;
             //     this.sendSmsModel.message = this.messageTemplateModel.body;
             // });
-            this.http.get(this.urlConstants.EmailTemplateGetById + selected).subscribe( resp => {
+            this.http.get(this.urlConstants.EmailTemplateGetById + selected).subscribe(resp => {
                 this.emailTemplateModel = resp as any;
                 this.sendEmailModel.subject = this.emailTemplateModel.subject;
                 this.sendEmailModel.body = this.emailTemplateModel.body;
 
             });
-            for (let i = 0 ; i < this.consultantList.length ; i++) {
-                const temp = {'item_id': this.consultantList[i].phone, 'item_text': this.consultantList[i].fullname , 'notes': ''};
+            for (let i = 0; i < this.consultantList.length; i++) {
+                const temp = { 'item_id': this.consultantList[i].phone, 'item_text': this.consultantList[i].fullname, 'notes': '' };
                 this.numbersForSmsDropdown.push(temp);
             }
-            for (let i = 0 ; i < this.consultantList.length ; i++) {
+            for (let i = 0; i < this.consultantList.length; i++) {
                 this.mailIdForMails.push(this.consultantList[i].email);
             }
-            for (let i = 0 ; i < this.consultantList.length ; i++) {
-                const temp = {'item_id': this.consultantList[i].id, 'item_text': this.consultantList[i].fullname , 'notes': ''};
-                 this.consultantNames.push(temp);
+            for (let i = 0; i < this.consultantList.length; i++) {
+                const temp = { 'item_id': this.consultantList[i].id, 'item_text': this.consultantList[i].fullname, 'notes': '' };
+                this.consultantNames.push(temp);
                 // this.consultantNames[i].item_text.push(this.consultantList[i].fullname);
             }
             console.log(this.consultantNames);

@@ -1,7 +1,7 @@
 export interface ClientPositionModel {
     assignTo: string;
     clientName: string;
-    clientId: string;
+    clientId: number;
     id: number;
     role: string;
     experience: string;
@@ -14,7 +14,6 @@ export interface ClientPositionModel {
     additionalComments: string;
     jobCode: string;
     location: string;
-    numberOfPositions: number;
     createdDate: string;
 }
 
