@@ -16,7 +16,7 @@ export interface ConsultantModel {
     skills: string;
     qualification: string;
     passoutYear: number;
-    cStatus: string;
+    cstatus: string;
     description: string;
     id: string;
     currentJobTitle: string;

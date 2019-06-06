@@ -53,13 +53,13 @@ export class ConsultantComponent implements OnInit {
             this.copyConList = resp as any;
         });
     }
-    consultantEdit(data) {
-        this.consultantModel = JSON.parse(JSON.stringify(data));
+    consultantEdit(id:number) {
+       this.getConsultantById(id);
         this.readOnlyForm = 'U';
         this.enableButtonType = 'U';
     }
-    readOnlyEnable(data) {
-        this.consultantModel = JSON.parse(JSON.stringify(data));
+    readOnlyEnable(id:number) {
+        this.getConsultantById(id);
         this.readOnlyForm = 'R';
         this.enableButtonType = 'E';
     }
@@ -90,6 +90,11 @@ export class ConsultantComponent implements OnInit {
             this.enableButtonType = '';
         }, err => {
             this.toastr.error(err.statusText, 'Client Position');
+        });
+    }
+    getConsultantById(id:number){
+        this.http.get(this.urlConstants.CGetById + id).subscribe(resp => {
+            this.consultantModel = resp as any;
         });
     }
     getFilesById() {
