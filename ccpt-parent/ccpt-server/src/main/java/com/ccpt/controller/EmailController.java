@@ -4,12 +4,10 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.mail.MessagingException;
-import javax.mail.internet.AddressException;
 import javax.mail.internet.MimeMessage;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -21,20 +19,27 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import com.ccpt.constants.CCPTConstants;
 import com.ccpt.model.EmailContent;
+import com.ccpt.service.EmailContentService;
 
 @Controller
 @CrossOrigin
 public class EmailController {
 
 	@Autowired
-	public JavaMailSender javaMailSender;
+	private JavaMailSender javaMailSender;
+
+	@Autowired
+	private EmailContentService emailContentService;
 
 	@PostMapping(CCPTConstants.SEND_EMAIL)
-	public ResponseEntity<String> sendEmail(@RequestBody EmailContent emailContent)
-			throws AddressException, MessagingException, IOException {
-		// TODO save email content to database
-		sendmail(emailContent.getToEmails(), emailContent.getSubject(), emailContent.getBody());
-		return new ResponseEntity<String>("Email sent successfully", HttpStatus.OK);
+	public ResponseEntity<String> sendEmail(@RequestBody EmailContent emailContent) throws Exception {
+		try {
+			sendmail(emailContent.getToEmails(), emailContent.getSubject(), emailContent.getBody());
+			emailContentService.save(emailContent);
+		} catch (Exception e) {
+			throw new Exception("Sending Email is Failed");
+		}
+		return null;
 	}
 
 	void sendmail(String toCSV, String subject, String body) {

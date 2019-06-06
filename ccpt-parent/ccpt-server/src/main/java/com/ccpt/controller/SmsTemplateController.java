@@ -13,43 +13,43 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ccpt.constants.CCPTConstants;
-import com.ccpt.dto.EmailTemplateDTO;
+import com.ccpt.dto.SmsTemplateDTO;
 import com.ccpt.factory.TemplateSubstitutorFactory;
 import com.ccpt.mapper.BaseMapper;
-import com.ccpt.mapper.EmailTemplateMapper;
-import com.ccpt.model.EmailContent;
-import com.ccpt.model.EmailTemplate;
+import com.ccpt.mapper.SMSTemplateMapper;
+import com.ccpt.model.SMS;
+import com.ccpt.model.SmsTemplate;
 import com.ccpt.service.BaseService;
-import com.ccpt.service.EmailTemplateService;
+import com.ccpt.service.SmsTemplateService;
 import com.ccpt.substitutor.ContentSubstitutor;
 
 @RestController
 @CrossOrigin
-@RequestMapping(CCPTConstants.TEMPLATE)
-public class EmailTemplateController extends BaseController<EmailTemplateDTO, EmailTemplate, Integer> {
+@RequestMapping(CCPTConstants.TEMPLATE+"/sms")
+public class SmsTemplateController extends BaseController<SmsTemplateDTO, SmsTemplate, Integer> {
 
 	@Autowired
-	private EmailTemplateService emailTemplateService;
+	private SmsTemplateService smsTemplateService;
 
 	@Autowired
 	TemplateSubstitutorFactory factory;
 
 	@PostMapping("/build/{type}")
 	@ResponseBody
-	public EmailContent buildContent(@PathVariable String type, @RequestBody Map<String, String> params) {
-		EmailTemplate emailTemplate = emailTemplateService.getTemplateByType(type);
+	public SMS buildContent(@PathVariable String type, @RequestBody  Map<String, String> params) {
+		SmsTemplate smsTemplate = smsTemplateService.getTemplateByType(type);
 		ContentSubstitutor substitutor = factory.getSubstitutor(type);
-		return substitutor.generate(emailTemplate, params);
+		return substitutor.generate(smsTemplate, params);
 	}
 
 	@Override
-	public BaseService<EmailTemplate, Integer> getService() {
-		return emailTemplateService;
+	public BaseService<SmsTemplate, Integer> getService() {
+		return smsTemplateService;
 	}
 
 	@Override
-	public BaseMapper<EmailTemplateDTO, EmailTemplate, Integer> getMapper() {
-		return Mappers.getMapper(EmailTemplateMapper.class);
+	public BaseMapper<SmsTemplateDTO, SmsTemplate, Integer> getMapper() {
+		return Mappers.getMapper(SMSTemplateMapper.class);
 	}
 
 }

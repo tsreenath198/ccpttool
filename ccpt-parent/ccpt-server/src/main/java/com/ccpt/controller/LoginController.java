@@ -28,6 +28,7 @@ public class LoginController extends BaseController<LoginDTO, Login, Integer> {
 	@Autowired
 	private LoginService loginService;
 
+
 	@PostMapping("login")
 	public ResponseEntity<Login> login(@RequestBody Login login, HttpSession session) throws AuthenticationException {
 		String username = login.getUsername();

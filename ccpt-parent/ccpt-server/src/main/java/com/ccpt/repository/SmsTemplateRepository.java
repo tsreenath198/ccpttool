@@ -1,7 +1,9 @@
 package com.ccpt.repository;
 
+import java.util.Optional;
+
 import com.ccpt.model.SmsTemplate;
 
 public interface SmsTemplateRepository extends BaseRepository<SmsTemplate, Integer> {
-	SmsTemplate findByType(String type);
+	Optional<SmsTemplate> findByType(String type);
 }

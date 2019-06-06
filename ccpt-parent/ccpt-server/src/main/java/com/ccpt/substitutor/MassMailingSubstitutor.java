@@ -9,6 +9,8 @@ import org.springframework.stereotype.Component;
 import com.ccpt.model.ClientPosition;
 import com.ccpt.model.EmailContent;
 import com.ccpt.model.EmailTemplate;
+import com.ccpt.model.SMS;
+import com.ccpt.model.SmsTemplate;
 import com.ccpt.service.ClientPositionService;
 import com.ccpt.util.StrSubstitutor;
 
@@ -28,7 +30,6 @@ public class MassMailingSubstitutor implements ContentSubstitutor {
 		Integer id = Integer.parseInt(params.get("cpId"));
 		ClientPosition clientPosition = clientPositionService.get(id);
 		Map<String, String> valuesMap = new HashMap<String, String>();
-
 		valuesMap.put("emailid", "tsreenath1985@gmail.com");
 		valuesMap.put("phone", "9848071296");
 		valuesMap.put("role", clientPosition.getRole());
@@ -46,6 +47,11 @@ public class MassMailingSubstitutor implements ContentSubstitutor {
 		emailContent.setBody(body);
 		emailContent.setSubject(subject);
 		return emailContent;
+	}
+
+	@Override
+	public SMS generate(SmsTemplate template, Map<String, String> params) {
+		return null;
 	}
 
 }
