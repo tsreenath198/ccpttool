@@ -5,11 +5,11 @@ export interface ClientPositionModel {
     id: number;
     role: string;
     experience: string;
-    clientPositionCode: string;
+    generatedCode: string;
     requiredSkills: string;
     minCtc: number;
     maxCtc: number;
-    clientPositionsStatusCode: string;
+    cpstatus: string;
     closedBy: string;
     additionalComments: string;
     jobCode: string;

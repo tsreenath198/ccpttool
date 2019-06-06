@@ -53,7 +53,7 @@ export class ClientPositionComponent implements OnInit {
     public getAllR = this.http.get(this.urlConstants.RGetAll);
     public getAllC = this.http.get(this.urlConstants.ClientGetAll);
     public getAllCon = this.http.get(this.urlConstants.CGetAll);
-    public getAllSms = this.http.get(this.urlConstants.SMSTemplateGetAll);
+    //public getAllSms = this.http.get(this.urlConstants.SMSTemplateGetAll);
     constructor(private http: HttpClientService, private toastr: ToastrCustomService, private modalService: NgbModal) { }
 
     ngOnInit() {
@@ -81,14 +81,14 @@ export class ClientPositionComponent implements OnInit {
             this.getAllR,
             this.getAllC,
             this.getAllCon,
-            this.getAllSms
+           // this.getAllSms
             // forkJoin on works for observables that complete
         ).subscribe(listofrecords => {
             this.clientPositionStatusList = listofrecords[0] as any;
             this.recruiterList = listofrecords[1] as any;
             this.clientList = listofrecords[2] as any;
             this.consultantList = listofrecords[3] as any;
-            this.smsList = listofrecords[4] as any;
+            //this.smsList = listofrecords[4] as any;
         });
     }
     editClientPosition(data) {
