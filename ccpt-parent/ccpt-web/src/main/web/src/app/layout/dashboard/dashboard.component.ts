@@ -19,7 +19,7 @@ export class DashboardComponent implements OnInit {
     public ccptReportCLCH: Array<any> = [];
     public ccptReportCOCH: Array<any> = [];
     public ccptReportCC: any = {};
-    public ccptReportCPL: Array<ClientPositionModel> = [];
+    public ccptReportCPL: Array<any> = [];
     private urlConstants = new URLConstants();
     public rpChoosenDays: any = 1;
     public cochChoosenDays: any = 1;

@@ -12,14 +12,14 @@
           <tbody class="overflow-ele-scroll">
             <tr
               *ngFor="let cal of clientApplicationList |  filter : 'clientPositionId' : currSearchTxt ; let i = index"
-              (click)="readOnlyEnable(cal)" (dblclick)="editClientApplication(cal)">
+              (click)="readOnlyEnable(cal.id)" (dblclick)="editClientApplication(cal)">
               <td >
                 {{cal.clientPositionCode}}
               </td>
-              <td>{{cal.consultantName}}</td>
-              <td>{{cal.clientApplicationStatus}}</td>
+              <td>{{cal.consultant.fullname}}</td>
+              <td>{{cal.status.code}}</td>
               <td>{{cal.interviewDate || 'N/A'}}</td>
-              <td>{{cal.notes || 'N/A'}}</td>
+              <td>{{cal.description || 'N/A'}}</td>
               <td><span class="fa fa-trash pull-right" data-toggle="tooltip" title="Delete" (click)="open(content,cal.id)"></span>
                 <ng-template #content let-c="close" let-d="dismiss">
                   <div class="modal-header">
@@ -50,7 +50,7 @@
             <div class="form-group">
               <label>Client Position<span class="required">*</span></label>
               <select class="form-control" name="cp" [disabled]="readOnlyForm == 'R'"
-                [(ngModel)]="CAModel.clientPosition.id"
+                [(ngModel)]="CAModel.cpId"
                 [ngClass]="{'is-invalid': f.submitted && cp.invalid}" #cp="ngModel" required>
                 <option *ngFor="let cpl of clientPositionList" [ngValue]="cpl.id">{{cpl.role}}
                 </option>
@@ -64,7 +64,7 @@
             <div class="form-group">
               <label>Consultant<span class="required">*</span></label>
               <select class="form-control" [disabled]="readOnlyForm == 'R'"
-                [(ngModel)]="CAModel.consultant.id" name="con"
+                [(ngModel)]="CAModel.consultantId" name="con"
                 [ngClass]="{'is-invalid': f.submitted && con.invalid}" #con="ngModel" required>
                 <option *ngFor="let cl of consultantList" [ngValue]="cl.id">{{cl.fullname}}</option>
               </select>
@@ -77,7 +77,7 @@
             <div class="form-group">
               <label>Client Application Status<span class="required">*</span></label>
               <select class="form-control" name="cas" [disabled]="readOnlyForm == 'R'"
-                [(ngModel)]="CAModel.caStatus.code"
+                [(ngModel)]="CAModel.caStatus"
                 [ngClass]="{'is-invalid': f.submitted && cas.invalid}" #cas="ngModel" required>
                 <option *ngFor="let casl of clientApplicationStatusList" [ngValue]="casl.code">
                   {{casl.description}}
@@ -96,13 +96,13 @@
                 Scheduled</small>
               <div *ngIf="isInterviewScheduled">
                 <label class='pt-2'>Interview Date</label>
-                <input type="date" class="form-control" name="date" [readonly]="readOnlyForm == 'R'"
+                <input type="date" class="form-control" name="intDate"  #intDate="ngModel" [readonly]="readOnlyForm == 'R'"
                   [(ngModel)]="CAModel.interviewDate">
                 <div class="input-group-addon">
                   <span class="glyphicon glyphicon-th"></span>
                 </div>
                 <label class='pt-2'>Interview Time</label>
-                <input type="time" class="form-control" name="date" [readonly]="readOnlyForm == 'R'"
+                <input type="time" class="form-control" name="intTime" #intTime="ngModel" [readonly]="readOnlyForm == 'R'"
                   [(ngModel)]="CAModel.interviewTime">
                 <div class="input-group-addon">
                   <span class="glyphicon glyphicon-th"></span>

@@ -13,12 +13,9 @@
           <tbody class="overflow-ele-scroll">
             <tr
               *ngFor="let cchl of consultantCallHistoryList  |  filter : 'consultantName' :currSearchTxt ; let i = index"
-              (click)="readOnlyEnable(cchl)" (dblclick)="consultantCallHistoryEdit(cchl)">
+              (click)="readOnlyEnable(cchl.id)" (dblclick)="consultantCallHistoryEdit(cchl)">
               <td>
-                {{cchl.consultantName}}
-              </td>
-              <td>
-                {{cchl.clientPositionCode}}
+                {{cchl.consultant.fullname}}
               </td>
               <td>
                 {{cchl.calledDate}}
@@ -52,7 +49,6 @@
           <div class="col-md-12">
             <div class="form-group">
               <label>Consultant<span class="required">*</span></label>
-
               <select class="form-control" name="consultant" [disabled]="readOnlyForm == 'R'"
                 [(ngModel)]="consultantCallHistoryModel.consultantId"
                 [ngClass]="{'is-invalid': f.submitted && consultant.invalid}" #consultant="ngModel" required>
@@ -62,17 +58,6 @@
               <div class="invalid-feedback">
                 Consultant is mandatory
               </div>
-            </div>
-          </div>
-          <div class="col-md-12">
-            <div class="form-group">
-              <label>Client Position <span class="required">*</span></label>
-              <select class="form-control" name="cps" [disabled]="readOnlyForm == 'R'"
-                [(ngModel)]="consultantCallHistoryModel.clientPositionCode" required>
-                <option  selected hidden>Client Position</option>
-                <option *ngFor="let cp of clientPositionList" [ngValue]="cp.clientPositionCode">
-                  {{cp.clientPositionCode}}</option>
-              </select>
             </div>
           </div>
           <div class="col-md-12">

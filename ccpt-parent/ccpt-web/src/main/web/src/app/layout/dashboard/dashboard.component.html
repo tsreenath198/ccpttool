@@ -60,8 +60,8 @@
             </thead>
             <tbody>
               <tr *ngFor="let cpl of ccptReportCPL">
-                <td>{{cpl.clientName}}</td>
-                <td>{{cpl.clientPositionCode}}</td>
+                <td>{{cpl.client.name}}</td>
+                <td>{{cpl.generatedCode}}</td>
                 <td>{{cpl.createdDate | date}}</td>
               </tr>
             </tbody>

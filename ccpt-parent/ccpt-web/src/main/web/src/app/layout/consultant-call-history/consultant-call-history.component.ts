@@ -53,10 +53,21 @@ export class ConsultantCallHistoryComponent implements OnInit {
         this.readOnlyForm = 'U';
         this.enableButtonType = 'U';
     }
-    readOnlyEnable(data) {
-        this.consultantCallHistoryModel = JSON.parse(JSON.stringify(data));
+    readOnlyEnable(id:number) {
+        this.getConsultantById(id);
         this.readOnlyForm = 'R';
         this.enableButtonType = 'E';
+    }
+    getConsultantById(id:number){
+        this.http.get(this.urlConstants.CoCHGetById + id).subscribe(resp => {
+            this.consultantCallHistoryModel = this.mapToUpdateModel(resp);
+        });
+    }
+    mapToUpdateModel(response): ConsultantCallHistoryModel{
+        let temp= response;
+        this.consultantCallHistoryModel = temp;
+        this.consultantCallHistoryModel['consultantId'] = temp.consultant.id;
+        return this.consultantCallHistoryModel
     }
     enableFormEditable(): void {
         this.readOnlyForm = 'U';
