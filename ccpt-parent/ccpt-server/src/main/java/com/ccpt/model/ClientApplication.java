@@ -29,12 +29,12 @@ public class ClientApplication extends IDEntity {
 	@NotNull
 	private ClientApplicationStatus status;
 
-	@ManyToOne(cascade = CascadeType.PERSIST, optional = false)
+	@ManyToOne(cascade = CascadeType.MERGE)
 	@JoinColumn(name = "client_position_id")
 	@NotNull
 	private ClientPosition clientPosition;
 
-	@ManyToOne(cascade = CascadeType.PERSIST)
+	@ManyToOne(cascade = CascadeType.MERGE)
 	@JoinColumn(name = "consultant_id")
 	@NotNull
 	private Consultant consultant;
