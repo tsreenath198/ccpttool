@@ -37,7 +37,7 @@ export class ClientPositionComponent implements OnInit {
     public numbersForSmsDropdown: Array<any> = [];
     public numbersToSend: Array<any> = [];
     public mailIdForMails: Array<any> = [];
-    public consultantNamesTocreate: Array<any> = [];
+    public shortListConsultants: Array<any> = [];
     public consultantNames: Array<any> = [];
     public dropdownSettings: any;
     public invalidAppCode = false;
@@ -59,7 +59,6 @@ export class ClientPositionComponent implements OnInit {
 
     ngOnInit() {
         this.getAllDropdowns();
-        this.init();
         this.dropdownSettings = {
             singleSelection: false,
             idField: 'item_id',
@@ -69,7 +68,8 @@ export class ClientPositionComponent implements OnInit {
             itemsShowLimit: 3,
             allowSearchFilter: true
         };
-        this.dropdownModals();
+        this.init();
+
     }
     init() {
         this.http.get(this.urlConstants.CPGetAll).subscribe(resp => {
@@ -159,7 +159,7 @@ export class ClientPositionComponent implements OnInit {
             });
         });
     }
-    
+
     private getClientNameById(clientId: number) {
         const temp = this.clientList.filter(c => c.id === clientId);
         return temp[0].name;
@@ -251,7 +251,7 @@ export class ClientPositionComponent implements OnInit {
             this.init();
             this.formReset();
             this.close();
-            this.consultantNamesTocreate = [];
+            this.shortListConsultants = [];
         }, err => {
             this.toastr.error(err.statusText, 'Client Application');
         });
@@ -261,7 +261,7 @@ export class ClientPositionComponent implements OnInit {
      * 1) content consists the modal instance
      * 2) Selected contains the code of selected row
      */
-    open(content, selected: number) {
+    open(content, selected: number, type: string) {
         if (selected) {
             this.selectedRecrd = selected;
         }
@@ -273,32 +273,28 @@ export class ClientPositionComponent implements OnInit {
         });
         console.log(content);
         if (content) {
-            // this.http.get(this.urlConstants.SMSTemplateGetById + selected).subscribe( resp => {
-            //     this.messageTemplateModel = resp as any;
-            //     this.sendSmsModel.message = this.messageTemplateModel.body;
-            // });
-            this.http.get(this.urlConstants.EmailTemplateGetById + selected).subscribe(resp => {
-                this.emailTemplateModel = resp as any;
-                this.sendEmailModel.subject = this.emailTemplateModel.subject;
-                this.sendEmailModel.body = this.emailTemplateModel.body;
-
-            });
-
-            console.log(this.consultantNames);
-        }
-    }
-    dropdownModals() {
-        for (let i = 0; i < this.consultantList.length; i++) {
-            const temp = { 'item_id': this.consultantList[i].phone, 'item_text': this.consultantList[i].fullname, 'notes': '' };
-            this.numbersForSmsDropdown.push(temp);
-        }
-        for (let i = 0; i < this.consultantList.length; i++) {
-            this.mailIdForMails.push(this.consultantList[i].email);
-        }
-        for (let i = 0; i < this.consultantList.length; i++) {
-            const temp = { 'item_id': this.consultantList[i].id, 'item_text': this.consultantList[i].fullname, 'notes': '' };
-            this.consultantNames.push(temp);
-            // this.consultantNames[i].item_text.push(this.consultantList[i].fullname);
+            if (type === 'email') {
+                this.http.get(this.urlConstants.EmailTemplateGetById + selected).subscribe(resp => {
+                    this.emailTemplateModel = resp as any;
+                    this.sendEmailModel.subject = this.emailTemplateModel.subject;
+                    this.sendEmailModel.body = this.emailTemplateModel.body;
+                });
+                for (let i = 0; i < this.consultantList.length; i++) {
+                    this.mailIdForMails.push(this.consultantList[i].email);
+                }
+            }
+            if (type === 'sms') {
+                for (let i = 0; i < this.consultantList.length; i++) {
+                    const temp = { 'item_id': this.consultantList[i].phone, 'item_text': this.consultantList[i].fullname, 'notes': '' };
+                    this.numbersForSmsDropdown.push(temp);
+                }
+            }
+            if (type === 'shortlist') {
+                for (let i = 0; i < this.consultantList.length; i++) {
+                    const temp = { 'item_id': this.consultantList[i].id, 'item_text': this.consultantList[i].fullname, 'notes': '' };
+                    this.consultantNames.push(temp);
+                }
+            }
         }
     }
     close() {

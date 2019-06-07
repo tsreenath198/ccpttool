@@ -12,9 +12,8 @@
       <div class="table-responsive mt-2">
         <table class="table table-hover table-striped">
           <tbody class="overflow-ele-scroll">
-            <tr *ngFor="let cpl of clientPositionList | filter: 'technology':currSearchTxt; let i = index"
-              (click)="readOnlyEnable(cpl.id)" (dblclick)="editClientPosition(cpl)">
-              <td class="table-data-padding">
+            <tr *ngFor="let cpl of clientPositionList | filter: 'technology':currSearchTxt; let i = index">
+              <td class="table-data-padding" (click)="readOnlyEnable(cpl.id)" (dblclick)="editClientPosition(cpl)">
                 <dl>
                   <dt>{{ cpl.clientPositionCode }}</dt>
                   <dd>
@@ -29,125 +28,17 @@
               </td>
               <td>
                 <span class="fa fa-trash pull-right pointer" data-toggle="tooltip" title="Delete"
-                  (click)="open(content, cpl.id)"></span>
-                <ng-template #content let-c="close" let-d="dismiss">
-                  <div class="modal-header">
-                    <h4 class="modal-title">Client Position</h4>
-                    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                  <div class="modal-body">
-                    <p>Are you sure you want to delete ? &hellip;</p>
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" (click)="deleteCPRecord()">Ok</button>
-                    <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
-                  </div>
-                </ng-template>
+                  (click)="open(content, cpl.id,'delete')"></span>
+
                 <span class="fa fa-filter pull-right pointer" data-toggle="tooltip" title="Shortlist"
-                  (click)="open(createCA, cpl.id)"></span>
-                <ng-template #createCA let-c="close" let-d="dismiss">
-                  <div class="modal-header">
-                    <h4 class="modal-title">Create Client Application</h4>
-                    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                  <div class="modal-body">
-                    <label>Consultants</label>
-                    <ng-multiselect-dropdown [placeholder]="'choose names..'" [data]="consultantNames"
-                      [(ngModel)]='consultantNamesTocreate' [settings]="dropdownSettings">
-                   <!-- (onSelect)="onItemSelect($event)"
-                     (onSelectAll)="onSelectAll($event)" -->
-                    </ng-multiselect-dropdown>
-                    <div *ngIf="consultantNamesTocreate">
-                      <table class="table table-hover table-striped">
-                        <thead>
-                          <tr>
-                            <th>Name</th>
-                            <th>Description</th>
-                            <th>Action</th>
-                          </tr>
-                        </thead>
-                        <tbody class="overflow-ele-scroll">
-                          <tr *ngFor="let cnt of consultantNamesTocreate">
-                            <td>
-                              {{cnt.item_text}}
-                            </td>
-                            <td>
-                                <input class="form-control"  
-                                [(ngModel)]="cnt.notes" name="experience">
-                            </td>
-                            <td>
-                              <button type="button" class="btn btn-secondary" (click)="createClientApplication(cnt)">Create</button>
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
-                  </div>
-                </ng-template>
+                  (click)="open(createCA, cpl.id,'shortlist')"></span>
+
                 <span class="fa fa-comment pull-right pointer" data-toggle="tooltip" title="SendSMS"
-                  (click)="open(sendSms, cpl.id)"></span>
-                <ng-template #sendSms let-c="close" let-d="dismiss">
-                  <div class="modal-header">
-                    <h4 class="modal-title">Send SMS</h4>
-                    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                  <div class="modal-body">
-                      <label>Sms Type</label>
-                      <select class="form-control" name="cn">
-                        <option *ngFor="let sms of smsList" [ngValue]="sms.id"> {{ sms.type }}</option>
-                      </select>
-                    <label>Numbers</label>
-                    <ng-multiselect-dropdown [placeholder]="'choose numbers..'" [data]="numbersForSmsDropdown"
-                      [(ngModel)]="numbersToSend" [settings]="dropdownSettings">
-                     <!-- (onSelect)="onItemSelect($event)"
-                     (onSelectAll)="onSelectAll($event)" -->
-                    </ng-multiselect-dropdown>
-                    <label>Message Body</label>
-                    <textarea class="form-control" cols="5" rows="8" [(ngModel)]="sendSmsModel.message"
-                      name="body"></textarea>
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" (click)="sendSmsReq()">Send</button>
-                    <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
-                  </div>
-                </ng-template>
+                  (click)="open(sendSms, cpl.id,'sms')"></span>
+
                 <span class="fa fa-envelope pull-right pointer" data-toggle="tooltip" title="SendMail"
-                  (click)="open(sendMail, cpl.id)"></span>
-                <ng-template #sendMail let-c="close" let-d="dismiss">
-                  <div class="modal-header">
-                    <h4 class="modal-title">Send SMS</h4>
-                    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                  <div class="modal-body">
-                    <label>E-Mail's</label>
-                    <ng-multiselect-dropdown [placeholder]="'choose numbers..'" [data]="mailIdForMails"
-                      [(ngModel)]="sendEmailModel.to" [settings]="dropdownSettings">
-                      <!-- (onSelect)="onItemSelect($event)"
-                    (onSelectAll)="onSelectAll($event)" -->
-                    </ng-multiselect-dropdown>
-                    <label>Subject</label>
-                    <input class="form-control" 
-                      [(ngModel)]="sendEmailModel.subject" name="sub"/>
-                    <label>Message Body</label>
-                    <textarea class="form-control" cols="5" rows="8" [(ngModel)]="sendEmailModel.body"
-                      name="body"></textarea>
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" (click)="sendEmailReq()">Send</button>
-                    <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
-                  </div>
-                </ng-template>
+                  (click)="open(sendMail, cpl.id,'email')"></span>
+
               </td>
             </tr>
           </tbody>
@@ -158,17 +49,17 @@
       <form name="form" id="clientPositionForm" (ngSubmit)="f.form.valid && createClientPosition(f)" #f="ngForm"
         novalidate>
         <div class="row">
-            <div class="col-md-12" *ngIf="readOnlyForm != ''">
-                <div class="form-group">
-                  <label>Assign To</label>
-                  <select class="form-control" name="assign" [disabled]="readOnlyForm == 'R'"
-                    [(ngModel)]="clientPositionModel.assignedTo" [ngClass]="{ 'is-invalid': f.submitted && assign.invalid }"
-                    #assign="ngModel" >
-                    <option *ngFor="let rl of recruiterList" [ngValue]="rl.id"> {{ rl.fullname }}</option>
-                  </select>
-                  
-                </div>
-              </div>
+          <div class="col-md-12" *ngIf="readOnlyForm != ''">
+            <div class="form-group">
+              <label>Assign To</label>
+              <select class="form-control" name="assign" [disabled]="readOnlyForm == 'R'"
+                [(ngModel)]="clientPositionModel.assignedTo" [ngClass]="{ 'is-invalid': f.submitted && assign.invalid }"
+                #assign="ngModel">
+                <option *ngFor="let rl of recruiterList" [ngValue]="rl.id"> {{ rl.fullname }}</option>
+              </select>
+
+            </div>
+          </div>
           <div class="col-md-12">
             <div class="form-group">
               <label>Client Name<span class="required">*</span></label>
@@ -198,8 +89,8 @@
               <label>Job Code</label>
               <input class="form-control" [readonly]="readOnlyForm == 'R'" [(ngModel)]="clientPositionModel.jobCode"
                 name="jobcode" placeholder="Job Code" [ngClass]="{ 'is-invalid': f.submitted && jobcode.invalid }"
-                #jobcode="ngModel"  />
-              
+                #jobcode="ngModel" />
+
             </div>
           </div>
           <div class="col-md-12" *ngIf="readOnlyForm == ''">
@@ -207,8 +98,8 @@
               <label>Number Of Positions</label>
               <input class="form-control" placeholder="Number Of Positions" type="number" min="0"
                 [readonly]="readOnlyForm == 'R'" [(ngModel)]="numberOfPositions" name="nofpos"
-                [ngClass]="{ 'is-invalid': f.submitted && nofpos.invalid }" #nofpos="ngModel"  />
-              
+                [ngClass]="{ 'is-invalid': f.submitted && nofpos.invalid }" #nofpos="ngModel" />
+
             </div>
           </div>
           <div class="col-md-12">
@@ -217,7 +108,7 @@
               <input class="form-control" placeholder="Location" [readonly]="readOnlyForm == 'R'"
                 [(ngModel)]="clientPositionModel.location" name="loc"
                 [ngClass]="{ 'is-invalid': f.submitted && loc.invalid }" #loc="ngModel" />
-              
+
             </div>
           </div>
         </div>
@@ -227,8 +118,8 @@
               <label>Minimum Experience</label>
               <input class="form-control" placeholder="Minimum" [readonly]="readOnlyForm == 'R'"
                 [(ngModel)]="clientPositionModel.experience" name="experience"
-                [ngClass]="{ 'is-invalid': f.submitted && experience.invalid }" #experience="ngModel"  />
-              
+                [ngClass]="{ 'is-invalid': f.submitted && experience.invalid }" #experience="ngModel" />
+
             </div>
           </div>
         </div>
@@ -255,8 +146,8 @@
               <label>Max CTC</label>
               <input class="form-control" [readonly]="readOnlyForm == 'R'" type="number"
                 [(ngModel)]="clientPositionModel.maxCtc" name="maxctc" placeholder="Max CTC"
-                [ngClass]="{ 'is-invalid': f.submitted && maxctc.invalid }" #maxctc="ngModel"  />
-             
+                [ngClass]="{ 'is-invalid': f.submitted && maxctc.invalid }" #maxctc="ngModel" />
+
             </div>
           </div>
         </div>
@@ -266,8 +157,8 @@
               <label>Min CTC</label>
               <input class="form-control" [readonly]="readOnlyForm == 'R'" type="number" placeholder="Min CTC"
                 [(ngModel)]="clientPositionModel.minCtc" name="minctc" max="clientPositionModel.maxCtc"
-                [ngClass]="{ 'is-invalid': f.submitted && minctc.invalid }" #minctc="ngModel"  />
-              
+                [ngClass]="{ 'is-invalid': f.submitted && minctc.invalid }" #minctc="ngModel" />
+
             </div>
           </div>
         </div>
@@ -336,3 +227,118 @@
     </div>
   </div>
 </div>
+
+
+<!-- All Templates Start-->
+<ng-template #createCA let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title">Create Client Application</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <label>Consultants</label>
+    <ng-multiselect-dropdown [placeholder]="'choose names..'" [data]="consultantNames"
+      [(ngModel)]='shortListConsultants' [settings]="dropdownSettings">
+      <!-- (onSelect)="onItemSelect($event)"
+     (onSelectAll)="onSelectAll($event)" -->
+    </ng-multiselect-dropdown>
+    <div *ngIf="shortListConsultants">
+      <table class="table table-hover table-striped">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody class="overflow-ele-scroll">
+          <tr *ngFor="let cnt of shortListConsultants">
+            <td>
+              {{cnt.item_text}}
+            </td>
+            <td>
+              <input class="form-control" [(ngModel)]="cnt.notes" name="experience">
+            </td>
+            <td>
+              <button type="button" class="btn btn-secondary" (click)="createClientApplication(cnt)">Create</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
+  </div>
+</ng-template>
+
+<ng-template #sendMail let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title">Send SMS</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <label>E-Mail's</label>
+    <ng-multiselect-dropdown [placeholder]="'choose numbers..'" [data]="mailIdForMails" [(ngModel)]="sendEmailModel.to"
+      [settings]="dropdownSettings">
+      <!-- (onSelect)="onItemSelect($event)"
+    (onSelectAll)="onSelectAll($event)" -->
+    </ng-multiselect-dropdown>
+    <label>Subject</label>
+    <input class="form-control" [(ngModel)]="sendEmailModel.subject" name="sub" />
+    <label>Message Body</label>
+    <textarea class="form-control" cols="5" rows="8" [(ngModel)]="sendEmailModel.body" name="body"></textarea>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="sendEmailReq()">Send</button>
+    <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
+  </div>
+</ng-template>
+
+<ng-template #sendSms let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title">Send SMS</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <label>Sms Type</label>
+    <select class="form-control" name="cn">
+      <option *ngFor="let sms of smsList" [ngValue]="sms.id"> {{ sms.type }}</option>
+    </select>
+    <label>Numbers</label>
+    <ng-multiselect-dropdown [placeholder]="'choose numbers..'" [data]="numbersForSmsDropdown"
+      [(ngModel)]="numbersToSend" [settings]="dropdownSettings">
+      <!-- (onSelect)="onItemSelect($event)"
+     (onSelectAll)="onSelectAll($event)" -->
+    </ng-multiselect-dropdown>
+    <label>Message Body</label>
+    <textarea class="form-control" cols="5" rows="8" [(ngModel)]="sendSmsModel.message" name="body"></textarea>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="sendSmsReq()">Send</button>
+    <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
+  </div>
+</ng-template>
+
+<ng-template #content let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title">Client Position</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <p>Are you sure you want to delete ? &hellip;</p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="deleteCPRecord()">Ok</button>
+    <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
+  </div>
+</ng-template>
+<!-- All Templates Ends-->
