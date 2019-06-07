@@ -160,15 +160,13 @@
         <div class="row">
             <div class="col-md-12" *ngIf="readOnlyForm != ''">
                 <div class="form-group">
-                  <label>Assign To<span class="required">*</span></label>
+                  <label>Assign To</label>
                   <select class="form-control" name="assign" [disabled]="readOnlyForm == 'R'"
                     [(ngModel)]="clientPositionModel.assignedTo" [ngClass]="{ 'is-invalid': f.submitted && assign.invalid }"
-                    #assign="ngModel" required>
+                    #assign="ngModel" >
                     <option *ngFor="let rl of recruiterList" [ngValue]="rl.id"> {{ rl.fullname }}</option>
                   </select>
-                  <div class="invalid-feedback">
-                    Assign to is mandatory
-                  </div>
+                  
                 </div>
               </div>
           <div class="col-md-12">
@@ -197,48 +195,40 @@
           </div>
           <div class="col-md-12">
             <div class="form-group">
-              <label>Job Code<span class="required">*</span></label>
+              <label>Job Code</label>
               <input class="form-control" [readonly]="readOnlyForm == 'R'" [(ngModel)]="clientPositionModel.jobCode"
                 name="jobcode" placeholder="Job Code" [ngClass]="{ 'is-invalid': f.submitted && jobcode.invalid }"
-                #jobcode="ngModel" required />
-              <div class="invalid-feedback">
-                job code is mandatory
-              </div>
+                #jobcode="ngModel"  />
+              
             </div>
           </div>
           <div class="col-md-12" *ngIf="readOnlyForm == ''">
             <div class="form-group">
-              <label>Number Of Positions<span class="required">*</span></label>
+              <label>Number Of Positions</label>
               <input class="form-control" placeholder="Number Of Positions" type="number" min="0"
                 [readonly]="readOnlyForm == 'R'" [(ngModel)]="numberOfPositions" name="nofpos"
-                [ngClass]="{ 'is-invalid': f.submitted && nofpos.invalid }" #nofpos="ngModel" required />
-              <div class="invalid-feedback">
-                Number of Positions is mandatory
-              </div>
+                [ngClass]="{ 'is-invalid': f.submitted && nofpos.invalid }" #nofpos="ngModel"  />
+              
             </div>
           </div>
           <div class="col-md-12">
             <div class="form-group">
-              <label>location<span class="required">*</span></label>
+              <label>Location</label>
               <input class="form-control" placeholder="Location" [readonly]="readOnlyForm == 'R'"
                 [(ngModel)]="clientPositionModel.location" name="loc"
-                [ngClass]="{ 'is-invalid': f.submitted && loc.invalid }" #loc="ngModel" required />
-              <div class="invalid-feedback">
-                Location is mandatory
-              </div>
+                [ngClass]="{ 'is-invalid': f.submitted && loc.invalid }" #loc="ngModel" />
+              
             </div>
           </div>
         </div>
         <div class="row">
           <div class="col-md-12">
             <div class="form-group">
-              <label>Minimum Experience<span class="required">*</span></label>
+              <label>Minimum Experience</label>
               <input class="form-control" placeholder="Minimum" [readonly]="readOnlyForm == 'R'"
                 [(ngModel)]="clientPositionModel.experience" name="experience"
-                [ngClass]="{ 'is-invalid': f.submitted && experience.invalid }" #experience="ngModel" required />
-              <div class="invalid-feedback">
-                Minimum Experience is mandatory
-              </div>
+                [ngClass]="{ 'is-invalid': f.submitted && experience.invalid }" #experience="ngModel"  />
+              
             </div>
           </div>
         </div>
@@ -262,26 +252,22 @@
         <div class="row">
           <div class="col-md-12">
             <div class="form-group">
-              <label>Max CTC<span class="required">*</span></label>
+              <label>Max CTC</label>
               <input class="form-control" [readonly]="readOnlyForm == 'R'" type="number"
                 [(ngModel)]="clientPositionModel.maxCtc" name="maxctc" placeholder="Max CTC"
-                [ngClass]="{ 'is-invalid': f.submitted && maxctc.invalid }" #maxctc="ngModel" required />
-              <div class="invalid-feedback">
-                Max CTC is mandatory
-              </div>
+                [ngClass]="{ 'is-invalid': f.submitted && maxctc.invalid }" #maxctc="ngModel"  />
+             
             </div>
           </div>
         </div>
         <div class="row">
           <div class="col-md-12">
             <div class="form-group">
-              <label>Min CTC<span class="required">*</span></label>
+              <label>Min CTC</label>
               <input class="form-control" [readonly]="readOnlyForm == 'R'" type="number" placeholder="Min CTC"
                 [(ngModel)]="clientPositionModel.minCtc" name="minctc" max="clientPositionModel.maxCtc"
-                [ngClass]="{ 'is-invalid': f.submitted && minctc.invalid }" #minctc="ngModel" required />
-              <div class="invalid-feedback">
-                Min CTC is mandatory
-              </div>
+                [ngClass]="{ 'is-invalid': f.submitted && minctc.invalid }" #minctc="ngModel"  />
+              
             </div>
           </div>
         </div>

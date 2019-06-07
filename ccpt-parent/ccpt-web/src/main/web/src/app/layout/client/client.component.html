@@ -45,10 +45,11 @@
                   </div>
                   <div class="modal-body">
                     <input class="form-control" type="file" ng2FileSelect [uploader]="uploader">
-                    <textarea class="form-control mt-3" placeholder="Comments" cols="5" rows="5" [(ngModel)]="comments"></textarea>
+                    <textarea class="form-control mt-3" placeholder="Comments" cols="5" rows="5"
+                      [(ngModel)]="comments"></textarea>
                   </div>
                   <div class="modal-footer">
-                      <button type="button" class="btn btn-secondary"(click)="uploadFiles()">Upload</button>
+                    <button type="button" class="btn btn-secondary" (click)="uploadFiles()">Upload</button>
                     <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
                   </div>
                 </ng-template>
@@ -99,100 +100,79 @@
           </div>
           <div class="col-md-12">
             <div class="form-group">
-              <label>Industry<span class="required">*</span></label>
+              <label>Industry</label>
               <input class="form-control" [readonly]="readOnlyForm == 'R'" [(ngModel)]="clientModel.industry"
-                name="industry" [ngClass]="{'is-invalid': f.submitted && industry.invalid}" #industry="ngModel"
-                required>
-              <div class="invalid-feedback">
-                Industry is mandatory
-              </div>
+                name="industry" [ngClass]="{'is-invalid': f.submitted && industry.invalid}" #industry="ngModel">
+
             </div>
           </div>
           <div class="col-md-12">
             <div class="form-group">
-              <label>Phone<span class="required">*</span></label>
+              <label>Phone</label>
               <input class="form-control" [readonly]="readOnlyForm == 'R'" [(ngModel)]="clientModel.phone" name="phone"
-                [ngClass]="{'is-invalid': f.submitted && phone.invalid}" #phone="ngModel" required>
-              <div class="invalid-feedback">
-                phone is mandatory
-              </div>
+                [ngClass]="{'is-invalid': f.submitted && phone.invalid}" #phone="ngModel">
+
             </div>
           </div>
           <div class="col-md-12">
             <div class="form-group">
-              <label>Email<span class="required">*</span></label>
+              <label>Email</label>
               <input class="form-control" [readonly]="readOnlyForm == 'R'" [(ngModel)]="clientModel.email" name="email"
-                [ngClass]="{'is-invalid': f.submitted && email.invalid}" #email="ngModel" required>
-              <div class="invalid-feedback">
-                email is mandatory
-              </div>
+                [ngClass]="{'is-invalid': f.submitted && email.invalid}" #email="ngModel">
+
             </div>
           </div>
           <div class="col-md-12">
             <div class="form-group">
-              <label>Guarantee Period<span class="required">*</span></label>
+              <label>Guarantee Period</label>
               <input type="number" class="form-control" [readonly]="readOnlyForm == 'R'"
                 [(ngModel)]="clientModel.guaranteePeriod" name="guaranteePeriod"
-                [ngClass]="{'is-invalid': f.submitted && guaranteePeriod.invalid}" #guaranteePeriod="ngModel" required>
-              <div class="invalid-feedback">
-                guarantee period is mandatory
-              </div>
+                [ngClass]="{'is-invalid': f.submitted && guaranteePeriod.invalid}" #guaranteePeriod="ngModel">
+
             </div>
           </div>
           <div class="col-md-12">
             <div class="form-group">
-              <label>Credit Period<span class="required">*</span></label>
+              <label>Credit Period</label>
               <input class="form-control" [readonly]="readOnlyForm == 'R'" [(ngModel)]="clientModel.creditPeriod"
                 name="creditPeriod" [ngClass]="{'is-invalid': f.submitted && creditPeriod.invalid}"
-                #creditPeriod="ngModel" required>
-              <div class="invalid-feedback">
-                credit period is mandatory
-              </div>
+                #creditPeriod="ngModel">
+
             </div>
           </div>
           <div class="col-md-12">
             <div class="form-group">
-              <label>Srevice Tax no<span class="required">*</span></label>
+              <label>Srevice Tax no</label>
               <input class="form-control" [readonly]="readOnlyForm == 'R'" [(ngModel)]="clientModel.servicetaxNo"
                 name="servicetaxNo" [ngClass]="{'is-invalid': f.submitted && servicetaxNo.invalid}"
-                #servicetaxNo="ngModel" required>
-              <div class="invalid-feedback">
-                service tax no is mandatory
-              </div>
+                #servicetaxNo="ngModel">
+
             </div>
           </div>
           <div class="col-md-12">
             <div class="form-group">
-              <label>Srevice Charge<span class="required">*</span></label>
+              <label>Srevice Charge</label>
               <input class="form-control" [readonly]="readOnlyForm == 'R'" [(ngModel)]="clientModel.serviceCharge"
                 name="serviceCharge" [ngClass]="{'is-invalid': f.submitted && serviceCharge.invalid}"
-                #serviceCharge="ngModel" required>
-              <div class="invalid-feedback">
-                service charge tax no is mandatory
-              </div>
+                #serviceCharge="ngModel">
+
             </div>
           </div>
           <div class="col-md-12">
             <div class="form-group">
-              <label>GST<span class="required">*</span></label>
-              <input class="form-control" [readonly]="readOnlyForm == 'R'" [(ngModel)]="clientModel.gst"
-                name="gst" [ngClass]="{'is-invalid': f.submitted && gst.invalid}"
-                #gst="ngModel" required>
-              <div class="invalid-feedback">
-                gst is mandatory
-              </div>
+              <label>GST</label>
+              <input class="form-control" [readonly]="readOnlyForm == 'R'" [(ngModel)]="clientModel.gst" name="gst"
+                [ngClass]="{'is-invalid': f.submitted && gst.invalid}" #gst="ngModel">
+
             </div>
           </div>
           <div class="col-md-12">
             <div class="form-group">
-              <label>Address<span class="required">*</span></label>
+              <label>Address</label>
               <textarea class="form-control" cols="5" rows="5" [readonly]="readOnlyForm == 'R'"
                 [(ngModel)]="clientModel.address" name="decription"
-                [ngClass]="{'is-invalid': f.submitted && description.invalid}" #description="ngModel"
-                required></textarea>
-              <div class="invalid-feedback">
-                address is mandatory
-              </div>
+                [ngClass]="{'is-invalid': f.submitted && description.invalid}" #description="ngModel"></textarea>
+
             </div>
           </div>
           <div class="col-md-12 pb-2">
@@ -201,14 +181,11 @@
           </div>
           <div class="col-md-12">
             <div class="form-group">
-              <label>Billing Address<span class="required">*</span></label>
+              <label>Billing Address</label>
               <textarea class="form-control" cols="5" rows="5" [readonly]="readOnlyForm == 'R'"
                 [(ngModel)]="clientModel.billingAddress" name="billingAddress"
-                [ngClass]="{'is-invalid': f.submitted && billingAddress.invalid}" #billingAddress="ngModel"
-                required></textarea>
-              <div class="invalid-feedback">
-                billing address is mandatory
-              </div>
+                [ngClass]="{'is-invalid': f.submitted && billingAddress.invalid}" #billingAddress="ngModel"></textarea>
+
             </div>
           </div>
         </div>
@@ -229,19 +206,15 @@
                   <td>
                     <input class="form-control" type="email" [readonly]="readOnlyForm == 'R'" [(ngModel)]="cc.email"
                       name="email{{i}}" [ngClass]="{'is-invalid': f.submitted && email.invalid}" placeholder="email"
-                      #email="ngModel" required>
-                    <div class="invalid-feedback">
-                      email is mandatory
-                    </div>
+                      #email="ngModel">
+
                   </td>
                   <td>
                     <!--pattern="/^-?\d+\.?\d*$/" onKeyPress="if(this.value.length==12) return false;"-->
                     <input class="form-control" type="number" [readonly]="readOnlyForm == 'R'" [(ngModel)]="cc.phone"
                       name="phone{{i}}" [ngClass]="{'is-invalid': f.submitted && phone.invalid}" placeholder="phone"
-                      #phone="ngModel" required>
-                    <div class="invalid-feedback">
-                      phone is mandatory
-                    </div>
+                      #phone="ngModel">
+
                   </td>
                   <td>
                     <i class="fa fa-minus" aria-hidden="true" id="decrease"

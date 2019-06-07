@@ -166,6 +166,20 @@
               </div>
             </div>
           </div>
+          <div class="col-md-12">
+            <div class="form-group">
+              <label>Consultant Status<span class="required">*</span></label>
+              <select class="form-control" name="constat" [disabled]="readOnlyForm == 'R'"
+                [(ngModel)]="consultantModel.cstatus" [ngClass]="{'is-invalid': f.submitted && constat.invalid}"
+                #constat="ngModel" required>
+                <option *ngFor="let cs of consultantStatusList" [ngValue]="cs.code">
+                  {{cs.description}}</option>
+              </select>
+              <div class="invalid-feedback">
+                consultant status is mandatory
+              </div>
+            </div>
+          </div>
           <div class="col-md-12 pb-2">
             <input type="checkbox" class="" [(ngModel)]="isFresher"
               name="interviewCheckbox">&nbsp;<label>Fresher</label>
@@ -271,14 +285,11 @@
           </div>
           <div class="col-md-12">
             <div class="form-group">
-              <label>Qualification<span class="required">*</span></label>
+              <label>Qualification</label>
               <textarea rows="8" class="form-control" name="qualification" [readonly]="readOnlyForm == 'R'"
                 [(ngModel)]="consultantModel.qualification" placeholder="Qualification"
-                [ngClass]="{'is-invalid': f.submitted && qualification.invalid}" #qualification="ngModel"
-                required></textarea>
-              <div class="invalid-feedback">
-                qualification is mandatory
-              </div>
+                [ngClass]="{'is-invalid': f.submitted && qualification.invalid}" #qualification="ngModel"></textarea>
+
             </div>
           </div>
 
@@ -289,20 +300,7 @@
                 type="number" [(ngModel)]="consultantModel.passoutYear">
             </div>
           </div>
-          <div class="col-md-12">
-            <div class="form-group">
-              <label>Consultant Status<span class="required">*</span></label>
-              <select class="form-control" name="constat" [disabled]="readOnlyForm == 'R'"
-                [(ngModel)]="consultantModel.cstatus"
-                [ngClass]="{'is-invalid': f.submitted && constat.invalid}" #constat="ngModel" required>
-                <option *ngFor="let cs of consultantStatusList" [ngValue]="cs.code">
-                  {{cs.description}}</option>
-              </select>
-              <div class="invalid-feedback">
-                consultant status is mandatory
-              </div>
-            </div>
-          </div>
+
         </div>
         <div class="row">
           <div class="col-md-12">
