@@ -44,10 +44,20 @@ export class ConsultantStatusComponent implements OnInit {
         this.readOnlyForm = 'U';
         this.enableButtonType = 'U';
     }
-    readOnlyEnable(data) {
-        this.consultantStatusModel = JSON.parse(JSON.stringify(data));
+    readOnlyEnable(id) {
+        this.getById(id);
         this.readOnlyForm = 'R';
         this.enableButtonType = 'E';
+    }
+    getById(id){
+        this.http.get(this.urlConstants.CSGetById + id).subscribe(resp => {
+            this.consultantStatusModel = this.mapToUpdateModel(resp);
+            });
+    }
+    mapToUpdateModel(response){
+        let temp=response;
+        this.consultantStatusModel=temp;
+        return this.consultantStatusModel   
     }
     public formReset() {
         this.consultantStatusModel = <ConsultantStatusModel>{};

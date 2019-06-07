@@ -37,7 +37,6 @@ export class ClientPositionStatusComponent implements OnInit {
         })
     }
     editClientPositionStatus(data) {
-        this.clientPositionStatusModel = JSON.parse(JSON.stringify(data));;
         this.readOnlyForm = 'U';
         this.enableButtonType = 'U';
     }
@@ -45,10 +44,20 @@ export class ClientPositionStatusComponent implements OnInit {
         this.readOnlyForm = 'U';
         this.enableButtonType = 'U';
     }
-    readOnlyEnable(data){
-        this.clientPositionStatusModel = JSON.parse(JSON.stringify(data));
+    readOnlyEnable(id){
+        this.getById(id);
         this.readOnlyForm = 'R';
         this.enableButtonType = 'E';
+    }
+    getById(id){
+        this.http.get(this.urlConstants.CPSGetById + id).subscribe(resp => {
+            this.clientPositionStatusModel = this.mapToUpdateModel(resp);
+            });
+    }
+    mapToUpdateModel(response){
+        let temp=response;
+        this.clientPositionStatusModel=temp;
+        return this.clientPositionStatusModel
     }
     formReset() {
         this.clientPositionStatusModel = <ClientpositionStatusModel>{};

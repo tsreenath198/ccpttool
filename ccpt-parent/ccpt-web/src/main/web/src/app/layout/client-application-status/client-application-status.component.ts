@@ -39,7 +39,6 @@ export class ClientApplicationStatusComponent implements OnInit {
      * @param data consists the  table current selected row data
      */
     editClientApplicationStatus(data): void {
-        this.clientApplicationStatusModel = JSON.parse(JSON.stringify(data));
         this.readOnlyForm = 'U';
         this.enableButtonType = 'U';
     }
@@ -50,10 +49,20 @@ export class ClientApplicationStatusComponent implements OnInit {
     /**
      * @param data consists the  table current selected row data
      */
-    readOnlyEnable(data): void {
-        this.clientApplicationStatusModel = JSON.parse(JSON.stringify(data));
+    readOnlyEnable(id): void {
+        this.getById(id);
         this.readOnlyForm = 'R';
         this.enableButtonType = 'E';
+    }
+    getById(id){
+        this.http.get(this.urlConstants.CASGetById + id).subscribe(resp => {
+            this.clientApplicationStatusModel = this.mapToUpdateModel(resp);
+            });
+    }
+    mapToUpdateModel(response){
+        let temp=response;
+        this.clientApplicationStatusModel=temp;
+        return this.clientApplicationStatusModel
     }
     formReset(): void {
         this.clientApplicationStatusModel = <ClientApplicationStatusModel>{};

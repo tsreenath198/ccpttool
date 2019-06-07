@@ -13,7 +13,7 @@
 
           <tbody>
             <tr *ngFor="let cpsl of clientPositionStatusList |  filter : 'description' :currSearchTxt ; let i = index"
-              (click)="readOnlyEnable(cpsl)" (dblclick)="editClientPositionStatus(cpsl)">
+              (click)="readOnlyEnable(cpsl.code)" (dblclick)="editClientPositionStatus(cpsl)">
               <td>
                 {{cpsl.description}}</td>
               <td>

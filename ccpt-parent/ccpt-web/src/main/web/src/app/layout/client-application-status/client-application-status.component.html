@@ -13,7 +13,7 @@
           <tbody>
             <tr
               *ngFor="let casl of clientApplicationStatusList |  filter : 'description' :currSearchTxt ; let i = index"
-              (click)="readOnlyEnable(casl)" (dblclick)="editClientApplicationStatus(casl)">
+              (click)="readOnlyEnable(casl.code)" (dblclick)="editClientApplicationStatus(casl)">
               <td >
                 {{casl.description}}
               </td>

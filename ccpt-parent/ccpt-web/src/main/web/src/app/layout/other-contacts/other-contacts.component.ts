@@ -38,9 +38,20 @@ export class OtherContactsComponent implements OnInit {
         this.readOnlyForm = 'U';
         this.enableButtonType = 'U';
     }
-    enableFormEditable(): void {
+    enableFormEditable(id): void {
+        this.getById(id);
         this.readOnlyForm = 'U';
         this.enableButtonType = 'U';
+    }
+    getById(id){
+        this.http.get(this.urlConstants.OCGetById + id).subscribe(resp => {
+            this.OCModel = this.mapToUpdateModel(resp);
+            });
+    }
+    mapToUpdateModel(response){
+        let temp=response;
+        this.OCModel=temp;
+        return this.OCModel   
     }
     readOnlyEnable(data) {
         this.OCModel = JSON.parse(JSON.stringify(data));

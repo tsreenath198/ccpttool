@@ -11,7 +11,7 @@
         <table class="table table-hover table-striped">
           <tbody>
             <tr *ngFor="let ocl of OCList |  filter : 'name' : currSearchTxt ; let i = index"
-              (click)="readOnlyEnable(ocl)" (dblclick)="editOtherContact(ocl)">
+              (click)="readOnlyEnable(ocl.id)" (dblclick)="edit(ocl)">
               <td>
                 {{ocl.name}}
               </td>

@@ -41,7 +41,6 @@ export class RecruiterComponent implements OnInit {
         })
     }
     recruiterEdit(data) {
-        this.recruiterModel =  JSON.parse(JSON.stringify(data));;
         this.readOnlyForm = 'U';
         this.enableButtonType = 'U';
     }
@@ -49,10 +48,20 @@ export class RecruiterComponent implements OnInit {
         this.readOnlyForm = 'U';
         this.enableButtonType = 'U';
     }
-    readOnlyEnable(data) {
-        this.recruiterModel = JSON.parse(JSON.stringify(data));
+    readOnlyEnable(id:number) {
+        this.getById(id);
         this.readOnlyForm = 'R';
         this.enableButtonType = 'E';
+    }
+    getById(id){
+        this.http.get(this.urlConstants.RGetById + id).subscribe(resp => {
+            this.recruiterModel = this.mapToUpdateModel(resp);
+            });
+    }
+    mapToUpdateModel(response){
+        let temp=response;
+        this.recruiterModel=temp;
+        return this.recruiterModel   
     }
     formReset() {
         this.recruiterModel = <RecruiterModel>{};
