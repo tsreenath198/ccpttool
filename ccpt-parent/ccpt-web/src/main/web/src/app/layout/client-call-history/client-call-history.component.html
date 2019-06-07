@@ -97,13 +97,10 @@
         <div class="row">
           <div class="col-md-12">
             <div class="form-group">
-              <label>Notes<span class="required">*</span></label>
+              <label>Notes</label>
               <textarea class="form-control" name="note" cols="10" rows="10" [readonly]="readOnlyForm == 'R'"
                 [(ngModel)]="clientCallHistoryModel.description" [ngClass]="{'is-invalid': f.submitted && note.invalid}"
-                #note="ngModel" required></textarea>
-              <div class="invalid-feedback">
-                Notes is mandatory
-              </div>
+                #note="ngModel"></textarea>
             </div>
           </div>
         </div>
