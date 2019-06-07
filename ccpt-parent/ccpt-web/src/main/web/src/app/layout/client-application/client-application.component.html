@@ -88,6 +88,21 @@
               </div>
             </div>
           </div>
+          <div class="col-md-12">
+            <div class="form-group">
+              <label>Creater<span class="required">*</span></label>
+              <select class="form-control" name="cas" [disabled]="true"
+                
+                [ngClass]="{'is-invalid': f.submitted && cas.invalid}"  required>
+                <option *ngFor="let rl of recruiterList" [ngValue]="rl.id">
+                  {{rl.fullname}}
+                </option>
+              </select>
+              <div class="invalid-feedback">
+                Client Apllication Status is mandatory
+              </div>
+            </div>
+          </div>
         </div>
         <div class="row">
           <div class="col-md-12">

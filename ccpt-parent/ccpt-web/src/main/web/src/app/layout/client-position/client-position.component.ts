@@ -245,6 +245,7 @@ export class ClientPositionComponent implements OnInit {
         });
     }
     createClientApplication(data: any) {
+        //TODO:Need to check the code
         const dataToCreate = { 'cpId': this.selectedRecrd, 'consultantId': data.item_id, 'caStatus': 'ACT', 'description': data.notes };
         this.http.post(dataToCreate, this.urlConstants.CACreate).subscribe(resp => {
             this.toastr.success(this.urlConstants.SuccessMsg, 'Client Application');

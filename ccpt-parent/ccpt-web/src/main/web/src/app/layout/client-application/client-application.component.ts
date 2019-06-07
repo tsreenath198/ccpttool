@@ -11,6 +11,7 @@ import { ClientPositionModel } from '../client-position/client-position.model';
 import { ToastrCustomService } from 'src/app/shared/services/toastr.service';
 import { NgForm } from '@angular/forms';
 import { NgbModalRef,ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { RecruiterModel } from '../recruiter/recruiter.model';
 
 
 @Component({
@@ -25,6 +26,7 @@ export class ClientApplicationComponent implements OnInit {
     public consultantList: Array<ConsultantModel> = [];
     public clientApplicationStatusList: Array<ClientApplicationStatusModel> = [];
     public clientPositionList: Array<ClientPositionModel> = [];
+    public recruiterList: Array<RecruiterModel> = [];
     private urlConstants = new URLConstants();
     public currSearchTxt = "";
     public formButtonsToggler = true;
@@ -41,6 +43,7 @@ export class ClientApplicationComponent implements OnInit {
     private getAllCAS = this.http.get(this.urlConstants.CASGetAll);
     private getAllC = this.http.get(this.urlConstants.CGetAll);
     private getAllCP = this.http.get(this.urlConstants.CPGetAll);
+    private getAllR = this.http.get(this.urlConstants.RGetAll);
 
     ngOnInit() {
         this.init();
@@ -55,12 +58,14 @@ export class ClientApplicationComponent implements OnInit {
         forkJoin(
             this.getAllCAS,
             this.getAllC,
-            this.getAllCP
+            this.getAllCP,
+            this.getAllR
             // forkJoin on works for observables that complete
         ).subscribe(listofrecords => {
             this.clientApplicationStatusList = listofrecords[0] as any;
             this.consultantList = listofrecords[1] as any;
             this.clientPositionList = listofrecords[2] as any;
+            this.recruiterList = listofrecords[3] as any;
         });
     }
 

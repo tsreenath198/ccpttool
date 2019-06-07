@@ -238,6 +238,10 @@
     </button>
   </div>
   <div class="modal-body">
+    <label>Creator</label>
+    <select class="form-control" name="creator" [disabled]="true"> 
+        <option *ngFor="let rl of recruiterList" [ngValue]="rl.id"> {{ rl.fullname }}</option>
+      </select>
     <label>Consultants</label>
     <ng-multiselect-dropdown [placeholder]="'choose names..'" [data]="consultantNames"
       [(ngModel)]='shortListConsultants' [settings]="dropdownSettings">
