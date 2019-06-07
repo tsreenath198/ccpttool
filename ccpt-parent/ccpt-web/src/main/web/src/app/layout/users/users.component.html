@@ -18,7 +18,7 @@
                                     (click)="open(content,ul.id)"></span>
                                 <ng-template #content let-c="close" let-d="dismiss">
                                     <div class="modal-header">
-                                        <h4 class="modal-title">Contact</h4>
+                                        <h4 class="modal-title">User</h4>
                                         <button type="button" class="close" aria-label="Close"
                                             (click)="d('Cross click')">
                                             <span aria-hidden="true">&times;</span>
@@ -70,7 +70,7 @@
                     </div>
                     <div class="col-md-8">
                         <div class="form-group">
-                            <label>role<span class="required">*</span></label>
+                            <label>Role<span class="required">*</span></label>
                             <select class="form-control" name="role" [(ngModel)]="usersModel.role"
                                 [disabled]="readOnlyForm == 'R'" [ngClass]="{'is-invalid': f.submitted && role.invalid}"
                                 #role="ngModel" required>

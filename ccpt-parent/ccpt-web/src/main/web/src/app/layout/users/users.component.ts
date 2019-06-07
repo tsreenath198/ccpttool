@@ -77,9 +77,9 @@ export class UsersComponent implements OnInit {
             this.toastr.error(err.error.message, 'User' );
         });
     }
-    deleteClientRecord(): void {
-        this.http.delete(this.urlConstants.OCDelete + this.selectedRecrdToDel).subscribe(resp => {
-            this.toastr.success(this.urlConstants.DeleteMsg, "Client");
+    deleteUserRecord(): void {
+        this.http.delete(this.urlConstants.UserDelete + this.selectedRecrdToDel).subscribe(resp => {
+            this.toastr.success(this.urlConstants.DeleteMsg, "User");
             this.init();
             this.close();
             this.formReset();

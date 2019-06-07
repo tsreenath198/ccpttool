@@ -20,19 +20,17 @@ export class LoginComponent implements OnInit {
         this.reset();
     }
     onLoggedin() {
-        this.router.navigate(['/layout']); //TODO:Need to fix once API done
-        
-        // this.http.post(this.loginDetails, this.urlConstants.UserLogin ).subscribe(resp => {
-        //     const response = resp as any;
-        //         this.toastr.success('User Logged In Successfully', 'Login');
-        //         sessionStorage.setItem('username', response.username);
-        //         sessionStorage.setItem('token', response.token);
-        //         sessionStorage.setItem('role', response.role);
-        //         this.router.navigate(['/layout']);
-        // }, error => {
-        //     this.toastr.error(error.error.message, 'Login');
-        //     this.reset();
-        // });
+        this.http.post(this.loginDetails, this.urlConstants.UserLogin ).subscribe(resp => {
+            const response = resp as any;
+                this.toastr.success('User Logged In Successfully', 'Login');
+                sessionStorage.setItem('username', response.username);
+                sessionStorage.setItem('token', response.token);
+                sessionStorage.setItem('role', response.role);
+                this.router.navigate(['/layout']);
+        }, error => {
+            this.toastr.error(error.error.message, 'Login');
+            this.reset();
+        });
     }
     reset(): void {
         sessionStorage.setItem('username', null);
