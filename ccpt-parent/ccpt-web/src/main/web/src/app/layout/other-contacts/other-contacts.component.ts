@@ -15,8 +15,8 @@ import { NgForm } from '@angular/forms';
 })
 export class OtherContactsComponent implements OnInit {
     constructor(private http:HttpClientService, private toastr: ToastrCustomService, private modalService: NgbModal) { }
-    public otherContactsModel:OtherContactsModel=<OtherContactsModel>{};
-    public otherContactList:any=[];
+    public OCModel:OtherContactsModel=<OtherContactsModel>{};
+    public OCList:any=[];
     private urlConstants = new URLConstants();    
     public readOnlyForm: string = '';
     public enableButtonType: string = '';
@@ -30,11 +30,11 @@ export class OtherContactsComponent implements OnInit {
     }
     init(){
         this.http.get(this.urlConstants.OCGetAll).subscribe(resp => {
-            this.otherContactList = resp as any;
+            this.OCList = resp as any;
         })
     }
-    editOtherContact(data) {
-        this.otherContactsModel = JSON.parse(JSON.stringify(data));;
+    edit(data) {
+        this.OCModel = JSON.parse(JSON.stringify(data));;
         this.readOnlyForm = 'U';
         this.enableButtonType = 'U';
     }
@@ -43,25 +43,25 @@ export class OtherContactsComponent implements OnInit {
         this.enableButtonType = 'U';
     }
     readOnlyEnable(data) {
-        this.otherContactsModel = JSON.parse(JSON.stringify(data));
+        this.OCModel = JSON.parse(JSON.stringify(data));
         this.readOnlyForm = 'R';
         this.enableButtonType = 'E';
     }
     formReset() {
-        this.otherContactsModel = <OtherContactsModel>{};
+        this.OCModel = <OtherContactsModel>{};
     }
-    otherContactCreate(otherContactForm: NgForm): void {
-        this.http.post(this.otherContactsModel, this.urlConstants.OCCreate).subscribe(resp => {
+    create(otherContactForm: NgForm): void {
+        this.http.post(this.OCModel, this.urlConstants.OCCreate).subscribe(resp => {
             this.toastr.success(this.urlConstants.SuccessMsg, "Contact");
             this.init();
             this.formReset();
             otherContactForm.resetForm();
         }, err => {
-            this.toastr.error(err.statusText, "Contact");
+            this.toastr.error(err.error.message, "Contact");
         });
     }
-    updateOtherContacts(otherContactForm: NgForm) {
-        this.http.update(this.otherContactsModel, this.urlConstants.OCUpdate).subscribe(resp => {
+    update(otherContactForm: NgForm) {
+        this.http.update(this.OCModel, this.urlConstants.OCUpdate).subscribe(resp => {
             this.formReset();
             this.toastr.success(this.urlConstants.UpdateMsg, "Contact ");
             this.init();
@@ -78,7 +78,7 @@ export class OtherContactsComponent implements OnInit {
         this.readOnlyForm = '';
         this.enableButtonType = ''; 
     }
-    deleteClientRecord(): void {
+    delete(): void {
         this.http.delete(this.urlConstants.OCDelete + this.selectedRecrdToDel).subscribe(resp => {
             this.toastr.success(this.urlConstants.DeleteMsg, "Client");
             this.init();

@@ -3,14 +3,14 @@
   <div class="row">
     <div class="col-md-7">
       <div class="row">
-        <div class="col-md-3"><strong>Total No of records : {{otherContactList.length}}</strong></div>
+        <div class="col-md-3"><strong>Total No of records : {{OCList.length}}</strong></div>
         <div class="col-md-6"> <input type="text" class="form-control" placeholder="search..."
             [(ngModel)]="currSearchTxt" /></div>
       </div>
       <div class="table-responsive mt-2">
         <table class="table table-hover table-striped">
           <tbody>
-            <tr *ngFor="let ocl of otherContactList |  filter : 'name' : currSearchTxt ; let i = index"
+            <tr *ngFor="let ocl of OCList |  filter : 'name' : currSearchTxt ; let i = index"
               (click)="readOnlyEnable(ocl)" (dblclick)="editOtherContact(ocl)">
               <td>
                 {{ocl.name}}
@@ -22,11 +22,12 @@
                 {{ocl.phone}}
               </td>
               <td>
-                <span class="fa fa-trash pull-right" data-toggle="tooltip" title="Delete" (click)="open(content,ocl.id)"></span>
+                <span class="fa fa-trash pull-right" data-toggle="tooltip" title="Delete"
+                  (click)="open(content,ocl.id)"></span>
                 <ng-template #content let-c="close" let-d="dismiss">
                   <div class="modal-header">
                     <h4 class="modal-title">Contact</h4>
-                    <button type="button"  class="close" aria-label="Close" (click)="d('Cross click')">
+                    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
                       <span aria-hidden="true">&times;</span>
                     </button>
                   </div>
@@ -34,7 +35,7 @@
                     <p>Are you sure you want to delete ? &hellip;</p>
                   </div>
                   <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" (click)="deleteClientRecord()">Ok</button>
+                    <button type="button" class="btn btn-secondary" (click)="delete()">Ok</button>
                     <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
                   </div>
                 </ng-template>
@@ -45,13 +46,13 @@
       </div>
     </div>
     <div class=" col-md-5">
-      <form name="form" id="otherContactForm" (ngSubmit)="f.form.valid&&otherContactCreate(f)" #f="ngForm" novalidate>
+      <form name="form" id="otherContactForm" (ngSubmit)="f.form.valid&&create(f)" #f="ngForm" novalidate>
         <div class="row">
           <div class="col-md-12">
             <div class="form-group">
               <label>Name<span class="required">*</span></label>
-              <input class="form-control" [readonly]="readOnlyForm == 'R'" [(ngModel)]="otherContactsModel.name"
-                name="name" [ngClass]="{'is-invalid': f.submitted && name.invalid}" #name="ngModel" required>
+              <input class="form-control" [readonly]="readOnlyForm == 'R'" [(ngModel)]="OCModel.name" name="name"
+                [ngClass]="{'is-invalid': f.submitted && name.invalid}" #name="ngModel" required>
               <div class="invalid-feedback">
                 name is mandatory
               </div>
@@ -59,26 +60,26 @@
           </div>
           <div class="col-md-12">
             <div class="form-group">
-              <label>E-Mail</label>
-              <input class="form-control" [readonly]="readOnlyForm == 'R'" [(ngModel)]="otherContactsModel.email"
-                name="email"  #email="ngModel" >
+              <label>Phone<span class="required">*</span></label>
+              <input class="form-control" [readonly]="readOnlyForm == 'R'" [(ngModel)]="OCModel.phone" name="phone"
+              [ngClass]="{'is-invalid': f.submitted && name.invalid}" #phone="ngModel" required>
+              <div class="invalid-feedback">
+                phone is mandatory
+              </div>
             </div>
           </div>
-          <div class="col-md-12 text-center">
-              <span>(or)</span>
-            </div>
           <div class="col-md-12">
             <div class="form-group">
-              <label>Phone</label>
-              <input class="form-control" [readonly]="readOnlyForm == 'R'" [(ngModel)]="otherContactsModel.phone"
-                name="phone" #phone="ngModel">
+              <label>E-Mail</label>
+              <input class="form-control" [readonly]="readOnlyForm == 'R'" [(ngModel)]="OCModel.email" name="email"
+                #email="ngModel">
             </div>
           </div>
           <div class="col-md-12">
             <div class="form-group">
               <label>Notes</label>
               <textarea class="form-control" cols="5" rows="5" [readonly]="readOnlyForm == 'R'"
-                [(ngModel)]="otherContactsModel.notes" name="notes" #notes="ngModel"></textarea>
+                [(ngModel)]="OCModel.notes" name="notes" #notes="ngModel"></textarea>
             </div>
           </div>
         </div>
@@ -86,7 +87,7 @@
           <div class="col-md-12">
             <button type="submit" *ngIf="enableButtonType == ''" class="btn btn-secondary ml-3">Add</button>
             <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2"
-              (click)="updateOtherContacts(f)">Update</button>
+              (click)="update(f)">Update</button>
             <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button"
               (click)="enableFormEditable()">Edit</button>
             <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3">Clear</button>
