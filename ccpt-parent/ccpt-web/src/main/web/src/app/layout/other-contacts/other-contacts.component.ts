@@ -33,15 +33,20 @@ export class OtherContactsComponent implements OnInit {
             this.OCList = resp as any;
         })
     }
-    edit(data) {
-        this.OCModel = JSON.parse(JSON.stringify(data));;
+    edit() {
         this.readOnlyForm = 'U';
         this.enableButtonType = 'U';
     }
-    enableFormEditable(id): void {
-        this.getById(id);
+    enableFormEditable(): void {
+        
         this.readOnlyForm = 'U';
         this.enableButtonType = 'U';
+    }
+    
+    readOnlyEnable(id) {
+        this.getById(id);
+        this.readOnlyForm = 'R';
+        this.enableButtonType = 'E';
     }
     getById(id){
         this.http.get(this.urlConstants.OCGetById + id).subscribe(resp => {
@@ -52,11 +57,6 @@ export class OtherContactsComponent implements OnInit {
         let temp=response;
         this.OCModel=temp;
         return this.OCModel   
-    }
-    readOnlyEnable(data) {
-        this.OCModel = JSON.parse(JSON.stringify(data));
-        this.readOnlyForm = 'R';
-        this.enableButtonType = 'E';
     }
     formReset() {
         this.OCModel = <OtherContactsModel>{};

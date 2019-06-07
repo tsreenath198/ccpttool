@@ -11,7 +11,7 @@
         <table class="table table-hover table-striped">
           <tbody>
             <tr *ngFor="let cl of clientList |  filter : 'name' : currSearchTxt ; let i = index"
-              (click)="readOnlyEnable(cl)" (dblclick)="editClient(cl)">
+              (click)="readOnlyEnable(cl.id)" (dblclick)="editClient(cl)">
               <td>
                 {{cl.name}}
               </td>

@@ -46,7 +46,6 @@ export class ClientComponent implements OnInit {
         this.clientModel.clientContacts = [{ 'fullname': '', 'email': '', 'phone': '' }];
     }
     editClient(data) {
-        this.clientModel = JSON.parse(JSON.stringify(data));
         this.readOnlyForm = 'U';
         this.enableButtonType = 'U';
     }
@@ -54,10 +53,20 @@ export class ClientComponent implements OnInit {
         this.readOnlyForm = 'U';
         this.enableButtonType = 'U';
     }
-    readOnlyEnable(data) {
-        this.clientModel = JSON.parse(JSON.stringify(data));
+    readOnlyEnable(id) {
+        this.getById(id);
         this.readOnlyForm = 'R';
         this.enableButtonType = 'E';
+    }
+    getById(id){
+        this.http.get(this.urlConstants.OCGetById + id).subscribe(resp => {
+            this.clientModel = this.mapToUpdateModel(resp);
+            });
+    }
+    mapToUpdateModel(response){
+        let temp=response;
+        this.clientModel=temp;
+        return this.clientModel   
     }
     formReset() {
         this.clientModel = <ClientModel>{};
