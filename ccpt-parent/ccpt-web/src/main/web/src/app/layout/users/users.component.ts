@@ -21,11 +21,11 @@ export class UsersComponent implements OnInit {
     public readOnlyForm = '';
     public enableButtonType = '';
     public currSearchTxt = '';
-    private selectedRecrdToDel: number = 0;
-    public closeResult: string = '';
+    private selectedRecrdToDel = 0;
+    public closeResult = '';
     private modalRef: NgbModalRef;
 
-    constructor(private http: HttpClientService, private toastr: ToastrCustomService,private modalService: NgbModal) { }
+    constructor(private http: HttpClientService, private toastr: ToastrCustomService, private modalService: NgbModal) { }
 
     ngOnInit() {
         this.http.get(this.urlConstants.RGetAll).subscribe(resp => {
@@ -48,10 +48,20 @@ export class UsersComponent implements OnInit {
         this.readOnlyForm = 'U';
         this.enableButtonType = 'U';
     }
-    readOnlyEnable(data) {
-        this.usersModel = JSON.parse(JSON.stringify(data));
+    readOnlyEnable(id: number) {
+        this.getUserById(id);
         this.readOnlyForm = 'R';
         this.enableButtonType = 'E';
+    }
+    getUserById(id: number) {
+        this.http.get(this.urlConstants.UserGetById + id).subscribe(resp => {
+        this.usersModel = this.mapToUpdateModel(resp);
+        });
+    }
+    mapToUpdateModel(response): UsersModel {
+        const temp = response;
+        this.usersModel = temp;
+        return this.usersModel;
     }
     formReset() {
         this.usersModel = <UsersModel>{};
@@ -79,19 +89,19 @@ export class UsersComponent implements OnInit {
     }
     deleteUserRecord(): void {
         this.http.delete(this.urlConstants.UserDelete + this.selectedRecrdToDel).subscribe(resp => {
-            this.toastr.success(this.urlConstants.DeleteMsg, "User");
+            this.toastr.success(this.urlConstants.DeleteMsg, 'User');
             this.init();
             this.close();
             this.formReset();
         }, err => {
             this.toastr.error(err.error.message, 'User' );
-        })
+        });
     }
     cancelForm(usersForm: NgForm) {
         usersForm.resetForm();
     }
      /**
-     * @param 
+     * @param
      * 1) content consists the modal instance
      * 2) Selected contains the code of selected row
      */
