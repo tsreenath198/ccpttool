@@ -119,7 +119,7 @@ export class ClientPositionComponent implements OnInit {
         this.clientPositionModel['clientId'] = temp.client.id;
         this.clientPositionModel['assignedTo'] = temp.assignedTo.id;
         this.clientPositionModel['cpstatus'] = temp.status.code;
-        this.clientPositionModel['closedBy'] = (temp.closedBy) ? temp.closedBy.id : null;
+        this.clientPositionModel['closedBy'] = (temp.closedBy) ? temp.closedBy.id : 0;
         return this.clientPositionModel;
     }
     formReset() {

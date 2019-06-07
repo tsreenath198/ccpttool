@@ -11,7 +11,7 @@ export interface ClientPositionModel {
     maxCtc: number;
     cpstatus: string;
     closedBy: string;
-    additionalComments: string;
+    description: string;
     jobCode: string;
     location: string;
     createdDate: string;
