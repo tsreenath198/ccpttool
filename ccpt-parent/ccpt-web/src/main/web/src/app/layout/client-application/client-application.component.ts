@@ -98,7 +98,7 @@ export class ClientApplicationComponent implements OnInit {
             clientApplicationForm.resetForm();
        
         }, err => {
-            this.toastr.error(err.statusText, 'Client Application');
+            this.toastr.error(err.error.message, 'Client Application');
         });
 
     }
@@ -117,7 +117,7 @@ export class ClientApplicationComponent implements OnInit {
             this.readOnlyForm = '';
             this.enableButtonType = '';
         }, err => {
-            this.toastr.error(err.statusText, 'Client Application');
+            this.toastr.error(err.error.message, 'Client Application');
         });
         this.formReset();
     }
@@ -135,6 +135,8 @@ export class ClientApplicationComponent implements OnInit {
             this.init();
             this.close();
             this.formReset();
+        }, err => {
+            this.toastr.error(err.error.message, 'Client Application');
         });
     }
     /**

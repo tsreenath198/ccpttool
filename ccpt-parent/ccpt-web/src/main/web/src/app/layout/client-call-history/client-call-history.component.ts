@@ -84,7 +84,7 @@ export class ClientCallHistoryComponent implements OnInit {
             this.formReset();
             clientCallHistoryForm.resetForm();
         }, err => {
-            this.toastr.error(err.statusText, 'Client Call History');
+            this.toastr.error(err.error.message, 'Client Call History');
         });
 
     }
@@ -96,7 +96,7 @@ export class ClientCallHistoryComponent implements OnInit {
             this.init();
             clientCallHistoryForm.resetForm();
         }, err => {
-            this.toastr.error(err.statusText, 'Client Call History');
+            this.toastr.error(err.error.message, 'Client Call History');
         });
     }
 
@@ -113,6 +113,8 @@ export class ClientCallHistoryComponent implements OnInit {
             this.init();
             this.close();
             this.formReset();
+        }, err => {
+            this.toastr.error(err.error.message, 'Client');
         });
     }
     /**

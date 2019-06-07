@@ -76,7 +76,7 @@ export class ConsultantComponent implements OnInit {
             this.formReset();
             consultantForm.resetForm();
         }, err => {
-            this.toastr.error(err.statusText, 'Consultant');
+            this.toastr.error(err.error.message, 'Consultant');
         });
     }
     updateConsultant(consultantForm: NgForm) {
@@ -88,7 +88,7 @@ export class ConsultantComponent implements OnInit {
             this.readOnlyForm = '';
             this.enableButtonType = '';
         }, err => {
-            this.toastr.error(err.statusText, 'Client Position');
+            this.toastr.error(err.statusText, 'Consultant');
         });
     }
     getConsultantById(id: number) {
@@ -115,6 +115,8 @@ export class ConsultantComponent implements OnInit {
             this.init();
             this.close();
             this.formReset();
+        }, err => {
+            this.toastr.error(err.statusText, 'Consultant');
         });
     }
     mapToUpdateModel(response): ConsultantModel {

@@ -64,7 +64,7 @@ export class RecruiterComponent implements OnInit {
             this.formReset();
             recruiterForm.resetForm();
         }, err => {
-            this.toastr.error(err.error.error + err.status, "Recruiter");
+            this.toastr.error(err.error.message + err.status, "Recruiter");
         })
     }
     updateRecruiter(recruiterForm:NgForm) {
@@ -77,7 +77,7 @@ export class RecruiterComponent implements OnInit {
             this.readOnlyForm = '';
             this.enableButtonType = '';
         }, err => {
-            this.toastr.error(err.statusText, "Recruiter");
+            this.toastr.error(err.error.message, "Recruiter");
         })
     }
     cancelForm(recruiterForm:NgForm) {
@@ -92,6 +92,8 @@ export class RecruiterComponent implements OnInit {
             this.init();
             this.close();
             this.formReset();
+        }, err => {
+            this.toastr.error(err.error.message, "Recruiter");
         })
     }
     /**

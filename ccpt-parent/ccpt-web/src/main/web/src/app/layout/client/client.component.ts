@@ -70,7 +70,7 @@ export class ClientComponent implements OnInit {
             clientForm.resetForm();
             this.clientContactDeclare();
         }, err => {
-            this.toastr.error(err.statusText, 'Client');
+            this.toastr.error(err.error.message, 'Client');
         });
     }
     updateClient(clientForm: NgForm) {
@@ -84,7 +84,7 @@ export class ClientComponent implements OnInit {
             this.readOnlyForm = '';
             this.enableButtonType = '';
         }, err => {
-            this.toastr.error(err.statusText, 'Client');
+            this.toastr.error(err.error.message, 'Client');
         });
     }
     cancelForm(consultantCallHistory: NgForm) {
@@ -115,10 +115,12 @@ export class ClientComponent implements OnInit {
     }
     deleteClientRecord(): void {
         this.http.delete(this.urlConstants.OCDelete + this.selectedRecrdToDel).subscribe(resp => {
-            this.toastr.success(this.urlConstants.DeleteMsg, 'Contact');
+            this.toastr.success(this.urlConstants.DeleteMsg, 'Client');
             this.init();
             this.close();
             this.formReset();
+        }, err => {
+            this.toastr.error(err.error.message, 'Client');
         });
     }
     getFilesById() {

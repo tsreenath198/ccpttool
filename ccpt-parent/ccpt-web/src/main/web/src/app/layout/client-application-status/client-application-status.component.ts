@@ -68,7 +68,7 @@ export class ClientApplicationStatusComponent implements OnInit {
             this.formReset();
             CASForm.resetForm();
         }, err => {
-            this.toastr.error(err.statusText, "Client Application Status");
+            this.toastr.error(err.error.message, "Client Application Status");
         });
     }
     /**
@@ -83,7 +83,7 @@ export class ClientApplicationStatusComponent implements OnInit {
             this.readOnlyForm = '';
             this.enableButtonType = '';
         }, err => {
-            this.toastr.error(err.statusText, "Client Application Status");
+            this.toastr.error(err.error.message, "Client Application Status");
         })
     }
     /**
@@ -101,6 +101,8 @@ export class ClientApplicationStatusComponent implements OnInit {
             this.init();
             this.close();
             this.formReset();
+        }, err => {
+            this.toastr.error(err.error.message, 'Client Application Status');
         })
     }
     /**

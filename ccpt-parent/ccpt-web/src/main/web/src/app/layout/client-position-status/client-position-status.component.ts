@@ -60,7 +60,7 @@ export class ClientPositionStatusComponent implements OnInit {
             this.formReset();
             clientPositionStatusForm.resetForm();
         }, err => {
-            this.toastr.error(err.statusText, "Client Position Status");
+            this.toastr.error(err.error.message, "Client Position Status");
         })
     }
     updateClientPositionStatus(clientApplicationStatusForm:NgForm) {
@@ -72,7 +72,7 @@ export class ClientPositionStatusComponent implements OnInit {
             this.readOnlyForm = '';
             this.enableButtonType = '';
         }, err => {
-            this.toastr.error(err.statusText, "Client Position Status");
+            this.toastr.error(err.error.message, "Client Position Status");
         })
     }
     // editableForm(){
@@ -97,6 +97,8 @@ export class ClientPositionStatusComponent implements OnInit {
             this.init();
             this.close();
             this.formReset();
+        }, err => {
+            this.toastr.error(err.error.message, 'Client Position Status');
         })
     }
     /**

@@ -62,7 +62,7 @@ export class UsersComponent implements OnInit {
             usersForm.resetForm();
             this.init();
         }, err => {
-            this.toastr.error(err.statusText, 'Users');
+            this.toastr.error(err.error.message, 'Users');
         });
     }
     updateUsers(usersForm: NgForm): void {
@@ -74,7 +74,7 @@ export class UsersComponent implements OnInit {
             this.readOnlyForm = '';
             this.enableButtonType = '';
         }, err => {
-            this.toastr.error(err.statusText, 'User' );
+            this.toastr.error(err.error.message, 'User' );
         });
     }
     deleteClientRecord(): void {
@@ -83,6 +83,8 @@ export class UsersComponent implements OnInit {
             this.init();
             this.close();
             this.formReset();
+        }, err => {
+            this.toastr.error(err.error.message, 'User' );
         })
     }
     cancelForm(usersForm: NgForm) {

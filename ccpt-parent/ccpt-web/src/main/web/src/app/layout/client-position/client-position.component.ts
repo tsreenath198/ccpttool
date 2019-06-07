@@ -140,6 +140,8 @@ export class ClientPositionComponent implements OnInit {
                         this.formReset();
                         clientPositionForm.resetForm();
 
+                    }, err => {
+                        this.toastr.error(err.error.message, 'Client Position');
                     });
                     i++;
                     this.clientPositionModel.generatedCode = temp; // replacing with original value
@@ -203,7 +205,7 @@ export class ClientPositionComponent implements OnInit {
             this.enableButtonType = '';
             this.closedByEnable = false;
         }, err => {
-            this.toastr.error(err.statusText, 'Client Position');
+            this.toastr.error(err.error.message, 'Client Position');
         });
     }
     cancelForm(clientPositionForm: NgForm) {
@@ -219,6 +221,8 @@ export class ClientPositionComponent implements OnInit {
             this.init();
             this.close();
             this.formReset();
+        }, err => {
+            this.toastr.error(err.error.message, 'Client Position');
         });
     }
     public sendSmsReq(): void {

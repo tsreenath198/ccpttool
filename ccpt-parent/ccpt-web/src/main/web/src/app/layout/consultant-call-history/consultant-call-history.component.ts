@@ -83,7 +83,7 @@ export class ConsultantCallHistoryComponent implements OnInit {
             this.formReset();
             consultantCallHistory.resetForm();
         }, err => {
-            this.toastr.error(err.statusText, 'Consultant Call History');
+            this.toastr.error(err.error.message, 'Consultant Call History');
         });
 
     }
@@ -97,7 +97,7 @@ export class ConsultantCallHistoryComponent implements OnInit {
             this.readOnlyForm = '';
             this.enableButtonType = '';
         }, err => {
-            this.toastr.error(err.statusText, 'Consultant Call History');
+            this.toastr.error(err.error.message, 'Consultant Call History');
         });
     }
     cancelForm(consultantCallHistory: NgForm) {
@@ -113,6 +113,8 @@ export class ConsultantCallHistoryComponent implements OnInit {
             this.init();
             this.close();
             this.formReset();
+        }, err => {
+            this.toastr.error(err.error.message, 'Consultant Call History');
         });
     }
     /**

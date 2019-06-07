@@ -59,7 +59,7 @@ export class ConsultantStatusComponent implements OnInit {
             this.formReset();
             consultantStatusForm.resetForm();
         }, err => {
-            this.toastr.error(err.statusText, 'Consultant Status');
+            this.toastr.error(err.error.message, 'Consultant Status');
         });
     }
     public updateConsultantStatus(consultantStatusForm: NgForm) {
@@ -72,7 +72,7 @@ export class ConsultantStatusComponent implements OnInit {
             this.readOnlyForm = '';
             this.enableButtonType = '';
         }, err => {
-            this.toastr.error(err.statusText, 'Consultant Status');
+            this.toastr.error(err.error.message, 'Consultant Status');
         });
     }
 
@@ -88,6 +88,8 @@ export class ConsultantStatusComponent implements OnInit {
             this.init();
             this.close();
             this.formReset();
+        }, err => {
+            this.toastr.error(err.error.message, 'Consultant Status');
         });
     }
     open(content, selected: string) {

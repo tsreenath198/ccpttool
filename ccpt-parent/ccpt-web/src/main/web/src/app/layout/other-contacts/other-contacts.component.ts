@@ -69,7 +69,7 @@ export class OtherContactsComponent implements OnInit {
             this.readOnlyForm = '';
             this.enableButtonType = '';
         }, err => {
-            this.toastr.error(err.statusText, "Contact");
+            this.toastr.error(err.error.message, "Contact");
         })
     }
     cancelForm(consultantCallHistory: NgForm) {
@@ -80,10 +80,12 @@ export class OtherContactsComponent implements OnInit {
     }
     delete(): void {
         this.http.delete(this.urlConstants.OCDelete + this.selectedRecrdToDel).subscribe(resp => {
-            this.toastr.success(this.urlConstants.DeleteMsg, "Client");
+            this.toastr.success(this.urlConstants.DeleteMsg, "Contact");
             this.init();
             this.close();
             this.formReset();
+        }, err => {
+            this.toastr.error(err.error.message, "Contact");
         })
     }
     /**
