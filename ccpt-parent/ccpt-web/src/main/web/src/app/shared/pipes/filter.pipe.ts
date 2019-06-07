@@ -12,6 +12,7 @@ export class FilterPipe implements PipeTransform {
         if (!field || !value) {
             return items;
         }
-        return items.filter(item => item[field].toLowerCase().indexOf(value.toLowerCase()) !== -1);
+        //item[field].toLowerCase().indexOf(value.toLowerCase()) !== -1
+        return items.filter(item => JSON.stringify(item).toLowerCase().indexOf(value.toLowerCase()) !== -1);
     }
 }
