@@ -12,6 +12,7 @@ import com.ccpt.model.ClientApplication;
 public interface ClientApplicationMapper extends BaseMapper<ClientApplicationDTO, ClientApplication, Integer> {
 	@Mappings({ @Mapping(source = "caStatus", target = "status.code"),
 			@Mapping(source = "cpId", target = "clientPosition.id"),
-			@Mapping(source = "consultantId", target = "consultant.id") })
+			@Mapping(source = "consultantId", target = "consultant.id"),
+			@Mapping(source = "creatorId", target = "recruiter.id") })
 	public ClientApplication toModel(ClientApplicationDTO dto);
 }

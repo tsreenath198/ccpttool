@@ -38,6 +38,11 @@ public class ClientApplication extends IDEntity {
 	@JoinColumn(name = "consultant_id")
 	@NotNull
 	private Consultant consultant;
+	
+	@ManyToOne(cascade = CascadeType.MERGE)
+	@JoinColumn(name = "recruiter_id")
+	@NotNull
+	private Recruiter recruiter;
 
 	@Temporal(TemporalType.DATE)
 	@Column
@@ -48,5 +53,7 @@ public class ClientApplication extends IDEntity {
 
 	@Column
 	private String interviewLocation;
+	
+	
 
 }

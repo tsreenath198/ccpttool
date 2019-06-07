@@ -1,5 +1,7 @@
 package com.ccpt.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,5 +18,12 @@ public class ClientApplicationService extends BaseService<ClientApplication, Int
 	public BaseRepository<ClientApplication, Integer> getRepository() {
 		return clientApplicationRepository;
 	}
+	public List<ClientApplication> getAllActiveCAByCpID(Integer cpId) {
+		return clientApplicationRepository.getAllActiveCAByCpID(cpId, "ACTIVE");
 
+		}
+
+		public Integer getAllActiveCACountByCpID(Integer cpId) {
+		return clientApplicationRepository.getAllActiveCACountByCpID(cpId, "ACTIVE");
+		}
 }
