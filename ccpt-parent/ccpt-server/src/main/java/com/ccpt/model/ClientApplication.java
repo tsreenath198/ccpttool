@@ -29,20 +29,20 @@ public class ClientApplication extends IDEntity {
 	@NotNull
 	private ClientApplicationStatus status;
 
-	@ManyToOne(cascade = CascadeType.MERGE)
+	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "client_position_id")
 	@NotNull
 	private ClientPosition clientPosition;
 
-	@ManyToOne(cascade = CascadeType.MERGE)
+	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "consultant_id")
 	@NotNull
 	private Consultant consultant;
-	
-	@ManyToOne(cascade = CascadeType.MERGE)
-	@JoinColumn(name = "recruiter_id")
+
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "creator_id")
 	@NotNull
-	private Recruiter recruiter;
+	private Recruiter creator;
 
 	@Temporal(TemporalType.DATE)
 	@Column
@@ -53,7 +53,5 @@ public class ClientApplication extends IDEntity {
 
 	@Column
 	private String interviewLocation;
-	
-	
 
 }

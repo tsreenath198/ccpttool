@@ -13,6 +13,6 @@ public interface ClientApplicationMapper extends BaseMapper<ClientApplicationDTO
 	@Mappings({ @Mapping(source = "caStatus", target = "status.code"),
 			@Mapping(source = "cpId", target = "clientPosition.id"),
 			@Mapping(source = "consultantId", target = "consultant.id"),
-			@Mapping(source = "creatorId", target = "recruiter.id") })
+			@Mapping(source = "creatorId", target = "creator.id") })
 	public ClientApplication toModel(ClientApplicationDTO dto);
 }

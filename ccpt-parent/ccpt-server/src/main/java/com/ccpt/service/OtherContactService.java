@@ -9,6 +9,10 @@ import com.ccpt.repository.OtherContactRepository;
 
 @Service
 public class OtherContactService extends BaseService<OtherContact, Integer> {
+	public OtherContactService() {
+		super("Other Contact");
+	}
+
 	@Autowired
 	private OtherContactRepository otherContactRepository;
 

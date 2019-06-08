@@ -21,6 +21,10 @@ import com.ccpt.mapper.ClientApplicationMapper;
 import com.ccpt.model.ClientApplication;
 import com.ccpt.service.BaseService;
 import com.ccpt.service.ClientApplicationService;
+import com.ccpt.service.ClientApplicationStatusService;
+import com.ccpt.service.ClientPositionService;
+import com.ccpt.service.ConsultantService;
+import com.ccpt.service.RecruiterService;
 
 @Controller
 @CrossOrigin
@@ -29,6 +33,18 @@ public class ClientApplicationController extends BaseController<ClientApplicatio
 
 	@Autowired
 	private ClientApplicationService clientApplicationService;
+
+	@Autowired
+	private ClientPositionService clientPositionService;
+
+	@Autowired
+	private RecruiterService recruiterService;
+
+	@Autowired
+	private ConsultantService consultantService;
+
+	@Autowired
+	private ClientApplicationStatusService clientApplicationStatusService;
 
 	@Override
 	public BaseService<ClientApplication, Integer> getService() {
@@ -40,33 +56,42 @@ public class ClientApplicationController extends BaseController<ClientApplicatio
 		return Mappers.getMapper(ClientApplicationMapper.class);
 	}
 
-	@Override
-	protected void validateAndClean(ClientApplication model) {
-		if (model.getClientPosition() == null) {
-			throw new ValidationException("Client Position cannot be null");
-		}
-		if(model.getConsultant() == null) {
-			throw new ValidationException("Consultant cannot be null");
-		}
-		if(model.getStatus() == null) {
-			throw new ValidationException("Application Status cannot be null");
-		}
-	}
-	
-	
 	@GetMapping("/getAllActiveCAByCpID")
 	public ResponseEntity<List<ClientApplication>> getAllActiveCAByCpID(@RequestParam Integer cpId) {
-	List<ClientApplication> result = clientApplicationService.getAllActiveCAByCpID(cpId);
-	return new ResponseEntity<List<ClientApplication>>(result, HttpStatus.OK);
+		List<ClientApplication> result = clientApplicationService.getAllActiveCAByCpID(cpId);
+		return new ResponseEntity<List<ClientApplication>>(result, HttpStatus.OK);
 
 	}
 
 	@GetMapping("/getAllActiveCACountByCpID")
 	public ResponseEntity<Integer> getAllActiveCACountByCpID(@RequestParam Integer cpId) {
-	Integer result = clientApplicationService.getAllActiveCACountByCpID(cpId);
-	return new ResponseEntity<Integer>(result, HttpStatus.OK);
+		Integer result = clientApplicationService.getAllActiveCACountByCpID(cpId);
+		return new ResponseEntity<Integer>(result, HttpStatus.OK);
 
 	}
 
+	@Override
+	protected void validateAndClean(ClientApplication model) {
+		if (model.getClientPosition() == null || model.getClientPosition().getId() == null) {
+			throw new ValidationException("Client Position cannot be null");
+		} else {
+			model.setClientPosition(clientPositionService.get(model.getClientPosition().getId()));
+		}
+		if (model.getConsultant() == null || model.getConsultant().getId() == null) {
+			throw new ValidationException("Consultant cannot be null");
+		} else {
+			model.setConsultant(consultantService.get(model.getConsultant().getId()));
+		}
+		if (model.getCreator() == null || model.getCreator().getId() == null) {
+			throw new ValidationException("Application Creator cannot be null");
+		} else {
+			model.setCreator(recruiterService.get(model.getCreator().getId()));
+		}
+		if (model.getStatus() == null || model.getStatus().getCode() == null) {
+			throw new ValidationException("Application Status cannot be null");
+		} else {
+			model.setStatus(clientApplicationStatusService.get(model.getStatus().getCode()));
+		}
+	}
 
 }

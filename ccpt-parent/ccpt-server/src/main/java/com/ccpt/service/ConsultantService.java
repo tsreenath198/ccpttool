@@ -9,6 +9,10 @@ import com.ccpt.repository.ConsultantRepository;
 
 @Service
 public class ConsultantService extends BaseService<Consultant, Integer> {
+	public ConsultantService() {
+		super("Consultant");
+	}
+
 	@Autowired
 	private ConsultantRepository consultantRepository;
 

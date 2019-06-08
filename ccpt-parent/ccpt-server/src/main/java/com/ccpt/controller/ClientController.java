@@ -39,8 +39,8 @@ public class ClientController extends BaseController<ClientDTO, Client, Integer>
 		if (model.getName() == null) {
 			throw new ValidationException("Client Name cannot be null");
 		}
-		if (model.getPhone() == null) {
-			throw new ValidationException("Phone number cannot be null");
+		if (model.getPhone() == null && model.getEmail() == null) {
+			throw new ValidationException("Phone number and Email Both cannot be null");
 		}
 
 	}

@@ -14,6 +14,10 @@ import com.ccpt.repository.EmailTemplateRepository;
 @Component
 public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 
+	public EmailTemplateService() {
+		super("Email Template");
+	}
+
 	@Autowired
 	private EmailTemplateRepository emailTemplateRepository;
 

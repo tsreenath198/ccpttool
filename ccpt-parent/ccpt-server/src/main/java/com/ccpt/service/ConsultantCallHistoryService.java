@@ -12,6 +12,10 @@ import com.ccpt.repository.ConsultantCallHistoryRepository;
 
 @Service
 public class ConsultantCallHistoryService extends BaseService<ConsultantCallHistory, Integer> {
+	public ConsultantCallHistoryService() {
+		super("Consultant Call History");
+	}
+
 	@Autowired
 	private ConsultantCallHistoryRepository consultantCallHistoryRepository;
 

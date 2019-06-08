@@ -39,6 +39,12 @@ public class ConsultantController extends BaseController<ConsultantDTO, Consulta
 		if (model.getStatus().getCode() == null) {
 			throw new ValidationException("Consultant Status cannot be null");
 		}
+		if (model.getFullname() == null) {
+			throw new ValidationException("Client Name cannot be null");
+		}
+		if (model.getPhone() == null && model.getEmail() == null) {
+			throw new ValidationException("Phone number and Email Both cannot be null");
+		}
 	}
 
 }

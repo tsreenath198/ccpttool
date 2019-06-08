@@ -14,6 +14,10 @@ import com.ccpt.repository.SmsTemplateRepository;
 @Component
 public class SmsTemplateService extends BaseService<SmsTemplate, Integer> {
 
+	public SmsTemplateService() {
+		super("SMS Template");
+	}
+
 	@Autowired
 	private SmsTemplateRepository smsTemplateRepository;
 

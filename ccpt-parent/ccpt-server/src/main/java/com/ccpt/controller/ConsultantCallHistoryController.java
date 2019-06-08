@@ -15,6 +15,7 @@ import com.ccpt.mapper.ConsultantCallHistoryMapper;
 import com.ccpt.model.ConsultantCallHistory;
 import com.ccpt.service.BaseService;
 import com.ccpt.service.ConsultantCallHistoryService;
+import com.ccpt.service.ConsultantService;
 
 @Controller
 @CrossOrigin
@@ -24,6 +25,8 @@ public class ConsultantCallHistoryController
 
 	@Autowired
 	private ConsultantCallHistoryService consultantCallHistoryService;
+	@Autowired
+	private ConsultantService consultantService;
 
 	@Override
 	public BaseService<ConsultantCallHistory, Integer> getService() {
@@ -37,8 +40,10 @@ public class ConsultantCallHistoryController
 
 	@Override
 	protected void validateAndClean(ConsultantCallHistory model) {
-		if (model.getConsultant() == null) {
-			throw new ValidationException("Client Position cannot be null");
+		if (model.getConsultant() == null || model.getConsultant().getId() == null) {
+			throw new ValidationException("Consultant cannot be null");
+		} else {
+			model.setConsultant(consultantService.get(model.getConsultant().getId()));
 		}
 		if (model.getCalledDate() == null) {
 			throw new ValidationException("Called Date cannot be null");

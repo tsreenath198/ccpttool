@@ -18,8 +18,12 @@ public class IDEntity extends BaseEntity<Integer> {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	protected Integer id;
 
+	public Integer getId() {
+		return (id == null || id == 0) ? null : id;
+	}
+
 	@Override
 	public Integer getKey() {
-		return id;
+		return getId();
 	}
 }

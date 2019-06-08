@@ -11,6 +11,10 @@ import com.ccpt.repository.UploadFileRepository;
 
 @Service
 public class UploadFileService extends BaseService<UploadFile, Integer> {
+	public UploadFileService() {
+		super("Upload File");
+	}
+
 	@Autowired
 	private UploadFileRepository uploadFileRepository;
 

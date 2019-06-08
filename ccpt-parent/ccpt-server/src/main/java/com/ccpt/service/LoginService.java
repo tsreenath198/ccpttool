@@ -9,6 +9,10 @@ import com.ccpt.repository.LoginRepository;
 
 @Service
 public class LoginService extends BaseService<Login, Integer> {
+	public LoginService() {
+		super("Login");
+	}
+
 	@Autowired
 	private LoginRepository loginRepository;
 

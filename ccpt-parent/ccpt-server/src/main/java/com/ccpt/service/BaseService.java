@@ -9,6 +9,11 @@ import com.ccpt.model.BaseEntity;
 import com.ccpt.repository.BaseRepository;
 
 public abstract class BaseService<T extends BaseEntity<ID>, ID> {
+	protected final String ENTITY;
+
+	public BaseService(String entity) {
+		this.ENTITY = entity;
+	}
 
 	public List<T> getAll() {
 		return getRepository().findByActiveFlagAllIgnoreCaseOrderByCreatedDateDesc(true);
@@ -19,7 +24,7 @@ public abstract class BaseService<T extends BaseEntity<ID>, ID> {
 		if (entity.isPresent()) {
 			return entity.get();
 		} else {
-			throw new EntityNotFoundException("Could not find entity for id : " + id);
+			throw new EntityNotFoundException("Could not find " + ENTITY + " for id : " + id);
 		}
 	}
 
@@ -30,12 +35,12 @@ public abstract class BaseService<T extends BaseEntity<ID>, ID> {
 	public T update(T entity) {
 		Optional<T> existing = getRepository().findById(entity.getKey());
 		if (entity.getKey() == null) {
-			throw new EntityNotFoundException("No key passed for entity");
+			throw new EntityNotFoundException("No primary key passed for " + ENTITY);
 		}
 		if (existing.isPresent()) {
 			return getRepository().save(entity);
 		} else {
-			throw new EntityNotFoundException("Could not find entity for id : " + entity.getKey());
+			throw new EntityNotFoundException("Could not find " + ENTITY + " for id : " + entity.getKey());
 		}
 	}
 

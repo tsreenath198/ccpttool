@@ -11,6 +11,10 @@ import com.ccpt.repository.RecruiterRepository;
 
 @Service
 public class RecruiterService extends BaseService<Recruiter, Integer> {
+	public RecruiterService() {
+		super("Recruiter");
+	}
+
 	@Autowired
 	private RecruiterRepository recruiterRepository;
 

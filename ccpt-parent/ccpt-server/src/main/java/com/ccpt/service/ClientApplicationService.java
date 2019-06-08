@@ -11,6 +11,10 @@ import com.ccpt.repository.ClientApplicationRepository;
 
 @Service
 public class ClientApplicationService extends BaseService<ClientApplication, Integer> {
+	public ClientApplicationService() {
+		super("Client Application");
+	}
+
 	@Autowired
 	private ClientApplicationRepository clientApplicationRepository;
 
@@ -18,12 +22,13 @@ public class ClientApplicationService extends BaseService<ClientApplication, Int
 	public BaseRepository<ClientApplication, Integer> getRepository() {
 		return clientApplicationRepository;
 	}
+
 	public List<ClientApplication> getAllActiveCAByCpID(Integer cpId) {
 		return clientApplicationRepository.getAllActiveCAByCpID(cpId, "ACTIVE");
 
-		}
+	}
 
-		public Integer getAllActiveCACountByCpID(Integer cpId) {
+	public Integer getAllActiveCACountByCpID(Integer cpId) {
 		return clientApplicationRepository.getAllActiveCACountByCpID(cpId, "ACTIVE");
-		}
+	}
 }

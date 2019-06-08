@@ -35,16 +35,16 @@ public class ClientPosition extends IDEntity {
 	@Column
 	private Double maxCtc;
 
-	@ManyToOne(cascade = CascadeType.MERGE)
+	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "status_code", referencedColumnName = "code")
 	@NotNull
 	private ClientPositionStatus status;
 
-	@ManyToOne(cascade = CascadeType.MERGE)
+	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "closed_by", nullable = true)
 	private Recruiter closedBy;
 
-	@ManyToOne(cascade = CascadeType.MERGE)
+	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "assigned_to")
 	private Recruiter assignedTo;
 
@@ -52,7 +52,7 @@ public class ClientPosition extends IDEntity {
 	@NotNull
 	private String generatedCode;
 
-	@ManyToOne(cascade = CascadeType.MERGE)
+	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "client_id")
 	@NotNull
 	private Client client;
