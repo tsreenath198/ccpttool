@@ -36,7 +36,7 @@ public class EmailTemplateController extends BaseController<EmailTemplateDTO, Em
 
 	@PostMapping("/build/{type}")
 	@ResponseBody
-	public EmailContent buildContent(@PathVariable String type, @RequestBody Map<String, String> params) {
+	public EmailContent buildContent(@PathVariable String type, @RequestBody Map<String, String> params) throws Exception {
 		EmailTemplate emailTemplate = emailTemplateService.getTemplateByType(type);
 		ContentSubstitutor substitutor = factory.getSubstitutor(type);
 		return substitutor.generate(emailTemplate, params);

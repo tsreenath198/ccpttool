@@ -19,6 +19,7 @@ import com.ccpt.dto.ClientApplicationDTO;
 import com.ccpt.mapper.BaseMapper;
 import com.ccpt.mapper.ClientApplicationMapper;
 import com.ccpt.model.ClientApplication;
+import com.ccpt.model.Detail;
 import com.ccpt.service.BaseService;
 import com.ccpt.service.ClientApplicationService;
 import com.ccpt.service.ClientApplicationStatusService;
@@ -64,9 +65,9 @@ public class ClientApplicationController extends BaseController<ClientApplicatio
 	}
 
 	@GetMapping("/getAllActiveCACountByCpID")
-	public ResponseEntity<Integer> getAllActiveCACountByCpID(@RequestParam Integer cpId) {
-		Integer result = clientApplicationService.getAllActiveCACountByCpID(cpId);
-		return new ResponseEntity<Integer>(result, HttpStatus.OK);
+	public ResponseEntity<List<Detail>> getAllActiveCACountByCpID() {
+		List<Detail> result = clientApplicationService.getAllActiveCACountByCpID();
+		return new ResponseEntity<List<Detail>>(result, HttpStatus.OK);
 
 	}
 

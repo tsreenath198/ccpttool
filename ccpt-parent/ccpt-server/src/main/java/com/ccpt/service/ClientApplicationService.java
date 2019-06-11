@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ccpt.model.ClientApplication;
+import com.ccpt.model.Detail;
 import com.ccpt.repository.BaseRepository;
 import com.ccpt.repository.ClientApplicationRepository;
 
@@ -28,7 +29,7 @@ public class ClientApplicationService extends BaseService<ClientApplication, Int
 
 	}
 
-	public Integer getAllActiveCACountByCpID(Integer cpId) {
-		return clientApplicationRepository.getAllActiveCACountByCpID(cpId, "ACTIVE");
+	public List<Detail> getAllActiveCACountByCpID() {
+		return clientApplicationRepository.getAllActiveCACountByCpID();
 	}
 }
