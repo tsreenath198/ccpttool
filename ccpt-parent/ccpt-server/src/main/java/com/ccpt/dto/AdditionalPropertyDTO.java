@@ -7,8 +7,8 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class AdditionalPropertyDTO extends IDEntityDTO {
-
+public class AdditionalPropertyDTO {
+	private Integer id;
 	private String name;
 	private String value;
 }
