@@ -12,5 +12,5 @@ import lombok.ToString;
 public abstract class BaseEntityDTO<ID> {
 	protected String description;
 	
-	protected List<AdditionalPropertyDTO> properties;
+	
 }

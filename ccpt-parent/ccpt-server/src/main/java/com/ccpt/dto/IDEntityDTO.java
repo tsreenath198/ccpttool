@@ -1,5 +1,7 @@
 package com.ccpt.dto;
 
+import java.util.List;
+
 import javax.persistence.MappedSuperclass;
 
 import lombok.Getter;
@@ -12,4 +14,5 @@ import lombok.ToString;
 @MappedSuperclass
 public class IDEntityDTO extends BaseEntityDTO<Integer> {
 	protected Integer id;
+	protected List<AdditionalPropertyDTO> properties;
 }

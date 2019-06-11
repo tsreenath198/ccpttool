@@ -14,6 +14,8 @@ import lombok.ToString;
 @Entity
 @Table
 public class AdditionalProperty extends IDEntity {
+	
+	protected Integer id;
 	@Column
 	private String name;
 	@Column

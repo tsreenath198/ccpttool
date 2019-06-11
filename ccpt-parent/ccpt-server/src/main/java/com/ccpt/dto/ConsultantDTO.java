@@ -20,18 +20,18 @@ public class ConsultantDTO extends IDEntityDTO {
 	private String currentLocation;
 	private int passoutYear;
 	private String qualification;
-	private Double expectedCTC;
+	private String expectedCTC;
 	private String cStatus;
-	private Integer experienceYrs;
-	private Integer experienceMonths;
+	private String experienceYrs;
+	private String experienceMonths;
 	private String currentCompany;
-	private Double currentCTC;
+	private String currentCTC;
 	private String prefferedLocation;
 	private String currentJobTitle;
 	private String currentFunctionalArea;
 	private String currentIndustry;
-	private Integer yearsInCurrentJob;
-	private Integer monthsInCurrentJob;
-	private Integer noticePeriod;
+	private String yearsInCurrentJob;
+	private String monthsInCurrentJob;
+	private String noticePeriod;
 	private String highestEducation;
 }

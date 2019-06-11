@@ -55,7 +55,7 @@ public class Consultant extends IDEntity {
 	private String qualification;
 
 	@Column
-	private Double expectedCTC;
+	private String expectedCTC;
 
 	@OneToOne(cascade = CascadeType.MERGE)
 	@JoinColumn(name = "status_code", referencedColumnName = "code")
@@ -63,16 +63,16 @@ public class Consultant extends IDEntity {
 	private ConsultantStatus status;
 
 	@Column
-	private Integer experienceYrs;
+	private String experienceYrs;
 
 	@Column
-	private Integer experienceMonths;
+	private String experienceMonths;
 
 	@Column
 	private String currentCompany;
 
 	@Column
-	private Double currentCTC;
+	private String currentCTC;
 
 	@Column
 	private String prefferedLocation;
@@ -87,13 +87,13 @@ public class Consultant extends IDEntity {
 	private String currentIndustry;
 
 	@Column
-	private Integer yearsInCurrentJob;
+	private String yearsInCurrentJob;
 
 	@Column
-	private Integer monthsInCurrentJob;
+	private String monthsInCurrentJob;
 
 	@Column
-	private Integer noticePeriod;
+	private String noticePeriod;
 
 	@Column
 	private String highestEducation;

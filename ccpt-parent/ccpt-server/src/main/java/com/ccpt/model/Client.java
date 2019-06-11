@@ -49,10 +49,10 @@ public class Client extends IDEntity {
 	private String serviceCharge;
 
 	@Column
-	private Integer guaranteePeriod;
+	private String guaranteePeriod;
 
 	@Column
-	private Integer creditPeriod;
+	private String creditPeriod;
 
 	@Column
 	private String website;

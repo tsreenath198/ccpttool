@@ -19,8 +19,8 @@ public class ClientDTO extends IDEntityDTO {
 	private String email;
 	private String servicetaxNo;
 	private String serviceCharge;
-	private Integer guaranteePeriod;
-	private Integer creditPeriod;
+	private String guaranteePeriod;
+	private String creditPeriod;
 	private String website;
 	private List<ClientContactDTO> clientContacts;
 }
