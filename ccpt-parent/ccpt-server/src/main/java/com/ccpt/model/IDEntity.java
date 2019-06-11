@@ -23,9 +23,7 @@ public class IDEntity extends BaseEntity<Integer> {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
-	@OneToMany(cascade = CascadeType.ALL)
-	@JoinColumn(name = "refId")
-	private List<AdditionalProperty> properties;
+	private transient List<AdditionalProperty> properties;
 
 	public Integer getId() {
 		return (id == null || id == 0) ? null : id;

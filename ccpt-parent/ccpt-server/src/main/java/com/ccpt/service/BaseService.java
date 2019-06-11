@@ -5,11 +5,20 @@ import java.util.Optional;
 
 import javax.persistence.EntityNotFoundException;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.CollectionUtils;
+
+import com.ccpt.model.AdditionalProperty;
 import com.ccpt.model.BaseEntity;
+import com.ccpt.model.IDEntity;
+import com.ccpt.repository.AdditionalPropertyRepository;
 import com.ccpt.repository.BaseRepository;
 
 public abstract class BaseService<T extends BaseEntity<ID>, ID> {
 	protected final String ENTITY;
+
+	@Autowired
+	private AdditionalPropertyRepository apRepo;
 
 	public BaseService(String entity) {
 		this.ENTITY = entity;
@@ -22,14 +31,38 @@ public abstract class BaseService<T extends BaseEntity<ID>, ID> {
 	public T get(ID id) {
 		Optional<T> entity = getRepository().findById(id);
 		if (entity.isPresent()) {
-			return entity.get();
+			T result = entity.get();
+			if (result instanceof IDEntity) {
+				IDEntity idEntity = (IDEntity) result;
+				Optional<List<AdditionalProperty>> addnProps = apRepo.findByRefIdAndRefType(idEntity.getId(), ENTITY);
+				if (addnProps.isPresent()) {
+					idEntity.setProperties(addnProps.get());
+				}
+			}
+			return result;
 		} else {
 			throw new EntityNotFoundException("Could not find " + ENTITY + " for id : " + id);
 		}
 	}
 
 	public T save(T entity) {
-		return getRepository().save(entity);
+		T result = getRepository().save(entity);
+		saveAddnProps(entity);
+		return result;
+	}
+
+	private void saveAddnProps(T entity) {
+		if (entity instanceof IDEntity) {
+			IDEntity idEntity = (IDEntity) entity;
+
+			if (!CollectionUtils.isEmpty(idEntity.getProperties())) {
+				for (AdditionalProperty prop : idEntity.getProperties()) {
+					prop.setRefId(idEntity.getId());
+					prop.setRefType(ENTITY);
+				}
+				apRepo.saveAll(idEntity.getProperties());
+			}
+		}
 	}
 
 	public T update(T entity) {
@@ -38,7 +71,9 @@ public abstract class BaseService<T extends BaseEntity<ID>, ID> {
 			throw new EntityNotFoundException("No primary key passed for " + ENTITY);
 		}
 		if (existing.isPresent()) {
-			return getRepository().save(entity);
+			T result = getRepository().save(entity);
+			saveAddnProps(entity);
+			return result;
 		} else {
 			throw new EntityNotFoundException("Could not find " + ENTITY + " for id : " + entity.getKey());
 		}
