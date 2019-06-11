@@ -21,11 +21,11 @@ import lombok.ToString;
 public class IDEntity extends BaseEntity<Integer> {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	protected Integer id;
+	private Integer id;
 
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "refId")
-	protected transient List<AdditionalProperty> properties;
+	private List<AdditionalProperty> properties;
 
 	public Integer getId() {
 		return (id == null || id == 0) ? null : id;
