@@ -15,7 +15,7 @@ import com.ccpt.service.ClientPositionService;
 import com.ccpt.util.StrSubstitutor;
 
 @Component
-public  class BulkSMSForClientPositionSubstitutor implements ContentSubstitutor {
+public class BulkSMSForClientPositionSubstitutor implements ContentSubstitutor {
 
 	@Autowired
 	private ClientPositionService clientPositionService;
@@ -26,18 +26,26 @@ public  class BulkSMSForClientPositionSubstitutor implements ContentSubstitutor 
 	}
 
 	@Override
-	public SMS generate(SmsTemplate smsTemplate, Map<String, String> params) {
+	public SMS generate(SmsTemplate smsTemplate, Map<String, String> params) throws Exception {
 		Integer id = Integer.parseInt(params.get("cpId"));
 		ClientPosition clientPosition = clientPositionService.get(id);
-		Map<String, String> valuesMap = new HashMap<String, String>();
-		valuesMap.put("joblocation", clientPosition.getLocation());
-		valuesMap.put("client", clientPosition.getClient().getName());
-		valuesMap.put("job", clientPosition.getRole());
-		String msg = smsTemplate.getDescription();
-		String message = StrSubstitutor.replace(msg, valuesMap);
-		SMS sms = new SMS();
-		sms.setMessage(message);
-		return sms;
+		if (clientPosition != null) {
+			Map<String, String> valuesMap = new HashMap<String, String>();
+			if (clientPosition.getLocation() != null) {
+				valuesMap.put("joblocation", clientPosition.getLocation());
+			} else {
+				throw new Exception("ClientPosition Location is null");
+			}
+			valuesMap.put("client", clientPosition.getClient().getName());
+			valuesMap.put("job", clientPosition.getRole());
+			String msg = smsTemplate.getDescription();
+			String message = StrSubstitutor.replace(msg, valuesMap);
+			SMS sms = new SMS();
+			sms.setMessage(message);
+			return sms;
+		} else {
+			throw new Exception("ClientPosition is null for given id:" + id);
+		}
 	}
 
 	@Override

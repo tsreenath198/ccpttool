@@ -26,29 +26,34 @@ public class MassMailingSubstitutor implements ContentSubstitutor {
 	}
 
 	@Override
-	public EmailContent generate(EmailTemplate emailTemplate, Map<String, String> params) {
+	public EmailContent generate(EmailTemplate emailTemplate, Map<String, String> params) throws Exception {
 		Integer id = Integer.parseInt(params.get("cpId"));
 		ClientPosition clientPosition = clientPositionService.get(id);
-		Map<String, String> valuesMap = new HashMap<String, String>();
-		valuesMap.put("emailid", "tsreenath1985@gmail.com");
-		valuesMap.put("phone", "9848071296");
-		valuesMap.put("role", clientPosition.getRole());
-		valuesMap.put("joblocation", clientPosition.getLocation());
-		valuesMap.put("sector", clientPosition.getClient().getIndustry());
-		valuesMap.put("jobDescription", clientPosition.getDescription());
-		valuesMap.put("jobSpecification", clientPosition.getRequiredSkills());
-
-		String templateSubject = emailTemplate.getSubject();
-		String templateBody = emailTemplate.getDescription();
-
-		String subject = StrSubstitutor.replace(templateSubject, valuesMap);
-		String body = StrSubstitutor.replace(templateBody, valuesMap);
-		EmailContent emailContent = new EmailContent();
-		emailContent.setBody(body);
-		emailContent.setSubject(subject);
-		return emailContent;
+		if (clientPosition != null) {
+			Map<String, String> valuesMap = new HashMap<String, String>();
+			valuesMap.put("emailid", "tsreenath1985@gmail.com");
+			valuesMap.put("phone", "9848071296");
+			valuesMap.put("role", clientPosition.getRole());
+			valuesMap.put("joblocation", clientPosition.getLocation());
+			valuesMap.put("sector", clientPosition.getClient().getIndustry());
+			if (clientPosition.getDescription() != null) {
+				valuesMap.put("jobDescription", clientPosition.getDescription());
+			} else {
+				valuesMap.put("jobDescription", "null");
+			}
+			valuesMap.put("jobSpecification", clientPosition.getRequiredSkills());
+			String templateSubject = emailTemplate.getSubject();
+			String templateBody = emailTemplate.getDescription();
+			String subject = StrSubstitutor.replace(templateSubject, valuesMap);
+			String body = StrSubstitutor.replace(templateBody, valuesMap);
+			EmailContent emailContent = new EmailContent();
+			emailContent.setBody(body);
+			emailContent.setSubject(subject);
+			return emailContent;
+		} else {
+			throw new Exception("ClientPosition is null for given id:" + id);
+		}
 	}
-
 	@Override
 	public SMS generate(SmsTemplate template, Map<String, String> params) {
 		return null;

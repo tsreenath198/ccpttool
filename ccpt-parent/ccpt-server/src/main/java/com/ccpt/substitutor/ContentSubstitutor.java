@@ -10,8 +10,8 @@ import com.ccpt.model.SmsTemplate;
 public interface ContentSubstitutor {
 	public String getType();
 
-	public EmailContent generate(EmailTemplate template, Map<String, String> params);
+	public EmailContent generate(EmailTemplate template, Map<String, String> params) throws Exception;
 
-	public SMS generate(SmsTemplate template, Map<String, String> params);
+	public SMS generate(SmsTemplate template, Map<String, String> params) throws Exception;
 
 }

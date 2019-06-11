@@ -16,14 +16,10 @@ import com.ccpt.model.EmailTemplate;
 import com.ccpt.model.SMS;
 import com.ccpt.model.SmsTemplate;
 import com.ccpt.service.ClientApplicationService;
-import com.ccpt.service.ClientPositionService;
 import com.ccpt.util.StrSubstitutor;
 
 @Component
-public  class BulkSMSForInterviewConfirmationSubstitutor implements ContentSubstitutor {
-
-	@Autowired
-	private ClientPositionService clientPositionService;
+public class BulkSMSForInterviewConfirmationSubstitutor implements ContentSubstitutor {
 
 	@Autowired
 	private ClientApplicationService clientApplicationService;
@@ -34,24 +30,29 @@ public  class BulkSMSForInterviewConfirmationSubstitutor implements ContentSubst
 	}
 
 	@Override
-	public SMS generate(SmsTemplate smsTemplate, Map<String, String> params) {
-		Integer cpId = Integer.parseInt(params.get("cpId"));
+	public SMS generate(SmsTemplate smsTemplate, Map<String, String> params) throws Exception {
 		Integer caId = Integer.parseInt(params.get("caId"));
-		ClientPosition clientPosition = clientPositionService.get(cpId);
 		ClientApplication clientApplication = clientApplicationService.get(caId);
-		Map<String, String> valuesMap = new HashMap<String, String>();
-		Date date = clientApplication.getInterviewDate();
-		DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
-		String strDate = dateFormat.format(date);
-		valuesMap.put("role", clientPosition.getRole());
-		valuesMap.put("interviewDate", strDate);
-		valuesMap.put("time", clientApplication.getInterviewTime());
-		valuesMap.put("interviewLocation", clientApplication.getInterviewLocation());
-		String msg= smsTemplate.getDescription();
-		String message = StrSubstitutor.replace(msg, valuesMap);
-		SMS sms = new SMS();
-		sms.setMessage(message);
-		return sms;
+		ClientPosition clientPosition = clientApplication.getClientPosition();
+
+		if (clientPosition != null && clientApplication != null) {
+			Map<String, String> valuesMap = new HashMap<String, String>();
+			Date date = clientApplication.getInterviewDate();
+			DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
+			String strDate = dateFormat.format(date);
+			valuesMap.put("role", clientPosition.getRole());
+			valuesMap.put("interviewDate", strDate);
+			valuesMap.put("time", clientApplication.getInterviewTime());
+			valuesMap.put("interviewLocation", clientApplication.getInterviewLocation());
+			String msg = smsTemplate.getDescription();
+			String message = StrSubstitutor.replace(msg, valuesMap);
+			SMS sms = new SMS();
+			sms.setMessage(message);
+			return sms;
+		} else {
+			throw new Exception("clientAplication is null for given id:" + caId);
+		}
+
 	}
 
 	@Override
