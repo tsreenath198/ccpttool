@@ -1,6 +1,6 @@
-package com.ccpt.model;
+package com.ccpt.dto;
 
-import javax.persistence.Cacheable;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
@@ -8,12 +8,11 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-@Entity
-@Table
 @Getter
 @Setter
 @ToString
-@Cacheable(true)
-public class ConsultantStatus extends StatusEntity {
+public class AdditionalPropertyDTO extends IDEntityDTO {
 
+	private String name;
+	private String value;
 }

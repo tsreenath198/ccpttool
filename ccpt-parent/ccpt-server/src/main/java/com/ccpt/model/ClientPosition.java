@@ -30,10 +30,14 @@ public class ClientPosition extends IDEntity {
 	private String requiredSkills;
 
 	@Column
-	private Double minCtc;
+	@NotNull
+	private String requiredPositions;
 
 	@Column
-	private Double maxCtc;
+	private String minCtc;
+
+	@Column
+	private String maxCtc;
 
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "status_code", referencedColumnName = "code")

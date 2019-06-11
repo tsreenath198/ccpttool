@@ -1,6 +1,6 @@
 package com.ccpt.model;
 
-import javax.persistence.Cacheable;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
@@ -8,12 +8,14 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-@Entity
-@Table
 @Getter
 @Setter
 @ToString
-@Cacheable(true)
-public class ConsultantStatus extends StatusEntity {
-
+@Entity
+@Table
+public class AdditionalProperty extends IDEntity {
+	@Column
+	private String name;
+	@Column
+	private String value;
 }

@@ -1,5 +1,7 @@
 package com.ccpt.dto;
 
+import java.util.List;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -9,4 +11,6 @@ import lombok.ToString;
 @ToString
 public abstract class BaseEntityDTO<ID> {
 	protected String description;
+	
+	protected List<AdditionalPropertyDTO> properties;
 }
