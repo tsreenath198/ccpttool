@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { routerTransition } from '../../router.animations';
-import {  UsersModel } from './users.model';
+import {  UsersModel, UserRoles } from './users.model';
 import { HttpClientService } from 'src/app/shared/services/http.service';
 import { URLConstants } from '../components/constants/url-constants';
 import { NgForm } from '@angular/forms';
 import { ToastrCustomService } from 'src/app/shared/services/toastr.service';
 import { NgbModalRef, ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { AdditionalPropertiesModel } from 'src/app/additional-properties.model';
 
 @Component({
     selector: 'app-users',
@@ -17,6 +18,8 @@ export class UsersComponent implements OnInit {
     public usersModel: UsersModel = <UsersModel>{};
     public usersList: Array<UsersModel> = [];
     private urlConstants = new URLConstants();
+    public rolesModel = new UserRoles();  
+    public rolesList: any = [];
     public getAllR: any;
     public readOnlyForm = '';
     public enableButtonType = '';
@@ -32,6 +35,8 @@ export class UsersComponent implements OnInit {
             this.getAllR = resp as any;
         });
         this.init();
+        this.additionalPropertiesDeclare();
+        this.rolesList = this.rolesModel.roles;
 
     }
     init() {
@@ -63,6 +68,21 @@ export class UsersComponent implements OnInit {
         this.usersModel = temp;
         return this.usersModel;
     }
+    additionalPropertiesDeclare() {
+        this.usersModel.properties = [<AdditionalPropertiesModel>{}];
+    }
+    propertiesListIncrement(event, i: number) {
+        switch (event.id) {
+            case 'decrease': {
+                this.usersModel.properties.splice(i, 1);
+                break;
+            }
+            case 'increase': {
+                this.usersModel.properties.push(<AdditionalPropertiesModel>{});
+                break;
+            }
+        }
+    }
     formReset() {
         this.usersModel = <UsersModel>{};
     }
@@ -71,6 +91,7 @@ export class UsersComponent implements OnInit {
             this.toastr.success(this.urlConstants.SuccessMsg, 'User');
             usersForm.resetForm();
             this.init();
+            this.additionalPropertiesDeclare();
         }, err => {
             this.toastr.error(err.error.message, 'Users');
         });
@@ -83,6 +104,7 @@ export class UsersComponent implements OnInit {
             usersForm.resetForm();
             this.readOnlyForm = '';
             this.enableButtonType = '';
+            this.additionalPropertiesDeclare();
         }, err => {
             this.toastr.error(err.error.message, 'User' );
         });
@@ -99,6 +121,9 @@ export class UsersComponent implements OnInit {
     }
     cancelForm(usersForm: NgForm) {
         usersForm.resetForm();
+        this.readOnlyForm = '';
+        this.enableButtonType = '';
+        this.additionalPropertiesDeclare();
     }
      /**
      * @param

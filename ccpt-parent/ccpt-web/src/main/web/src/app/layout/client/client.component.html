@@ -1,7 +1,7 @@
 <div [@routerTransition]>
   <app-page-header [icon1]="'fa-building'" [heading1]="'Client'"></app-page-header>
   <div class="row">
-    <div class="col-md-8">
+    <div class="col-md-7">
       <div class="row">
         <div class="col-md-3"><strong>Total No of records : {{clientList.length}}</strong></div>
         <div class="col-md-6"> <input type="text" class="form-control" placeholder="search..."
@@ -85,7 +85,7 @@
         </table>
       </div>
     </div>
-    <div class=" col-md-4">
+    <div class=" col-md-5">
       <form name="form" id="clientForm" (ngSubmit)="f.form.valid&&clientCreate(f)" #f="ngForm" novalidate>
         <div class="row">
           <div class="col-md-12">
@@ -125,7 +125,7 @@
           <div class="col-md-12">
             <div class="form-group">
               <label>Guarantee Period</label>
-              <input type="number" class="form-control" [readonly]="readOnlyForm == 'R'"
+              <input type="text" class="form-control" [readonly]="readOnlyForm == 'R'"
                 [(ngModel)]="clientModel.guaranteePeriod" name="guaranteePeriod"
                 [ngClass]="{'is-invalid': f.submitted && guaranteePeriod.invalid}" #guaranteePeriod="ngModel">
 
@@ -134,15 +134,15 @@
           <div class="col-md-12">
             <div class="form-group">
               <label>Credit Period</label>
-              <input class="form-control" [readonly]="readOnlyForm == 'R'" [(ngModel)]="clientModel.creditPeriod"
-                name="creditPeriod" [ngClass]="{'is-invalid': f.submitted && creditPeriod.invalid}"
-                #creditPeriod="ngModel">
+              <input class="form-control" type="text" [readonly]="readOnlyForm == 'R'"
+                [(ngModel)]="clientModel.creditPeriod" name="creditPeriod"
+                [ngClass]="{'is-invalid': f.submitted && creditPeriod.invalid}" #creditPeriod="ngModel">
 
             </div>
           </div>
           <div class="col-md-12">
             <div class="form-group">
-              <label>Srevice Tax no</label>
+              <label>Service Tax no</label>
               <input class="form-control" [readonly]="readOnlyForm == 'R'" [(ngModel)]="clientModel.servicetaxNo"
                 name="servicetaxNo" [ngClass]="{'is-invalid': f.submitted && servicetaxNo.invalid}"
                 #servicetaxNo="ngModel">
@@ -151,7 +151,7 @@
           </div>
           <div class="col-md-12">
             <div class="form-group">
-              <label>Srevice Charge</label>
+              <label>Service Charge</label>
               <input class="form-control" [readonly]="readOnlyForm == 'R'" [(ngModel)]="clientModel.serviceCharge"
                 name="serviceCharge" [ngClass]="{'is-invalid': f.submitted && serviceCharge.invalid}"
                 #serviceCharge="ngModel">
@@ -164,6 +164,13 @@
               <input class="form-control" [readonly]="readOnlyForm == 'R'" [(ngModel)]="clientModel.gst" name="gst"
                 [ngClass]="{'is-invalid': f.submitted && gst.invalid}" #gst="ngModel">
 
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="form-group">
+              <label>Description</label>
+              <textarea class="form-control" name="note" [readonly]="readOnlyForm == 'R'" rows="10"
+                [(ngModel)]="clientModel.description"></textarea>
             </div>
           </div>
           <div class="col-md-12">
@@ -198,10 +205,8 @@
                   <td>
                     <input class="form-control" [readonly]="readOnlyForm == 'R'" [(ngModel)]="cc.fullname"
                       name="fullname{{i}}" [ngClass]="{'is-invalid': f.submitted && fullname.invalid}"
-                      placeholder="fullname" #fullname="ngModel" required>
-                    <div class="invalid-feedback">
-                      name is mandatory
-                    </div>
+                      placeholder="fullname" #fullname="ngModel">
+
                   </td>
                   <td>
                     <input class="form-control" type="email" [readonly]="readOnlyForm == 'R'" [(ngModel)]="cc.email"
@@ -211,7 +216,7 @@
                   </td>
                   <td>
                     <!--pattern="/^-?\d+\.?\d*$/" onKeyPress="if(this.value.length==12) return false;"-->
-                    <input class="form-control" type="number" [readonly]="readOnlyForm == 'R'" [(ngModel)]="cc.phone"
+                    <input class="form-control" type="string" [readonly]="readOnlyForm == 'R'" [(ngModel)]="cc.phone"
                       name="phone{{i}}" [ngClass]="{'is-invalid': f.submitted && phone.invalid}" placeholder="phone"
                       #phone="ngModel">
 
@@ -221,6 +226,32 @@
                       (click)="clientContactListIncrement($event.target,i)"></i>
                     <i class="fa fa-plus" *ngIf="(i+1)==clientModel.clientContacts.length" aria-hidden="true"
                       id="increase" (click)="clientContactListIncrement($event.target,i)"></i>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <strong>Additional Properties</strong>
+        <div class="row">
+          <div class="table-responsive">
+            <table class="table table-hover table-striped">
+              <tbody>
+                <tr *ngFor="let ap of clientModel.properties;let i=index">
+                  <td>
+                    <input class="form-control" [readonly]="readOnlyForm == 'R'" [(ngModel)]="ap.name" name="pname{{i}}"
+                      placeholder="name" #pname="ngModel">
+                  </td>
+                  <td>
+                    <input class="form-control" type="text" [readonly]="readOnlyForm == 'R'" [(ngModel)]="ap.value"
+                      name="pvalue{{i}}" placeholder="value" #pvalue="ngModel">
+
+                  </td>
+                  <td>
+                    <i class="fa fa-minus" aria-hidden="true" id="decrease"
+                      (click)="propertiesListIncrement($event.target,i)"></i><br>
+                    <i class="fa fa-plus" *ngIf="(i+1)==clientModel.properties.length" aria-hidden="true"
+                      id="increase" (click)="propertiesListIncrement($event.target,i)"></i>
                   </td>
                 </tr>
               </tbody>

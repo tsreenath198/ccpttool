@@ -15,7 +15,7 @@
             <tr *ngFor="let cpl of clientPositionList | filter: 'technology':currSearchTxt; let i = index">
               <td class="table-data-padding" (click)="readOnlyEnable(cpl.id)" (dblclick)="editClientPosition(cpl)">
                 <dl>
-                  <dt>{{ cpl.clientPositionCode }}</dt>
+                  <dt>{{ cpl.generatedCode }}</dt>
                   <dd>
                     Need {{ cpl.role || 'N/A' }} for {{ cpl.clientName || 'NA' }} with minimun
                     {{ cpl.experience || 'N/A' }} yrs ({{
@@ -95,9 +95,9 @@
           </div>
           <div class="col-md-12" *ngIf="readOnlyForm == ''">
             <div class="form-group">
-              <label>Number Of Positions</label>
+              <label>Required Positions</label>
               <input class="form-control" placeholder="Number Of Positions" type="number" min="0"
-                [readonly]="readOnlyForm == 'R'" [(ngModel)]="numberOfPositions" name="nofpos"
+                [readonly]="readOnlyForm == 'R'" [(ngModel)]="clientPositionModel.requiredPositions" name="nofpos"
                 [ngClass]="{ 'is-invalid': f.submitted && nofpos.invalid }" #nofpos="ngModel" />
 
             </div>
@@ -115,7 +115,7 @@
         <div class="row">
           <div class="col-md-12">
             <div class="form-group">
-              <label>Minimum Experience</label>
+              <label>Required Experience</label>
               <input class="form-control" placeholder="Minimum" [readonly]="readOnlyForm == 'R'"
                 [(ngModel)]="clientPositionModel.experience" name="experience"
                 [ngClass]="{ 'is-invalid': f.submitted && experience.invalid }" #experience="ngModel" />
@@ -209,6 +209,32 @@
             </div>
           </div>
         </div>
+        <strong>Additional Properties</strong>
+        <div class="row">
+          <div class="table-responsive">
+            <table class="table table-hover table-striped">
+              <tbody>
+                <tr *ngFor="let ap of clientPositionModel.properties;let i=index">
+                  <td>
+                    <input class="form-control" [readonly]="readOnlyForm == 'R'" [(ngModel)]="ap.name" name="pname{{i}}"
+                      placeholder="name" #pname="ngModel">
+                  </td>
+                  <td>
+                    <input class="form-control" type="text" [readonly]="readOnlyForm == 'R'" [(ngModel)]="ap.value"
+                      name="pvalue{{i}}" placeholder="value" #pvalue="ngModel">
+
+                  </td>
+                  <td>
+                    <i class="fa fa-minus" aria-hidden="true" id="decrease"
+                      (click)="propertiesListIncrement($event.target,i)"></i><br>
+                    <i class="fa fa-plus" *ngIf="(i+1)==clientPositionModel.properties.length" aria-hidden="true"
+                      id="increase" (click)="propertiesListIncrement($event.target,i)"></i>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
         <div class="row text-center">
           <div class="col-md-12">
             <button type="submit" *ngIf="enableButtonType == ''" class="btn btn-secondary ml-3">Add</button>
@@ -239,7 +265,7 @@
   </div>
   <div class="modal-body">
     <label>Creator</label>
-    <select class="form-control" name="creator" [disabled]="true"> 
+    <select class="form-control" name="creator"  [(ngModel)]="creator"> 
         <option *ngFor="let rl of recruiterList" [ngValue]="rl.id"> {{ rl.fullname }}</option>
       </select>
     <label>Consultants</label>

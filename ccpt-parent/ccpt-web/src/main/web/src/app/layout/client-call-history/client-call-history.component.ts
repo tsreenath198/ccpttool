@@ -8,6 +8,7 @@ import { ToastrCustomService } from 'src/app/shared/services/toastr.service';
 import { URLConstants } from '../components/constants/url-constants';
 import { NgForm } from '@angular/forms';
 import { ClientModel } from '../client/client.model';
+import { AdditionalPropertiesModel } from 'src/app/additional-properties.model';
 
 
 @Component({
@@ -44,6 +45,7 @@ export class ClientCallHistoryComponent implements OnInit {
             this.clientList = resp as Array<ClientModel>;
         });
         this.init();
+        this.additionalPropertiesDeclare();
     }
     init() {
         this.http.get(this.urlConstants.CCHGetAll).subscribe(resp => {
@@ -70,6 +72,21 @@ export class ClientCallHistoryComponent implements OnInit {
         this.clientCallHistoryModel['cpId'] = temp.clientPosition.id;
         return this.clientCallHistoryModel;
     }
+    additionalPropertiesDeclare() {
+        this.clientCallHistoryModel.properties = [<AdditionalPropertiesModel>{}];
+    }
+    propertiesListIncrement(event, i: number) {
+        switch (event.id) {
+            case 'decrease': {
+                this.clientCallHistoryModel.properties.splice(i, 1);
+                break;
+            }
+            case 'increase': {
+                this.clientCallHistoryModel.properties.push(<AdditionalPropertiesModel>{});
+                break;
+            }
+        }
+    }
     enableFormEditable(): void {
         this.readOnlyForm = 'U';
         this.enableButtonType = 'U';
@@ -83,6 +100,7 @@ export class ClientCallHistoryComponent implements OnInit {
             this.init();
             this.formReset();
             clientCallHistoryForm.resetForm();
+            this.additionalPropertiesDeclare();
         }, err => {
             this.toastr.error(err.error.message, 'Client Call History');
         });
@@ -95,6 +113,7 @@ export class ClientCallHistoryComponent implements OnInit {
             this.formReset();
             this.init();
             clientCallHistoryForm.resetForm();
+            this.additionalPropertiesDeclare();
         }, err => {
             this.toastr.error(err.error.message, 'Client Call History');
         });
@@ -105,7 +124,7 @@ export class ClientCallHistoryComponent implements OnInit {
         clientCallHistoryForm.resetForm();
         this.readOnlyForm = '';
         this.enableButtonType = '';
-
+        this.additionalPropertiesDeclare();
     }
     deleteCCHRecord(): void {
         this.http.delete(this.urlConstants.CCHDelete + this.selectedRecrdToDel).subscribe(resp => {

@@ -7,6 +7,7 @@ import { ToastrCustomService } from 'src/app/shared/services/toastr.service';
 import { NgForm } from '@angular/forms';
 import { ClientModel, ClientContactsModel } from './client.model';
 import { FileUploader, FileLikeObject } from 'ng2-file-upload';
+import { AdditionalPropertiesModel } from 'src/app/additional-properties.model';
 
 
 
@@ -35,6 +36,7 @@ export class ClientComponent implements OnInit {
     }
     ngOnInit() {
         this.clientContactDeclare();
+        this.additionalPropertiesDeclare();
         this.init();
     }
     init() {
@@ -44,6 +46,9 @@ export class ClientComponent implements OnInit {
     }
     clientContactDeclare() {
         this.clientModel.clientContacts = [{ 'fullname': '', 'email': '', 'phone': '' }];
+    }
+    additionalPropertiesDeclare() {
+        this.clientModel.properties = [<AdditionalPropertiesModel>{}];
     }
     editClient(data) {
         this.readOnlyForm = 'U';
@@ -58,15 +63,15 @@ export class ClientComponent implements OnInit {
         this.readOnlyForm = 'R';
         this.enableButtonType = 'E';
     }
-    getById(id){
-        this.http.get(this.urlConstants.OCGetById + id).subscribe(resp => {
+    getById(id) {
+        this.http.get(this.urlConstants.ClientGetById + id).subscribe(resp => {
             this.clientModel = this.mapToUpdateModel(resp);
             });
     }
-    mapToUpdateModel(response){
-        let temp=response;
-        this.clientModel=temp;
-        return this.clientModel   
+    mapToUpdateModel(response) {
+        const temp = response;
+        this.clientModel = temp;
+        return this.clientModel;
     }
     formReset() {
         this.clientModel = <ClientModel>{};
@@ -78,6 +83,7 @@ export class ClientComponent implements OnInit {
             this.formReset();
             clientForm.resetForm();
             this.clientContactDeclare();
+            this.additionalPropertiesDeclare();
         }, err => {
             this.toastr.error(err.error.message, 'Client');
         });
@@ -89,6 +95,7 @@ export class ClientComponent implements OnInit {
             this.init();
             clientForm.resetForm();
             this.clientContactDeclare();
+            this.additionalPropertiesDeclare();
 
             this.readOnlyForm = '';
             this.enableButtonType = '';
@@ -102,6 +109,7 @@ export class ClientComponent implements OnInit {
         this.readOnlyForm = '';
         this.enableButtonType = '';
         this.clientContactDeclare();
+        this.additionalPropertiesDeclare();
     }
     clientContactListIncrement(event, i: number) {
         switch (event.id) {
@@ -115,6 +123,18 @@ export class ClientComponent implements OnInit {
             }
         }
     }
+    propertiesListIncrement(event, i: number) {
+        switch (event.id) {
+            case 'decrease': {
+                this.clientModel.properties.splice(i, 1);
+                break;
+            }
+            case 'increase': {
+                this.clientModel.properties.push(<AdditionalPropertiesModel>{});
+                break;
+            }
+        }
+    }
     billngAddressMatch() {
         if (this.address === true) {
             this.clientModel.billingAddress = this.clientModel.address;
@@ -123,7 +143,7 @@ export class ClientComponent implements OnInit {
         }
     }
     deleteClientRecord(): void {
-        this.http.delete(this.urlConstants.OCDelete + this.selectedRecrdToDel).subscribe(resp => {
+        this.http.delete(this.urlConstants.ClientDelete + this.selectedRecrdToDel).subscribe(resp => {
             this.toastr.success(this.urlConstants.DeleteMsg, 'Client');
             this.init();
             this.close();
@@ -179,7 +199,7 @@ export class ClientComponent implements OnInit {
         formData.append('file', files[0].rawFile, files[0].name);
         const params = 'refId=' + this.selectedRecrdToDel + '&refType= Consultant &comments=' + this.comments;
         this.http.upload('file/create?' + params, formData).subscribe(resp => {
-            console.log("resp =====", resp);
+            console.log('resp =====', resp);
             this.close();
         });
         /* let requests = [];

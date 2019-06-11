@@ -210,9 +210,9 @@
               <div class="form-group">
                 <label>Experience</label>
                 <div class="form-inline">
-                  <input type="number" name="expyears" class="form-control col-md-3" [readonly]="readOnlyForm == 'R'"
+                  <input type="text" name="expyears" class="form-control col-md-3" [readonly]="readOnlyForm == 'R'"
                     [(ngModel)]="consultantModel.experienceYrs" min="0" placeholder="Years">
-                  &nbsp;<span>/</span>&nbsp;<input type="number" class="form-control col-md-3" name="expmonths"
+                  &nbsp;<span>/</span>&nbsp;<input type="text" class="form-control col-md-3" name="expmonths"
                     [readonly]="readOnlyForm == 'R'" [(ngModel)]="consultantModel.experienceMonths" min="0" max="11"
                     placeholder="Months" (onkeyup)="imposeMinMax(this)">
                 </div>
@@ -244,9 +244,9 @@
               <div class="form-group">
                 <label>Experience in Current Job</label>
                 <div class="form-inline">
-                  <input type="number" name="yearsInCurrentJob" class="form-control col-md-3"
+                  <input type="text" name="yearsInCurrentJob" class="form-control col-md-3"
                     [readonly]="readOnlyForm == 'R'" [(ngModel)]="consultantModel.yearsInCurrentJob" min="0"
-                    placeholder="Years">&nbsp;<span>/</span>&nbsp;<input type="number" class="form-control col-md-3"
+                    placeholder="Years">&nbsp;<span>/</span>&nbsp;<input type="text" class="form-control col-md-3"
                     name="monthsInCurrentJob" [readonly]="readOnlyForm == 'R'"
                     [(ngModel)]="consultantModel.monthsInCurrentJob" min="0" max="12" placeholder="Months">
                 </div>
@@ -255,7 +255,7 @@
             <div class="col-md-12">
               <div class="form-group">
                 <label>Notice period</label>
-                <input type="number" name="noticePeriod" placeholder="Notice Period" [readonly]="readOnlyForm == 'R'"
+                <input type="text" name="noticePeriod" placeholder="Notice Period" [readonly]="readOnlyForm == 'R'"
                   class="form-control" [(ngModel)]="consultantModel.noticePeriod">
               </div>
             </div>
@@ -310,7 +310,32 @@
                 [readonly]="readOnlyForm == 'R'" [(ngModel)]="consultantModel.description" rows="10"></textarea>
             </div>
           </div>
+        </div>
+        <strong>Additional Properties</strong>
+        <div class="row">
+          <div class="table-responsive">
+            <table class="table table-hover table-striped">
+              <tbody>
+                <tr *ngFor="let ap of consultantModel.properties;let i=index">
+                  <td>
+                    <input class="form-control" [readonly]="readOnlyForm == 'R'" [(ngModel)]="ap.name" name="pname{{i}}"
+                      placeholder="name" #pname="ngModel">
+                  </td>
+                  <td>
+                    <input class="form-control" type="text" [readonly]="readOnlyForm == 'R'" [(ngModel)]="ap.value"
+                      name="pvalue{{i}}" placeholder="value" #pvalue="ngModel">
 
+                  </td>
+                  <td>
+                    <i class="fa fa-minus" aria-hidden="true" id="decrease"
+                      (click)="propertiesListIncrement($event.target,i)"></i><br>
+                    <i class="fa fa-plus" *ngIf="(i+1)==consultantModel.properties.length" aria-hidden="true"
+                      id="increase" (click)="propertiesListIncrement($event.target,i)"></i>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
 
         <div class="row text-center">

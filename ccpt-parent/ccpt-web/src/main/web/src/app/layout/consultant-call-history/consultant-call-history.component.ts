@@ -8,6 +8,7 @@ import { ToastrCustomService } from 'src/app/shared/services/toastr.service';
 import { URLConstants } from '../components/constants/url-constants';
 import { NgForm } from '@angular/forms';
 import { ClientPositionModel } from '../client-position/client-position.model';
+import { AdditionalPropertiesModel } from 'src/app/additional-properties.model';
 
 
 @Component({
@@ -36,6 +37,7 @@ export class ConsultantCallHistoryComponent implements OnInit {
     constructor(private http: HttpClientService, private toastr: ToastrCustomService, private modalService: NgbModal) { }
     ngOnInit() {
         this.init();
+        this.additionalPropertiesDeclare();
         this.http.get(this.urlConstants.CGetAll).subscribe(resp => {
             this.consultantList = resp as Array<ConsultantModel>;
         });
@@ -53,21 +55,36 @@ export class ConsultantCallHistoryComponent implements OnInit {
         this.readOnlyForm = 'U';
         this.enableButtonType = 'U';
     }
-    readOnlyEnable(id:number) {
+    readOnlyEnable(id: number) {
         this.getConsultantById(id);
         this.readOnlyForm = 'R';
         this.enableButtonType = 'E';
     }
-    getConsultantById(id:number){
+    getConsultantById(id: number) {
         this.http.get(this.urlConstants.CoCHGetById + id).subscribe(resp => {
             this.consultantCallHistoryModel = this.mapToUpdateModel(resp);
         });
     }
-    mapToUpdateModel(response): ConsultantCallHistoryModel{
-        let temp= response;
+    mapToUpdateModel(response): ConsultantCallHistoryModel {
+        const temp = response;
         this.consultantCallHistoryModel = temp;
         this.consultantCallHistoryModel['consultantId'] = temp.consultant.id;
-        return this.consultantCallHistoryModel
+        return this.consultantCallHistoryModel;
+    }
+    additionalPropertiesDeclare() {
+        this.consultantCallHistoryModel.properties = [<AdditionalPropertiesModel>{}];
+    }
+    propertiesListIncrement(event, i: number) {
+        switch (event.id) {
+            case 'decrease': {
+                this.consultantCallHistoryModel.properties.splice(i, 1);
+                break;
+            }
+            case 'increase': {
+                this.consultantCallHistoryModel.properties.push(<AdditionalPropertiesModel>{});
+                break;
+            }
+        }
     }
     enableFormEditable(): void {
         this.readOnlyForm = 'U';
@@ -81,6 +98,7 @@ export class ConsultantCallHistoryComponent implements OnInit {
             this.toastr.success(this.urlConstants.SuccessMsg, 'Consultant Call History');
             this.init();
             this.formReset();
+            this.additionalPropertiesDeclare();
             consultantCallHistory.resetForm();
         }, err => {
             this.toastr.error(err.error.message, 'Consultant Call History');
@@ -96,6 +114,7 @@ export class ConsultantCallHistoryComponent implements OnInit {
 
             this.readOnlyForm = '';
             this.enableButtonType = '';
+            this.additionalPropertiesDeclare();
         }, err => {
             this.toastr.error(err.error.message, 'Consultant Call History');
         });
@@ -105,6 +124,7 @@ export class ConsultantCallHistoryComponent implements OnInit {
         consultantCallHistory.resetForm();
         this.readOnlyForm = '';
         this.enableButtonType = '';
+        this.additionalPropertiesDeclare();
 
     }
     deleteCoCHRecord(): void {

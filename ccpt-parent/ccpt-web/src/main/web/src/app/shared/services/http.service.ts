@@ -30,7 +30,7 @@ export class HttpClientService {
     return this.http.delete(this.base_url + URL);
   }
   upload(URL: string, formData: any) {
-    //'X-TOKEN': sessionStorage.getItem('access_token'),
+    // 'X-TOKEN': sessionStorage.getItem('access_token'),
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'multipart/form-data',

@@ -90,9 +90,8 @@
           </div>
           <div class="col-md-12">
             <div class="form-group">
-              <label>Creater<span class="required">*</span></label>
-              <select class="form-control" name="cas" [disabled]="true"
-                
+              <label>Creator<span class="required">*</span></label>
+              <select class="form-control" name="creator" [disabled]="readOnlyForm == 'R'" [(ngModel)]="CAModel.creatorId"
                 [ngClass]="{'is-invalid': f.submitted && cas.invalid}"  required>
                 <option *ngFor="let rl of recruiterList" [ngValue]="rl.id">
                   {{rl.fullname}}
@@ -137,6 +136,32 @@
               <textarea class="form-control" name="note" [readonly]="readOnlyForm == 'R'" rows="10"
                 [(ngModel)]="CAModel.description"></textarea>
             </div>
+          </div>
+        </div>
+        <strong>Additional Properties</strong>
+        <div class="row">
+          <div class="table-responsive">
+            <table class="table table-hover table-striped">
+              <tbody>
+                <tr *ngFor="let ap of CAModel.properties;let i=index">
+                  <td>
+                    <input class="form-control" [readonly]="readOnlyForm == 'R'" [(ngModel)]="ap.name" name="pname{{i}}"
+                      placeholder="name" #pname="ngModel">
+                  </td>
+                  <td>
+                    <input class="form-control" type="text" [readonly]="readOnlyForm == 'R'" [(ngModel)]="ap.value"
+                      name="pvalue{{i}}" placeholder="value" #pvalue="ngModel">
+
+                  </td>
+                  <td>
+                    <i class="fa fa-minus" aria-hidden="true" id="decrease"
+                      (click)="propertiesListIncrement($event.target,i)"></i><br>
+                    <i class="fa fa-plus" *ngIf="(i+1)==CAModel.properties.length" aria-hidden="true"
+                      id="increase" (click)="propertiesListIncrement($event.target,i)"></i>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
         <div class="row text-center">

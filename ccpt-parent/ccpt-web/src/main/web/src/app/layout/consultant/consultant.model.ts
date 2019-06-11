@@ -1,4 +1,5 @@
 import { ConsultantStatusModel } from "../consultant-status/consultant-status.model";
+import { AdditionalPropertiesModel } from "src/app/additional-properties.model";
 
 export interface ConsultantModel {
     fullname: string;
@@ -8,8 +9,8 @@ export interface ConsultantModel {
     dob: string;
     currentCompany: string;
     currentLocation: string;
-    currentCTC: number;
-    expectedCTC: number;
+    currentCTC: string;
+    expectedCTC: string;
     experienceMonths: string;
     experienceYrs: string;
     prefferedLocation: string;
@@ -22,10 +23,11 @@ export interface ConsultantModel {
     currentJobTitle: string;
     currentFunctionalArea: string;
     currentIndustry: string;
-    yearsInCurrentJob: number;
-    monthsInCurrentJob: number;
-    noticePeriod: number;
+    yearsInCurrentJob: string;
+    monthsInCurrentJob: string;
+    noticePeriod: string;
     highestEducation: string;
+    properties: Array<AdditionalPropertiesModel>;
 }
 
 

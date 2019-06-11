@@ -1,3 +1,5 @@
+import { AdditionalPropertiesModel } from "src/app/additional-properties.model";
+
 export interface ClientPositionModel {
     assignedTo: string;
     clientName: string;
@@ -7,14 +9,16 @@ export interface ClientPositionModel {
     experience: string;
     generatedCode: string;
     requiredSkills: string;
-    minCtc: number;
-    maxCtc: number;
+    minCtc: string;
+    maxCtc: string;
     cpstatus: string;
     closedBy: string;
     description: string;
     jobCode: string;
     location: string;
     createdDate: string;
+    requiredPositions: string;
+    properties: Array<AdditionalPropertiesModel>;
 }
 
 export class SendSmsModel {

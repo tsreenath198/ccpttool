@@ -1,6 +1,4 @@
-import { ClientPositionModel } from "../client-position/client-position.model";
-import { ConsultantModel } from "../consultant/consultant.model";
-import { ClientApplicationStatusModel } from "../client-application-status/client-application-status.model";
+import { AdditionalPropertiesModel } from "src/app/additional-properties.model";
 
 export interface ClientApplicationModel {
     caStatus: string;
@@ -11,4 +9,6 @@ export interface ClientApplicationModel {
     interviewTime: string;
     id: number;
     description: string;
+    creatorId: string;
+    properties: Array<AdditionalPropertiesModel>;
 }

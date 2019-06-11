@@ -6,6 +6,7 @@ import { HttpClientService } from 'src/app/shared/services/http.service';
 import { ToastrCustomService } from 'src/app/shared/services/toastr.service';
 import { URLConstants } from '../components/constants/url-constants';
 import { NgForm } from '@angular/forms';
+import { AdditionalPropertiesModel } from 'src/app/additional-properties.model';
 
 @Component({
     selector: 'app-recruiter',
@@ -24,21 +25,22 @@ export class RecruiterComponent implements OnInit {
     private selectedRecrdToDel: number = 0;
     public closeResult: string = '';
     private modalRef: NgbModalRef;
-    public genderList=['MALE','FEMALE','OTHER'];
+    public genderList =['MALE','FEMALE','OTHER'];
     public currSearchTxt: string ;
     
-    public readOnlyForm: string = '';
-    public enableButtonType: string = '';
+    public readOnlyForm = '';
+    public enableButtonType = '';
 
     constructor(private http: HttpClientService, private toastr: ToastrCustomService, private modalService: NgbModal) { }
     ngOnInit() {
         this.init();
+        this.additionalPropertiesDeclare();
         this.rolesList = this.rolesModel.roles;
     }
     init() {
         this.http.get(this.urlConstants.RGetAll).subscribe(resp => {
             this.recruiterList = resp as any;
-        })
+        });
     }
     recruiterEdit(data) {
         this.readOnlyForm = 'U';
@@ -53,60 +55,78 @@ export class RecruiterComponent implements OnInit {
         this.readOnlyForm = 'R';
         this.enableButtonType = 'E';
     }
-    getById(id){
+    getById(id) {
         this.http.get(this.urlConstants.RGetById + id).subscribe(resp => {
             this.recruiterModel = this.mapToUpdateModel(resp);
             });
     }
-    mapToUpdateModel(response){
-        let temp=response;
-        this.recruiterModel=temp;
-        return this.recruiterModel   
+    mapToUpdateModel(response) {
+        const temp=response;
+        this.recruiterModel= temp;
+        return this.recruiterModel;
+    }
+    additionalPropertiesDeclare() {
+        this.recruiterModel.properties = [<AdditionalPropertiesModel>{}];
+    }
+    propertiesListIncrement(event, i: number) {
+        switch (event.id) {
+            case 'decrease': {
+                this.recruiterModel.properties.splice(i, 1);
+                break;
+            }
+            case 'increase': {
+                this.recruiterModel.properties.push(<AdditionalPropertiesModel>{});
+                break;
+            }
+        }
     }
     formReset() {
         this.recruiterModel = <RecruiterModel>{};
     }
-    createRecruiter(recruiterForm:NgForm): void {
+    createRecruiter(recruiterForm: NgForm): void {
         this.http.post(this.recruiterModel, this.urlConstants.RCreate).subscribe(resp => {
-            this.toastr.success(this.urlConstants.SuccessMsg, "Recruiter");
+            this.toastr.success(this.urlConstants.SuccessMsg, 'Recruiter');
             this.init();
             this.formReset();
             recruiterForm.resetForm();
+            this.additionalPropertiesDeclare();
         }, err => {
-            this.toastr.error(err.error.message + err.status, "Recruiter");
-        })
+            this.toastr.error(err.error.message + err.status, 'Recruiter');
+        });
     }
-    updateRecruiter(recruiterForm:NgForm) {
+    updateRecruiter(recruiterForm: NgForm) {
         this.http.update(this.recruiterModel, this.urlConstants.RUpdate).subscribe(resp => {
-            this.toastr.success(this.urlConstants.UpdateMsg, "Recruiter");
+            this.toastr.success(this.urlConstants.UpdateMsg, 'Recruiter');
             this.init();
             this.formReset();
             recruiterForm.resetForm();
-            
+            this.additionalPropertiesDeclare();
+
             this.readOnlyForm = '';
             this.enableButtonType = '';
         }, err => {
-            this.toastr.error(err.error.message, "Recruiter");
-        })
+            this.toastr.error(err.error.message, 'Recruiter');
+        });
     }
-    cancelForm(recruiterForm:NgForm) {
+    cancelForm(recruiterForm: NgForm) {
         this.formReset();
         recruiterForm.resetForm();
         this.readOnlyForm = '';
-        this.enableButtonType = ''; 
+        this.enableButtonType = '';
+        this.additionalPropertiesDeclare();
     }
     deleteRecruiterRecord(): void {
         this.http.delete(this.urlConstants.RDelete + this.selectedRecrdToDel).subscribe(resp => {
-            this.toastr.success(this.urlConstants.DeleteMsg, "Recruiter");
+            this.toastr.success(this.urlConstants.DeleteMsg, 'Recruiter');
             this.init();
             this.close();
             this.formReset();
         }, err => {
-            this.toastr.error(err.error.message, "Recruiter");
-        })
+            this.toastr.error(err.error.message, 'Recruiter');
+        });
     }
     /**
-     * @param 
+     * @param
      * 1) content consists the modal instance
      * 2) Selected contains the code of selected row
      */
@@ -133,5 +153,5 @@ export class RecruiterComponent implements OnInit {
             return `with: ${reason}`;
         }
     }
-    
+
 }

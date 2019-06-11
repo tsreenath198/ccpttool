@@ -13,6 +13,7 @@ import { RecruiterModel } from '../recruiter/recruiter.model';
 import { MessageTemplateModel } from '../message-template/message-template.model';
 import { ConsultantModel } from '../consultant/consultant.model';
 import { EmailTemplateModel } from '../email-template/email-template.model';
+import { AdditionalPropertiesModel } from 'src/app/additional-properties.model';
 
 
 @Component({
@@ -50,6 +51,7 @@ export class ClientPositionComponent implements OnInit {
     public readOnlyForm = '';
     public enableButtonType = '';
     public numberOfPositions = 0;
+    public creator = 0;
     public getAllCPS = this.http.get(this.urlConstants.CPSGetAll);
     public getAllR = this.http.get(this.urlConstants.RGetAll);
     public getAllC = this.http.get(this.urlConstants.ClientGetAll);
@@ -69,6 +71,7 @@ export class ClientPositionComponent implements OnInit {
             allowSearchFilter: true
         };
         this.init();
+        this.additionalPropertiesDeclare();
 
     }
     init() {
@@ -122,6 +125,21 @@ export class ClientPositionComponent implements OnInit {
         this.clientPositionModel['closedBy'] = (temp.closedBy) ? temp.closedBy.id : 0;
         return this.clientPositionModel;
     }
+    additionalPropertiesDeclare() {
+        this.clientPositionModel.properties = [<AdditionalPropertiesModel>{}];
+    }
+    propertiesListIncrement(event, i: number) {
+        switch (event.id) {
+            case 'decrease': {
+                this.clientPositionModel.properties.splice(i, 1);
+                break;
+            }
+            case 'increase': {
+                this.clientPositionModel.properties.push(<AdditionalPropertiesModel>{});
+                break;
+            }
+        }
+    }
     formReset() {
         this.clientPositionModel = <ClientPositionModel>{};
     }
@@ -129,8 +147,8 @@ export class ClientPositionComponent implements OnInit {
         this.clientPositionModel.generatedCode = this.generateCPCode(this.clientPositionModel.jobCode, this.clientPositionModel.clientId, this.clientPositionModel.location);
         if (this.clientPositionModel.generatedCode) {
             if (!this.invalidAppCode) {
-                let i = 0;
-                while (i < this.numberOfPositions) {
+                let i = 1;
+                while (i < this.numberOfPositions + 1) {
                     const temp = this.clientPositionModel.generatedCode; // Storing Original value
                     this.clientPositionModel.generatedCode += ('-' + i); // Updating with the count
                     // this.createCP(clientPositionForm);
@@ -139,6 +157,7 @@ export class ClientPositionComponent implements OnInit {
                         this.init();
                         this.formReset();
                         clientPositionForm.resetForm();
+                        this.additionalPropertiesDeclare();
 
                     }, err => {
                         this.toastr.error(err.error.message, 'Client Position');
@@ -150,7 +169,7 @@ export class ClientPositionComponent implements OnInit {
         }
     }
     private generateCPCode(code, cnt, loc): string {
-        return code + "-" + this.getClientNameById(cnt) + "-" + loc;
+        return code + '-' + this.getClientNameById(cnt) + '-' + loc;
     }
     private getTranslations(): Promise<any> {
         return new Promise((resolve, reject) => {
@@ -204,6 +223,7 @@ export class ClientPositionComponent implements OnInit {
             this.readOnlyForm = '';
             this.enableButtonType = '';
             this.closedByEnable = false;
+            this.additionalPropertiesDeclare();
         }, err => {
             this.toastr.error(err.error.message, 'Client Position');
         });
@@ -214,6 +234,7 @@ export class ClientPositionComponent implements OnInit {
         this.readOnlyForm = '';
         this.enableButtonType = '';
         this.closedByEnable = false;
+        this.additionalPropertiesDeclare();
     }
     deleteCPRecord(): void {
         this.http.delete(this.urlConstants.CPDelete + this.selectedRecrd).subscribe(resp => {
@@ -245,8 +266,8 @@ export class ClientPositionComponent implements OnInit {
         });
     }
     createClientApplication(data: any) {
-        //TODO:Need to check the code
-        const dataToCreate = { 'cpId': this.selectedRecrd, 'consultantId': data.item_id, 'caStatus': 'ACT', 'description': data.notes };
+        // TODO:Need to check the code
+        const dataToCreate = { 'cpId': this.selectedRecrd, 'consultantId': data.item_id, 'caStatus': 'NEW', 'description': data.notes, 'creatorId': this.creator };
         this.http.post(dataToCreate, this.urlConstants.CACreate).subscribe(resp => {
             this.toastr.success(this.urlConstants.SuccessMsg, 'Client Application');
             this.init();

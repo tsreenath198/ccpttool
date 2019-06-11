@@ -6,6 +6,7 @@ import { URLConstants } from '../components/constants/url-constants';
 import { ToastrCustomService } from 'src/app/shared/services/toastr.service';
 import { NgbModal, ModalDismissReasons, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { NgForm } from '@angular/forms';
+import { AdditionalPropertiesModel } from 'src/app/additional-properties.model';
 
 @Component({
     selector: 'app-other-contacts',
@@ -27,6 +28,7 @@ export class OtherContactsComponent implements OnInit {
     private modalRef: NgbModalRef;
     ngOnInit() {
         this.init();
+        this.additionalPropertiesDeclare();
     }
     init(){
         this.http.get(this.urlConstants.OCGetAll).subscribe(resp => {
@@ -58,6 +60,21 @@ export class OtherContactsComponent implements OnInit {
         this.OCModel=temp;
         return this.OCModel   
     }
+    additionalPropertiesDeclare() {
+        this.OCModel.properties = [<AdditionalPropertiesModel>{}];
+    }
+    propertiesListIncrement(event, i: number) {
+        switch (event.id) {
+            case 'decrease': {
+                this.OCModel.properties.splice(i, 1);
+                break;
+            }
+            case 'increase': {
+                this.OCModel.properties.push(<AdditionalPropertiesModel>{});
+                break;
+            }
+        }
+    }
     formReset() {
         this.OCModel = <OtherContactsModel>{};
     }
@@ -67,6 +84,7 @@ export class OtherContactsComponent implements OnInit {
             this.init();
             this.formReset();
             otherContactForm.resetForm();
+            this.additionalPropertiesDeclare();
         }, err => {
             this.toastr.error(err.error.message, "Contact");
         });
@@ -79,6 +97,7 @@ export class OtherContactsComponent implements OnInit {
             otherContactForm.resetForm();
             this.readOnlyForm = '';
             this.enableButtonType = '';
+            this.additionalPropertiesDeclare();
         }, err => {
             this.toastr.error(err.error.message, "Contact");
         })
@@ -87,7 +106,8 @@ export class OtherContactsComponent implements OnInit {
         this.formReset();
         consultantCallHistory.resetForm();
         this.readOnlyForm = '';
-        this.enableButtonType = ''; 
+        this.enableButtonType = '';
+        this.additionalPropertiesDeclare();
     }
     delete(): void {
         this.http.delete(this.urlConstants.OCDelete + this.selectedRecrdToDel).subscribe(resp => {

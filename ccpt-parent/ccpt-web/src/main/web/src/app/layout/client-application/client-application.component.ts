@@ -10,8 +10,9 @@ import { ConsultantModel } from '../consultant/consultant.model';
 import { ClientPositionModel } from '../client-position/client-position.model';
 import { ToastrCustomService } from 'src/app/shared/services/toastr.service';
 import { NgForm } from '@angular/forms';
-import { NgbModalRef,ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModalRef, ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { RecruiterModel } from '../recruiter/recruiter.model';
+import { AdditionalPropertiesModel } from 'src/app/additional-properties.model';
 
 
 @Component({
@@ -28,7 +29,7 @@ export class ClientApplicationComponent implements OnInit {
     public clientPositionList: Array<ClientPositionModel> = [];
     public recruiterList: Array<RecruiterModel> = [];
     private urlConstants = new URLConstants();
-    public currSearchTxt = "";
+    public currSearchTxt = '';
     public formButtonsToggler = true;
     public editButtonToggler = true;
     public isInterviewScheduled = false;
@@ -48,6 +49,7 @@ export class ClientApplicationComponent implements OnInit {
     ngOnInit() {
         this.init();
         this.getAllDropdowns();
+        this.additionalPropertiesDeclare();
     }
     init() {
         this.http.get(this.urlConstants.CAGetAll).subscribe(resp => {
@@ -90,18 +92,35 @@ export class ClientApplicationComponent implements OnInit {
     mapToUpdateModel(response): ClientApplicationModel {
         const temp = response;
         this.CAModel = temp;
-        this.CAModel['cpId']= temp.clientPosition.id;
-        this.CAModel['consultantId']= temp.consultant.id;
+        this.CAModel['cpId'] = temp.clientPosition.id;
+        this.CAModel['consultantId'] = temp.consultant.id;
         this.CAModel['caStatus'] = temp.status.code;
+        this.CAModel['creatorId'] = temp.creator.id;
         return this.CAModel;
+    }
+    additionalPropertiesDeclare() {
+        this.CAModel.properties = [<AdditionalPropertiesModel>{}];
+    }
+    propertiesListIncrement(event, i: number) {
+        switch (event.id) {
+            case 'decrease': {
+                this.CAModel.properties.splice(i, 1);
+                break;
+            }
+            case 'increase': {
+                this.CAModel.properties.push(<AdditionalPropertiesModel>{});
+                break;
+            }
+        }
     }
     createClientApplication(clientApplicationForm: NgForm): void {
         this.http.post(this.CAModel, this.urlConstants.CACreate).subscribe(resp => {
             this.toastr.success(this.urlConstants.SuccessMsg, 'Client Application');
             this.init();
             this.formReset();
+        this.additionalPropertiesDeclare();
             clientApplicationForm.resetForm();
-       
+
         }, err => {
             this.toastr.error(err.error.message, 'Client Application');
         });
@@ -118,6 +137,7 @@ export class ClientApplicationComponent implements OnInit {
             this.toastr.success(this.urlConstants.UpdateMsg, 'Client Application');
             this.formReset();
             this.init();
+            this.additionalPropertiesDeclare();
             clientApplicationForm.resetForm();
             this.readOnlyForm = '';
             this.enableButtonType = '';
@@ -132,6 +152,7 @@ export class ClientApplicationComponent implements OnInit {
         clientApplicationForm.resetForm();
         this.readOnlyForm = '';
         this.enableButtonType = '';
+        this.additionalPropertiesDeclare();
 
     }
     deleteCARecord(): void {

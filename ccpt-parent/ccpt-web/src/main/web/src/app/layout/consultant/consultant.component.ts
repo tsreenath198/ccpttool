@@ -9,6 +9,7 @@ import { HttpClientService } from 'src/app/shared/services/http.service';
 import { ConsultantStatusModel } from '../consultant-status/consultant-status.model';
 import { ToastrCustomService } from 'src/app/shared/services/toastr.service';
 import { URLConstants } from '../components/constants/url-constants';
+import { AdditionalPropertiesModel } from 'src/app/additional-properties.model';
 
 
 @Component({
@@ -45,6 +46,7 @@ export class ConsultantComponent implements OnInit {
             this.consultantStatusList = resp as any;
         });
         this.init();
+        this.additionalPropertiesDeclare();
     }
 
     init(): void {
@@ -75,6 +77,7 @@ export class ConsultantComponent implements OnInit {
             this.init();
             this.formReset();
             consultantForm.resetForm();
+            this.additionalPropertiesDeclare();
         }, err => {
             this.toastr.error(err.error.message, 'Consultant');
         });
@@ -87,6 +90,7 @@ export class ConsultantComponent implements OnInit {
             consultantForm.resetForm();
             this.readOnlyForm = '';
             this.enableButtonType = '';
+            this.additionalPropertiesDeclare();
         }, err => {
             this.toastr.error(err.statusText, 'Consultant');
         });
@@ -107,7 +111,7 @@ export class ConsultantComponent implements OnInit {
         consultantForm.resetForm();
         this.readOnlyForm = '';
         this.enableButtonType = '';
-
+        this.additionalPropertiesDeclare();
     }
     deleteConsultantRecord(): void {
         this.http.delete(this.urlConstants.CDelete + this.selectedRecrdToDel).subscribe(resp => {
@@ -124,6 +128,21 @@ export class ConsultantComponent implements OnInit {
         this.consultantModel = temp;
         this.consultantModel['cstatus'] = temp.status.code;
         return this.consultantModel
+    }
+    additionalPropertiesDeclare() {
+        this.consultantModel.properties = [<AdditionalPropertiesModel>{}];
+    }
+    propertiesListIncrement(event, i: number) {
+        switch (event.id) {
+            case 'decrease': {
+                this.consultantModel.properties.splice(i, 1);
+                break;
+            }
+            case 'increase': {
+                this.consultantModel.properties.push(<AdditionalPropertiesModel>{});
+                break;
+            }
+        }
     }
     imposeMinMax(el) {
         if (el.value !== '') {
