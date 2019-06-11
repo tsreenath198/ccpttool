@@ -12,4 +12,5 @@ import lombok.ToString;
 public class ClientCallHistoryDTO extends IDEntityDTO {
 	private Integer cpId;
 	private Date calledDate;
+	private Integer calledBy;
 }

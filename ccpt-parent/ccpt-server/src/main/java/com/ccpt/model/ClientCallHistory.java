@@ -32,5 +32,10 @@ public class ClientCallHistory extends IDEntity {
 	@Column
 	@NotNull
 	private Date calledDate;
-
+	
+	
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "called_by")
+	@NotNull
+	private Recruiter calledBy;
 }
