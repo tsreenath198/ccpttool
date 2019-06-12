@@ -60,7 +60,7 @@ export class EmailTemplateComponent implements OnInit {
     formReset() {
         this.emailTemplateModel = <EmailTemplateModel>{};
     }
-    ematlTemplateCreate(emailTemplateForm: NgForm): void {
+    emailTemplateCreate(emailTemplateForm: NgForm): void {
         this.http.post(this.emailTemplateModel, this.urlConstants.EmailTemplateCreate).subscribe(resp => {
             this.toastr.success(this.urlConstants.SuccessMsg, 'Contact');
             this.init();
