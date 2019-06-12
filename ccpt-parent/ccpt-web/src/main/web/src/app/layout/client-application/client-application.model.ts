@@ -10,5 +10,6 @@ export interface ClientApplicationModel {
     id: number;
     description: string;
     creatorId: string;
+    interviewMode: string;
     properties: Array<AdditionalPropertiesModel>;
 }

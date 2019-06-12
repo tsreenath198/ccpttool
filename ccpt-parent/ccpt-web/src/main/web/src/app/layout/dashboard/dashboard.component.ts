@@ -5,6 +5,7 @@ import { URLConstants } from '../components/constants/url-constants';
 import { routerTransition } from '../../router.animations';
 import { ClientPositionModel } from '../client-position/client-position.model';
 import { forkJoin } from 'rxjs';
+import { NgbModal, ModalDismissReasons, NgbModalRef  } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     selector: 'app-dashboard',
@@ -21,16 +22,25 @@ export class DashboardComponent implements OnInit {
     public ccptReportCC: any = {};
     public ccptReportCPL: Array<any> = [];
     public openCP: Array<any> = [];
+    public activeCA: Array<any> = [];
+    public activeCAById: Array<any>= [];
     private urlConstants = new URLConstants();
     public rpChoosenDays: any = 1;
     public cochChoosenDays: any = 1;
     public clchChoosenDays: any = 1;
+
+    private selectedRecrd = 0;
+    public closeResult = '';
+    private modalRef: NgbModalRef;
+
+
     public getAllReportCLCH = this.http.get(this.urlConstants.ReportingGetAllCLCH + this.clchChoosenDays);
     public getAllReportCOCH = this.http.get(this.urlConstants.ReportingGetAllCOCH + this.cochChoosenDays);
     public getAllReportCPL = this.http.get(this.urlConstants.ReportingGetAllTop5CP);
     public getAllReportCC = this.http.get(this.urlConstants.ReportingGetClosures + this.rpChoosenDays);
     public getAllOpenCP = this.http.get(this.urlConstants.ReportingGetAllOpenCP);
-    constructor(private http: HttpClientService, private toastr: ToastrCustomService) {
+    public getAllActiveCA = this.http.get(this.urlConstants.ReportingGetAllActiveCA);
+    constructor(private http: HttpClientService, private toastr: ToastrCustomService, private modalService: NgbModal) {
         // this.sliders.push(
         //     {
         //         imagePath: 'assets/images/slider1.jpg',
@@ -81,12 +91,14 @@ export class DashboardComponent implements OnInit {
             this.getAllReportCPL,
             this.getAllReportCC,
             this.getAllOpenCP,
+            this.getAllActiveCA,
         ).subscribe(listofrecords => {
             this.ccptReportCLCH = listofrecords[0] as any;
             this.ccptReportCOCH = listofrecords[1] as any;
             this.ccptReportCPL = listofrecords[2] as any;
             this.ccptReportCC = listofrecords[3] as any;
-            this.openCP = listofrecords[4] as any
+            this.openCP = listofrecords[4] as any;
+            this.activeCA = listofrecords[5] as any;
         });
     }
     public rpGetAllByDays() {
@@ -106,5 +118,39 @@ export class DashboardComponent implements OnInit {
         this.http.get(this.urlConstants.ReportingGetAllCLCH  + numberOfDays).subscribe(resp => {
             this.ccptReportCLCH = resp as any;
         });
+    }
+    getAllActiveCAById(recrd: number) {
+        this.http.get(this.urlConstants.ReportingGetAllActiveCAById + recrd).subscribe(resp => {
+            this.activeCAById = resp as any;
+        });
+    }
+    /**
+     * @param
+     * 1) content consists the modal instance
+     * 2) Selected contains the code of selected row
+     */
+    open(content, selected: number) {
+        if (selected) {
+            this.selectedRecrd = selected;
+        }
+        this.modalRef = this.modalService.open(content);
+        this.modalRef.result.then((result) => {
+            this.closeResult = `Closed with: ${result}`;
+        }, (reason) => {
+            this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+        });
+        this.getAllActiveCAById(this.selectedRecrd);
+    }
+    close() {
+        this.modalRef.close();
+    }
+    private getDismissReason(reason: any): string {
+        if (reason === ModalDismissReasons.ESC) {
+            return 'by pressing ESC';
+        } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+            return 'by clicking on a backdrop';
+        } else {
+            return `with: ${reason}`;
+        }
     }
 }

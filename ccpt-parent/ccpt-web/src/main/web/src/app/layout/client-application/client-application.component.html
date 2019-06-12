@@ -127,6 +127,12 @@
                 <div class="input-group-addon">
                   <span class="glyphicon glyphicon-th"></span>
                 </div>
+                <label class='pt-2'>Interview Mode</label>
+                <input  class="form-control" name="date" [readonly]="readOnlyForm == 'R'"
+                  [(ngModel)]="CAModel.interviewMode">
+                <div class="input-group-addon">
+                  <span class="glyphicon glyphicon-th"></span>
+                </div>
               </div>
             </div>
           </div>

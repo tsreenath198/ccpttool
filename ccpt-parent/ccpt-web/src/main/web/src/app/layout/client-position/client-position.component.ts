@@ -56,7 +56,6 @@ export class ClientPositionComponent implements OnInit {
     public getAllR = this.http.get(this.urlConstants.RGetAll);
     public getAllC = this.http.get(this.urlConstants.ClientGetAll);
     public getAllCon = this.http.get(this.urlConstants.CGetAll);
-    // public getAllSms = this.http.get(this.urlConstants.SMSTemplateGetAll);
     constructor(private http: HttpClientService, private toastr: ToastrCustomService, private modalService: NgbModal) { }
 
     ngOnInit() {
@@ -85,14 +84,12 @@ export class ClientPositionComponent implements OnInit {
             this.getAllR,
             this.getAllC,
             this.getAllCon,
-            // this.getAllSms
             // forkJoin on works for observables that complete
         ).subscribe(listofrecords => {
             this.clientPositionStatusList = listofrecords[0] as any;
             this.recruiterList = listofrecords[1] as any;
             this.clientList = listofrecords[2] as any;
             this.consultantList = listofrecords[3] as any;
-            // this.smsList = listofrecords[4] as any;
         });
     }
     editClientPosition(data) {
@@ -145,40 +142,19 @@ export class ClientPositionComponent implements OnInit {
     }
     createClientPosition(clientPositionForm: NgForm): void {
         this.clientPositionModel.generatedCode = this.generateCPCode(this.clientPositionModel.jobCode, this.clientPositionModel.clientId, this.clientPositionModel.location);
-        if (this.clientPositionModel.generatedCode) {
-            if (!this.invalidAppCode) {
-                let i = 1;
-                while (i < this.numberOfPositions + 1) {
-                    const temp = this.clientPositionModel.generatedCode; // Storing Original value
-                    this.clientPositionModel.generatedCode += ('-' + i); // Updating with the count
-                    // this.createCP(clientPositionForm);
-                    this.getTranslations().then(success => {
-                        this.toastr.success(this.urlConstants.SuccessMsg, 'Client Position');
-                        this.init();
-                        this.formReset();
-                        clientPositionForm.resetForm();
-                        this.additionalPropertiesDeclare();
-
-                    }, err => {
-                        this.toastr.error(err.error.message, 'Client Position');
-                    });
-                    i++;
-                    this.clientPositionModel.generatedCode = temp; // replacing with original value
-                }
-            }
-        }
+        this.http.post(this.clientPositionModel, this.urlConstants.CPCreate).subscribe(resp => {
+            this.toastr.success(this.urlConstants.SuccessMsg, 'Client Position');
+                    this.init();
+                    this.formReset();
+                    clientPositionForm.resetForm();
+                    this.additionalPropertiesDeclare();
+                }, err => {
+                    this.toastr.error(err.error.message, 'Client Position');
+                });
     }
     private generateCPCode(code, cnt, loc): string {
         return code + '-' + this.getClientNameById(cnt) + '-' + loc;
     }
-    private getTranslations(): Promise<any> {
-        return new Promise((resolve, reject) => {
-            this.http.post(this.clientPositionModel, this.urlConstants.CPCreate).subscribe(resp => {
-                resolve(resp);
-            });
-        });
-    }
-
     private getClientNameById(clientId: number) {
         const temp = this.clientList.filter(c => c.id === clientId);
         return temp[0].name;
@@ -246,6 +222,9 @@ export class ClientPositionComponent implements OnInit {
             this.toastr.error(err.error.message, 'Client Position');
         });
     }
+    public selectSms(sms){
+        console.log(sms.value.description);
+    }
     public sendSmsReq(): void {
         for (let i = 0; i <= this.numbersToSend.length; i++) {
             const temp = this.numbersToSend[i].item_id;
@@ -296,16 +275,15 @@ export class ClientPositionComponent implements OnInit {
         console.log(content);
         if (content) {
             if (type === 'email') {
-                this.http.get(this.urlConstants.EmailTemplateGetById + selected).subscribe(resp => {
-                    this.emailTemplateModel = resp as any;
-                    this.sendEmailModel.subject = this.emailTemplateModel.subject;
-                    this.sendEmailModel.body = this.emailTemplateModel.body;
-                });
                 for (let i = 0; i < this.consultantList.length; i++) {
+                    const temp= {'item_id': this.consultantList[i].phone, 'item_text': this.consultantList[i].fullname, 'notes': ''};
                     this.mailIdForMails.push(this.consultantList[i].email);
                 }
             }
             if (type === 'sms') {
+                this.http.get(this.urlConstants.SMSTemplateGetAll).subscribe(resp =>{
+                    this.smsList= resp as any;
+                })
                 for (let i = 0; i < this.consultantList.length; i++) {
                     const temp = { 'item_id': this.consultantList[i].phone, 'item_text': this.consultantList[i].fullname, 'notes': '' };
                     this.numbersForSmsDropdown.push(temp);

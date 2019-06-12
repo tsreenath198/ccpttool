@@ -42,24 +42,34 @@ export class MessageTemplateComponent implements OnInit {
         this.readOnlyForm = 'U';
         this.enableButtonType = 'U';
     }
-    readOnlyEnable(data) {
-        this.messageTemplateModel = JSON.parse(JSON.stringify(data));
+    readOnlyEnable(id) {
+        this.getSMSById(id);
         this.readOnlyForm = 'R';
         this.enableButtonType = 'E';
+    }
+    getSMSById(id: number) {
+        this.http.get(this.urlConstants.SMSTemplateGetById + id).subscribe(resp => {
+            this.messageTemplateModel = this.mapToUpdateModel(resp);
+        });
+    }
+    mapToUpdateModel(response): MessageTemplateModel {
+        const temp = response;
+        this.messageTemplateModel = temp;
+        return this.messageTemplateModel;
     }
     formReset() {
         this.messageTemplateModel = <MessageTemplateModel>{};
     }
-    // otherContactCreate(messageTemplateForm: NgForm): void {
-    //     this.http.post(this.messageTemplateModel, this.urlConstants.OCCreate).subscribe(resp => {
-    //         this.toastr.success(this.urlConstants.SuccessMsg, 'Contact');
-    //         this.init();
-    //         this.formReset();
-    //         messageTemplateForm.resetForm();
-    //     }, err => {
-    //         this.toastr.error(err.statusText, 'Contact');
-    //     });
-    // }
+    messageTemplateCreate(messageTemplateForm: NgForm): void {
+        this.http.post(this.messageTemplateModel, this.urlConstants.SMSTemplateCreate).subscribe(resp => {
+            this.toastr.success(this.urlConstants.SuccessMsg, 'Contact');
+            this.init();
+            this.formReset();
+            messageTemplateForm.resetForm();
+        }, err => {
+            this.toastr.error(err.statusText, 'Contact');
+        });
+    }
     updateMessageTemplate(messageTemplateForm: NgForm) {
         this.http.update(this.messageTemplateModel, this.urlConstants.SMSTemplateUpdate).subscribe(resp => {
             this.formReset();
@@ -78,14 +88,14 @@ export class MessageTemplateComponent implements OnInit {
         this.readOnlyForm = '';
         this.enableButtonType = '';
     }
-    // deleteClientRecord(): void {
-    //     this.http.delete(this.urlConstants.OCDelete + this.selectedRecrdToDel).subscribe(resp => {
-    //         this.toastr.success(this.urlConstants.DeleteMsg, 'Client');
-    //         this.init();
-    //         this.close();
-    //         this.formReset();
-    //     });
-    // }
+    deleteClientRecord(): void {
+        this.http.delete(this.urlConstants.SMSTemplateDelete + this.selectedRecrdToDel).subscribe(resp => {
+            this.toastr.success(this.urlConstants.DeleteMsg, 'Client');
+            this.init();
+            this.close();
+            this.formReset();
+        });
+    }
     /**
      * @param
      * 1) content consists the modal instance

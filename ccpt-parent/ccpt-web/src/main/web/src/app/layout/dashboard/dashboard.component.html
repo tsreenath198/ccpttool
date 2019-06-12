@@ -18,7 +18,7 @@
   <div class="row">
     <div class="col col-xl-6 col-lg-12">
       <div class="card mb-3">
-        <div class="card-header bg-dark text-clr-white" >Recruiter Performance
+        <div class="card-header bg-dark text-clr-white">Recruiter Performance
           <span class="pull-right">
             <select class="form-control form-control-sm" name="cp" #t [(ngModel)]="rpChoosenDays"
               (change)="rpGetAllByDays()">
@@ -85,14 +85,14 @@
           <table class="table table-sm ">
             <thead>
               <tr>
-                <th>Consultant</th>
                 <th>Description</th>
+                <th>Consultant</th>
               </tr>
             </thead>
             <tbody>
               <tr *ngFor="let cch of ccptReportCOCH ">
-                <td>{{cch.consultantName || 'NA'}}</td>
-                <td>{{cch.description || 'NA'}}</td>
+                  <td>{{cch.calledBy.fullname || 'NA'}}</td>
+                  <td>{{cch.consultant.fullname || 'NA'}}</td>
               </tr>
             </tbody>
           </table>
@@ -120,8 +120,8 @@
             </thead>
             <tbody>
               <tr *ngFor="let cch of ccptReportCLCH">
-                <td>{{cch.clientName || 'NA'}}</td>
-                <td>{{cch.clientPositionCode || 'NA'}}</td>
+                <td>{{cch.calledBy.fullname || 'NA'}}</td>
+                <td>{{cch.clientPosition.generatedCode || 'NA'}}</td>
               </tr>
             </tbody>
           </table>
@@ -193,5 +193,61 @@
         </div>
       </div>
     </div>
+    <div class="col col-xl-6 col-lg-12">
+      <div class="card mb-3">
+        <div class="card-header bg-dark text-clr-white">Active Client Applications
+        </div>
+        <div class="table-scroll">
+          <table class="table table-sm">
+            <thead>
+              <tr>
+                <th>Count </th>
+                <th>Code</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let aca of activeCA" data-toggle="tooltip" (click)="open(content,aca.cpId)">
+                <td>{{aca.count}}</td>
+                <td>{{aca.generatedCode}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
+<ng-template #content let-c="close" let-d="dismiss">
+    <div class="modal-header">
+      <h4 class="modal-title">Active Client Applications</h4>
+      <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+        <div class="table-scroll">
+            <table class="table table-sm">
+              <thead>
+                <tr>
+                  <th>Position </th>
+                  <th>Client</th>
+                  <th>Consultant </th>
+                  <th>Interview Date</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let aca of activeCAById">
+                  <td>{{aca.clientPosition.generatedCode}}</td>
+                  <td>{{aca.clientPosition.client.name}}</td>
+                  <td>{{aca.consultant.fullname}}</td>
+                  <td>{{aca.interviewDate|| 'NA'}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+    </div>
+    <div class="modal-footer">
+      <!-- <button type="button" class="btn btn-secondary" (click)="deleteCoCHRecord()">Ok</button> -->
+      <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
+    </div>
+  </ng-template>

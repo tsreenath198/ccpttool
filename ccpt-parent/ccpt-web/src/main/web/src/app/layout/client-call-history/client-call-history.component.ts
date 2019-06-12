@@ -9,6 +9,7 @@ import { URLConstants } from '../components/constants/url-constants';
 import { NgForm } from '@angular/forms';
 import { ClientModel } from '../client/client.model';
 import { AdditionalPropertiesModel } from 'src/app/additional-properties.model';
+import { RecruiterModel } from '../recruiter/recruiter.model';
 
 
 @Component({
@@ -22,6 +23,7 @@ export class ClientCallHistoryComponent implements OnInit {
     public clientCallHistoryList: Array<any> = [];
     public clientPositionList: Array<ClientPositionModel> = [];
     public clientList: Array<ClientModel> = [];
+    public rescruiterList: Array<RecruiterModel> = [];
     public formButtonsToggler = true;
     public editButtonToggler = true;
     public urlConstants = new URLConstants();
@@ -33,8 +35,6 @@ export class ClientCallHistoryComponent implements OnInit {
     public enableButtonType = '';
 
     constructor(private http: HttpClientService, private toastr: ToastrCustomService, private modalService: NgbModal) {
-        this.clientCallHistoryModel['clientId'] = <ClientModel>{};
-        this.clientCallHistoryModel['clientPositionCode'] = <ClientPositionModel>{};
     }
 
     ngOnInit() {
@@ -43,6 +43,9 @@ export class ClientCallHistoryComponent implements OnInit {
         });
         this.http.get(this.urlConstants.ClientGetAll).subscribe(resp => {
             this.clientList = resp as Array<ClientModel>;
+        });
+        this.http.get(this.urlConstants.RGetAll).subscribe(resp =>{
+            this.rescruiterList = resp as any;
         });
         this.init();
         this.additionalPropertiesDeclare();
@@ -70,6 +73,7 @@ export class ClientCallHistoryComponent implements OnInit {
         const temp = response;
         this.clientCallHistoryModel = temp;
         this.clientCallHistoryModel['cpId'] = temp.clientPosition.id;
+        this.clientCallHistoryModel['calledBy'] = temp.calledBy.id;
         return this.clientCallHistoryModel;
     }
     additionalPropertiesDeclare() {

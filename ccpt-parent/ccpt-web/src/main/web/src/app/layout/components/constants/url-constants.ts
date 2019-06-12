@@ -64,7 +64,7 @@ export class URLConstants {
     RDelete = 'recruiter/';
     RGetById = 'recruiter/';
     RGetByName = 'recruiter/name/';
-    
+
 
     /*Client*/
     ClientCreate = 'client';
@@ -85,23 +85,27 @@ export class URLConstants {
     ReportingGetAllCOCH = 'report/getAllConsultantCallHistorysByDays?days=';
     ReportingGetAllTop5CP = 'report/getTop5CP';
     ReportingGetClosures = 'report/getClosedCountOfAllRecruitersFromLastGivenDays?days=';
-    ReportingGetAllOpenCP = 'report/getAllOpenCP'
+    ReportingGetAllOpenCP = 'report/getAllOpenCP';
+    ReportingGetAllActiveCA = 'clientApplication/getAllActiveCACountByCpID';
+    ReportingGetAllActiveCAById = 'clientApplication/getAllActiveCAByCpID?cpId=';
 
     /**Email Template */
-    EmailTemplateCreate = 'template'
+    EmailTemplateCreate = 'template';
     EmailTemplateGetAll = 'template/';
-    EmailTemplateDelete= 'template/';
+    EmailTemplateDelete = 'template/';
     EmailTemplateGetById = 'template/';
     EmailTemplateUpdate = 'template';
-    EmailTemplateBuildContent = 'template/build/'
+    EmailTemplateBuildContent = 'template/build/';
     EmailTemplateSend = 'sendEmail';
 
     /**SMS template */
-    SMSTemplateGetAll = 'sms/getAll';
+    SMSTemplateGetAll = 'template/sms/';
+    SMSTemplateCreate = 'template/sms';
+    SMSTemplateDelete = 'template/sms/';
+    SMSTemplateGetById = 'template/sms/';
+    SMSTemplateUpdate = 'template/sms';
+    SMSTemplateBuildContent = 'template/sms/build/';
     SMSTemplateSend = 'sms/send';
-    SMSTemplateBulkSMSForClientRole = 'sms/template/bulkSMSForClientRole/';
-    SMSTemplatebulkSMSForClientPosition = 'sms/template/bulkSMSForClientPosition/';
-    SMSTemplateUpdate = 'sms/update';
 
     /**User setup */
     UserLogin = 'user/login';

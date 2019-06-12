@@ -42,24 +42,34 @@ export class EmailTemplateComponent implements OnInit {
         this.readOnlyForm = 'U';
         this.enableButtonType = 'U';
     }
-    readOnlyEnable(data) {
-        this.emailTemplateModel = JSON.parse(JSON.stringify(data));
+    readOnlyEnable(id) {
+        this.getEmailById(id)
         this.readOnlyForm = 'R';
         this.enableButtonType = 'E';
+    }
+    getEmailById(id: number) {
+        this.http.get(this.urlConstants.SMSTemplateGetById + id).subscribe(resp => {
+            this.emailTemplateModel = this.mapToUpdateModel(resp);
+        });
+    }
+    mapToUpdateModel(response): EmailTemplateModel {
+        const temp = response;
+        this.emailTemplateModel = temp;
+        return this.emailTemplateModel;
     }
     formReset() {
         this.emailTemplateModel = <EmailTemplateModel>{};
     }
-    // otherContactCreate(emailTemplateForm: NgForm): void {
-    //     this.http.create(this.emailTemplateModel, this.urlConstants.OCCreate).subscribe(resp => {
-    //         this.toastr.success(this.urlConstants.SuccessMsg, 'Contact');
-    //         this.init();
-    //         this.formReset();
-    //         emailTemplateForm.resetForm();
-    //     }, err => {
-    //         this.toastr.error(err.statusText, 'Contact');
-    //     });
-    // }
+    ematlTemplateCreate(emailTemplateForm: NgForm): void {
+        this.http.post(this.emailTemplateModel, this.urlConstants.EmailTemplateCreate).subscribe(resp => {
+            this.toastr.success(this.urlConstants.SuccessMsg, 'Contact');
+            this.init();
+            this.formReset();
+            emailTemplateForm.resetForm();
+        }, err => {
+            this.toastr.error(err.statusText, 'Contact');
+        });
+    }
     updateEmailTemplate(emailTemplateForm: NgForm) {
         this.http.update(this.emailTemplateModel, this.urlConstants.EmailTemplateUpdate).subscribe(resp => {
             this.formReset();
@@ -78,14 +88,14 @@ export class EmailTemplateComponent implements OnInit {
         this.readOnlyForm = '';
         this.enableButtonType = '';
     }
-    // deleteClientRecord(): void {
-    //     this.http.delete(this.urlConstants.OCDelete + this.selectedRecrdToDel).subscribe(resp => {
-    //         this.toastr.success(this.urlConstants.DeleteMsg, 'Client');
-    //         this.init();
-    //         this.close();
-    //         this.formReset();
-    //     });
-    // }
+    deleteClientRecord(): void {
+        this.http.delete(this.urlConstants.EmailTemplateDelete + this.selectedRecrdToDel).subscribe(resp => {
+            this.toastr.success(this.urlConstants.DeleteMsg, 'Client');
+            this.init();
+            this.close();
+            this.formReset();
+        });
+    }
     /**
      * @param
      * 1) content consists the modal instance

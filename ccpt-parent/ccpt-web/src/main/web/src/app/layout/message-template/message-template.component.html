@@ -1,7 +1,7 @@
 <div [@routerTransition]>
-  
-    <app-page-header [icon2]="'fa-comment'" [heading2]="'Messages'" [icon1]="'fa-user'"
-    [heading1]="'Administration'"></app-page-header>
+
+  <app-page-header [icon2]="'fa-comment'" [heading2]="'Messages'" [icon1]="'fa-user'" [heading1]="'Administration'">
+  </app-page-header>
   <div class="row">
     <div class="col-md-7">
       <div class="row">
@@ -13,11 +13,11 @@
         <table class="table table-hover table-striped">
           <tbody>
             <tr *ngFor="let mtl of messageTemplateList |  filter : 'type' : currSearchTxt ; let i = index"
-              (click)="readOnlyEnable(mtl)" (dblclick)="editMessageTemplate(mtl)">
+              (click)="readOnlyEnable(mtl.id)" (dblclick)="editMessageTemplate(mtl)">
               <td>
                 {{mtl.type}}
               </td>
-              <!-- <td>
+              <td>
                 <span class="fa fa-trash pull-right" data-toggle="tooltip" title="Delete" (click)="open(content,mtl.id)"></span>
                 <ng-template #content let-c="close" let-d="dismiss">
                   <div class="modal-header">
@@ -34,15 +34,15 @@
                     <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
                   </div>
                 </ng-template>
-              </td> -->
+              </td>
             </tr>
           </tbody>
         </table>
       </div>
     </div>
     <div class=" col-md-5">
-        <!-- add this "emailTemplateCreate(f)"" in (ngSubmit) when we want to create  -->
-      <form name="form" id="messageTemplateForm" (ngSubmit)="f.form.valid" #f="ngForm" novalidate>
+      <form name="form" id="messageTemplateForm" (ngSubmit)="f.form.valid&&messageTemplateCreate(f)" #f="ngForm"
+        novalidate>
         <div class="row">
           <div class="col-md-12">
             <div class="form-group">
@@ -58,7 +58,7 @@
             <div class="form-group">
               <label>Body<span class="required">*</span></label>
               <textarea class="form-control" cols="5" rows="13" [readonly]="readOnlyForm == 'R'"
-                [(ngModel)]="messageTemplateModel.body" name="notes"
+                [(ngModel)]="messageTemplateModel.description" name="notes"
                 [ngClass]="{'is-invalid': f.submitted && notes.invalid}" #notes="ngModel" required></textarea>
               <div class="invalid-feedback">
                 Body is mandatory
@@ -68,7 +68,7 @@
         </div>
         <div class="row text-center">
           <div class="col-md-12">
-            <!-- <button type="submit" *ngIf="enableButtonType == ''" class="btn btn-secondary ml-3">Add</button> -->
+            <button type="submit" *ngIf="enableButtonType == ''" class="btn btn-secondary ml-3">Add</button>
             <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2"
               (click)="updateMessageTemplate(f)">Update</button>
             <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button"

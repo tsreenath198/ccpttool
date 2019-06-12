@@ -9,6 +9,7 @@ import { URLConstants } from '../components/constants/url-constants';
 import { NgForm } from '@angular/forms';
 import { ClientPositionModel } from '../client-position/client-position.model';
 import { AdditionalPropertiesModel } from 'src/app/additional-properties.model';
+import { RecruiterModel } from '../recruiter/recruiter.model';
 
 
 @Component({
@@ -25,6 +26,7 @@ export class ConsultantCallHistoryComponent implements OnInit {
     public editButtonToggler = true;
     public consultantList: Array<ConsultantModel> = [];
     public clientPositionList: Array<ClientPositionModel> = [];
+    public rescruiterList: Array<RecruiterModel> = [];
     public urlConstants = new URLConstants();
 
     private selectedRecrdToDel = 0;
@@ -43,6 +45,9 @@ export class ConsultantCallHistoryComponent implements OnInit {
         });
         this.http.get(this.urlConstants.CPGetAll).subscribe(resp => {
             this.clientPositionList = resp as Array<ClientPositionModel>;
+        });
+        this.http.get(this.urlConstants.RGetAll).subscribe(resp =>{
+            this.rescruiterList = resp as any;
         });
     }
     init() {
@@ -69,6 +74,7 @@ export class ConsultantCallHistoryComponent implements OnInit {
         const temp = response;
         this.consultantCallHistoryModel = temp;
         this.consultantCallHistoryModel['consultantId'] = temp.consultant.id;
+        this.consultantCallHistoryModel['calledBy'] = temp.calledBy.id;
         return this.consultantCallHistoryModel;
     }
     additionalPropertiesDeclare() {

@@ -55,22 +55,25 @@
       <form name="form" id="clientCallHistoryForm" (ngSubmit)="f.form.valid&&createClientCallHistory(f)" #f="ngForm"
         novalidate>
         <div class="row">
-          <!-- <div class="col-md-12">
+          <div class="col-md-12">
             <div class="form-group">
-              <label>Client Name<span class="required">*</span></label>
+              <label>Called By<span class="required">*</span></label>
 
               <select class="form-control" [disabled]="readOnlyForm == 'R'" name="cn"
-                [(ngModel)]="clientCallHistoryModel.clientId" [ngClass]="{'is-invalid': f.submitted && cn.invalid}"
+                [(ngModel)]="clientCallHistoryModel.calledBy" [ngClass]="{'is-invalid': f.submitted && cn.invalid}"
                 #cn="ngModel" required>
-                <option *ngFor="let cl of clientList" [ngValue]="cl.id">
-                  {{cl.name}}
+                <option *ngFor="let rl of rescruiterList" [ngValue]="rl.id">
+                  {{rl.fullname}}
                 </option>
               </select>
               <div class="invalid-feedback">
-                Client Position is mandatory
+                Called By is mandatory
               </div>
             </div>
-          </div> -->
+          </div>
+
+
+
           <div class="col-md-12">
             <div class="form-group">
               <label>Client Position<span class="required">*</span></label>
