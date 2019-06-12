@@ -53,5 +53,8 @@ public class ClientApplication extends IDEntity {
 
 	@Column
 	private String interviewLocation;
+	
+	@Column
+	private String interviewMode;
 
 }

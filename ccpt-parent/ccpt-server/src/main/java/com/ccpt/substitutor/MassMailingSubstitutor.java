@@ -39,7 +39,7 @@ public class MassMailingSubstitutor implements ContentSubstitutor {
 			if (clientPosition.getDescription() != null) {
 				valuesMap.put("jobDescription", clientPosition.getDescription());
 			} else {
-				valuesMap.put("jobDescription", "null");
+				throw new Exception("jobDescription is null for given cpid:" + id);
 			}
 			valuesMap.put("jobSpecification", clientPosition.getRequiredSkills());
 			String templateSubject = emailTemplate.getSubject();
@@ -54,6 +54,7 @@ public class MassMailingSubstitutor implements ContentSubstitutor {
 			throw new Exception("ClientPosition is null for given id:" + id);
 		}
 	}
+
 	@Override
 	public SMS generate(SmsTemplate template, Map<String, String> params) {
 		return null;

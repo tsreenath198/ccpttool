@@ -46,10 +46,22 @@ public class InterviewConfirmationSubstitutor implements ContentSubstitutor {
 			} else if (clientApplication.getConsultant().getGender() == "Female") {
 				valuesMap.put("salutation", "Madam");
 			}
-			valuesMap.put("interviewDate", clientApplication.getInterviewDate().toString());
-			valuesMap.put("Time", clientApplication.getInterviewTime());
-			// TODO InterviewMode
-			valuesMap.put("Mode", "InterviewMode");
+			if (clientApplication.getInterviewDate() != null) {
+				valuesMap.put("interviewDate", clientApplication.getInterviewDate().toString());
+			} else {
+				throw new Exception("interviewDate is null in clientApplication");
+			}
+			if (clientApplication.getInterviewTime() != null) {
+				valuesMap.put("Time", clientApplication.getInterviewTime());
+			} else {
+				throw new Exception("interviewTime is null in clientApplication");
+			}
+			if (clientApplication.getInterviewMode() != null) {
+				valuesMap.put("Mode", clientApplication.getInterviewMode());
+			} else {
+				throw new Exception("interviewMode is null in clientApplication");
+			}
+
 			valuesMap.put("consultantName", clientApplication.getConsultant().getFullname());
 			String templateSubject = emailTemplate.getSubject();
 			String templateBody = emailTemplate.getDescription();
