@@ -16,6 +16,7 @@ import com.ccpt.model.ClientCallHistory;
 import com.ccpt.service.BaseService;
 import com.ccpt.service.ClientCallHistoryService;
 import com.ccpt.service.ClientPositionService;
+import com.ccpt.service.RecruiterService;
 
 @Controller
 @CrossOrigin
@@ -27,6 +28,9 @@ public class ClientCallHistoryController extends BaseController<ClientCallHistor
 
 	@Autowired
 	private ClientPositionService clientPositionService;
+	
+	@Autowired
+	private RecruiterService recruiterService;
 
 	@Override
 	public BaseService<ClientCallHistory, Integer> getService() {
@@ -44,6 +48,12 @@ public class ClientCallHistoryController extends BaseController<ClientCallHistor
 			throw new ValidationException("Client Position cannot be null");
 		} else {
 			model.setClientPosition(clientPositionService.get(model.getClientPosition().getId()));
+		}
+		
+		if (model.getCalledBy() == null || model.getCalledBy().getId() == null) {
+			throw new ValidationException("Called By cannot be null");
+		} else {
+			model.setCalledBy(recruiterService.get(model.getCalledBy().getId()));
 		}
 		if (model.getCalledDate() == null) {
 			throw new ValidationException("Called Date cannot be null");
