@@ -30,4 +30,8 @@ public class ClientPositionService extends BaseService<ClientPosition, Integer> 
 	public BaseRepository<ClientPosition, Integer> getRepository() {
 		return clientPositionRepository;
 	}
+
+	public void deleteByClientId(Integer clientId) {
+		clientPositionRepository.deleteByClientId(clientId);		
+	}
 }

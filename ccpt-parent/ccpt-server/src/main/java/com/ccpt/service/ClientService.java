@@ -9,6 +9,10 @@ import com.ccpt.repository.ClientRepository;
 
 @Service
 public class ClientService extends BaseService<Client, Integer> {
+	
+	@Autowired
+	private ClientPositionService clientPositionService;
+	
 	public ClientService() {
 		super("Client");
 	}
@@ -19,6 +23,11 @@ public class ClientService extends BaseService<Client, Integer> {
 	@Override
 	public BaseRepository<Client, Integer> getRepository() {
 		return clientRepository;
+	}
+
+	@Override
+	protected void postDelete(Integer id) {
+		clientPositionService.deleteByClientId(id);
 	}
 
 }

@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ccpt.dto.BaseEntityDTO;
+import com.ccpt.dto.GenericResponse;
 import com.ccpt.mapper.BaseMapper;
 import com.ccpt.model.BaseEntity;
 import com.ccpt.service.BaseService;
@@ -55,9 +56,10 @@ public abstract class BaseController<DTO extends BaseEntityDTO<ID>, MODEL extend
 	}
 
 	@DeleteMapping(ID_PARAM)
-	ResponseEntity<String> delete(@PathVariable ID id) {
+	ResponseEntity<GenericResponse> delete(@PathVariable ID id) {
 		getService().delete(id);
-		return new ResponseEntity<String>("Entity with id : " + id + " deleted", HttpStatus.OK);
+		return new ResponseEntity<GenericResponse>(new GenericResponse("Entity with id : " + id + " deleted"),
+				HttpStatus.OK);
 	}
 
 	public abstract BaseService<MODEL, ID> getService();

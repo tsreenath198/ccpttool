@@ -12,4 +12,6 @@ public interface ClientPositionRepository extends BaseRepository<ClientPosition,
 
 	@Query("SELECT t1 FROM ClientPosition t1 WHERE t1.id NOT IN (SELECT distinct t2.clientPosition.id FROM ClientApplication t2)")
 	List<ClientPosition> getAllOpenCP();
+
+	void deleteByClientId(Integer clientId);
 }

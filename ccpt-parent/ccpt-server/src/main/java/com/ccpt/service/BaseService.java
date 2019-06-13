@@ -83,6 +83,11 @@ public abstract class BaseService<T extends BaseEntity<ID>, ID> {
 		T entity = get(id);
 		entity.setActiveFlag(false);
 		getRepository().save(entity);
+		postDelete(id);
+	}
+
+	protected void postDelete(ID id) {
+		// Can be overidden in children
 	}
 
 	public abstract BaseRepository<T, ID> getRepository();
