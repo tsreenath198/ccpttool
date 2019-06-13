@@ -5,11 +5,11 @@
             <h1>Consultant Coordination and Placement Tool</h1>
                 <div class="form-content">
                     <div class="form-group">
-                        <input type="text" [(ngModel)]="loginDetails.username" class="form-control input-underline input-lg" id="" placeholder="{{ 'Email' | translate }}">
+                        <input type="text" [(ngModel)]="loginDetails.username" class="form-control input-underline input-lg" id="" placeholder="{{ 'Email' | translate }}" (keypress)="login($event)">
                     </div>
 
                     <div class="form-group">
-                        <input type="password" class="form-control input-underline input-lg" id="" placeholder="{{ 'Password' | translate }}" [(ngModel)]="loginDetails.password">
+                        <input type="password" class="form-control input-underline input-lg" id="" placeholder="{{ 'Password' | translate }}" [(ngModel)]="loginDetails.password" (keypress)="login($event)">
                     </div>
                 </div>
                 <a class="btn rounded-btn"  (click)="onLoggedin()"><span class="fa fa-sign-in"></span>&nbsp;&nbsp;{{ 'Sign in' | translate }}</a>

@@ -20,17 +20,21 @@ export class LoginComponent implements OnInit {
         this.reset();
     }
     onLoggedin() {
-        this.http.post(this.loginDetails, this.urlConstants.UserLogin ).subscribe(resp => {
+        this.http.post(this.loginDetails, this.urlConstants.UserLogin).subscribe(resp => {
             const response = resp as any;
-                this.toastr.success('User Logged In Successfully', 'Login');
-                sessionStorage.setItem('username', response.username);
-                sessionStorage.setItem('token', response.token);
-                sessionStorage.setItem('role', response.role);
-                this.router.navigate(['/layout']);
+            this.toastr.success('User Logged In Successfully', 'Login');
+            sessionStorage.setItem('username', response.username);
+            sessionStorage.setItem('token', response.token);
+            sessionStorage.setItem('role', response.role);
+            this.router.navigate(['/layout']);
         }, error => {
             this.toastr.error(error.error.message, 'Login');
             this.reset();
         });
+    }
+    login(event): void {
+        if (event.keyCode === 13)
+            this.onLoggedin()
     }
     reset(): void {
         sessionStorage.setItem('username', null);
