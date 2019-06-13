@@ -46,7 +46,7 @@ export class ConsultantCallHistoryComponent implements OnInit {
         this.http.get(this.urlConstants.CPGetAll).subscribe(resp => {
             this.clientPositionList = resp as Array<ClientPositionModel>;
         });
-        this.http.get(this.urlConstants.RGetAll).subscribe(resp =>{
+        this.http.get(this.urlConstants.RGetAll).subscribe(resp => {
             this.rescruiterList = resp as any;
         });
     }
@@ -68,6 +68,10 @@ export class ConsultantCallHistoryComponent implements OnInit {
     getConsultantById(id: number) {
         this.http.get(this.urlConstants.CoCHGetById + id).subscribe(resp => {
             this.consultantCallHistoryModel = this.mapToUpdateModel(resp);
+            const temp = resp as any;
+            if (temp.properties == null) {
+                this.additionalPropertiesDeclare();
+            }
         });
     }
     mapToUpdateModel(response): ConsultantCallHistoryModel {

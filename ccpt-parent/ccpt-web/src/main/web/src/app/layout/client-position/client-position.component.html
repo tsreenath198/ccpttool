@@ -144,7 +144,7 @@
           <div class="col-md-12">
             <div class="form-group">
               <label>Max CTC</label>
-              <input class="form-control" [readonly]="readOnlyForm == 'R'" type="number"
+              <input class="form-control" [readonly]="readOnlyForm == 'R'" type="text"
                 [(ngModel)]="clientPositionModel.maxCtc" name="maxctc" placeholder="Max CTC"
                 [ngClass]="{ 'is-invalid': f.submitted && maxctc.invalid }" #maxctc="ngModel" />
 
@@ -155,7 +155,7 @@
           <div class="col-md-12">
             <div class="form-group">
               <label>Min CTC</label>
-              <input class="form-control" [readonly]="readOnlyForm == 'R'" type="number" placeholder="Min CTC"
+              <input class="form-control" [readonly]="readOnlyForm == 'R'" type="text" placeholder="Min CTC"
                 [(ngModel)]="clientPositionModel.minCtc" name="minctc" max="clientPositionModel.maxCtc"
                 [ngClass]="{ 'is-invalid': f.submitted && minctc.invalid }" #minctc="ngModel" />
 

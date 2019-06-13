@@ -21,10 +21,8 @@ import { AdditionalPropertiesModel } from 'src/app/additional-properties.model';
 export class ConsultantComponent implements OnInit {
     public consultantModel: ConsultantModel = <ConsultantModel>{};
     public consultantList: Array<ConsultantModel> = [];
-    public copyConList: Array<ConsultantModel> = [];
     public consultantStatusList: Array<ConsultantStatusModel> = [];
     public formButtonsToggler = true;
-
     public readOnlyForm = '';
     public enableButtonType = '';
     public genderList = ['Male', 'Female', 'Other'];
@@ -52,8 +50,18 @@ export class ConsultantComponent implements OnInit {
     init(): void {
         this.http.get(this.urlConstants.CGetAll).subscribe(resp => {
             this.consultantList = resp as any;
-            this.copyConList = resp as any;
+            this.consultantList.forEach(cl => {
+                if (this.validate(cl.fullname) || this.validate(cl.email) || this.validate(cl.phone) || this.validate(cl.dob)) {
+                    cl['isProfileCompleted'] = false;
+                } else {
+                    cl['isProfileCompleted'] = true;
+                }
+            });
         });
+    }
+    private validate(value: any): boolean {
+        const bool = (value == null) ? true : false;
+        return bool;
     }
     consultantEdit(id: number) {
         this.readOnlyForm = 'U';
@@ -78,6 +86,7 @@ export class ConsultantComponent implements OnInit {
             this.formReset();
             consultantForm.resetForm();
             this.additionalPropertiesDeclare();
+
         }, err => {
             this.toastr.error(err.error.message, 'Consultant');
         });
@@ -98,6 +107,10 @@ export class ConsultantComponent implements OnInit {
     getConsultantById(id: number) {
         this.http.get(this.urlConstants.CGetById + id).subscribe(resp => {
             this.consultantModel = this.mapToUpdateModel(resp);
+            const temp = resp as any;
+            if (temp.properties == null) {
+                this.additionalPropertiesDeclare();
+            }
         });
     }
     getFilesById() {
@@ -124,10 +137,10 @@ export class ConsultantComponent implements OnInit {
         });
     }
     mapToUpdateModel(response): ConsultantModel {
-        let temp = response;
+        const temp = response;
         this.consultantModel = temp;
         this.consultantModel['cstatus'] = temp.status.code;
-        return this.consultantModel
+        return this.consultantModel;
     }
     additionalPropertiesDeclare() {
         this.consultantModel.properties = [<AdditionalPropertiesModel>{}];

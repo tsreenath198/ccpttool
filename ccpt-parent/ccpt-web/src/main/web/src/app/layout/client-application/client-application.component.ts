@@ -33,6 +33,7 @@ export class ClientApplicationComponent implements OnInit {
     public formButtonsToggler = true;
     public editButtonToggler = true;
     public isInterviewScheduled = false;
+    public showProperties = false;
     private selectedRecrdToDel = 0;
     public closeResult = '';
     private modalRef: NgbModalRef;
@@ -87,7 +88,11 @@ export class ClientApplicationComponent implements OnInit {
     getCCHById(id: number) {
         this.http.get(this.urlConstants.CAGetById + id).subscribe(resp => {
             this.CAModel = this.mapToUpdateModel(resp);
-            });
+            const temp = resp as any;
+            if (temp.properties == null) {
+                this.additionalPropertiesDeclare();
+            }
+        });
     }
     mapToUpdateModel(response): ClientApplicationModel {
         const temp = response;
@@ -118,7 +123,7 @@ export class ClientApplicationComponent implements OnInit {
             this.toastr.success(this.urlConstants.SuccessMsg, 'Client Application');
             this.init();
             this.formReset();
-        this.additionalPropertiesDeclare();
+            this.additionalPropertiesDeclare();
             clientApplicationForm.resetForm();
 
         }, err => {

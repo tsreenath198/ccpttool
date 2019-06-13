@@ -10,17 +10,17 @@
       <div class="table-responsive mt-2">
         <table class="table table-hover table-striped">
           <tbody class="overflow-ele-scroll">
-            <tr
-              *ngFor="let cal of clientApplicationList |  filter : 'clientPositionId' : currSearchTxt ; let i = index"
+            <tr *ngFor="let cal of clientApplicationList |  filter : 'clientPositionId' : currSearchTxt ; let i = index"
               (click)="readOnlyEnable(cal.id)" (dblclick)="editClientApplication(cal)">
-              <td >
+              <td>
                 {{cal.clientPositionCode}}
               </td>
               <td>{{cal.consultant.fullname}}</td>
               <td>{{cal.status.code}}</td>
               <td>{{cal.interviewDate || 'N/A'}}</td>
               <td>{{cal.description || 'N/A'}}</td>
-              <td><span class="fa fa-trash pull-right" data-toggle="tooltip" title="Delete" (click)="open(content,cal.id)"></span>
+              <td><span class="fa fa-trash pull-right" data-toggle="tooltip" title="Delete"
+                  (click)="open(content,cal.id)"></span>
                 <ng-template #content let-c="close" let-d="dismiss">
                   <div class="modal-header">
                     <h4 class="modal-title">Client Application</h4>
@@ -49,8 +49,7 @@
           <div class="col-md-12">
             <div class="form-group">
               <label>Client Position<span class="required">*</span></label>
-              <select class="form-control" name="cp" [disabled]="readOnlyForm == 'R'"
-                [(ngModel)]="CAModel.cpId"
+              <select class="form-control" name="cp" [disabled]="readOnlyForm == 'R'" [(ngModel)]="CAModel.cpId"
                 [ngClass]="{'is-invalid': f.submitted && cp.invalid}" #cp="ngModel" required>
                 <option *ngFor="let cpl of clientPositionList" [ngValue]="cpl.id">{{cpl.generatedCode}}
                 </option>
@@ -63,9 +62,8 @@
           <div class="col-md-12">
             <div class="form-group">
               <label>Consultant<span class="required">*</span></label>
-              <select class="form-control" [disabled]="readOnlyForm == 'R'"
-                [(ngModel)]="CAModel.consultantId" name="con"
-                [ngClass]="{'is-invalid': f.submitted && con.invalid}" #con="ngModel" required>
+              <select class="form-control" [disabled]="readOnlyForm == 'R'" [(ngModel)]="CAModel.consultantId"
+                name="con" [ngClass]="{'is-invalid': f.submitted && con.invalid}" #con="ngModel" required>
                 <option *ngFor="let cl of consultantList" [ngValue]="cl.id">{{cl.fullname}}</option>
               </select>
               <div class="invalid-feedback">
@@ -76,8 +74,7 @@
           <div class="col-md-12">
             <div class="form-group">
               <label>Client Application Status<span class="required">*</span></label>
-              <select class="form-control" name="cas" [disabled]="readOnlyForm == 'R'"
-                [(ngModel)]="CAModel.caStatus"
+              <select class="form-control" name="cas" [disabled]="readOnlyForm == 'R'" [(ngModel)]="CAModel.caStatus"
                 [ngClass]="{'is-invalid': f.submitted && cas.invalid}" #cas="ngModel" required>
                 <option *ngFor="let casl of clientApplicationStatusList" [ngValue]="casl.code">
                   {{casl.description}}
@@ -91,8 +88,8 @@
           <div class="col-md-12">
             <div class="form-group">
               <label>Creator<span class="required">*</span></label>
-              <select class="form-control" name="creator" [disabled]="readOnlyForm == 'R'" [(ngModel)]="CAModel.creatorId"
-                [ngClass]="{'is-invalid': f.submitted && cas.invalid}"  required>
+              <select class="form-control" name="creator" [disabled]="readOnlyForm == 'R'"
+                [(ngModel)]="CAModel.creatorId" [ngClass]="{'is-invalid': f.submitted && cas.invalid}" required>
                 <option *ngFor="let rl of recruiterList" [ngValue]="rl.id">
                   {{rl.fullname}}
                 </option>
@@ -110,25 +107,25 @@
                 Scheduled</small>
               <div *ngIf="isInterviewScheduled">
                 <label class='pt-2'>Interview Date</label>
-                <input type="date" class="form-control" name="intDate"  #intDate="ngModel" [readonly]="readOnlyForm == 'R'"
-                  [(ngModel)]="CAModel.interviewDate">
+                <input type="date" class="form-control" name="intDate" #intDate="ngModel"
+                  [readonly]="readOnlyForm == 'R'" [(ngModel)]="CAModel.interviewDate">
                 <div class="input-group-addon">
                   <span class="glyphicon glyphicon-th"></span>
                 </div>
                 <label class='pt-2'>Interview Time</label>
-                <input type="time" class="form-control" name="intTime" #intTime="ngModel" [readonly]="readOnlyForm == 'R'"
-                  [(ngModel)]="CAModel.interviewTime">
+                <input type="time" class="form-control" name="intTime" #intTime="ngModel"
+                  [readonly]="readOnlyForm == 'R'" [(ngModel)]="CAModel.interviewTime">
                 <div class="input-group-addon">
                   <span class="glyphicon glyphicon-th"></span>
                 </div>
                 <label class='pt-2'>Interview Location</label>
-                <input  class="form-control" name="date" [readonly]="readOnlyForm == 'R'"
+                <input class="form-control" name="date" [readonly]="readOnlyForm == 'R'"
                   [(ngModel)]="CAModel.interviewLocation">
                 <div class="input-group-addon">
                   <span class="glyphicon glyphicon-th"></span>
                 </div>
                 <label class='pt-2'>Interview Mode</label>
-                <input  class="form-control" name="date" [readonly]="readOnlyForm == 'R'"
+                <input class="form-control" name="date" [readonly]="readOnlyForm == 'R'"
                   [(ngModel)]="CAModel.interviewMode">
                 <div class="input-group-addon">
                   <span class="glyphicon glyphicon-th"></span>
@@ -162,8 +159,8 @@
                   <td>
                     <i class="fa fa-minus" aria-hidden="true" id="decrease"
                       (click)="propertiesListIncrement($event.target,i)"></i><br>
-                    <i class="fa fa-plus" *ngIf="(i+1)==CAModel.properties.length" aria-hidden="true"
-                      id="increase" (click)="propertiesListIncrement($event.target,i)"></i>
+                    <i class="fa fa-plus" *ngIf="(i+1)==CAModel.properties.length" aria-hidden="true" id="increase"
+                      (click)="propertiesListIncrement($event.target,i)"></i>
                   </td>
                 </tr>
               </tbody>

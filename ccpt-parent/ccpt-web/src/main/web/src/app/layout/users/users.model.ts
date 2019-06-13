@@ -8,5 +8,5 @@ export interface UsersModel {
     properties: Array<AdditionalPropertiesModel>;
 }
 export class UserRoles {
-    roles = ['User', 'Admin'];
+    roles = ['User', 'Admin', 'Management'];
 }

@@ -15,50 +15,54 @@ import { AdditionalPropertiesModel } from 'src/app/additional-properties.model';
     animations: [routerTransition()]
 })
 export class OtherContactsComponent implements OnInit {
-    constructor(private http:HttpClientService, private toastr: ToastrCustomService, private modalService: NgbModal) { }
-    public OCModel:OtherContactsModel=<OtherContactsModel>{};
-    public OCList:any=[];
-    private urlConstants = new URLConstants();    
-    public readOnlyForm: string = '';
-    public enableButtonType: string = '';
-    public currSearchTxt: string=''; 
+    constructor(private http: HttpClientService, private toastr: ToastrCustomService, private modalService: NgbModal) { }
+    public OCModel: OtherContactsModel = <OtherContactsModel>{};
+    public OCList: any = [];
+    private urlConstants = new URLConstants();
+    public readOnlyForm = '';
+    public enableButtonType = '';
+    public currSearchTxt = '';
 
-    private selectedRecrdToDel: number = 0;
-    public closeResult: string = '';
+    private selectedRecrdToDel = 0;
+    public closeResult = '';
     private modalRef: NgbModalRef;
     ngOnInit() {
         this.init();
         this.additionalPropertiesDeclare();
     }
-    init(){
+    init() {
         this.http.get(this.urlConstants.OCGetAll).subscribe(resp => {
             this.OCList = resp as any;
-        })
+        });
     }
     edit() {
         this.readOnlyForm = 'U';
         this.enableButtonType = 'U';
     }
     enableFormEditable(): void {
-        
+
         this.readOnlyForm = 'U';
         this.enableButtonType = 'U';
     }
-    
+
     readOnlyEnable(id) {
         this.getById(id);
         this.readOnlyForm = 'R';
         this.enableButtonType = 'E';
     }
-    getById(id){
+    getById(id) {
         this.http.get(this.urlConstants.OCGetById + id).subscribe(resp => {
             this.OCModel = this.mapToUpdateModel(resp);
+            const temp = resp as any;
+            if (temp.properties == null) {
+                this.additionalPropertiesDeclare();
+            }
             });
     }
-    mapToUpdateModel(response){
-        let temp=response;
-        this.OCModel=temp;
-        return this.OCModel   
+    mapToUpdateModel(response) {
+        const temp = response;
+        this.OCModel = temp;
+        return this.OCModel;
     }
     additionalPropertiesDeclare() {
         this.OCModel.properties = [<AdditionalPropertiesModel>{}];
@@ -80,27 +84,27 @@ export class OtherContactsComponent implements OnInit {
     }
     create(otherContactForm: NgForm): void {
         this.http.post(this.OCModel, this.urlConstants.OCCreate).subscribe(resp => {
-            this.toastr.success(this.urlConstants.SuccessMsg, "Contact");
+            this.toastr.success(this.urlConstants.SuccessMsg, 'Contact');
             this.init();
             this.formReset();
             otherContactForm.resetForm();
             this.additionalPropertiesDeclare();
         }, err => {
-            this.toastr.error(err.error.message, "Contact");
+            this.toastr.error(err.error.message, 'Contact');
         });
     }
     update(otherContactForm: NgForm) {
         this.http.update(this.OCModel, this.urlConstants.OCUpdate).subscribe(resp => {
             this.formReset();
-            this.toastr.success(this.urlConstants.UpdateMsg, "Contact ");
+            this.toastr.success(this.urlConstants.UpdateMsg, 'Contact ');
             this.init();
             otherContactForm.resetForm();
             this.readOnlyForm = '';
             this.enableButtonType = '';
             this.additionalPropertiesDeclare();
         }, err => {
-            this.toastr.error(err.error.message, "Contact");
-        })
+            this.toastr.error(err.error.message, 'Contact');
+        });
     }
     cancelForm(consultantCallHistory: NgForm) {
         this.formReset();
@@ -111,16 +115,16 @@ export class OtherContactsComponent implements OnInit {
     }
     delete(): void {
         this.http.delete(this.urlConstants.OCDelete + this.selectedRecrdToDel).subscribe(resp => {
-            this.toastr.success(this.urlConstants.DeleteMsg, "Contact");
+            this.toastr.success(this.urlConstants.DeleteMsg, 'Contact');
             this.init();
             this.close();
             this.formReset();
         }, err => {
-            this.toastr.error(err.error.message, "Contact");
-        })
+            this.toastr.error(err.error.message, 'Contact');
+        });
     }
     /**
-     * @param 
+     * @param
      * 1) content consists the modal instance
      * 2) Selected contains the code of selected row
      */

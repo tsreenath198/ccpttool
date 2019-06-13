@@ -66,7 +66,11 @@ export class ClientComponent implements OnInit {
     getById(id) {
         this.http.get(this.urlConstants.ClientGetById + id).subscribe(resp => {
             this.clientModel = this.mapToUpdateModel(resp);
-            });
+            const temp = resp as any;
+            if (temp.properties == null) {
+                this.additionalPropertiesDeclare();
+            }
+        });
     }
     mapToUpdateModel(response) {
         const temp = response;

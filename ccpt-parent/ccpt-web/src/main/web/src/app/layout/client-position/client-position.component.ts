@@ -111,6 +111,10 @@ export class ClientPositionComponent implements OnInit {
     getCPById(id: number) {
         this.http.get(this.urlConstants.CPGetById + id).subscribe(resp => {
             this.clientPositionModel = this.mapToUpdateModel(resp);
+            const temp = resp as any;
+            if (temp.properties == null) {
+                this.additionalPropertiesDeclare();
+            }
         });
     }
     mapToUpdateModel(response): ClientPositionModel {
@@ -222,7 +226,7 @@ export class ClientPositionComponent implements OnInit {
             this.toastr.error(err.error.message, 'Client Position');
         });
     }
-    public selectSms(sms){
+    public selectSms(sms) {
         console.log(sms.value.description);
     }
     public sendSmsReq(): void {
@@ -276,14 +280,14 @@ export class ClientPositionComponent implements OnInit {
         if (content) {
             if (type === 'email') {
                 for (let i = 0; i < this.consultantList.length; i++) {
-                    const temp= {'item_id': this.consultantList[i].phone, 'item_text': this.consultantList[i].fullname, 'notes': ''};
+                    const temp = {'item_id': this.consultantList[i].phone, 'item_text': this.consultantList[i].fullname, 'notes': ''};
                     this.mailIdForMails.push(this.consultantList[i].email);
                 }
             }
             if (type === 'sms') {
-                this.http.get(this.urlConstants.SMSTemplateGetAll).subscribe(resp =>{
-                    this.smsList= resp as any;
-                })
+                this.http.get(this.urlConstants.SMSTemplateGetAll).subscribe(resp => {
+                    this.smsList = resp as any;
+                });
                 for (let i = 0; i < this.consultantList.length; i++) {
                     const temp = { 'item_id': this.consultantList[i].phone, 'item_text': this.consultantList[i].fullname, 'notes': '' };
                     this.numbersForSmsDropdown.push(temp);

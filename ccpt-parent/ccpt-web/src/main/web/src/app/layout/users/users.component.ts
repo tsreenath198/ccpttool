@@ -18,7 +18,7 @@ export class UsersComponent implements OnInit {
     public usersModel: UsersModel = <UsersModel>{};
     public usersList: Array<UsersModel> = [];
     private urlConstants = new URLConstants();
-    public rolesModel = new UserRoles();  
+    public rolesModel = new UserRoles();
     public rolesList: any = [];
     public getAllR: any;
     public readOnlyForm = '';
@@ -61,6 +61,10 @@ export class UsersComponent implements OnInit {
     getUserById(id: number) {
         this.http.get(this.urlConstants.UserGetById + id).subscribe(resp => {
         this.usersModel = this.mapToUpdateModel(resp);
+        const temp = resp as any;
+        if (temp.properties == null) {
+            this.additionalPropertiesDeclare();
+        }
         });
     }
     mapToUpdateModel(response): UsersModel {

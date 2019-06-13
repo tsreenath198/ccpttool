@@ -10,7 +10,8 @@
       <div class="table-responsive mt-2">
         <table class="table table-hover table-striped">
           <tbody class="overflow-ele-scroll">
-            <tr *ngFor="let cl of consultantList |  filter : 'fullname' :currSearchTxt ; let i = index">
+            <tr *ngFor="let cl of consultantList |  filter : 'fullname' :currSearchTxt ; let i = index"
+              [ngClass]="!cl.isProfileCompleted ? 'bg-danger':''">
               <td class="table-data-padding" (click)="readOnlyEnable(cl.id)" (dblclick)="consultantEdit(cl.id)">
                 <dl>
                   <dt> {{cl.fullname}}</dt>
@@ -142,15 +143,11 @@
           </div>
           <div class="col-md-12">
             <div class="form-group" data-provide="datepicker">
-              <label>Date of Birth<span class="required">*</span></label>
+              <label>Date of Birth</label>
               <input type="date" class="form-control" name="dob" [(ngModel)]="consultantModel.dob"
-                [ngClass]="{'is-invalid': f.submitted && dob.invalid}" #dob="ngModel" [readonly]="readOnlyForm == 'R'"
-                required>
+                [ngClass]="{'is-invalid': f.submitted && dob.invalid}" #dob="ngModel" [readonly]="readOnlyForm == 'R'">
               <div class="input-group-addon">
                 <span class="glyphicon glyphicon-th"></span>
-              </div>
-              <div class="invalid-feedback">
-                date of birth is mandatory
               </div>
             </div>
           </div>

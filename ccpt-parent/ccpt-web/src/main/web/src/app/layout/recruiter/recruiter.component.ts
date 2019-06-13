@@ -16,18 +16,18 @@ import { AdditionalPropertiesModel } from 'src/app/additional-properties.model';
 })
 export class RecruiterComponent implements OnInit {
     public recruiterModel: RecruiterModel = <RecruiterModel>{};
-    public formButtonsToggler: boolean = true;
-    public editButtonToggler: boolean = true;
+    public formButtonsToggler = true;
+    public editButtonToggler = true;
     public recruiterList: Array<RecruiterModel> = [];
     public rolesModel = new Roles();
     public rolesList: any = [];
     public urlConstants = new URLConstants();
-    private selectedRecrdToDel: number = 0;
-    public closeResult: string = '';
+    private selectedRecrdToDel = 0;
+    public closeResult = '';
     private modalRef: NgbModalRef;
-    public genderList =['MALE','FEMALE','OTHER'];
+    public genderList = ['MALE', 'FEMALE', 'OTHER'];
     public currSearchTxt: string ;
-    
+
     public readOnlyForm = '';
     public enableButtonType = '';
 
@@ -50,7 +50,7 @@ export class RecruiterComponent implements OnInit {
         this.readOnlyForm = 'U';
         this.enableButtonType = 'U';
     }
-    readOnlyEnable(id:number) {
+    readOnlyEnable(id: number) {
         this.getById(id);
         this.readOnlyForm = 'R';
         this.enableButtonType = 'E';
@@ -58,11 +58,15 @@ export class RecruiterComponent implements OnInit {
     getById(id) {
         this.http.get(this.urlConstants.RGetById + id).subscribe(resp => {
             this.recruiterModel = this.mapToUpdateModel(resp);
+            const temp = resp as any;
+            if (temp.properties == null) {
+                this.additionalPropertiesDeclare();
+            }
             });
     }
     mapToUpdateModel(response) {
-        const temp=response;
-        this.recruiterModel= temp;
+        const temp = response;
+        this.recruiterModel = temp;
         return this.recruiterModel;
     }
     additionalPropertiesDeclare() {
