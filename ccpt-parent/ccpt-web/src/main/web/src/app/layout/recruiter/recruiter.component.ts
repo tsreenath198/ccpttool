@@ -25,8 +25,8 @@ export class RecruiterComponent implements OnInit {
     private selectedRecrdToDel = 0;
     public closeResult = '';
     private modalRef: NgbModalRef;
-    public genderList = ['MALE', 'FEMALE', 'OTHER'];
-    public currSearchTxt: string ;
+    public genderList = ['Male', 'Female', 'Other'];
+    public currSearchTxt: string;
 
     public readOnlyForm = '';
     public enableButtonType = '';
@@ -62,7 +62,7 @@ export class RecruiterComponent implements OnInit {
             if (temp.properties == null) {
                 this.additionalPropertiesDeclare();
             }
-            });
+        });
     }
     mapToUpdateModel(response) {
         const temp = response;
@@ -126,6 +126,12 @@ export class RecruiterComponent implements OnInit {
             this.close();
             this.formReset();
         }, err => {
+            if (err.status === 200) {
+                this.init();
+                this.close();
+                this.formReset();
+                return this.toastr.success(this.urlConstants.DeleteMsg, 'Recruiter');
+            }
             this.toastr.error(err.error.message, 'Recruiter');
         });
     }
