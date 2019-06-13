@@ -27,7 +27,7 @@ public class MyMultipleFileZip {
 				System.out.println("Zipping the file: " + input.getName());
 				zipOut.putNextEntry(ze);
 				byte[] tmp = new byte[4 * 1024];
-				int size = 0;
+				Integer size = 0;
 				while ((size = fis.read(tmp)) != -1) {
 					zipOut.write(tmp, 0, size);
 				}

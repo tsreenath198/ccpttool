@@ -47,7 +47,7 @@ public class UploadFileController {
 		byte[] content = null;
 		List<UploadFile> res = uploadFileService.getByRefIdAndTefType(refType, refId);
 		List<String> files = new ArrayList<String>();
-		for (int i = 0; i < res.size(); i++) {
+		for (Integer i = 0; i < res.size(); i++) {
 			content = res.get(i).getContent();
 			String filePath = writeByte(content, i);
 			files.add(filePath);

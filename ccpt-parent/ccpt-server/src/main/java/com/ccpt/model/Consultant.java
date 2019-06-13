@@ -49,7 +49,7 @@ public class Consultant extends IDEntity {
 	private String currentLocation;
 
 	@Column
-	private int passoutYear;
+	private Integer passoutYear;
 
 	@Column
 	private String qualification;

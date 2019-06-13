@@ -11,6 +11,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 
 import lombok.Getter;
@@ -18,7 +19,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Entity
-@Table
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = { "client_position_id", "consultant_id" }))
 @Getter
 @Setter
 @ToString
@@ -53,7 +54,7 @@ public class ClientApplication extends IDEntity {
 
 	@Column
 	private String interviewLocation;
-	
+
 	@Column
 	private String interviewMode;
 

@@ -18,7 +18,7 @@ public class ConsultantDTO extends IDEntityDTO {
 	private String phone;
 	private String skills;
 	private String currentLocation;
-	private int passoutYear;
+	private Integer passoutYear;
 	private String qualification;
 	private String expectedCTC;
 	private String cStatus;
