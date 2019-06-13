@@ -136,12 +136,18 @@ export class ClientCallHistoryComponent implements OnInit {
     }
     deleteCCHRecord(): void {
         this.http.delete(this.urlConstants.CCHDelete + this.selectedRecrdToDel).subscribe(resp => {
-            this.toastr.success(this.urlConstants.DeleteMsg, 'Client');
+            this.toastr.success(this.urlConstants.DeleteMsg, 'Client Call History');
             this.init();
             this.close();
             this.formReset();
         }, err => {
-            this.toastr.error(err.error.message, 'Client');
+            if (err.status === 200) {
+                this.init();
+                this.close();
+                this.formReset();
+                return this.toastr.success(this.urlConstants.DeleteMsg, 'Client Call History');
+            }
+            this.toastr.error(err.error.message, 'Client Call History');
         });
     }
     /**

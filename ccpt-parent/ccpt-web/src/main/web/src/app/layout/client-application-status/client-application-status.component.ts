@@ -111,6 +111,12 @@ export class ClientApplicationStatusComponent implements OnInit {
             this.close();
             this.formReset();
         }, err => {
+            if (err.status === 200) {
+                this.init();
+                this.close();
+                this.formReset();
+                return this.toastr.success(this.urlConstants.DeleteMsg, 'Client Application Status');
+            }
             this.toastr.error(err.error.message, 'Client Application Status');
         })
     }

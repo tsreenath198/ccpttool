@@ -123,7 +123,6 @@ export class RecruiterComponent implements OnInit {
         this.http.delete(this.urlConstants.RDelete + this.selectedRecrdToDel).subscribe(resp => {
             this.toastr.success(this.urlConstants.DeleteMsg, 'Recruiter');
             this.init();
-            this.close();
             this.formReset();
         }, err => {
             if (err.status === 200) {

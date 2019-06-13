@@ -120,6 +120,12 @@ export class UsersComponent implements OnInit {
             this.close();
             this.formReset();
         }, err => {
+            if (err.status === 200) {
+                this.init();
+                this.close();
+                this.formReset();
+                return this.toastr.success(this.urlConstants.DeleteMsg, 'User');
+            }
             this.toastr.error(err.error.message, 'User' );
         });
     }

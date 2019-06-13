@@ -338,8 +338,8 @@
   </div>
   <div class="modal-body">
     <label>Sms Type</label>
-    <select class="form-control" name="cn" [(ngModel)]="sendSmsModel.message">
-      <option *ngFor="let sms of smsList" [ngValue]="sms.description"> {{ sms.type }}</option>
+    <select class="form-control" name="cn" (change)="selectSms($event.target)">
+      <option *ngFor="let sms of smsList" > {{ sms.type }}</option>
     </select>
     <label>Numbers</label>
     <ng-multiselect-dropdown [placeholder]="'choose numbers..'" [data]="numbersForSmsDropdown"

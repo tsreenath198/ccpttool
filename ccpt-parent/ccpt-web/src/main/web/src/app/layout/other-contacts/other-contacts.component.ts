@@ -120,6 +120,12 @@ export class OtherContactsComponent implements OnInit {
             this.close();
             this.formReset();
         }, err => {
+            if (err.status === 200) {
+                this.init();
+                this.close();
+                this.formReset();
+                return this.toastr.success(this.urlConstants.DeleteMsg, 'Contact');
+            }
             this.toastr.error(err.error.message, 'Contact');
         });
     }

@@ -105,27 +105,21 @@
           </div>
           <div class="col-md-12">
             <div class="form-group">
-              <label>E-Mail<span class="required">*</span></label>
+              <label>E-Mail</label>
+              <!-- ng-pattern="/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/" -->
               <input class="form-control" placeholder="E-mail" name="email" [readonly]="readOnlyForm == 'R'"
-                [(ngModel)]="consultantModel.email" ng-pattern="/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/"
-                [ngClass]="{'is-invalid': f.submitted && email.invalid}" #email="ngModel" type="email" required>
-              <div class="invalid-feedback">
-                email is mandatory
-              </div>
-
+                [(ngModel)]="consultantModel.email" 
+                #email="ngModel" type="email">
             </div>
           </div>
           <div class="col-md-12">
             <div class="form-group">
               <!--pattern="/^-?\d+\.?\d*$/"
                 onKeyPress="if(this.value.length==12) return false;" -->
-              <label>Phone<span class="required">*</span></label>
+              <label>Phone</label>
               <input class="form-control" placeholder="Phone" name="phone" [readonly]="readOnlyForm == 'R'"
                 [(ngModel)]="consultantModel.phone" maxlength="12" onKeyPress="if(this.value.length==12) return false;"
-                [ngClass]="{'is-invalid': f.submitted && phone.invalid}" #phone="ngModel" type="number" required>
-              <div class="invalid-feedback">
-                phone is mandatory
-              </div>
+                 #phone="ngModel" type="text">
             </div>
           </div>
           <div class="col-md-12">
@@ -153,14 +147,9 @@
           </div>
           <div class="col-md-12">
             <div class="form-group">
-              <label>Highest Education<span class="required">*</span></label>
+              <label>Highest Education</label>
               <input class="form-control" name="highesteducation" [readonly]="readOnlyForm == 'R'"
-                placeholder="Highest Education" [(ngModel)]="consultantModel.highestEducation"
-                [ngClass]="{'is-invalid': f.submitted && highesteducation.invalid}" #highesteducation="ngModel"
-                required>
-              <div class="invalid-feedback">
-                highest education is mandatory
-              </div>
+                placeholder="Highest Education" [(ngModel)]="consultantModel.highestEducation" #highesteducation="ngModel">
             </div>
           </div>
           <div class="col-md-12">

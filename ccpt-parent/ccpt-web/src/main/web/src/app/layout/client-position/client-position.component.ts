@@ -145,6 +145,7 @@ export class ClientPositionComponent implements OnInit {
         this.clientPositionModel = <ClientPositionModel>{};
     }
     createClientPosition(clientPositionForm: NgForm): void {
+        // tslint:disable-next-line:max-line-length
         this.clientPositionModel.generatedCode = this.generateCPCode(this.clientPositionModel.jobCode, this.clientPositionModel.clientId, this.clientPositionModel.location);
         this.http.post(this.clientPositionModel, this.urlConstants.CPCreate).subscribe(resp => {
             this.toastr.success(this.urlConstants.SuccessMsg, 'Client Position');
@@ -194,6 +195,7 @@ export class ClientPositionComponent implements OnInit {
         return isStr;
     }
     updateClientPosition(clientPositionForm: NgForm) {
+        // tslint:disable-next-line:max-line-length
         this.clientPositionModel.generatedCode = this.generateCPCode(this.clientPositionModel.jobCode, this.clientPositionModel.clientId, this.clientPositionModel.location);
         this.http.update(this.clientPositionModel, this.urlConstants.CPUpdate).subscribe(resp => {
             this.toastr.success(this.urlConstants.UpdateMsg, 'Client Position');
@@ -223,11 +225,17 @@ export class ClientPositionComponent implements OnInit {
             this.close();
             this.formReset();
         }, err => {
+            if (err.status === 200) {
+                this.init();
+                this.close();
+                this.formReset();
+                return this.toastr.success(this.urlConstants.DeleteMsg, 'Client Position');
+            }
             this.toastr.error(err.error.message, 'Client Position');
         });
     }
     public selectSms(sms) {
-        console.log(sms.value.description);
+        console.log(sms.value);
     }
     public sendSmsReq(): void {
         for (let i = 0; i <= this.numbersToSend.length; i++) {
@@ -250,6 +258,7 @@ export class ClientPositionComponent implements OnInit {
     }
     createClientApplication(data: any) {
         // TODO:Need to check the code
+        // tslint:disable-next-line:max-line-length
         const dataToCreate = { 'cpId': this.selectedRecrd, 'consultantId': data.item_id, 'caStatus': 'NEW', 'description': data.notes, 'creatorId': this.creator };
         this.http.post(dataToCreate, this.urlConstants.CACreate).subscribe(resp => {
             this.toastr.success(this.urlConstants.SuccessMsg, 'Client Application');

@@ -120,6 +120,7 @@ export class DashboardComponent implements OnInit {
         });
     }
     getAllActiveCAById(recrd: number) {
+        this.activeCAById = [];
         this.http.get(this.urlConstants.ReportingGetAllActiveCAById + recrd).subscribe(resp => {
             this.activeCAById = resp as any;
         });
