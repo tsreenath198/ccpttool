@@ -2,6 +2,7 @@ package com.ccpt.controller;
 
 import java.util.List;
 
+import javax.persistence.EntityExistsException;
 import javax.validation.ValidationException;
 
 import org.mapstruct.factory.Mappers;
@@ -92,6 +93,14 @@ public class ClientApplicationController extends BaseController<ClientApplicatio
 			throw new ValidationException("Application Status cannot be null");
 		} else {
 			model.setStatus(clientApplicationStatusService.get(model.getStatus().getCode()));
+		}
+		if (model.getConsultant().getId() != null || model.getClientPosition().getId() != null) {
+			Integer check = clientApplicationService.checkPositionWithConsultant(model.getClientPosition().getId(),
+					model.getConsultant().getId());
+			if (check >= 1) {
+				throw new EntityExistsException(
+						"Client Application is already exist with this consultant and client position");
+			}
 		}
 	}
 

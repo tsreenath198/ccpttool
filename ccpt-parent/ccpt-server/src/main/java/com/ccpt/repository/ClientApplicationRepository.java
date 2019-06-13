@@ -16,4 +16,8 @@ public interface ClientApplicationRepository extends BaseRepository<ClientApplic
 	List<ClientApplication> getAllActiveCAByCpID(@Param(value = "id") Integer id,
 			@Param(value = "status") String status);
 
+	@Query("SELECT count(*) FROM ClientApplication c where client_position_id=:cpId AND consultant_id=:cid")
+	Integer checkPositionWithConsultant(@Param(value = "cpId") Integer cpId,
+			@Param(value = "cid") Integer cid);
+
 }

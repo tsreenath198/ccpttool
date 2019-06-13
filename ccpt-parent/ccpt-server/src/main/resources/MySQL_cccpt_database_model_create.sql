@@ -273,6 +273,7 @@ INSERT INTO sms_template (id, active_flag, created_date, description, updated_da
 INSERT INTO sms_template (id, active_flag, created_date, description, updated_date, type) VALUES (NULL, b'1', '2019-06-12 09:47:49', 'Sir, Interview for ${role} is confirmed on ${interviewDate} ${time} at ${interviewLocation}', '2019-06-12 09:47:49', 'client interview confirmation');
 INSERT INTO sms_template (id, active_flag, created_date, description, updated_date, type) VALUES (NULL, b'1', '2019-06-12 09:47:49', 'Your Interview for ${role} is confirmed on ${interviewDate} ${time} at ${interviewLocation}', '2019-06-12 09:47:49', 'consultant');
 INSERT INTO sms_template (id, active_flag, created_date, description, updated_date, type) VALUES (NULL, b'1', '2019-06-12 09:47:49', 'Excellent Opportunity for ${job} for one of our ${client} at ${joblocation}', '2019-06-12 09:47:49', 'send job');
+ALTER TABLE client_application ADD CONSTRAINT uq_client_application UNIQUE(client_position_id, consultant_id);
 -- End of file.
 
 SET foreign_key_checks = 1;

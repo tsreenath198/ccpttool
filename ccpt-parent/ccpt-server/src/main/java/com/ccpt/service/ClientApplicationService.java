@@ -36,4 +36,9 @@ public class ClientApplicationService extends BaseService<ClientApplication, Int
 	public List<PositionSummaryStatistics> getAllActiveCACountByCpID() {
 		return positionSummaryRepository.getAllActiveCACountByCpID();
 	}
+
+	public Integer checkPositionWithConsultant(Integer cpId, Integer consultantId) {
+		return clientApplicationRepository.checkPositionWithConsultant(cpId, consultantId);
+	}
+
 }
