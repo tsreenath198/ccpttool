@@ -1,12 +1,15 @@
 package com.ccpt.service;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ccpt.model.ClientApplication;
 import com.ccpt.model.ClientPosition;
 import com.ccpt.repository.BaseRepository;
+import com.ccpt.repository.ClientApplicationRepository;
 import com.ccpt.repository.ClientPositionRepository;
 
 @Service
@@ -17,6 +20,9 @@ public class ClientPositionService extends BaseService<ClientPosition, Integer> 
 
 	@Autowired
 	private ClientPositionRepository clientPositionRepository;
+
+	@Autowired
+	private ClientApplicationRepository clientApplicationRepository;
 
 	public List<ClientPosition> getTop5ClientPositions() {
 		return clientPositionRepository.findTop5ByActiveFlagAllIgnoreCaseOrderByIdDesc(true);
@@ -32,6 +38,16 @@ public class ClientPositionService extends BaseService<ClientPosition, Integer> 
 	}
 
 	public void deleteByClientId(Integer clientId) {
-		clientPositionRepository.deleteByClientId(clientId);		
+		clientPositionRepository.deleteByClientId(clientId);
+	}
+
+	@Override
+	protected void postDelete(ClientPosition clientPosition) {
+		List<ClientApplication> listOfCA = clientApplicationRepository
+				.findByClientPositionIdAndActiveFlag(clientPosition.getId(), true);
+		for (ClientApplication clientApplication : listOfCA) {
+			clientApplication.setActiveFlag(false);
+			clientApplication.setUpdatedDate(new Date());
+		}
 	}
 }

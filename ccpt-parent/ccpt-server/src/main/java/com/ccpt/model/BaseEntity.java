@@ -1,5 +1,6 @@
 package com.ccpt.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -20,7 +21,12 @@ import lombok.ToString;
 @Setter
 @ToString
 @MappedSuperclass
-public abstract class BaseEntity<ID> {
+public abstract class BaseEntity<ID> implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	@Column
 	@NotNull

@@ -16,6 +16,11 @@ import lombok.ToString;
 @ToString
 public class SMS extends IDEntity {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Column
 	@NotNull
 	private String contactNumbers;

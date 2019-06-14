@@ -16,6 +16,11 @@ import lombok.ToString;
 @ToString
 public class ClientContact extends IDEntity {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Column
 	@NotNull
 	private String fullname;

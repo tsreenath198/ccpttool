@@ -15,5 +15,9 @@ import lombok.ToString;
 @ToString
 @Cacheable(true)
 public class ConsultantStatus extends StatusEntity {
+	/**
+	* 
+	*/
+	private static final long serialVersionUID = 1L;
 
 }

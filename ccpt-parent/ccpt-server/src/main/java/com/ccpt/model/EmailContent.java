@@ -16,6 +16,11 @@ import lombok.ToString;
 @Table
 public class EmailContent extends IDEntity {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Column
 	@NotNull
 	private String toEmails;

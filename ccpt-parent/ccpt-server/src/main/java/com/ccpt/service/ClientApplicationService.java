@@ -41,4 +41,8 @@ public class ClientApplicationService extends BaseService<ClientApplication, Int
 		return clientApplicationRepository.checkPositionWithConsultant(cpId, consultantId);
 	}
 
+	public List<ClientApplication> findByConsultantIdAndActiveFlag(Integer consultantId) {
+		return clientApplicationRepository.findByConsultantIdAndActiveFlag(consultantId, true);
+	}
+
 }

@@ -17,6 +17,11 @@ import lombok.ToString;
 @Setter
 @ToString
 public class Login extends IDEntity {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Column(unique = true)
 	@NotNull
 	private String username;

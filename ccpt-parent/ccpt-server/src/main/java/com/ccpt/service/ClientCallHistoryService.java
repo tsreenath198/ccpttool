@@ -28,4 +28,8 @@ public class ClientCallHistoryService extends BaseService<ClientCallHistory, Int
 		return clientCallHistoryRepository;
 	}
 
+	List<ClientCallHistory> findByClientPositionId(Integer clientPositionId) {
+		return clientCallHistoryRepository.findByClientPositionIdAndActiveFlag(clientPositionId, true);
+	}
+
 }

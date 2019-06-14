@@ -16,6 +16,11 @@ import lombok.ToString;
 @ToString
 @MappedSuperclass
 public class IDEntity extends BaseEntity<Integer> {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;

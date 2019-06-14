@@ -25,6 +25,11 @@ import lombok.ToString;
 @ToString
 public class ClientApplication extends IDEntity {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@OneToOne(cascade = CascadeType.MERGE)
 	@JoinColumn(name = "status_code", referencedColumnName = "code")
 	@NotNull

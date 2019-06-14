@@ -18,6 +18,11 @@ import lombok.ToString;
 @ToString
 public class UploadFile extends IDEntity {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public UploadFile(byte[] content, Integer refId, String refType, String comments) {
 		this.content = content;
 		this.refId = refId;

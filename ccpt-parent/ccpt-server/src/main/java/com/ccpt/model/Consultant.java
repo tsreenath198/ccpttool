@@ -24,6 +24,11 @@ import lombok.ToString;
 @Table(uniqueConstraints = { @UniqueConstraint(columnNames = { "fullname", "email", "phone" }) })
 public class Consultant extends IDEntity {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Column(unique = true)
 	@NotNull
 	private String fullname;

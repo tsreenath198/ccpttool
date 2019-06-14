@@ -21,4 +21,7 @@ public interface ClientApplicationRepository extends BaseRepository<ClientApplic
 
 	List<ClientApplication> findByClientPositionIdAndActiveFlag(@Param("clientPositionId") Integer clientPositionId,
 			@Param("activeFlag") Boolean activeFlag);
+
+	List<ClientApplication> findByConsultantIdAndActiveFlag(@Param("consultantId") Integer consultantId,
+			@Param("activeFlag") Boolean activeFlag);
 }

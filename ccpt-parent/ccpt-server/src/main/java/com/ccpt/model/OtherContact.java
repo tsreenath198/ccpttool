@@ -16,6 +16,11 @@ import lombok.ToString;
 @ToString
 public class OtherContact extends IDEntity {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Column(unique = true)
 	@NotNull
 	private String name;

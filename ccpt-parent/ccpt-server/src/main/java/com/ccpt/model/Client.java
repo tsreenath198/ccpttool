@@ -20,6 +20,11 @@ import lombok.ToString;
 @Setter
 @ToString
 public class Client extends IDEntity {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Column(unique = true)
 	@NotNull
 	private String name;

@@ -20,6 +20,11 @@ import lombok.ToString;
 @ToString
 public class Recruiter extends IDEntity {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Column(unique = true)
 	@NotNull
 	private String fullname;

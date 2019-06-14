@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.ccpt.model.Client;
 import com.ccpt.model.ClientApplication;
+import com.ccpt.model.ClientCallHistory;
 import com.ccpt.model.ClientContact;
 import com.ccpt.model.ClientPosition;
 import com.ccpt.repository.BaseRepository;
@@ -19,13 +20,13 @@ import com.ccpt.repository.ClientRepository;
 public class ClientService extends BaseService<Client, Integer> {
 
 	@Autowired
-	private ClientPositionService clientPositionService;
-
-	@Autowired
 	private ClientPositionRepository clientPositionRepository;
 
 	@Autowired
 	private ClientApplicationRepository clientApplicationRepository;
+
+	@Autowired
+	private ClientCallHistoryService clientCallHistoryService;
 
 	public ClientService() {
 		super("Client");
@@ -55,9 +56,13 @@ public class ClientService extends BaseService<Client, Integer> {
 				clientApplication.setActiveFlag(false);
 				clientApplication.setUpdatedDate(new Date());
 			}
+			List<ClientCallHistory> listOfCH = clientCallHistoryService.findByClientPositionId(cp.getId());
+			for (ClientCallHistory clientCallHistory : listOfCH) {
+				clientCallHistory.setActiveFlag(false);
+				clientCallHistory.setUpdatedDate(new Date());
+			}
 			cp.setActiveFlag(false);
 			cp.setUpdatedDate(new Date());
-			clientPositionService.update(cp);
 		}
 	}
 

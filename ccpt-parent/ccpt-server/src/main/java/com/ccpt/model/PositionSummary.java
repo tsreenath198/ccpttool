@@ -11,6 +11,10 @@ import lombok.ToString;
 @Setter
 @ToString
 public class PositionSummary extends IDEntity {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Integer cpId;
 	private String generatedCode;
 	private Integer count;

@@ -18,6 +18,11 @@ import lombok.ToString;
 @Setter
 @ToString
 public class ClientPosition extends IDEntity {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Column
 	@NotNull
 	private String role;

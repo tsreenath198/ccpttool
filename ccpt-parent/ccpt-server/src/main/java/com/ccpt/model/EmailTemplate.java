@@ -16,6 +16,11 @@ import lombok.ToString;
 @ToString
 public class EmailTemplate extends IDEntity {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Column(name = "type", unique = true)
 	@NotNull
 	private String type;

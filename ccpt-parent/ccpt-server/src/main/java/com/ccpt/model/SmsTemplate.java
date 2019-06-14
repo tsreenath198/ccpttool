@@ -16,6 +16,10 @@ import lombok.ToString;
 @ToString
 public class SmsTemplate extends IDEntity {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	@Column(name = "type", unique = true)
 	@NotNull
 	private String type;

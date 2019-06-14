@@ -23,6 +23,11 @@ import lombok.ToString;
 @ToString
 public class ClientCallHistory extends IDEntity {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@ManyToOne(cascade = CascadeType.MERGE)
 	@JoinColumn(name = "client_position_id")
 	@NotNull
@@ -32,8 +37,7 @@ public class ClientCallHistory extends IDEntity {
 	@Column
 	@NotNull
 	private Date calledDate;
-	
-	
+
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "called_by")
 	@NotNull
