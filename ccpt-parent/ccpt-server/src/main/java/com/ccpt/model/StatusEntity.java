@@ -1,6 +1,8 @@
 package com.ccpt.model;
 
 import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.validation.constraints.Size;
@@ -15,8 +17,11 @@ import lombok.ToString;
 @Setter
 @ToString
 @MappedSuperclass
-public class StatusEntity extends BaseEntity<String> {
+public class StatusEntity extends BaseEntity<Integer> {
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer id;
+
 	@Column
 	@Size(max = 30)
 	protected String code;
@@ -25,8 +30,12 @@ public class StatusEntity extends BaseEntity<String> {
 		return StringUtils.isEmpty(code) ? null : code;
 	}
 
+	public Integer getId() {
+		return (id == null || id == 0) ? null : id;
+	}
+
 	@Override
-	public String getKey() {
-		return getCode();
+	public Integer getKey() {
+		return getId();
 	}
 }

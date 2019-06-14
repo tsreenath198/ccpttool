@@ -1,7 +1,6 @@
 package com.ccpt.model;
 
 import java.util.Date;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
@@ -39,7 +38,7 @@ public abstract class BaseEntity<ID> {
 
 	@Column
 	protected String description;
-	
+
 	@EmbeddedId
 	public abstract ID getKey();
 }

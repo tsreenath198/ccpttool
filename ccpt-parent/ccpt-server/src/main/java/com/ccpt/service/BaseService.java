@@ -29,7 +29,7 @@ public abstract class BaseService<T extends BaseEntity<ID>, ID> {
 	}
 
 	public T get(ID id) {
-		Optional<T> entity = getRepository().findById(id);
+		Optional<T> entity = getRepository().findByIdAndActiveFlag(id,true);
 		if (entity.isPresent()) {
 			T result = entity.get();
 			if (result instanceof IDEntity) {
@@ -82,11 +82,11 @@ public abstract class BaseService<T extends BaseEntity<ID>, ID> {
 	public void delete(ID id) {
 		T entity = get(id);
 		entity.setActiveFlag(false);
+		postDelete(entity);
 		getRepository().save(entity);
-		postDelete(id);
 	}
 
-	protected void postDelete(ID id) {
+	protected void postDelete(T entity) {
 		// Can be overidden in children
 	}
 

@@ -6,5 +6,5 @@ import com.ccpt.dto.ConsultantStatusDTO;
 import com.ccpt.model.ConsultantStatus;
 
 @Mapper
-public interface ConsultantStatusMapper extends BaseMapper<ConsultantStatusDTO, ConsultantStatus, String> {
+public interface ConsultantStatusMapper extends BaseMapper<ConsultantStatusDTO, ConsultantStatus, Integer> {
 }

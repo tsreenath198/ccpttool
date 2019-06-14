@@ -3,6 +3,7 @@ package com.ccpt.repository;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import com.ccpt.model.ClientPosition;
 
@@ -14,4 +15,7 @@ public interface ClientPositionRepository extends BaseRepository<ClientPosition,
 	List<ClientPosition> getAllOpenCP();
 
 	void deleteByClientId(Integer clientId);
+
+	List<ClientPosition> findByClientIdAndActiveFlag(@Param("clientId") Integer clientId,
+			@Param("activeFlag") Boolean activeFlag);
 }

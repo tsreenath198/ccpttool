@@ -12,6 +12,7 @@ import com.ccpt.model.BaseEntity;
 public abstract interface BaseRepository<T extends BaseEntity<ID>, ID> extends CrudRepository<T, ID> {
 
 	List<T> findByActiveFlagAllIgnoreCaseOrderByCreatedDateDesc(Boolean activeFlag);
-	
-	Optional<T> findByIdAndActiveFlag(ID id, Boolean activeFlag); 
+
+	 Optional<T> findByIdAndActiveFlag(ID id, Boolean activeFlag);
+//	Optional<T> findByIdAndActiveFlag(@Param("id") ID id, @Param("activeFlag") Boolean activeFlag);
 }

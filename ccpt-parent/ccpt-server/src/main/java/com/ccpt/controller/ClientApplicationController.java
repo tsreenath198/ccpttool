@@ -92,7 +92,7 @@ public class ClientApplicationController extends BaseController<ClientApplicatio
 		if (model.getStatus() == null || model.getStatus().getCode() == null) {
 			throw new ValidationException("Application Status cannot be null");
 		} else {
-			model.setStatus(clientApplicationStatusService.get(model.getStatus().getCode()));
+			model.setStatus(clientApplicationStatusService.findByCode(model.getStatus().getCode()));
 		}
 		if (model.getConsultant().getId() != null || model.getClientPosition().getId() != null) {
 			Integer check = clientApplicationService.checkPositionWithConsultant(model.getClientPosition().getId(),

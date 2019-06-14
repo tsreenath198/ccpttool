@@ -66,7 +66,7 @@ public class ClientPositionController extends BaseController<ClientPositionDTO, 
 		if (model.getStatus().getCode() == null) {
 			throw new ValidationException("Client Position Status cannot be null");
 		} else {
-			model.setStatus(ClientPositionStatusService.get(model.getStatus().getCode()));
+			model.setStatus(ClientPositionStatusService.findByCode(model.getStatus().getCode()));
 		}
 	}
 }

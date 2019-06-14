@@ -8,7 +8,7 @@ import com.ccpt.repository.BaseRepository;
 import com.ccpt.repository.ClientApplicationStatusRepository;
 
 @Service
-public class ClientApplicationStatusService extends BaseService<ClientApplicationStatus, String> {
+public class ClientApplicationStatusService extends BaseService<ClientApplicationStatus, Integer> {
 	public ClientApplicationStatusService() {
 		super("Client Application Status");
 	}
@@ -17,8 +17,12 @@ public class ClientApplicationStatusService extends BaseService<ClientApplicatio
 	private ClientApplicationStatusRepository clientApplicationStatusRepository;
 
 	@Override
-	public BaseRepository<ClientApplicationStatus, String> getRepository() {
+	public BaseRepository<ClientApplicationStatus, Integer> getRepository() {
 		return clientApplicationStatusRepository;
+	}
+	
+	public ClientApplicationStatus findByCode(String code) {
+		return clientApplicationStatusRepository.findByCodeAndActiveFlag(code, true);
 	}
 
 }

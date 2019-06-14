@@ -8,7 +8,7 @@ import com.ccpt.repository.BaseRepository;
 import com.ccpt.repository.ConsultantStatusRepository;
 
 @Service
-public class ConsultantStatusService extends BaseService<ConsultantStatus, String> {
+public class ConsultantStatusService extends BaseService<ConsultantStatus, Integer> {
 	public ConsultantStatusService() {
 		super("Consultant Status");
 	}
@@ -17,7 +17,7 @@ public class ConsultantStatusService extends BaseService<ConsultantStatus, Strin
 	private ConsultantStatusRepository consultantStatusRepository;
 
 	@Override
-	public BaseRepository<ConsultantStatus, String> getRepository() {
+	public BaseRepository<ConsultantStatus, Integer> getRepository() {
 		return consultantStatusRepository;
 	}
 

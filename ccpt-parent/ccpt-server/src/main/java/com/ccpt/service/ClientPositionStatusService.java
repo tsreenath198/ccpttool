@@ -8,7 +8,7 @@ import com.ccpt.repository.BaseRepository;
 import com.ccpt.repository.ClientPositionStatusRepository;
 
 @Service
-public class ClientPositionStatusService extends BaseService<ClientPositionStatus, String> {
+public class ClientPositionStatusService extends BaseService<ClientPositionStatus, Integer> {
 	public ClientPositionStatusService() {
 		super("Client Position Status");
 	}
@@ -17,8 +17,11 @@ public class ClientPositionStatusService extends BaseService<ClientPositionStatu
 	private ClientPositionStatusRepository clientPositionStatusRepository;
 
 	@Override
-	public BaseRepository<ClientPositionStatus, String> getRepository() {
+	public BaseRepository<ClientPositionStatus, Integer> getRepository() {
 		return clientPositionStatusRepository;
 	}
 
+	public ClientPositionStatus findByCode(String code) {
+		return clientPositionStatusRepository.findByCodeAndActiveFlag(code, true);
+	}
 }

@@ -20,18 +20,18 @@ import com.ccpt.service.ClientApplicationStatusService;
 @CrossOrigin
 @RequestMapping(CCPTConstants.CLIENT_APPLICATION_STATUS)
 public class ClientApplicationStatusController
-		extends BaseController<ClientApplicationStatusDTO, ClientApplicationStatus, String> {
+		extends BaseController<ClientApplicationStatusDTO, ClientApplicationStatus, Integer> {
 
 	@Autowired
 	private ClientApplicationStatusService clientApplicationStatusService;
 
 	@Override
-	public BaseService<ClientApplicationStatus, String> getService() {
+	public BaseService<ClientApplicationStatus, Integer> getService() {
 		return clientApplicationStatusService;
 	}
 
 	@Override
-	public BaseMapper<ClientApplicationStatusDTO, ClientApplicationStatus, String> getMapper() {
+	public BaseMapper<ClientApplicationStatusDTO, ClientApplicationStatus, Integer> getMapper() {
 		return Mappers.getMapper(ClientApplicationStatusMapper.class);
 	}
 

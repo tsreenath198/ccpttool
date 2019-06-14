@@ -19,18 +19,18 @@ import com.ccpt.service.ConsultantStatusService;
 @Controller
 @CrossOrigin
 @RequestMapping(CCPTConstants.CONSULTANT_STATUS)
-public class ConsultantStatusController extends BaseController<ConsultantStatusDTO, ConsultantStatus, String> {
+public class ConsultantStatusController extends BaseController<ConsultantStatusDTO, ConsultantStatus, Integer> {
 
 	@Autowired
 	private ConsultantStatusService consultantStatusService;
 
 	@Override
-	public BaseService<ConsultantStatus, String> getService() {
+	public BaseService<ConsultantStatus, Integer> getService() {
 		return consultantStatusService;
 	}
 
 	@Override
-	public BaseMapper<ConsultantStatusDTO, ConsultantStatus, String> getMapper() {
+	public BaseMapper<ConsultantStatusDTO, ConsultantStatus, Integer> getMapper() {
 		return Mappers.getMapper(ConsultantStatusMapper.class);
 	}
 

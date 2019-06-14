@@ -7,5 +7,5 @@ import com.ccpt.model.ClientApplicationStatus;
 
 @Mapper
 public interface ClientApplicationStatusMapper
-		extends BaseMapper<ClientApplicationStatusDTO, ClientApplicationStatus, String> {
+		extends BaseMapper<ClientApplicationStatusDTO, ClientApplicationStatus, Integer> {
 }

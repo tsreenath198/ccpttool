@@ -6,5 +6,5 @@ import com.ccpt.dto.ClientPositionStatusDTO;
 import com.ccpt.model.ClientPositionStatus;
 
 @Mapper
-public interface ClientPositionStatusMapper extends BaseMapper<ClientPositionStatusDTO, ClientPositionStatus, String> {
+public interface ClientPositionStatusMapper extends BaseMapper<ClientPositionStatusDTO, ClientPositionStatus, Integer> {
 }

@@ -20,18 +20,18 @@ import com.ccpt.service.ClientPositionStatusService;
 @CrossOrigin
 @RequestMapping(CCPTConstants.CLIENT_POSITION_STATUS)
 public class ClientPositionStatusController
-		extends BaseController<ClientPositionStatusDTO, ClientPositionStatus, String> {
+		extends BaseController<ClientPositionStatusDTO, ClientPositionStatus, Integer> {
 
 	@Autowired
 	private ClientPositionStatusService clientPositionStatusService;
 
 	@Override
-	public BaseService<ClientPositionStatus, String> getService() {
+	public BaseService<ClientPositionStatus, Integer> getService() {
 		return clientPositionStatusService;
 	}
 
 	@Override
-	public BaseMapper<ClientPositionStatusDTO, ClientPositionStatus, String> getMapper() {
+	public BaseMapper<ClientPositionStatusDTO, ClientPositionStatus, Integer> getMapper() {
 		return Mappers.getMapper(ClientPositionStatusMapper.class);
 	}
 

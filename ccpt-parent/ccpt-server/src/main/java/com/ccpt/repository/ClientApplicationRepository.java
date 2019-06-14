@@ -17,7 +17,8 @@ public interface ClientApplicationRepository extends BaseRepository<ClientApplic
 			@Param(value = "status") String status);
 
 	@Query("SELECT count(*) FROM ClientApplication c where client_position_id=:cpId AND consultant_id=:cid")
-	Integer checkPositionWithConsultant(@Param(value = "cpId") Integer cpId,
-			@Param(value = "cid") Integer cid);
+	Integer checkPositionWithConsultant(@Param(value = "cpId") Integer cpId, @Param(value = "cid") Integer cid);
 
+	List<ClientApplication> findByClientPositionIdAndActiveFlag(@Param("clientPositionId") Integer clientPositionId,
+			@Param("activeFlag") Boolean activeFlag);
 }

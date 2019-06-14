@@ -2,5 +2,5 @@ package com.ccpt.repository;
 
 import com.ccpt.model.ConsultantStatus;
 
-public interface ConsultantStatusRepository extends BaseRepository<ConsultantStatus, String> {
+public interface ConsultantStatusRepository extends BaseRepository<ConsultantStatus, Integer> {
 }
