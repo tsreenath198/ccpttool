@@ -20,5 +20,9 @@ public class ConsultantStatusService extends BaseService<ConsultantStatus, Integ
 	public BaseRepository<ConsultantStatus, Integer> getRepository() {
 		return consultantStatusRepository;
 	}
+	
+	public ConsultantStatus findByCode(String code) {
+		return consultantStatusRepository.findByCodeAndActiveFlag(code, true);
+	}
 
 }

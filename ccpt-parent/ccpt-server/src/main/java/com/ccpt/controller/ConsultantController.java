@@ -15,6 +15,7 @@ import com.ccpt.mapper.ConsultantMapper;
 import com.ccpt.model.Consultant;
 import com.ccpt.service.BaseService;
 import com.ccpt.service.ConsultantService;
+import com.ccpt.service.ConsultantStatusService;
 
 @Controller
 @CrossOrigin
@@ -23,6 +24,8 @@ public class ConsultantController extends BaseController<ConsultantDTO, Consulta
 
 	@Autowired
 	private ConsultantService consultantService;
+	@Autowired
+	private ConsultantStatusService consultantStatusService;
 
 	@Override
 	public BaseService<Consultant, Integer> getService() {
@@ -38,6 +41,8 @@ public class ConsultantController extends BaseController<ConsultantDTO, Consulta
 	protected void validateAndClean(Consultant model) {
 		if (model.getStatus().getCode() == null) {
 			throw new ValidationException("Consultant Status cannot be null");
+		} else {
+			model.setStatus(consultantStatusService.findByCode(model.getStatus().getCode()));
 		}
 		if (model.getFullname() == null) {
 			throw new ValidationException("Client Name cannot be null");
