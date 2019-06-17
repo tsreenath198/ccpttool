@@ -121,16 +121,12 @@ export class RecruiterComponent implements OnInit {
     }
     deleteRecruiterRecord(): void {
         this.http.delete(this.urlConstants.RDelete + this.selectedRecrdToDel).subscribe(resp => {
-            this.toastr.success(this.urlConstants.DeleteMsg, 'Recruiter');
+            let response:any = resp;
+            this.toastr.success(response.message, 'Recruiter');
+            this.close();
             this.init();
             this.formReset();
         }, err => {
-            if (err.status === 200) {
-                this.init();
-                this.close();
-                this.formReset();
-                return this.toastr.success(this.urlConstants.DeleteMsg, 'Recruiter');
-            }
             this.toastr.error(err.error.message, 'Recruiter');
         });
     }
@@ -139,11 +135,11 @@ export class RecruiterComponent implements OnInit {
      * 1) content consists the modal instance
      * 2) Selected contains the code of selected row
      */
-    open(content, selected: number) {
-        if (selected) {
-            this.selectedRecrdToDel = selected;
+    open(event: any) {
+        if (event.id) {
+            this.selectedRecrdToDel = event.id;
         }
-        this.modalRef = this.modalService.open(content);
+        this.modalRef = this.modalService.open(event.content);
         this.modalRef.result.then((result) => {
             this.closeResult = `Closed with: ${result}`;
         }, (reason) => {

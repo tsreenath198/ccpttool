@@ -1,0 +1,13 @@
+<span class="fa fa-trash pull-right" *ngIf="type == 'trash'" data-toggle="tooltip" title="Delete" (click)="remove()"></span>
+
+<span class="fa fa-upload pull-right px-2" *ngIf="type == 'upload'" data-toggle="tooltip" title="Upload" (click)="open(upload,cl.id)"></span>
+<span class="fa fa-download pull-right" *ngIf="type == 'download'" data-toggle="tooltip" title="Download"
+  (click)="open(download,cl.id);getFilesById()"></span>
+<span class="fa fa-filter pull-right pointer" *ngIf="type == 'shortList'" data-toggle="tooltip" title="Shortlist"
+  (click)="open(createCA, cpl.id,'shortlist')"></span>
+
+<span class="fa fa-comment pull-right pointer" *ngIf="type == 'sms'" data-toggle="tooltip" title="SendSMS"
+  (click)="update()"></span>
+
+<span class="fa fa-envelope pull-right pointer" *ngIf="type == 'email'" data-toggle="tooltip" title="SendMail"
+  (click)="update()"></span>

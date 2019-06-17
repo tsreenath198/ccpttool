@@ -8,6 +8,7 @@
         <div class="col-md-6"> <input type="text" class="form-control" placeholder="search..."
             [(ngModel)]="currSearchTxt" /></div>
       </div>
+      
       <div class="table-responsive mt-2">
         <table class="table table-hover table-striped">
           <tbody class="overflow-ele-scroll">
@@ -19,23 +20,8 @@
                   <dd>{{rl.address || 'NA'}}</dd>
                 </dl>
               </td>
-              <td><span class="fa fa-trash pull-right" data-toggle="tooltip" title="Delete"
-                  (click)="open(content,rl.id)"></span>
-                <ng-template #content let-c="close" let-d="dismiss">
-                  <div class="modal-header">
-                    <h4 class="modal-title">Recruiter</h4>
-                    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                  <div class="modal-body">
-                    <p>Are you sure you want to delete ? &hellip;</p>
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" (click)="deleteRecruiterRecord()">Ok</button>
-                    <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
-                  </div>
-                </ng-template>
+              <td width="100">
+                <app-action [content]="content" [id]="rl.id" (trash)="open($event)"></app-action>
               </td>
             </tr>
           </tbody>
@@ -169,3 +155,19 @@
     </div>
   </div>
 </div>
+
+<ng-template #content let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title">Recruiter</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <p>Are you sure you want to delete ? &hellip;</p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="deleteRecruiterRecord()">Ok</button>
+    <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
+  </div>
+</ng-template>

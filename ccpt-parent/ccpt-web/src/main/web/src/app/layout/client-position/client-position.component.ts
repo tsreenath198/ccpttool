@@ -14,6 +14,7 @@ import { MessageTemplateModel } from '../message-template/message-template.model
 import { ConsultantModel } from '../consultant/consultant.model';
 import { EmailTemplateModel } from '../email-template/email-template.model';
 import { AdditionalPropertiesModel } from 'src/app/additional-properties.model';
+import { ActionModel } from '../modals/action';
 
 
 @Component({
@@ -41,6 +42,7 @@ export class ClientPositionComponent implements OnInit {
     public shortListConsultants: Array<any> = [];
     public consultantNames: Array<any> = [];
     public dropdownSettings: any;
+    public actionModel: ActionModel = <ActionModel>{};
     public invalidAppCode = false;
     public closedByEnable = false;
     private selectedRecrd = 0;
@@ -50,13 +52,19 @@ export class ClientPositionComponent implements OnInit {
     public currSearchTxt: string;
     public readOnlyForm = '';
     public enableButtonType = '';
+    public trash='trash';
+    public shortList='shortList';
+    public sms='sms';
+    public email='email';
     public numberOfPositions = 0;
     public creator = 0;
     public getAllCPS = this.http.get(this.urlConstants.CPSGetAll);
     public getAllR = this.http.get(this.urlConstants.RGetAll);
     public getAllC = this.http.get(this.urlConstants.ClientGetAll);
     public getAllCon = this.http.get(this.urlConstants.CGetAll);
-    constructor(private http: HttpClientService, private toastr: ToastrCustomService, private modalService: NgbModal) { }
+    constructor(private http: HttpClientService, private toastr: ToastrCustomService, private modalService: NgbModal) {
+        this.actionModel.sendMail
+    }
 
     ngOnInit() {
         this.getAllDropdowns();
@@ -149,13 +157,13 @@ export class ClientPositionComponent implements OnInit {
         this.clientPositionModel.generatedCode = this.generateCPCode(this.clientPositionModel.jobCode, this.clientPositionModel.clientId, this.clientPositionModel.location);
         this.http.post(this.clientPositionModel, this.urlConstants.CPCreate).subscribe(resp => {
             this.toastr.success(this.urlConstants.SuccessMsg, 'Client Position');
-                    this.init();
-                    this.formReset();
-                    clientPositionForm.resetForm();
-                    this.additionalPropertiesDeclare();
-                }, err => {
-                    this.toastr.error(err.error.message, 'Client Position');
-                });
+            this.init();
+            this.formReset();
+            clientPositionForm.resetForm();
+            this.additionalPropertiesDeclare();
+        }, err => {
+            this.toastr.error(err.error.message, 'Client Position');
+        });
     }
     private generateCPCode(code, cnt, loc): string {
         return code + '-' + this.getClientNameById(cnt) + '-' + loc;
@@ -276,6 +284,7 @@ export class ClientPositionComponent implements OnInit {
      * 2) Selected contains the code of selected row
      */
     open(content, selected: number, type: string) {
+        debugger
         if (selected) {
             this.selectedRecrd = selected;
         }
@@ -289,7 +298,7 @@ export class ClientPositionComponent implements OnInit {
         if (content) {
             if (type === 'email') {
                 for (let i = 0; i < this.consultantList.length; i++) {
-                    const temp = {'item_id': this.consultantList[i].phone, 'item_text': this.consultantList[i].fullname, 'notes': ''};
+                    const temp = { 'item_id': this.consultantList[i].phone, 'item_text': this.consultantList[i].fullname, 'notes': '' };
                     this.mailIdForMails.push(this.consultantList[i].email);
                 }
             }
