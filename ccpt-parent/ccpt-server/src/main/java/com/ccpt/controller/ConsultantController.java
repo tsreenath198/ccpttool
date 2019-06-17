@@ -38,22 +38,31 @@ public class ConsultantController extends BaseController<ConsultantDTO, Consulta
 		return Mappers.getMapper(ConsultantMapper.class);
 	}
 
+	@SuppressWarnings("unused")
 	@Override
 	protected void validateAndClean(Consultant model) {
-		Integer check = consultantService.findByFullnameAndEmail(model.getFullname(), model.getEmail());
-		if (check >= 1)
-			throw new DataIntegrityViolationException("Consultant is already exists with this Fullname and Email");
-		if (model.getStatus().getCode() == null) {
+
+		Consultant consultantFullName = consultantService.findByFullname(model.getFullname());
+		Consultant consultantEmail = consultantService.findByEmail(model.getEmail());
+		Consultant consultantPhone = consultantService.findByPhone(model.getPhone());
+		if (consultantFullName != null)
+			throw new DataIntegrityViolationException("Consultant is already exists with this Fullname");
+		else if (consultantEmail != null)
+			throw new DataIntegrityViolationException("Consultant is already exists with this Email");
+		else if (consultantPhone != null)
+			throw new DataIntegrityViolationException("Consultant is already exists with this Phone");
+		else if (consultantFullName != null && consultantEmail != null && consultantPhone != null)
+			throw new DataIntegrityViolationException(
+					"Consultant is already exists with this Fullname, Email and Phone");
+		else if (model.getStatus().getCode() == null)
 			throw new ValidationException("Consultant Status cannot be null");
-		} else {
-			model.setStatus(consultantStatusService.findByCode(model.getStatus().getCode()));
-		}
-		if (model.getFullname() == null) {
+		else if (model.getFullname() == null)
 			throw new ValidationException("Client Name cannot be null");
-		}
-		if (model.getPhone() == null && model.getEmail() == null) {
+		else if (model.getPhone() == null && model.getEmail() == null)
 			throw new ValidationException("Phone number and Email Both cannot be null");
-		}
+		else
+			model.setStatus(consultantStatusService.findByCode(model.getStatus().getCode()));
+
 	}
 
 }

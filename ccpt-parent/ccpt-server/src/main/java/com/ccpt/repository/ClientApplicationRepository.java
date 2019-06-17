@@ -14,11 +14,11 @@ import com.ccpt.model.InterviewSummaryStatistics;
 @Transactional
 public interface ClientApplicationRepository extends BaseRepository<ClientApplication, Integer> {
 
-	@Query("SELECT c FROM ClientApplication c where client_position_id=:id AND status_code=:status")
+	@Query("SELECT c FROM ClientApplication c where client_position_id=:id AND status_code=:status AND active_flag=1")
 	List<ClientApplication> getAllActiveCAByCpID(@Param(value = "id") Integer id,
 			@Param(value = "status") String status);
 
-	@Query("SELECT count(*) FROM ClientApplication c where client_position_id=:cpId AND consultant_id=:cid")
+	@Query("SELECT count(*) FROM ClientApplication c where client_position_id=:cpId AND consultant_id=:cid AND active_flag=1")
 	Integer checkPositionWithConsultant(@Param(value = "cpId") Integer cpId, @Param(value = "cid") Integer cid);
 
 	List<ClientApplication> findByClientPositionIdAndActiveFlag(@Param("clientPositionId") Integer clientPositionId,
