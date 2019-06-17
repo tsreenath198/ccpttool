@@ -50,6 +50,8 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 		return new ResponseEntity<>(errorDetails, HttpStatus.UNAUTHORIZED);
 	}
 
+	
+
 	@Override
 	protected ResponseEntity<Object> handleAsyncRequestTimeoutException(AsyncRequestTimeoutException ex,
 			HttpHeaders arg1, HttpStatus status, WebRequest request) {

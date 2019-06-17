@@ -39,4 +39,8 @@ public class ConsultantService extends BaseService<Consultant, Integer> {
 
 	}
 
+	public Integer findByFullnameAndEmail(String fullname, String email) {
+		return consultantRepository.findByFullnameAndEmail(fullname, email);
+	}
+
 }

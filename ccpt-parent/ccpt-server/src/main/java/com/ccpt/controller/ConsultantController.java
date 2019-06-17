@@ -4,6 +4,7 @@ import javax.validation.ValidationException;
 
 import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,6 +40,9 @@ public class ConsultantController extends BaseController<ConsultantDTO, Consulta
 
 	@Override
 	protected void validateAndClean(Consultant model) {
+		Integer check = consultantService.findByFullnameAndEmail(model.getFullname(), model.getEmail());
+		if (check >= 1)
+			throw new DataIntegrityViolationException("Consultant is already exists with this Fullname and Email");
 		if (model.getStatus().getCode() == null) {
 			throw new ValidationException("Consultant Status cannot be null");
 		} else {
