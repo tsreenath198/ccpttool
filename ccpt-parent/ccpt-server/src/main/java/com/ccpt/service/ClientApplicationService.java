@@ -1,11 +1,13 @@
 package com.ccpt.service;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ccpt.model.ClientApplication;
+import com.ccpt.model.InterviewSummaryStatistics;
 import com.ccpt.model.PositionSummaryStatistics;
 import com.ccpt.repository.BaseRepository;
 import com.ccpt.repository.ClientApplicationRepository;
@@ -39,6 +41,11 @@ public class ClientApplicationService extends BaseService<ClientApplication, Int
 
 	public Integer checkPositionWithConsultant(Integer cpId, Integer consultantId) {
 		return clientApplicationRepository.checkPositionWithConsultant(cpId, consultantId);
+	}
+
+	public List<InterviewSummaryStatistics> getAllInterviewsToday() {
+		Date today = new Date();
+		return clientApplicationRepository.getAllInterviewsToday(today);
 	}
 
 	public List<ClientApplication> findByConsultantIdAndActiveFlag(Integer consultantId) {

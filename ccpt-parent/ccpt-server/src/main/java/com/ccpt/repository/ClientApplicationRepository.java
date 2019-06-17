@@ -1,5 +1,6 @@
 package com.ccpt.repository;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -8,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import com.ccpt.model.ClientApplication;
+import com.ccpt.model.InterviewSummaryStatistics;
 
 @Transactional
 public interface ClientApplicationRepository extends BaseRepository<ClientApplication, Integer> {
@@ -21,6 +23,9 @@ public interface ClientApplicationRepository extends BaseRepository<ClientApplic
 
 	List<ClientApplication> findByClientPositionIdAndActiveFlag(@Param("clientPositionId") Integer clientPositionId,
 			@Param("activeFlag") Boolean activeFlag);
+
+	@Query("SELECT  cl.name as clientName,cl.phone as clientPhone,con.fullname as consultantName,con.phone as consultantPhone,ca.interviewMode as interviewMode,ca.interviewDate as interviewDate,ca.interviewLocation as interviewLocation,ca.interviewTime  as interviewTime FROM ClientApplication ca,ClientPosition cp ,Client cl,Consultant con WHERE ca.clientPosition=cp.id AND cp.client =cl.id AND ca.consultant=con.id AND ca.interviewDate=:currentDate")
+	List<InterviewSummaryStatistics> getAllInterviewsToday(@Param(value = "currentDate") Date currentDate);
 
 	List<ClientApplication> findByConsultantIdAndActiveFlag(@Param("consultantId") Integer consultantId,
 			@Param("activeFlag") Boolean activeFlag);

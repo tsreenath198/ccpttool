@@ -20,6 +20,7 @@ import com.ccpt.dto.ClientApplicationDTO;
 import com.ccpt.mapper.BaseMapper;
 import com.ccpt.mapper.ClientApplicationMapper;
 import com.ccpt.model.ClientApplication;
+import com.ccpt.model.InterviewSummaryStatistics;
 import com.ccpt.model.PositionSummaryStatistics;
 import com.ccpt.service.BaseService;
 import com.ccpt.service.ClientApplicationService;
@@ -69,6 +70,13 @@ public class ClientApplicationController extends BaseController<ClientApplicatio
 	public ResponseEntity<List<PositionSummaryStatistics>> getAllActiveCACountByCpID() {
 		List<PositionSummaryStatistics> result = clientApplicationService.getAllActiveCACountByCpID();
 		return new ResponseEntity<List<PositionSummaryStatistics>>(result, HttpStatus.OK);
+
+	}
+
+	@GetMapping("/getAllInterviewsToday")
+	public ResponseEntity<List<InterviewSummaryStatistics>> getAllInterviewsToday() {
+		List<InterviewSummaryStatistics> result = clientApplicationService.getAllInterviewsToday();
+		return new ResponseEntity<List<InterviewSummaryStatistics>>(result, HttpStatus.OK);
 
 	}
 

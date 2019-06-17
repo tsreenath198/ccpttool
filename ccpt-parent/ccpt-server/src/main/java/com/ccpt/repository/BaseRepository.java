@@ -13,6 +13,7 @@ public abstract interface BaseRepository<T extends BaseEntity<ID>, ID> extends C
 
 	List<T> findByActiveFlagAllIgnoreCaseOrderByCreatedDateDesc(Boolean activeFlag);
 
-	 Optional<T> findByIdAndActiveFlag(ID id, Boolean activeFlag);
-//	Optional<T> findByIdAndActiveFlag(@Param("id") ID id, @Param("activeFlag") Boolean activeFlag);
+	Optional<T> findByIdAndActiveFlag(ID id, Boolean activeFlag);
+	// Optional<T> findByIdAndActiveFlag(@Param("id") ID id,
+	// @Param("activeFlag") Boolean activeFlag);
 }
