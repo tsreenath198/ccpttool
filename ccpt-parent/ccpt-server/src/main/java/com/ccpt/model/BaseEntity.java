@@ -32,7 +32,7 @@ public abstract class BaseEntity<ID> implements Serializable {
 	@NotNull
 	protected Boolean activeFlag = true;
 
-	@Column
+	@Column(updatable = false)
 	@Temporal(TemporalType.TIMESTAMP)
 	@CreationTimestamp
 	protected Date createdDate;
