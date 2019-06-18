@@ -2,7 +2,7 @@ package com.ccpt.controller;
 
 import static com.ccpt.constants.CCPTConstants.GET_ALL;
 import static com.ccpt.constants.CCPTConstants.ID_PARAM;
-
+import static com.ccpt.constants.CCPTConstants.ACTIVATE_ID_PARAM;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -58,6 +58,13 @@ public abstract class BaseController<DTO extends BaseEntityDTO<ID>, MODEL extend
 	@DeleteMapping(ID_PARAM)
 	ResponseEntity<GenericResponse> delete(@PathVariable ID id) {
 		getService().delete(id);
+		return new ResponseEntity<GenericResponse>(new GenericResponse("Entity with id : " + id + " deleted"),
+				HttpStatus.OK);
+	}
+
+	@PutMapping(ACTIVATE_ID_PARAM)
+	ResponseEntity<GenericResponse> activate(@PathVariable ID id) {
+		getService().activate(id);
 		return new ResponseEntity<GenericResponse>(new GenericResponse("Entity with id : " + id + " deleted"),
 				HttpStatus.OK);
 	}

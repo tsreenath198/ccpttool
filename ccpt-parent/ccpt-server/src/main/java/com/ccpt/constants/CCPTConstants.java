@@ -3,6 +3,7 @@ package com.ccpt.constants;
 public interface CCPTConstants {
 	String GET_ALL = "/";
 	String ID_PARAM = "/{id}";
+	String ACTIVATE_ID_PARAM = "activate/{id}";
 	String SEND = "/send";
 	String CLIENT_APPLICATION = "/clientApplication";
 	String CLIENT_CALL_HISTORY = "/clientCallHistory";

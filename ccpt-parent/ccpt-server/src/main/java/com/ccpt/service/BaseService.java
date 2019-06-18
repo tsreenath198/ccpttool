@@ -29,7 +29,7 @@ public abstract class BaseService<T extends BaseEntity<ID>, ID> {
 	}
 
 	public T get(ID id) {
-		Optional<T> entity = getRepository().findByIdAndActiveFlag(id,true);
+		Optional<T> entity = getRepository().findByIdAndActiveFlag(id, true);
 		if (entity.isPresent()) {
 			T result = entity.get();
 			if (result instanceof IDEntity) {
@@ -91,4 +91,18 @@ public abstract class BaseService<T extends BaseEntity<ID>, ID> {
 	}
 
 	public abstract BaseRepository<T, ID> getRepository();
+
+	public void activate(ID id) {
+		Optional<T> entity = getRepository().findById(id);
+		if (entity.isPresent()) {
+			entity.get().setActiveFlag(true);
+			postActivate(entity.get());
+			getRepository().save(entity.get());
+		}
+		throw new EntityNotFoundException("Could not find " + ENTITY + " for id : " + id);
+	}
+
+	private void postActivate(T entity2) {
+		// Can be overidden in children
+	}
 }

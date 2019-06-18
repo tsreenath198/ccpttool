@@ -1,11 +1,14 @@
 package com.ccpt.controller;
 
+import java.util.List;
+
 import javax.validation.ValidationException;
 
 import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -42,19 +45,30 @@ public class ConsultantController extends BaseController<ConsultantDTO, Consulta
 	@Override
 	protected void validateAndClean(Consultant model) {
 
-		Consultant consultantFullName = consultantService.findByFullname(model.getFullname());
-		Consultant consultantEmail = consultantService.findByEmail(model.getEmail());
-		Consultant consultantPhone = consultantService.findByPhone(model.getPhone());
-		if (consultantFullName != null)
-			throw new DataIntegrityViolationException("Consultant is already exists with this Fullname");
-		else if (consultantEmail != null)
-			throw new DataIntegrityViolationException("Consultant is already exists with this Email");
-		else if (consultantPhone != null)
-			throw new DataIntegrityViolationException("Consultant is already exists with this Phone");
-		else if (consultantFullName != null && consultantEmail != null && consultantPhone != null)
-			throw new DataIntegrityViolationException(
-					"Consultant is already exists with this Fullname, Email and Phone");
-		else if (model.getStatus().getCode() == null)
+		List<Consultant> matchingConsultants = consultantService.find(model.getPhone(), model.getFullname(),
+				model.getEmail());
+		if (!CollectionUtils.isEmpty(matchingConsultants)) {
+			for (Consultant entity : matchingConsultants) {
+				if (!entity.getActiveFlag()) {
+					throw new DataIntegrityViolationException(
+							"A Inactive consultant (" + entity.getId() + ") exists with (" + entity.getFullname() + ", "
+									+ entity.getEmail() + ", " + entity.getPhone() + ")");
+				}
+				if (model.getFullname().equals(entity.getFullname())) {
+					throw new DataIntegrityViolationException(
+							"Consultant(" + entity.getId() + ") is already exists with this Fullname");
+				}
+				if (model.getEmail().equals(entity.getEmail())) {
+					throw new DataIntegrityViolationException(
+							"Consultant (" + entity.getId() + ")  is already exists with this Email");
+				}
+				if (model.getPhone().equals(entity.getPhone())) {
+					throw new DataIntegrityViolationException(
+							"Consultant (" + entity.getId() + ")  is already exists with this Phone");
+				}
+			}
+		}
+		if (model.getStatus().getCode() == null)
 			throw new ValidationException("Consultant Status cannot be null");
 		else if (model.getFullname() == null)
 			throw new ValidationException("Client Name cannot be null");

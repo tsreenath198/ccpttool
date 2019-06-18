@@ -39,16 +39,8 @@ public class ConsultantService extends BaseService<Consultant, Integer> {
 
 	}
 
-	public Consultant findByFullname(String fullname) {
-		return consultantRepository.findByFullname(fullname);
-	}
-
-	public Consultant findByEmail(String email) {
-		return consultantRepository.findByEmail(email);
-	}
-
-	public Consultant findByPhone(String phone) {
-		return consultantRepository.findByPhone(phone);
+	public List<Consultant> find(String fullname, String email, String phone) {
+		return consultantRepository.findByPhoneOrFullnameOrEmail(phone, fullname, email);
 	}
 
 }
