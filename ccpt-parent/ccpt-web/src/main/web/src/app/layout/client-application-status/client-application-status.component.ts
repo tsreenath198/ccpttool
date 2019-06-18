@@ -21,7 +21,7 @@ export class ClientApplicationStatusComponent implements OnInit {
     public readOnlyForm: string = '';
     public enableButtonType: string = '';
     public currSearchTxt: string;
-    private selectedRecrdToDel: string = '';
+    private selectedRecrdToDel: number = 0;
     public closeResult: string = '';
     private modalRef: NgbModalRef;
     constructor(private http: HttpClientService, private toastr: ToastrCustomService, private modalService: NgbModal
@@ -125,7 +125,7 @@ export class ClientApplicationStatusComponent implements OnInit {
      * 1) content consists the modal instance
      * 2) Selected contains the code of selected row
      */
-    open(content, selected: string) {
+    open(content, selected: number) {
         if (selected) {
             this.selectedRecrdToDel = selected;
         }

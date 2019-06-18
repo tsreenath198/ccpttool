@@ -1,4 +1,4 @@
-import { AdditionalPropertiesModel } from "src/app/additional-properties.model";
+import { AdditionalPropertiesModel } from 'src/app/additional-properties.model';
 
 export interface UsersModel {
     username: string;
@@ -8,5 +8,5 @@ export interface UsersModel {
     properties: Array<AdditionalPropertiesModel>;
 }
 export class UserRoles {
-    roles = ['User', 'Admin', 'Management'];
+    roles = ['User', 'Admin', 'Manager'];
 }

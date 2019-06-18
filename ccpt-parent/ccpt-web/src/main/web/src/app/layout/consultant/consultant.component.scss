@@ -14,6 +14,9 @@
 .required {
   color: red;
 }
-.red{
-  background-color: red;
+.border-left-red{
+  border-left: 6px solid red;
+}
+.border-left-trans{
+  border-left: 6px solid transparent;
 }

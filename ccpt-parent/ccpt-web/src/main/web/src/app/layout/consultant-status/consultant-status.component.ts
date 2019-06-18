@@ -20,7 +20,7 @@ export class ConsultantStatusComponent implements OnInit {
     public formButtonsToggler = true;
     public editButtonToggler = true;
     public currSearchTxt = '';
-    private selectedRecrdToDel = '';
+    private selectedRecrdToDel = 0;
     public closeResult = '';
     private modalRef: NgbModalRef;
 
@@ -108,7 +108,7 @@ export class ConsultantStatusComponent implements OnInit {
             this.toastr.error(err.error.message, 'Consultant Status');
         });
     }
-    open(content, selected: string) {
+    open(content, selected: number) {
         if (selected) {
             this.selectedRecrdToDel = selected;
         }

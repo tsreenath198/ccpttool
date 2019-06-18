@@ -129,8 +129,8 @@ export class ClientPositionComponent implements OnInit {
         const temp = response;
         this.clientPositionModel = temp;
         this.clientPositionModel['clientId'] = temp.client.id;
-        this.clientPositionModel['assignedTo'] = temp.assignedTo.id;
         this.clientPositionModel['cpstatus'] = temp.status.code;
+        this.clientPositionModel['assignedTo'] = (temp.assignedTo) ? temp.assignedTo.id : 0;
         this.clientPositionModel['closedBy'] = (temp.closedBy) ? temp.closedBy.id : 0;
         return this.clientPositionModel;
     }
@@ -166,7 +166,15 @@ export class ClientPositionComponent implements OnInit {
         });
     }
     private generateCPCode(code, cnt, loc): string {
-        return code + '-' + this.getClientNameById(cnt) + '-' + loc;
+        if ((code == null || code == undefined) && (loc == null || loc == undefined)) {
+            return this.getClientNameById(cnt);
+        } else if(loc == null || loc== undefined) {
+            return code + '-' + this.getClientNameById(cnt) ;
+        } else if(code == null || code == undefined) {
+         return this.getClientNameById(cnt) + '-' + loc;
+        } else {
+            return code + '-' + this.getClientNameById(cnt) + '-' + loc;
+        }
     }
     private getClientNameById(clientId: number) {
         const temp = this.clientList.filter(c => c.id === clientId);
@@ -243,7 +251,11 @@ export class ClientPositionComponent implements OnInit {
         });
     }
     public selectSms(sms) {
-        console.log(sms.value);
+        const temp = {'cpId': this.selectedRecrd};
+        this.http.post(temp , this.urlConstants.SMSTemplateBuildContent + sms.value ).subscribe(resp => {
+            const temp = resp as any;
+            this.sendSmsModel.message = temp.message;
+        });
     }
     public sendSmsReq(): void {
         for (let i = 0; i <= this.numbersToSend.length; i++) {

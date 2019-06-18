@@ -13,14 +13,14 @@
 
           <tbody>
             <tr *ngFor="let cpsl of clientPositionStatusList |  filter : 'description' :currSearchTxt ; let i = index"
-              (click)="readOnlyEnable(cpsl.code)" (dblclick)="editClientPositionStatus(cpsl)">
+              (click)="readOnlyEnable(cpsl.id)" (dblclick)="editClientPositionStatus(cpsl)">
               <td>
                 {{cpsl.description}}</td>
               <td>
                 {{cpsl.code}}
               </td>
               <td><span class="fa fa-trash pull-right" data-toggle="tooltip" title="Delete"
-                  (click)="open(content,cpsl.code)"></span>
+                  (click)="open(content,cpsl.id)"></span>
                 <ng-template #content let-c="close" let-d="dismiss">
                   <div class="modal-header">
                     <h4 class="modal-title">Client Position Status</h4>

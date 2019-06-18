@@ -13,7 +13,7 @@
           <tbody>
             <tr
               *ngFor="let casl of clientApplicationStatusList |  filter : 'description' :currSearchTxt ; let i = index"
-              (click)="readOnlyEnable(casl.code)" (dblclick)="editClientApplicationStatus(casl)">
+              (click)="readOnlyEnable(casl.id)" (dblclick)="editClientApplicationStatus(casl)">
               <td >
                 {{casl.description}}
               </td>
@@ -21,7 +21,7 @@
                 {{casl.code}}
               </td>
               <td><span class="fa fa-trash pull-right" data-toggle="tooltip" title="Delete"
-                  (click)="open(content,casl.code)"></span>
+                  (click)="open(content,casl.id)"></span>
                 <ng-template #content let-c="close" let-d="dismiss">
                   <div class="modal-header">
                     <h4 class="modal-title">Client Application Status</h4>

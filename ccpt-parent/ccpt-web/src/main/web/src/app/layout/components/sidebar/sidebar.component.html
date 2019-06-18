@@ -19,7 +19,7 @@
               <span>{{ 'Consultants' | translate }}</span>
             </a>
           </li>
-          <li>
+          <li >
             <a class="list-group-item " [routerLink]="['/layout/client-call-history']"
               [routerLinkActive]="['router-link-active']">
               <span class="fa fa-fw fa-building"></span>
@@ -33,11 +33,11 @@
       <i class="fa fa-fw fa-users"></i>&nbsp;
       <span>{{ 'Consultants' | translate }}</span>
     </a>
-    <a [routerLink]="['/layout/client']" [routerLinkActive]="['router-link-active']" class="list-group-item">
+    <a *ngIf="loggedInRole == 'Admin' || loggedInRole == 'Manager'" [routerLink]="['/layout/client']" [routerLinkActive]="['router-link-active']" class="list-group-item">
       <i class="fa fa-fw fa-building"></i>&nbsp;
       <span>{{ 'Clients' | translate }}</span>
     </a>
-    <a [routerLink]="['/layout/client-position']" [routerLinkActive]="['router-link-active']" class="list-group-item">
+    <a *ngIf="loggedInRole == 'Admin' || loggedInRole == 'Manager'" [routerLink]="['/layout/client-position']" [routerLinkActive]="['router-link-active']" class="list-group-item">
       <i class="fa fa-fw fa-briefcase"></i>&nbsp;
       <span>{{ 'Client Positions' | translate }}</span>
     </a>
@@ -50,7 +50,7 @@
       <i class="fa fa-fw fa-address-book"></i>&nbsp;
       <span>{{ 'Other Contacts' | translate }}</span>
     </a>
-    <div class="nested-menu" *ngIf="loggedInRole == 'Admin'">
+    <div class="nested-menu" *ngIf="loggedInRole == 'Admin' ">
       <a class="list-group-item" (click)="addExpandClass('pages')">
         <i class="fa fa-fw fa-user"></i>&nbsp;
         <span>{{ 'Administration' | translate }}</span>
@@ -215,9 +215,9 @@
                 </li>
             </div>
         </div> -->
-  </div>
-  <div class="toggle-button" [ngClass]="{collapsed: collapsed}" (click)="toggleCollapsed()">
-    <i class="fa fa-fw fa-angle-double-{{collapsed?'right':'left'}}"></i>&nbsp;
-    <span>{{ 'Collapse ' | translate }}</span>
+        <div class="toggle-button" [ngClass]="{collapsed: collapsed}" (click)="toggleCollapsed()">
+          <i class="fa fa-fw fa-angle-double-{{collapsed?'right':'left'}}"></i>&nbsp;
+          <span>{{ 'Collapse ' | translate }}</span>
+        </div>
   </div>
 </nav>

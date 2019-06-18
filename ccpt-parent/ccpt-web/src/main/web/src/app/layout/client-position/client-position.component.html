@@ -53,8 +53,22 @@
     <div class="col-md-5">
       <form name="form" id="clientPositionForm" (ngSubmit)="f.form.valid && createClientPosition(f)" #f="ngForm"
         novalidate>
+        <div class="row text-center">
+          <div class="col-md-12">
+            <button type="submit" *ngIf="enableButtonType == ''" class="btn btn-secondary ml-3">Add</button>
+            <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2"
+              (click)="updateClientPosition(f)">
+              Update
+            </button>
+            <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button"
+              (click)="enableFormEditable()">
+              Edit
+            </button>
+            <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3">Clear</button>
+          </div>
+        </div>
         <div class="row">
-          <div class="col-md-12" *ngIf="readOnlyForm != ''">
+          <div class="col-md-12">
             <div class="form-group">
               <label>Assign To</label>
               <select class="form-control" name="assign" [disabled]="readOnlyForm == 'R'"
@@ -98,13 +112,11 @@
 
             </div>
           </div>
-          <div class="col-md-12" *ngIf="readOnlyForm == ''">
+          <div class="col-md-12" >
             <div class="form-group">
               <label>Required Positions</label>
               <input class="form-control" placeholder="Number Of Positions" type="number" min="0"
-                [readonly]="readOnlyForm == 'R'" [(ngModel)]="clientPositionModel.requiredPositions" name="nofpos"
-                [ngClass]="{ 'is-invalid': f.submitted && nofpos.invalid }" #nofpos="ngModel" />
-
+                [readonly]="readOnlyForm == 'R'" [(ngModel)]="clientPositionModel.requiredPositions" name="nofpos" #nofpos="ngModel" />
             </div>
           </div>
           <div class="col-md-12">
@@ -173,7 +185,7 @@
               <label>Client Position Status </label>
               <select class="form-control" name="cps" [disabled]="readOnlyForm == 'R'"
                 [(ngModel)]="clientPositionModel.cpstatus">
-                <option *ngFor="let cpsl of clientPositionStatusList" [ngValue]="cpsl.code"> {{ cpsl.description }}
+                <option *ngFor="let cpsl of clientPositionStatusList"  [ngValue]="cpsl.code"> {{ cpsl.description }}
                 </option>
               </select>
             </div>

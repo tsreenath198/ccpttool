@@ -1,7 +1,7 @@
 import { AdditionalPropertiesModel } from "src/app/additional-properties.model";
 
 export interface ClientPositionModel {
-    assignedTo: string;
+    assignedTo: number;
     clientName: string;
     clientId: number;
     id: number;

@@ -12,14 +12,14 @@
         <table class="table table-hover table-striped">
           <tbody>
             <tr *ngFor="let csl of consultantStatusList |  filter : 'description' :currSearchTxt ; let i = index"
-            (click)="readOnlyEnable(csl.code)" (dblclick)="editClientApplicationStatus(csl)">
+            (click)="readOnlyEnable(csl.id)" (dblclick)="editClientApplicationStatus(csl)">
               <td>
                 {{csl.description}}</td>
               <td>
                 {{csl.code}}
               </td>
               <td><span class="fa fa-trash pull-right" data-toggle="tooltip" title="Delete"
-                  (click)="open(content,csl.code)"></span>
+                  (click)="open(content,csl.id)"></span>
                 <ng-template #content let-c="close" let-d="dismiss">
                   <div class="modal-header">
                     <h4 class="modal-title">Consultant Status</h4>

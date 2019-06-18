@@ -11,7 +11,7 @@
         <table class="table table-hover table-striped">
           <tbody class="overflow-ele-scroll">
             <tr *ngFor="let cl of consultantList |  filter : 'fullname' :currSearchTxt ; let i = index"
-              [ngClass]="!cl.isProfileCompleted ? 'bg-danger':''">
+              [ngClass]="!cl.isProfileCompleted ? 'border-left-red':'border-left-trans'">
               <td class="table-data-padding" (click)="readOnlyEnable(cl.id)" (dblclick)="consultantEdit(cl.id)">
                 <dl>
                   <dt> {{cl.fullname}}</dt>
@@ -34,6 +34,15 @@
     </div>
     <div class="col-md-5">
       <form name="form" id="clientPositionForm" (ngSubmit)="f.form.valid&&createConsultant(f)" #f="ngForm" novalidate>
+        <div class="row text-center">
+          <div class="col-md-12">
+            <button type="submit" *ngIf="enableButtonType == ''" class="btn btn-secondary ml-3">Add</button>
+            <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2"
+              (click)="updateConsultant(f)">Update</button>
+            <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button"
+              (click)="enableFormEditable()">Edit</button>
+            <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3">Clear</button> </div>
+        </div>
         <div class="row">
           <div class="col-md-12">
             <div class="form-group">
@@ -52,8 +61,7 @@
               <label>E-Mail</label>
               <!-- ng-pattern="/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/" -->
               <input class="form-control" placeholder="E-mail" name="email" [readonly]="readOnlyForm == 'R'"
-                [(ngModel)]="consultantModel.email" 
-                #email="ngModel" type="email">
+                [(ngModel)]="consultantModel.email" #email="ngModel" type="email">
             </div>
           </div>
           <div class="col-md-12">
@@ -63,7 +71,7 @@
               <label>Phone</label>
               <input class="form-control" placeholder="Phone" name="phone" [readonly]="readOnlyForm == 'R'"
                 [(ngModel)]="consultantModel.phone" maxlength="12" onKeyPress="if(this.value.length==12) return false;"
-                 #phone="ngModel" type="text">
+                #phone="ngModel" type="text">
             </div>
           </div>
           <div class="col-md-12">
@@ -93,7 +101,8 @@
             <div class="form-group">
               <label>Highest Education</label>
               <input class="form-control" name="highesteducation" [readonly]="readOnlyForm == 'R'"
-                placeholder="Highest Education" [(ngModel)]="consultantModel.highestEducation" #highesteducation="ngModel">
+                placeholder="Highest Education" [(ngModel)]="consultantModel.highestEducation"
+                #highesteducation="ngModel">
             </div>
           </div>
           <div class="col-md-12">
