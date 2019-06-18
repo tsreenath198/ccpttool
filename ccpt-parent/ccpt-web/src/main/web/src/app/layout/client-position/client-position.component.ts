@@ -295,26 +295,26 @@ export class ClientPositionComponent implements OnInit {
      * 1) content consists the modal instance
      * 2) Selected contains the code of selected row
      */
-    open(content, selected: number, type: string) {
-        debugger
-        if (selected) {
-            this.selectedRecrd = selected;
+    open(event:any) {
+        //content, selected: number, type: string
+        if (event.id) {
+            this.selectedRecrd = event.id;
         }
-        this.modalRef = this.modalService.open(content);
+        this.modalRef = this.modalService.open(event.content);
         this.modalRef.result.then((result) => {
             this.closeResult = `Closed with: ${result}`;
         }, (reason) => {
             this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
         });
-        console.log(content);
-        if (content) {
-            if (type === 'email') {
+        console.log(event.content);
+        if (event.content) {
+            if (event.type === this.email) {
                 for (let i = 0; i < this.consultantList.length; i++) {
                     const temp = { 'item_id': this.consultantList[i].phone, 'item_text': this.consultantList[i].fullname, 'notes': '' };
                     this.mailIdForMails.push(this.consultantList[i].email);
                 }
             }
-            if (type === 'sms') {
+            if (event.type === this.sms) {
                 this.http.get(this.urlConstants.SMSTemplateGetAll).subscribe(resp => {
                     this.smsList = resp as any;
                 });
@@ -323,7 +323,7 @@ export class ClientPositionComponent implements OnInit {
                     this.numbersForSmsDropdown.push(temp);
                 }
             }
-            if (type === 'shortlist') {
+            if (event.type === this.shortList) {
                 for (let i = 0; i < this.consultantList.length; i++) {
                     const temp = { 'item_id': this.consultantList[i].id, 'item_text': this.consultantList[i].fullname, 'notes': '' };
                     this.consultantNames.push(temp);

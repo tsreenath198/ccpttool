@@ -3,7 +3,7 @@
   <div class="row">
     <div class="col-md-7 ">
       <div class="row">
-        <div class="col-md-3">
+        <div class="col-md-6">
           <strong>Total No of records : {{ clientPositionList.length }}</strong>
         </div>
         <div class="col-md-6"><input type="text" class="form-control" placeholder="search..."
@@ -26,11 +26,15 @@
                   </dd>
                 </dl>
               </td>
-              <td width="100">
-                <app-action [content]="trashContent" [id]="cpl.id" [type]="trash" (action)="open()"></app-action>
-                <app-action [content]="shortListContent" [id]="cpl.id" [type]="shortList" (action)="open()"></app-action>
+              <td width="140">
+                <app-action [trashContent]="trashContent" [shortListContent]="shortListContent"
+                  [sendMailContent]="sendMailContent" [sendSMSContent]="sendSMSContent" [id]="cpl.id" [isTrash]="trash"
+                  [isSendSMS]="sms" [isSendMail]="email" [isShortList]="shortList" (shortList)="open($event)"
+                  (sendSMS)="open($event)" (trash)="open($event)" (sendMail)="open($event)"></app-action>
+
+                <!-- <app-action [content]="shortListContent" [id]="cpl.id" [type]="shortList" (action)="open()"></app-action>
                 <app-action [content]="sendSMSContent" [id]="cpl.id" [type]="sms" (action)="open()"></app-action>
-                <app-action [content]="sendMailContent" [id]="cpl.id" [type]="email" (action)="open()"></app-action>
+                <app-action [content]="sendMailContent" [id]="cpl.id" [type]="email" (action)="open()"></app-action> -->
 
                 <!-- <span class="fa fa-trash pull-right pointer" data-toggle="tooltip" title="Delete"
                   (click)="open(content, cpl.id,'delete')"></span>
