@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { NgbModal, ModalDismissReasons, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { FileUploader, FileLikeObject } from 'ng2-file-upload';
 import { NgForm } from '@angular/forms';
@@ -37,11 +37,17 @@ export class ConsultantComponent implements OnInit {
     public download:string = 'download';
     public trash:string = 'trash';
     public upload:string = 'upload';
+    protected screenHeight:any;
     private modalRef: NgbModalRef;
     public urlConstants = new URLConstants();
     public currSearchTxt: string;
-    constructor(private http: HttpClientService, private toastr: ToastrCustomService, private modalService: NgbModal) { }
-
+    constructor(private http: HttpClientService, private toastr: ToastrCustomService, private modalService: NgbModal) {
+        this.getScreenSize();
+     }
+     @HostListener('window:resize', ['$event'])
+     getScreenSize(event?) {
+           this.screenHeight = window.innerHeight;
+     }
     ngOnInit() {
         this.http.get(this.urlConstants.CSGetAll).subscribe(resp => {
             this.consultantStatusList = resp as any;
