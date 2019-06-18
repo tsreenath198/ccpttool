@@ -11,6 +11,8 @@ export class ActionComponent implements OnInit {
   @Input() shortListContent;
   @Input() sendSMSContent;
   @Input() sendMailContent;
+  @Input() uploadContent;
+  @Input() downloadContent;
 
   @Input() id;
 
@@ -18,11 +20,15 @@ export class ActionComponent implements OnInit {
   @Input() isSendSMS;
   @Input() isSendMail;
   @Input() isShortList;
+  @Input() isUpload;
+  @Input() isDownload;
 
   @Output() trash = new EventEmitter();
   @Output() sendSMS = new EventEmitter();
   @Output() shortList = new EventEmitter();
   @Output() sendMail = new EventEmitter();
+  @Output() download = new EventEmitter();
+  @Output() upload = new EventEmitter();
 
   ngOnInit() {
   }
@@ -38,5 +44,11 @@ export class ActionComponent implements OnInit {
   }
   shortListData() {
     this.shortList.emit({ content: this.shortListContent, id: this.id, type: this.isShortList });
+  }
+  uploadData() {
+    this.upload.emit({ content: this.uploadContent, id: this.id, type: this.isUpload });
+  }
+  downloadData() {
+    this.download.emit({ content: this.downloadContent, id: this.id, type: this.isDownload });
   }
 }

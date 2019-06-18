@@ -34,6 +34,9 @@ export class ConsultantComponent implements OnInit {
     public uploader: FileUploader = new FileUploader({});
     private selectedRecrdToDel = 0;
     public closeResult = '';
+    public download:string = 'download';
+    public trash:string = 'trash';
+    public upload:string = 'upload';
     private modalRef: NgbModalRef;
     public urlConstants = new URLConstants();
     public currSearchTxt: string;
@@ -113,8 +116,8 @@ export class ConsultantComponent implements OnInit {
             }
         });
     }
-    getFilesById() {
-        this.http.get('/uploadFile/id?id=' + 2).subscribe(resp => {
+    getFilesById(id: number) {
+        this.http.get('/uploadFile/id?id=' + id).subscribe(resp => {
             this.fileList.push(resp);
             console.log(this.fileList);
         });
@@ -180,12 +183,15 @@ export class ConsultantComponent implements OnInit {
      * 1) content consists the modal instance
      * 2) Selected contains the code of selected row
      */
-    open(content, selected: number) {
+    open(event: any) {
         this.selectedRecrdToDel = 0;
-        if (selected) {
-            this.selectedRecrdToDel = selected;
+        if (event.id) {
+            this.selectedRecrdToDel = event.id;
         }
-        this.modalRef = this.modalService.open(content);
+        if(event.type === this.download){
+            this.getFilesById(this.selectedRecrdToDel);
+        }
+        this.modalRef = this.modalService.open(event.content);
         this.modalRef.result.then((result) => {
             this.closeResult = `Closed with: ${result}`;
         }, (reason) => {
