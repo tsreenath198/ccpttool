@@ -41,7 +41,6 @@ public class ConsultantController extends BaseController<ConsultantDTO, Consulta
 		return Mappers.getMapper(ConsultantMapper.class);
 	}
 
-	@SuppressWarnings("unused")
 	@Override
 	protected void validateAndClean(Consultant model) {
 

@@ -7,6 +7,6 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class ClientPositionStatusDTO extends StatusEntityDTO {
-
+public class ClientPositionStatusDTO extends IDEntityDTO  {
+	private String code;
 }

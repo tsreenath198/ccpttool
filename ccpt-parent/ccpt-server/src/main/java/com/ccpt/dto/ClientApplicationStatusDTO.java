@@ -1,5 +1,12 @@
 package com.ccpt.dto;
 
-public class ClientApplicationStatusDTO extends StatusEntityDTO {
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
+@Getter
+@Setter
+@ToString
+public class ClientApplicationStatusDTO extends IDEntityDTO {
+	private String code;
 }
