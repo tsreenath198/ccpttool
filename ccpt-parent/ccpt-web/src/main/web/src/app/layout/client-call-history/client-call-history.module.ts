@@ -4,10 +4,10 @@ import  {FormsModule} from '@angular/forms';
 
 import { ClientCallHistoryRoutingModule } from './client-call-history-routing.module';
 import { ClientCallHistoryComponent } from './client-call-history.component';
-import { PageHeaderModule, SharedPipesModule } from '../../shared';
+import { PageHeaderModule, SharedPipesModule, ActionListModule } from '../../shared';
 
 @NgModule({
-    imports: [CommonModule, ClientCallHistoryRoutingModule,FormsModule, PageHeaderModule,SharedPipesModule],
+    imports: [CommonModule, ClientCallHistoryRoutingModule,FormsModule, PageHeaderModule,SharedPipesModule,ActionListModule],
     declarations: [ClientCallHistoryComponent]
 })
 export class ClientCallHistoryModule {}

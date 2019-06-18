@@ -63,7 +63,7 @@ export class ClientPositionComponent implements OnInit {
     public getAllC = this.http.get(this.urlConstants.ClientGetAll);
     public getAllCon = this.http.get(this.urlConstants.CGetAll);
     constructor(private http: HttpClientService, private toastr: ToastrCustomService, private modalService: NgbModal) {
-        this.actionModel.sendMail
+        this.actionModel.sendMail;
     }
 
     ngOnInit() {

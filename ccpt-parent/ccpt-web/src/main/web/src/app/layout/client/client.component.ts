@@ -32,6 +32,10 @@ export class ClientComponent implements OnInit {
     private selectedRecrdToDel = 0;
     public closeResult = '';
     private modalRef: NgbModalRef;
+    
+    public download:string = 'download';
+    public trash:string = 'trash';
+    public upload:string = 'upload';
     constructor(private http: HttpClientService, private toastr: ToastrCustomService, private modalService: NgbModal) {
     }
     ngOnInit() {
@@ -162,8 +166,8 @@ export class ClientComponent implements OnInit {
             this.toastr.error(err.error.message, 'Client');
         });
     }
-    getFilesById() {
-        this.http.get('/uploadFile/id?id=' + 3).subscribe(resp => {
+    getFilesById(id: number) {
+        this.http.get('/uploadFile/id?id=' + id).subscribe(resp => {
             this.fileList.push(resp);
             console.log(this.fileList);
         });
@@ -173,11 +177,15 @@ export class ClientComponent implements OnInit {
      * 1) content consists the modal instance
      * 2) Selected contains the code of selected row
      */
-    open(content, selected: number) {
-        if (selected) {
-            this.selectedRecrdToDel = selected;
+    open(event: any) {
+        this.selectedRecrdToDel = 0;
+        if (event.id) {
+            this.selectedRecrdToDel = event.id;
         }
-        this.modalRef = this.modalService.open(content);
+        if(event.type === this.download){
+            this.getFilesById(this.selectedRecrdToDel);
+        }
+        this.modalRef = this.modalService.open(event.content);
         this.modalRef.result.then((result) => {
             this.closeResult = `Closed with: ${result}`;
         }, (reason) => {

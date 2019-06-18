@@ -14,7 +14,41 @@
   </div>
   <hr> -->
 
-
+  <div class="row">
+    <div class="col col-xl-12 col-lg-12">
+      <div class="card mb-3">
+        <div class="card-header bg-dark text-clr-white">Interviews Today</div>
+        <div class="table-scroll">
+          <table class="table table-sm">
+            <thead>
+              <tr>
+                <th>Client</th>
+                <th>Client NO.</th>
+                <th>Consultant</th>
+                <th>Consultant No.</th>
+                <th>Mode</th>
+                <th>Date</th>
+                <th>Location</th>
+                <th>Time</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let val of interviewsToday">
+                <td>{{val.clientName}}</td>
+                <td>{{val.clientPhone}}</td>
+                <td>{{val.consultantName}}</td>
+                <td>{{val.consultantPhone}}</td>
+                <td>{{val.interviewMode}}</td>
+                <td>{{val.interviewDate}}</td>
+                <td>{{val.interviewLocation}}</td>
+                <td>{{val.interviewTime}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
   <div class="row">
     <div class="col col-xl-6 col-lg-12">
       <div class="card mb-3">

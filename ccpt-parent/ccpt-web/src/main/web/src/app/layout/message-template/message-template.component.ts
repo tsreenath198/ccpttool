@@ -21,7 +21,7 @@ export class MessageTemplateComponent implements OnInit {
     public readOnlyForm = '';
     public enableButtonType = '';
     public currSearchTxt = '';
-
+    public trash:string = 'trash';
     private selectedRecrdToDel = 0;
     public closeResult = '';
     private modalRef: NgbModalRef;
@@ -109,11 +109,11 @@ export class MessageTemplateComponent implements OnInit {
      * 1) content consists the modal instance
      * 2) Selected contains the code of selected row
      */
-    open(content, selected: number) {
-        if (selected) {
-            this.selectedRecrdToDel = selected;
+    open(event: any) {
+        if (event.id) {
+            this.selectedRecrdToDel = event.id;
         }
-        this.modalRef = this.modalService.open(content);
+        this.modalRef = this.modalService.open(event.content);
         this.modalRef.result.then((result) => {
             this.closeResult = `Closed with: ${result}`;
         }, (reason) => {

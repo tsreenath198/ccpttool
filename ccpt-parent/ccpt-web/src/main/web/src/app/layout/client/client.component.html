@@ -3,11 +3,11 @@
   <div class="row">
     <div class="col-md-7">
       <div class="row">
-        <div class="col-md-3"><strong>Total No of records : {{clientList.length}}</strong></div>
+        <div class="col-md-6"><strong>Total No of records : {{clientList.length}}</strong></div>
         <div class="col-md-6"> <input type="text" class="form-control" placeholder="search..."
             [(ngModel)]="currSearchTxt" /></div>
       </div>
-      <div class="table-responsive mt-2">
+      <div class="table-responsive mt-2 table-wrapper-scroll-y my-custom-scrollbar">
         <table class="table table-hover table-striped">
           <tbody>
             <tr *ngFor="let cl of clientList |  filter : 'name' : currSearchTxt ; let i = index"
@@ -18,67 +18,11 @@
               <td>
                 {{cl.address}}
               </td>
-              <td><span class="fa fa-trash pull-right" (click)="open(content,cl.id)"></span>
-                <ng-template #content let-c="close" let-d="dismiss">
-                  <div class="modal-header">
-                    <h4 class="modal-title">Client Application Status</h4>
-                    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                  <div class="modal-body">
-                    <p>Are you sure you want to delete ? &hellip;</p>
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" (click)="deleteClientRecord()">Ok</button>
-                    <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
-                  </div>
-                </ng-template>
-                <span class="fa fa-upload pull-right px-2" data-toggle="tooltip" title="Upload"
-                  (click)="open(upload,cl.id)"></span>
-                <ng-template #upload let-c="close" let-d="dismiss">
-                  <div class="modal-header">
-                    <h4 class="modal-title">{{urlConstants.UploadFilesMsg}}</h4>
-                    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                  <div class="modal-body">
-                    <input class="form-control" type="file" ng2FileSelect [uploader]="uploader">
-                    <textarea class="form-control mt-3" placeholder="Comments" cols="5" rows="5"
-                      [(ngModel)]="comments"></textarea>
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" (click)="uploadFiles()">Upload</button>
-                    <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
-                  </div>
-                </ng-template>
-                <span class="fa fa-download pull-right" data-toggle="tooltip" title="Download"
-                  (click)="open(download,cl.id);getFilesById()"></span>
-                <ng-template #download let-c="close" let-d="dismiss">
-                  <div class="modal-header">
-                    <h4 class="modal-title">Client {{urlConstants.DownloadFilesMsg}}</h4>
-                    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                  <div class="modal-body">
-                    <table class="table">
-                      <thead>
-                        <th>Reference Type</th>
-                        <th>Comments</th>
-                      </thead>
-                      <tbody *ngFor="let fl of fileList">
-                        <td>{{fl.refId}}</td>
-                        <td>{{fl.refType}}</td>
-                        <td>{{fl.comments}}</td>
-                      </tbody>
-                    </table>
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
-                  </div>
-                </ng-template>
+              <td width="140">
+                <app-action [trashContent]="trashContent" [uploadContent]="uploadContent"
+                  [downloadContent]="downloadContent" [id]="cl.id" [isTrash]="trash" [isUpload]="upload"
+                  [isDownload]="download" (upload)="open($event)" (download)="open($event)" (trash)="open($event)">
+                </app-action>
               </td>
             </tr>
           </tbody>
@@ -282,3 +226,61 @@
     </div>
   </div>
 </div>
+<ng-template #trashContent let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title">Client Application Status</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <p>Are you sure you want to delete ? &hellip;</p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="deleteClientRecord()">Ok</button>
+    <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
+  </div>
+</ng-template>
+
+<ng-template #uploadContent let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title">{{urlConstants.UploadFilesMsg}}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <input class="form-control" type="file" ng2FileSelect [uploader]="uploader">
+    <textarea class="form-control mt-3" placeholder="Comments" cols="5" rows="5"
+      [(ngModel)]="comments"></textarea>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="uploadFiles()">Upload</button>
+    <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
+  </div>
+</ng-template>
+
+<ng-template #downloadContent let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title">Client {{urlConstants.DownloadFilesMsg}}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <table class="table">
+      <thead>
+        <th>Reference Type</th>
+        <th>Comments</th>
+      </thead>
+      <tbody *ngFor="let fl of fileList">
+        <td>{{fl.refId}}</td>
+        <td>{{fl.refType}}</td>
+        <td>{{fl.comments}}</td>
+      </tbody>
+    </table>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
+  </div>
+</ng-template>

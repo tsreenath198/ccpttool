@@ -33,6 +33,7 @@ export class ClientCallHistoryComponent implements OnInit {
     public currSearchTxt: string;
     public readOnlyForm = '';
     public enableButtonType = '';
+    public trash:string = 'trash';
 
     constructor(private http: HttpClientService, private toastr: ToastrCustomService, private modalService: NgbModal) {
     }
@@ -141,12 +142,6 @@ export class ClientCallHistoryComponent implements OnInit {
             this.close();
             this.formReset();
         }, err => {
-            if (err.status === 200) {
-                this.init();
-                this.close();
-                this.formReset();
-                return this.toastr.success(this.urlConstants.DeleteMsg, 'Client Call History');
-            }
             this.toastr.error(err.error.message, 'Client Call History');
         });
     }
@@ -155,11 +150,11 @@ export class ClientCallHistoryComponent implements OnInit {
      * 1) content consists the modal instance
      * 2) Selected contains the code of selected row
      */
-    open(content, selected: number) {
-        if (selected) {
-            this.selectedRecrdToDel = selected;
+    open(event: any) {
+        if (event.id) {
+            this.selectedRecrdToDel = event.id;
         }
-        this.modalRef = this.modalService.open(content);
+        this.modalRef = this.modalService.open(event.content);
         this.modalRef.result.then((result) => {
             this.closeResult = `Closed with: ${result}`;
         }, (reason) => {

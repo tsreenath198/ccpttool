@@ -23,7 +23,8 @@ export class DashboardComponent implements OnInit {
     public ccptReportCPL: Array<any> = [];
     public openCP: Array<any> = [];
     public activeCA: Array<any> = [];
-    public activeCAById: Array<any>= [];
+    public activeCAById: Array<any> = [];
+    public interviewsToday: Array<any> = [];
     private urlConstants = new URLConstants();
     public rpChoosenDays: any = 1;
     public cochChoosenDays: any = 1;
@@ -40,6 +41,7 @@ export class DashboardComponent implements OnInit {
     public getAllReportCC = this.http.get(this.urlConstants.ReportingGetClosures + this.rpChoosenDays);
     public getAllOpenCP = this.http.get(this.urlConstants.ReportingGetAllOpenCP);
     public getAllActiveCA = this.http.get(this.urlConstants.ReportingGetAllActiveCA);
+    public getAllInterviewsToday = this.http.get(this.urlConstants.ReportingGetAllInterviewsToday);
     constructor(private http: HttpClientService, private toastr: ToastrCustomService, private modalService: NgbModal) {
         // this.sliders.push(
         //     {
@@ -92,6 +94,7 @@ export class DashboardComponent implements OnInit {
             this.getAllReportCC,
             this.getAllOpenCP,
             this.getAllActiveCA,
+            this.getAllInterviewsToday
         ).subscribe(listofrecords => {
             this.ccptReportCLCH = listofrecords[0] as any;
             this.ccptReportCOCH = listofrecords[1] as any;
@@ -99,6 +102,7 @@ export class DashboardComponent implements OnInit {
             this.ccptReportCC = listofrecords[3] as any;
             this.openCP = listofrecords[4] as any;
             this.activeCA = listofrecords[5] as any;
+            this.interviewsToday = listofrecords[6] as any;
         });
     }
     public rpGetAllByDays() {

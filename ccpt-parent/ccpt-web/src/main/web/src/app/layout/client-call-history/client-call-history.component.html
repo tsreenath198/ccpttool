@@ -5,11 +5,11 @@
   <div class="row">
     <div class="col-md-7">
       <div class="row">
-        <div class="col-md-3"><strong>Total No of records : {{clientCallHistoryList.length}}</strong></div>
+        <div class="col-md-6"><strong>Total No of records : {{clientCallHistoryList.length}}</strong></div>
         <div class="col-md-6"> <input type="text" class="form-control" placeholder="search..."
             [(ngModel)]="currSearchTxt" /></div>
       </div>
-      <div class="table-responsive mt-2">
+      <div class="table-responsive mt-2 table-wrapper-scroll-y my-custom-scrollbar">
         <div *ngIf="clientCallHistoryList; else tableElse">
           <table class="table table-hover table-striped">
             <tbody class="overflow-ele-scroll">
@@ -24,23 +24,8 @@
                 <td>
                   {{cchl.calledDate}}
                 </td>
-                <td><span class="fa fa-trash pull-right" data-toggle="tooltip" title="Delete"
-                    (click)="open(content,cchl.id)"></span>
-                  <ng-template #content let-c="close" let-d="dismiss">
-                    <div class="modal-header">
-                      <h4 class="modal-title">Client Call History</h4>
-                      <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
-                        <span aria-hidden="true">&times;</span>
-                      </button>
-                    </div>
-                    <div class="modal-body">
-                      <p>Are you sure you want to delete ? &hellip;</p>
-                    </div>
-                    <div class="modal-footer">
-                      <button type="button" class="btn btn-secondary" (click)="deleteCCHRecord()">Ok</button>
-                      <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
-                    </div>
-                  </ng-template>
+                <td width="100">
+                  <app-action [trashContent]="trashContent" [id]="cchl.id" [isTrash]="trash" (trash)="open($event)"></app-action>
                 </td>
               </tr>
             </tbody>
@@ -151,3 +136,18 @@
     </div>
   </div>
 </div>
+<ng-template #trashContent let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title">Client Call History</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <p>Are you sure you want to delete ? &hellip;</p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="deleteCCHRecord()">Ok</button>
+    <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
+  </div>
+</ng-template>

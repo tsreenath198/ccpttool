@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
-import { PageHeaderModule, SharedPipesModule } from '../../shared';
+import { PageHeaderModule, SharedPipesModule, ActionListModule } from '../../shared';
 import { ClientComponent } from './client.component';
 import { ClientRoutingModule } from './client-routing.module';
 import { NgbModule, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
@@ -15,7 +15,8 @@ import { FileUploadModule } from 'ng2-file-upload';
         PageHeaderModule,
         SharedPipesModule,
         NgbModule,
-        FileUploadModule
+        FileUploadModule,
+        ActionListModule
     ],
 
     declarations: [ClientComponent],

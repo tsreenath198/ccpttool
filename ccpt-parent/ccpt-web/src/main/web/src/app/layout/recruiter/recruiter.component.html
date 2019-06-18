@@ -4,12 +4,12 @@
   <div class="row">
     <div class="col-md-7 ">
       <div class="row">
-        <div class="col-md-3"><strong>Total No of records : {{recruiterList.length}}</strong></div>
+        <div class="col-md-6"><strong>Total No of records : {{recruiterList.length}}</strong></div>
         <div class="col-md-6"> <input type="text" class="form-control" placeholder="search..."
             [(ngModel)]="currSearchTxt" /></div>
       </div>
       
-      <div class="table-responsive mt-2">
+      <div class="table-responsive mt-2 table-wrapper-scroll-y my-custom-scrollbar">
         <table class="table table-hover table-striped">
           <tbody class="overflow-ele-scroll">
             <tr *ngFor="let rl of recruiterList |  filter : 'fullname' :currSearchTxt ; let i = index"
@@ -21,7 +21,7 @@
                 </dl>
               </td>
               <td width="100">
-                <app-action [content]="content" [id]="rl.id" (trash)="open($event)"></app-action>
+                <app-action [trashContent]="trashContent" [id]="rl.id" [isTrash]="trash" (trash)="open($event)"></app-action>
               </td>
             </tr>
           </tbody>
@@ -156,7 +156,7 @@
   </div>
 </div>
 
-<ng-template #content let-c="close" let-d="dismiss">
+<ng-template #trashContent let-c="close" let-d="dismiss">
   <div class="modal-header">
     <h4 class="modal-title">Recruiter</h4>
     <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">

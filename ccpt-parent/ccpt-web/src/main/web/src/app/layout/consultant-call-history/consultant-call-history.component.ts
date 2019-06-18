@@ -32,7 +32,7 @@ export class ConsultantCallHistoryComponent implements OnInit {
     private selectedRecrdToDel = 0;
     public closeResult = '';
     private modalRef: NgbModalRef;
-
+    public trash:string = 'trash';
     public readOnlyForm = '';
     public enableButtonType = '';
 
@@ -144,12 +144,6 @@ export class ConsultantCallHistoryComponent implements OnInit {
             this.close();
             this.formReset();
         }, err => {
-            if (err.status === 200) {
-                this.init();
-                this.close();
-                this.formReset();
-                return this.toastr.success(this.urlConstants.DeleteMsg, 'Consultant Call History');
-            }
             this.toastr.error(err.error.message, 'Consultant Call History');
         });
     }
@@ -158,11 +152,11 @@ export class ConsultantCallHistoryComponent implements OnInit {
      * 1) content consists the modal instance
      * 2) Selected contains the code of selected row
      */
-    open(content, selected: number) {
-        if (selected) {
-            this.selectedRecrdToDel = selected;
+    open(event: any) {
+        if (event.id) {
+            this.selectedRecrdToDel = event.id;
         }
-        this.modalRef = this.modalService.open(content);
+        this.modalRef = this.modalService.open(event.content);
         this.modalRef.result.then((result) => {
             this.closeResult = `Closed with: ${result}`;
         }, (reason) => {

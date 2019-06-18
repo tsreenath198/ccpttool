@@ -7,12 +7,12 @@
         <div class="col-md-6"> <input type="text" class="form-control" placeholder="search..."
             [(ngModel)]="currSearchTxt" /></div>
       </div>
-      <div class="table-responsive mt-2">
+      <div  class="table-responsive  mt-2 table-wrapper-scroll-y my-custom-scrollbar">
         <table class="table table-hover table-striped">
-          <tbody class="overflow-ele-scroll">
+          <tbody class="overflow-ele-scroll ">
             <tr *ngFor="let cl of consultantList |  filter : 'fullname' :currSearchTxt ; let i = index"
               [ngClass]="!cl.isProfileCompleted ? 'border-left-red':'border-left-trans'">
-              <td class="table-data-padding" (click)="readOnlyEnable(cl.id)" (dblclick)="consultantEdit(cl.id)">
+              <td class="table-data-padding " (click)="readOnlyEnable(cl.id)" (dblclick)="consultantEdit(cl.id)">
                 <dl>
                   <dt> {{cl.fullname}}</dt>
                   <dd>{{cl.skills || 'NA'}}</dd>

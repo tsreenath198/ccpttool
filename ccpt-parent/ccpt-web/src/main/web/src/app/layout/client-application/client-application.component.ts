@@ -39,6 +39,7 @@ export class ClientApplicationComponent implements OnInit {
     private modalRef: NgbModalRef;
     public readOnlyForm = '';
     public enableButtonType = '';
+    public trash:string = 'trash';
 
     constructor(private http: HttpClientService, private toastr: ToastrCustomService, private modalService: NgbModal) {
     }
@@ -181,11 +182,11 @@ export class ClientApplicationComponent implements OnInit {
      * 1) content consists the modal instance
      * 2) Selected contains the code of selected row
      */
-    open(content, selected: number) {
-        if (selected) {
-            this.selectedRecrdToDel = selected;
+    open(event: any) {
+        if (event.id) {
+            this.selectedRecrdToDel = event.id;
         }
-        this.modalRef = this.modalService.open(content);
+        this.modalRef = this.modalService.open(event.content);
         this.modalRef.result.then((result) => {
             this.closeResult = `Closed with: ${result}`;
         }, (reason) => {

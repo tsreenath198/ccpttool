@@ -3,11 +3,11 @@
   <div class="row">
     <div class="col-md-7">
       <div class="row">
-        <div class="col-md-3"><strong>Total No of records : {{OCList.length}}</strong></div>
+        <div class="col-md-6"><strong>Total No of records : {{OCList.length}}</strong></div>
         <div class="col-md-6"> <input type="text" class="form-control" placeholder="search..."
             [(ngModel)]="currSearchTxt" /></div>
       </div>
-      <div class="table-responsive mt-2">
+      <div class="table-responsive mt-2 table-wrapper-scroll-y my-custom-scrollbar">
         <table class="table table-hover table-striped">
           <tbody>
             <tr *ngFor="let ocl of OCList |  filter : 'name' : currSearchTxt ; let i = index"
@@ -21,24 +21,8 @@
               <td>
                 {{ocl.phone}}
               </td>
-              <td>
-                <span class="fa fa-trash pull-right" data-toggle="tooltip" title="Delete"
-                  (click)="open(content,ocl.id)"></span>
-                <ng-template #content let-c="close" let-d="dismiss">
-                  <div class="modal-header">
-                    <h4 class="modal-title">Contact</h4>
-                    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                  <div class="modal-body">
-                    <p>Are you sure you want to delete ? &hellip;</p>
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" (click)="delete()">Ok</button>
-                    <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
-                  </div>
-                </ng-template>
+              <td width="100">
+                <app-action [trashContent]="trashContent" [id]="ocl.id" [isTrash]="trash" (trash)="open($event)"></app-action>
               </td>
             </tr>
           </tbody>
@@ -123,3 +107,19 @@
     </div>
   </div>
 </div>
+
+<ng-template #trashContent let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title">Contact</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <p>Are you sure you want to delete ? &hellip;</p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="delete()">Ok</button>
+    <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
+  </div>
+</ng-template>

@@ -27,7 +27,7 @@ export class RecruiterComponent implements OnInit {
     private modalRef: NgbModalRef;
     public genderList = ['Male', 'Female', 'Other'];
     public currSearchTxt: string;
-
+    public trash:string = 'trash';
     public readOnlyForm = '';
     public enableButtonType = '';
 
