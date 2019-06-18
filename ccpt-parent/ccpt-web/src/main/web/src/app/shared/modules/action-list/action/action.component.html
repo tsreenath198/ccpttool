@@ -1,5 +1,5 @@
-<span class="fa fa-trash pull-right" *ngIf="isTrash == 'trash'" data-toggle="tooltip" title="Delete"
-  (click)="trashData()"></span>
+<span class="fa fa-trash pull-right" *ngIf="isTrash == 'trash' && loggedInRole === 'Admin'" data-toggle="tooltip" title="Delete"
+  (click)="trashData()" ></span>
 
 <span class="fa fa-upload pull-right px-2" *ngIf="isUpload == 'upload'" data-toggle="tooltip" title="Upload"
   (click)="uploadData()"></span>

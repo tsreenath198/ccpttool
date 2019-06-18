@@ -24,13 +24,6 @@
                   [downloadContent]="downloadContent" [id]="cl.id" [isTrash]="trash" [isUpload]="upload"
                   [isDownload]="download" (upload)="open($event)" (download)="open($event)" (trash)="open($event)">
                 </app-action>
-
-                <!-- <span class="fa fa-trash pull-right" data-toggle="tooltip" title="Delete"
-                  (click)="open(delete,cl.id)"></span>
-                <span class="fa fa-upload pull-right px-2" data-toggle="tooltip" title="Upload"
-                  (click)="open(upload,cl.id)"></span>
-                <span class="fa fa-download pull-right" data-toggle="tooltip" title="Download"
-                  (click)="open(download,cl.id);getFilesById()"></span> -->
               </td>
             </tr>
           </tbody>

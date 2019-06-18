@@ -6,6 +6,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 })
 export class ActionComponent implements OnInit {
 
+  public loggedInRole: string = '';
   constructor() { }
   @Input() trashContent;
   @Input() shortListContent;
@@ -31,6 +32,7 @@ export class ActionComponent implements OnInit {
   @Output() upload = new EventEmitter();
 
   ngOnInit() {
+    this.loggedInRole = sessionStorage.getItem('role');
   }
 
   trashData() {
