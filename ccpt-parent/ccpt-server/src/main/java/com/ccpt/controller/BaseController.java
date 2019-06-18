@@ -62,7 +62,7 @@ public abstract class BaseController<DTO extends BaseEntityDTO<ID>, MODEL extend
 				HttpStatus.OK);
 	}
 
-	@PutMapping(ACTIVATE_ID_PARAM)
+	@GetMapping(ACTIVATE_ID_PARAM)
 	ResponseEntity<GenericResponse> activate(@PathVariable ID id) {
 		getService().activate(id);
 		return new ResponseEntity<GenericResponse>(new GenericResponse("Entity with id : " + id + " Activated"),

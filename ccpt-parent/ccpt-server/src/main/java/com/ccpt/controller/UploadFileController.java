@@ -1,18 +1,17 @@
 package com.ccpt.controller;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.stream.Collectors;
+
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,11 +20,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.ccpt.constants.CCPTConstants;
 import com.ccpt.model.UploadFile;
+import com.ccpt.model.UploadFileResponse;
 import com.ccpt.service.UploadFileService;
-import com.ccpt.util.MyMultipleFileZip;
 
 @Controller
 @CrossOrigin
@@ -41,42 +41,44 @@ public class UploadFileController {
 		return new ResponseEntity<UploadFile>(uploadFile, HttpStatus.OK);
 	}
 
-	@GetMapping(CCPTConstants.GET_BY_REF_ID_AND_REF_TPYE)
-	public ResponseEntity<Void> getByRefIdAndRefType(@RequestParam String refType, @RequestParam Integer refId)
-			throws IOException {
-		byte[] content = null;
-		List<UploadFile> res = uploadFileService.getByRefIdAndTefType(refType, refId);
-		List<String> files = new ArrayList<String>();
-		for (Integer i = 0; i < res.size(); i++) {
-			content = res.get(i).getContent();
-			String filePath = writeByte(content, i);
-			files.add(filePath);
-		}
-		MyMultipleFileZip mfe = new MyMultipleFileZip();
-		mfe.zipFiles(files);
-		return new ResponseEntity<>(HttpStatus.OK);
-	}
+	@GetMapping(CCPTConstants.DOWNLOAD_BY_REF_ID_AND_REF_TPYE)
+	public ResponseEntity<Void> downloadFileByRefIdAndRefType(@RequestParam String refType, @RequestParam Integer refId,
+			HttpServletResponse httpServletResponse) throws IOException {
+		UploadFile dbFile = uploadFileService.downloadFileByRefIdAndRefType(refType, refId);
 
-	static String writeByte(byte[] bytes, int iterNum) {
-		String FILEPATH = "d:\\test" + iterNum + ".txt";
-		File file = new File(FILEPATH);
+		byte[] retrievedFile = dbFile.getContent();
 		try {
-			OutputStream os = new FileOutputStream(file);
-			os.write(bytes);
-			System.out.println("Successfully" + " byte inserted");
-			os.close();
-		} catch (Exception e) {
-			System.out.println("Exception: " + e);
+			httpServletResponse.setContentType(dbFile.getFileType());
+			httpServletResponse.setHeader("Expires", "0");
+			httpServletResponse.setHeader("Cache-Control", "must-revalidate, post-check=0, pre-check=0");
+			httpServletResponse.setHeader("Pragma", "public");
+			httpServletResponse.addHeader("Content-Type", dbFile.getFileType());
+			httpServletResponse.setContentType(dbFile.getFileType());
+			httpServletResponse.setHeader("Content-Disposition", "attachment; filename=" + dbFile.getFileName());
+			ServletOutputStream servletOutputStream = httpServletResponse.getOutputStream();
+			servletOutputStream.write(retrievedFile);
+			servletOutputStream.flush();
+			servletOutputStream.close();
+			return new ResponseEntity<Void>(HttpStatus.OK);
+		} catch (Exception exception) {
+			System.out.println("exceptions");
 		}
-		return FILEPATH;
+		return null;
 	}
 
 	@PostMapping("save")
-	public ResponseEntity<Void> uploadFile(@RequestParam("file") MultipartFile file, @RequestParam("refId") int refId,
+	public UploadFileResponse uploadFile(@RequestParam("file") MultipartFile file, @RequestParam("refId") int refId,
 			@RequestParam("refType") String refType, @RequestParam("comments") String comments) throws IOException {
-		UploadFile uploadFile = new UploadFile(file.getBytes(), refId, refType, comments);
-		uploadFileService.save(uploadFile);
-		return new ResponseEntity<Void>(HttpStatus.CREATED);
+
+		String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+		String fileType = file.getContentType();
+		UploadFile uploadFile = new UploadFile(file.getBytes(), refId, refType, comments, fileName, fileType);
+		UploadFile dbFile = uploadFileService.save(uploadFile);
+
+		String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath().path("/downloadFile/")
+				.path(dbFile.getId().toString()).toUriString();
+
+		return new UploadFileResponse(dbFile.getFileName(), fileDownloadUri, file.getContentType(), file.getSize());
 	}
 
 	@PostMapping("/uploadMultipleFiles")
@@ -101,10 +103,4 @@ public class UploadFileController {
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 
-	@GetMapping("/getAllfromRefIdAndType")
-	public ResponseEntity<List<UploadFile>> getAllfromRefIdAndType(@RequestParam String refType,
-			@RequestParam Integer refId) throws IOException {
-		List<UploadFile> res = uploadFileService.getByRefIdAndTefType(refType, refId);
-		return new ResponseEntity<List<UploadFile>>(res, HttpStatus.OK);
-	}
 }

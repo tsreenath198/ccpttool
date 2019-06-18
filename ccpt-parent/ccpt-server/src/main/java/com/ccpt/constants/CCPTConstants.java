@@ -19,7 +19,7 @@ public interface CCPTConstants {
 	String SEND_EMAIL = "/sendEmail";
 	String TEMPLATE = "/template";
 	String EMAIL = "/email";
-	String GET_BY_REF_ID_AND_REF_TPYE = "/download";
+	String DOWNLOAD_BY_REF_ID_AND_REF_TPYE = "/download";
 	String UPLOAD_FILE = "/file";
 	String SMS = "/sms";
 
