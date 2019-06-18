@@ -2,6 +2,7 @@ package com.ccpt.service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -41,6 +42,15 @@ public class ConsultantService extends BaseService<Consultant, Integer> {
 
 	public List<Consultant> find(String fullname, String email, String phone) {
 		return consultantRepository.findByPhoneOrFullnameOrEmail(phone, fullname, email);
+	}
+
+	@Override
+	protected void postActivate(Consultant consultant) {
+		Optional<Consultant> coOptional = consultantRepository.findById(consultant.getId());
+		if (coOptional.isPresent()) {
+			coOptional.get().setActiveFlag(true);
+			coOptional.get().setUpdatedDate(new Date());
+		}
 	}
 
 }
