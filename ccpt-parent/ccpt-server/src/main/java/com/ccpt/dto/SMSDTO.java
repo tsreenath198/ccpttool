@@ -10,5 +10,5 @@ import lombok.ToString;
 public class SMSDTO extends IDEntityDTO {
 	private String contactNumbers;
 	private String message;
-
+	private String target;
 }

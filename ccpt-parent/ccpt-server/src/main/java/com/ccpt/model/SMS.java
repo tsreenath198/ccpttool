@@ -28,5 +28,8 @@ public class SMS extends IDEntity {
 	@Column
 	@NotNull
 	private String message;
-
+	
+	@Column
+	@NotNull
+	private String target;
 }

@@ -11,4 +11,5 @@ public class EmailContentDTO extends IDEntityDTO {
 	private String toEmails;
 	private String subject;
 	private String body;
+	private String target;
 }

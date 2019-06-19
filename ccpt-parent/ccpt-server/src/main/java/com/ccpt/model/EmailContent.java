@@ -32,4 +32,8 @@ public class EmailContent extends IDEntity {
 	@Column
 	@NotNull
 	private String body;
+
+	@Column
+	@NotNull
+	private String target;
 }
