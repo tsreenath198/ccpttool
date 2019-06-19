@@ -7,6 +7,7 @@ import { ToastrCustomService } from 'src/app/shared/services/toastr.service';
 import { NgbModal, ModalDismissReasons, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { NgForm } from '@angular/forms';
 import { AdditionalPropertiesModel } from 'src/app/additional-properties.model';
+import { AngularEditorConfig } from '@kolkov/angular-editor';
 
 @Component({
     selector: 'app-other-contacts',
@@ -28,6 +29,14 @@ export class OtherContactsComponent implements OnInit {
     public closeResult = '';
     public trash = 'trash';
     private modalRef: NgbModalRef;
+    protected config: AngularEditorConfig = {
+        editable: true,
+        spellcheck: true,
+        height: '15rem',
+        minHeight: '5rem',
+        placeholder: 'Enter text here...',
+        translate: 'no'
+      };
 
     constructor(private http: HttpClientService, private toastr: ToastrCustomService, private modalService: NgbModal) {
         this.getScreenSize();
@@ -58,17 +67,20 @@ export class OtherContactsComponent implements OnInit {
     }
     edit() {
         this.readOnlyForm = 'U';
+        this.config.editable = true;
         this.enableButtonType = 'U';
     }
     enableFormEditable(): void {
 
         this.readOnlyForm = 'U';
+        this.config.editable = true;
         this.enableButtonType = 'U';
     }
 
     readOnlyEnable(id) {
         this.getById(id);
         this.readOnlyForm = 'R';
+        this.config.editable = false;
         this.enableButtonType = 'E';
     }
     getById(id) {
