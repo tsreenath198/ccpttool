@@ -12,6 +12,7 @@ public interface ConsultantCallHistoryMapper
 		extends BaseMapper<ConsultantCallHistoryDTO, ConsultantCallHistory, Integer> {
 
 	@Mappings({ @Mapping(source = "consultantId", target = "consultant.id"),
-			@Mapping(source = "calledBy", target = "calledBy.id") })
+			@Mapping(source = "calledBy", target = "calledBy.id"),
+			@Mapping(source = "clientPositionId", target = "clientPosition.id")})
 	public ConsultantCallHistory toModel(ConsultantCallHistoryDTO dto);
 }

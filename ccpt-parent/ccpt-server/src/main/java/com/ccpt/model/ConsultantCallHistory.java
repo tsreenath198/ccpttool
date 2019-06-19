@@ -36,6 +36,10 @@ public class ConsultantCallHistory extends IDEntity {
 	@Column
 	@NotNull
 	private Date calledDate;
+	
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "client_position_id")
+	private ClientPosition clientPosition;
 
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "called_by")
