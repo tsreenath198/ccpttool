@@ -5,6 +5,6 @@ export interface OtherContactsModel{
     name:string,
     email:string,
     phone:string,
-    notes:string,
+    description:string,
     properties: Array<AdditionalPropertiesModel>,
 }

@@ -3,23 +3,25 @@
   <div class="row">
     <div class="col-md-7">
       <div class="row">
-        <div class="col-md-6"><strong>Total No of records : {{OCList.length}}</strong></div>
-        <div class="col-md-6"> <input type="text" class="form-control" placeholder="search..."
-            [(ngModel)]="currSearchTxt" /></div>
+        <div class="col-md-6"><input type="text" class="form-control" placeholder="search..." [(ngModel)]="currSearchTxt" /></div>
       </div>
-      <div class="table-responsive mt-2 table-wrapper-scroll-y my-custom-scrollbar">
+      <div class="table-responsive mt-2 table-wrapper-scroll-y my-custom-scrollbar" [style.height.px]="screenHeight">
         <table class="table table-hover table-striped">
           <tbody>
-            <tr *ngFor="let ocl of OCList |  filter : 'name' : currSearchTxt ; let i = index"
-              (click)="readOnlyEnable(ocl.id)" (dblclick)="edit(ocl)">
+            <tr
+              *ngFor="let ocl of OCList | filter: 'name':currSearchTxt; let i = index"
+              [ngClass]="!ocl.isProfileCompleted ? 'bl-red' : 'bl-trans'"
+              (click)="readOnlyEnable(ocl.id)"
+              (dblclick)="edit(ocl)"
+            >
               <td>
-                {{ocl.name}}
+                {{ ocl.name }}
               </td>
               <td>
-                {{ocl.email}}
+                {{ ocl.email }}
               </td>
               <td>
-                {{ocl.phone}}
+                {{ ocl.phone }}
               </td>
               <td width="100">
                 <app-action [trashContent]="trashContent" [id]="ocl.id" [isTrash]="trash" (trash)="open($event)"></app-action>
@@ -30,13 +32,20 @@
       </div>
     </div>
     <div class=" col-md-5">
-      <form name="form" id="otherContactForm" (ngSubmit)="f.form.valid&&create(f)" #f="ngForm" novalidate>
+      <form name="form" id="otherContactForm" (ngSubmit)="f.form.valid && create(f)" #f="ngForm" novalidate>
         <div class="row">
           <div class="col-md-12">
             <div class="form-group">
               <label>Name<span class="required">*</span></label>
-              <input class="form-control" [readonly]="readOnlyForm == 'R'" [(ngModel)]="OCModel.name" name="name"
-                [ngClass]="{'is-invalid': f.submitted && name.invalid}" #name="ngModel" required>
+              <input
+                class="form-control"
+                [readonly]="readOnlyForm == 'R'"
+                [(ngModel)]="OCModel.name"
+                name="name"
+                [ngClass]="{ 'is-invalid': f.submitted && name.invalid }"
+                #name="ngModel"
+                required
+              />
               <div class="invalid-feedback">
                 name is mandatory
               </div>
@@ -44,26 +53,35 @@
           </div>
           <div class="col-md-12">
             <div class="form-group">
-              <label>Phone<span class="required">*</span></label>
-              <input class="form-control" [readonly]="readOnlyForm == 'R'" [(ngModel)]="OCModel.phone" name="phone"
-              [ngClass]="{'is-invalid': f.submitted && name.invalid}" #phone="ngModel" required>
-              <div class="invalid-feedback">
-                phone is mandatory
-              </div>
+              <label>Phone</label>
+              <input
+                class="form-control"
+                [readonly]="readOnlyForm == 'R'"
+                [(ngModel)]="OCModel.phone"
+                name="phone"
+                [ngClass]="{ 'is-invalid': f.submitted && name.invalid }"
+                #phone="ngModel"
+              />
             </div>
           </div>
           <div class="col-md-12">
             <div class="form-group">
               <label>E-Mail</label>
-              <input class="form-control" [readonly]="readOnlyForm == 'R'" [(ngModel)]="OCModel.email" name="email"
-                #email="ngModel">
+              <input class="form-control" [readonly]="readOnlyForm == 'R'" [(ngModel)]="OCModel.email" name="email" #email="ngModel" />
             </div>
           </div>
           <div class="col-md-12">
             <div class="form-group">
               <label>Notes</label>
-              <textarea class="form-control" cols="5" rows="5" [readonly]="readOnlyForm == 'R'"
-                [(ngModel)]="OCModel.notes" name="notes" #notes="ngModel"></textarea>
+              <textarea
+                class="form-control"
+                cols="5"
+                rows="5"
+                [readonly]="readOnlyForm == 'R'"
+                [(ngModel)]="OCModel.description"
+                name="notes"
+                #notes="ngModel"
+              ></textarea>
             </div>
           </div>
         </div>
@@ -72,21 +90,37 @@
           <div class="table-responsive">
             <table class="table table-hover table-striped">
               <tbody>
-                <tr *ngFor="let ap of OCModel.properties;let i=index">
+                <tr *ngFor="let ap of OCModel.properties; let i = index">
                   <td>
-                    <input class="form-control" [readonly]="readOnlyForm == 'R'" [(ngModel)]="ap.name" name="pname{{i}}"
-                      placeholder="name" #pname="ngModel">
+                    <input
+                      class="form-control"
+                      [readonly]="readOnlyForm == 'R'"
+                      [(ngModel)]="ap.name"
+                      name="pname{{ i }}"
+                      placeholder="name"
+                      #pname="ngModel"
+                    />
                   </td>
                   <td>
-                    <input class="form-control" type="text" [readonly]="readOnlyForm == 'R'" [(ngModel)]="ap.value"
-                      name="pvalue{{i}}" placeholder="value" #pvalue="ngModel">
-
+                    <input
+                      class="form-control"
+                      type="text"
+                      [readonly]="readOnlyForm == 'R'"
+                      [(ngModel)]="ap.value"
+                      name="pvalue{{ i }}"
+                      placeholder="value"
+                      #pvalue="ngModel"
+                    />
                   </td>
                   <td>
-                    <i class="fa fa-minus" aria-hidden="true" id="decrease"
-                      (click)="propertiesListIncrement($event.target,i)"></i><br>
-                    <i class="fa fa-plus" *ngIf="(i+1)==OCModel.properties.length" aria-hidden="true"
-                      id="increase" (click)="propertiesListIncrement($event.target,i)"></i>
+                    <i class="fa fa-minus" aria-hidden="true" id="decrease" (click)="propertiesListIncrement($event.target, i)"></i><br />
+                    <i
+                      class="fa fa-plus"
+                      *ngIf="i + 1 == OCModel.properties.length"
+                      aria-hidden="true"
+                      id="increase"
+                      (click)="propertiesListIncrement($event.target, i)"
+                    ></i>
                   </td>
                 </tr>
               </tbody>
@@ -96,10 +130,10 @@
         <div class="row text-center">
           <div class="col-md-12">
             <button type="submit" *ngIf="enableButtonType == ''" class="btn btn-secondary ml-3">Add</button>
-            <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2"
-              (click)="update(f)">Update</button>
-            <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button"
-              (click)="enableFormEditable()">Edit</button>
+            <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2" (click)="update(f)">Update</button>
+            <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button" (click)="enableFormEditable()">
+              Edit
+            </button>
             <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3">Clear</button>
           </div>
         </div>

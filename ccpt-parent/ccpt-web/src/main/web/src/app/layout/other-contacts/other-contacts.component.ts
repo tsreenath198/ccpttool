@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { routerTransition } from '../../router.animations';
 import { OtherContactsModel } from './other-contacts.model';
 import { HttpClientService } from 'src/app/shared/services/http.service';
@@ -15,7 +15,7 @@ import { AdditionalPropertiesModel } from 'src/app/additional-properties.model';
     animations: [routerTransition()]
 })
 export class OtherContactsComponent implements OnInit {
-    constructor(private http: HttpClientService, private toastr: ToastrCustomService, private modalService: NgbModal) { }
+
     public OCModel: OtherContactsModel = <OtherContactsModel>{};
     public OCList: any = [];
     private urlConstants = new URLConstants();
@@ -23,10 +23,19 @@ export class OtherContactsComponent implements OnInit {
     public enableButtonType = '';
     public currSearchTxt = '';
 
+    protected screenHeight: any;
     private selectedRecrdToDel = 0;
     public closeResult = '';
-    public trash:string = 'trash';
+    public trash = 'trash';
     private modalRef: NgbModalRef;
+
+    constructor(private http: HttpClientService, private toastr: ToastrCustomService, private modalService: NgbModal) {
+        this.getScreenSize();
+     }
+     @HostListener('window:resize', ['$event'])
+     getScreenSize(event?) {
+           this.screenHeight = window.innerHeight;
+     }
     ngOnInit() {
         this.init();
         this.additionalPropertiesDeclare();
@@ -34,7 +43,18 @@ export class OtherContactsComponent implements OnInit {
     init() {
         this.http.get(this.urlConstants.OCGetAll).subscribe(resp => {
             this.OCList = resp as any;
+            this.OCList.forEach(cl => {
+                if (this.validate(cl.name) || this.validate(cl.email) || this.validate(cl.phone)) {
+                    cl['isProfileCompleted'] = false;
+                } else {
+                    cl['isProfileCompleted'] = true;
+                }
+            });
         });
+    }
+    private validate(value: any): boolean {
+        const bool = (value == null) ? true : false;
+        return bool;
     }
     edit() {
         this.readOnlyForm = 'U';
@@ -52,8 +72,10 @@ export class OtherContactsComponent implements OnInit {
         this.enableButtonType = 'E';
     }
     getById(id) {
-        this.http.get(this.urlConstants.OCGetById + id).subscribe(resp => {
+        const temp = this.http.get(this.urlConstants.OCGetById + id);
+        temp.subscribe(resp => {
             this.OCModel = this.mapToUpdateModel(resp);
+            // tslint:disable-next-line:no-shadowed-variable
             const temp = resp as any;
             if (temp.properties == null) {
                 this.additionalPropertiesDeclare();
@@ -84,7 +106,8 @@ export class OtherContactsComponent implements OnInit {
         this.OCModel = <OtherContactsModel>{};
     }
     create(otherContactForm: NgForm): void {
-        this.http.post(this.OCModel, this.urlConstants.OCCreate).subscribe(resp => {
+        const temp = this.http.post(this.OCModel, this.urlConstants.OCCreate);
+        temp.subscribe(resp => {
             this.toastr.success(this.urlConstants.SuccessMsg, 'Contact');
             this.init();
             this.formReset();
@@ -95,7 +118,8 @@ export class OtherContactsComponent implements OnInit {
         });
     }
     update(otherContactForm: NgForm) {
-        this.http.update(this.OCModel, this.urlConstants.OCUpdate).subscribe(resp => {
+        const temp = this.http.update(this.OCModel, this.urlConstants.OCUpdate);
+        temp.subscribe(resp => {
             this.formReset();
             this.toastr.success(this.urlConstants.UpdateMsg, 'Contact ');
             this.init();
@@ -115,7 +139,8 @@ export class OtherContactsComponent implements OnInit {
         this.additionalPropertiesDeclare();
     }
     delete(): void {
-        this.http.delete(this.urlConstants.OCDelete + this.selectedRecrdToDel).subscribe(resp => {
+        const temp = this.http.delete(this.urlConstants.OCDelete + this.selectedRecrdToDel);
+        temp.subscribe(resp => {
             this.toastr.success(this.urlConstants.DeleteMsg, 'Contact');
             this.init();
             this.close();
