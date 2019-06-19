@@ -102,7 +102,7 @@ public class ClientApplicationController extends BaseController<ClientApplicatio
 		} else {
 			model.setStatus(clientApplicationStatusService.findByCode(model.getStatus().getCode()));
 		}
-		if (model.getConsultant().getId() != null || model.getClientPosition().getId() != null) {
+		if (model.getId() == null && model.getConsultant().getId() != null || model.getClientPosition().getId() != null) {
 			Integer check = clientApplicationService.checkPositionWithConsultant(model.getClientPosition().getId(),
 					model.getConsultant().getId());
 			if (check >= 1) {
