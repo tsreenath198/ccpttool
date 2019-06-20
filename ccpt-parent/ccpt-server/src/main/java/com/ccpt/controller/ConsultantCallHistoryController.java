@@ -26,10 +26,10 @@ public class ConsultantCallHistoryController
 
 	@Autowired
 	private ConsultantCallHistoryService consultantCallHistoryService;
-	
+
 	@Autowired
 	private ConsultantService consultantService;
-	
+
 	@Autowired
 	private RecruiterService recruiterService;
 
@@ -57,6 +57,9 @@ public class ConsultantCallHistoryController
 		}
 		if (model.getCalledDate() == null) {
 			throw new ValidationException("Called Date cannot be null");
+		}
+		if (model.getDescription() == null || model.getDescription().isEmpty()) {
+			throw new ValidationException("Description cannot be null");
 		}
 	}
 

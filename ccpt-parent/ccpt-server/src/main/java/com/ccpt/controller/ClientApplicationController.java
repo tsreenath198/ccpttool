@@ -73,9 +73,9 @@ public class ClientApplicationController extends BaseController<ClientApplicatio
 
 	}
 
-	@GetMapping("/getAllInterviewsToday")
-	public ResponseEntity<List<InterviewSummaryStatistics>> getAllInterviewsToday() {
-		List<InterviewSummaryStatistics> result = clientApplicationService.getAllInterviewsToday();
+	@GetMapping("/getAllOneWeekInterviews")
+	public ResponseEntity<List<InterviewSummaryStatistics>> getAllOneWeekInterviews() {
+		List<InterviewSummaryStatistics> result = clientApplicationService.getAllOneWeekInterviews();
 		return new ResponseEntity<List<InterviewSummaryStatistics>>(result, HttpStatus.OK);
 
 	}

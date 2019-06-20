@@ -1,5 +1,6 @@
 package com.ccpt.service;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -43,9 +44,14 @@ public class ClientApplicationService extends BaseService<ClientApplication, Int
 		return clientApplicationRepository.checkPositionWithConsultant(cpId, consultantId);
 	}
 
-	public List<InterviewSummaryStatistics> getAllInterviewsToday() {
+	public List<InterviewSummaryStatistics> getAllOneWeekInterviews() {
 		Date today = new Date();
-		return clientApplicationRepository.getAllInterviewsToday(today);
+		Date week = new Date();
+		Calendar c = Calendar.getInstance();
+		c.setTime(week);
+		c.add(Calendar.DATE, 6);
+		week = c.getTime();
+		return clientApplicationRepository.getAllInterviewsToday(today, week);
 	}
 
 	public List<ClientApplication> findByConsultantIdAndActiveFlag(Integer consultantId) {

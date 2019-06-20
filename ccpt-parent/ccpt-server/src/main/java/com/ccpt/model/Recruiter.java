@@ -53,4 +53,8 @@ public class Recruiter extends IDEntity {
 	@NotNull
 	private String address;
 
+	@Column(unique = true)
+	@NotNull
+	private String aliasName;
+
 }

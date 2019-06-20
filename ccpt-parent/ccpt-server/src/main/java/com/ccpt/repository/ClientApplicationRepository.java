@@ -24,8 +24,9 @@ public interface ClientApplicationRepository extends BaseRepository<ClientApplic
 	List<ClientApplication> findByClientPositionIdAndActiveFlag(@Param("clientPositionId") Integer clientPositionId,
 			@Param("activeFlag") Boolean activeFlag);
 
-	@Query("SELECT  cl.name as clientName,cl.phone as clientPhone,con.fullname as consultantName,con.phone as consultantPhone,ca.interviewMode as interviewMode,ca.interviewDate as interviewDate,ca.interviewLocation as interviewLocation,ca.interviewTime  as interviewTime FROM ClientApplication ca,ClientPosition cp ,Client cl,Consultant con WHERE ca.clientPosition=cp.id AND cp.client =cl.id AND ca.consultant=con.id AND ca.interviewDate=:currentDate")
-	List<InterviewSummaryStatistics> getAllInterviewsToday(@Param(value = "currentDate") Date currentDate);
+	@Query("SELECT  cl.name as clientName,cl.phone as clientPhone,con.fullname as consultantName,con.phone as consultantPhone,ca.interviewMode as interviewMode,ca.interviewDate as interviewDate,ca.interviewLocation as interviewLocation,ca.interviewTime  as interviewTime FROM ClientApplication ca,ClientPosition cp ,Client cl,Consultant con WHERE ca.clientPosition=cp.id AND cp.client =cl.id AND ca.consultant=con.id AND ca.interviewDate BETWEEN :currentDate AND :week")
+	List<InterviewSummaryStatistics> getAllInterviewsToday(@Param(value = "currentDate") Date currentDate,
+			@Param(value = "week") Date week);
 
 	List<ClientApplication> findByConsultantIdAndActiveFlag(@Param("consultantId") Integer consultantId,
 			@Param("activeFlag") Boolean activeFlag);

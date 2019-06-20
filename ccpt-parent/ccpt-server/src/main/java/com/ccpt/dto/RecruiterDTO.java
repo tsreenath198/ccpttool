@@ -17,4 +17,5 @@ public class RecruiterDTO extends IDEntityDTO {
 	private String phone;
 	private String email;
 	private String address;
+	private String aliasName;
 }

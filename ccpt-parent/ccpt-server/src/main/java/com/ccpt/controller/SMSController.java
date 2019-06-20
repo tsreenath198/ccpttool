@@ -2,6 +2,9 @@ package com.ccpt.controller;
 
 import java.net.URISyntaxException;
 
+import javax.validation.ValidationException;
+
+import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -17,13 +20,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.client.RestTemplate;
 
 import com.ccpt.constants.CCPTConstants;
+import com.ccpt.dto.SMSDTO;
+import com.ccpt.mapper.BaseMapper;
+import com.ccpt.mapper.SMSMapper;
 import com.ccpt.model.SMS;
+import com.ccpt.service.BaseService;
 import com.ccpt.service.SMSService;
 
 @Controller
 @CrossOrigin
 @RequestMapping(CCPTConstants.SMS)
-public class SMSController {
+public class SMSController extends BaseController<SMSDTO, SMS, Integer> {
 
 	@Value("${sms.url}")
 	private String url;
@@ -60,6 +67,23 @@ public class SMSController {
 		} catch (Exception e) {
 		}
 		return null;
+	}
+
+	@Override
+	public BaseService<SMS, Integer> getService() {
+		return smsService;
+	}
+
+	@Override
+	public BaseMapper<SMSDTO, SMS, Integer> getMapper() {
+		return Mappers.getMapper(SMSMapper.class);
+	}
+
+	@Override
+	protected void validateAndClean(SMS model) {
+		if (model.getMessage() == null) {
+			throw new ValidationException("Message cannot be null");
+		}
 	}
 
 }

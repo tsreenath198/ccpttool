@@ -28,7 +28,7 @@ public class ClientCallHistoryController extends BaseController<ClientCallHistor
 
 	@Autowired
 	private ClientPositionService clientPositionService;
-	
+
 	@Autowired
 	private RecruiterService recruiterService;
 
@@ -49,7 +49,7 @@ public class ClientCallHistoryController extends BaseController<ClientCallHistor
 		} else {
 			model.setClientPosition(clientPositionService.get(model.getClientPosition().getId()));
 		}
-		
+
 		if (model.getCalledBy() == null || model.getCalledBy().getId() == null) {
 			throw new ValidationException("Called By cannot be null");
 		} else {
@@ -57,6 +57,9 @@ public class ClientCallHistoryController extends BaseController<ClientCallHistor
 		}
 		if (model.getCalledDate() == null) {
 			throw new ValidationException("Called Date cannot be null");
+		}
+		if (model.getDescription() == null || model.getDescription().isEmpty()) {
+			throw new ValidationException("Description cannot be null");
 		}
 	}
 }
