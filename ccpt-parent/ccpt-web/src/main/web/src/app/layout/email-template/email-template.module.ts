@@ -7,7 +7,7 @@ import { EmailTemplateRoutingModule } from './email-template-routing.module';
 import { EmailTemplateComponent } from './email-template.component';
 
 @NgModule({
-    imports: [CommonModule, EmailTemplateRoutingModule, FormsModule, PageHeaderModule, SharedPipesModule,ActionListModule],
+    imports: [CommonModule, EmailTemplateRoutingModule, FormsModule, PageHeaderModule, SharedPipesModule, ActionListModule],
     declarations: [EmailTemplateComponent]
 })
 export class EmailTemplateModule {}

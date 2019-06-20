@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { routerTransition } from '../../router.animations';
 import { NgbModal, ModalDismissReasons, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { URLConstants } from '../components/constants/url-constants';
@@ -32,12 +32,17 @@ export class ClientComponent implements OnInit {
     private selectedRecrdToDel = 0;
     public closeResult = '';
     private modalRef: NgbModalRef;
-    
-    public download:string = 'download';
-    public trash:string = 'trash';
-    public upload:string = 'upload';
+    protected screenHeight: any;
+    public download = 'download';
+    public trash = 'trash';
+    public upload = 'upload';
     constructor(private http: HttpClientService, private toastr: ToastrCustomService, private modalService: NgbModal) {
+        this.getScreenSize();
     }
+    @HostListener('window:resize', ['$event'])
+     getScreenSize(event?) {
+           this.screenHeight = window.innerHeight;
+     }
     ngOnInit() {
         this.clientContactDeclare();
         this.additionalPropertiesDeclare();
@@ -68,8 +73,10 @@ export class ClientComponent implements OnInit {
         this.enableButtonType = 'E';
     }
     getById(id) {
-        this.http.get(this.urlConstants.ClientGetById + id).subscribe(resp => {
+        const temp = this.http.get(this.urlConstants.ClientGetById + id);
+        temp.subscribe(resp => {
             this.clientModel = this.mapToUpdateModel(resp);
+            // tslint:disable-next-line:no-shadowed-variable
             const temp = resp as any;
             if (temp.properties == null) {
                 this.additionalPropertiesDeclare();
@@ -85,7 +92,8 @@ export class ClientComponent implements OnInit {
         this.clientModel = <ClientModel>{};
     }
     clientCreate(clientForm: NgForm): void {
-        this.http.post(this.clientModel, this.urlConstants.ClientCreate).subscribe(resp => {
+        const temp = this.http.post(this.clientModel, this.urlConstants.ClientCreate);
+        temp.subscribe(resp => {
             this.toastr.success(this.urlConstants.SuccessMsg, 'Client');
             this.init();
             this.formReset();
@@ -97,7 +105,8 @@ export class ClientComponent implements OnInit {
         });
     }
     updateClient(clientForm: NgForm) {
-        this.http.update(this.clientModel, this.urlConstants.ClientUpdate).subscribe(resp => {
+        const temp = this.http.update(this.clientModel, this.urlConstants.ClientUpdate);
+        temp.subscribe(resp => {
             this.formReset();
             this.toastr.success(this.urlConstants.UpdateMsg, 'Client');
             this.init();
@@ -151,7 +160,8 @@ export class ClientComponent implements OnInit {
         }
     }
     deleteClientRecord(): void {
-        this.http.delete(this.urlConstants.ClientDelete + this.selectedRecrdToDel).subscribe(resp => {
+        const temp = this.http.delete(this.urlConstants.ClientDelete + this.selectedRecrdToDel);
+        temp.subscribe(resp => {
             this.toastr.success(this.urlConstants.DeleteMsg, 'Client');
             this.init();
             this.close();
@@ -182,7 +192,7 @@ export class ClientComponent implements OnInit {
         if (event.id) {
             this.selectedRecrdToDel = event.id;
         }
-        if(event.type === this.download){
+        if (event.type === this.download) {
             this.getFilesById(this.selectedRecrdToDel);
         }
         this.modalRef = this.modalService.open(event.content);

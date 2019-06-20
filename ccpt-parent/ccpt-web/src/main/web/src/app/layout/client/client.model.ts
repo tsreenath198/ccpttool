@@ -1,4 +1,4 @@
-import { AdditionalPropertiesModel } from "src/app/additional-properties.model";
+import { AdditionalPropertiesModel } from 'src/app/additional-properties.model';
 
 export interface ClientModel {
     id: number;
@@ -22,6 +22,6 @@ export interface ClientContactsModel {
       email: string;
       fullname: string;
       phone: string;
-      //properties: Array<AdditionalPropertiesModel>;
+      // properties: Array<AdditionalPropertiesModel>;
 }
 

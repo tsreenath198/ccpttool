@@ -7,7 +7,7 @@ import { MessageTemplateRoutingModule } from './message-template-routing.module'
 import { MessageTemplateComponent } from './message-template.component';
 
 @NgModule({
-    imports: [CommonModule, MessageTemplateRoutingModule, FormsModule, PageHeaderModule, SharedPipesModule,ActionListModule],
+    imports: [CommonModule, MessageTemplateRoutingModule, FormsModule, PageHeaderModule, SharedPipesModule, ActionListModule],
     declarations: [MessageTemplateComponent]
 })
 export class MessageTemplateModule {}

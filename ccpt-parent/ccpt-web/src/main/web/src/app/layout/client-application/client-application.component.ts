@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { routerTransition } from '../../router.animations';
 import { forkJoin } from 'rxjs';
 import { URLConstants } from '../components/constants/url-constants';
@@ -37,16 +37,23 @@ export class ClientApplicationComponent implements OnInit {
     private selectedRecrdToDel = 0;
     public closeResult = '';
     private modalRef: NgbModalRef;
+    protected screenHeight: any;
     public readOnlyForm = '';
     public enableButtonType = '';
-    public trash:string = 'trash';
+    public trash = 'trash';
 
-    constructor(private http: HttpClientService, private toastr: ToastrCustomService, private modalService: NgbModal) {
-    }
     private getAllCAS = this.http.get(this.urlConstants.CASGetAll);
     private getAllC = this.http.get(this.urlConstants.CGetAll);
     private getAllCP = this.http.get(this.urlConstants.CPGetAll);
     private getAllR = this.http.get(this.urlConstants.RGetAll);
+
+    constructor(private http: HttpClientService, private toastr: ToastrCustomService, private modalService: NgbModal) {
+        this.getScreenSize();
+    }
+    @HostListener('window:resize', ['$event'])
+    getScreenSize(event?) {
+          this.screenHeight = window.innerHeight;
+    }
 
     ngOnInit() {
         this.init();
@@ -87,8 +94,10 @@ export class ClientApplicationComponent implements OnInit {
         this.enableButtonType = 'E';
     }
     getCCHById(id: number) {
-        this.http.get(this.urlConstants.CAGetById + id).subscribe(resp => {
+        const temp = this.http.get(this.urlConstants.CAGetById + id);
+        temp.subscribe(resp => {
             this.CAModel = this.mapToUpdateModel(resp);
+            // tslint:disable-next-line:no-shadowed-variable
             const temp = resp as any;
             if (temp.properties == null) {
                 this.additionalPropertiesDeclare();
@@ -120,7 +129,8 @@ export class ClientApplicationComponent implements OnInit {
         }
     }
     createClientApplication(clientApplicationForm: NgForm): void {
-        this.http.post(this.CAModel, this.urlConstants.CACreate).subscribe(resp => {
+        const temp = this.http.post(this.CAModel, this.urlConstants.CACreate);
+        temp.subscribe(resp => {
             this.toastr.success(this.urlConstants.SuccessMsg, 'Client Application');
             this.init();
             this.formReset();
@@ -139,7 +149,8 @@ export class ClientApplicationComponent implements OnInit {
         this.enableButtonType = 'U';
     }
     updateClientApplication(clientApplicationForm: NgForm) {
-        this.http.update(this.CAModel, this.urlConstants.CAUpdate).subscribe(resp => {
+        const temp = this.http.update(this.CAModel, this.urlConstants.CAUpdate);
+        temp.subscribe(resp => {
             this.toastr.success(this.urlConstants.UpdateMsg, 'Client Application');
             this.formReset();
             this.init();
@@ -162,7 +173,8 @@ export class ClientApplicationComponent implements OnInit {
 
     }
     deleteCARecord(): void {
-        this.http.delete(this.urlConstants.CADelete + this.selectedRecrdToDel).subscribe(resp => {
+        const temp = this.http.delete(this.urlConstants.CADelete + this.selectedRecrdToDel);
+        temp.subscribe(resp => {
             this.toastr.success(this.urlConstants.DeleteMsg, 'Client Application');
             this.init();
             this.close();

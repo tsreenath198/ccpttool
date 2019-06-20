@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { routerTransition } from '../../router.animations';
 import { ClientpositionStatusModel } from './client-position-status.model';
 import { HttpClientService } from 'src/app/shared/services/http.service';
@@ -18,24 +18,31 @@ export class ClientPositionStatusComponent implements OnInit {
     public clientPositionStatusModel: ClientpositionStatusModel = <ClientpositionStatusModel>{};
     public clientPositionStatusList: Array<ClientpositionStatusModel> = [];
     private urlConstants = new URLConstants();
-    public formButtonsToggler: boolean =true;
-    public editButtonToggler: boolean =true;
-    private selectedRecrdToDel: number = 0;
-    public closeResult: string = '';
+    public formButtonsToggler = true;
+    public editButtonToggler = true;
+    private selectedRecrdToDel = 0;
+    public closeResult = '';
     private modalRef: NgbModalRef;
     public currSearchTxt: string ;
-    public readOnlyForm: string = '';
+    public readOnlyForm = '';
     public enableButtonType = '';
-    public trash:string = 'trash';
+    public trash = 'trash';
+    protected screenHeight: any;
 
-    constructor(private http: HttpClientService, private toastr: ToastrCustomService,private modalService: NgbModal) { }
+    constructor(private http: HttpClientService, private toastr: ToastrCustomService, private modalService: NgbModal) {
+        this.getScreenSize();
+    }
+    @HostListener('window:resize', ['$event'])
+    getScreenSize(event?) {
+          this.screenHeight = window.innerHeight;
+    }
     ngOnInit() {
         this.init();
     }
     init() {
         this.http.get(this.urlConstants.CPSGetAll).subscribe(resp => {
             this.clientPositionStatusList = resp as Array<ClientpositionStatusModel>;
-        })
+        });
     }
     editClientPositionStatus(data) {
         this.readOnlyForm = 'U';

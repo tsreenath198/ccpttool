@@ -34,6 +34,7 @@ export class URLConstants {
     CDelete = 'consultant/';
     CGetById = 'consultant/';
     CUpload = 'file/save';
+    CActivate = 'consultant/activate/'
 
     /* Client Application */
     CACreate = 'clientApplication';
@@ -88,7 +89,7 @@ export class URLConstants {
     ReportingGetAllOpenCP = 'report/getAllOpenCP';
     ReportingGetAllActiveCA = 'clientApplication/getAllActiveCACountByCpID';
     ReportingGetAllActiveCAById = 'clientApplication/getAllActiveCAByCpID?cpId=';
-    ReportingGetAllInterviewsToday = 'clientApplication/getAllInterviewsToday';
+    ReportingGetAllInterviewsToday = 'clientApplication/getAllOneWeekInterviews';
 
     /**Email Template */
     EmailTemplateCreate = 'template';
@@ -120,7 +121,7 @@ export class URLConstants {
     DeleteMsg = 'Deleted Successfully';
     SuccessMsg = 'Created Successfully ';
     UpdateMsg = 'Updated Successfully';
-
+    ActivatedMsg = 'Activated Successfully'
     UploadFilesMsg = 'Upload Files';
     DownloadFilesMsg = 'Files';
 }

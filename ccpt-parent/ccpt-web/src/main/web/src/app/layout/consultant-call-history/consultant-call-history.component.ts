@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { routerTransition } from '../../router.animations';
 import { NgbModal, ModalDismissReasons, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ConsultantCallHistoryModel } from './consultant-call-history.model';
@@ -10,6 +10,7 @@ import { NgForm } from '@angular/forms';
 import { ClientPositionModel } from '../client-position/client-position.model';
 import { AdditionalPropertiesModel } from 'src/app/additional-properties.model';
 import { RecruiterModel } from '../recruiter/recruiter.model';
+import { forkJoin } from 'rxjs';
 
 
 @Component({
@@ -19,42 +20,81 @@ import { RecruiterModel } from '../recruiter/recruiter.model';
     animations: [routerTransition()]
 })
 export class ConsultantCallHistoryComponent implements OnInit {
-    public consultantCallHistoryModel: ConsultantCallHistoryModel = <ConsultantCallHistoryModel>{};
-    public consultantCallHistoryList: Array<ConsultantCallHistoryModel> = [];
+    public consultantCallHistoryModel: ConsultantCallHistoryModel = <any>{};
+    public consultantCallHistoryList: Array<any> = [];
     public currSearchTxt = '';
     public formButtonsToggler = true;
     public editButtonToggler = true;
-    public consultantList: Array<ConsultantModel> = [];
-    public clientPositionList: Array<ClientPositionModel> = [];
-    public rescruiterList: Array<RecruiterModel> = [];
+    public consultantList: Array<any> = [];
+    public clientPositionList: Array<any> = [];
+    public recruiterList: Array<any> = [];
     public urlConstants = new URLConstants();
 
     private selectedRecrdToDel = 0;
     public closeResult = '';
     private modalRef: NgbModalRef;
-    public trash:string = 'trash';
+    public trash = 'trash';
+    protected screenHeight: any;
     public readOnlyForm = '';
     public enableButtonType = '';
 
-    constructor(private http: HttpClientService, private toastr: ToastrCustomService, private modalService: NgbModal) { }
+    protected getCplPromise = this.http.get(this.urlConstants.CPGetAll);
+    protected getClPromise = this.http.get(this.urlConstants.CGetAll);
+    protected getRlPromise = this.http.get(this.urlConstants.RGetAll);
+    protected cochGetAllPromise = this.http.get(this.urlConstants.CoCHGetAll);
+
+    constructor(private http: HttpClientService, private toastr: ToastrCustomService, private modalService: NgbModal) {
+        this.getScreenSize();
+     }
+
+    @HostListener('window:resize', ['$event'])
+    getScreenSize(event?) {
+          this.screenHeight = window.innerHeight;
+    }
     ngOnInit() {
+        this.joins();
         this.init();
         this.additionalPropertiesDeclare();
-        this.http.get(this.urlConstants.CGetAll).subscribe(resp => {
-            this.consultantList = resp as Array<ConsultantModel>;
-        });
-        this.http.get(this.urlConstants.CPGetAll).subscribe(resp => {
-            this.clientPositionList = resp as Array<ClientPositionModel>;
-        });
-        this.http.get(this.urlConstants.RGetAll).subscribe(resp => {
-            this.rescruiterList = resp as any;
-        });
+        // this.http.get(this.urlConstants.CGetAll).subscribe(resp => {
+        //     this.consultantList = resp as Array<ConsultantModel>;
+        // });
+        // this.http.get(this.urlConstants.CPGetAll).subscribe(resp => {
+        //     this.clientPositionList = resp as Array<ClientPositionModel>;
+        // });
+        // this.http.get(this.urlConstants.RGetAll).subscribe(resp => {
+        //     this.recruiterList = resp as any;
+        // });
     }
+    joins() {
+        forkJoin(this.getCplPromise, this.getClPromise, this.getRlPromise).subscribe(listofrecords => {
+          this.clientPositionList = listofrecords[0] as any;
+          this.consultantList = listofrecords[1] as any;
+          this.recruiterList = listofrecords[2] as any;
+          this.getRecruiterId();
+          this.getTodaysDate();
+        });
+      }
     init() {
-        this.http.get(this.urlConstants.CoCHGetAll).subscribe(resp => {
+        this.cochGetAllPromise.subscribe(resp => {
             this.consultantCallHistoryList = resp as Array<ConsultantCallHistoryModel>;
         });
     }
+    getRecruiterId() {
+        const temp = sessionStorage.getItem('username');
+        this.recruiterList.forEach(rl => {
+          if (rl.email === temp) {
+            this.consultantCallHistoryModel.calledBy = rl.id;
+          }
+        });
+      }
+      getTodaysDate() {
+        const today = new Date();
+        const dd = String(today.getDate()).padStart(2, '0');
+        const mm = String(today.getMonth() + 1).padStart(2, '0'); // January is 0!
+        const yyyy = today.getFullYear();
+        const temp = yyyy+'-'+mm+'-'+dd ;
+        this.consultantCallHistoryModel.calledDate = temp;
+      }
     consultantCallHistoryEdit(data) {
         this.consultantCallHistoryModel = JSON.parse(JSON.stringify(data));
         this.readOnlyForm = 'U';
@@ -66,8 +106,10 @@ export class ConsultantCallHistoryComponent implements OnInit {
         this.enableButtonType = 'E';
     }
     getConsultantById(id: number) {
-        this.http.get(this.urlConstants.CoCHGetById + id).subscribe(resp => {
+        const temp = this.http.get(this.urlConstants.CoCHGetById + id);
+        temp.subscribe(resp => {
             this.consultantCallHistoryModel = this.mapToUpdateModel(resp);
+            // tslint:disable-next-line:no-shadowed-variable
             const temp = resp as any;
             if (temp.properties == null) {
                 this.additionalPropertiesDeclare();
@@ -79,6 +121,7 @@ export class ConsultantCallHistoryComponent implements OnInit {
         this.consultantCallHistoryModel = temp;
         this.consultantCallHistoryModel['consultantId'] = temp.consultant.id;
         this.consultantCallHistoryModel['calledBy'] = temp.calledBy.id;
+        this.consultantCallHistoryModel['clientPositionId'] = temp.clientPosition.id;
         return this.consultantCallHistoryModel;
     }
     additionalPropertiesDeclare() {
@@ -104,7 +147,8 @@ export class ConsultantCallHistoryComponent implements OnInit {
         this.consultantCallHistoryModel = <ConsultantCallHistoryModel>{};
     }
     createConsultantCallHistory(consultantCallHistory: NgForm): void {
-        this.http.post(this.consultantCallHistoryModel, this.urlConstants.CoCHCreate).subscribe(resp => {
+        const temp = this.http.post(this.consultantCallHistoryModel, this.urlConstants.CoCHCreate);
+        temp.subscribe(resp => {
             this.toastr.success(this.urlConstants.SuccessMsg, 'Consultant Call History');
             this.init();
             this.formReset();
@@ -116,7 +160,8 @@ export class ConsultantCallHistoryComponent implements OnInit {
 
     }
     updateConsultantCallHistory(consultantCallHistory: NgForm) {
-        this.http.update(this.consultantCallHistoryModel, this.urlConstants.CoCHUpdate).subscribe(resp => {
+        const temp = this.http.update(this.consultantCallHistoryModel, this.urlConstants.CoCHUpdate);
+        temp.subscribe(resp => {
             this.formReset();
             this.toastr.success(this.urlConstants.UpdateMsg, 'Consultant Call History');
             this.init();
@@ -138,7 +183,8 @@ export class ConsultantCallHistoryComponent implements OnInit {
 
     }
     deleteCoCHRecord(): void {
-        this.http.delete(this.urlConstants.CoCHDelete + this.selectedRecrdToDel).subscribe(resp => {
+        const temp = this.http.delete(this.urlConstants.CoCHDelete + this.selectedRecrdToDel);
+        temp.subscribe(resp => {
             this.toastr.success(this.urlConstants.DeleteMsg, 'Consultant Call History');
             this.init();
             this.close();

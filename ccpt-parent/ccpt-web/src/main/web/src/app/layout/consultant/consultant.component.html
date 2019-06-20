@@ -3,11 +3,14 @@
   <div class="row">
     <div class="col-md-7">
       <div class="row">
-        <div class="col-md-6"><strong>Total No of records : {{consultantList.length}}</strong></div>
         <div class="col-md-6"> <input type="text" class="form-control" placeholder="search..."
             [(ngModel)]="currSearchTxt" /></div>
+        <div class="input-group col-md-6 ">
+            <input type="text" [(ngModel)]="idToActivate" class="form-control" placeholder="Consultant ID" >
+              <button class="btn btn-secondary " (click)="activateId()" type="button">Activate</button>
+          </div>
       </div>
-      <div  class="table-responsive  mt-2" [style.height.px]="screenHeight">
+      <div  class="table-responsive table-wrapper-scroll-y my-custom-scrollbar  mt-2" [style.height.px]="screenHeight">
         <table class="table table-hover table-striped">
           <tbody class="overflow-ele-scroll ">
             <tr *ngFor="let cl of consultantList |  filter : 'fullname' :currSearchTxt ; let i = index"
@@ -15,7 +18,7 @@
               <td class="table-data-padding " (click)="readOnlyEnable(cl.id)" (dblclick)="consultantEdit(cl.id)">
                 <dl>
                   <dt> {{cl.fullname}}</dt>
-                  <dd>{{cl.skills || 'NA'}}</dd>
+                  <dd>{{cl.skills}}</dd>
                 </dl>
               </td>
               <!--  <input type="file" (change)="fileChange($event)" > <span class="fa fa-upload pull-right"></span> -->
@@ -45,7 +48,7 @@
           <div class="col-md-12">
             <div class="form-group">
               <label>Full Name<span class="required">*</span></label>
-              <input class="form-control" name="fullname" [readonly]="readOnlyForm == 'R'" placeholder="Fullname"
+              <input class="form-control" name="fullname" [readonly]="readOnlyForm == 'R'"
                 [(ngModel)]="consultantModel.fullname" [ngClass]="{'is-invalid': f.submitted && fullname.invalid}"
                 #fullname="ngModel" required>
               <div class="invalid-feedback">
@@ -58,7 +61,7 @@
             <div class="form-group">
               <label>E-Mail</label>
               <!-- ng-pattern="/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/" -->
-              <input class="form-control" placeholder="E-mail" name="email" [readonly]="readOnlyForm == 'R'"
+              <input class="form-control" name="email" [readonly]="readOnlyForm == 'R'"
                 [(ngModel)]="consultantModel.email" #email="ngModel" type="email">
             </div>
           </div>
@@ -67,7 +70,7 @@
               <!--pattern="/^-?\d+\.?\d*$/"
                 onKeyPress="if(this.value.length==12) return false;" -->
               <label>Phone</label>
-              <input class="form-control" placeholder="Phone" name="phone" [readonly]="readOnlyForm == 'R'"
+              <input class="form-control"  name="phone" [readonly]="readOnlyForm == 'R'"
                 [(ngModel)]="consultantModel.phone" maxlength="12" onKeyPress="if(this.value.length==12) return false;"
                 #phone="ngModel" type="text">
             </div>
@@ -98,8 +101,7 @@
           <div class="col-md-12">
             <div class="form-group">
               <label>Highest Education</label>
-              <input class="form-control" name="highesteducation" [readonly]="readOnlyForm == 'R'"
-                placeholder="Highest Education" [(ngModel)]="consultantModel.highestEducation"
+              <input class="form-control" name="highesteducation" [readonly]="readOnlyForm == 'R'" [(ngModel)]="consultantModel.highestEducation"
                 #highesteducation="ngModel">
             </div>
           </div>
@@ -125,21 +127,21 @@
             <div class="col-md-12">
               <div class="form-group">
                 <label>Current Company</label>
-                <input type="text" name="currentCompany" placeholder="Current Company" class="form-control"
+                <input type="text" name="currentCompany" class="form-control"
                   [readonly]="readOnlyForm == 'R'" [(ngModel)]="consultantModel.currentCompany">
               </div>
             </div>
             <div class="col-md-12">
               <div class="form-group">
                 <label>Current Location</label>
-                <input type="text" name="currentLocation" placeholder="Current Location"
+                <input type="text" name="currentLocation" 
                   [readonly]="readOnlyForm == 'R'" class="form-control" [(ngModel)]="consultantModel.currentLocation">
               </div>
             </div>
             <div class="col-md-12">
               <div class="form-group">
                 <label>Current CTC</label>
-                <input type="number" name="currentCTC" placeholder="Current CTC" [readonly]="readOnlyForm == 'R'"
+                <input type="text" name="currentCTC"  [readonly]="readOnlyForm == 'R'"
                   class="form-control" [(ngModel)]="consultantModel.currentCTC">
               </div>
             </div>
@@ -158,14 +160,14 @@
             <div class="col-md-12">
               <div class="form-group">
                 <label>Current Job Title</label>
-                <input type="text" name="currentJobTitle" placeholder="Current Job Title"
+                <input type="text" name="currentJobTitle" 
                   [readonly]="readOnlyForm == 'R'" class="form-control" [(ngModel)]="consultantModel.currentJobTitle">
               </div>
             </div>
             <div class="col-md-12">
               <div class="form-group">
                 <label>Current Functional Area</label>
-                <input type="text" name="currentFunctionalArea" placeholder="Current Functiional Area"
+                <input type="text" name="currentFunctionalArea" 
                   [readonly]="readOnlyForm == 'R'" class="form-control"
                   [(ngModel)]="consultantModel.currentFunctionalArea">
               </div>
@@ -173,7 +175,7 @@
             <div class="col-md-12">
               <div class="form-group">
                 <label>Current Industry</label>
-                <input type="text" name="currentIndustry" placeholder="Current Industry"
+                <input type="text" name="currentIndustry" 
                   [readonly]="readOnlyForm == 'R'" class="form-control" [(ngModel)]="consultantModel.currentIndustry">
               </div>
             </div>
@@ -192,7 +194,7 @@
             <div class="col-md-12">
               <div class="form-group">
                 <label>Notice period</label>
-                <input type="text" name="noticePeriod" placeholder="Notice Period" [readonly]="readOnlyForm == 'R'"
+                <input type="text" name="noticePeriod" [readonly]="readOnlyForm == 'R'"
                   class="form-control" [(ngModel)]="consultantModel.noticePeriod">
               </div>
             </div>
@@ -200,7 +202,7 @@
           <div class="col-md-12">
             <div class="form-group">
               <label>Expected CTC</label>
-              <input type="number" name="expectedCTC" placeholder="Expected CTC" [readonly]="readOnlyForm == 'R'"
+              <input type="text" name="expectedCTC"  [readonly]="readOnlyForm == 'R'"
                 class="form-control" [(ngModel)]="consultantModel.expectedCTC">
             </div>
           </div>
@@ -208,7 +210,7 @@
           <div class="col-md-12">
             <div class="form-group">
               <label>Prefer Location</label>
-              <input class="form-control" name="prefferedLocation" placeholder="Preffered Location"
+              <input class="form-control" name="prefferedLocation" 
                 [readonly]="readOnlyForm == 'R'" [(ngModel)]="consultantModel.prefferedLocation">
             </div>
           </div>
@@ -216,24 +218,14 @@
             <div class="form-group">
               <label>Skills</label>
               <textarea class="form-control" cols="10" rows="10" name="skills" [readonly]="readOnlyForm == 'R'"
-                [(ngModel)]="consultantModel.skills" placeholder="Skills">
+                [(ngModel)]="consultantModel.skills" >
                 </textarea>
             </div>
           </div>
           <div class="col-md-12">
             <div class="form-group">
-              <label>Qualification</label>
-              <textarea rows="8" class="form-control" name="qualification" [readonly]="readOnlyForm == 'R'"
-                [(ngModel)]="consultantModel.qualification" placeholder="Qualification"
-                [ngClass]="{'is-invalid': f.submitted && qualification.invalid}" #qualification="ngModel"></textarea>
-
-            </div>
-          </div>
-
-          <div class="col-md-12">
-            <div class="form-group">
               <label>Passout Year</label>
-              <input class="form-control" name="passoutyear" placeholder="Passout Year" [readonly]="readOnlyForm == 'R'"
+              <input class="form-control" name="passoutyear"  [readonly]="readOnlyForm == 'R'"
                 type="number" [(ngModel)]="consultantModel.passoutYear">
             </div>
           </div>
@@ -243,7 +235,7 @@
           <div class="col-md-12">
             <div class="form-group">
               <label>Description</label>
-              <textarea class="form-control" name="description" placeholder="Description"
+              <textarea class="form-control" name="description"
                 [readonly]="readOnlyForm == 'R'" [(ngModel)]="consultantModel.description" rows="10"></textarea>
             </div>
           </div>

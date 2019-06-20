@@ -1,5 +1,5 @@
-import { ConsultantStatusModel } from "../consultant-status/consultant-status.model";
-import { AdditionalPropertiesModel } from "src/app/additional-properties.model";
+import { ConsultantStatusModel } from '../consultant-status/consultant-status.model';
+import { AdditionalPropertiesModel } from 'src/app/additional-properties.model';
 
 export interface ConsultantModel {
     fullname: string;
@@ -15,7 +15,6 @@ export interface ConsultantModel {
     experienceYrs: string;
     prefferedLocation: string;
     skills: string;
-    qualification: string;
     passoutYear: number;
     cstatus: string;
     description: string;

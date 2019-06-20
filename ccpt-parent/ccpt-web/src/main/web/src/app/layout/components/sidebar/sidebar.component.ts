@@ -13,7 +13,7 @@ export class SidebarComponent implements OnInit {
     showMenu: string;
     pushRightClass: string;
     public loggedInUserRole: string;
-    public loggedInRole: string = '';
+    public loggedInRole = '';
 
     @Output() collapsedEvent = new EventEmitter<boolean>();
 

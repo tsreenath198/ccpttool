@@ -7,3 +7,11 @@
 .bl-trans{
   border-left: 6px solid transparent;
 }
+.my-custom-scrollbar {
+  position: relative;
+  height: 31.5em;
+  overflow: auto;
+  }
+  .table-wrapper-scroll-y {
+  display: block;
+  }

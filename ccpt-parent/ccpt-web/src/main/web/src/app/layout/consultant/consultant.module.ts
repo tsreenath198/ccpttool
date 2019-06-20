@@ -8,7 +8,7 @@ import { ConsultantRoutingModule } from './consultant-routing.module';
 import { ConsultantComponent } from './consultant.component';
 
 @NgModule({
-    imports: [CommonModule, ConsultantRoutingModule, FormsModule, PageHeaderModule,ActionListModule, SharedPipesModule, FileUploadModule],
+    imports: [CommonModule, ConsultantRoutingModule, FormsModule, PageHeaderModule, ActionListModule, SharedPipesModule, FileUploadModule],
     declarations: [ConsultantComponent]
 })
 export class ConsultantModule { }

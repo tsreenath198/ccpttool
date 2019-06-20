@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { NgbModal, ModalDismissReasons, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { routerTransition } from '../../router.animations';
 import { ConsultantStatusModel } from './consultant-status.model';
@@ -23,11 +23,18 @@ export class ConsultantStatusComponent implements OnInit {
     private selectedRecrdToDel = 0;
     public closeResult = '';
     private modalRef: NgbModalRef;
-    public trash:string = 'trash';
+    public trash = 'trash';
+    protected screenHeight: any;
 
     public readOnlyForm = '';
     public enableButtonType = '';
-    constructor(private http: HttpClientService, private toastr: ToastrCustomService, private modalService: NgbModal) { }
+    constructor(private http: HttpClientService, private toastr: ToastrCustomService, private modalService: NgbModal) {
+        this.getScreenSize();
+    }
+    @HostListener('window:resize', ['$event'])
+    getScreenSize(event?) {
+          this.screenHeight = window.innerHeight;
+    }
     ngOnInit() {
         this.init();
     }
@@ -50,21 +57,23 @@ export class ConsultantStatusComponent implements OnInit {
         this.readOnlyForm = 'R';
         this.enableButtonType = 'E';
     }
-    getById(id){
-        this.http.get(this.urlConstants.CSGetById + id).subscribe(resp => {
+    getById(id) {
+        const temp = this.http.get(this.urlConstants.CSGetById + id);
+        temp.subscribe(resp => {
             this.consultantStatusModel = this.mapToUpdateModel(resp);
             });
     }
-    mapToUpdateModel(response){
-        let temp=response;
-        this.consultantStatusModel=temp;
-        return this.consultantStatusModel   
+    mapToUpdateModel(response) {
+        const temp = response;
+        this.consultantStatusModel = temp;
+        return this.consultantStatusModel;
     }
     public formReset() {
         this.consultantStatusModel = <ConsultantStatusModel>{};
     }
     public createConsultantStatus(consultantStatusForm: NgForm): void {
-        this.http.post(this.consultantStatusModel, this.urlConstants.CSCreate).subscribe(resp => {
+        const temp = this.http.post(this.consultantStatusModel, this.urlConstants.CSCreate);
+        temp.subscribe(resp => {
             this.toastr.success(this.urlConstants.SuccessMsg, 'Consultant Status');
             this.init();
             this.formReset();
@@ -74,7 +83,8 @@ export class ConsultantStatusComponent implements OnInit {
         });
     }
     public updateConsultantStatus(consultantStatusForm: NgForm) {
-        this.http.update(this.consultantStatusModel, this.urlConstants.CSUpdate).subscribe(resp => {
+        const temp = this.http.update(this.consultantStatusModel, this.urlConstants.CSUpdate);
+        temp.subscribe(resp => {
             this.toastr.success(this.urlConstants.UpdateMsg, 'Consultant Status');
             this.formButtonsToggler = true;
             this.formReset();
@@ -94,7 +104,8 @@ export class ConsultantStatusComponent implements OnInit {
         this.enableButtonType = '';
     }
     deleteCSRecord(): void {
-        this.http.delete(this.urlConstants.CSDelete + this.selectedRecrdToDel).subscribe(resp => {
+        const temp = this.http.delete(this.urlConstants.CSDelete + this.selectedRecrdToDel);
+        temp.subscribe(resp => {
             this.toastr.success(this.urlConstants.DeleteMsg, 'Consultant Status');
             this.init();
             this.close();

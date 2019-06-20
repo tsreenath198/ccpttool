@@ -1,4 +1,4 @@
-import { AdditionalPropertiesModel } from "src/app/additional-properties.model";
+import { AdditionalPropertiesModel } from 'src/app/additional-properties.model';
 
 export interface ClientPositionModel {
     assignedTo: number;
@@ -22,7 +22,7 @@ export interface ClientPositionModel {
 }
 
 export class SendSmsModel {
-    contactNumbers: Array<string>= [];
+    contactNumbers: Array<string> = [];
     message: string;
 }
 

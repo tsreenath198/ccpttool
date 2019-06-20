@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { routerTransition } from '../../router.animations';
 import { HttpClientService } from 'src/app/shared/services/http.service';
 import { URLConstants } from '../components/constants/url-constants';
@@ -14,17 +14,25 @@ import { MessageTemplateModel } from './message-template.model';
     animations: [routerTransition()]
 })
 export class MessageTemplateComponent implements OnInit {
-    constructor(private http: HttpClientService, private toastr: ToastrCustomService, private modalService: NgbModal) { }
+
     public messageTemplateModel: MessageTemplateModel = <MessageTemplateModel>{};
     public messageTemplateList: any = [];
     private urlConstants = new URLConstants();
     public readOnlyForm = '';
     public enableButtonType = '';
     public currSearchTxt = '';
-    public trash:string = 'trash';
+    public trash = 'trash';
     private selectedRecrdToDel = 0;
     public closeResult = '';
     private modalRef: NgbModalRef;
+    protected screenHeight: any;
+    constructor(private http: HttpClientService, private toastr: ToastrCustomService, private modalService: NgbModal) {
+        this.getScreenSize();
+    }
+    @HostListener('window:resize', ['$event'])
+    getScreenSize(event?) {
+          this.screenHeight = window.innerHeight;
+    }
     ngOnInit() {
         this.init();
     }
@@ -48,7 +56,8 @@ export class MessageTemplateComponent implements OnInit {
         this.enableButtonType = 'E';
     }
     getSMSById(id: number) {
-        this.http.get(this.urlConstants.SMSTemplateGetById + id).subscribe(resp => {
+        const temp = this.http.get(this.urlConstants.SMSTemplateGetById + id);
+        temp.subscribe(resp => {
             this.messageTemplateModel = this.mapToUpdateModel(resp);
         });
     }
@@ -61,7 +70,8 @@ export class MessageTemplateComponent implements OnInit {
         this.messageTemplateModel = <MessageTemplateModel>{};
     }
     messageTemplateCreate(messageTemplateForm: NgForm): void {
-        this.http.post(this.messageTemplateModel, this.urlConstants.SMSTemplateCreate).subscribe(resp => {
+        const temp = this.http.post(this.messageTemplateModel, this.urlConstants.SMSTemplateCreate);
+        temp.subscribe(resp => {
             this.toastr.success(this.urlConstants.SuccessMsg, 'Contact');
             this.init();
             this.formReset();
@@ -71,7 +81,8 @@ export class MessageTemplateComponent implements OnInit {
         });
     }
     updateMessageTemplate(messageTemplateForm: NgForm) {
-        this.http.update(this.messageTemplateModel, this.urlConstants.SMSTemplateUpdate).subscribe(resp => {
+        const temp = this.http.update(this.messageTemplateModel, this.urlConstants.SMSTemplateUpdate);
+        temp.subscribe(resp => {
             this.formReset();
             this.toastr.success(this.urlConstants.UpdateMsg, 'Message Template ');
             this.init();
@@ -89,7 +100,8 @@ export class MessageTemplateComponent implements OnInit {
         this.enableButtonType = '';
     }
     deleteClientRecord(): void {
-        this.http.delete(this.urlConstants.SMSTemplateDelete + this.selectedRecrdToDel).subscribe(resp => {
+        const temp = this.http.delete(this.urlConstants.SMSTemplateDelete + this.selectedRecrdToDel);
+        temp.subscribe(resp => {
             this.toastr.success(this.urlConstants.DeleteMsg, 'Client');
             this.init();
             this.close();

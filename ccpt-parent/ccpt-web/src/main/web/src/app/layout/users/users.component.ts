@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { routerTransition } from '../../router.animations';
 import {  UsersModel, UserRoles } from './users.model';
 import { HttpClientService } from 'src/app/shared/services/http.service';
@@ -28,8 +28,15 @@ export class UsersComponent implements OnInit {
     public closeResult = '';
     private modalRef: NgbModalRef;
     public trash:string = 'trash';
+    protected screenHeight:any;
 
-    constructor(private http: HttpClientService, private toastr: ToastrCustomService, private modalService: NgbModal) { }
+    constructor(private http: HttpClientService, private toastr: ToastrCustomService, private modalService: NgbModal) { 
+        this.getScreenSize();
+     }
+     @HostListener('window:resize', ['$event'])
+     getScreenSize(event?) {
+           this.screenHeight = window.innerHeight;
+     }
 
     ngOnInit() {
         this.http.get(this.urlConstants.RGetAll).subscribe(resp => {
@@ -60,7 +67,8 @@ export class UsersComponent implements OnInit {
         this.enableButtonType = 'E';
     }
     getUserById(id: number) {
-        this.http.get(this.urlConstants.UserGetById + id).subscribe(resp => {
+        let temp=this.http.get(this.urlConstants.UserGetById + id);
+        temp.subscribe(resp => {
         this.usersModel = this.mapToUpdateModel(resp);
         const temp = resp as any;
         if (temp.properties == null) {
@@ -92,7 +100,8 @@ export class UsersComponent implements OnInit {
         this.usersModel = <UsersModel>{};
     }
     createUser(usersForm: NgForm): void {
-        this.http.post(this.usersModel, this.urlConstants.UserCreate).subscribe(resp => {
+        let temp=this.http.post(this.usersModel, this.urlConstants.UserCreate);
+        temp.subscribe(resp => {
             this.toastr.success(this.urlConstants.SuccessMsg, 'User');
             usersForm.resetForm();
             this.init();
@@ -102,7 +111,8 @@ export class UsersComponent implements OnInit {
         });
     }
     updateUsers(usersForm: NgForm): void {
-        this.http.update(this.usersModel, this.urlConstants.UserUpdate).subscribe(resp => {
+        let temp=this.http.update(this.usersModel, this.urlConstants.UserUpdate);
+        temp.subscribe(resp => {
             this.formReset();
             this.toastr.success(this.urlConstants.UpdateMsg, 'User');
             this.init();
@@ -115,7 +125,8 @@ export class UsersComponent implements OnInit {
         });
     }
     deleteUserRecord(): void {
-        this.http.delete(this.urlConstants.UserDelete + this.selectedRecrdToDel).subscribe(resp => {
+        let temp=this.http.delete(this.urlConstants.UserDelete + this.selectedRecrdToDel);
+        temp.subscribe(resp => {
             this.toastr.success(this.urlConstants.DeleteMsg, 'User');
             this.init();
             this.close();

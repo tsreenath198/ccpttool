@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { routerTransition } from '../../router.animations';
 import { NgbModal, ModalDismissReasons, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { RecruiterModel, Roles } from './recruiter.model';
@@ -28,10 +28,17 @@ export class RecruiterComponent implements OnInit {
     public genderList = ['Male', 'Female', 'Other'];
     public currSearchTxt: string;
     public trash:string = 'trash';
+    protected screenHeight:any;
     public readOnlyForm = '';
     public enableButtonType = '';
 
-    constructor(private http: HttpClientService, private toastr: ToastrCustomService, private modalService: NgbModal) { }
+    constructor(private http: HttpClientService, private toastr: ToastrCustomService, private modalService: NgbModal) { 
+        this.getScreenSize();
+     }
+     @HostListener('window:resize', ['$event'])
+     getScreenSize(event?) {
+           this.screenHeight = window.innerHeight;
+     }
     ngOnInit() {
         this.init();
         this.additionalPropertiesDeclare();
@@ -56,7 +63,8 @@ export class RecruiterComponent implements OnInit {
         this.enableButtonType = 'E';
     }
     getById(id) {
-        this.http.get(this.urlConstants.RGetById + id).subscribe(resp => {
+        let temp=this.http.get(this.urlConstants.RGetById + id);
+        temp.subscribe(resp => {
             this.recruiterModel = this.mapToUpdateModel(resp);
             const temp = resp as any;
             if (temp.properties == null) {
@@ -88,7 +96,8 @@ export class RecruiterComponent implements OnInit {
         this.recruiterModel = <RecruiterModel>{};
     }
     createRecruiter(recruiterForm: NgForm): void {
-        this.http.post(this.recruiterModel, this.urlConstants.RCreate).subscribe(resp => {
+        let temp=this.http.post(this.recruiterModel, this.urlConstants.RCreate);
+        temp.subscribe(resp => {
             this.toastr.success(this.urlConstants.SuccessMsg, 'Recruiter');
             this.init();
             this.formReset();
@@ -99,7 +108,8 @@ export class RecruiterComponent implements OnInit {
         });
     }
     updateRecruiter(recruiterForm: NgForm) {
-        this.http.update(this.recruiterModel, this.urlConstants.RUpdate).subscribe(resp => {
+        let temp=this.http.update(this.recruiterModel, this.urlConstants.RUpdate);
+        temp.subscribe(resp => {
             this.toastr.success(this.urlConstants.UpdateMsg, 'Recruiter');
             this.init();
             this.formReset();
@@ -120,7 +130,8 @@ export class RecruiterComponent implements OnInit {
         this.additionalPropertiesDeclare();
     }
     deleteRecruiterRecord(): void {
-        this.http.delete(this.urlConstants.RDelete + this.selectedRecrdToDel).subscribe(resp => {
+        let temp=this.http.delete(this.urlConstants.RDelete + this.selectedRecrdToDel);
+        temp.subscribe(resp => {
             let response:any = resp;
             this.toastr.success(response.message, 'Recruiter');
             this.close();

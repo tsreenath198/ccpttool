@@ -20,7 +20,7 @@
             </a>
           </li>
           <li >
-            <a class="list-group-item " [routerLink]="['/layout/client-call-history']"
+            <a *ngIf="loggedInRole === 'Admin' || loggedInRole === 'Manager'" class="list-group-item " [routerLink]="['/layout/client-call-history']"
               [routerLinkActive]="['router-link-active']">
               <span class="fa fa-fw fa-building"></span>
               <span>{{ 'Clients' | translate }}</span>

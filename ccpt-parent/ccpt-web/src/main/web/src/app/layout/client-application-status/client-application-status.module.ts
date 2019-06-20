@@ -8,8 +8,15 @@ import { ClientApplicationStatusComponent } from './client-application-status.co
 import { ClientApplicationStatusRoutingModule } from './client-application-status-routing.module';
 
 @NgModule({
-    imports: [CommonModule, ClientApplicationStatusRoutingModule, FormsModule, PageHeaderModule, NgbModule, SharedPipesModule,ActionListModule],
-    declarations: [ClientApplicationStatusComponent], 
+    imports: [CommonModule,
+        ClientApplicationStatusRoutingModule,
+        FormsModule,
+         PageHeaderModule,
+         NgbModule,
+         SharedPipesModule,
+         ActionListModule
+        ],
+    declarations: [ClientApplicationStatusComponent],
     providers: [NgbActiveModal]
 })
 export class ClientApplicationStatusModule { }

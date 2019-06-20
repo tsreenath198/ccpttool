@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { routerTransition } from '../../router.animations';
 import { URLConstants } from '../components/constants/url-constants';
 import { ClientApplicationStatusModel } from './client-application-status.model';
@@ -18,24 +18,30 @@ export class ClientApplicationStatusComponent implements OnInit {
     public clientApplicationStatusModel: ClientApplicationStatusModel = <ClientApplicationStatusModel>{};
     public clientApplicationStatusList: Array<ClientApplicationStatusModel> = [];
     private urlConstants = new URLConstants();
-    public readOnlyForm: string = '';
-    public enableButtonType: string = '';
+    public readOnlyForm = '';
+    public enableButtonType = '';
     public currSearchTxt: string;
-    private selectedRecrdToDel: number = 0;
-    public closeResult: string = '';
+    private selectedRecrdToDel = 0;
+    public closeResult = '';
     private modalRef: NgbModalRef;
-    
-    public trash:string = 'trash';
-    constructor(private http: HttpClientService, private toastr: ToastrCustomService, private modalService: NgbModal
-    ) {
+
+    protected screenHeight: any;
+
+    public trash = 'trash';
+    constructor(private http: HttpClientService, private toastr: ToastrCustomService, private modalService: NgbModal) {
+        this.getScreenSize();
     }
+    @HostListener('window:resize', ['$event'])
+     getScreenSize(event?) {
+           this.screenHeight = window.innerHeight;
+     }
     ngOnInit() {
         this.init();
     }
     init() {
         this.http.get(this.urlConstants.CASGetAll).subscribe(resp => {
             this.clientApplicationStatusList = resp as any;
-        })
+        });
     }
     /**
      * @param data consists the  table current selected row data
@@ -56,15 +62,16 @@ export class ClientApplicationStatusComponent implements OnInit {
         this.readOnlyForm = 'R';
         this.enableButtonType = 'E';
     }
-    getById(id){
-        this.http.get(this.urlConstants.CASGetById + id).subscribe(resp => {
+    getById(id) {
+        const temp = this.http.get(this.urlConstants.CASGetById + id);
+        temp.subscribe(resp => {
             this.clientApplicationStatusModel = this.mapToUpdateModel(resp);
             });
     }
-    mapToUpdateModel(response){
-        let temp=response;
-        this.clientApplicationStatusModel=temp;
-        return this.clientApplicationStatusModel
+    mapToUpdateModel(response) {
+        const temp = response;
+        this.clientApplicationStatusModel = temp;
+        return this.clientApplicationStatusModel;
     }
     formReset(): void {
         this.clientApplicationStatusModel = <ClientApplicationStatusModel>{};
@@ -73,29 +80,31 @@ export class ClientApplicationStatusComponent implements OnInit {
     * @param CASForm consists the form instance
     */
    createCAStatus(CASForm: NgForm): void {
-        this.http.post(this.clientApplicationStatusModel, this.urlConstants.CASCreate).subscribe(resp => {
-            this.toastr.success(this.urlConstants.SuccessMsg, "Client Application Status");
+    const temp = this.http.post(this.clientApplicationStatusModel, this.urlConstants.CASCreate);
+    temp.subscribe(resp => {
+            this.toastr.success(this.urlConstants.SuccessMsg, 'Client Application Status');
             this.init();
             this.formReset();
             CASForm.resetForm();
         }, err => {
-            this.toastr.error(err.error.message, "Client Application Status");
+            this.toastr.error(err.error.message, 'Client Application Status');
         });
     }
     /**
      * @param CASForm consists the form instance
      */
     updateClientApplicationStatus(CASForm: NgForm): void {
-        this.http.update(this.clientApplicationStatusModel, this.urlConstants.CASUpdate).subscribe(resp => {
-            this.toastr.success(this.urlConstants.UpdateMsg, "Client Application Status");
+        const temp = this.http.post(this.clientApplicationStatusModel, this.urlConstants.CASCreate);
+        temp.subscribe(resp => {
+            this.toastr.success(this.urlConstants.UpdateMsg, 'Client Application Status');
             this.formReset();
             this.init();
             CASForm.resetForm();
             this.readOnlyForm = '';
             this.enableButtonType = '';
         }, err => {
-            this.toastr.error(err.error.message, "Client Application Status");
-        })
+            this.toastr.error(err.error.message, 'Client Application Status');
+        });
     }
     /**
      * @param CASForm consists the form instance
@@ -107,17 +116,18 @@ export class ClientApplicationStatusComponent implements OnInit {
         this.enableButtonType = '';
     }
     deleteCASRecord(): void {
-        this.http.delete(this.urlConstants.CASDelete + this.selectedRecrdToDel).subscribe(resp => {
-            this.toastr.success(this.urlConstants.DeleteMsg, "Client Application Status");
+        const temp = this.http.delete(this.urlConstants.CASDelete + this.selectedRecrdToDel);
+        temp.subscribe(resp => {
+            this.toastr.success(this.urlConstants.DeleteMsg, 'Client Application Status');
             this.init();
             this.close();
             this.formReset();
         }, err => {
             this.toastr.error(err.error.message, 'Client Application Status');
-        })
+        });
     }
     /**
-     * @param 
+     * @param
      * 1) content consists the modal instance
      * 2) Selected contains the code of selected row
      */

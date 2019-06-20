@@ -5,11 +5,10 @@
   <div class="row">
     <div class="col-md-7">
       <div class="row">
-        <div class="col-md-6"><strong>Total No of records : {{clientCallHistoryList.length}}</strong></div>
         <div class="col-md-6"> <input type="text" class="form-control" placeholder="search..."
             [(ngModel)]="currSearchTxt" /></div>
       </div>
-      <div class="table-responsive mt-2 table-wrapper-scroll-y my-custom-scrollbar">
+      <div class="table-responsive mt-2 table-wrapper-scroll-y my-custom-scrollbar" [style.height.px]="screenHeight">
         <div *ngIf="clientCallHistoryList; else tableElse">
           <table class="table table-hover table-striped">
             <tbody class="overflow-ele-scroll">
@@ -40,14 +39,13 @@
       <form name="form" id="clientCallHistoryForm" (ngSubmit)="f.form.valid&&createClientCallHistory(f)" #f="ngForm"
         novalidate>
         <div class="row">
-          <div class="col-md-12">
+          <div class="col-md-6">
             <div class="form-group">
               <label>Called By<span class="required">*</span></label>
-
               <select class="form-control" [disabled]="readOnlyForm == 'R'" name="cn"
                 [(ngModel)]="clientCallHistoryModel.calledBy" [ngClass]="{'is-invalid': f.submitted && cn.invalid}"
                 #cn="ngModel" required>
-                <option *ngFor="let rl of rescruiterList" [ngValue]="rl.id">
+                <option *ngFor="let rl of recruiterList" [ngValue]="rl.id">
                   {{rl.fullname}}
                 </option>
               </select>
@@ -56,9 +54,20 @@
               </div>
             </div>
           </div>
-
-
-
+          <div class="col-md-6">
+              <div class="form-group">
+                <label>Called Date <span class="required">*</span></label>
+                <input class="form-control" type="date" name="calledDate" [readonly]="readOnlyForm == 'R'"
+                  placeholder="Called Date" [(ngModel)]="clientCallHistoryModel.calledDate" required>
+              </div>
+              <div class="invalid-feedback">
+                Called Date is mandatory
+              </div>
+          </div>
+          <div class="col-md-12">
+              <hr>
+          </div>
+          
           <div class="col-md-12">
             <div class="form-group">
               <label>Client Position<span class="required">*</span></label>
@@ -75,24 +84,17 @@
               </div>
             </div>
           </div>
-          <div class="col-md-12">
-            <div class="form-group">
-              <label>Called Date <span class="required">*</span></label>
-              <input class="form-control" type="date" name="calledDate" [readonly]="readOnlyForm == 'R'"
-                placeholder="Called Date" [(ngModel)]="clientCallHistoryModel.calledDate" required>
-            </div>
-            <div class="invalid-feedback">
-              Called Date is mandatory
-            </div>
-          </div>
         </div>
         <div class="row">
           <div class="col-md-12">
             <div class="form-group">
-              <label>Notes</label>
+              <label>Notes<span class="required">*</span></label>
               <textarea class="form-control" name="note" cols="10" rows="10" [readonly]="readOnlyForm == 'R'"
                 [(ngModel)]="clientCallHistoryModel.description" [ngClass]="{'is-invalid': f.submitted && note.invalid}"
-                #note="ngModel"></textarea>
+                #note="ngModel" required></textarea>
+                <div class="invalid-feedback">
+                  Notes is mandatory
+                </div>
             </div>
           </div>
         </div>

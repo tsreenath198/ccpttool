@@ -1,4 +1,4 @@
-export interface ClientApplicationStatusModel{
-    description:string,
-    code:string,
+export interface ClientApplicationStatusModel {
+    description: string;
+    code: string;
 }

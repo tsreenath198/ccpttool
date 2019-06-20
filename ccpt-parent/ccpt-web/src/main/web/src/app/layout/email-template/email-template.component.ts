@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { routerTransition } from '../../router.animations';
 import { HttpClientService } from 'src/app/shared/services/http.service';
 import { URLConstants } from '../components/constants/url-constants';
@@ -14,18 +14,27 @@ import { EmailTemplateModel } from './email-template.model';
     animations: [routerTransition()]
 })
 export class EmailTemplateComponent implements OnInit {
-    constructor(private http: HttpClientService, private toastr: ToastrCustomService, private modalService: NgbModal) { }
+
     public emailTemplateModel: EmailTemplateModel = <EmailTemplateModel>{};
     public emailTemplateList: any = [];
     private urlConstants = new URLConstants();
     public readOnlyForm = '';
     public enableButtonType = '';
     public currSearchTxt = '';
-    
-    public trash:string = 'trash';
+
+    public trash = 'trash';
     private selectedRecrdToDel = 0;
     public closeResult = '';
     private modalRef: NgbModalRef;
+    protected screenHeight: any;
+
+    constructor(private http: HttpClientService, private toastr: ToastrCustomService, private modalService: NgbModal) {
+        this.getScreenSize();
+     }
+     @HostListener('window:resize', ['$event'])
+     getScreenSize(event?) {
+           this.screenHeight = window.innerHeight;
+     }
     ngOnInit() {
         this.init();
     }
@@ -44,12 +53,13 @@ export class EmailTemplateComponent implements OnInit {
         this.enableButtonType = 'U';
     }
     readOnlyEnable(id) {
-        this.getEmailById(id)
+        this.getEmailById(id);
         this.readOnlyForm = 'R';
         this.enableButtonType = 'E';
     }
     getEmailById(id: number) {
-        this.http.get(this.urlConstants.SMSTemplateGetById + id).subscribe(resp => {
+        const temp = this.http.get(this.urlConstants.SMSTemplateGetById + id);
+        temp.subscribe(resp => {
             this.emailTemplateModel = this.mapToUpdateModel(resp);
         });
     }
@@ -62,7 +72,8 @@ export class EmailTemplateComponent implements OnInit {
         this.emailTemplateModel = <EmailTemplateModel>{};
     }
     emailTemplateCreate(emailTemplateForm: NgForm): void {
-        this.http.post(this.emailTemplateModel, this.urlConstants.EmailTemplateCreate).subscribe(resp => {
+        const temp = this.http.post(this.emailTemplateModel, this.urlConstants.EmailTemplateCreate);
+        temp.subscribe(resp => {
             this.toastr.success(this.urlConstants.SuccessMsg, 'Contact');
             this.init();
             this.formReset();
@@ -72,7 +83,8 @@ export class EmailTemplateComponent implements OnInit {
         });
     }
     updateEmailTemplate(emailTemplateForm: NgForm) {
-        this.http.update(this.emailTemplateModel, this.urlConstants.EmailTemplateUpdate).subscribe(resp => {
+        const temp = this.http.update(this.emailTemplateModel, this.urlConstants.EmailTemplateUpdate);
+        temp.subscribe(resp => {
             this.formReset();
             this.toastr.success(this.urlConstants.UpdateMsg, 'Email Template ');
             this.init();
@@ -90,7 +102,8 @@ export class EmailTemplateComponent implements OnInit {
         this.enableButtonType = '';
     }
     deleteClientRecord(): void {
-        this.http.delete(this.urlConstants.EmailTemplateDelete + this.selectedRecrdToDel).subscribe(resp => {
+        const temp = this.http.delete(this.urlConstants.EmailTemplateDelete + this.selectedRecrdToDel);
+        temp.subscribe(resp => {
             this.toastr.success(this.urlConstants.DeleteMsg, 'Client');
             this.init();
             this.close();
