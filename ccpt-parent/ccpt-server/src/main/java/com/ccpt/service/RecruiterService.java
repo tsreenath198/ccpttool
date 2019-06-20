@@ -7,8 +7,8 @@ import javax.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.ccpt.model.DropDownStatistics;
 import com.ccpt.model.Recruiter;
+import com.ccpt.model.RecruiterDropdownStatistics;
 import com.ccpt.repository.BaseRepository;
 import com.ccpt.repository.RecruiterRepository;
 
@@ -33,7 +33,7 @@ public class RecruiterService extends BaseService<Recruiter, Integer> {
 		return recruiterRepository;
 	}
 
-	public List<DropDownStatistics> getAllCreators() {
+	public List<RecruiterDropdownStatistics> getAllCreators() {
 		return recruiterRepository.getAllCreators();
 	}
 }

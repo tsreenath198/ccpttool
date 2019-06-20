@@ -13,6 +13,6 @@ public interface ClientApplicationStatusRepository extends BaseRepository<Client
 	ClientApplicationStatus findByCodeAndActiveFlag(@Param("code") String code,
 			@Param("activeFlag") Boolean activeFlag);
 
-	@Query(value = "SELECT id as id,description as name FROM ClientApplicationStatus")
+	@Query("SELECT id as id,description as name FROM ClientApplicationStatus WHERE active_flag=1")
 	List<DropDownStatistics> getAllCAStatus();
 }
