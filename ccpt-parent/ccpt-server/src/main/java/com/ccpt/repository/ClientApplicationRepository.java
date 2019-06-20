@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import com.ccpt.model.ClientApplication;
+import com.ccpt.model.ClientApplicationStatistics;
 import com.ccpt.model.InterviewSummaryStatistics;
 
 @Transactional
@@ -30,4 +31,16 @@ public interface ClientApplicationRepository extends BaseRepository<ClientApplic
 
 	List<ClientApplication> findByConsultantIdAndActiveFlag(@Param("consultantId") Integer consultantId,
 			@Param("activeFlag") Boolean activeFlag);
+
+	@Query(value = "SELECT id as id,generatedCode as name FROM ClientPosition")
+	List<ClientApplicationStatistics> getAllCps();
+
+	@Query(value = "SELECT id as id,fullname as name FROM Consultant")
+	List<ClientApplicationStatistics> getAllConsultants();
+
+	@Query(value = "SELECT id as id,description as name FROM ClientApplicationStatus")
+	List<ClientApplicationStatistics> getAllCAStatus();
+
+	@Query(value = "SELECT id as id,aliasName as name FROM Recruiter")
+	List<ClientApplicationStatistics> getAllCreators();
 }

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ccpt.model.ClientApplication;
+import com.ccpt.model.ClientApplicationStatistics;
 import com.ccpt.model.InterviewSummaryStatistics;
 import com.ccpt.model.PositionSummaryStatistics;
 import com.ccpt.repository.BaseRepository;
@@ -56,6 +57,22 @@ public class ClientApplicationService extends BaseService<ClientApplication, Int
 
 	public List<ClientApplication> findByConsultantIdAndActiveFlag(Integer consultantId) {
 		return clientApplicationRepository.findByConsultantIdAndActiveFlag(consultantId, true);
+	}
+
+	public List<ClientApplicationStatistics> getAllCps() {
+		return clientApplicationRepository.getAllCps();
+	}
+
+	public List<ClientApplicationStatistics> getAllConsultants() {
+		return clientApplicationRepository.getAllConsultants();
+	}
+
+	public List<ClientApplicationStatistics> getAllCAStatus() {
+		return clientApplicationRepository.getAllCAStatus();
+	}
+
+	public List<ClientApplicationStatistics> getAllCreators() {
+		return clientApplicationRepository.getAllCreators();
 	}
 
 }
