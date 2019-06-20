@@ -5,8 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.ccpt.model.ClientApplicationStatistics;
 import com.ccpt.model.ClientApplicationStatus;
+import com.ccpt.model.DropDownStatistics;
 import com.ccpt.repository.BaseRepository;
 import com.ccpt.repository.ClientApplicationStatusRepository;
 
@@ -28,7 +28,7 @@ public class ClientApplicationStatusService extends BaseService<ClientApplicatio
 		return clientApplicationStatusRepository.findByCodeAndActiveFlag(code, true);
 	}
 
-	public List<ClientApplicationStatistics> getAllCAStatus() {
+	public List<DropDownStatistics> getAllCAStatus() {
 		return clientApplicationStatusRepository.getAllCAStatus();
 	}
 }

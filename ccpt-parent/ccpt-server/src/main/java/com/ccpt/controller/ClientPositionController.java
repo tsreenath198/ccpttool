@@ -17,8 +17,8 @@ import com.ccpt.constants.CCPTConstants;
 import com.ccpt.dto.ClientPositionDTO;
 import com.ccpt.mapper.BaseMapper;
 import com.ccpt.mapper.ClientPositionMapper;
-import com.ccpt.model.ClientApplicationStatistics;
 import com.ccpt.model.ClientPosition;
+import com.ccpt.model.DropDownStatistics;
 import com.ccpt.service.BaseService;
 import com.ccpt.service.ClientPositionService;
 import com.ccpt.service.ClientPositionStatusService;
@@ -77,9 +77,9 @@ public class ClientPositionController extends BaseController<ClientPositionDTO, 
 	}
 	
 	@GetMapping("/getAllCps")
-	public ResponseEntity<List<ClientApplicationStatistics>> getAllCps() {
-		List<ClientApplicationStatistics> result = clientPositionService.getAllCps();
-		return new ResponseEntity<List<ClientApplicationStatistics>>(result, HttpStatus.OK);
+	public ResponseEntity<List<DropDownStatistics>> getAllCps() {
+		List<DropDownStatistics> result = clientPositionService.getAllCps();
+		return new ResponseEntity<List<DropDownStatistics>>(result, HttpStatus.OK);
 
 	}
 }

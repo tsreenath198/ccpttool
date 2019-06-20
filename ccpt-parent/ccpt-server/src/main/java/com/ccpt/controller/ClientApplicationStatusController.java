@@ -17,8 +17,8 @@ import com.ccpt.constants.CCPTConstants;
 import com.ccpt.dto.ClientApplicationStatusDTO;
 import com.ccpt.mapper.BaseMapper;
 import com.ccpt.mapper.ClientApplicationStatusMapper;
-import com.ccpt.model.ClientApplicationStatistics;
 import com.ccpt.model.ClientApplicationStatus;
+import com.ccpt.model.DropDownStatistics;
 import com.ccpt.service.BaseService;
 import com.ccpt.service.ClientApplicationStatusService;
 
@@ -49,9 +49,9 @@ public class ClientApplicationStatusController
 	}
 
 	@GetMapping("/getAllCAStatus")
-	public ResponseEntity<List<ClientApplicationStatistics>> getAllCAStatus() {
-		List<ClientApplicationStatistics> result = clientApplicationStatusService.getAllCAStatus();
-		return new ResponseEntity<List<ClientApplicationStatistics>>(result, HttpStatus.OK);
+	public ResponseEntity<List<DropDownStatistics>> getAllCAStatus() {
+		List<DropDownStatistics> result = clientApplicationStatusService.getAllCAStatus();
+		return new ResponseEntity<List<DropDownStatistics>>(result, HttpStatus.OK);
 
 	}
 }

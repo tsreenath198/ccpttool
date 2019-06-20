@@ -5,8 +5,8 @@ import java.util.List;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import com.ccpt.model.ClientApplicationStatistics;
 import com.ccpt.model.ClientApplicationStatus;
+import com.ccpt.model.DropDownStatistics;
 
 public interface ClientApplicationStatusRepository extends BaseRepository<ClientApplicationStatus, Integer> {
 
@@ -14,5 +14,5 @@ public interface ClientApplicationStatusRepository extends BaseRepository<Client
 			@Param("activeFlag") Boolean activeFlag);
 
 	@Query(value = "SELECT id as id,description as name FROM ClientApplicationStatus")
-	List<ClientApplicationStatistics> getAllCAStatus();
+	List<DropDownStatistics> getAllCAStatus();
 }

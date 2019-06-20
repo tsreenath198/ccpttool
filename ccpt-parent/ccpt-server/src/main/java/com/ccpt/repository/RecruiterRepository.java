@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import com.ccpt.model.ClientApplicationStatistics;
+import com.ccpt.model.DropDownStatistics;
 import com.ccpt.model.Recruiter;
 
 public interface RecruiterRepository extends BaseRepository<Recruiter, Integer> {
@@ -13,5 +13,5 @@ public interface RecruiterRepository extends BaseRepository<Recruiter, Integer> 
 	Recruiter getRecruiterFromName(@Param(value = "name") String name);
 
 	@Query(value = "SELECT id as id,aliasName as name FROM Recruiter")
-	List<ClientApplicationStatistics> getAllCreators();
+	List<DropDownStatistics> getAllCreators();
 }

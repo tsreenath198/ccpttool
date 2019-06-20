@@ -5,8 +5,8 @@ import java.util.List;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import com.ccpt.model.ClientApplicationStatistics;
 import com.ccpt.model.ClientPosition;
+import com.ccpt.model.DropDownStatistics;
 
 public interface ClientPositionRepository extends BaseRepository<ClientPosition, Integer> {
 
@@ -21,6 +21,6 @@ public interface ClientPositionRepository extends BaseRepository<ClientPosition,
 			@Param("activeFlag") Boolean activeFlag);
 
 	@Query(value = "SELECT id as id,generatedCode as name FROM ClientPosition")
-	List<ClientApplicationStatistics> getAllCps();
+	List<DropDownStatistics> getAllCps();
 
 }

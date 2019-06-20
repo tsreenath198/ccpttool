@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.ccpt.dto.RecruiterDTO;
 import com.ccpt.mapper.BaseMapper;
 import com.ccpt.mapper.RecruiterMapper;
-import com.ccpt.model.ClientApplicationStatistics;
+import com.ccpt.model.DropDownStatistics;
 import com.ccpt.model.Recruiter;
 import com.ccpt.service.BaseService;
 import com.ccpt.service.RecruiterService;
@@ -72,9 +72,9 @@ public class RecruiterController extends BaseController<RecruiterDTO, Recruiter,
 	}
 	
 	@GetMapping("/getAllCreators")
-	public ResponseEntity<List<ClientApplicationStatistics>> getAllCreators() {
-		List<ClientApplicationStatistics> result = recruiterService.getAllCreators();
-		return new ResponseEntity<List<ClientApplicationStatistics>>(result, HttpStatus.OK);
+	public ResponseEntity<List<DropDownStatistics>> getAllCreators() {
+		List<DropDownStatistics> result = recruiterService.getAllCreators();
+		return new ResponseEntity<List<DropDownStatistics>>(result, HttpStatus.OK);
 
 	}
 }

@@ -7,8 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ccpt.model.ClientApplication;
-import com.ccpt.model.ClientApplicationStatistics;
 import com.ccpt.model.ClientPosition;
+import com.ccpt.model.DropDownStatistics;
 import com.ccpt.repository.BaseRepository;
 import com.ccpt.repository.ClientApplicationRepository;
 import com.ccpt.repository.ClientPositionRepository;
@@ -51,8 +51,8 @@ public class ClientPositionService extends BaseService<ClientPosition, Integer> 
 			clientApplication.setUpdatedDate(new Date());
 		}
 	}
-	
-	public List<ClientApplicationStatistics> getAllCps() {
+
+	public List<DropDownStatistics> getAllCps() {
 		return clientPositionRepository.getAllCps();
 	}
 }
