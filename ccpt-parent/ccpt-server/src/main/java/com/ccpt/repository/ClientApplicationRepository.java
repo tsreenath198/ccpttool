@@ -14,7 +14,7 @@ import com.ccpt.model.InterviewSummaryStatistics;
 @Transactional
 public interface ClientApplicationRepository extends BaseRepository<ClientApplication, Integer> {
 
-	@Query("SELECT c FROM ClientApplication c where client_position_id=:id AND status_code=:status AND active_flag=1")
+	@Query("SELECT c FROM ClientApplication c where client_position_id=:id AND status_code!=:status AND active_flag=1")
 	List<ClientApplication> getAllActiveCAByCpID(@Param(value = "id") Integer id,
 			@Param(value = "status") String status);
 

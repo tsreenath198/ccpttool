@@ -32,12 +32,12 @@ public class ClientApplicationService extends BaseService<ClientApplication, Int
 	}
 
 	public List<ClientApplication> getAllActiveCAByCpID(Integer cpId) {
-		return clientApplicationRepository.getAllActiveCAByCpID(cpId, "New");
+		return clientApplicationRepository.getAllActiveCAByCpID(cpId, "Rejected By Client");
 
 	}
 
 	public List<PositionSummaryStatistics> getAllActiveCACountByCpID() {
-		return positionSummaryRepository.getAllActiveCACountByCpID(true);
+		return positionSummaryRepository.getAllActiveCACountByCpID();
 	}
 
 	public Integer checkPositionWithConsultant(Integer cpId, Integer consultantId) {

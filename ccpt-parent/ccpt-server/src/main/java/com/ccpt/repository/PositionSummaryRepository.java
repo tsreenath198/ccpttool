@@ -6,14 +6,15 @@ import javax.transaction.Transactional;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
-import org.springframework.data.repository.query.Param;
 
 import com.ccpt.model.PositionSummary;
 import com.ccpt.model.PositionSummaryStatistics;
 
 @Transactional
 public interface PositionSummaryRepository extends CrudRepository<PositionSummary, Integer> {
-	@Query("SELECT cp.id as cpId,cp.generatedCode as generatedCode,COUNT(*) as count FROM ClientPosition cp   left outer join  ClientApplication ca on cp.id = ca.clientPosition AND cp.activeFlag=:flag AND ca.activeFlag=:flag group by cp.generatedCode")
-	List<PositionSummaryStatistics> getAllActiveCACountByCpID(@Param("flag") Boolean flag);
+	@Query(value = "SELECT client_position.id as cpId, client_position.generated_code as generatedCode ,COUNT(*) as count FROM client_position INNER JOIN client_application ON client_position.id=client_application.client_position_id AND client_application.active_flag='1' AND client_position.active_flag='1' AND client_position.status_code!='Closed' AND client_application.status_code!='Rejected By Client' GROUP BY client_position.generated_code", nativeQuery = true)
+	List<PositionSummaryStatistics> getAllActiveCACountByCpID();
+
+	
 
 }
