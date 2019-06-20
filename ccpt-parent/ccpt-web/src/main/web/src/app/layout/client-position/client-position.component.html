@@ -301,12 +301,13 @@
     </button>
   </div>
   <div class="modal-body">
-    <label>E-Mail's</label>
-    <ng-multiselect-dropdown [placeholder]="'choose numbers..'" [data]="mailIdForMails" [(ngModel)]="sendEmailModel.to"
+    <label>E-Mail</label>
+    <!-- <ng-multiselect-dropdown [placeholder]="'choose numbers..'" [data]="mailIdForMails" [(ngModel)]="sendEmailModel.to"
       [settings]="dropdownSettings">
+    </ng-multiselect-dropdown> -->
+    
       <!-- (onSelect)="onItemSelect($event)"
     (onSelectAll)="onSelectAll($event)" -->
-    </ng-multiselect-dropdown>
     <label>Subject</label>
     <input class="form-control" [(ngModel)]="sendEmailModel.subject" name="sub" />
     <label>Message Body</label>
