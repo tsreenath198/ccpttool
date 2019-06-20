@@ -14,7 +14,6 @@ export interface ClientPositionModel {
     cpstatus: string;
     closedBy: string;
     description: string;
-    jobCode: string;
     location: string;
     createdDate: string;
     requiredPositions: string;

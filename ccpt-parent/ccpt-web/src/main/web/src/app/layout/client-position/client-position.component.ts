@@ -15,6 +15,7 @@ import { ConsultantModel } from '../consultant/consultant.model';
 import { EmailTemplateModel } from '../email-template/email-template.model';
 import { AdditionalPropertiesModel } from 'src/app/additional-properties.model';
 import { ActionModel } from '../modals/action';
+import { AngularEditorConfig } from '@kolkov/angular-editor';
 
 
 @Component({
@@ -59,10 +60,19 @@ export class ClientPositionComponent implements OnInit {
     public numberOfPositions = 0;
     protected screenHeight: any;
     public creator = 0;
+    protected apName = '';
+    protected apValue = '';
     public getAllCPS = this.http.get(this.urlConstants.CPSGetAll);
     public getAllR = this.http.get(this.urlConstants.RGetAll);
     public getAllC = this.http.get(this.urlConstants.ClientGetAll);
     public getAllCon = this.http.get(this.urlConstants.CGetAll);
+    protected config: AngularEditorConfig = {
+        editable: true,
+        spellcheck: true,
+        height: '15rem',
+        minHeight: '5rem',
+        translate: 'no'
+    };
     constructor(private http: HttpClientService, private toastr: ToastrCustomService, private modalService: NgbModal) {
         // tslint:disable-next-line:no-unused-expression
         this.actionModel.sendMail;
@@ -85,13 +95,14 @@ export class ClientPositionComponent implements OnInit {
             allowSearchFilter: true
         };
         this.init();
-        this.additionalPropertiesDeclare();
-
     }
     init() {
         this.http.get(this.urlConstants.CPGetAll).subscribe(resp => {
             this.clientPositionList = resp as any;
         });
+        this.clientPositionModel.properties = [];
+        this.clientPositionModel.cpstatus = 'Open';
+
     }
     getAllDropdowns() {
         forkJoin(
@@ -110,16 +121,19 @@ export class ClientPositionComponent implements OnInit {
     editClientPosition(data) {
         this.clientPositionModel = JSON.parse(JSON.stringify(data));
         this.readOnlyForm = 'U';
+        this.config.editable = true;
         this.enableButtonType = 'U';
         this.closedByEnable = true;
     }
     enableFormEditable(): void {
         this.readOnlyForm = 'U';
         this.enableButtonType = 'U';
+        this.config.editable = true;
         this.closedByEnable = true;
     }
     readOnlyEnable(id: number) {
         this.getCPById(id);
+        this.config.editable = false;
         this.readOnlyForm = 'R';
         this.enableButtonType = 'E';
     }
@@ -129,9 +143,6 @@ export class ClientPositionComponent implements OnInit {
             this.clientPositionModel = this.mapToUpdateModel(resp);
             // tslint:disable-next-line:no-shadowed-variable
             const temp = resp as any;
-            if (temp.properties == null) {
-                this.additionalPropertiesDeclare();
-            }
         });
     }
     mapToUpdateModel(response): ClientPositionModel {
@@ -143,9 +154,6 @@ export class ClientPositionComponent implements OnInit {
         this.clientPositionModel['closedBy'] = (temp.closedBy) ? temp.closedBy.id : 0;
         return this.clientPositionModel;
     }
-    additionalPropertiesDeclare() {
-        this.clientPositionModel.properties = [<AdditionalPropertiesModel>{}];
-    }
     propertiesListIncrement(event, i: number) {
         switch (event.id) {
             case 'decrease': {
@@ -153,7 +161,9 @@ export class ClientPositionComponent implements OnInit {
                 break;
             }
             case 'increase': {
-                this.clientPositionModel.properties.push(<AdditionalPropertiesModel>{});
+                this.clientPositionModel.properties.push(<AdditionalPropertiesModel>{ "name": this.apName, "value": this.apValue });
+                this.apName = '';
+                this.apValue = '';
                 break;
             }
         }
@@ -163,50 +173,28 @@ export class ClientPositionComponent implements OnInit {
     }
     createClientPosition(clientPositionForm: NgForm): void {
         // tslint:disable-next-line:max-line-length
-        this.clientPositionModel.generatedCode = this.generateCPCode(this.clientPositionModel.jobCode, this.clientPositionModel.clientId, this.clientPositionModel.location);
+        this.clientPositionModel.generatedCode = this.generateCPCode(this.clientPositionModel.clientId, this.clientPositionModel.location);
         const temp = this.http.post(this.clientPositionModel, this.urlConstants.CPCreate);
         temp.subscribe(resp => {
             this.toastr.success(this.urlConstants.SuccessMsg, 'Client Position');
             this.init();
             this.formReset();
             clientPositionForm.resetForm();
-            this.additionalPropertiesDeclare();
         }, err => {
             this.toastr.error(err.error.message, 'Client Position');
         });
     }
-    private generateCPCode(code, cnt, loc): string {
-        if ((code == null || code === undefined) && (loc == null || loc === undefined)) {
-            return this.getClientNameById(cnt);
-        } else if (loc == null || loc === undefined) {
-            return code + '-' + this.getClientNameById(cnt) ;
-        } else if (code == null || code === undefined) {
-         return this.getClientNameById(cnt) + '-' + loc;
-        } else {
-            return code + '-' + this.getClientNameById(cnt) + '-' + loc;
+    private generateCPCode(cnt, loc): string {
+        if(loc == null || loc == undefined){
+            return  this.getClientNameById(cnt);
+        }else {
+            return  this.getClientNameById(cnt) + '-' + loc;
         }
     }
     private getClientNameById(clientId: number) {
         const temp = this.clientList.filter(c => c.id === clientId);
         return temp[0].name;
     }
-    /** Validate Client Position Code */
-    /* private validateCPCode(code: string): void {
-         const arr = code.split('-');
-         if (arr.length === 4 && this.containsOnlyDigits(arr[0]) && arr[3].length === 3) {
-             for (let i = 1; i < arr.length - 1; i++) {
-                 if (!this.containsOnlyAlphabets(arr[i])) {
-                     this.invalidAppCode = true;
-                     return;
-                 } else {
-                     this.invalidAppCode = false;
-                 }
-             }
-         } else {
-             this.invalidAppCode = true;
-         }
-     }*/
-
     /** Check contains Only Digits */
     private containsOnlyDigits(code): boolean {
         const isnum = /^\d+$/.test(code);
@@ -222,7 +210,7 @@ export class ClientPositionComponent implements OnInit {
     }
     updateClientPosition(clientPositionForm: NgForm) {
         // tslint:disable-next-line:max-line-length
-        this.clientPositionModel.generatedCode = this.generateCPCode(this.clientPositionModel.jobCode, this.clientPositionModel.clientId, this.clientPositionModel.location);
+        this.clientPositionModel.generatedCode = this.generateCPCode( this.clientPositionModel.clientId, this.clientPositionModel.location);
         const temp = this.http.update(this.clientPositionModel, this.urlConstants.CPUpdate);
         temp.subscribe(resp => {
             this.toastr.success(this.urlConstants.UpdateMsg, 'Client Position');
@@ -232,7 +220,6 @@ export class ClientPositionComponent implements OnInit {
             this.readOnlyForm = '';
             this.enableButtonType = '';
             this.closedByEnable = false;
-            this.additionalPropertiesDeclare();
         }, err => {
             this.toastr.error(err.error.message, 'Client Position');
         });
@@ -240,10 +227,10 @@ export class ClientPositionComponent implements OnInit {
     cancelForm(clientPositionForm: NgForm) {
         this.formReset();
         clientPositionForm.resetForm();
+        this.init();
         this.readOnlyForm = '';
         this.enableButtonType = '';
         this.closedByEnable = false;
-        this.additionalPropertiesDeclare();
     }
     deleteCPRecord(): void {
         const temp = this.http.delete(this.urlConstants.CPDelete + this.selectedRecrd);
@@ -263,8 +250,8 @@ export class ClientPositionComponent implements OnInit {
         });
     }
     public selectSms(sms) {
-        const temp = {'cpId': this.selectedRecrd};
-        this.http.post(temp , this.urlConstants.SMSTemplateBuildContent + sms.value ).subscribe(resp => {
+        const temp = { 'cpId': this.selectedRecrd };
+        this.http.post(temp, this.urlConstants.SMSTemplateBuildContent + sms.value).subscribe(resp => {
             // tslint:disable-next-line:no-shadowed-variable
             const temp = resp as any;
             this.sendSmsModel.message = temp.message;
@@ -311,7 +298,7 @@ export class ClientPositionComponent implements OnInit {
      * 2) Selected contains the code of selected row
      */
     open(event: any) {
-        // content, selected: number, type: string
+        //content, selected: number, type: string
         if (event.id) {
             this.selectedRecrd = event.id;
         }
@@ -321,7 +308,6 @@ export class ClientPositionComponent implements OnInit {
         }, (reason) => {
             this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
         });
-        console.log(event.content);
         if (event.content) {
             if (event.type === this.email) {
                 for (let i = 0; i < this.consultantList.length; i++) {
