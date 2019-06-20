@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ccpt.model.ClientApplication;
+import com.ccpt.model.ClientApplicationStatistics;
 import com.ccpt.model.Consultant;
 import com.ccpt.repository.BaseRepository;
 import com.ccpt.repository.ConsultantRepository;
@@ -52,5 +53,10 @@ public class ConsultantService extends BaseService<Consultant, Integer> {
 			coOptional.get().setUpdatedDate(new Date());
 		}
 	}
+	
+	public List<ClientApplicationStatistics> getAllConsultants() {
+		return consultantRepository.getAllConsultants();
+	}
+
 
 }

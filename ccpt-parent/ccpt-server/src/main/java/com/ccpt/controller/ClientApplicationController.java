@@ -20,7 +20,6 @@ import com.ccpt.dto.ClientApplicationDTO;
 import com.ccpt.mapper.BaseMapper;
 import com.ccpt.mapper.ClientApplicationMapper;
 import com.ccpt.model.ClientApplication;
-import com.ccpt.model.ClientApplicationStatistics;
 import com.ccpt.model.InterviewSummaryStatistics;
 import com.ccpt.model.PositionSummaryStatistics;
 import com.ccpt.service.BaseService;
@@ -81,33 +80,6 @@ public class ClientApplicationController extends BaseController<ClientApplicatio
 
 	}
 
-	@GetMapping("/getAllCps")
-	public ResponseEntity<List<ClientApplicationStatistics>> getAllCps() {
-		List<ClientApplicationStatistics> result = clientApplicationService.getAllCps();
-		return new ResponseEntity<List<ClientApplicationStatistics>>(result, HttpStatus.OK);
-
-	}
-
-	@GetMapping("/getAllConsultants")
-	public ResponseEntity<List<ClientApplicationStatistics>> getAllConsultants() {
-		List<ClientApplicationStatistics> result = clientApplicationService.getAllConsultants();
-		return new ResponseEntity<List<ClientApplicationStatistics>>(result, HttpStatus.OK);
-
-	}
-
-	@GetMapping("/getAllCAStatus")
-	public ResponseEntity<List<ClientApplicationStatistics>> getAllCAStatus() {
-		List<ClientApplicationStatistics> result = clientApplicationService.getAllCAStatus();
-		return new ResponseEntity<List<ClientApplicationStatistics>>(result, HttpStatus.OK);
-
-	}
-	
-	@GetMapping("/getAllCreators")
-	public ResponseEntity<List<ClientApplicationStatistics>> getAllCreators() {
-		List<ClientApplicationStatistics> result = clientApplicationService.getAllCreators();
-		return new ResponseEntity<List<ClientApplicationStatistics>>(result, HttpStatus.OK);
-
-	}
 	@Override
 	protected void validateAndClean(ClientApplication model) {
 		if (model.getClientPosition() == null || model.getClientPosition().getId() == null) {

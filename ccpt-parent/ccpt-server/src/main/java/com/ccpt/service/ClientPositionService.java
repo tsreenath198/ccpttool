@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ccpt.model.ClientApplication;
+import com.ccpt.model.ClientApplicationStatistics;
 import com.ccpt.model.ClientPosition;
 import com.ccpt.repository.BaseRepository;
 import com.ccpt.repository.ClientApplicationRepository;
@@ -49,5 +50,9 @@ public class ClientPositionService extends BaseService<ClientPosition, Integer> 
 			clientApplication.setActiveFlag(false);
 			clientApplication.setUpdatedDate(new Date());
 		}
+	}
+	
+	public List<ClientApplicationStatistics> getAllCps() {
+		return clientPositionRepository.getAllCps();
 	}
 }

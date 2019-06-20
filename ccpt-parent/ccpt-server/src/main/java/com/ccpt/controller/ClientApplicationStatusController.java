@@ -1,17 +1,23 @@
 package com.ccpt.controller;
 
+import java.util.List;
+
 import javax.validation.ValidationException;
 
 import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.ccpt.constants.CCPTConstants;
 import com.ccpt.dto.ClientApplicationStatusDTO;
 import com.ccpt.mapper.BaseMapper;
 import com.ccpt.mapper.ClientApplicationStatusMapper;
+import com.ccpt.model.ClientApplicationStatistics;
 import com.ccpt.model.ClientApplicationStatus;
 import com.ccpt.service.BaseService;
 import com.ccpt.service.ClientApplicationStatusService;
@@ -40,5 +46,12 @@ public class ClientApplicationStatusController
 		if (model.getCode() == null) {
 			throw new ValidationException("Client Application Status Code cannot be null");
 		}
+	}
+
+	@GetMapping("/getAllCAStatus")
+	public ResponseEntity<List<ClientApplicationStatistics>> getAllCAStatus() {
+		List<ClientApplicationStatistics> result = clientApplicationStatusService.getAllCAStatus();
+		return new ResponseEntity<List<ClientApplicationStatistics>>(result, HttpStatus.OK);
+
 	}
 }

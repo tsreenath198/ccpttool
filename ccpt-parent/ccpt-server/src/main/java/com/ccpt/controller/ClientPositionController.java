@@ -1,17 +1,23 @@
 package com.ccpt.controller;
 
+import java.util.List;
+
 import javax.validation.ValidationException;
 
 import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.ccpt.constants.CCPTConstants;
 import com.ccpt.dto.ClientPositionDTO;
 import com.ccpt.mapper.BaseMapper;
 import com.ccpt.mapper.ClientPositionMapper;
+import com.ccpt.model.ClientApplicationStatistics;
 import com.ccpt.model.ClientPosition;
 import com.ccpt.service.BaseService;
 import com.ccpt.service.ClientPositionService;
@@ -68,5 +74,12 @@ public class ClientPositionController extends BaseController<ClientPositionDTO, 
 		} else {
 			model.setStatus(ClientPositionStatusService.findByCode(model.getStatus().getCode()));
 		}
+	}
+	
+	@GetMapping("/getAllCps")
+	public ResponseEntity<List<ClientApplicationStatistics>> getAllCps() {
+		List<ClientApplicationStatistics> result = clientPositionService.getAllCps();
+		return new ResponseEntity<List<ClientApplicationStatistics>>(result, HttpStatus.OK);
+
 	}
 }

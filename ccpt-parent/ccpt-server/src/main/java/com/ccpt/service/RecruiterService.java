@@ -1,10 +1,13 @@
 package com.ccpt.service;
 
+import java.util.List;
+
 import javax.persistence.EntityNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ccpt.model.ClientApplicationStatistics;
 import com.ccpt.model.Recruiter;
 import com.ccpt.repository.BaseRepository;
 import com.ccpt.repository.RecruiterRepository;
@@ -30,4 +33,7 @@ public class RecruiterService extends BaseService<Recruiter, Integer> {
 		return recruiterRepository;
 	}
 
+	public List<ClientApplicationStatistics> getAllCreators() {
+		return recruiterRepository.getAllCreators();
+	}
 }

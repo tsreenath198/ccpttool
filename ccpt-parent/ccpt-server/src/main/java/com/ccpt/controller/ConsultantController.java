@@ -7,15 +7,19 @@ import javax.validation.ValidationException;
 import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.ccpt.constants.CCPTConstants;
 import com.ccpt.dto.ConsultantDTO;
 import com.ccpt.mapper.BaseMapper;
 import com.ccpt.mapper.ConsultantMapper;
+import com.ccpt.model.ClientApplicationStatistics;
 import com.ccpt.model.Consultant;
 import com.ccpt.service.BaseService;
 import com.ccpt.service.ConsultantService;
@@ -39,6 +43,13 @@ public class ConsultantController extends BaseController<ConsultantDTO, Consulta
 	@Override
 	public BaseMapper<ConsultantDTO, Consultant, Integer> getMapper() {
 		return Mappers.getMapper(ConsultantMapper.class);
+	}
+
+	@GetMapping("/getAllConsultants")
+	public ResponseEntity<List<ClientApplicationStatistics>> getAllConsultants() {
+		List<ClientApplicationStatistics> result = consultantService.getAllConsultants();
+		return new ResponseEntity<List<ClientApplicationStatistics>>(result, HttpStatus.OK);
+
 	}
 
 	@Override

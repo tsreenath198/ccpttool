@@ -1,5 +1,7 @@
 package com.ccpt.controller;
 
+import java.util.List;
+
 import javax.validation.ValidationException;
 
 import org.mapstruct.factory.Mappers;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.ccpt.dto.RecruiterDTO;
 import com.ccpt.mapper.BaseMapper;
 import com.ccpt.mapper.RecruiterMapper;
+import com.ccpt.model.ClientApplicationStatistics;
 import com.ccpt.model.Recruiter;
 import com.ccpt.service.BaseService;
 import com.ccpt.service.RecruiterService;
@@ -66,5 +69,12 @@ public class RecruiterController extends BaseController<RecruiterDTO, Recruiter,
 		if (model.getAddress() == null) {
 			throw new ValidationException("Address cannot be null");
 		}
+	}
+	
+	@GetMapping("/getAllCreators")
+	public ResponseEntity<List<ClientApplicationStatistics>> getAllCreators() {
+		List<ClientApplicationStatistics> result = recruiterService.getAllCreators();
+		return new ResponseEntity<List<ClientApplicationStatistics>>(result, HttpStatus.OK);
+
 	}
 }
