@@ -57,9 +57,6 @@ public class Consultant extends IDEntity {
 	private Integer passoutYear;
 
 	@Column
-	private String qualification;
-
-	@Column
 	private String expectedCTC;
 
 	@OneToOne(cascade = CascadeType.ALL)

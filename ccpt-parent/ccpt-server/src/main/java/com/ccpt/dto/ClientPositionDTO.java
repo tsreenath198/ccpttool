@@ -19,6 +19,5 @@ public class ClientPositionDTO extends IDEntityDTO {
 	private Integer assignedTo;
 	private String generatedCode;
 	private Integer clientId;
-	private String jobCode;
 	private String location;
 }

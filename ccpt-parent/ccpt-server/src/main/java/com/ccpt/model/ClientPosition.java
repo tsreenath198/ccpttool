@@ -67,9 +67,6 @@ public class ClientPosition extends IDEntity {
 	private Client client;
 
 	@Column
-	private String jobCode;
-
-	@Column
 	private String location;
 
 }
