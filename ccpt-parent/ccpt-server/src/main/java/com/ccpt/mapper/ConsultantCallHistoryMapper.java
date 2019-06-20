@@ -13,6 +13,6 @@ public interface ConsultantCallHistoryMapper
 
 	@Mappings({ @Mapping(source = "consultantId", target = "consultant.id"),
 			@Mapping(source = "calledBy", target = "calledBy.id"),
-			@Mapping(source = "clientPositionId", target = "clientPosition.id")})
+			@Mapping(source = "cpId", target = "clientPosition.id") })
 	public ConsultantCallHistory toModel(ConsultantCallHistoryDTO dto);
 }

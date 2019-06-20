@@ -13,5 +13,5 @@ public class ConsultantCallHistoryDTO extends IDEntityDTO {
 	private Integer consultantId;
 	private Date calledDate;
 	private Integer calledBy;
-	private Integer clientPositionId;
+	private Integer cpId;
 }

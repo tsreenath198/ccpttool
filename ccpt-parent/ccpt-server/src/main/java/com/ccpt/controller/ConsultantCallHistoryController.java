@@ -14,6 +14,7 @@ import com.ccpt.mapper.BaseMapper;
 import com.ccpt.mapper.ConsultantCallHistoryMapper;
 import com.ccpt.model.ConsultantCallHistory;
 import com.ccpt.service.BaseService;
+import com.ccpt.service.ClientPositionService;
 import com.ccpt.service.ConsultantCallHistoryService;
 import com.ccpt.service.ConsultantService;
 import com.ccpt.service.RecruiterService;
@@ -32,6 +33,9 @@ public class ConsultantCallHistoryController
 
 	@Autowired
 	private RecruiterService recruiterService;
+
+	@Autowired
+	private ClientPositionService clientPositionService;
 
 	@Override
 	public BaseService<ConsultantCallHistory, Integer> getService() {
@@ -60,6 +64,11 @@ public class ConsultantCallHistoryController
 		}
 		if (model.getDescription() == null || model.getDescription().isEmpty()) {
 			throw new ValidationException("Description cannot be null");
+		}
+		if (model.getClientPosition() == null || model.getClientPosition().getId() == null) {
+			throw new ValidationException("Client Position cannot be null");
+		} else {
+			model.setClientPosition(clientPositionService.get(model.getClientPosition().getId()));
 		}
 	}
 
