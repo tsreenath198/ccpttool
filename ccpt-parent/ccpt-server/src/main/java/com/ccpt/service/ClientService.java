@@ -11,6 +11,7 @@ import com.ccpt.model.ClientApplication;
 import com.ccpt.model.ClientCallHistory;
 import com.ccpt.model.ClientContact;
 import com.ccpt.model.ClientPosition;
+import com.ccpt.model.DropDownStatistics;
 import com.ccpt.repository.BaseRepository;
 import com.ccpt.repository.ClientApplicationRepository;
 import com.ccpt.repository.ClientPositionRepository;
@@ -64,6 +65,10 @@ public class ClientService extends BaseService<Client, Integer> {
 			cp.setActiveFlag(false);
 			cp.setUpdatedDate(new Date());
 		}
+	}
+
+	public List<DropDownStatistics> getAllClients() {
+		return clientRepository.getAllClients();
 	}
 
 }
