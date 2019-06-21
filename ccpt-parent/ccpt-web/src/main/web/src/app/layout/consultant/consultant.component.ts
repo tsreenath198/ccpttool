@@ -69,7 +69,7 @@ export class ConsultantComponent implements OnInit {
       });
     });
     this.consultantModel['cstatus'] = 'Active';
-    this.consultantModel.properties = [];
+    this.consultantModel['properties'] = [];
   }
   private validate(value: any): boolean {
     const bool = value == null ? true : false;
@@ -174,7 +174,7 @@ export class ConsultantComponent implements OnInit {
           break;
       }
       case 'increase': {
-          this.consultantModel.properties.push(<AdditionalPropertiesModel>{ "name": this.apName, "value": this.apValue });
+          this.consultantModel.properties.push(<AdditionalPropertiesModel>{ 'name': this.apName, 'value': this.apValue });
           this.apName = '';
           this.apValue = '';
           break;
