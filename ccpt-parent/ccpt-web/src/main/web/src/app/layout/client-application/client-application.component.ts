@@ -24,11 +24,11 @@ import { AngularEditorConfig } from '@kolkov/angular-editor';
 })
 export class ClientApplicationComponent implements OnInit {
     public CAModel: ClientApplicationModel = <ClientApplicationModel>{};
-    public clientApplicationList: Array<ClientApplicationModel> = [];
-    public consultantList: Array<ConsultantModel> = [];
+    public clientApplicationList: Array<any> = [];
+    public consultantList: Array<any> = [];
     public clientApplicationStatusList: Array<ClientApplicationStatusModel> = [];
-    public clientPositionList: Array<ClientPositionModel> = [];
-    public recruiterList: Array<RecruiterModel> = [];
+    public clientPositionList: Array<any> = [];
+    public recruiterList: Array<any> = [];
     private urlConstants = new URLConstants();
     public currSearchTxt = '';
     public formButtonsToggler = true;
@@ -54,9 +54,9 @@ export class ClientApplicationComponent implements OnInit {
     };
 
     private getAllCAS = this.http.get(this.urlConstants.CASGetAll);
-    private getAllC = this.http.get(this.urlConstants.CGetAll);
-    private getAllCP = this.http.get(this.urlConstants.CPGetAll);
-    private getAllR = this.http.get(this.urlConstants.RGetAll);
+    private getAllC = this.http.get(this.urlConstants.CDropdown);
+    private getAllCP = this.http.get(this.urlConstants.CPDropdown);
+    private getAllR = this.http.get(this.urlConstants.RDropdown);
 
     constructor(private http: HttpClientService, private toastr: ToastrCustomService, private modalService: NgbModal) {
         this.getScreenSize();
@@ -103,11 +103,11 @@ export class ClientApplicationComponent implements OnInit {
     readOnlyEnable(id: number) {
 
         // this.isInterviewScheduled = true;
-        this.getCCHById(id);
+        this.getCAById(id);
         this.readOnlyForm = 'R';
         this.enableButtonType = 'E';
     }
-    getCCHById(id: number) {
+    getCAById(id: number) {
         const temp = this.http.get(this.urlConstants.CAGetById + id);
         temp.subscribe(resp => {
             this.CAModel = this.mapToUpdateModel(resp);
@@ -117,6 +117,9 @@ export class ClientApplicationComponent implements OnInit {
             }else{
                 this.isInterviewScheduled = false;
             }
+            if(this.CAModel.properties == null){
+                this.CAModel.properties = [];
+              }
         });
     }
     mapToUpdateModel(response): ClientApplicationModel {

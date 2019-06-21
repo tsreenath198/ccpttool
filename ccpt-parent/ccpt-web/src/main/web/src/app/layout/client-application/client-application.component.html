@@ -64,7 +64,7 @@
               <label>Client Position<span class="required">*</span></label>
               <select class="form-control" name="cp" [disabled]="readOnlyForm == 'R'" [(ngModel)]="CAModel.cpId"
                 [ngClass]="{'is-invalid': f.submitted && cp.invalid}" #cp="ngModel" required>
-                <option *ngFor="let cpl of clientPositionList" [ngValue]="cpl.id">{{cpl.generatedCode}}
+                <option *ngFor="let cpl of clientPositionList" [ngValue]="cpl.id">{{cpl.name}}
                 </option>
               </select>
               <div class="invalid-feedback">
@@ -77,7 +77,7 @@
               <label>Consultant<span class="required">*</span></label>
               <select class="form-control" [disabled]="readOnlyForm == 'R'" [(ngModel)]="CAModel.consultantId"
                 name="con" [ngClass]="{'is-invalid': f.submitted && con.invalid}" #con="ngModel" required>
-                <option *ngFor="let cl of consultantList" [ngValue]="cl.id">{{cl.fullname}}</option>
+                <option *ngFor="let cl of consultantList" [ngValue]="cl.id">{{cl.name}}</option>
               </select>
               <div class="invalid-feedback">
                 Consultant is mandatory
@@ -106,7 +106,7 @@
               <select class="form-control" name="creator" [disabled]="readOnlyForm == 'R'"
                 [(ngModel)]="CAModel.creatorId" [ngClass]="{'is-invalid': f.submitted && cas.invalid}" required>
                 <option *ngFor="let rl of recruiterList" [ngValue]="rl.id">
-                  {{rl.fullname}}
+                  {{rl.name}}
                 </option>
               </select>
               <div class="invalid-feedback">

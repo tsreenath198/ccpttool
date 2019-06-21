@@ -126,7 +126,10 @@ export class ConsultantComponent implements OnInit {
     temp.subscribe(resp => {
       this.consultantModel = this.mapToUpdateModel(resp);
       // tslint:disable-next-line:no-shadowed-variable
-      const temp = resp as any;
+      
+      if(this.consultantModel.properties == null){
+        this.consultantModel.properties = [];
+      }
     });
   }
   getFilesById(id: number) {

@@ -26,7 +26,7 @@ export class URLConstants {
     CPUpdate = 'clientPosition';
     CPDelete = 'clientPosition/';
     CPGetById = 'clientPosition/';
-
+    CPDropdown = 'clientPosition/getAllCps'
     /*Consultant */
     CCreate = 'consultant';
     CGetAll = 'consultant/';
@@ -35,6 +35,7 @@ export class URLConstants {
     CGetById = 'consultant/';
     CUpload = 'file/save';
     CActivate = 'consultant/activate/'
+    CDropdown = 'consultant/getAllConsultants'
 
     /* Client Application */
     CACreate = 'clientApplication';
@@ -65,6 +66,7 @@ export class URLConstants {
     RDelete = 'recruiter/';
     RGetById = 'recruiter/';
     RGetByName = 'recruiter/name/';
+    RDropdown = 'recruiter/getAllCreators'
 
 
     /*Client*/
@@ -73,6 +75,7 @@ export class URLConstants {
     ClientUpdate = 'client';
     ClientDelete = 'client/';
     ClientGetById = 'client/';
+    ClientDropdown = 'client/getAllClients'
 
     /*Other Contacts */
     OCCreate = 'contact';

@@ -74,7 +74,7 @@
                 required
               >
                 <option *ngFor="let rl of recruiterList" [ngValue]="rl.id">
-                  {{ rl.fullname }}
+                  {{ rl.name }}
                 </option>
               </select>
               <div class="invalid-feedback">
@@ -115,7 +115,7 @@
                 #cp="ngModel"
               >
                 <option *ngFor="let cpl of clientPositionList" [ngValue]="cpl.id">
-                  {{ cpl.generatedCode }}
+                  {{ cpl.name }}
                 </option>
               </select>
             </div>
@@ -132,7 +132,7 @@
                 #consultant="ngModel"
                 required
               >
-                <option *ngFor="let consultant of consultantList" [ngValue]="consultant.id">{{ consultant.fullname }} </option>
+                <option *ngFor="let consultant of consultantList" [ngValue]="consultant.id">{{ consultant.name }} </option>
               </select>
               <div class="invalid-feedback">
                 Consultant is mandatory

@@ -90,7 +90,9 @@ export class ClientComponent implements OnInit {
         temp.subscribe(resp => {
             this.clientModel = this.mapToUpdateModel(resp);
             // tslint:disable-next-line:no-shadowed-variable
-            const temp = resp as any;
+            if(this.clientModel.properties == null){
+                this.clientModel.properties = [];
+              }
         });
     }
     mapToUpdateModel(response) {

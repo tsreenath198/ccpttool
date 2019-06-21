@@ -196,14 +196,14 @@
               [ngClass]="{ 'is-invalid': f.submitted && assign.invalid }"
               #assign="ngModel"
             >
-              <option *ngFor="let rl of recruiterList" [ngValue]="rl.id"> {{ rl.fullname }}</option>
+              <option *ngFor="let rl of recruiterList" [ngValue]="rl.id"> {{ rl.name }}</option>
             </select>
           </div>
           <div class="col-md-6" *ngIf="closedByEnable">
             <div class="form-group">
               <label>Closed By</label>
               <select class="form-control" name="closedBy" [disabled]="readOnlyForm == 'R'" [(ngModel)]="clientPositionModel.closedBy">
-                <option *ngFor="let rl of recruiterList" [ngValue]="rl.id"> {{ rl.fullname }}</option>
+                <option *ngFor="let rl of recruiterList" [ngValue]="rl.id"> {{ rl.name }}</option>
               </select>
             </div>
           </div>

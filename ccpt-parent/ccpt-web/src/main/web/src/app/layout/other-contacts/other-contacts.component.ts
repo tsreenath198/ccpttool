@@ -90,6 +90,9 @@ export class OtherContactsComponent implements OnInit {
         temp.subscribe(resp => {
             this.OCModel = this.mapToUpdateModel(resp);
             // tslint:disable-next-line:no-shadowed-variable
+             if (this.OCModel.properties == null) {
+                    this.OCModel.properties = [];
+                }
             });
     }
     mapToUpdateModel(response) {

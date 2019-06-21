@@ -41,9 +41,9 @@ export class ConsultantCallHistoryComponent implements OnInit {
     protected apName = '';
     protected apValue = '';
 
-    protected getCplPromise = this.http.get(this.urlConstants.CPGetAll);
-    protected getClPromise = this.http.get(this.urlConstants.CGetAll);
-    protected getRlPromise = this.http.get(this.urlConstants.RGetAll);
+    protected getCplPromise = this.http.get(this.urlConstants.CPDropdown);
+    protected getClPromise = this.http.get(this.urlConstants.CDropdown);
+    protected getRlPromise = this.http.get(this.urlConstants.RDropdown);
     protected cochGetAllPromise = this.http.get(this.urlConstants.CoCHGetAll);
 
     constructor(private http: HttpClientService, private toastr: ToastrCustomService, private modalService: NgbModal) {
@@ -89,6 +89,10 @@ export class ConsultantCallHistoryComponent implements OnInit {
           if (rl.email === temp) {
             this.consultantCallHistoryModel.calledBy = rl.id;
           }
+          
+      if(this.consultantCallHistoryModel.properties == null){
+        this.consultantCallHistoryModel.properties = [];
+      }
         });
       }
       getTodaysDate() {
@@ -165,10 +169,8 @@ export class ConsultantCallHistoryComponent implements OnInit {
             this.toastr.success(this.urlConstants.UpdateMsg, 'Consultant Call History');
             this.init();
             consultantCallHistory.resetForm();
-
             this.readOnlyForm = '';
-            this.enableButtonType = '';
-            
+            this.enableButtonType = '';  
         }, err => {
             this.toastr.error(err.error.message, 'Consultant Call History');
         });

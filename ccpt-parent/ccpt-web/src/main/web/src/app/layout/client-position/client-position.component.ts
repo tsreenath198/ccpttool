@@ -29,9 +29,9 @@ export class ClientPositionComponent implements OnInit {
   public consultantCreateList: Array<any> = [];
   public consultantList: Array<ConsultantModel> = [];
   public smsList: Array<MessageTemplateModel> = [];
-  public clientPositionStatusList: Array<ClientpositionStatusModel> = [];
-  public clientList: Array<ClientModel> = [];
-  public recruiterList: Array<RecruiterModel> = [];
+  public clientPositionStatusList: Array<any> = [];
+  public clientList: Array<any> = [];
+  public recruiterList: Array<any> = [];
   public messageTemplateModel: MessageTemplateModel = <MessageTemplateModel>{};
   public emailTemplateModel: EmailTemplateModel = <EmailTemplateModel>{};
   public sendSmsModel: SendSmsModel = <SendSmsModel>{};
@@ -63,8 +63,8 @@ export class ClientPositionComponent implements OnInit {
   protected apValue = '';
   public loggedInRole = '';
   public getAllCPS = this.http.get(this.urlConstants.CPSGetAll);
-  public getAllR = this.http.get(this.urlConstants.RGetAll);
-  public getAllC = this.http.get(this.urlConstants.ClientGetAll);
+  public getAllR = this.http.get(this.urlConstants.RDropdown);
+  public getAllC = this.http.get(this.urlConstants.ClientDropdown);
   public getAllCon = this.http.get(this.urlConstants.CGetAll);
   protected config: AngularEditorConfig = {
     editable: true,
@@ -142,7 +142,9 @@ export class ClientPositionComponent implements OnInit {
     temp.subscribe(resp => {
       this.clientPositionModel = this.mapToUpdateModel(resp);
       // tslint:disable-next-line:no-shadowed-variable
-      const temp = resp as any;
+      if(this.clientPositionModel.properties == null){
+        this.clientPositionModel.properties = [];
+      }
     });
   }
   mapToUpdateModel(response): ClientPositionModel {

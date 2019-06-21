@@ -38,9 +38,9 @@ export class ClientCallHistoryComponent implements OnInit {
   protected apName = '';
   protected apValue = '';
   public loggedInRole = '';
-  protected getCplPromise = this.http.get(this.urlConstants.CPGetAll);
+  protected getCplPromise = this.http.get(this.urlConstants.CPDropdown);
   protected getClPromise = this.http.get(this.urlConstants.ClientGetAll);
-  protected getRlPromise = this.http.get(this.urlConstants.RGetAll);
+  protected getRlPromise = this.http.get(this.urlConstants.RDropdown);
   protected cchGetAllPromise = this.http.get(this.urlConstants.CCHGetAll);
 
   constructor(private http: HttpClientService, private toastr: ToastrCustomService, private modalService: NgbModal) {
@@ -76,6 +76,9 @@ export class ClientCallHistoryComponent implements OnInit {
     this.recruiterList.forEach(rl => {
       if (rl.email === temp) {
         this.clientCallHistoryModel.calledBy = rl.id;
+      }
+      if(this.clientCallHistoryModel.properties == null){
+        this.clientCallHistoryModel.properties = [];
       }
     });
   }

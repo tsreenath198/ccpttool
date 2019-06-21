@@ -69,6 +69,10 @@ export class RecruiterComponent implements OnInit {
     const temp = this.http.get(this.urlConstants.RGetById + id);
     temp.subscribe(resp => {
       this.recruiterModel = this.mapToUpdateModel(resp);
+      
+      if(this.recruiterModel.properties == null){
+        this.recruiterModel.properties = [];
+      }
     });
   }
   mapToUpdateModel(response) {

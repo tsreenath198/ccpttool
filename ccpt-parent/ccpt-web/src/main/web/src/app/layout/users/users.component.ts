@@ -26,6 +26,8 @@ export class UsersComponent implements OnInit {
     public currSearchTxt = '';
     private selectedRecrdToDel = 0;
     public closeResult = '';
+    protected apName = '';
+    protected apValue = '';
     private modalRef: NgbModalRef;
     public trash:string = 'trash';
     protected screenHeight:any;
@@ -42,8 +44,7 @@ export class UsersComponent implements OnInit {
         this.http.get(this.urlConstants.RGetAll).subscribe(resp => {
             this.getAllR = resp as any;
         });
-        this.init();
-        this.additionalPropertiesDeclare();
+        this.init();    
         this.rolesList = this.rolesModel.roles;
 
     }
@@ -51,6 +52,7 @@ export class UsersComponent implements OnInit {
         this.http.get(this.urlConstants.UserGetAll).subscribe(resp => {
             this.usersList = resp as any;
         });
+        this.usersModel.properties = [];
     }
     editUser(data) {
         this.usersModel = JSON.parse(JSON.stringify(data));
@@ -70,9 +72,8 @@ export class UsersComponent implements OnInit {
         let temp=this.http.get(this.urlConstants.UserGetById + id);
         temp.subscribe(resp => {
         this.usersModel = this.mapToUpdateModel(resp);
-        const temp = resp as any;
-        if (temp.properties == null) {
-            this.additionalPropertiesDeclare();
+        if (this.usersModel.properties == null) {
+            this.usersModel.properties = [];
         }
         });
     }
@@ -81,20 +82,19 @@ export class UsersComponent implements OnInit {
         this.usersModel = temp;
         return this.usersModel;
     }
-    additionalPropertiesDeclare() {
-        this.usersModel.properties = [<AdditionalPropertiesModel>{}];
-    }
     propertiesListIncrement(event, i: number) {
         switch (event.id) {
             case 'decrease': {
-                this.usersModel.properties.splice(i, 1);
-                break;
+              this.usersModel.properties.splice(i, 1);
+              break;
             }
             case 'increase': {
-                this.usersModel.properties.push(<AdditionalPropertiesModel>{});
-                break;
+              this.usersModel.properties.push(<AdditionalPropertiesModel>{ 'name': this.apName, 'value': this.apValue });
+              this.apName = '';
+              this.apValue = '';
+              break;
             }
-        }
+          }
     }
     formReset() {
         this.usersModel = <UsersModel>{};
@@ -105,7 +105,6 @@ export class UsersComponent implements OnInit {
             this.toastr.success(this.urlConstants.SuccessMsg, 'User');
             usersForm.resetForm();
             this.init();
-            this.additionalPropertiesDeclare();
         }, err => {
             this.toastr.error(err.error.message, 'Users');
         });
@@ -119,7 +118,6 @@ export class UsersComponent implements OnInit {
             usersForm.resetForm();
             this.readOnlyForm = '';
             this.enableButtonType = '';
-            this.additionalPropertiesDeclare();
         }, err => {
             this.toastr.error(err.error.message, 'User' );
         });
@@ -136,10 +134,10 @@ export class UsersComponent implements OnInit {
         });
     }
     cancelForm(usersForm: NgForm) {
+        this.init();
         usersForm.resetForm();
         this.readOnlyForm = '';
         this.enableButtonType = '';
-        this.additionalPropertiesDeclare();
     }
      /**
      * @param

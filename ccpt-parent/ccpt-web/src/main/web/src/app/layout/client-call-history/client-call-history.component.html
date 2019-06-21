@@ -72,7 +72,7 @@
                 [(ngModel)]="clientCallHistoryModel.calledBy" [ngClass]="{'is-invalid': f.submitted && cn.invalid}"
                 #cn="ngModel" required>
                 <option *ngFor="let rl of recruiterList" [ngValue]="rl.id">
-                  {{rl.fullname}}
+                  {{rl.name}}
                 </option>
               </select>
               <div class="invalid-feedback">
@@ -102,7 +102,7 @@
                 [(ngModel)]="clientCallHistoryModel.cpId" [ngClass]="{'is-invalid': f.submitted && cp.invalid}"
                 #cp="ngModel" required>
                 <option *ngFor="let cpl of clientPositionList" [ngValue]="cpl.id">
-                  {{cpl.generatedCode}}
+                  {{cpl.name}}
                 </option>
               </select>
               <div class="invalid-feedback">
