@@ -20,7 +20,7 @@
             </a>
           </li>
           <li >
-            <a *ngIf="loggedInRole === 'Admin' || loggedInRole === 'Manager'" class="list-group-item " [routerLink]="['/layout/client-call-history']"
+            <a  class="list-group-item " [routerLink]="['/layout/client-call-history']"
               [routerLinkActive]="['router-link-active']">
               <span class="fa fa-fw fa-building"></span>
               <span>{{ 'Clients' | translate }}</span>
@@ -33,11 +33,11 @@
       <i class="fa fa-fw fa-users"></i>&nbsp;
       <span>{{ 'Consultants' | translate }}</span>
     </a>
-    <a *ngIf="loggedInRole == 'Admin' || loggedInRole == 'Manager'" [routerLink]="['/layout/client']" [routerLinkActive]="['router-link-active']" class="list-group-item">
+    <a  [routerLink]="['/layout/client']" [routerLinkActive]="['router-link-active']" class="list-group-item">
       <i class="fa fa-fw fa-building"></i>&nbsp;
       <span>{{ 'Clients' | translate }}</span>
     </a>
-    <a *ngIf="loggedInRole == 'Admin' || loggedInRole == 'Manager'" [routerLink]="['/layout/client-position']" [routerLinkActive]="['router-link-active']" class="list-group-item">
+    <a  [routerLink]="['/layout/client-position']" [routerLinkActive]="['router-link-active']" class="list-group-item">
       <i class="fa fa-fw fa-briefcase"></i>&nbsp;
       <span>{{ 'Client Positions' | translate }}</span>
     </a>

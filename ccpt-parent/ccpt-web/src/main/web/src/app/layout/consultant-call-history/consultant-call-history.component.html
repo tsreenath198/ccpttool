@@ -19,7 +19,7 @@
                 Called Date
               </th>
               <th>
-                Position
+                  <span class="pull-right">Action</span>
               </th>
             </tr>
           </thead>
@@ -38,9 +38,6 @@
               <td>
                 {{ cchl.calledDate }}
               </td>
-              <td>
-                {{ cchl.clientPosition.generatedCode }}
-              </td>
               <td width="100">
                 <app-action [trashContent]="trashContent" [id]="cchl.id" [isTrash]="trash" (trash)="open($event)"></app-action>
               </td>
@@ -51,6 +48,18 @@
     </div>
     <div class="col-md-5">
       <form name="form" id="clientPositionForm" (ngSubmit)="f.form.valid && createConsultantCallHistory(f)" #f="ngForm" novalidate>
+          <div class="row text-center">
+              <div class="col-md-12">
+                <button type="submit" *ngIf="enableButtonType == ''" class="btn btn-secondary ml-3" [disabled]="f.form.pristine || f.form.invalid">Add</button>
+                <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2" (click)="updateConsultantCallHistory(f)">
+                  Update
+                </button>
+                <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button" (click)="enableFormEditable()">
+                  Edit
+                </button>
+                <button type="button" (click)="cancelForm(f)" *ngIf="enableButtonType != 'E'" class="btn btn-secondary ml-3">{{enableButtonType == 'U' ? 'Close' : 'Clear'}}</button>
+              </div>
+            </div>
         <div class="row">
           <div class="col-md-6">
             <div class="form-group">
@@ -101,7 +110,7 @@
                 class="form-control"
                 [disabled]="readOnlyForm == 'R'"
                 name="cp"
-                [(ngModel)]="consultantCallHistoryModel.clientPositionId"
+                [(ngModel)]="consultantCallHistoryModel.cpId"
                 [ngClass]="{ 'is-invalid': f.submitted && cp.invalid }"
                 #cp="ngModel"
               >
@@ -130,7 +139,32 @@
               </div>
             </div>
           </div>
-
+          <!-- *ngIf="consultantCallHistoryModel.properties.length > 0" -->
+          <div class="row" >
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>Additional Properties</label>
+                  <table class="table">
+                    <tbody>
+                      <tr *ngFor="let ap of consultantCallHistoryModel.properties;let i=index">
+                        <td>
+                          <input type="text" [(ngModel)]="ap.name" class="form-control" name="addPropName{{i}}"
+                            [readonly]="readOnlyForm == 'R'">
+                        </td>
+                        <td>
+                          <input type="text" [(ngModel)]="ap.value" class="form-control" name="addPropValue{{i}}"
+                            [readonly]="readOnlyForm == 'R'">
+                        </td>
+                        <td>
+                          <i class="fa fa-minus" aria-hidden="true" id="decrease" *ngIf="enableButtonType != 'E'"
+                            (click)="propertiesListIncrement($event.target,i)"></i>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
           <div class="col-md-12">
             <div class="form-group">
               <label>Notes<span class="required">*</span></label>
@@ -151,58 +185,43 @@
             </div>
           </div>
         </div>
-        <strong>Additional Properties</strong>
         <div class="row">
-          <div class="table-responsive">
-            <table class="table table-hover table-striped">
-              <tbody>
-                <tr *ngFor="let ap of consultantCallHistoryModel.properties; let i = index">
-                  <td>
-                    <input
-                      class="form-control"
-                      [readonly]="readOnlyForm == 'R'"
-                      [(ngModel)]="ap.name"
-                      name="pname{{ i }}"
-                      placeholder="name"
-                      #pname="ngModel"
-                    />
-                  </td>
-                  <td>
-                    <input
-                      class="form-control"
-                      type="text"
-                      [readonly]="readOnlyForm == 'R'"
-                      [(ngModel)]="ap.value"
-                      name="pvalue{{ i }}"
-                      placeholder="value"
-                      #pvalue="ngModel"
-                    />
-                  </td>
-                  <td>
-                    <i class="fa fa-minus" aria-hidden="true" id="decrease" (click)="propertiesListIncrement($event.target, i)"></i><br />
-                    <i
-                      class="fa fa-plus"
-                      *ngIf="i + 1 == consultantCallHistoryModel.properties.length"
-                      aria-hidden="true"
-                      id="increase"
-                      (click)="propertiesListIncrement($event.target, i)"
-                    ></i>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+            <div class="col-md-12">
+              <div class="form-group">
+                <label>Additional Properties</label>
+                <div class="table-responsive">
+                  <table class="table">
+                    <tbody>
+                      <tr>
+                        <td>
+                          <input type="text" [(ngModel)]="apName" class="form-control" name="apName"
+                            [readonly]="readOnlyForm == 'R'">
+                        </td>
+                        <td>
+                          <input type="text" [(ngModel)]="apValue" class="form-control" name="apValue"
+                            [readonly]="readOnlyForm == 'R'">
+                        </td>
+                        <td>
+                          <i class="fa fa-plus" aria-hidden="true" id="increase" *ngIf="enableButtonType != 'E'"
+                            (click)="propertiesListIncrement($event.target,i)"></i>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
         <div class="row text-center">
           <div class="col-md-12">
-            <button type="submit" *ngIf="enableButtonType == ''" class="btn btn-secondary ml-3">Add</button>
+            <button type="submit" *ngIf="enableButtonType == ''" class="btn btn-secondary ml-3" [disabled]="f.form.pristine || f.form.invalid">Add</button>
             <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2" (click)="updateConsultantCallHistory(f)">
               Update
             </button>
             <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button" (click)="enableFormEditable()">
               Edit
             </button>
-            <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3">Clear</button>
+            <button type="button" (click)="cancelForm(f)" *ngIf="enableButtonType != 'E'" class="btn btn-secondary ml-3">{{enableButtonType == 'U' ? 'Close' : 'Clear'}}</button>
           </div>
         </div>
       </form>

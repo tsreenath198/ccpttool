@@ -6,9 +6,10 @@ import { PageHeaderModule, SharedPipesModule, ActionListModule } from '../../sha
 import { ClientApplicationComponent } from './client-application.component';
 import { ClientApplicationRoutingModule } from './client-application-routing.module';
 import { NgbModule, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { AngularEditorModule } from '@kolkov/angular-editor';
 
 @NgModule({
-    imports: [CommonModule, ClientApplicationRoutingModule, FormsModule, PageHeaderModule, SharedPipesModule, NgbModule, ActionListModule],
+    imports: [CommonModule, ClientApplicationRoutingModule, FormsModule, PageHeaderModule, SharedPipesModule, NgbModule, ActionListModule,AngularEditorModule],
     declarations: [ClientApplicationComponent],
     providers: [NgbActiveModal]
 })

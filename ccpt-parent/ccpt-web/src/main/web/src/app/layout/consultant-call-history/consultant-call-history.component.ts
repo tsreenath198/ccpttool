@@ -37,6 +37,9 @@ export class ConsultantCallHistoryComponent implements OnInit {
     protected screenHeight: any;
     public readOnlyForm = '';
     public enableButtonType = '';
+    
+    protected apName = '';
+    protected apValue = '';
 
     protected getCplPromise = this.http.get(this.urlConstants.CPGetAll);
     protected getClPromise = this.http.get(this.urlConstants.CGetAll);
@@ -54,7 +57,6 @@ export class ConsultantCallHistoryComponent implements OnInit {
     ngOnInit() {
         this.joins();
         this.init();
-        this.additionalPropertiesDeclare();
         // this.http.get(this.urlConstants.CGetAll).subscribe(resp => {
         //     this.consultantList = resp as Array<ConsultantModel>;
         // });
@@ -75,9 +77,11 @@ export class ConsultantCallHistoryComponent implements OnInit {
         });
       }
     init() {
+        
         this.cochGetAllPromise.subscribe(resp => {
             this.consultantCallHistoryList = resp as Array<ConsultantCallHistoryModel>;
         });
+        this.consultantCallHistoryModel.properties = [];
     }
     getRecruiterId() {
         const temp = sessionStorage.getItem('username');
@@ -111,9 +115,6 @@ export class ConsultantCallHistoryComponent implements OnInit {
             this.consultantCallHistoryModel = this.mapToUpdateModel(resp);
             // tslint:disable-next-line:no-shadowed-variable
             const temp = resp as any;
-            if (temp.properties == null) {
-                this.additionalPropertiesDeclare();
-            }
         });
     }
     mapToUpdateModel(response): ConsultantCallHistoryModel {
@@ -121,11 +122,8 @@ export class ConsultantCallHistoryComponent implements OnInit {
         this.consultantCallHistoryModel = temp;
         this.consultantCallHistoryModel['consultantId'] = temp.consultant.id;
         this.consultantCallHistoryModel['calledBy'] = temp.calledBy.id;
-        this.consultantCallHistoryModel['clientPositionId'] = temp.clientPosition.id;
+        this.consultantCallHistoryModel['cpId'] = temp.clientPosition.id;
         return this.consultantCallHistoryModel;
-    }
-    additionalPropertiesDeclare() {
-        this.consultantCallHistoryModel.properties = [<AdditionalPropertiesModel>{}];
     }
     propertiesListIncrement(event, i: number) {
         switch (event.id) {
@@ -134,7 +132,9 @@ export class ConsultantCallHistoryComponent implements OnInit {
                 break;
             }
             case 'increase': {
-                this.consultantCallHistoryModel.properties.push(<AdditionalPropertiesModel>{});
+                this.consultantCallHistoryModel.properties.push(<AdditionalPropertiesModel>{ "name": this.apName, "value": this.apValue });
+                this.apName = '';
+                this.apValue = '';
                 break;
             }
         }
@@ -152,7 +152,6 @@ export class ConsultantCallHistoryComponent implements OnInit {
             this.toastr.success(this.urlConstants.SuccessMsg, 'Consultant Call History');
             this.init();
             this.formReset();
-            this.additionalPropertiesDeclare();
             consultantCallHistory.resetForm();
         }, err => {
             this.toastr.error(err.error.message, 'Consultant Call History');
@@ -169,18 +168,17 @@ export class ConsultantCallHistoryComponent implements OnInit {
 
             this.readOnlyForm = '';
             this.enableButtonType = '';
-            this.additionalPropertiesDeclare();
+            
         }, err => {
             this.toastr.error(err.error.message, 'Consultant Call History');
         });
     }
     cancelForm(consultantCallHistory: NgForm) {
         this.formReset();
+        this.init();
         consultantCallHistory.resetForm();
         this.readOnlyForm = '';
         this.enableButtonType = '';
-        this.additionalPropertiesDeclare();
-
     }
     deleteCoCHRecord(): void {
         const temp = this.http.delete(this.urlConstants.CoCHDelete + this.selectedRecrdToDel);

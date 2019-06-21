@@ -7,6 +7,7 @@ import { ClientComponent } from './client.component';
 import { ClientRoutingModule } from './client-routing.module';
 import { NgbModule, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FileUploadModule } from 'ng2-file-upload';
+import { AngularEditorModule } from '@kolkov/angular-editor';
 
 @NgModule({
     imports: [CommonModule,
@@ -16,7 +17,8 @@ import { FileUploadModule } from 'ng2-file-upload';
         SharedPipesModule,
         NgbModule,
         FileUploadModule,
-        ActionListModule
+        ActionListModule,
+        AngularEditorModule
     ],
 
     declarations: [ClientComponent],

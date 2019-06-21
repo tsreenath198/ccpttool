@@ -8,6 +8,7 @@ import { NgForm } from '@angular/forms';
 import { ClientModel, ClientContactsModel } from './client.model';
 import { FileUploader, FileLikeObject } from 'ng2-file-upload';
 import { AdditionalPropertiesModel } from 'src/app/additional-properties.model';
+import { AngularEditorConfig } from '@kolkov/angular-editor';
 
 
 
@@ -36,6 +37,17 @@ export class ClientComponent implements OnInit {
     public download = 'download';
     public trash = 'trash';
     public upload = 'upload';
+    protected apName = '';
+    protected apValue = '';
+    public loggedInRole = '';
+    protected config: AngularEditorConfig = {
+        editable: true,
+        spellcheck: true,
+        height: '15rem',
+        minHeight: '5rem',
+        translate: 'no'
+    };
+
     constructor(private http: HttpClientService, private toastr: ToastrCustomService, private modalService: NgbModal) {
         this.getScreenSize();
     }
@@ -44,20 +56,21 @@ export class ClientComponent implements OnInit {
            this.screenHeight = window.innerHeight;
      }
     ngOnInit() {
+        this.loggedInRole = sessionStorage.getItem('role');
         this.clientContactDeclare();
-        this.additionalPropertiesDeclare();
         this.init();
     }
     init() {
         this.http.get(this.urlConstants.ClientGetAll).subscribe(resp => {
             this.clientList = resp as any;
         });
+        this.clientModel.properties = [];
+        this.clientModel.serviceCharge = '8.33';
+        this.clientModel.guaranteePeriod = '3 months';
+        this.clientModel.creditPeriod = '1 month';
     }
     clientContactDeclare() {
         this.clientModel.clientContacts = [{ 'fullname': '', 'email': '', 'phone': '' }];
-    }
-    additionalPropertiesDeclare() {
-        this.clientModel.properties = [<AdditionalPropertiesModel>{}];
     }
     editClient(data) {
         this.readOnlyForm = 'U';
@@ -78,9 +91,6 @@ export class ClientComponent implements OnInit {
             this.clientModel = this.mapToUpdateModel(resp);
             // tslint:disable-next-line:no-shadowed-variable
             const temp = resp as any;
-            if (temp.properties == null) {
-                this.additionalPropertiesDeclare();
-            }
         });
     }
     mapToUpdateModel(response) {
@@ -99,7 +109,6 @@ export class ClientComponent implements OnInit {
             this.formReset();
             clientForm.resetForm();
             this.clientContactDeclare();
-            this.additionalPropertiesDeclare();
         }, err => {
             this.toastr.error(err.error.message, 'Client');
         });
@@ -112,7 +121,6 @@ export class ClientComponent implements OnInit {
             this.init();
             clientForm.resetForm();
             this.clientContactDeclare();
-            this.additionalPropertiesDeclare();
 
             this.readOnlyForm = '';
             this.enableButtonType = '';
@@ -126,7 +134,6 @@ export class ClientComponent implements OnInit {
         this.readOnlyForm = '';
         this.enableButtonType = '';
         this.clientContactDeclare();
-        this.additionalPropertiesDeclare();
     }
     clientContactListIncrement(event, i: number) {
         switch (event.id) {
@@ -147,7 +154,9 @@ export class ClientComponent implements OnInit {
                 break;
             }
             case 'increase': {
-                this.clientModel.properties.push(<AdditionalPropertiesModel>{});
+                this.clientModel.properties.push(<AdditionalPropertiesModel>{ 'name': this.apName, 'value': this.apValue });
+                this.apName = '';
+                this.apValue = '';
                 break;
             }
         }

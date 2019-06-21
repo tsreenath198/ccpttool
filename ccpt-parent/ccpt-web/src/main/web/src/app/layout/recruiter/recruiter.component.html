@@ -29,8 +29,18 @@
     </div>
     <div class="col-md-5">
       <form name="form" id="clientPositionForm" (ngSubmit)="f.form.valid&&createRecruiter(f)" #f="ngForm" novalidate>
+          <div class="row text-center">
+              <div class="col-md-12">
+                <button type="submit" *ngIf="enableButtonType == ''" class="btn btn-secondary ml-3" [disabled]="f.form.pristine || f.form.invalid">Add</button>
+                <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2"
+                  (click)="updateRecruiter(f)">Update</button>
+                <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button"
+                  (click)="enableFormEditable()">Edit</button>
+                <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3" *ngIf="enableButtonType != 'E'">{{enableButtonType == 'U' ? 'Close' : 'Clear'}}</button>
+              </div>
+            </div>
         <div class="row">
-          <div class="col-md-12">
+          <div class="col-md-6">
             <div class="form-group">
               <label>Full Name<span class="required">*</span></label>
               <input class="form-control" name="fullname" [readonly]="readOnlyForm== 'R'"
@@ -41,7 +51,7 @@
               </div>
             </div>
           </div>
-          <div class="col-md-12">
+          <div class="col-md-6">
             <div class="form-group" data-provide="datepicker">
               <label>Date of Birth</label>
               <input type="date" class="form-control" name="dob" [(ngModel)]="recruiterModel.dob"
@@ -52,7 +62,9 @@
               </div>
             </div>
           </div>
-          <div class="col-md-12">
+        </div>
+        <div class="row">
+          <div class="col-md-6">
             <div class="form-group">
               <label>Gender<span class="required">*</span></label>
               <select class="form-control" name="gender" [disabled]="readOnlyForm == 'R'"
@@ -65,22 +77,22 @@
               </div>
             </div>
           </div>
-        </div>
-        <div class="row">
-          <div class="col-md-12">
-            <div class="form-group">
-              <label>Role<span class="required">*</span></label>
-              <select class="form-control" name="role" [(ngModel)]="recruiterModel.role"
-                [disabled]="readOnlyForm == 'R'" [ngClass]="{'is-invalid': f.submitted && role.invalid}" #role="ngModel"
-                required>
-                <option *ngFor="let role of rolesList" [ngValue]="role">{{role}}</option>
-              </select>
-              <div class="invalid-feedback">
-                role is mandatory
+          <div class="col-md-6">
+              <div class="form-group">
+                <label>Role<span class="required">*</span></label>
+                <select class="form-control" name="role" [(ngModel)]="recruiterModel.role"
+                  [disabled]="readOnlyForm == 'R'" [ngClass]="{'is-invalid': f.submitted && role.invalid}" #role="ngModel"
+                  required>
+                  <option *ngFor="let role of rolesList" [ngValue]="role">{{role}}</option>
+                </select>
+                <div class="invalid-feedback">
+                  role is mandatory
+                </div>
               </div>
             </div>
-          </div>
-          <div class="col-md-12">
+        </div>
+        <div class="row">  
+          <div class="col-md-6">
             <div class="form-group">
               <!--pattern="/^-?\d+\.?\d*$/" onKeyPress="if(this.value.length==12) return false;" -->
               <label>Phone<span class="required">*</span></label>
@@ -92,7 +104,7 @@
               </div>
             </div>
           </div>
-          <div class="col-md-12">
+          <div class="col-md-6">
             <div class="form-group">
               <label>E-Mail<span class="required">*</span></label>
               <input class="form-control" name="email" type="email" [readonly]="readOnlyForm == 'R'"
@@ -105,6 +117,19 @@
           </div>
         </div>
         <div class="row">
+          <div class="col-md-6">
+              <div class="form-group">
+                  <label>Alias<span class="required">*</span></label>
+                  <input class="form-control" name="alias" type="text" [readonly]="readOnlyForm == 'R'"
+                    [(ngModel)]="recruiterModel.aliasName" [ngClass]="{'is-invalid': f.submitted && alias.invalid}"
+                    #alias="ngModel" required>
+                  <div class="invalid-feedback">
+                    alias name is mandatory
+                  </div>
+                </div>
+          </div>
+        </div>
+        <div class="row">
           <div class="col-md-12">
             <div class="form-group">
               <label>Address</label>
@@ -114,40 +139,80 @@
             </div>
           </div>
         </div>
-        <strong>Additional Properties</strong>
-        <div class="row">
-          <div class="table-responsive">
-            <table class="table table-hover table-striped">
-              <tbody>
-                <tr *ngFor="let ap of recruiterModel.properties;let i=index">
-                  <td>
-                    <input class="form-control" [readonly]="readOnlyForm == 'R'" [(ngModel)]="ap.name" name="pname{{i}}"
-                      placeholder="name" #pname="ngModel">
-                  </td>
-                  <td>
-                    <input class="form-control" type="text" [readonly]="readOnlyForm == 'R'" [(ngModel)]="ap.value"
-                      name="pvalue{{i}}" placeholder="value" #pvalue="ngModel">
-
-                  </td>
-                  <td>
-                    <i class="fa fa-minus" aria-hidden="true" id="decrease"
-                      (click)="propertiesListIncrement($event.target,i)"></i><br>
-                    <i class="fa fa-plus" *ngIf="(i+1)==recruiterModel.properties.length" aria-hidden="true"
-                      id="increase" (click)="propertiesListIncrement($event.target,i)"></i>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+        <div class="row" *ngIf="recruiterModel.properties.length > 0">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label>Additional Properties</label>
+                <table class="table">
+                  <tbody>
+                    <tr *ngFor="let ap of recruiterModel.properties;let i=index">
+                      <td>
+                        <input type="text" [(ngModel)]="ap.name" class="form-control" name="addPropName{{i}}"
+                          [readonly]="readOnlyForm == 'R'">
+                      </td>
+                      <td>
+                        <input type="text" [(ngModel)]="ap.value" class="form-control" name="addPropValue{{i}}"
+                          [readonly]="readOnlyForm == 'R'">
+                      </td>
+                      <td>
+                        <i class="fa fa-minus" aria-hidden="true" id="decrease" *ngIf="enableButtonType != 'E'"
+                          (click)="propertiesListIncrement($event.target,i)"></i>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
           </div>
-        </div>
+          <div class="row">
+              <div class="col-md-12">
+                  <div class="form-group">
+                    <label>Description</label>
+                    <textarea
+                      class="form-control"
+                      name="description"
+                      [readonly]="readOnlyForm == 'R'"
+                      [(ngModel)]="recruiterModel.description"
+                      rows="10"
+                    ></textarea>
+                  </div>
+                </div>
+          </div> 
+        <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label>Additional Properties</label>
+                <div class="table-responsive">
+                  <table class="table">
+                    <tbody>
+                      <tr>
+                        <td>
+                          <input type="text" [(ngModel)]="apName" class="form-control" name="apName"
+                            [readonly]="readOnlyForm == 'R'">
+                        </td>
+                        <td>
+                          <input type="text" [(ngModel)]="apValue" class="form-control" name="apValue"
+                            [readonly]="readOnlyForm == 'R'">
+                        </td>
+                        <td>
+                          <i class="fa fa-plus" aria-hidden="true" id="increase" *ngIf="enableButtonType != 'E'"
+                            (click)="propertiesListIncrement($event.target,i)"></i>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
         <div class="row text-center">
           <div class="col-md-12">
-            <button type="submit" *ngIf="enableButtonType == ''" class="btn btn-secondary ml-3">Add</button>
+            <button type="submit" *ngIf="enableButtonType == ''" class="btn btn-secondary ml-3" [disabled]="f.form.pristine || f.form.invalid">Add</button>
             <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2"
               (click)="updateRecruiter(f)">Update</button>
             <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button"
               (click)="enableFormEditable()">Edit</button>
-            <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3">Clear</button>
+            <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3" *ngIf="enableButtonType != 'E'">{{enableButtonType == 'U' ? 'Close' : 'Clear'}}</button>
           </div>
         </div>
       </form>

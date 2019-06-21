@@ -6,31 +6,40 @@
         <div class="col-md-6">
           <strong>Total No of records : {{ clientPositionList.length }}</strong>
         </div>
-        <div class="col-md-6"><input type="text" class="form-control" placeholder="search"
-            [(ngModel)]="currSearchTxt" /></div>
+        <div class="col-md-6"><input type="text" class="form-control" placeholder="search" [(ngModel)]="currSearchTxt" /></div>
       </div>
       <div class="table-responsive mt-2 table-wrapper-scroll-y my-custom-scrollbar" [style.height.px]="screenHeight">
         <table class="table table-hover table-striped">
           <tbody class="overflow-ele-scroll">
-            <tr *ngFor="let cpl of clientPositionList | filter: 'technology':currSearchTxt; let i = index"
-              [ngClass]="{'bl-closed' :cpl.status.code === 'Closed','bl-on-hold':cpl.status.code === 'On Hold'}">
+            <tr
+              *ngFor="let cpl of clientPositionList | filter: 'technology':currSearchTxt; let i = index"
+              [ngClass]="{ 'bl-closed': cpl.status.code === 'Closed', 'bl-on-hold': cpl.status.code === 'On Hold' }"
+            >
               <td class="table-data-padding" (click)="readOnlyEnable(cpl.id)" (dblclick)="editClientPosition(cpl)">
                 <dl>
-                  <dt>{{ cpl.generatedCode }} ({{cpl.assignedTo.aliasName}})</dt>
+                  <dt>{{ cpl.generatedCode }} ({{ cpl.assignedTo.aliasName }})</dt>
                   <dd>
-                    Need {{ cpl.requiredPositions }} candidate(s) with minimun
-                    {{ cpl.experience }} yrs ({{
-                      cpl.minCtc 
-                    }}
-                    - {{ cpl.maxCtc }} )
+                    Need {{ cpl.requiredPositions }} candidate(s) with minimun {{ cpl.experience }} yrs ({{ cpl.minCtc }} -
+                    {{ cpl.maxCtc }} )
                   </dd>
                 </dl>
               </td>
               <td width="140">
-                <app-action [trashContent]="trashContent" [shortListContent]="shortListContent"
-                  [sendMailContent]="sendMailContent" [sendSMSContent]="sendSMSContent" [id]="cpl.id" [isTrash]="trash"
-                  [isSendSMS]="sms" [isSendMail]="email" [isShortList]="shortList" (shortList)="open($event)"
-                  (sendSMS)="open($event)" (trash)="open($event)" (sendMail)="open($event)"></app-action>
+                <app-action
+                  [trashContent]="trashContent"
+                  [shortListContent]="shortListContent"
+                  [sendMailContent]="sendMailContent"
+                  [sendSMSContent]="sendSMSContent"
+                  [id]="cpl.id"
+                  [isTrash]="trash"
+                  [isSendSMS]="sms"
+                  [isSendMail]="email"
+                  [isShortList]="shortList"
+                  (shortList)="open($event)"
+                  (sendSMS)="open($event)"
+                  (trash)="open($event)"
+                  (sendMail)="open($event)"
+                ></app-action>
               </td>
             </tr>
           </tbody>
@@ -38,30 +47,41 @@
       </div>
     </div>
     <div class="col-md-5">
-      <form name="form" id="clientPositionForm" (ngSubmit)="f.form.valid && createClientPosition(f)" #f="ngForm"
-        novalidate>
-        <div class="row text-center">
+      <form name="form" id="clientPositionForm" (ngSubmit)="f.form.valid && createClientPosition(f)" #f="ngForm" novalidate>
+        <div class="row text-center" *ngIf="loggedInRole != 'User'">
           <div class="col-md-12">
-            <button type="submit" *ngIf="enableButtonType == ''" class="btn btn-secondary ml-3">Add</button>
-            <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2"
-              (click)="updateClientPosition(f)">
+            <button
+              type="submit"
+              *ngIf="enableButtonType == ''"
+              class="btn btn-secondary ml-3"
+              [disabled]="f.form.pristine || f.form.invalid"
+            >
+              Add
+            </button>
+            <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2" (click)="updateClientPosition(f)">
               Update
             </button>
-            <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button"
-              (click)="enableFormEditable()">
+            <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button" (click)="enableFormEditable()">
               Edit
             </button>
-            <button type="button" (click)="cancelForm(f)" *ngIf="enableButtonType != 'E'"
-              class="btn btn-secondary ml-3">{{enableButtonType == 'U' ? 'Close' : 'Clear'}}</button>
+            <button type="button" (click)="cancelForm(f)" *ngIf="enableButtonType != 'E'" class="btn btn-secondary ml-3">
+              {{ enableButtonType == 'U' ? 'Close' : 'Clear' }}
+            </button>
           </div>
         </div>
         <div class="row">
           <div class="col-md-6">
             <div class="form-group">
               <label>Client Name<span class="required">*</span></label>
-              <select class="form-control" name="cn" [disabled]="readOnlyForm == 'R'"
-                [(ngModel)]="clientPositionModel.clientId" [ngClass]="{ 'is-invalid': f.submitted && cn.invalid }"
-                #cn="ngModel" required>
+              <select
+                class="form-control"
+                name="cn"
+                [disabled]="readOnlyForm == 'R'"
+                [(ngModel)]="clientPositionModel.clientId"
+                [ngClass]="{ 'is-invalid': f.submitted && cn.invalid }"
+                #cn="ngModel"
+                required
+              >
                 <option *ngFor="let cls of clientList" [ngValue]="cls.id"> {{ cls.name }}</option>
               </select>
               <div class="invalid-feedback">
@@ -72,9 +92,15 @@
           <div class="col-md-6">
             <div class="form-group">
               <label>Job Title<span class="required">*</span></label>
-              <input class="form-control" [readonly]="readOnlyForm == 'R'" [(ngModel)]="clientPositionModel.role"
-                name="technology" [ngClass]="{ 'is-invalid': f.submitted && technology.invalid }" #technology="ngModel"
-                required />
+              <input
+                class="form-control"
+                [readonly]="readOnlyForm == 'R'"
+                [(ngModel)]="clientPositionModel.role"
+                name="technology"
+                [ngClass]="{ 'is-invalid': f.submitted && technology.invalid }"
+                #technology="ngModel"
+                required
+              />
               <div class="invalid-feedback">
                 Role is mandatory
               </div>
@@ -85,65 +111,98 @@
           <div class="col-md-6">
             <div class="form-group">
               <label>Required Positions</label>
-              <input class="form-control" type="number" min="0" [readonly]="readOnlyForm == 'R'"
-                [(ngModel)]="clientPositionModel.requiredPositions" name="nofpos" #nofpos="ngModel" />
+              <input
+                class="form-control"
+                type="number"
+                min="0"
+                [readonly]="readOnlyForm == 'R'"
+                [(ngModel)]="clientPositionModel.requiredPositions"
+                name="nofpos"
+                #nofpos="ngModel"
+              />
             </div>
           </div>
           <div class="col-md-6">
             <div class="form-group">
               <label>Required Experience</label>
-              <input class="form-control" [readonly]="readOnlyForm == 'R'" [(ngModel)]="clientPositionModel.experience"
-                name="experience" [ngClass]="{ 'is-invalid': f.submitted && experience.invalid }"
-                #experience="ngModel" />
+              <input
+                class="form-control"
+                [readonly]="readOnlyForm == 'R'"
+                [(ngModel)]="clientPositionModel.experience"
+                name="experience"
+                [ngClass]="{ 'is-invalid': f.submitted && experience.invalid }"
+                #experience="ngModel"
+              />
             </div>
           </div>
         </div>
         <div class="row">
           <div class="col-md-6">
             <label>Min CTC</label>
-            <input class="form-control" [readonly]="readOnlyForm == 'R'" type="text"
-              [(ngModel)]="clientPositionModel.minCtc" name="minctc"
-              [ngClass]="{ 'is-invalid': f.submitted && minctc.invalid }" #minctc="ngModel" />
+            <input
+              class="form-control"
+              [readonly]="readOnlyForm == 'R'"
+              type="text"
+              [(ngModel)]="clientPositionModel.minCtc"
+              name="minctc"
+              [ngClass]="{ 'is-invalid': f.submitted && minctc.invalid }"
+              #minctc="ngModel"
+            />
           </div>
           <div class="col-md-6">
             <label>Max CTC</label>
-            <input class="form-control" [readonly]="readOnlyForm == 'R'" type="text"
-              [(ngModel)]="clientPositionModel.maxCtc" name="maxctc"
-              [ngClass]="{ 'is-invalid': f.submitted && maxctc.invalid }" #maxctc="ngModel" />
+            <input
+              class="form-control"
+              [readonly]="readOnlyForm == 'R'"
+              type="text"
+              [(ngModel)]="clientPositionModel.maxCtc"
+              name="maxctc"
+              [ngClass]="{ 'is-invalid': f.submitted && maxctc.invalid }"
+              #maxctc="ngModel"
+            />
           </div>
         </div>
         <div class="row">
           <div class="col-md-6">
             <div class="form-group">
               <label>Location</label>
-              <input class="form-control" [readonly]="readOnlyForm == 'R'" [(ngModel)]="clientPositionModel.location"
-                name="loc" [ngClass]="{ 'is-invalid': f.submitted && loc.invalid }" #loc="ngModel" />
-
+              <input
+                class="form-control"
+                [readonly]="readOnlyForm == 'R'"
+                [(ngModel)]="clientPositionModel.location"
+                name="loc"
+                [ngClass]="{ 'is-invalid': f.submitted && loc.invalid }"
+                #loc="ngModel"
+              />
             </div>
           </div>
           <div class="col-md-6">
             <div class="form-group">
               <label>Client Position Status </label>
-              <select class="form-control" name="cps" [disabled]="readOnlyForm == 'R'"
-                [(ngModel)]="clientPositionModel.cpstatus">
-                <option *ngFor="let cpsl of clientPositionStatusList" [ngValue]="cpsl.code"> {{ cpsl.description }}
-                </option>
+              <select class="form-control" name="cps" [disabled]="readOnlyForm == 'R'" [(ngModel)]="clientPositionModel.cpstatus">
+                <option *ngFor="let cpsl of clientPositionStatusList" [ngValue]="cpsl.code"> {{ cpsl.description }} </option>
               </select>
             </div>
           </div>
         </div>
         <div class="row">
-          <div class="col-md-6"> <label>Assign To</label>
-            <select class="form-control" name="assign" [disabled]="readOnlyForm == 'R'"
-              [(ngModel)]="clientPositionModel.assignedTo" [ngClass]="{ 'is-invalid': f.submitted && assign.invalid }"
-              #assign="ngModel">
+          <div class="col-md-6">
+            <label>Assign To</label>
+            <select
+              class="form-control"
+              name="assign"
+              [disabled]="readOnlyForm == 'R'"
+              [(ngModel)]="clientPositionModel.assignedTo"
+              [ngClass]="{ 'is-invalid': f.submitted && assign.invalid }"
+              #assign="ngModel"
+            >
               <option *ngFor="let rl of recruiterList" [ngValue]="rl.id"> {{ rl.fullname }}</option>
-            </select></div>
+            </select>
+          </div>
           <div class="col-md-6" *ngIf="closedByEnable">
             <div class="form-group">
               <label>Closed By</label>
-              <select class="form-control" name="closedBy" [disabled]="readOnlyForm == 'R'"
-                [(ngModel)]="clientPositionModel.closedBy">
+              <select class="form-control" name="closedBy" [disabled]="readOnlyForm == 'R'" [(ngModel)]="clientPositionModel.closedBy">
                 <option *ngFor="let rl of recruiterList" [ngValue]="rl.id"> {{ rl.fullname }}</option>
               </select>
             </div>
@@ -153,9 +212,17 @@
           <div class="col-md-12">
             <div class="form-group">
               <label>Required Skills<span class="required">*</span></label>
-              <textarea class="form-control" cols="10" rows="10" [(ngModel)]="clientPositionModel.requiredSkills"
-                name="requiredskills" [ngClass]="{ 'is-invalid': f.submitted && requiredskills.invalid }"
-                #requiredskills="ngModel" required [readonly]="readOnlyForm == 'R'"></textarea>
+              <textarea
+                class="form-control"
+                cols="10"
+                rows="10"
+                [(ngModel)]="clientPositionModel.requiredSkills"
+                name="requiredskills"
+                [ngClass]="{ 'is-invalid': f.submitted && requiredskills.invalid }"
+                #requiredskills="ngModel"
+                required
+                [readonly]="readOnlyForm == 'R'"
+              ></textarea>
               <div class="invalid-feedback">
                 Required Skills are mandatory
               </div>
@@ -168,18 +235,33 @@
               <label>Additional Properties</label>
               <table class="table">
                 <tbody>
-                  <tr *ngFor="let ap of clientPositionModel.properties;let i=index">
+                  <tr *ngFor="let cpmp of clientPositionModel.properties; let i = index">
                     <td>
-                      <input type="text" [(ngModel)]="ap.name" class="form-control" name="addPropName"
-                        [readonly]="readOnlyForm == 'R'">
+                      <input
+                        type="text"
+                        [(ngModel)]="cpmp.name"
+                        class="form-control"
+                        name="addPropName{{ i }}"
+                        [readonly]="readOnlyForm == 'R'"
+                      />
                     </td>
                     <td>
-                      <input type="text" [(ngModel)]="ap.value" class="form-control" name="addPropValue"
-                        [readonly]="readOnlyForm == 'R'">
+                      <input
+                        type="text"
+                        [(ngModel)]="cpmp.value"
+                        class="form-control"
+                        name="addPropValue{{ i }}"
+                        [readonly]="readOnlyForm == 'R'"
+                      />
                     </td>
                     <td>
-                      <i class="fa fa-minus" aria-hidden="true" id="decrease" *ngIf="enableButtonType != 'E'"
-                        (click)="propertiesListIncrement($event.target,i)"></i>
+                      <i
+                        class="fa fa-minus"
+                        aria-hidden="true"
+                        id="decrease"
+                        *ngIf="enableButtonType != 'E'"
+                        (click)="propertiesListIncrement($event.target, i)"
+                      ></i>
                     </td>
                   </tr>
                 </tbody>
@@ -191,8 +273,7 @@
           <div class="col-md-12">
             <div class="form-group">
               <label>Description</label>
-              <angular-editor [(ngModel)]="clientPositionModel.description" name="description" [config]="config">
-              </angular-editor>
+              <angular-editor [(ngModel)]="clientPositionModel.description" name="description" [config]="config"> </angular-editor>
             </div>
           </div>
         </div>
@@ -205,16 +286,19 @@
                   <tbody>
                     <tr>
                       <td>
-                        <input type="text" [(ngModel)]="apName" class="form-control" name="apName"
-                          [readonly]="readOnlyForm == 'R'">
+                        <input type="text" [(ngModel)]="apName" class="form-control" name="apName" [readonly]="readOnlyForm == 'R'" />
                       </td>
                       <td>
-                        <input type="text" [(ngModel)]="apValue" class="form-control" name="apValue"
-                          [readonly]="readOnlyForm == 'R'">
+                        <input type="text" [(ngModel)]="apValue" class="form-control" name="apValue" [readonly]="readOnlyForm == 'R'" />
                       </td>
                       <td>
-                        <i class="fa fa-plus" aria-hidden="true" id="increase" *ngIf="enableButtonType != 'E'"
-                          (click)="propertiesListIncrement($event.target,i)"></i>
+                        <i
+                          class="fa fa-plus"
+                          aria-hidden="true"
+                          id="increase"
+                          *ngIf="enableButtonType != 'E'"
+                          (click)="propertiesListIncrement($event.target, i)"
+                        ></i>
                       </td>
                     </tr>
                   </tbody>
@@ -223,20 +307,25 @@
             </div>
           </div>
         </div>
-        <div class="row text-center">
+        <div class="row text-center" *ngIf="loggedInRole != 'User'">
           <div class="col-md-12">
-            <button type="submit" *ngIf="enableButtonType == ''" [disabled]="f.form.pristine || f.form.invalid"
-              class="btn btn-secondary ml-3">Add</button>
-            <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2"
-              (click)="updateClientPosition(f)">
+            <button
+              type="submit"
+              *ngIf="enableButtonType == ''"
+              [disabled]="f.form.pristine || f.form.invalid"
+              class="btn btn-secondary ml-3"
+            >
+              Add
+            </button>
+            <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2" (click)="updateClientPosition(f)">
               Update
             </button>
-            <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button"
-              (click)="enableFormEditable()">
+            <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button" (click)="enableFormEditable()">
               Edit
             </button>
-            <button type="button" (click)="cancelForm(f)" *ngIf="enableButtonType != 'E'"
-              class="btn btn-secondary ml-3">{{enableButtonType == 'U' ? 'Close' : 'Clear'}}</button>
+            <button type="button" (click)="cancelForm(f)" *ngIf="enableButtonType != 'E'" class="btn btn-secondary ml-3">
+              {{ enableButtonType == 'U' ? 'Close' : 'Clear' }}
+            </button>
           </div>
         </div>
       </form>
@@ -258,8 +347,12 @@
       <option *ngFor="let rl of recruiterList" [ngValue]="rl.id"> {{ rl.fullname }}</option>
     </select>
     <label>Consultants</label>
-    <ng-multiselect-dropdown [placeholder]="'choose names..'" [data]="consultantNames"
-      [(ngModel)]="shortListConsultants" [settings]="dropdownSettings">
+    <ng-multiselect-dropdown
+      [placeholder]="'choose names..'"
+      [data]="consultantNames"
+      [(ngModel)]="shortListConsultants"
+      [settings]="dropdownSettings"
+    >
       <!-- (onSelect)="onItemSelect($event)"
      (onSelectAll)="onSelectAll($event)" -->
     </ng-multiselect-dropdown>
@@ -305,8 +398,8 @@
     <!-- <ng-multiselect-dropdown [placeholder]="'choose numbers..'" [data]="mailIdForMails" [(ngModel)]="sendEmailModel.to"
       [settings]="dropdownSettings">
     </ng-multiselect-dropdown> -->
-    
-      <!-- (onSelect)="onItemSelect($event)"
+
+    <!-- (onSelect)="onItemSelect($event)"
     (onSelectAll)="onSelectAll($event)" -->
     <label>Subject</label>
     <input class="form-control" [(ngModel)]="sendEmailModel.subject" name="sub" />
@@ -332,8 +425,12 @@
       <option *ngFor="let sms of smsList"> {{ sms.type }}</option>
     </select>
     <label>Numbers</label>
-    <ng-multiselect-dropdown [placeholder]="'choose numbers..'" [data]="numbersForSmsDropdown"
-      [(ngModel)]="numbersToSend" [settings]="dropdownSettings">
+    <ng-multiselect-dropdown
+      [placeholder]="'choose numbers..'"
+      [data]="numbersForSmsDropdown"
+      [(ngModel)]="numbersToSend"
+      [settings]="dropdownSettings"
+    >
       <!-- (onSelect)="onItemSelect($event)"
      (onSelectAll)="onSelectAll($event)" -->
     </ng-multiselect-dropdown>

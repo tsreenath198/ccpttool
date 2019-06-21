@@ -14,6 +14,7 @@ export interface ClientModel {
     servicetaxNo: string;
     gst: string;
     description: string;
+    website: string;
     clientContacts: Array<ClientContactsModel>;
     properties: Array<AdditionalPropertiesModel>;
 

@@ -36,6 +36,8 @@ export class ConsultantComponent implements OnInit {
   public download = 'download';
   public trash = 'trash';
   public upload = 'upload';
+  protected apName = '';
+  protected apValue = '';
   protected screenHeight: any;
   private modalRef: NgbModalRef;
   public urlConstants = new URLConstants();
@@ -53,11 +55,9 @@ export class ConsultantComponent implements OnInit {
       this.consultantStatusList = resp as any;
     });
     this.init();
-    this.additionalPropertiesDeclare();
   }
 
   init(): void {
-      this.defaultStatus();
     this.http.get(this.urlConstants.CGetAll).subscribe(resp => {
       this.consultantList = resp as any;
       this.consultantList.forEach(cl => {
@@ -68,6 +68,8 @@ export class ConsultantComponent implements OnInit {
         }
       });
     });
+    this.consultantModel['cstatus'] = 'Active';
+    this.consultantModel.properties = [];
   }
   private validate(value: any): boolean {
     const bool = value == null ? true : false;
@@ -89,9 +91,6 @@ export class ConsultantComponent implements OnInit {
   formReset() {
     this.consultantModel = <ConsultantModel>{};
   }
-  defaultStatus(){
-    this.consultantModel['cstatus'] = 'Active';
-  }
   createConsultant(consultantForm: NgForm): void {
     const temp = this.http.post(this.consultantModel, this.urlConstants.CCreate);
     temp.subscribe(
@@ -100,7 +99,6 @@ export class ConsultantComponent implements OnInit {
         this.init();
         this.formReset();
         consultantForm.resetForm();
-        this.additionalPropertiesDeclare();
       },
       err => {
         this.toastr.error(err.error.message, 'Consultant');
@@ -117,7 +115,6 @@ export class ConsultantComponent implements OnInit {
         consultantForm.resetForm();
         this.readOnlyForm = '';
         this.enableButtonType = '';
-        this.additionalPropertiesDeclare();
       },
       err => {
         this.toastr.error(err.statusText, 'Consultant');
@@ -130,9 +127,6 @@ export class ConsultantComponent implements OnInit {
       this.consultantModel = this.mapToUpdateModel(resp);
       // tslint:disable-next-line:no-shadowed-variable
       const temp = resp as any;
-      if (temp.properties == null) {
-        this.additionalPropertiesDeclare();
-      }
     });
   }
   getFilesById(id: number) {
@@ -144,10 +138,8 @@ export class ConsultantComponent implements OnInit {
   cancelForm(consultantForm: NgForm) {
     this.formReset();
     consultantForm.resetForm();
-    this.defaultStatus();
     this.readOnlyForm = '';
     this.enableButtonType = '';
-    this.additionalPropertiesDeclare();
   }
   deleteConsultantRecord(): void {
     const temp = this.http.delete(this.urlConstants.CDelete + this.selectedRecrdToDel);
@@ -175,20 +167,19 @@ export class ConsultantComponent implements OnInit {
     this.consultantModel['cstatus'] = temp.status.code;
     return this.consultantModel;
   }
-  additionalPropertiesDeclare() {
-    this.consultantModel.properties = [<AdditionalPropertiesModel>{}];
-  }
   propertiesListIncrement(event, i: number) {
     switch (event.id) {
       case 'decrease': {
-        this.consultantModel.properties.splice(i, 1);
-        break;
+          this.consultantModel.properties.splice(i, 1);
+          break;
       }
       case 'increase': {
-        this.consultantModel.properties.push(<AdditionalPropertiesModel>{});
-        break;
+          this.consultantModel.properties.push(<AdditionalPropertiesModel>{ "name": this.apName, "value": this.apValue });
+          this.apName = '';
+          this.apValue = '';
+          break;
       }
-    }
+  }
   }
   imposeMinMax(el) {
     if (el.value !== '') {

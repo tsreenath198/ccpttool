@@ -5,7 +5,7 @@ export interface ConsultantCallHistoryModel {
     consultantId: number;
     description: string;
     calledDate: string;
-    clientPositionId: number;
+    cpId: number;
     id: number;
     properties: Array<AdditionalPropertiesModel>;
 }

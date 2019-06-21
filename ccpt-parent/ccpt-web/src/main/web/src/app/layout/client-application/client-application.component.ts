@@ -13,6 +13,7 @@ import { NgForm } from '@angular/forms';
 import { NgbModalRef, ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { RecruiterModel } from '../recruiter/recruiter.model';
 import { AdditionalPropertiesModel } from 'src/app/additional-properties.model';
+import { AngularEditorConfig } from '@kolkov/angular-editor';
 
 
 @Component({
@@ -41,6 +42,16 @@ export class ClientApplicationComponent implements OnInit {
     public readOnlyForm = '';
     public enableButtonType = '';
     public trash = 'trash';
+    protected apName = '';
+    protected apValue = '';
+    public loggedInRole = '';
+    protected config: AngularEditorConfig = {
+        editable: true,
+        spellcheck: true,
+        height: '15rem',
+        minHeight: '5rem',
+        translate: 'no'
+    };
 
     private getAllCAS = this.http.get(this.urlConstants.CASGetAll);
     private getAllC = this.http.get(this.urlConstants.CGetAll);
@@ -56,14 +67,16 @@ export class ClientApplicationComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.loggedInRole = sessionStorage.getItem('role');
         this.init();
         this.getAllDropdowns();
-        this.additionalPropertiesDeclare();
     }
     init() {
         this.http.get(this.urlConstants.CAGetAll).subscribe(resp => {
             this.clientApplicationList = resp as any;
         });
+        this.CAModel.properties = [];
+        this.CAModel.caStatus = 'New';
     }
     getAllDropdowns() {
         forkJoin(
@@ -88,7 +101,8 @@ export class ClientApplicationComponent implements OnInit {
         this.enableButtonType = 'U';
     }
     readOnlyEnable(id: number) {
-        this.isInterviewScheduled = true;
+
+        // this.isInterviewScheduled = true;
         this.getCCHById(id);
         this.readOnlyForm = 'R';
         this.enableButtonType = 'E';
@@ -98,9 +112,10 @@ export class ClientApplicationComponent implements OnInit {
         temp.subscribe(resp => {
             this.CAModel = this.mapToUpdateModel(resp);
             // tslint:disable-next-line:no-shadowed-variable
-            const temp = resp as any;
-            if (temp.properties == null) {
-                this.additionalPropertiesDeclare();
+            if(this.CAModel.interviewDate != null){
+                this.isInterviewScheduled = true;
+            }else{
+                this.isInterviewScheduled = false;
             }
         });
     }
@@ -113,9 +128,6 @@ export class ClientApplicationComponent implements OnInit {
         this.CAModel['creatorId'] = temp.creator.id;
         return this.CAModel;
     }
-    additionalPropertiesDeclare() {
-        this.CAModel.properties = [<AdditionalPropertiesModel>{}];
-    }
     propertiesListIncrement(event, i: number) {
         switch (event.id) {
             case 'decrease': {
@@ -123,7 +135,9 @@ export class ClientApplicationComponent implements OnInit {
                 break;
             }
             case 'increase': {
-                this.CAModel.properties.push(<AdditionalPropertiesModel>{});
+                this.CAModel.properties.push(<AdditionalPropertiesModel>{ 'name': this.apName, 'value': this.apValue });
+                this.apName = '';
+                this.apValue = '';
                 break;
             }
         }
@@ -134,7 +148,6 @@ export class ClientApplicationComponent implements OnInit {
             this.toastr.success(this.urlConstants.SuccessMsg, 'Client Application');
             this.init();
             this.formReset();
-            this.additionalPropertiesDeclare();
             clientApplicationForm.resetForm();
 
         }, err => {
@@ -154,7 +167,6 @@ export class ClientApplicationComponent implements OnInit {
             this.toastr.success(this.urlConstants.UpdateMsg, 'Client Application');
             this.formReset();
             this.init();
-            this.additionalPropertiesDeclare();
             clientApplicationForm.resetForm();
             this.readOnlyForm = '';
             this.enableButtonType = '';
@@ -165,11 +177,11 @@ export class ClientApplicationComponent implements OnInit {
     }
 
     cancelForm(clientApplicationForm: NgForm) {
+        this.init();
         this.formReset();
         clientApplicationForm.resetForm();
         this.readOnlyForm = '';
         this.enableButtonType = '';
-        this.additionalPropertiesDeclare();
 
     }
     deleteCARecord(): void {
