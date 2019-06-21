@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ccpt.model.CallHistorySummaryStatistics;
 import com.ccpt.model.ConsultantCallHistory;
 import com.ccpt.repository.BaseRepository;
 import com.ccpt.repository.ConsultantCallHistoryRepository;
@@ -32,4 +33,11 @@ public class ConsultantCallHistoryService extends BaseService<ConsultantCallHist
 		return consultantCallHistoryRepository;
 	}
 
+	public List<CallHistorySummaryStatistics> getAllconCHCountByRecruiters() {
+		return consultantCallHistoryRepository.getAllconCHCountByRecruiters();
+	}
+
+	public List<ConsultantCallHistory> getAllconCHByRecruiterId(Integer rId) {
+		return consultantCallHistoryRepository.getAllconCHByRecruiterId(rId, true);
+	}
 }

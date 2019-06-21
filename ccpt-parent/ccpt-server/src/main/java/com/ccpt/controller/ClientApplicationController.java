@@ -67,8 +67,8 @@ public class ClientApplicationController extends BaseController<ClientApplicatio
 	}
 
 	@GetMapping("/getAllActiveCACountByCpID")
-	public ResponseEntity<List<PositionSummaryStatistics>> getAllActiveCACountByCpID() {
-		List<PositionSummaryStatistics> result = clientApplicationService.getAllActiveCACountByCpID();
+	public ResponseEntity<List<PositionSummaryStatistics>> getAllActiveCACount() {
+		List<PositionSummaryStatistics> result = clientApplicationService.getAllActiveCACount();
 		return new ResponseEntity<List<PositionSummaryStatistics>>(result, HttpStatus.OK);
 
 	}

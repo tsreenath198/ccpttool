@@ -1,17 +1,24 @@
 package com.ccpt.controller;
 
+import java.util.List;
+
 import javax.validation.ValidationException;
 
 import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.ccpt.constants.CCPTConstants;
 import com.ccpt.dto.ConsultantCallHistoryDTO;
 import com.ccpt.mapper.BaseMapper;
 import com.ccpt.mapper.ConsultantCallHistoryMapper;
+import com.ccpt.model.CallHistorySummaryStatistics;
 import com.ccpt.model.ConsultantCallHistory;
 import com.ccpt.service.BaseService;
 import com.ccpt.service.ClientPositionService;
@@ -45,6 +52,20 @@ public class ConsultantCallHistoryController
 	@Override
 	public BaseMapper<ConsultantCallHistoryDTO, ConsultantCallHistory, Integer> getMapper() {
 		return Mappers.getMapper(ConsultantCallHistoryMapper.class);
+	}
+
+	@GetMapping("/getAllconCHCountByRecruiters")
+	public ResponseEntity<List<CallHistorySummaryStatistics>> getAllconCHCountByRecruiters() {
+		List<CallHistorySummaryStatistics> result = consultantCallHistoryService.getAllconCHCountByRecruiters();
+		return new ResponseEntity<List<CallHistorySummaryStatistics>>(result, HttpStatus.OK);
+
+	}
+
+	@GetMapping("/getAllconCHByRecruiterId")
+	public ResponseEntity<List<ConsultantCallHistory>> getAllconCHByRecruiterId(@RequestParam Integer rId) {
+		List<ConsultantCallHistory> result = consultantCallHistoryService.getAllconCHByRecruiterId(rId);
+		return new ResponseEntity<List<ConsultantCallHistory>>(result, HttpStatus.OK);
+
 	}
 
 	@Override
