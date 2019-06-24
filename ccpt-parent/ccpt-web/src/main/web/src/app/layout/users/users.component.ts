@@ -1,6 +1,6 @@
-import { Component, OnInit, HostListener } from '@angular/core';
+import { Component, OnInit, HostListener, ElementRef } from '@angular/core';
 import { routerTransition } from '../../router.animations';
-import {  UsersModel, UserRoles } from './users.model';
+import { UsersModel, UserRoles } from './users.model';
 import { HttpClientService } from 'src/app/shared/services/http.service';
 import { URLConstants } from '../components/constants/url-constants';
 import { NgForm } from '@angular/forms';
@@ -29,24 +29,26 @@ export class UsersComponent implements OnInit {
     protected apName = '';
     protected apValue = '';
     private modalRef: NgbModalRef;
-    public trash:string = 'trash';
-    protected screenHeight:any;
+    public trash: string = 'trash';
+    protected screenHeight: any;
+    protected viewPassword: boolean;
 
-    constructor(private http: HttpClientService, private toastr: ToastrCustomService, private modalService: NgbModal) { 
+    constructor(private http: HttpClientService, private toastr: ToastrCustomService, private modalService: NgbModal,
+        private el: ElementRef) {
         this.getScreenSize();
-     }
-     @HostListener('window:resize', ['$event'])
-     getScreenSize(event?) {
-           this.screenHeight = window.innerHeight;
-     }
+    }
+    @HostListener('window:resize', ['$event'])
+    getScreenSize(event?) {
+        this.screenHeight = window.innerHeight;
+    }
 
     ngOnInit() {
         this.http.get(this.urlConstants.RGetAll).subscribe(resp => {
             this.getAllR = resp as any;
         });
-        this.init();    
+        this.init();
         this.rolesList = this.rolesModel.roles;
-
+        this.viewPassword = false;
     }
     init() {
         this.http.get(this.urlConstants.UserGetAll).subscribe(resp => {
@@ -69,12 +71,12 @@ export class UsersComponent implements OnInit {
         this.enableButtonType = 'E';
     }
     getUserById(id: number) {
-        let temp=this.http.get(this.urlConstants.UserGetById + id);
+        let temp = this.http.get(this.urlConstants.UserGetById + id);
         temp.subscribe(resp => {
-        this.usersModel = this.mapToUpdateModel(resp);
-        if (this.usersModel.properties == null) {
-            this.usersModel.properties = [];
-        }
+            this.usersModel = this.mapToUpdateModel(resp);
+            if (this.usersModel.properties == null) {
+                this.usersModel.properties = [];
+            }
         });
     }
     mapToUpdateModel(response): UsersModel {
@@ -85,22 +87,32 @@ export class UsersComponent implements OnInit {
     propertiesListIncrement(event, i: number) {
         switch (event.id) {
             case 'decrease': {
-              this.usersModel.properties.splice(i, 1);
-              break;
+                this.usersModel.properties.splice(i, 1);
+                break;
             }
             case 'increase': {
-              this.usersModel.properties.push(<AdditionalPropertiesModel>{ 'name': this.apName, 'value': this.apValue });
-              this.apName = '';
-              this.apValue = '';
-              break;
+                this.usersModel.properties.push(<AdditionalPropertiesModel>{ 'name': this.apName, 'value': this.apValue });
+                this.apName = '';
+                this.apValue = '';
+                break;
             }
-          }
+        }
+    }
+    toogle(html: HTMLInputElement) {
+        if(html.type === 'password'){
+            html.type = 'text';
+            this.viewPassword = true;
+        }else{
+            html.type = 'password';
+            this.viewPassword = false; 
+        }
+        
     }
     formReset() {
         this.usersModel = <UsersModel>{};
     }
     createUser(usersForm: NgForm): void {
-        let temp=this.http.post(this.usersModel, this.urlConstants.UserCreate);
+        let temp = this.http.post(this.usersModel, this.urlConstants.UserCreate);
         temp.subscribe(resp => {
             this.toastr.success(this.urlConstants.SuccessMsg, 'User');
             usersForm.resetForm();
@@ -110,7 +122,7 @@ export class UsersComponent implements OnInit {
         });
     }
     updateUsers(usersForm: NgForm): void {
-        let temp=this.http.update(this.usersModel, this.urlConstants.UserUpdate);
+        let temp = this.http.update(this.usersModel, this.urlConstants.UserUpdate);
         temp.subscribe(resp => {
             this.formReset();
             this.toastr.success(this.urlConstants.UpdateMsg, 'User');
@@ -119,18 +131,18 @@ export class UsersComponent implements OnInit {
             this.readOnlyForm = '';
             this.enableButtonType = '';
         }, err => {
-            this.toastr.error(err.error.message, 'User' );
+            this.toastr.error(err.error.message, 'User');
         });
     }
     deleteUserRecord(): void {
-        let temp=this.http.delete(this.urlConstants.UserDelete + this.selectedRecrdToDel);
+        let temp = this.http.delete(this.urlConstants.UserDelete + this.selectedRecrdToDel);
         temp.subscribe(resp => {
             this.toastr.success(this.urlConstants.DeleteMsg, 'User');
             this.init();
             this.close();
             this.formReset();
         }, err => {
-            this.toastr.error(err.error.message, 'User' );
+            this.toastr.error(err.error.message, 'User');
         });
     }
     cancelForm(usersForm: NgForm) {
@@ -139,11 +151,11 @@ export class UsersComponent implements OnInit {
         this.readOnlyForm = '';
         this.enableButtonType = '';
     }
-     /**
-     * @param
-     * 1) content consists the modal instance
-     * 2) Selected contains the code of selected row
-     */
+    /**
+    * @param
+    * 1) content consists the modal instance
+    * 2) Selected contains the code of selected row
+    */
     open(event: any) {
         if (event.id) {
             this.selectedRecrdToDel = event.id;
