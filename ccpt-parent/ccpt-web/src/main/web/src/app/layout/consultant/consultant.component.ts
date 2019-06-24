@@ -18,7 +18,7 @@ import { AdditionalPropertiesModel } from 'src/app/additional-properties.model';
   animations: [routerTransition()]
 })
 export class ConsultantComponent implements OnInit {
-  public consultantModel: ConsultantModel = <ConsultantModel>{  };
+  public consultantModel: ConsultantModel = <ConsultantModel>{};
   public consultantList: Array<ConsultantModel> = [];
   public consultantStatusList: Array<ConsultantStatusModel> = [];
   public formButtonsToggler = true;
@@ -89,7 +89,7 @@ export class ConsultantComponent implements OnInit {
     this.enableButtonType = 'U';
   }
   formReset() {
-    this.consultantModel = <ConsultantModel>{};
+    this.consultantModel = <ConsultantModel>{ properties: [] };
   }
   createConsultant(consultantForm: NgForm): void {
     const temp = this.http.post(this.consultantModel, this.urlConstants.CCreate);
@@ -126,8 +126,8 @@ export class ConsultantComponent implements OnInit {
     temp.subscribe(resp => {
       this.consultantModel = this.mapToUpdateModel(resp);
       // tslint:disable-next-line:no-shadowed-variable
-      
-      if(this.consultantModel.properties == null){
+
+      if (this.consultantModel.properties == null) {
         this.consultantModel.properties = [];
       }
     });
@@ -175,16 +175,16 @@ export class ConsultantComponent implements OnInit {
   propertiesListIncrement(event, i: number) {
     switch (event.id) {
       case 'decrease': {
-          this.consultantModel.properties.splice(i, 1);
-          break;
+        this.consultantModel.properties.splice(i, 1);
+        break;
       }
       case 'increase': {
-          this.consultantModel.properties.push(<AdditionalPropertiesModel>{ 'name': this.apName, 'value': this.apValue });
-          this.apName = '';
-          this.apValue = '';
-          break;
+        this.consultantModel.properties.push(<AdditionalPropertiesModel>{ 'name': this.apName, 'value': this.apValue });
+        this.apName = '';
+        this.apValue = '';
+        break;
       }
-  }
+    }
   }
   imposeMinMax(el) {
     if (el.value !== '') {
@@ -214,24 +214,24 @@ export class ConsultantComponent implements OnInit {
   open(event: any) {
     this.selectedRecrdToDel = 0;
     if (event.id) {
-        this.selectedRecrdToDel = event.id;
+      this.selectedRecrdToDel = event.id;
     }
     if (event.type === this.download) {
-        // this.getFilesById(this.selectedRecrdToDel); TODO:Need to fix for multiple downloads
-        this.http.get('file/download?refType=Consultant&refId=' + this.selectedRecrdToDel).subscribe(resp => {
-            this.fileList.push(resp);
-            console.log(this.fileList);
-        });
+      // this.getFilesById(this.selectedRecrdToDel); TODO:Need to fix for multiple downloads
+      this.http.get('file/download?refType=Consultant&refId=' + this.selectedRecrdToDel).subscribe(resp => {
+        this.fileList.push(resp);
+        console.log(this.fileList);
+      });
     } else {
-        this.modalRef = this.modalService.open(event.content);
-        this.modalRef.result.then((result) => {
-            this.closeResult = `Closed with: ${result}`;
-        }, (reason) => {
-            this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-        });
+      this.modalRef = this.modalService.open(event.content);
+      this.modalRef.result.then((result) => {
+        this.closeResult = `Closed with: ${result}`;
+      }, (reason) => {
+        this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+      });
     }
 
-}
+  }
   close() {
     this.modalRef.close();
   }
@@ -257,8 +257,8 @@ export class ConsultantComponent implements OnInit {
     formData.append('file', files[0].rawFile, files[0].name);
     const params = 'refId=' + this.selectedRecrdToDel + '&refType=Consultant&comments=' + this.comments;
     this.http.upload('file/save?' + params, formData).subscribe(resp => {
-        console.log('resp =====', resp);
-        this.close();
+      console.log('resp =====', resp);
+      this.close();
     });
     /* let requests = [];
          files.forEach((file) => {

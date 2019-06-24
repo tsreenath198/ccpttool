@@ -101,7 +101,7 @@ export class ClientComponent implements OnInit {
         return this.clientModel;
     }
     formReset() {
-        this.clientModel = <ClientModel>{};
+        this.clientModel = <ClientModel>{properties : []};
     }
     clientCreate(clientForm: NgForm): void {
         const temp = this.http.post(this.clientModel, this.urlConstants.ClientCreate);
