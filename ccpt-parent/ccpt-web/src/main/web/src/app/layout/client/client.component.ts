@@ -52,9 +52,9 @@ export class ClientComponent implements OnInit {
         this.getScreenSize();
     }
     @HostListener('window:resize', ['$event'])
-     getScreenSize(event?) {
-           this.screenHeight = window.innerHeight;
-     }
+    getScreenSize(event?) {
+        this.screenHeight = window.innerHeight;
+    }
     ngOnInit() {
         this.loggedInRole = sessionStorage.getItem('role');
         this.clientContactDeclare();
@@ -90,9 +90,9 @@ export class ClientComponent implements OnInit {
         temp.subscribe(resp => {
             this.clientModel = this.mapToUpdateModel(resp);
             // tslint:disable-next-line:no-shadowed-variable
-            if(this.clientModel.properties == null){
+            if (this.clientModel.properties == null) {
                 this.clientModel.properties = [];
-              }
+            }
         });
     }
     mapToUpdateModel(response) {
@@ -206,14 +206,20 @@ export class ClientComponent implements OnInit {
             this.selectedRecrdToDel = event.id;
         }
         if (event.type === this.download) {
-            this.getFilesById(this.selectedRecrdToDel);
+            // this.getFilesById(this.selectedRecrdToDel); TODO:Need to fix for multiple downloads
+            this.http.get('file/download?refType=Consultant&refId=' + this.selectedRecrdToDel).subscribe(resp => {
+                this.fileList.push(resp);
+                console.log(this.fileList);
+            });
+        } else {
+            this.modalRef = this.modalService.open(event.content);
+            this.modalRef.result.then((result) => {
+                this.closeResult = `Closed with: ${result}`;
+            }, (reason) => {
+                this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+            });
         }
-        this.modalRef = this.modalService.open(event.content);
-        this.modalRef.result.then((result) => {
-            this.closeResult = `Closed with: ${result}`;
-        }, (reason) => {
-            this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-        });
+
     }
     close() {
         this.modalRef.close();
@@ -238,8 +244,8 @@ export class ClientComponent implements OnInit {
         const files = this.getFiles();
         const formData = new FormData();
         formData.append('file', files[0].rawFile, files[0].name);
-        const params = 'refId=' + this.selectedRecrdToDel + '&refType= Consultant &comments=' + this.comments;
-        this.http.upload('file/create?' + params, formData).subscribe(resp => {
+        const params = 'refId=' + this.selectedRecrdToDel + '&refType=Consultant&comments=' + this.comments;
+        this.http.upload('file/save?' + params, formData).subscribe(resp => {
             console.log('resp =====', resp);
             this.close();
         });
