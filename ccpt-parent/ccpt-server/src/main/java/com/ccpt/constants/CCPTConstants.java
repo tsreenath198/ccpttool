@@ -22,6 +22,7 @@ public interface CCPTConstants {
 	String DOWNLOAD_BY_REF_ID_AND_REF_TPYE = "/download";
 	String UPLOAD_FILE = "/file";
 	String SMS = "/sms";
+	String PAYMENT = "/payment";
 
 	String CLIENT_APPLICATION_STATUS = "/caStatus";
 	String CLIENT_POSITION_STATUS = "/cpStatus";

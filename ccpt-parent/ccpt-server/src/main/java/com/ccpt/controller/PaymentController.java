@@ -1,0 +1,104 @@
+package com.ccpt.controller;
+
+import javax.persistence.Transient;
+import javax.validation.ValidationException;
+
+import org.mapstruct.factory.Mappers;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.ccpt.constants.CCPTConstants;
+import com.ccpt.dto.PaymentDTO;
+import com.ccpt.mapper.BaseMapper;
+import com.ccpt.mapper.PaymentMapper;
+import com.ccpt.model.Payment;
+import com.ccpt.service.BaseService;
+import com.ccpt.service.PaymentService;
+
+@Controller
+@CrossOrigin
+@RequestMapping(CCPTConstants.PAYMENT)
+public class PaymentController extends BaseController<PaymentDTO, Payment, Integer> {
+	@Transient
+	@Value("${payment.from}")
+	private String from;
+	@Autowired
+	private PaymentService paymentService;
+
+	@Override
+	public BaseService<Payment, Integer> getService() {
+		return paymentService;
+	}
+
+	@Override
+	public BaseMapper<PaymentDTO, Payment, Integer> getMapper() {
+		return Mappers.getMapper(PaymentMapper.class);
+	}
+
+	@Override
+	protected void validateAndClean(Payment model) {
+		model.setFrom(from);
+		if (model.getInvoiceDate() == null) {
+			throw new ValidationException("Invoice Date cannot be null");
+		}
+		if (model.getBranchHeadName() == null) {
+			throw new ValidationException("Branch head name cannot be null");
+		}
+		if (model.getBranchLocation() == null) {
+			throw new ValidationException("Branch location cannot be null");
+		}
+		if (model.getCandidateName() == null) {
+			throw new ValidationException("Candidate name cannot be null");
+		}
+		if (model.getPhone() == null) {
+			throw new ValidationException("Phone number cannot be null");
+		}
+		if (model.getDesignation() == null) {
+			throw new ValidationException("Designation cannot be null");
+		}
+		if (model.getJoiningDate() == null) {
+			throw new ValidationException("Joining Date cannot be null");
+		}
+		if (model.getAnnualPackage() == null) {
+			throw new ValidationException("Annual package cannot be null");
+		}
+		if (model.getCompanyName() == null) {
+			throw new ValidationException("Company name cannot be null");
+		}
+		if (model.getCompanyGstNum() == null) {
+			throw new ValidationException("Company Gst number cannot be null");
+		}
+		if (model.getCompanyWebsite() == null) {
+			throw new ValidationException("Company website cannot be null");
+		}
+		if (model.getBillingAddress() == null) {
+			throw new ValidationException("Billing address cannot be null");
+		}
+		if (model.getContactPerson() == null) {
+			throw new ValidationException("Contact person cannot be null");
+		}
+		if (model.getContactPersonNum() == null) {
+			throw new ValidationException("Contact person number cannot be null");
+		}
+		if (model.getContactPersonDesignation() == null) {
+			throw new ValidationException("Contact person designation cannot be null");
+		}
+		if (model.getContactPersonEmail() == null) {
+			throw new ValidationException("Contact person email cannot be null");
+		}
+		if (model.getServiceCharge() == null) {
+			throw new ValidationException("Service charge cannot be null");
+		}
+		if (model.getCreditPeriod() == null) {
+			throw new ValidationException("Credit period cannot be null");
+		}
+		if (model.getGauranteePeriod() == null) {
+			throw new ValidationException("Gaurantee period cannot be null");
+		}
+
+	}
+
+}
