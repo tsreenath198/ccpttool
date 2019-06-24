@@ -20,11 +20,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.ccpt.constants.CCPTConstants;
+import com.ccpt.dto.GenericResponse;
 import com.ccpt.model.UploadFile;
-import com.ccpt.model.UploadFileResponse;
 import com.ccpt.service.UploadFileService;
 
 @Controller
@@ -42,8 +41,8 @@ public class UploadFileController {
 	}
 
 	@GetMapping(CCPTConstants.DOWNLOAD_BY_REF_ID_AND_REF_TPYE)
-	public ResponseEntity<Void> downloadFileByRefIdAndRefType(@RequestParam String refType, @RequestParam Integer refId,
-			HttpServletResponse httpServletResponse) throws IOException {
+	public ResponseEntity<GenericResponse> downloadFileByRefIdAndRefType(@RequestParam String refType,
+			@RequestParam Integer refId, HttpServletResponse httpServletResponse) throws IOException {
 		UploadFile dbFile = uploadFileService.downloadFileByRefIdAndRefType(refType, refId);
 
 		byte[] retrievedFile = dbFile.getContent();
@@ -59,7 +58,8 @@ public class UploadFileController {
 			servletOutputStream.write(retrievedFile);
 			servletOutputStream.flush();
 			servletOutputStream.close();
-			return new ResponseEntity<Void>(HttpStatus.OK);
+			return new ResponseEntity<GenericResponse>(
+					new GenericResponse(dbFile.getFileName() + "  downloaded successfully"), HttpStatus.OK);
 		} catch (Exception exception) {
 			System.out.println("exceptions");
 		}
@@ -67,18 +67,17 @@ public class UploadFileController {
 	}
 
 	@PostMapping("save")
-	public UploadFileResponse uploadFile(@RequestParam("file") MultipartFile file, @RequestParam("refId") int refId,
-			@RequestParam("refType") String refType, @RequestParam("comments") String comments) throws IOException {
+	public ResponseEntity<GenericResponse> uploadFile(@RequestParam("file") MultipartFile file,
+			@RequestParam("refId") int refId, @RequestParam("refType") String refType,
+			@RequestParam("comments") String comments) throws IOException {
 
 		String fileName = StringUtils.cleanPath(file.getOriginalFilename());
 		String fileType = file.getContentType();
 		UploadFile uploadFile = new UploadFile(file.getBytes(), refId, refType, comments, fileName, fileType);
-		UploadFile dbFile = uploadFileService.save(uploadFile);
+		uploadFileService.save(uploadFile);
 
-		String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath().path("/downloadFile/")
-				.path(dbFile.getId().toString()).toUriString();
-
-		return new UploadFileResponse(dbFile.getFileName(), fileDownloadUri, file.getContentType(), file.getSize());
+		return new ResponseEntity<GenericResponse>(new GenericResponse(fileName + "  uploaded successfully"),
+				HttpStatus.OK);
 	}
 
 	@PostMapping("/uploadMultipleFiles")
