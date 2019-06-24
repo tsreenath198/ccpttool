@@ -180,12 +180,6 @@ export class ClientComponent implements OnInit {
             this.readOnlyForm = '';
             this.enableButtonType = '';
         }, err => {
-            if (err.status === 200) {
-                this.init();
-                this.close();
-                this.formReset();
-                return this.toastr.success(this.urlConstants.DeleteMsg, 'Client');
-            }
             this.toastr.error(err.error.message, 'Client');
         });
     }
@@ -207,9 +201,10 @@ export class ClientComponent implements OnInit {
         }
         if (event.type === this.download) {
             // this.getFilesById(this.selectedRecrdToDel); TODO:Need to fix for multiple downloads
-            this.http.get('file/download?refType=Consultant&refId=' + this.selectedRecrdToDel).subscribe(resp => {
-                this.fileList.push(resp);
-                console.log(this.fileList);
+            this.http.get('file/download?refType=Client&refId=' + this.selectedRecrdToDel).subscribe(resp => {
+            }, err => {
+                if (err.status == 200)
+                    window.open(err.url);
             });
         } else {
             this.modalRef = this.modalService.open(event.content);
@@ -244,10 +239,13 @@ export class ClientComponent implements OnInit {
         const files = this.getFiles();
         const formData = new FormData();
         formData.append('file', files[0].rawFile, files[0].name);
-        const params = 'refId=' + this.selectedRecrdToDel + '&refType=Consultant&comments=' + this.comments;
+        const params = 'refId=' + this.selectedRecrdToDel + '&refType=Client&comments=' + this.comments;
         this.http.upload('file/save?' + params, formData).subscribe(resp => {
-            console.log('resp =====', resp);
+            let temp: any = resp;
+            this.toastr.success(temp.message, 'Client');
             this.close();
+        }, err => {
+            this.toastr.success(err.error.message, 'Client');
         });
         /* let requests = [];
          files.forEach((file) => {
