@@ -24,6 +24,8 @@ export class DashboardComponent implements OnInit {
     public openCP: Array<any> = [];
     public activeCA: Array<any> = [];
     public activeCAById: Array<any> = [];
+    public cochByIdList: Array<any> = [];
+    public clchByIdList: Array<any> = [];
     public interviewsToday: Array<any> = [];
     private urlConstants = new URLConstants();
     public rpChoosenDays: any = 1;
@@ -35,8 +37,8 @@ export class DashboardComponent implements OnInit {
     private modalRef: NgbModalRef;
 
 
-    public getAllReportCLCH = this.http.get(this.urlConstants.ReportingGetAllCLCH + this.clchChoosenDays);
-    public getAllReportCOCH = this.http.get(this.urlConstants.ReportingGetAllCOCH + this.cochChoosenDays);
+    public getAllReportCLCH = this.http.get(this.urlConstants.CCHGetCountByRecruiter);
+    public getAllReportCOCH = this.http.get(this.urlConstants.CoCHGetCountByRecruiter);
     public getAllReportCPL = this.http.get(this.urlConstants.ReportingGetAllTop5CP);
     public getAllReportCC = this.http.get(this.urlConstants.ReportingGetClosures + this.rpChoosenDays);
     public getAllOpenCP = this.http.get(this.urlConstants.ReportingGetAllOpenCP);
@@ -111,30 +113,42 @@ export class DashboardComponent implements OnInit {
             this.ccptReportCC = resp;
         });
     }
-    public cochGetAllByDays() {
-        const numberOfDays = this.cochChoosenDays;
-        this.http.get(this.urlConstants.ReportingGetAllCOCH  + numberOfDays).subscribe(resp => {
-            this.ccptReportCOCH = resp as any;
-        });
-    }
-    public clchGetAllByDays() {
-        const numberOfDays = this.clchChoosenDays;
-        this.http.get(this.urlConstants.ReportingGetAllCLCH  + numberOfDays).subscribe(resp => {
-            this.ccptReportCLCH = resp as any;
-        });
-    }
+    // public cochGetAllByDays() {
+    //     const numberOfDays = this.cochChoosenDays;
+    //     this.http.get(this.urlConstants.ReportingGetAllCOCH  + numberOfDays).subscribe(resp => {
+    //         this.ccptReportCOCH = resp as any;
+    //     });
+    // }
+    // public clchGetAllByDays() {
+    //     const numberOfDays = this.clchChoosenDays;
+    //     this.http.get(this.urlConstants.ReportingGetAllCLCH  + numberOfDays).subscribe(resp => {
+    //         this.ccptReportCLCH = resp as any;
+    //     });
+    // }
     getAllActiveCAById(recrd: number) {
         this.activeCAById = [];
         this.http.get(this.urlConstants.ReportingGetAllActiveCAById + recrd).subscribe(resp => {
             this.activeCAById = resp as any;
         });
     }
+    getAllCoCHByID(recrd: number){
+        this.cochByIdList=[];
+        this.http.get(this.urlConstants.CoCHGetByRecruiterId + recrd).subscribe(resp =>{
+            this.cochByIdList = resp as any;
+        })
+    }
+    getAllClCHByID(recrd: number){
+        this.clchByIdList=[];
+        this.http.get(this.urlConstants.CCHGetByRecruiterId + recrd).subscribe(resp =>{
+            this.clchByIdList = resp as any;
+        })
+    }
     /**
      * @param
      * 1) content consists the modal instance
      * 2) Selected contains the code of selected row
      */
-    open(content, selected: number) {
+    open(content, selected: number , type) {
         if (selected) {
             this.selectedRecrd = selected;
         }
@@ -144,7 +158,15 @@ export class DashboardComponent implements OnInit {
         }, (reason) => {
             this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
         });
-        this.getAllActiveCAById(this.selectedRecrd);
+        if(type == 'activeClientApplication'){
+            this.getAllActiveCAById(this.selectedRecrd);
+        }
+        if(type == 'ConsultantCallHistory'){
+            this.getAllCoCHByID(this.selectedRecrd);
+        }
+        if(type == 'ClientCallHistory'){
+            this.getAllClCHByID(this.selectedRecrd);
+        }
     }
     close() {
         this.modalRef.close();

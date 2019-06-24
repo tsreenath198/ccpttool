@@ -51,6 +51,8 @@ export class URLConstants {
     CCHUpdate = 'clientCallHistory';
     CCHDelete = 'clientCallHistory/';
     CCHGetById = 'clientCallHistory/';
+    CCHGetCountByRecruiter = 'clientCallHistory/getAllCchCountByRecruiters';
+    CCHGetByRecruiterId = 'clientCallHistory/getAllCchByRecruiterId?rId=';
 
     /* consultant Call History */
     CoCHCreate = 'consultantCallHistory';
@@ -58,6 +60,8 @@ export class URLConstants {
     CoCHUpdate = 'consultantCallHistory';
     CoCHDelete = 'consultantCallHistory/';
     CoCHGetById = 'consultantCallHistory/';
+    CoCHGetCountByRecruiter = 'consultantCallHistory/getAllconCHCountByRecruiters';
+    CoCHGetByRecruiterId = 'consultantCallHistory/getAllconCHByRecruiterId?rId=';
 
     /* Recruiter */
     RCreate = 'recruiter';

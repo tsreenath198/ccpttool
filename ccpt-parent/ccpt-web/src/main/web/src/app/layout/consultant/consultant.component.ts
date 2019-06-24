@@ -214,21 +214,24 @@ export class ConsultantComponent implements OnInit {
   open(event: any) {
     this.selectedRecrdToDel = 0;
     if (event.id) {
-      this.selectedRecrdToDel = event.id;
+        this.selectedRecrdToDel = event.id;
     }
     if (event.type === this.download) {
-      this.getFilesById(this.selectedRecrdToDel);
+        // this.getFilesById(this.selectedRecrdToDel); TODO:Need to fix for multiple downloads
+        this.http.get('file/download?refType=Consultant&refId=' + this.selectedRecrdToDel).subscribe(resp => {
+            this.fileList.push(resp);
+            console.log(this.fileList);
+        });
+    } else {
+        this.modalRef = this.modalService.open(event.content);
+        this.modalRef.result.then((result) => {
+            this.closeResult = `Closed with: ${result}`;
+        }, (reason) => {
+            this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+        });
     }
-    this.modalRef = this.modalService.open(event.content);
-    this.modalRef.result.then(
-      result => {
-        this.closeResult = `Closed with: ${result}`;
-      },
-      reason => {
-        this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-      }
-    );
-  }
+
+}
   close() {
     this.modalRef.close();
   }
@@ -252,10 +255,10 @@ export class ConsultantComponent implements OnInit {
     const files = this.getFiles();
     const formData = new FormData();
     formData.append('file', files[0].rawFile, files[0].name);
-    const params = 'refId=' + this.selectedRecrdToDel + '&refType= Consultant &comments=' + this.comments;
-    this.http.upload('file/create?' + params, formData).subscribe(resp => {
-      console.log('resp =====', resp);
-      this.close();
+    const params = 'refId=' + this.selectedRecrdToDel + '&refType=Consultant&comments=' + this.comments;
+    this.http.upload('file/save?' + params, formData).subscribe(resp => {
+        console.log('resp =====', resp);
+        this.close();
     });
     /* let requests = [];
          files.forEach((file) => {

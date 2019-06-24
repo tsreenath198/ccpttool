@@ -17,13 +17,13 @@
   <div class="row" *ngIf="interviewsToday">
     <div class="col col-xl-12 col-lg-12">
       <div class="card mb-3">
-        <div class="card-header bg-dark text-clr-white">Interviews Today</div>
+        <div class="card-header bg-dark text-clr-white">Interviews this week</div>
         <div class="table-scroll">
           <table class="table table-sm">
             <thead>
               <tr>
                 <th>Client</th>
-                <th>Client NO.</th>
+                <th>Client No.</th>
                 <th>Consultant</th>
                 <th>Consultant No.</th>
                 <th>Mode</th>
@@ -34,14 +34,14 @@
             </thead>
             <tbody>
               <tr *ngFor="let val of interviewsToday">
-                <td>{{val.clientName}}</td>
-                <td>{{val.clientPhone}}</td>
-                <td>{{val.consultantName}}</td>
-                <td>{{val.consultantPhone}}</td>
-                <td>{{val.interviewMode}}</td>
-                <td>{{val.interviewDate}}</td>
-                <td>{{val.interviewLocation}}</td>
-                <td>{{val.interviewTime}}</td>
+                <td>{{ val.clientName }}</td>
+                <td>{{ val.clientPhone }}</td>
+                <td>{{ val.consultantName }}</td>
+                <td>{{ val.consultantPhone }}</td>
+                <td>{{ val.interviewMode }}</td>
+                <td>{{ val.interviewDate }}</td>
+                <td>{{ val.interviewLocation }}</td>
+                <td>{{ val.interviewTime }}</td>
               </tr>
             </tbody>
           </table>
@@ -52,26 +52,32 @@
   <div class="row">
     <div class="col col-xl-6 col-lg-12">
       <div class="card mb-3 ">
-        <div class="card-header bg-dark text-clr-white">Consultant Call History<span class="pull-right">
+        <div class="card-header bg-dark text-clr-white">
+          Consultant Call History
+          <!-- <span class="pull-right">
             <select class="form-control form-control-sm" name="cp" #t [(ngModel)]="cochChoosenDays"
               (change)="cochGetAllByDays()">
               <option *ngFor="let nod of noOfDays | keyvalue" [ngValue]="nod.value">{{nod.key}}
               </option>
             </select>
-          </span>
+          </span> -->
         </div>
         <div class="table-scroll">
           <table class="table table-sm ">
             <thead>
               <tr>
-                <th>Description</th>
-                <th>Consultant</th>
+                <th>Name</th>
+                <th>Count</th>
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let cch of ccptReportCOCH ">
-                  <td>{{cch.calledBy.fullname }}</td>
-                  <td>{{cch.consultant.fullname }}</td>
+              <tr
+                *ngFor="let cch of ccptReportCOCH"
+                data-toggle="tooltip"
+                (click)="open(contentCoCH, cch.recruiterId, 'ConsultantCallHistory')"
+              >
+                <td>{{ cch.fullName }}</td>
+                <td>{{ cch.count }}</td>
               </tr>
             </tbody>
           </table>
@@ -80,27 +86,32 @@
     </div>
     <div class="col col-xl-6 col-lg-12">
       <div class="card mb-3">
-        <div class="card-header bg-dark text-clr-white">Client Call History
-          <span class="pull-right">
+        <div class="card-header bg-dark text-clr-white">
+          Client Call History
+          <!-- <span class="pull-right">
             <select class="form-control form-control-sm" name="cp" #t [(ngModel)]="clchChoosenDays"
               (change)="clchGetAllByDays()">
               <option *ngFor="let nod of noOfDays | keyvalue" [ngValue]="nod.value">{{nod.key}}
               </option>
             </select>
-          </span>
+          </span> -->
         </div>
         <div class="table-scroll">
           <table class="table table-sm">
             <thead>
               <tr>
-                <th>Client</th>
-                <th>Position Code</th>
+                <th>Name</th>
+                <th>Count</th>
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let cch of ccptReportCLCH">
-                <td>{{cch.calledBy.fullname }}</td>
-                <td>{{cch.clientPosition.generatedCode }}</td>
+              <tr
+                *ngFor="let cch of ccptReportCLCH"
+                data-toggle="tooltip"
+                (click)="open(contentClch, cch.recruiterId, 'ClientCallHistory')"
+              >
+                <td>{{ cch.fullName }}</td>
+                <td>{{ cch.count }}</td>
               </tr>
             </tbody>
           </table>
@@ -150,12 +161,11 @@
   <div class="row">
     <div class="col col-xl-6 col-lg-12">
       <div class="card mb-3">
-        <div class="card-header bg-dark text-clr-white">Recruiter Performance
+        <div class="card-header bg-dark text-clr-white">
+          Recruiter Performance
           <span class="pull-right">
-            <select class="form-control form-control-sm" name="cp" #t [(ngModel)]="rpChoosenDays"
-              (change)="rpGetAllByDays()">
-              <option *ngFor="let nod of noOfDays | keyvalue" [ngValue]="nod.value">{{nod.key}}
-              </option>
+            <select class="form-control form-control-sm" name="cp" #t [(ngModel)]="rpChoosenDays" (change)="rpGetAllByDays()">
+              <option *ngFor="let nod of noOfDays | keyvalue" [ngValue]="nod.value">{{ nod.key }} </option>
             </select>
           </span>
         </div>
@@ -169,8 +179,8 @@
             </thead>
             <tbody>
               <tr *ngFor="let val of ccptReportCC | keyvalue">
-                <td>{{val.key}}</td>
-                <td>{{val.value}}</td>
+                <td>{{ val.key }}</td>
+                <td>{{ val.value }}</td>
               </tr>
             </tbody>
           </table>
@@ -179,22 +189,21 @@
     </div>
     <div class="col col-xl-6 col-lg-12">
       <div class="card mb-3">
-        <div class="card-header bg-dark text-clr-white">Latest Client Positions
-        </div>
+        <div class="card-header bg-dark text-clr-white">Latest Client Positions</div>
         <div class="table-scroll">
           <table class="table table-sm">
             <thead>
               <tr>
-                <th>Client </th>
+                <th>Client</th>
                 <th>Code</th>
                 <th>Date</th>
               </tr>
             </thead>
             <tbody>
               <tr *ngFor="let cpl of ccptReportCPL">
-                <td>{{cpl.client.name}}</td>
-                <td>{{cpl.generatedCode}}</td>
-                <td>{{cpl.createdDate | date}}</td>
+                <td>{{ cpl.client.name }}</td>
+                <td>{{ cpl.generatedCode }}</td>
+                <td>{{ cpl.createdDate | date }}</td>
               </tr>
             </tbody>
           </table>
@@ -202,26 +211,25 @@
       </div>
     </div>
   </div>
-  
+
   <div class="row">
     <div class="col col-xl-6 col-lg-12">
       <div class="card mb-3">
-        <div class="card-header bg-dark text-clr-white">Open Client Positions
-        </div>
+        <div class="card-header bg-dark text-clr-white">Open Client Positions</div>
         <div class="table-scroll">
           <table class="table table-sm">
             <thead>
               <tr>
-                <th>Client </th>
+                <th>Client</th>
                 <th>Code</th>
                 <th>Date</th>
               </tr>
             </thead>
             <tbody>
               <tr *ngFor="let ocp of openCP">
-                <td>{{ocp.client.name}}</td>
-                <td>{{ocp.generatedCode}}</td>
-                <td>{{ocp.createdDate | date}}</td>
+                <td>{{ ocp.client.name }}</td>
+                <td>{{ ocp.generatedCode }}</td>
+                <td>{{ ocp.createdDate | date }}</td>
               </tr>
             </tbody>
           </table>
@@ -230,20 +238,19 @@
     </div>
     <div class="col col-xl-6 col-lg-12">
       <div class="card mb-3">
-        <div class="card-header bg-dark text-clr-white">Active Client Applications
-        </div>
+        <div class="card-header bg-dark text-clr-white">Active Client Applications</div>
         <div class="table-scroll">
           <table class="table table-sm">
             <thead>
               <tr>
-                <th>Count </th>
+                <th>Count</th>
                 <th>Code</th>
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let aca of activeCA" data-toggle="tooltip" (click)="open(content,aca.cpId)">
-                <td>{{aca.count}}</td>
-                <td>{{aca.generatedCode}}</td>
+              <tr *ngFor="let aca of activeCA" data-toggle="tooltip" (click)="open(contentACA, aca.cpId, 'activeClientApplication')">
+                <td>{{ aca.count }}</td>
+                <td>{{ aca.generatedCode }}</td>
               </tr>
             </tbody>
           </table>
@@ -252,37 +259,121 @@
     </div>
   </div>
 </div>
-<ng-template #content let-c="close" let-d="dismiss">
-    <div class="modal-header">
-      <h4 class="modal-title">Active Client Applications</h4>
-      <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
-        <span aria-hidden="true">&times;</span>
-      </button>
+<ng-template #contentClch let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title">Client Call History</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="table-scroll">
+      <table class="table table-sm">
+        <thead>
+          <tr>
+            <th>
+              Caller
+            </th>
+            <th>
+              Client Pos
+            </th>
+            <th>
+              Called Date
+            </th>
+            <th width="150">
+              Description
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let aca of clchByIdList">
+            <td>{{ aca.calledBy.fullname }}</td>
+            <td>{{ aca.clientPosition.generatedCode}}</td>
+            <td>{{ aca.calledDate }}</td>
+            <td>{{ aca.description }}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
-    <div class="modal-body">
-        <div class="table-scroll">
-            <table class="table table-sm">
-              <thead>
-                <tr>
-                  <th>Position </th>
-                  <th>Client</th>
-                  <th>Consultant </th>
-                  <th>Interview Date</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let aca of activeCAById">
-                  <td>{{aca.clientPosition.generatedCode}}</td>
-                  <td>{{aca.clientPosition.client.name}}</td>
-                  <td>{{aca.consultant.fullname}}</td>
-                  <td>{{aca.interviewDate}}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+  </div>
+  <div class="modal-footer">
+    <!-- <button type="button" class="btn btn-secondary" (click)="deleteCoCHRecord()">Ok</button> -->
+    <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
+  </div>
+</ng-template>
+<ng-template #contentCoCH let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title">Consultant Call History</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="table-scroll">
+      <table class="table table-sm">
+        <thead>
+          <tr>
+            <th>
+              Caller
+            </th>
+            <th>
+              Consultant
+            </th>
+            <th>
+              Called Date
+            </th>
+            <th width="150">
+              Description
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let aca of cochByIdList">
+            <td>{{ aca.calledBy.fullname }}</td>
+            <td>{{ aca.consultant.fullname }}</td>
+            <td>{{ aca.calledDate }}</td>
+            <td>{{ aca.description }}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
-    <div class="modal-footer">
-      <!-- <button type="button" class="btn btn-secondary" (click)="deleteCoCHRecord()">Ok</button> -->
-      <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
+  </div>
+  <div class="modal-footer">
+    <!-- <button type="button" class="btn btn-secondary" (click)="deleteCoCHRecord()">Ok</button> -->
+    <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
+  </div>
+</ng-template>
+<ng-template #contentACA let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title">Active Client Applications</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="table-scroll">
+      <table class="table table-sm">
+        <thead>
+          <tr>
+            <th>Position</th>
+            <th>Client</th>
+            <th>Consultant</th>
+            <th>Interview Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let aca of activeCAById">
+            <td>{{ aca.clientPosition.generatedCode }}</td>
+            <td>{{ aca.clientPosition.client.name }}</td>
+            <td>{{ aca.consultant.fullname }}</td>
+            <td>{{ aca.interviewDate }}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
-  </ng-template>
+  </div>
+  <div class="modal-footer">
+    <!-- <button type="button" class="btn btn-secondary" (click)="deleteCoCHRecord()">Ok</button> -->
+    <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
+  </div>
+</ng-template>

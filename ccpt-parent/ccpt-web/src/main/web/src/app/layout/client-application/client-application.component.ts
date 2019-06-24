@@ -14,6 +14,7 @@ import { NgbModalRef, ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-boo
 import { RecruiterModel } from '../recruiter/recruiter.model';
 import { AdditionalPropertiesModel } from 'src/app/additional-properties.model';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
+import { FileUploader, FileLikeObject } from 'ng2-file-upload';
 
 
 @Component({
@@ -41,10 +42,15 @@ export class ClientApplicationComponent implements OnInit {
     protected screenHeight: any;
     public readOnlyForm = '';
     public enableButtonType = '';
+    public download = 'download';
     public trash = 'trash';
+    public upload = 'upload';
+    public uploader: FileUploader = new FileUploader({});
     protected apName = '';
     protected apValue = '';
     public loggedInRole = '';
+    public comments = '';
+    public fileList: Array<any> = [];
     protected config: AngularEditorConfig = {
         editable: true,
         spellcheck: true,
@@ -212,15 +218,25 @@ export class ClientApplicationComponent implements OnInit {
      * 2) Selected contains the code of selected row
      */
     open(event: any) {
+        this.selectedRecrdToDel = 0;
         if (event.id) {
             this.selectedRecrdToDel = event.id;
         }
-        this.modalRef = this.modalService.open(event.content);
-        this.modalRef.result.then((result) => {
-            this.closeResult = `Closed with: ${result}`;
-        }, (reason) => {
-            this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-        });
+        if (event.type === this.download) {
+            // this.getFilesById(this.selectedRecrdToDel); TODO:Need to fix for multiple downloads
+            this.http.get('file/download?refType=ClientApplication&refId=' + this.selectedRecrdToDel).subscribe(resp => {
+                this.fileList.push(resp);
+                console.log(this.fileList);
+            });
+        } else {
+            this.modalRef = this.modalService.open(event.content);
+            this.modalRef.result.then((result) => {
+                this.closeResult = `Closed with: ${result}`;
+            }, (reason) => {
+                this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+            });
+        }
+
     }
     close() {
         this.modalRef.close();
@@ -233,5 +249,41 @@ export class ClientApplicationComponent implements OnInit {
         } else {
             return `with: ${reason}`;
         }
+    }
+    /** Get Uploaded files */
+    getFiles(): FileLikeObject[] {
+        return this.uploader.queue.map((fileItem) => {
+            return fileItem.file;
+        });
+    }
+    /** Upload documents of respective consultant */
+    uploadFiles() {
+        const files = this.getFiles();
+        const formData = new FormData();
+        formData.append('file', files[0].rawFile, files[0].name);
+        const params = 'refId=' + this.selectedRecrdToDel + '&refType=CLientApplication&comments=' + this.comments;
+        this.http.upload('file/save?' + params, formData).subscribe(resp => {
+            console.log('resp =====', resp);
+            this.close();
+        });
+        /* let requests = [];
+         files.forEach((file) => {
+             let formData = new FormData();
+             formData.append('file', file.rawFile, file.name);
+             console.log(formData);
+             this.http.upload('', formData[0]).subscribe(resp => {
+                 console.log("resp=====", resp);
+             })
+             // requests.push(this.uploadService.upload(formData));
+         });*/
+
+        /*concat(...requests).subscribe(
+          (res) => {
+            console.log(res);
+          },
+          (err) => {
+            console.log(err);
+          }
+        );*/
     }
 }
