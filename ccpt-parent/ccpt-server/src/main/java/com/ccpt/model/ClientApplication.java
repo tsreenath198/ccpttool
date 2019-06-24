@@ -54,6 +54,10 @@ public class ClientApplication extends IDEntity {
 	@Column
 	private Date interviewDate;
 
+	@Temporal(TemporalType.DATE)
+	@Column
+	private Date sentOn;
+
 	@Column
 	private String interviewTime;
 

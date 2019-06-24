@@ -41,8 +41,8 @@ public class UploadFileController {
 	}
 
 	@GetMapping(CCPTConstants.DOWNLOAD_BY_REF_ID_AND_REF_TPYE)
-	public ResponseEntity<GenericResponse> downloadFileByRefIdAndRefType(@RequestParam String refType,
-			@RequestParam Integer refId, HttpServletResponse httpServletResponse) throws IOException {
+	public GenericResponse downloadFileByRefIdAndRefType(@RequestParam String refType, @RequestParam Integer refId,
+			HttpServletResponse httpServletResponse) throws IOException {
 		UploadFile dbFile = uploadFileService.downloadFileByRefIdAndRefType(refType, refId);
 
 		byte[] retrievedFile = dbFile.getContent();
@@ -58,8 +58,7 @@ public class UploadFileController {
 			servletOutputStream.write(retrievedFile);
 			servletOutputStream.flush();
 			servletOutputStream.close();
-			return new ResponseEntity<GenericResponse>(
-					new GenericResponse(dbFile.getFileName() + "  downloaded successfully"), HttpStatus.OK);
+			return new GenericResponse(dbFile.getFileName() + "  downloaded successfully");
 		} catch (Exception exception) {
 			System.out.println("exceptions");
 		}

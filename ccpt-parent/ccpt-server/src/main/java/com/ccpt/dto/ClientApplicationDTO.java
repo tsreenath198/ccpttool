@@ -18,5 +18,6 @@ public class ClientApplicationDTO extends IDEntityDTO {
 	private String interviewLocation;
 	private String interviewMode;
 	private Integer creatorId;
+	private Date sentOn;
 
 }
