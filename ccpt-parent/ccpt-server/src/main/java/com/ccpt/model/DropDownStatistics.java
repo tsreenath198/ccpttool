@@ -1,7 +1,7 @@
 package com.ccpt.model;
 
 public interface DropDownStatistics {
-	public String getId();
+	public Integer getId();
 
 	public String getName();
 
