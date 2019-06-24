@@ -149,6 +149,8 @@ export class RecruiterComponent implements OnInit {
         this.close();
         this.init();
         this.formReset();
+        this.readOnlyForm = '';
+        this.enableButtonType = '';
       },
       err => {
         this.toastr.error(err.error.message, 'Recruiter');

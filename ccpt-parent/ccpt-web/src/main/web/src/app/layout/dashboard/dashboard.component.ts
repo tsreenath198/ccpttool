@@ -138,7 +138,7 @@ export class DashboardComponent implements OnInit {
         if (selected) {
             this.selectedRecrd = selected;
         }
-        this.modalRef = this.modalService.open(content);
+        this.modalRef = this.modalService.open(content,{ size: 'lg', backdrop: 'static'});
         this.modalRef.result.then((result) => {
             this.closeResult = `Closed with: ${result}`;
         }, (reason) => {

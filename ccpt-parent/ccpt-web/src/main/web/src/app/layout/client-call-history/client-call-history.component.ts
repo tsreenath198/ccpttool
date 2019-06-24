@@ -183,6 +183,8 @@ export class ClientCallHistoryComponent implements OnInit {
         this.toastr.success(this.urlConstants.DeleteMsg, 'Client Call History');
         this.init();
         this.getRecruiterId();
+        this.readOnlyForm = '';
+        this.enableButtonType = '';
     this.getTodaysDate();
         this.close();
         this.formReset();

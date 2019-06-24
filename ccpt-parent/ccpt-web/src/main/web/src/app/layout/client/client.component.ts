@@ -177,6 +177,8 @@ export class ClientComponent implements OnInit {
             this.init();
             this.close();
             this.formReset();
+            this.readOnlyForm = '';
+            this.enableButtonType = '';
         }, err => {
             if (err.status === 200) {
                 this.init();

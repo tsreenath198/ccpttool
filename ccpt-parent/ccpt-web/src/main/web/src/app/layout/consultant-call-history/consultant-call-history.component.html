@@ -57,7 +57,8 @@
                 <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button" (click)="enableFormEditable()">
                   Edit
                 </button>
-                <button type="button" (click)="cancelForm(f)" *ngIf="enableButtonType != 'E'" class="btn btn-secondary ml-3">{{enableButtonType == 'U' ? 'Close' : 'Clear'}}</button>
+                                       <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3" *ngIf="enableButtonType != 'U'||enableButtonType != 'E'">{{enableButtonType == 'U'||enableButtonType == 'E' ? 'Close' : 'Clear'}}</button>
+
               </div>
             </div>
         <div class="row">
@@ -130,8 +131,7 @@
                 [(ngModel)]="consultantCallHistoryModel.consultantId"
                 [ngClass]="{ 'is-invalid': f.submitted && consultant.invalid }"
                 #consultant="ngModel"
-                required
-              >
+                required>
                 <option *ngFor="let consultant of consultantList" [ngValue]="consultant.id">{{ consultant.name }} </option>
               </select>
               <div class="invalid-feedback">
@@ -220,7 +220,8 @@
             <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button" (click)="enableFormEditable()">
               Edit
             </button>
-            <button type="button" (click)="cancelForm(f)" *ngIf="enableButtonType != 'E'" class="btn btn-secondary ml-3">{{enableButtonType == 'U' ? 'Close' : 'Clear'}}</button>
+                                   <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3" *ngIf="enableButtonType != 'U'||enableButtonType != 'E'">{{enableButtonType == 'U'||enableButtonType == 'E' ? 'Close' : 'Clear'}}</button>
+
           </div>
         </div>
       </form>

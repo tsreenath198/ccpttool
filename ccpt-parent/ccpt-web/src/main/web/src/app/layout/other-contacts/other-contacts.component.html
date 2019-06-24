@@ -162,7 +162,8 @@
               (click)="enableFormEditable()">
               Edit
             </button>
-            <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3" *ngIf="enableButtonType != 'E'">{{enableButtonType == 'U' ? 'Close' : 'Clear'}}</button>
+            <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3" *ngIf="enableButtonType != 'U'||enableButtonType != 'E'">{{enableButtonType == 'U'||enableButtonType == 'E' ? 'Close' : 'Clear'}}
+            </button>          
           </div>
         </div>
       </form>

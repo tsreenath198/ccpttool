@@ -155,6 +155,8 @@ export class OtherContactsComponent implements OnInit {
             this.init();
             this.close();
             this.formReset();
+            this.readOnlyForm = '';
+            this.enableButtonType = '';
         }, err => {
             this.toastr.error(err.error.message, 'Contact');
         });

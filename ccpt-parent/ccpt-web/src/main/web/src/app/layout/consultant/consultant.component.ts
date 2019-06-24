@@ -152,6 +152,8 @@ export class ConsultantComponent implements OnInit {
         this.init();
         this.close();
         this.formReset();
+        this.readOnlyForm = '';
+        this.enableButtonType = '';
       },
       err => {
         if (err.status === 200) {

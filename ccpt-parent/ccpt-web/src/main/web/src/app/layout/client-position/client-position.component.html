@@ -3,9 +3,6 @@
   <div class="row">
     <div class="col-md-7">
       <div class="row">
-        <div class="col-md-6">
-          <strong>Total No of records : {{ clientPositionList.length }}</strong>
-        </div>
         <div class="col-md-6"><input type="text" class="form-control" placeholder="search" [(ngModel)]="currSearchTxt" /></div>
       </div>
       <div class="table-responsive mt-2 table-wrapper-scroll-y my-custom-scrollbar" [style.height.px]="screenHeight">
@@ -64,8 +61,7 @@
             <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button" (click)="enableFormEditable()">
               Edit
             </button>
-            <button type="button" (click)="cancelForm(f)" *ngIf="enableButtonType != 'E'" class="btn btn-secondary ml-3">
-              {{ enableButtonType == 'U' ? 'Close' : 'Clear' }}
+            <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3" *ngIf="enableButtonType != 'U'||enableButtonType != 'E'">{{enableButtonType == 'U'||enableButtonType == 'E' ? 'Close' : 'Clear'}}
             </button>
           </div>
         </div>
@@ -323,8 +319,7 @@
             <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button" (click)="enableFormEditable()">
               Edit
             </button>
-            <button type="button" (click)="cancelForm(f)" *ngIf="enableButtonType != 'E'" class="btn btn-secondary ml-3">
-              {{ enableButtonType == 'U' ? 'Close' : 'Clear' }}
+            <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3" *ngIf="enableButtonType != 'U'||enableButtonType != 'E'">{{enableButtonType == 'U'||enableButtonType == 'E' ? 'Close' : 'Clear'}}
             </button>
           </div>
         </div>

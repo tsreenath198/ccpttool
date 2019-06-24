@@ -112,6 +112,8 @@ export class ClientPositionStatusComponent implements OnInit {
             this.init();
             this.close();
             this.formReset();
+            this.readOnlyForm = '';
+            this.enableButtonType = '';
         }, err => {
             this.toastr.error(err.error.message, 'Client Position Status');
         });
