@@ -90,7 +90,7 @@
                 [readonly]="readOnlyForm == 'R'"
                 [(ngModel)]="consultantModel.fullname"
                 [ngClass]="{ 'is-invalid': f.submitted && fullname.invalid }"
-                #fullname="ngModel"
+                #fullname="ngModel" #consultantName (keyup)="transformTitleCase(consultantName)"
                 required
               />
               <div class="invalid-feedback">
@@ -118,8 +118,7 @@
             <div class="form-group">
               <!--pattern="/^-?\d+\.?\d*$/"
                 onKeyPress="if(this.value.length==12) return false;" -->
-              <label>Phone</label>
-              <input
+              <label>Phone</label><input
                 class="form-control"
                 name="phone"
                 [readonly]="readOnlyForm == 'R'"
@@ -127,7 +126,7 @@
                 maxlength="12"
                 onKeyPress="if(this.value.length==12) return false;"
                 #phone="ngModel"
-                type="text"
+                type="tel"
               />
             </div>
           </div>

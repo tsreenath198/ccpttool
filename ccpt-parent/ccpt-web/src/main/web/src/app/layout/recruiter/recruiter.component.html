@@ -46,7 +46,7 @@
               <label>Full Name<span class="required">*</span></label>
               <input class="form-control" name="fullname" [readonly]="readOnlyForm== 'R'"
                 [(ngModel)]="recruiterModel.fullname" [ngClass]="{'is-invalid': f.submitted && fullname.invalid}"
-                #fullname="ngModel" required>
+                #fullname="ngModel" #recruiterName (keyup)="transformTitleCase(recruiterName)" required>
               <div class="invalid-feedback">
                 fullname is mandatory
               </div>
@@ -140,7 +140,7 @@
             </div>
           </div>
         </div>
-        <div class="row" *ngIf="recruiterModel.properties">
+        <div class="row" *ngIf="recruiterModel.properties.length>0">
             <div class="col-md-12">
               <div class="form-group">
                 <label>Additional Properties</label>

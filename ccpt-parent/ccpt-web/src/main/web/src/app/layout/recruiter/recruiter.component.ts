@@ -51,6 +51,7 @@ export class RecruiterComponent implements OnInit {
     });
 
     this.recruiterModel.properties = [];
+    this.recruiterModel['phone'] = '+91';
   }
   recruiterEdit(data) {
     this.readOnlyForm = 'U';
@@ -82,6 +83,7 @@ export class RecruiterComponent implements OnInit {
   }
   additionalPropertiesDeclare() {
     this.recruiterModel.properties = [<AdditionalPropertiesModel>{}];
+    this.recruiterModel['phone'] = '+91';
   }
   propertiesListIncrement(event, i: number) {
     switch (event.id) {
@@ -100,7 +102,7 @@ export class RecruiterComponent implements OnInit {
     }
   }
   formReset() {
-    this.recruiterModel = <RecruiterModel>{};
+    this.recruiterModel = <RecruiterModel>{properties: []};
   }
   createRecruiter(recruiterForm: NgForm): void {
     const temp = this.http.post(this.recruiterModel, this.urlConstants.RCreate);
@@ -134,8 +136,8 @@ export class RecruiterComponent implements OnInit {
     );
   }
   cancelForm(recruiterForm: NgForm) {
-    this.formReset();
     recruiterForm.resetForm();
+    this.formReset();
     this.init();
     this.readOnlyForm = '';
     this.enableButtonType = '';
@@ -157,6 +159,11 @@ export class RecruiterComponent implements OnInit {
       }
     );
   }
+  transformTitleCase(ip: HTMLInputElement) {
+    let temp = ip.value.length === 0 ? '' :
+        ip.value.replace(/\w\S*/g, (txt => txt[0].toUpperCase() + txt.substr(1).toLowerCase()));
+    ip.value = temp;
+}
   /**
    * @param
    * 1) content consists the modal instance

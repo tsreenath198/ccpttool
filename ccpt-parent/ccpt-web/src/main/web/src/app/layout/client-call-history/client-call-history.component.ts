@@ -134,6 +134,8 @@ export class ClientCallHistoryComponent implements OnInit {
   }
   formReset() {
     this.clientCallHistoryModel = <ClientCallHistoryModel>{};
+    this.clientCallHistoryModel.properties = [];
+    this.loggedInRole = sessionStorage.getItem('role');
   }
   createClientCallHistory(clientCallHistoryForm: NgForm): void {
     const temp = this.http.post(this.clientCallHistoryModel, this.urlConstants.CCHCreate);

@@ -109,7 +109,7 @@ export class UsersComponent implements OnInit {
         
     }
     formReset() {
-        this.usersModel = <UsersModel>{};
+        this.usersModel = <UsersModel>{ properties: [] };
     }
     createUser(usersForm: NgForm): void {
         let temp = this.http.post(this.usersModel, this.urlConstants.UserCreate);

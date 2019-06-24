@@ -62,6 +62,7 @@ export class OtherContactsComponent implements OnInit {
             });
         });
     this.OCModel.properties = [];
+    this.OCModel['phone'] = '+91';
     }
     private validate(value: any): boolean {
         const bool = (value == null) ? true : false;
@@ -115,7 +116,9 @@ export class OtherContactsComponent implements OnInit {
           }
     }
     formReset() {
-        this.OCModel = <OtherContactsModel>{};
+        this.OCModel = <OtherContactsModel>{}; 
+        this.OCModel.properties = [];
+        this.OCModel['phone'] = '+91';
     }
     create(otherContactForm: NgForm): void {
         const temp = this.http.post(this.OCModel, this.urlConstants.OCCreate);
@@ -142,9 +145,9 @@ export class OtherContactsComponent implements OnInit {
         });
     }
     cancelForm(consultantCallHistory: NgForm) {
+        consultantCallHistory.resetForm();
         this.formReset();
         this.init();
-        consultantCallHistory.resetForm();
         this.readOnlyForm = '';
         this.enableButtonType = '';
     }
@@ -160,6 +163,11 @@ export class OtherContactsComponent implements OnInit {
         }, err => {
             this.toastr.error(err.error.message, 'Contact');
         });
+    }
+    transformTitleCase(ip: HTMLInputElement) {
+        let temp = ip.value.length === 0 ? '' :
+            ip.value.replace(/\w\S*/g, (txt => txt[0].toUpperCase() + txt.substr(1).toLowerCase()));
+        ip.value = temp;
     }
     /**
      * @param

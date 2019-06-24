@@ -11,5 +11,6 @@ export interface ClientApplicationModel {
     description: string;
     creatorId: string;
     interviewMode: string;
+    sentOn: string;
     properties: Array<AdditionalPropertiesModel>;
 }

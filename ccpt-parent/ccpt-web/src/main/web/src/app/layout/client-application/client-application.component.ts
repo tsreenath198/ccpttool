@@ -101,6 +101,8 @@ export class ClientApplicationComponent implements OnInit {
 
     formReset() {
         this.CAModel = <ClientApplicationModel>{};
+        this.CAModel.properties = [];
+        this.CAModel.caStatus = 'New';
     }
     enableFormEditable(): void {
         this.readOnlyForm = 'U';
@@ -186,9 +188,9 @@ export class ClientApplicationComponent implements OnInit {
     }
 
     cancelForm(clientApplicationForm: NgForm) {
+        clientApplicationForm.resetForm();
         this.init();
         this.formReset();
-        clientApplicationForm.resetForm();
         this.readOnlyForm = '';
         this.enableButtonType = '';
 
@@ -225,8 +227,10 @@ export class ClientApplicationComponent implements OnInit {
         if (event.type === this.download) {
             // this.getFilesById(this.selectedRecrdToDel); TODO:Need to fix for multiple downloads
             this.http.get('file/download?refType=ClientApplication&refId=' + this.selectedRecrdToDel).subscribe(resp => {
-                this.fileList.push(resp);
-                console.log(this.fileList);
+
+            }, err => {
+                if (err.status == 200)
+                    window.open(err.url);
             });
         } else {
             this.modalRef = this.modalService.open(event.content);
@@ -263,8 +267,11 @@ export class ClientApplicationComponent implements OnInit {
         formData.append('file', files[0].rawFile, files[0].name);
         const params = 'refId=' + this.selectedRecrdToDel + '&refType=CLientApplication&comments=' + this.comments;
         this.http.upload('file/save?' + params, formData).subscribe(resp => {
-            console.log('resp =====', resp);
+            let temp: any = resp;
+            this.toastr.success(temp.message, 'Client');
             this.close();
+        }, err => {
+            this.toastr.success(err.error.message, 'Client');
         });
         /* let requests = [];
          files.forEach((file) => {

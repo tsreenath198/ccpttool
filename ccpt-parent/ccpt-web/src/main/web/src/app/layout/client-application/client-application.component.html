@@ -119,9 +119,19 @@
           </div>
         </div>
         <div class="row">
+            <div class="col-md-6">
+                <label >Sent On</label>
+                <input type="date" class="form-control" name="senton" #senton="ngModel"
+                  [readonly]="readOnlyForm == 'R'" [(ngModel)]="CAModel.sentOn">
+                <div class="input-group-addon">
+                  <span class="glyphicon glyphicon-th"></span>
+                </div>
+            </div>
+          </div>
+        <div class="row">
           <div class="col-md-12">
             <div class="form-group" data-provide="datepicker">
-              <input type="checkbox" [(ngModel)]="isInterviewScheduled" name="interviewCheckbox">&nbsp;<small>Interview
+              <input class="mt-2" type="checkbox" [(ngModel)]="isInterviewScheduled" name="interviewCheckbox">&nbsp;<small>Interview
                 Scheduled</small>
               <div *ngIf="isInterviewScheduled">
                 <div class ="row">
@@ -163,7 +173,7 @@
               </div>
             </div>
           </div>
-          <div class="row" *ngIf="CAModel.properties">
+          <div class="row" *ngIf="CAModel.properties.length>0">
               <div class="col-md-12">
                 <div class="form-group">
                   <label>Additional Properties</label>

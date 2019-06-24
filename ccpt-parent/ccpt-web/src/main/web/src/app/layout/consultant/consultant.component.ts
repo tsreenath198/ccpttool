@@ -68,12 +68,15 @@ export class ConsultantComponent implements OnInit {
         }
       });
     });
-    this.consultantModel['cstatus'] = 'Active';
     this.consultantModel['properties'] = [];
+    this.consultantModel['cstatus'] = 'Active';
+    this.consultantModel['phone'] = '+91';
   }
   private validate(value: any): boolean {
     const bool = value == null ? true : false;
     return bool;
+  }
+  defaultValues(){
   }
   consultantEdit(id: number) {
     this.readOnlyForm = 'U';
@@ -90,6 +93,8 @@ export class ConsultantComponent implements OnInit {
   }
   formReset() {
     this.consultantModel = <ConsultantModel>{ properties: [] };
+    this.consultantModel['cstatus'] = 'Active';
+    this.consultantModel['phone'] = '+91';
   }
   createConsultant(consultantForm: NgForm): void {
     const temp = this.http.post(this.consultantModel, this.urlConstants.CCreate);
@@ -143,6 +148,7 @@ export class ConsultantComponent implements OnInit {
     consultantForm.resetForm();
     this.readOnlyForm = '';
     this.enableButtonType = '';
+    this.defaultValues();
   }
   deleteConsultantRecord(): void {
     const temp = this.http.delete(this.urlConstants.CDelete + this.selectedRecrdToDel);
@@ -206,6 +212,11 @@ export class ConsultantComponent implements OnInit {
       this.init();
     });
   }
+  transformTitleCase(ip: HTMLInputElement) {
+    let temp = ip.value.length === 0 ? '' :
+        ip.value.replace(/\w\S*/g, (txt => txt[0].toUpperCase() + txt.substr(1).toLowerCase()));
+    ip.value = temp;
+}
   /**
    * @param
    * 1) content consists the modal instance
@@ -217,10 +228,11 @@ export class ConsultantComponent implements OnInit {
       this.selectedRecrdToDel = event.id;
     }
     if (event.type === this.download) {
-      // this.getFilesById(this.selectedRecrdToDel); TODO:Need to fix for multiple downloads
-      this.http.get('file/download?refType=Consultant&refId=' + this.selectedRecrdToDel).subscribe(resp => {
-        this.fileList.push(resp);
-        console.log(this.fileList);
+        // this.getFilesById(this.selectedRecrdToDel); TODO:Need to fix for multiple downloads
+        this.http.get('file/download?refType=Consultant&refId=' + this.selectedRecrdToDel).subscribe(resp => {
+        }, err => {
+          if (err.status == 200)
+              window.open(err.url);
       });
     } else {
       this.modalRef = this.modalService.open(event.content);
@@ -257,9 +269,12 @@ export class ConsultantComponent implements OnInit {
     formData.append('file', files[0].rawFile, files[0].name);
     const params = 'refId=' + this.selectedRecrdToDel + '&refType=Consultant&comments=' + this.comments;
     this.http.upload('file/save?' + params, formData).subscribe(resp => {
-      console.log('resp =====', resp);
+      let temp: any = resp;
+      this.toastr.success(temp.message, 'Client');
       this.close();
-    });
+  }, err => {
+      this.toastr.success(err.error.message, 'Client');
+  });
     /* let requests = [];
          files.forEach((file) => {
              let formData = new FormData();

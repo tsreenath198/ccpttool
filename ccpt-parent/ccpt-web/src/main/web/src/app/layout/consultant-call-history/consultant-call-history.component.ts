@@ -89,10 +89,6 @@ export class ConsultantCallHistoryComponent implements OnInit {
           if (rl.email === temp) {
             this.consultantCallHistoryModel.calledBy = rl.id;
           }
-          
-      if(this.consultantCallHistoryModel.properties == null){
-        this.consultantCallHistoryModel.properties = [];
-      }
         });
       }
       getTodaysDate() {
@@ -148,7 +144,7 @@ export class ConsultantCallHistoryComponent implements OnInit {
         this.enableButtonType = 'U';
     }
     formReset() {
-        this.consultantCallHistoryModel = <ConsultantCallHistoryModel>{};
+        this.consultantCallHistoryModel = <ConsultantCallHistoryModel>{properties:[]};
     }
     createConsultantCallHistory(consultantCallHistory: NgForm): void {
         const temp = this.http.post(this.consultantCallHistoryModel, this.urlConstants.CoCHCreate);
@@ -176,9 +172,9 @@ export class ConsultantCallHistoryComponent implements OnInit {
         });
     }
     cancelForm(consultantCallHistory: NgForm) {
+        consultantCallHistory.resetForm();
         this.formReset();
         this.init();
-        consultantCallHistory.resetForm();
         this.readOnlyForm = '';
         this.enableButtonType = '';
     }

@@ -172,6 +172,8 @@ export class ClientPositionComponent implements OnInit {
   }
   formReset() {
     this.clientPositionModel = <ClientPositionModel>{};
+    this.clientPositionModel.properties = [];
+    this.clientPositionModel.cpstatus = 'Open';
   }
   createClientPosition(clientPositionForm: NgForm): void {
     // tslint:disable-next-line:max-line-length
@@ -233,8 +235,8 @@ export class ClientPositionComponent implements OnInit {
     );
   }
   cancelForm(clientPositionForm: NgForm) {
-    this.formReset();
     clientPositionForm.resetForm();
+    this.formReset();
     this.init();
     this.readOnlyForm = '';
     this.enableButtonType = '';

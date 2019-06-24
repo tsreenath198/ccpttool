@@ -68,6 +68,7 @@ export class ClientComponent implements OnInit {
         this.clientModel.serviceCharge = '8.33';
         this.clientModel.guaranteePeriod = '3 months';
         this.clientModel.creditPeriod = '1 month';
+        this.clientModel.phone = '+91';
     }
     clientContactDeclare() {
         this.clientModel.clientContacts = [{ 'fullname': '', 'email': '', 'phone': '' }];
@@ -102,6 +103,10 @@ export class ClientComponent implements OnInit {
     }
     formReset() {
         this.clientModel = <ClientModel>{properties : []};
+        this.clientModel.serviceCharge = '8.33';
+        this.clientModel.guaranteePeriod = '3 months';
+        this.clientModel.creditPeriod = '1 month';
+        this.clientModel.phone = '+91';
     }
     clientCreate(clientForm: NgForm): void {
         const temp = this.http.post(this.clientModel, this.urlConstants.ClientCreate);
@@ -131,8 +136,8 @@ export class ClientComponent implements OnInit {
         });
     }
     cancelForm(consultantCallHistory: NgForm) {
-        this.formReset();
         consultantCallHistory.resetForm();
+        this.formReset();
         this.readOnlyForm = '';
         this.enableButtonType = '';
         this.clientContactDeclare();
