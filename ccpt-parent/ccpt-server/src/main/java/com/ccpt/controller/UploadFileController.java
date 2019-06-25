@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.ValidationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -33,8 +34,7 @@ public class UploadFileController {
 	private UploadFileService uploadFileService;
 
 	@GetMapping(CCPTConstants.DOWNLOAD)
-	public void downloadFile(@PathVariable Integer id, HttpServletResponse httpServletResponse)
-			throws IOException {
+	public void downloadFile(@PathVariable Integer id, HttpServletResponse httpServletResponse) throws IOException {
 		UploadFile dbFile = uploadFileService.get(id);
 
 		byte[] retrievedFile = dbFile.getContent();
@@ -62,11 +62,16 @@ public class UploadFileController {
 
 		String fileName = StringUtils.cleanPath(file.getOriginalFilename());
 		String fileType = file.getContentType();
-		UploadFile uploadFile = new UploadFile(file.getBytes(), refId, refType, comments, fileName, fileType);
-		uploadFileService.save(uploadFile);
+		boolean isDuplicate = uploadFileService.isDuplicate(refId, refType, fileName);
+		if (!isDuplicate) {
+			UploadFile uploadFile = new UploadFile(file.getBytes(), refId, refType, comments, fileName, fileType);
+			uploadFileService.save(uploadFile);
 
-		return new ResponseEntity<GenericResponse>(new GenericResponse(fileName + "  uploaded successfully"),
-				HttpStatus.OK);
+			return new ResponseEntity<GenericResponse>(new GenericResponse(fileName + "  uploaded successfully"),
+					HttpStatus.OK);
+		} else {
+			throw new ValidationException("File with file name : " + fileName + " already exists !");
+		}
 	}
 
 	@DeleteMapping(CCPTConstants.ID_PARAM)

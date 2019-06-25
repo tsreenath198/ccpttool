@@ -27,4 +27,8 @@ public class UploadFileService extends BaseService<UploadFile, Integer> {
 		return uploadFileRepository;
 	}
 
+	public boolean isDuplicate(Integer refId, String refType, String fileName) {
+		return uploadFileRepository.countByRefIdAndRefTypeAndfileName(refId, refType, fileName) > 0;
+	}
+
 }
