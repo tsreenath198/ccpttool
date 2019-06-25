@@ -55,8 +55,8 @@ public class ConsultantController extends BaseController<ConsultantDTO, Consulta
 	@Override
 	protected void validateAndClean(Consultant model) {
 
-		List<Consultant> matchingConsultants = consultantService.find(model.getPhone(), model.getFullname(),
-				model.getEmail());
+		List<Consultant> matchingConsultants = consultantService.find(model.getFullname(),
+				model.getEmail(), model.getPhone());
 		if (!CollectionUtils.isEmpty(matchingConsultants)) {
 			for (Consultant entity : matchingConsultants) {
 				if (!entity.getActiveFlag()) {

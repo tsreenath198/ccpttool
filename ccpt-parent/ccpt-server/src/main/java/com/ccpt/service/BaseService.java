@@ -108,12 +108,12 @@ public abstract class BaseService<T extends BaseEntity<ID>, ID> {
 
 	public void activate(ID id) {
 		Optional<T> entity = getRepository().findById(id);
-		if (entity.isPresent()) {
+		if (entity.isPresent() && !entity.get().getActiveFlag()) {
 			entity.get().setActiveFlag(true);
 			postActivate(entity.get());
 			getRepository().save(entity.get());
 		} else {
-			throw new EntityNotFoundException("Could not find " + ENTITY + " for id : " + id);
+			throw new EntityNotFoundException("Could not find a inactive" + ENTITY + " for id : " + id);
 		}
 	}
 
