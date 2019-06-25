@@ -45,7 +45,6 @@ public class UploadFile extends IDEntity {
 
 	@Column
 	@NotNull
-	@Enumerated(EnumType.STRING)
 	private String refType;
 
 	@Lob
