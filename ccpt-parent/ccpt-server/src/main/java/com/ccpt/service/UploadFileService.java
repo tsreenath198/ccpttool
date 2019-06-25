@@ -1,5 +1,7 @@
 package com.ccpt.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,8 +18,8 @@ public class UploadFileService extends BaseService<UploadFile, Integer> {
 	@Autowired
 	private UploadFileRepository uploadFileRepository;
 
-	public UploadFile downloadFileByRefIdAndRefType(String refType, Integer refId) {
-		return uploadFileRepository.downloadFileByRefIdAndRefType(refType, refId);
+	public List<UploadFile> findByRefIdAndRefType(Integer refId, String refType) {
+		return uploadFileRepository.findByRefIdAndRefType(refId, refType);
 	}
 
 	@Override

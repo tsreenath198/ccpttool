@@ -19,7 +19,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class Client extends IDEntity {
+public class Client extends FileSupportEntity {
 	/**
 	 * 
 	 */

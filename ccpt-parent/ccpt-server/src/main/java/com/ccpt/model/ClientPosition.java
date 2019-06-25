@@ -17,10 +17,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class ClientPosition extends IDEntity {
-	/**
-	 * 
-	 */
+public class ClientPosition extends FileSupportEntity {
 	private static final long serialVersionUID = 1L;
 
 	@Column

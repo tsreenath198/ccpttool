@@ -18,11 +18,8 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class Recruiter extends IDEntity {
+public class Recruiter extends FileSupportEntity {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	@Column(unique = true)

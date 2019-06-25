@@ -23,11 +23,8 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class ClientApplication extends IDEntity {
+public class ClientApplication extends FileSupportEntity {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	@OneToOne(cascade = CascadeType.MERGE)

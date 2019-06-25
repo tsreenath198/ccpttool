@@ -3,6 +3,8 @@ package com.ccpt.model;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Lob;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -43,6 +45,7 @@ public class UploadFile extends IDEntity {
 
 	@Column
 	@NotNull
+	@Enumerated(EnumType.STRING)
 	private String refType;
 
 	@Lob

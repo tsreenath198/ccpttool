@@ -10,15 +10,21 @@ import org.springframework.util.CollectionUtils;
 
 import com.ccpt.model.AdditionalProperty;
 import com.ccpt.model.BaseEntity;
+import com.ccpt.model.FileSupportEntity;
 import com.ccpt.model.IDEntity;
+import com.ccpt.model.UploadFile;
 import com.ccpt.repository.AdditionalPropertyRepository;
 import com.ccpt.repository.BaseRepository;
+import com.ccpt.repository.UploadFileRepository;
 
 public abstract class BaseService<T extends BaseEntity<ID>, ID> {
 	protected final String ENTITY;
 
 	@Autowired
 	private AdditionalPropertyRepository apRepo;
+
+	@Autowired
+	private UploadFileRepository ufRepo;
 
 	public BaseService(String entity) {
 		this.ENTITY = entity;
@@ -38,6 +44,14 @@ public abstract class BaseService<T extends BaseEntity<ID>, ID> {
 				if (addnProps.isPresent()) {
 					idEntity.setProperties(addnProps.get());
 				}
+			}
+			if (result instanceof FileSupportEntity) {
+				FileSupportEntity fsEntity = (FileSupportEntity) result;
+				List<UploadFile> uploadFiles = ufRepo.findByRefIdAndRefType(fsEntity.getId(), ENTITY);
+				for (UploadFile uploadFile : uploadFiles) {
+					uploadFile.setContent(null);
+				}
+				fsEntity.setFiles(uploadFiles);
 			}
 			return result;
 		} else {
@@ -82,8 +96,8 @@ public abstract class BaseService<T extends BaseEntity<ID>, ID> {
 	public void delete(ID id) {
 		T entity = get(id);
 		entity.setActiveFlag(false);
-		postDelete(entity);
 		getRepository().save(entity);
+		postDelete(entity);
 	}
 
 	protected void postDelete(T entity) {

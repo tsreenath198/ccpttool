@@ -22,7 +22,7 @@ import lombok.ToString;
 @Setter
 @ToString
 @Table(uniqueConstraints = { @UniqueConstraint(columnNames = { "fullname", "email", "phone" }) })
-public class Consultant extends IDEntity {
+public class Consultant extends FileSupportEntity {
 
 	/**
 	 * 

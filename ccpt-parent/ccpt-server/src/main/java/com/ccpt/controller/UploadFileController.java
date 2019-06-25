@@ -1,8 +1,6 @@
 package com.ccpt.controller;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.stream.Collectors;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
@@ -34,16 +32,10 @@ public class UploadFileController {
 	@Autowired
 	private UploadFileService uploadFileService;
 
-	@GetMapping(CCPTConstants.ID_PARAM)
-	public ResponseEntity<UploadFile> getUploadFileById(@RequestParam Integer id) {
-		UploadFile uploadFile = uploadFileService.get(id);
-		return new ResponseEntity<UploadFile>(uploadFile, HttpStatus.OK);
-	}
-
-	@GetMapping(CCPTConstants.DOWNLOAD_BY_REF_ID_AND_REF_TPYE)
-	public GenericResponse downloadFileByRefIdAndRefType(@RequestParam String refType, @RequestParam Integer refId,
-			HttpServletResponse httpServletResponse) throws IOException {
-		UploadFile dbFile = uploadFileService.downloadFileByRefIdAndRefType(refType, refId);
+	@GetMapping(CCPTConstants.DOWNLOAD)
+	public void downloadFile(@PathVariable Integer id, HttpServletResponse httpServletResponse)
+			throws IOException {
+		UploadFile dbFile = uploadFileService.get(id);
 
 		byte[] retrievedFile = dbFile.getContent();
 		try {
@@ -58,11 +50,9 @@ public class UploadFileController {
 			servletOutputStream.write(retrievedFile);
 			servletOutputStream.flush();
 			servletOutputStream.close();
-			return new GenericResponse(dbFile.getFileName() + "  downloaded successfully");
 		} catch (Exception exception) {
 			System.out.println("exceptions");
 		}
-		return null;
 	}
 
 	@PostMapping("save")
@@ -77,22 +67,6 @@ public class UploadFileController {
 
 		return new ResponseEntity<GenericResponse>(new GenericResponse(fileName + "  uploaded successfully"),
 				HttpStatus.OK);
-	}
-
-	@PostMapping("/uploadMultipleFiles")
-	public ResponseEntity<Void> uploadMultipleFiles(@RequestParam("files") MultipartFile[] files,
-			@RequestParam("refId") int refId, @RequestParam("refType") String refType,
-			@RequestParam("comments") String comments) {
-		Arrays.asList(files).stream().map(file -> {
-			try {
-				return uploadFile(file, refId, refType, comments);
-			} catch (IOException e) {
-				e.printStackTrace();
-				return new ResponseEntity<Void>(HttpStatus.CREATED);
-			}
-		}).collect(Collectors.toList());
-		return null;
-
 	}
 
 	@DeleteMapping(CCPTConstants.ID_PARAM)

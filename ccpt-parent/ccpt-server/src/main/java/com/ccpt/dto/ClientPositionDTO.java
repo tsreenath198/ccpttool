@@ -7,7 +7,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class ClientPositionDTO extends IDEntityDTO {
+public class ClientPositionDTO extends FileSupportEntityDTO {
 	private String role;
 	private String experience;
 	private String requiredSkills;

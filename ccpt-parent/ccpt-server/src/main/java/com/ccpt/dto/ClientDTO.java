@@ -9,7 +9,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class ClientDTO extends IDEntityDTO {
+public class ClientDTO extends FileSupportEntityDTO {
 	private String name;
 	private String address;
 	private String billingAddress;

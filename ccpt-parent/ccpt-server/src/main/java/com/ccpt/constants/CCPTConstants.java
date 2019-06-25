@@ -19,7 +19,7 @@ public interface CCPTConstants {
 	String SEND_EMAIL = "/sendEmail";
 	String TEMPLATE = "/template";
 	String EMAIL = "/email";
-	String DOWNLOAD_BY_REF_ID_AND_REF_TPYE = "/download";
+	String DOWNLOAD = "/download/{id}";
 	String UPLOAD_FILE = "/file";
 	String SMS = "/sms";
 	String PAYMENT = "/payment";
@@ -27,4 +27,5 @@ public interface CCPTConstants {
 	String CLIENT_APPLICATION_STATUS = "/caStatus";
 	String CLIENT_POSITION_STATUS = "/cpStatus";
 	String CONSULTANT_STATUS = "/consultantStatus";
+	String REF_TYPE_ID_PARAM = "/{refType}/{refId}";
 }
