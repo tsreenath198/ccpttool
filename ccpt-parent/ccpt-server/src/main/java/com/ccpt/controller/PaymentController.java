@@ -1,11 +1,9 @@
 package com.ccpt.controller;
 
-import javax.persistence.Transient;
 import javax.validation.ValidationException;
 
 import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,9 +20,6 @@ import com.ccpt.service.PaymentService;
 @CrossOrigin
 @RequestMapping(CCPTConstants.PAYMENT)
 public class PaymentController extends BaseController<PaymentDTO, Payment, Integer> {
-	@Transient
-	@Value("${payment.from}")
-	private String from;
 	@Autowired
 	private PaymentService paymentService;
 
@@ -40,7 +35,6 @@ public class PaymentController extends BaseController<PaymentDTO, Payment, Integ
 
 	@Override
 	protected void validateAndClean(Payment model) {
-		model.setFrom(from);
 		if (model.getInvoiceDate() == null) {
 			throw new ValidationException("Invoice Date cannot be null");
 		}

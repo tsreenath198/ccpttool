@@ -22,9 +22,7 @@ public class Payment extends IDEntity {
 	 */
 
 	private static final long serialVersionUID = 1L;
-	@Column
-	@NotNull
-	private String from;
+	
 	@Column
 	@NotNull
 	private Date invoiceDate;
