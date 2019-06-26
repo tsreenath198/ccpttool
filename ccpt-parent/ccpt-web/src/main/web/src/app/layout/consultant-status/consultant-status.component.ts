@@ -24,7 +24,7 @@ export class ConsultantStatusComponent implements OnInit {
     public closeResult = '';
     private modalRef: NgbModalRef;
     public trash = 'trash';
-    protected screenHeight: any;
+    public screenHeight: any;
 
     public readOnlyForm = '';
     public enableButtonType = '';

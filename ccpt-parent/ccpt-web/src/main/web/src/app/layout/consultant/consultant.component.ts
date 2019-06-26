@@ -36,9 +36,9 @@ export class ConsultantComponent implements OnInit {
   public download = 'download';
   public trash = 'trash';
   public upload = 'upload';
-  protected apName = '';
-  protected apValue = '';
-  protected screenHeight: any;
+  public apName = '';
+  public apValue = '';
+  public screenHeight: any;
   private modalRef: NgbModalRef;
   public urlConstants = new URLConstants();
   public currSearchTxt: string;

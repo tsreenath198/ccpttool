@@ -39,19 +39,19 @@ export class ClientApplicationComponent implements OnInit {
     private selectedRecrdToDel = 0;
     public closeResult = '';
     private modalRef: NgbModalRef;
-    protected screenHeight: any;
+    public screenHeight: any;
     public readOnlyForm = '';
     public enableButtonType = '';
     public download = 'download';
     public trash = 'trash';
     public upload = 'upload';
     public uploader: FileUploader = new FileUploader({});
-    protected apName = '';
-    protected apValue = '';
+    public apName = '';
+    public apValue = '';
     public loggedInRole = '';
     public comments = '';
     public fileList: Array<any> = [];
-    protected config: AngularEditorConfig = {
+    public config: AngularEditorConfig = {
         editable: true,
         spellcheck: true,
         height: '15rem',

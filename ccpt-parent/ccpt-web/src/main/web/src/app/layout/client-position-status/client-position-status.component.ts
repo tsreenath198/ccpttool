@@ -27,7 +27,7 @@ export class ClientPositionStatusComponent implements OnInit {
     public readOnlyForm = '';
     public enableButtonType = '';
     public trash = 'trash';
-    protected screenHeight: any;
+    public screenHeight: any;
 
     constructor(private http: HttpClientService, private toastr: ToastrCustomService, private modalService: NgbModal) {
         this.getScreenSize();

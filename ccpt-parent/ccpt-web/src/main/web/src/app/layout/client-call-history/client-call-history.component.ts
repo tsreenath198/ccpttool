@@ -30,18 +30,18 @@ export class ClientCallHistoryComponent implements OnInit {
   private selectedRecrdToDel = 0;
   public closeResult = '';
   private modalRef: NgbModalRef;
-  protected screenHeight: any;
+  public screenHeight: any;
   public currSearchTxt: string;
   public readOnlyForm = '';
   public enableButtonType = '';
   public trash = 'trash';
-  protected apName = '';
-  protected apValue = '';
+  public apName = '';
+  public apValue = '';
   public loggedInRole = '';
-  protected getCplPromise = this.http.get(this.urlConstants.CPDropdown);
-  protected getClPromise = this.http.get(this.urlConstants.ClientGetAll);
-  protected getRlPromise = this.http.get(this.urlConstants.RDropdown);
-  protected cchGetAllPromise = this.http.get(this.urlConstants.CCHGetAll);
+  public getCplPromise = this.http.get(this.urlConstants.CPDropdown);
+  public getClPromise = this.http.get(this.urlConstants.ClientGetAll);
+  public getRlPromise = this.http.get(this.urlConstants.RDropdown);
+  public cchGetAllPromise = this.http.get(this.urlConstants.CCHGetAll);
 
   constructor(private http: HttpClientService, private toastr: ToastrCustomService, private modalService: NgbModal) {
     this.getScreenSize();

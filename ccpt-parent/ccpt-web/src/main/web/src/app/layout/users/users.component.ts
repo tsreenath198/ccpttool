@@ -26,12 +26,12 @@ export class UsersComponent implements OnInit {
     public currSearchTxt = '';
     private selectedRecrdToDel = 0;
     public closeResult = '';
-    protected apName = '';
-    protected apValue = '';
+    public apName = '';
+    public apValue = '';
     private modalRef: NgbModalRef;
     public trash: string = 'trash';
-    protected screenHeight: any;
-    protected viewPassword: boolean;
+    public screenHeight: any;
+    public viewPassword: boolean;
 
     constructor(private http: HttpClientService, private toastr: ToastrCustomService, private modalService: NgbModal,
         private el: ElementRef) {

@@ -33,14 +33,14 @@ export class ClientComponent implements OnInit {
     private selectedRecrdToDel = 0;
     public closeResult = '';
     private modalRef: NgbModalRef;
-    protected screenHeight: any;
+    public screenHeight: any;
     public download = 'download';
     public trash = 'trash';
     public upload = 'upload';
-    protected apName = '';
-    protected apValue = '';
+    public apName = '';
+    public apValue = '';
     public loggedInRole = '';
-    protected config: AngularEditorConfig = {
+    public config: AngularEditorConfig = {
         editable: true,
         spellcheck: true,
         height: '15rem',

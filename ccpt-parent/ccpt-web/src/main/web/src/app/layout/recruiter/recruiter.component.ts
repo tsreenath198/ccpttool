@@ -28,11 +28,11 @@ export class RecruiterComponent implements OnInit {
   public genderList = ['Male', 'Female', 'Other'];
   public currSearchTxt: string;
   public trash = 'trash';
-  protected screenHeight: any;
+  public screenHeight: any;
   public readOnlyForm = '';
   public enableButtonType = '';
-  protected apName = '';
-  protected apValue = '';
+  public apName = '';
+  public apValue = '';
 
   constructor(private http: HttpClientService, private toastr: ToastrCustomService, private modalService: NgbModal) {
     this.getScreenSize();

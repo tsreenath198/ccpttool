@@ -24,14 +24,14 @@ export class OtherContactsComponent implements OnInit {
     public enableButtonType = '';
     public currSearchTxt = '';
 
-    protected screenHeight: any;
+    public screenHeight: any;
     private selectedRecrdToDel = 0;
     public closeResult = '';
     public trash = 'trash';
-    protected apName = '';
-    protected apValue = '';
+    public apName = '';
+    public apValue = '';
     private modalRef: NgbModalRef;
-    protected config: AngularEditorConfig = {
+    public config: AngularEditorConfig = {
         editable: true,
         spellcheck: true,
         height: '15rem',

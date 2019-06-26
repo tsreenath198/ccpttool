@@ -57,16 +57,16 @@ export class ClientPositionComponent implements OnInit {
   public sms = 'sms';
   public email = 'email';
   public numberOfPositions = 0;
-  protected screenHeight: any;
+  public screenHeight: any;
   public creator = 0;
-  protected apName = '';
-  protected apValue = '';
+  public apName = '';
+  public apValue = '';
   public loggedInRole = '';
   public getAllCPS = this.http.get(this.urlConstants.CPSGetAll);
   public getAllR = this.http.get(this.urlConstants.RDropdown);
   public getAllC = this.http.get(this.urlConstants.ClientDropdown);
   public getAllCon = this.http.get(this.urlConstants.CGetAll);
-  protected config: AngularEditorConfig = {
+  public config: AngularEditorConfig = {
     editable: true,
     spellcheck: true,
     height: '15rem',

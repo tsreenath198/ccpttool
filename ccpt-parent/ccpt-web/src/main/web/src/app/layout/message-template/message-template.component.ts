@@ -25,7 +25,7 @@ export class MessageTemplateComponent implements OnInit {
     private selectedRecrdToDel = 0;
     public closeResult = '';
     private modalRef: NgbModalRef;
-    protected screenHeight: any;
+    public screenHeight: any;
     constructor(private http: HttpClientService, private toastr: ToastrCustomService, private modalService: NgbModal) {
         this.getScreenSize();
     }

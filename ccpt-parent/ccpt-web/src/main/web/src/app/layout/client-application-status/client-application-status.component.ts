@@ -25,7 +25,7 @@ export class ClientApplicationStatusComponent implements OnInit {
     public closeResult = '';
     private modalRef: NgbModalRef;
 
-    protected screenHeight: any;
+    public screenHeight: any;
 
     public trash = 'trash';
     constructor(private http: HttpClientService, private toastr: ToastrCustomService, private modalService: NgbModal) {

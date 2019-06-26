@@ -34,17 +34,17 @@ export class ConsultantCallHistoryComponent implements OnInit {
     public closeResult = '';
     private modalRef: NgbModalRef;
     public trash = 'trash';
-    protected screenHeight: any;
+    public screenHeight: any;
     public readOnlyForm = '';
     public enableButtonType = '';
     
-    protected apName = '';
-    protected apValue = '';
+    public apName = '';
+    public apValue = '';
 
-    protected getCplPromise = this.http.get(this.urlConstants.CPDropdown);
-    protected getClPromise = this.http.get(this.urlConstants.CDropdown);
-    protected getRlPromise = this.http.get(this.urlConstants.RDropdown);
-    protected cochGetAllPromise = this.http.get(this.urlConstants.CoCHGetAll);
+    public getCplPromise = this.http.get(this.urlConstants.CPDropdown);
+    public getClPromise = this.http.get(this.urlConstants.CDropdown);
+    public getRlPromise = this.http.get(this.urlConstants.RDropdown);
+    public cochGetAllPromise = this.http.get(this.urlConstants.CoCHGetAll);
 
     constructor(private http: HttpClientService, private toastr: ToastrCustomService, private modalService: NgbModal) {
         this.getScreenSize();
