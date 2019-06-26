@@ -10,7 +10,7 @@ public interface CCPTConstants {
 	String CLIENT_POSITION = "/clientPosition";
 	String CONSULTANT_CALL_HISTORY = "/consultantCallHistory";
 	String CONSULTANT = "/consultant";
-	String LOGIN = "/admin";
+	String LOGIN = "/login";
 	String RECRUITER = "/recruiter";
 	String REPORT = "/report";
 	String CLIENT = "/client";
@@ -20,12 +20,12 @@ public interface CCPTConstants {
 	String TEMPLATE = "/template";
 	String EMAIL = "/email";
 	String DOWNLOAD = "/download/{id}";
-	String UPLOAD_FILE = "/file";
+	String UPLOAD_FILE = "/uploadFile";
 	String SMS = "/sms";
 	String PAYMENT = "/payment";
 
 	String CLIENT_APPLICATION_STATUS = "/caStatus";
 	String CLIENT_POSITION_STATUS = "/cpStatus";
-	String CONSULTANT_STATUS = "/consultantStatus";
+	String CONSULTANT_STATUS = "/conStatus";
 	String REF_TYPE_ID_PARAM = "/{refType}/{refId}";
 }
