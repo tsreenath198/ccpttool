@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.ccpt.constants.CCPTConstants;
 import com.ccpt.dto.LoginDTO;
 import com.ccpt.mapper.BaseMapper;
 import com.ccpt.mapper.LoginMapper;
@@ -29,7 +30,7 @@ public class LoginController extends BaseController<LoginDTO, Login, Integer> {
 	private LoginService loginService;
 
 
-	@PostMapping("login")
+	@PostMapping(CCPTConstants.LOGIN)
 	public ResponseEntity<Login> login(@RequestBody Login login, HttpSession session) throws AuthenticationException {
 		String username = login.getUsername();
 		String password = login.getPassword();
