@@ -24,12 +24,12 @@ export class PaymentsComponent implements OnInit {
     public enableButtonType = '';
     public currSearchTxt = '';
 
-    protected screenHeight: any;
+    public screenHeight: any;
     private selectedRecrdToDel = 0;
     public closeResult = '';
     public trash = 'trash';
-    protected apName = '';
-    protected apValue = '';
+    public apName = '';
+    public apValue = '';
     private modalRef: NgbModalRef;
 
     constructor(private http: HttpClientService, private toastr: ToastrCustomService, private modalService: NgbModal) {
