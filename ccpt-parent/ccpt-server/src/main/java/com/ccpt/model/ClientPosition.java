@@ -54,7 +54,7 @@ public class ClientPosition extends FileSupportEntity {
 	@JoinColumn(name = "assigned_to")
 	private Recruiter assignedTo;
 
-	@Column(unique = true)
+	@Column()
 	@NotNull
 	private String generatedCode;
 
