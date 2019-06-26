@@ -55,15 +55,16 @@ public class ConsultantCallHistoryController
 	}
 
 	@GetMapping("/getAllconCHCountByRecruiters")
-	public ResponseEntity<List<CallHistorySummaryStatistics>> getAllconCHCountByRecruiters() {
-		List<CallHistorySummaryStatistics> result = consultantCallHistoryService.getAllconCHCountByRecruiters();
+	public ResponseEntity<List<CallHistorySummaryStatistics>> getAllconCHCountByRecruiters(@RequestParam Integer days) {
+		List<CallHistorySummaryStatistics> result = consultantCallHistoryService.getAllconCHCountByRecruiters(days);
 		return new ResponseEntity<List<CallHistorySummaryStatistics>>(result, HttpStatus.OK);
 
 	}
 
 	@GetMapping("/getAllconCHByRecruiterId")
-	public ResponseEntity<List<ConsultantCallHistory>> getAllconCHByRecruiterId(@RequestParam Integer rId) {
-		List<ConsultantCallHistory> result = consultantCallHistoryService.getAllconCHByRecruiterId(rId);
+	public ResponseEntity<List<ConsultantCallHistory>> getAllconCHByRecruiterId(@RequestParam Integer rId,
+			@RequestParam Integer days) {
+		List<ConsultantCallHistory> result = consultantCallHistoryService.getAllconCHByRecruiterId(rId, days);
 		return new ResponseEntity<List<ConsultantCallHistory>>(result, HttpStatus.OK);
 
 	}

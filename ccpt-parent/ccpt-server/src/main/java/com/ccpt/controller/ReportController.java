@@ -41,13 +41,8 @@ public class ReportController {
 	@GetMapping("getAllClientCallHistorysByDays")
 	public ResponseEntity<List<ClientCallHistory>> getAllClientCallHistorysByDays(@RequestParam Integer days)
 			throws ParseException {
-		Calendar cal = Calendar.getInstance();
-		cal.add(Calendar.DATE, -days);
-		Date startDate = cal.getTime();
-		Date endDate = new Date();
-
 		List<ClientCallHistory> clientCallHistoryList = clientCallHistoryService
-				.getAllClientCallHistorysFromLastGivenDays(startDate, endDate);
+				.getAllClientCallHistorysFromLastGivenDays(days);
 
 		return new ResponseEntity<List<ClientCallHistory>>(clientCallHistoryList, HttpStatus.OK);
 	}
@@ -67,7 +62,8 @@ public class ReportController {
 	}
 
 	@GetMapping("getClosedCountOfAllRecruitersFromLastGivenDays")
-	public ResponseEntity<Map<String, Long>> getClosedCountOfAllRecruitersFromLastGivenDays(@RequestParam Integer days) {
+	public ResponseEntity<Map<String, Long>> getClosedCountOfAllRecruitersFromLastGivenDays(
+			@RequestParam Integer days) {
 		Calendar cal = Calendar.getInstance();
 		cal.add(Calendar.DATE, -days);
 		Date startDate = cal.getTime();

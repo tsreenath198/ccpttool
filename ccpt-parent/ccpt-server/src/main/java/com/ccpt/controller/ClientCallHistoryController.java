@@ -50,15 +50,16 @@ public class ClientCallHistoryController extends BaseController<ClientCallHistor
 	}
 
 	@GetMapping("/getAllCchCountByRecruiters")
-	public ResponseEntity<List<CallHistorySummaryStatistics>> getAllCchCountByRecruiters() {
-		List<CallHistorySummaryStatistics> result = clientCallHistoryService.getAllCchCountByRecruiters();
+	public ResponseEntity<List<CallHistorySummaryStatistics>> getAllCchCountByRecruiters(@RequestParam Integer days) {
+		List<CallHistorySummaryStatistics> result = clientCallHistoryService.getAllCchCountByRecruiters(days);
 		return new ResponseEntity<List<CallHistorySummaryStatistics>>(result, HttpStatus.OK);
 
 	}
 
 	@GetMapping("/getAllCchByRecruiterId")
-	public ResponseEntity<List<ClientCallHistory>> getAllCchByRecruiterId(@RequestParam Integer rId) {
-		List<ClientCallHistory> result = clientCallHistoryService.getAllCchByRecruiterId(rId);
+	public ResponseEntity<List<ClientCallHistory>> getAllCchByRecruiterId(@RequestParam Integer rId,
+			@RequestParam Integer days) {
+		List<ClientCallHistory> result = clientCallHistoryService.getAllCchByRecruiterId(rId, days);
 		return new ResponseEntity<List<ClientCallHistory>>(result, HttpStatus.OK);
 
 	}
