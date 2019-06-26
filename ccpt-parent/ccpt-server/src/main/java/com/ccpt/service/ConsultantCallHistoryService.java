@@ -22,12 +22,16 @@ public class ConsultantCallHistoryService extends BaseService<ConsultantCallHist
 	@Autowired
 	private ConsultantCallHistoryRepository consultantCallHistoryRepository;
 
-	public List<ConsultantCallHistory> getAllConsultantCallHistorysFromLastGivenDays(Date sdate, Date edate) {
-		return consultantCallHistoryRepository.getAllConsultantCallHistorysFromLastGivenDays(sdate, edate, true);
+	public List<ConsultantCallHistory> getAllConsultantCallHistorysFromLastGivenDays(Integer days) {
+		Day day = getDays(days);
+		return consultantCallHistoryRepository.getAllConsultantCallHistorysFromLastGivenDays(day.getStartDate(),
+				day.getEndDate(), true);
 	}
 
-	public List<Object[]> getClosedCountOfAllRecruitersFromLastGivenDays(Date startDate, Date endDate) {
-		return consultantCallHistoryRepository.getClosedCountOfAllRecruitersFromLastGivenDays(startDate, endDate);
+	public List<Object[]> getClosedCountOfAllRecruitersFromLastGivenDays(Integer days) {
+		Day day = getDays(days);
+		return consultantCallHistoryRepository.getClosedCountOfAllRecruitersFromLastGivenDays(day.getStartDate(),
+				day.getEndDate());
 	}
 
 	@Override
