@@ -36,7 +36,7 @@
               <td>{{cal.status.code}}</td>
               <td>{{cal.creator.fullname }}</td>
               
-              <td width="100">
+              <td width="140">
                   <app-action [trashContent]="trashContent" [uploadContent]="uploadContent"
                   [downloadContent]="downloadContent" [id]="cal.id" [isTrash]="trash" [isUpload]="upload"
                   [isDownload]="download" (upload)="open($event)" (download)="open($event)" (trash)="open($event)">
@@ -57,7 +57,7 @@
                 (click)="updateClientApplication(f)">Update</button>
               <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button"
                 (click)="enableFormEditable()">Edit</button>
-                <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3" *ngIf="enableButtonType == ''">{{enableButtonType != '' ? 'Close' : 'Clear'}}
+                <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3">{{enableButtonType != '' ? 'Close' : 'Clear'}}
                 </button>  
             </div>
           </div>
@@ -239,7 +239,7 @@
               (click)="updateClientApplication(f)">Update</button>
             <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button"
               (click)="enableFormEditable()">Edit</button>
-              <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3" *ngIf="enableButtonType != 'U'||enableButtonType != 'E'">{{enableButtonType == 'U'||enableButtonType == 'E' ? 'Close' : 'Clear'}}
+              <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3">{{enableButtonType != '' ? 'Close' : 'Clear'}}
               </button>
           </div>
         </div>
@@ -265,29 +265,35 @@
   </div>
 </ng-template>
 <ng-template #downloadContent let-c="close" let-d="dismiss">
-    <div class="modal-header">
-      <h4 class="modal-title">Client Application {{ urlConstants.DownloadFilesMsg }}</h4>
-      <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-    <div class="modal-body">
-      <table class="table ">
-        <thead>
-          <th>Reference Type</th>
-          <th>Comments</th>
-        </thead>
-        <tbody *ngFor="let fl of fileList">
-          <td>{{ fl.refId }}</td>
-          <td>{{ fl.refType }}</td>
-          <td>{{ fl.comments }}</td>
-        </tbody>
-      </table>
-    </div>
-    <div class="modal-footer">
-      <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
-    </div>
-  </ng-template>
+  <div class="modal-header">
+    <h4 class="modal-title">Consultant {{ urlConstants.DownloadFilesMsg }}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body" *ngIf="CAModel.files.length > 0; else emptyMsg">
+    <table class="table">
+      <thead>
+        <th>File Name</th>
+        <th>Description</th>
+        <th>Action</th>
+      </thead>
+      <tbody *ngFor="let fl of CAModel.files">
+        <td>{{fl.fileName}}</td>
+        <td>{{fl.Description}}</td>
+        <td>
+          <button type="button" class="btn btn-secondary btn-sm" (click)="downloadFile(fl.id)">Download</button>
+        </td>
+      </tbody>
+    </table>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
+  </div>
+</ng-template>
+<ng-template #emptyMsg >
+  <h3 class="text-center">No Files to download</h3>
+</ng-template>
   <ng-template #uploadContent let-c="close" let-d="dismiss">
     <div class="modal-header">
       <h4 class="modal-title">{{ urlConstants.UploadFilesMsg }}</h4>

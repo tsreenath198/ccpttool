@@ -14,11 +14,11 @@ export class URLConstants {
     CPSGetById = 'cpStatus/';
 
     /*Consultant Status*/
-    CSCreate = 'consultantStatus';
-    CSGetAll = 'consultantStatus/';
-    CSUpdate = 'consultantStatus';
-    CSDelete = 'consultantStatus/';
-    CSGetById = 'consultantStatus/';
+    CSCreate = 'conStatus';
+    CSGetAll = 'conStatus/';
+    CSUpdate = 'conStatus';
+    CSDelete = 'conStatus/';
+    CSGetById = 'conStatus/';
 
     /*Client Position */
     CPCreate = 'clientPosition';
@@ -26,7 +26,7 @@ export class URLConstants {
     CPUpdate = 'clientPosition';
     CPDelete = 'clientPosition/';
     CPGetById = 'clientPosition/';
-    CPDropdown = 'clientPosition/getAllCps'
+    CPDropdown = 'clientPosition/getAllCps';
     /*Consultant */
     CCreate = 'consultant';
     CGetAll = 'consultant/';
@@ -34,8 +34,8 @@ export class URLConstants {
     CDelete = 'consultant/';
     CGetById = 'consultant/';
     CUpload = 'file/save';
-    CActivate = 'consultant/activate/'
-    CDropdown = 'consultant/getAllConsultants'
+    CActivate = 'consultant/activate/';
+    CDropdown = 'consultant/getAllConsultants';
 
     /* Client Application */
     CACreate = 'clientApplication';
@@ -70,7 +70,7 @@ export class URLConstants {
     RDelete = 'recruiter/';
     RGetById = 'recruiter/';
     RGetByName = 'recruiter/name/';
-    RDropdown = 'recruiter/getAllCreators'
+    RDropdown = 'recruiter/getAllCreators';
 
 
     /*Client*/
@@ -79,7 +79,7 @@ export class URLConstants {
     ClientUpdate = 'client';
     ClientDelete = 'client/';
     ClientGetById = 'client/';
-    ClientDropdown = 'client/getAllClients'
+    ClientDropdown = 'client/getAllClients';
 
     /*Other Contacts */
     OCCreate = 'contact';
@@ -124,11 +124,24 @@ export class URLConstants {
     UserDelete = 'user/';
     UserGetById = 'user/';
 
+    /**Payments */
+    PaymentCreate = 'payment';
+    PaymentGetAll = 'payment/';
+    PaymentUpdate = 'payment';
+    PaymentDelete = 'payment/';
+    PaymentGetById = 'payment/';
+    PaymentActivateById = 'payment/';
+
     /** Messages */
     DeleteMsg = 'Deleted Successfully';
     SuccessMsg = 'Created Successfully ';
     UpdateMsg = 'Updated Successfully';
-    ActivatedMsg = 'Activated Successfully'
+    ActivatedMsg = 'Activated Successfully';
     UploadFilesMsg = 'Upload Files';
     DownloadFilesMsg = 'Files';
+
+    /**File */
+    FileUpload = 'uploadFile/save?';
+    FileDownload = 'uploadFile/download/';
+    FileDelete = 'uploadFile/'
 }

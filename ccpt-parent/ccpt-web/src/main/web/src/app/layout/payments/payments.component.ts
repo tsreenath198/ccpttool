@@ -1,6 +1,6 @@
 import { Component, OnInit, HostListener } from '@angular/core';
 import { routerTransition } from '../../router.animations';
-import { OtherContactsModel } from './other-contacts.model';
+import { PaymentsModel } from './payments.model';
 import { HttpClientService } from 'src/app/shared/services/http.service';
 import { URLConstants } from '../components/constants/url-constants';
 import { ToastrCustomService } from 'src/app/shared/services/toastr.service';
@@ -10,26 +10,26 @@ import { AdditionalPropertiesModel } from 'src/app/additional-properties.model';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 
 @Component({
-    selector: 'app-other-contacts',
-    templateUrl: './other-contacts.component.html',
-    styleUrls: ['./other-contacts.component.scss'],
+    selector: 'app-payments',
+    templateUrl: './payments.component.html',
+    styleUrls: ['./payments.component.scss'],
     animations: [routerTransition()]
 })
-export class OtherContactsComponent implements OnInit {
+export class PaymentsComponent implements OnInit {
 
-    public OCModel: OtherContactsModel = <OtherContactsModel>{};
-    public OCList: any = [];
+    public paymentModel: PaymentsModel = <PaymentsModel>{};
+    public paymentsList: any = [];
     private urlConstants = new URLConstants();
     public readOnlyForm = '';
     public enableButtonType = '';
     public currSearchTxt = '';
 
-    public screenHeight: any;
+    protected screenHeight: any;
     private selectedRecrdToDel = 0;
     public closeResult = '';
     public trash = 'trash';
-    public apName = '';
-    public apValue = '';
+    protected apName = '';
+    protected apValue = '';
     private modalRef: NgbModalRef;
 
     constructor(private http: HttpClientService, private toastr: ToastrCustomService, private modalService: NgbModal) {
@@ -43,18 +43,10 @@ export class OtherContactsComponent implements OnInit {
         this.init();
     }
     init() {
-        this.http.get(this.urlConstants.OCGetAll).subscribe(resp => {
-            this.OCList = resp as any;
-            this.OCList.forEach(cl => {
-                if (this.validate(cl.name) || this.validate(cl.email) || this.validate(cl.phone)) {
-                    cl['isProfileCompleted'] = false;
-                } else {
-                    cl['isProfileCompleted'] = true;
-                }
-            });
+        this.http.get(this.urlConstants.PaymentGetAll).subscribe(resp => {
+            this.paymentsList = resp as any;
         });
-    this.OCModel.properties = [];
-    this.OCModel['phone'] = '+91';
+    this.paymentModel.properties = [];
     }
     private validate(value: any): boolean {
         const bool = (value == null) ? true : false;
@@ -62,45 +54,42 @@ export class OtherContactsComponent implements OnInit {
     }
     edit() {
         this.readOnlyForm = 'U';
-        //this.config.editable = true;
         this.enableButtonType = 'U';
     }
     enableFormEditable(): void {
 
         this.readOnlyForm = 'U';
-        //this.config.editable = true;
         this.enableButtonType = 'U';
     }
 
     readOnlyEnable(id) {
         this.getById(id);
         this.readOnlyForm = 'R';
-       // this.config.editable = false;
         this.enableButtonType = 'E';
     }
     getById(id) {
-        const temp = this.http.get(this.urlConstants.OCGetById + id);
+        const temp = this.http.get(this.urlConstants.PaymentGetById + id);
         temp.subscribe(resp => {
-            this.OCModel = this.mapToUpdateModel(resp);
+            this.paymentModel = this.mapToUpdateModel(resp);
             // tslint:disable-next-line:no-shadowed-variable
-             if (this.OCModel.properties == null) {
-                    this.OCModel.properties = [];
+             if (this.paymentModel.properties == null) {
+                    this.paymentModel.properties = [];
                 }
             });
     }
     mapToUpdateModel(response) {
         const temp = response;
-        this.OCModel = temp;
-        return this.OCModel;
+        this.paymentModel = temp;
+        return this.paymentModel;
     }
     propertiesListIncrement(event, i: number) {
         switch (event.id) {
             case 'decrease': {
-              this.OCModel.properties.splice(i, 1);
+              this.paymentModel.properties.splice(i, 1);
               break;
             }
             case 'increase': {
-              this.OCModel.properties.push(<AdditionalPropertiesModel>{ 'name': this.apName, 'value': this.apValue });
+              this.paymentModel.properties.push(<AdditionalPropertiesModel>{ 'name': this.apName, 'value': this.apValue });
               this.apName = '';
               this.apValue = '';
               break;
@@ -108,28 +97,26 @@ export class OtherContactsComponent implements OnInit {
           }
     }
     formReset() {
-        this.OCModel = <OtherContactsModel>{}; 
-        this.OCModel.properties = [];
-        this.OCModel['phone'] = '+91';
+        this.paymentModel = <PaymentsModel>{properties: []};
     }
-    create(otherContactForm: NgForm): void {
-        const temp = this.http.post(this.OCModel, this.urlConstants.OCCreate);
+    create(paymentsForm: NgForm): void {
+        const temp = this.http.post(this.paymentModel, this.urlConstants.PaymentCreate);
         temp.subscribe(resp => {
             this.toastr.success(this.urlConstants.SuccessMsg, 'Contact');
             this.init();
             this.formReset();
-            otherContactForm.resetForm();
+            paymentsForm.resetForm();
         }, err => {
             this.toastr.error(err.error.message, 'Contact');
         });
     }
-    update(otherContactForm: NgForm) {
-        const temp = this.http.update(this.OCModel, this.urlConstants.OCUpdate);
+    update(paymentsForm: NgForm) {
+        const temp = this.http.update(this.paymentModel, this.urlConstants.PaymentUpdate);
         temp.subscribe(resp => {
             this.formReset();
             this.toastr.success(this.urlConstants.UpdateMsg, 'Contact ');
             this.init();
-            otherContactForm.resetForm();
+            paymentsForm.resetForm();
             this.readOnlyForm = '';
             this.enableButtonType = '';
         }, err => {
@@ -144,7 +131,7 @@ export class OtherContactsComponent implements OnInit {
         this.enableButtonType = '';
     }
     delete(): void {
-        const temp = this.http.delete(this.urlConstants.OCDelete + this.selectedRecrdToDel);
+        const temp = this.http.delete(this.urlConstants.PaymentDelete + this.selectedRecrdToDel);
         temp.subscribe(resp => {
             this.toastr.success(this.urlConstants.DeleteMsg, 'Contact');
             this.init();
@@ -155,11 +142,6 @@ export class OtherContactsComponent implements OnInit {
         }, err => {
             this.toastr.error(err.error.message, 'Contact');
         });
-    }
-    transformTitleCase(ip: HTMLInputElement) {
-        let temp = ip.value.length === 0 ? '' :
-            ip.value.replace(/\w\S*/g, (txt => txt[0].toUpperCase() + txt.substr(1).toLowerCase()));
-        ip.value = temp;
     }
     /**
      * @param

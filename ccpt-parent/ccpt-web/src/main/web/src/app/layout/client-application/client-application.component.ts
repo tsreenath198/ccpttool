@@ -30,7 +30,7 @@ export class ClientApplicationComponent implements OnInit {
     public clientApplicationStatusList: Array<ClientApplicationStatusModel> = [];
     public clientPositionList: Array<any> = [];
     public recruiterList: Array<any> = [];
-    private urlConstants = new URLConstants();
+    public urlConstants = new URLConstants();
     public currSearchTxt = '';
     public formButtonsToggler = true;
     public editButtonToggler = true;
@@ -224,23 +224,31 @@ export class ClientApplicationComponent implements OnInit {
         if (event.id) {
             this.selectedRecrdToDel = event.id;
         }
-        if (event.type === this.download) {
-            // this.getFilesById(this.selectedRecrdToDel); TODO:Need to fix for multiple downloads
-            this.http.get('file/download?refType=ClientApplication&refId=' + this.selectedRecrdToDel).subscribe(resp => {
+        // if (event.type === this.download) {
+        //     // this.getFilesById(this.selectedRecrdToDel); TODO:Need to fix for multiple downloads
+        //     this.http.get('file/download?refType=ClientApplication&refId=' + this.selectedRecrdToDel).subscribe(resp => {
 
-            }, err => {
-                if (err.status == 200)
-                    window.open(err.url);
-            });
-        } else {
+        //     }, err => {
+        //         if (err.status == 200)
+        //             window.open(err.url);
+        //     });
+        // } else {
             this.modalRef = this.modalService.open(event.content);
             this.modalRef.result.then((result) => {
                 this.closeResult = `Closed with: ${result}`;
             }, (reason) => {
                 this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
             });
-        }
+        //}
 
+    }
+    /**Download file */
+    downloadFile(id:number){
+        this.http.get(this.urlConstants.FileDownload + id).subscribe(resp => {
+                }, err => {
+                    if (err.status == 200)
+                        window.open(err.url);
+                });
     }
     close() {
         this.modalRef.close();
@@ -265,8 +273,8 @@ export class ClientApplicationComponent implements OnInit {
         const files = this.getFiles();
         const formData = new FormData();
         formData.append('file', files[0].rawFile, files[0].name);
-        const params = 'refId=' + this.selectedRecrdToDel + '&refType=CLientApplication&comments=' + this.comments;
-        this.http.upload('file/save?' + params, formData).subscribe(resp => {
+        const params = 'refId=' + this.selectedRecrdToDel + '&refType=Client Application&comments=' + this.comments;
+        this.http.upload(this.urlConstants.FileUpload + params, formData).subscribe(resp => {
             let temp: any = resp;
             this.toastr.success(temp.message, 'Client');
             this.close();

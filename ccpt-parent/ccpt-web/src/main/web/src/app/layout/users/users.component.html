@@ -134,6 +134,16 @@
             </div>
           </div>
         </div>
+        <div class="row text-center" >
+            <div class="col-md-12">
+              <button type="submit" *ngIf="enableButtonType == ''" class="btn btn-secondary ml-3" [disabled]="f.form.pristine || f.form.invalid">Add</button>
+              <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2"
+                (click)="updateUsers(f)">Update</button>
+              <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button"
+                (click)="enableFormEditable()">Edit</button>
+                <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3" >{{enableButtonType != '' ? 'Close' : 'Clear'}}</button>
+            </div>
+          </div>
       </form>
     </div>
   </div>

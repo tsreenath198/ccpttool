@@ -36,8 +36,8 @@
                   (click)="updateRecruiter(f)">Update</button>
                 <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button"
                   (click)="enableFormEditable()">Edit</button>
-                  <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3" *ngIf="enableButtonType != 'U'||enableButtonType != 'E'">{{enableButtonType == 'U'||enableButtonType == 'E' ? 'Close' : 'Clear'}}
-                  </button>
+                  <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3" >{{enableButtonType != '' ? 'Close' : 'Clear'}}</button>
+
               </div>
             </div>
         <div class="row">
@@ -213,8 +213,8 @@
               (click)="updateRecruiter(f)">Update</button>
             <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button"
               (click)="enableFormEditable()">Edit</button>
-              <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3" *ngIf="enableButtonType != 'U'||enableButtonType != 'E'">{{enableButtonType == 'U'||enableButtonType == 'E' ? 'Close' : 'Clear'}}
-              </button>
+              <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3" >{{enableButtonType != '' ? 'Close' : 'Clear'}}</button>
+
           </div>
         </div>
       </form>

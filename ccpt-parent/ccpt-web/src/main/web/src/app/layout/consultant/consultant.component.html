@@ -31,9 +31,9 @@
             </tr>
           </thead>
           <tbody class="overflow-ele-scroll ">
-            <tr *ngFor="let cl of consultantList | filter: 'fullname':currSearchTxt; let i = index"
+            <tr *ngFor="let cl of consultantList | filter: 'fullname':currSearchTxt; let i = index"  (click)="readOnlyEnable(cl.id)" (dblclick)="consultantEdit(cl.id)"
               [ngClass]="!cl.isProfileCompleted ? 'bl-red' : 'bl-trans'">
-              <td class="table-data-padding " (click)="readOnlyEnable(cl.id)" (dblclick)="consultantEdit(cl.id)">
+              <td class="table-data-padding ">
                 <dl>
                   <dt>{{ cl.fullname }}</dt>
                   <dd data-toggle="tooltip" title="{{cl.skills}}">
@@ -72,9 +72,7 @@
               (click)="enableFormEditable()">
               Edit
             </button>
-            <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3"
-              *ngIf="enableButtonType != 'U'||enableButtonType != 'E'">{{enableButtonType == 'U'||enableButtonType == 'E' ? 'Close' : 'Clear'}}</button>
-
+            <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3">{{enableButtonType != '' ? 'Close' : 'Clear'}}</button>
           </div>
         </div>
         <div class="row">
@@ -355,8 +353,7 @@
               (click)="enableFormEditable()">
               Edit
             </button>
-            <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3"
-              *ngIf="enableButtonType != 'U'||enableButtonType != 'E'">{{enableButtonType == 'U'||enableButtonType == 'E' ? 'Close' : 'Clear'}}</button>
+            <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3">{{enableButtonType != '' ? 'Close' : 'Clear'}}</button>
 
           </div>
         </div>
@@ -386,22 +383,28 @@
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
-  <div class="modal-body">
-    <table class="table ">
+  <div class="modal-body" *ngIf="consultantModel.files.length > 0; else emptyMsg">
+    <table class="table">
       <thead>
-        <th>Reference Type</th>
-        <th>Comments</th>
+        <th>File Name</th>
+        <th>Description</th>
+        <th>Action</th>
       </thead>
-      <tbody *ngFor="let fl of fileList">
-        <td>{{ fl.refId }}</td>
-        <td>{{ fl.refType }}</td>
-        <td>{{ fl.comments }}</td>
+      <tbody *ngFor="let fl of consultantModel.files">
+        <td>{{fl.fileName}}</td>
+        <td>{{fl.Description}}</td>
+        <td>
+          <button type="button" class="btn btn-secondary btn-sm" (click)="downloadFile(fl.id)">Download</button>
+        </td>
       </tbody>
     </table>
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
   </div>
+</ng-template>
+<ng-template #emptyMsg >
+  <h3 class="text-center">No Files to download</h3>
 </ng-template>
 <ng-template #uploadContent let-c="close" let-d="dismiss">
   <div class="modal-header">

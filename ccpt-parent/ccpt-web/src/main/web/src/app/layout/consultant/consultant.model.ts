@@ -26,6 +26,7 @@ export interface ConsultantModel {
     monthsInCurrentJob: string;
     noticePeriod: string;
     highestEducation: string;
+    files: Array<any>;
     properties: Array<AdditionalPropertiesModel>;
 }
 

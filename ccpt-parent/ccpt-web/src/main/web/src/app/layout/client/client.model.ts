@@ -15,6 +15,7 @@ export interface ClientModel {
     gst: string;
     description: string;
     website: string;
+    files: Array<any>;
     clientContacts: Array<ClientContactsModel>;
     properties: Array<AdditionalPropertiesModel>;
 

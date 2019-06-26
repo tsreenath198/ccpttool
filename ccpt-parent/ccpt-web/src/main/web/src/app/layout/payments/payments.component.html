@@ -1,0 +1,530 @@
+<div [@routerTransition]>
+  <app-page-header [icon1]="'fa-inr'" [heading1]="'Payments'"></app-page-header>
+  <div class="row">
+    <div class="col-md-7">
+      <div class="row">
+        <div class="col-md-6"><input type="text" class="form-control" placeholder="search..." [(ngModel)]="currSearchTxt" /></div>
+      </div>
+      <div class="table-responsive mt-2 table-wrapper-scroll-y my-custom-scrollbar" [style.height.px]="screenHeight">
+        <table class="table table-hover table-striped">
+          <thead>
+            <tr>
+              <th>
+                Invoice
+              </th>
+              <th>
+                Company
+              </th>
+              <th>
+                Consultant
+              </th>
+              <th>
+                <span class="pull-right">Action</span>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              *ngFor="let pl of paymentsList | filter: 'name':currSearchTxt; let i = index"
+              (click)="readOnlyEnable(pl.id)"
+              (dblclick)="edit(pl)"
+            >
+              <td>
+                {{ pl.invoiceDate | date}}
+              </td>
+              <td>
+                {{ pl.companyName }}
+              </td>
+              <td>
+                {{ pl.candidateName }}
+              </td>
+              <td width="100">
+                <app-action [trashContent]="trashContent" [id]="pl.id" [isTrash]="trash" (trash)="open($event)"> </app-action>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class=" col-md-5">
+      <form name="form" id="paymentsForm" (ngSubmit)="f.form.valid && create(f)" #f="ngForm" novalidate>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group " data-provide="datepicker">
+              <label>Invoice Date<span class="required">*</span></label>
+              <input
+                type="date"
+                class="form-control"
+                name="dob"
+                [(ngModel)]="paymentModel.invoiceDate"
+                [ngClass]="{ 'is-invalid': f.submitted && invoiceDate.invalid }"
+                #invoiceDate="ngModel"
+                [readonly]="readOnlyForm == 'R'"
+                required
+              />
+              <div class="invalid-feedback">
+                Invoice Date is mandatory
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>Company Name<span class="required">*</span></label>
+              <input
+                class="form-control capi"
+                [readonly]="readOnlyForm == 'R'"
+                [(ngModel)]="paymentModel.companyName"
+                name="name"
+                [ngClass]="{ 'is-invalid': f.submitted && name.invalid }"
+                #name="ngModel"
+                required
+              />
+              <div class="invalid-feedback">
+                Company name is mandatory
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>Company Website<span class="required">*</span></label>
+              <input
+                class="form-control"
+                [readonly]="readOnlyForm == 'R'"
+                [(ngModel)]="paymentModel.companyWebsite"
+                name="phone"
+                [ngClass]="{ 'is-invalid': f.submitted && web.invalid }"
+                #web="ngModel"
+                required
+              />
+              <div class="invalid-feedback">
+                Company website is mandatory
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>Company Gst<span class="required">*</span></label>
+              <input
+                class="form-control capi"
+                [readonly]="readOnlyForm == 'R'"
+                [(ngModel)]="paymentModel.companyGstNum"
+                name="name"
+                [ngClass]="{ 'is-invalid': f.submitted && companyGstNum.invalid }"
+                #companyGstNum="ngModel"
+                required
+              />
+              <div class="invalid-feedback">
+                Company gst is mandatory
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>Credit Period<span class="required">*</span></label>
+              <input
+                type="number"
+                class="form-control"
+                [readonly]="readOnlyForm == 'R'"
+                [(ngModel)]="paymentModel.creditPeriod"
+                name="phone"
+                [ngClass]="{ 'is-invalid': f.submitted && creditPeriod.invalid }"
+                #creditPeriod="ngModel"
+                required
+              />
+              <div class="invalid-feedback">
+                Credit period is mandatory
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>Guarentee Period<span class="required">*</span></label>
+              <input
+                type="number"
+                class="form-control capi"
+                [readonly]="readOnlyForm == 'R'"
+                [(ngModel)]="paymentModel.gauranteePeriod"
+                name="name"
+                [ngClass]="{ 'is-invalid': f.submitted && gauranteePeriod.invalid }"
+                #gauranteePeriod="ngModel"
+                required
+              />
+              <div class="invalid-feedback">
+                Guarentee period is mandatory
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>Contact person<span class="required">*</span></label>
+              <input
+                class="form-control"
+                [readonly]="readOnlyForm == 'R'"
+                [(ngModel)]="paymentModel.contactPerson"
+                name="phone"
+                [ngClass]="{ 'is-invalid': f.submitted && contactPerson.invalid }"
+                #contactPerson="ngModel"
+                required
+              />
+              <div class="invalid-feedback">
+                Contact person is mandatory
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>Designation<span class="required">*</span></label>
+              <input
+                class="form-control"
+                [readonly]="readOnlyForm == 'R'"
+                [(ngModel)]="paymentModel.contactPersonDesignation"
+                name="phone"
+                [ngClass]="{ 'is-invalid': f.submitted && contactPersonDesignation.invalid }"
+                #contactPersonDesignation="ngModel"
+                required
+              />
+              <div class="invalid-feedback">
+                Contact person designation is mandatory
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>Contact person Ph.<span class="required">*</span></label>
+              <input
+                class="form-control capi"
+                [readonly]="readOnlyForm == 'R'"
+                [(ngModel)]="paymentModel.contactPersonNum"
+                name="name"
+                [ngClass]="{ 'is-invalid': f.submitted && contactPersonNum.invalid }"
+                #contactPersonNum="ngModel"
+                required
+              />
+              <div class="invalid-feedback">
+                Phone is mandatory
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>Contact person email</label>
+              <input
+                class="form-control"
+                [readonly]="readOnlyForm == 'R'"
+                [(ngModel)]="paymentModel.contactPersonEmail"
+                name="phone"
+                [ngClass]="{ 'is-invalid': f.submitted && contactPersonEmail.invalid }"
+                #contactPersonEmail="ngModel"
+                required
+              />
+              <div class="invalid-feedback">
+                Email is mandatory
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>Joining Date<span class="required">*</span></label>
+              <input
+                type="date"
+                class="form-control"
+                name="dob"
+                [(ngModel)]="paymentModel.joiningDate"
+                [ngClass]="{ 'is-invalid': f.submitted && joiningDate.invalid }"
+                #joiningDate="ngModel"
+                [readonly]="readOnlyForm == 'R'"
+                required
+              />
+              <div class="invalid-feedback">
+                Joining date is mandatory
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>Candidate Name<span class="required">*</span></label>
+              <input
+                class="form-control"
+                [readonly]="readOnlyForm == 'R'"
+                [(ngModel)]="paymentModel.candidateName"
+                name="candidateName"
+                [ngClass]="{ 'is-invalid': f.submitted && candidateName.invalid }"
+                #candidateName="ngModel"
+                required
+              />
+              <div class="invalid-feedback">
+                Candidate name is mandatory
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>Designation<span class="required">*</span></label>
+              <input
+                type="text"
+                class="form-control"
+                name="dob"
+                [(ngModel)]="paymentModel.designation"
+                [ngClass]="{ 'is-invalid': f.submitted && designation.invalid }"
+                #designation="ngModel"
+                [readonly]="readOnlyForm == 'R'"
+                required
+              />
+              <div class="invalid-feedback">
+                Designation is mandatory
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>Annual Package<span class="required">*</span></label>
+              <input
+                type="number"
+                class="form-control"
+                name="dob"
+                [(ngModel)]="paymentModel.annualPackage"
+                [ngClass]="{ 'is-invalid': f.submitted && annualPackage.invalid }"
+                #annualPackage="ngModel"
+                [readonly]="readOnlyForm == 'R'"
+                required
+              />
+              <div class="invalid-feedback">
+                Annual package is mandatory
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>Phone<span class="required">*</span></label>
+              <input
+                class="form-control"
+                [readonly]="readOnlyForm == 'R'"
+                [(ngModel)]="paymentModel.phone"
+                name="phone"
+                [ngClass]="{ 'is-invalid': f.submitted && phone.invalid }"
+                #phone="ngModel"
+                required
+              />
+              <div class="invalid-feedback">
+                Phone is mandatory
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>Branch Head<span class="required">*</span></label>
+              <input
+                type="text"
+                class="form-control"
+                name="dob"
+                [(ngModel)]="paymentModel.branchHeadName"
+                [ngClass]="{ 'is-invalid': f.submitted && branchHeadName.invalid }"
+                #branchHeadName="ngModel"
+                [readonly]="readOnlyForm == 'R'"
+                required
+              />
+              <div class="invalid-feedback">
+                Branch Head Name is mandatory
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>Branch Location <span class="required">*</span></label>
+              <input
+                class="form-control"
+                [readonly]="readOnlyForm == 'R'"
+                [(ngModel)]="paymentModel.branchLocation"
+                name="branchLocation"
+                [ngClass]="{ 'is-invalid': f.submitted && branchLocation.invalid }"
+                #branchLocation="ngModel"
+                required
+              />
+              <div class="invalid-feedback">
+                Branch location is mandatory
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>Service Charge <span class="required">*</span></label>
+              <input
+                type="number"
+                class="form-control"
+                [readonly]="readOnlyForm == 'R'"
+                [(ngModel)]="paymentModel.serviceCharge"
+                name="serviceCharge"
+                [ngClass]="{ 'is-invalid': f.submitted && serviceCharge.invalid }"
+                #serviceCharge="ngModel"
+                required
+              />
+              <div class="invalid-feedback">
+                Service charge is mandatory
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="form-group">
+              <label>Billing Address<span class="required">*</span></label>
+              <textarea
+                class="form-control"
+                cols="5"
+                rows="5"
+                [readonly]="readOnlyForm == 'R'"
+                [(ngModel)]="paymentModel.billingAddress"
+                name="billingAddress"
+                [ngClass]="{ 'is-invalid': f.submitted && billingAddress.invalid }"
+                #billingAddress="ngModel"
+                required
+              ></textarea>
+              <div class="invalid-feedback">
+                Billing address is mandatory
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="row" *ngIf="paymentModel.properties.length > 0">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label>Additional Properties</label>
+                <table class="table">
+                  <tbody>
+                    <tr *ngFor="let cpmp of paymentModel.properties; let i = index">
+                      <td>
+                        <input
+                          type="text"
+                          [(ngModel)]="cpmp.name"
+                          class="form-control"
+                          name="addPropName{{ i }}"
+                          [readonly]="readOnlyForm == 'R'"
+                        />
+                      </td>
+                      <td>
+                        <input
+                          type="text"
+                          [(ngModel)]="cpmp.value"
+                          class="form-control"
+                          name="addPropValue{{ i }}"
+                          [readonly]="readOnlyForm == 'R'"
+                        />
+                      </td>
+                      <td>
+                        <i
+                          class="fa fa-minus"
+                          aria-hidden="true"
+                          id="decrease"
+                          *ngIf="enableButtonType != 'E'"
+                          (click)="propertiesListIncrement($event.target, i)"
+                        ></i>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="form-group">
+              <label>Description<span class="required">*</span></label>
+              <textarea
+                class="form-control"
+                cols="5"
+                rows="5"
+                [readonly]="readOnlyForm == 'R'"
+                [(ngModel)]="paymentModel.description"
+                name="description"
+                #notes="ngModel"
+              ></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="form-group">
+              <label>Additional Properties</label>
+              <div class="table-responsive">
+                <table class="table">
+                  <tbody>
+                    <tr>
+                      <td>
+                        <input type="text" [(ngModel)]="apName" class="form-control" name="apName" [readonly]="readOnlyForm == 'R'" />
+                      </td>
+                      <td>
+                        <input type="text" [(ngModel)]="apValue" class="form-control" name="apValue" [readonly]="readOnlyForm == 'R'" />
+                      </td>
+                      <td>
+                        <i
+                          class="fa fa-plus"
+                          aria-hidden="true"
+                          id="increase"
+                          *ngIf="enableButtonType != 'E'"
+                          (click)="propertiesListIncrement($event.target, i)"
+                        ></i>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row text-center">
+          <div class="col-md-12">
+            <button
+              type="submit"
+              *ngIf="enableButtonType == ''"
+              class="btn btn-secondary ml-3"
+              [disabled]="f.form.pristine || f.form.invalid"
+            >
+              Add
+            </button>
+            <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2" (click)="update(f)">Update</button>
+            <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button" (click)="enableFormEditable()">
+              Edit
+            </button>
+            <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3">
+              {{ enableButtonType != '' ? 'Close' : 'Clear' }}
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<ng-template #trashContent let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title">Contact</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <p>Are you sure you want to delete ? &hellip;</p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="delete()">Ok</button>
+    <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
+  </div>
+</ng-template>

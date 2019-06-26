@@ -116,9 +116,8 @@
           <div class="col-md-12">
             <div class="form-group">
               <label>Notes</label>
-              <angular-editor [(ngModel)]="OCModel.description" name="dd" [config]="config"></angular-editor>
-              <!-- <textarea class="form-control" cols="5" rows="5" [readonly]="readOnlyForm == 'R'"
-                [(ngModel)]="OCModel.notes" name="notes" #notes="ngModel"></textarea> -->
+              <textarea class="form-control" cols="5" rows="5" [readonly]="readOnlyForm == 'R'"
+                [(ngModel)]="OCModel.notes" name="notes" #notes="ngModel"></textarea>
             </div>
           </div>
         </div>
@@ -162,8 +161,7 @@
               (click)="enableFormEditable()">
               Edit
             </button>
-            <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3" *ngIf="enableButtonType != 'U'||enableButtonType != 'E'">{{enableButtonType == 'U'||enableButtonType == 'E' ? 'Close' : 'Clear'}}
-            </button>          
+            <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3" >{{enableButtonType != '' ? 'Close' : 'Clear'}}</button>         
           </div>
         </div>
       </form>

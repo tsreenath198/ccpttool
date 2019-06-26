@@ -9,10 +9,10 @@
         <table class="table table-hover table-striped">
           <tbody class="overflow-ele-scroll">
             <tr
-              *ngFor="let cpl of clientPositionList | filter: 'technology':currSearchTxt; let i = index"
+              *ngFor="let cpl of clientPositionList | filter: 'technology':currSearchTxt; let i = index"  (click)="readOnlyEnable(cpl.id)" (dblclick)="editClientPosition(cpl)"
               [ngClass]="{ 'bl-closed': cpl.status.code === 'Closed', 'bl-on-hold': cpl.status.code === 'On Hold' }"
             >
-              <td class="table-data-padding" (click)="readOnlyEnable(cpl.id)" (dblclick)="editClientPosition(cpl)">
+              <td class="table-data-padding">
                 <dl>
                   <dt>{{ cpl.generatedCode }} ({{ cpl.assignedTo.aliasName }})</dt>
                   <dd>
@@ -61,7 +61,7 @@
             <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button" (click)="enableFormEditable()">
               Edit
             </button>
-            <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3" *ngIf="enableButtonType != 'U'||enableButtonType != 'E'">{{enableButtonType == 'U'||enableButtonType == 'E' ? 'Close' : 'Clear'}}
+            <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3" >{{enableButtonType != '' ? 'Close' : 'Clear'}}
             </button>
           </div>
         </div>
@@ -319,7 +319,7 @@
             <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button" (click)="enableFormEditable()">
               Edit
             </button>
-            <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3" *ngIf="enableButtonType != 'U'||enableButtonType != 'E'">{{enableButtonType == 'U'||enableButtonType == 'E' ? 'Close' : 'Clear'}}
+            <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3" >{{enableButtonType != '' ? 'Close' : 'Clear'}}
             </button>
           </div>
         </div>
