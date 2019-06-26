@@ -54,9 +54,8 @@ public class ClientPosition extends FileSupportEntity {
 	@JoinColumn(name = "assigned_to")
 	private Recruiter assignedTo;
 
-	@Column(unique = true)
-	@NotNull
-	private String generatedCode;
+	
+	private transient String generatedCode;
 
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "client_id")

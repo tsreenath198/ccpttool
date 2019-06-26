@@ -17,7 +17,6 @@ public class ClientPositionDTO extends FileSupportEntityDTO {
 	private String cpstatus;
 	private Integer closedBy;
 	private Integer assignedTo;
-	private String generatedCode;
 	private Integer clientId;
 	private String location;
 }
