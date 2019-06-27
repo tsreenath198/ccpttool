@@ -20,4 +20,5 @@ public class ClientPositionDTO extends FileSupportEntityDTO {
 	private String generatedCode;
 	private Integer clientId;
 	private String location;
+	private String qualification;
 }

@@ -65,5 +65,8 @@ public class ClientPosition extends FileSupportEntity {
 
 	@Column
 	private String location;
+	
+	@Column
+	private String qualification;
 
 }
