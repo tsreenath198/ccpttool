@@ -16,12 +16,12 @@
                   <th>
                     Phone
                   </th>
-                  <th >
+                  <th>
                     Email
                   </th>
-                  <th>
+                  <!-- <th>
                     <span class="pull-right">Action</span>
-                  </th>
+                  </th> -->
                 </tr>
               </thead>
           <tbody>
@@ -36,12 +36,12 @@
               <td>
                   {{cl.email}}
               </td>
-              <td width="140">
+              <!-- <td width="140">
                 <app-action [trashContent]="trashContent" [uploadContent]="uploadContent"
                   [downloadContent]="downloadContent" [id]="cl.id" [isTrash]="trash" [isUpload]="upload"
                   [isDownload]="download" (upload)="open($event)" (download)="open($event)" (trash)="open($event)">
                 </app-action>
-              </td>
+              </td> -->
             </tr>
           </tbody>
         </table>
@@ -54,10 +54,21 @@
             <button type="submit" *ngIf="enableButtonType == ''" class="btn btn-secondary ml-3" [disabled]="f.form.pristine || f.form.invalid">Add</button>
             <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2"
               (click)="updateClient(f)">Update</button>
-            <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button"
-              (click)="enableFormEditable()">Edit</button>
-              <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3" >{{enableButtonType != '' ? 'Close' : 'Clear'}}</button>    
-          </div>
+            <!-- <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button"
+              (click)="enableFormEditable()">Edit</button> -->
+              <button type="button" (click)="cancelForm(f)" *ngIf="enableButtonType == ''"
+              class="btn btn-secondary ml-3">{{enableButtonType != '' ? 'Close' : 'Clear'}}</button>
+              
+              <span class="pull-right" *ngIf="showAction">
+                  <div class="form-group">
+                      <select class="form-control" [(ngModel)]="action" name="sel1" #sel1="ngModel" (change)="actions(action,trashContent,uploadContent,downloadContent,f)">
+                          <option [ngValue]="null" hidden selected>Choose action</option>  
+                        <option *ngFor="let al of actionsList.actions" [ngValue]="al.value">
+                              {{ al.key }}
+                            </option>
+                      </select>
+                    </div>
+              </span>           </div>
         </div>
         <div class="row">
           <div class="col-md-6">
@@ -287,13 +298,25 @@
               </div>
           </div>
           <div class="row text-center" *ngIf="loggedInRole != 'User'">
-              <div class="col-md-12">
+              <div class="col-md-12 form-group">
                 <button type="submit" *ngIf="enableButtonType == ''" class="btn btn-secondary ml-3" [disabled]="f.form.pristine || f.form.invalid">Add</button>
                 <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2"
                   (click)="updateClient(f)">Update</button>
-                <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button"
-                  (click)="enableFormEditable()">Edit</button>
-                  <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3">{{enableButtonType != '' ? 'Close' : 'Clear'}}</button>              
+                <!-- <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button"
+                  (click)="enableFormEditable()">Edit</button> -->
+                  <button type="button" (click)="cancelForm(f)" *ngIf="enableButtonType == ''"
+                  class="btn btn-secondary ml-3">{{enableButtonType != '' ? 'Close' : 'Clear'}}</button>
+                  
+                  <span class="pull-right" *ngIf="showAction">
+                      <div class="form-group">
+                          <select class="form-control" [(ngModel)]="action" name="sel1" #sel1="ngModel" (change)="actions(action,trashContent,uploadContent,downloadContent,f)">
+                              <option [ngValue]="null" hidden selected>Choose action</option>  
+                            <option *ngFor="let al of actionsList.actions" [ngValue]="al.value">
+                                  {{ al.key }}
+                                </option>
+                          </select>
+                        </div>
+                  </span>           
                 </div>
             </div>
       </form>

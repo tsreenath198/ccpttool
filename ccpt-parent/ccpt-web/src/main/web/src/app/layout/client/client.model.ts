@@ -20,6 +20,9 @@ export interface ClientModel {
     properties: Array<AdditionalPropertiesModel>;
 
 }
+export class ActionsList {
+    actions = [{key: 'Edit' , value:'Edit'},{key: 'File Upload' , value:'File Upload'},{key: 'File Download' , value:'File Download'}, {key: 'Delete' , value:'Delete'}, {key: 'Close' , value:'Close'}];
+}
 export interface ClientContactsModel {
       email: string;
       fullname: string;

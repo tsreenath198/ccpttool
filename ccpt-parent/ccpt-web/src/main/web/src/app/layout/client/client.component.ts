@@ -5,7 +5,7 @@ import { URLConstants } from '../components/constants/url-constants';
 import { HttpClientService } from 'src/app/shared/services/http.service';
 import { ToastrCustomService } from 'src/app/shared/services/toastr.service';
 import { NgForm } from '@angular/forms';
-import { ClientModel, ClientContactsModel } from './client.model';
+import { ClientModel, ClientContactsModel, ActionsList } from './client.model';
 import { FileUploader, FileLikeObject } from 'ng2-file-upload';
 import { AdditionalPropertiesModel } from 'src/app/additional-properties.model';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
@@ -30,6 +30,10 @@ export class ClientComponent implements OnInit {
     public fileList: Array<any> = [];
     public address = false;
 
+    public showAction: boolean = false;
+    public actionsList = new ActionsList();
+    public action:string;
+    
     private selectedRecrdToDel = 0;
     public closeResult = '';
     private modalRef: NgbModalRef;
@@ -76,6 +80,8 @@ export class ClientComponent implements OnInit {
     editClient(data) {
         this.readOnlyForm = 'U';
         this.enableButtonType = 'U';
+        this.showAction = true;
+        this.action=null;
     }
     enableFormEditable(): void {
         this.readOnlyForm = 'U';
@@ -85,6 +91,8 @@ export class ClientComponent implements OnInit {
         this.getById(id);
         this.readOnlyForm = 'R';
         this.enableButtonType = 'E';
+        this.showAction = true;
+        this.action=null;
     }
     getById(id) {
         const temp = this.http.get(this.urlConstants.ClientGetById + id);
@@ -131,6 +139,7 @@ export class ClientComponent implements OnInit {
 
             this.readOnlyForm = '';
             this.enableButtonType = '';
+            this.showAction = false;
         }, err => {
             this.toastr.error(err.error.message, 'Client');
         });
@@ -140,6 +149,7 @@ export class ClientComponent implements OnInit {
         this.formReset();
         this.readOnlyForm = '';
         this.enableButtonType = '';
+        this.showAction = false;
         this.clientContactDeclare();
     }
     clientContactListIncrement(event, i: number) {
@@ -168,6 +178,29 @@ export class ClientComponent implements OnInit {
             }
         }
     }
+    actions(value,trashContent,uploadContent,downloadContent,form){
+        switch(value){
+          case 'Delete':{
+            this.open(this.clientModel.id,trashContent);
+            break;
+          }
+          case 'File Upload':{
+            this.open(this.clientModel.id,uploadContent);
+            break;
+          }
+          case 'File Download':{
+            this.open(this.clientModel.id,downloadContent);
+            break;
+          }
+          case 'Edit':{
+            this.enableFormEditable();
+            break;
+          }
+          case 'Close':{
+            this.cancelForm(form);
+          }
+        }
+      }
     billngAddressMatch() {
         if (this.address === true) {
             this.clientModel.billingAddress = this.clientModel.address;
@@ -184,6 +217,7 @@ export class ClientComponent implements OnInit {
             this.formReset();
             this.readOnlyForm = '';
             this.enableButtonType = '';
+            this.showAction = false;
         }, err => {
             this.toastr.error(err.error.message, 'Client');
         });
@@ -199,10 +233,10 @@ export class ClientComponent implements OnInit {
      * 1) content consists the modal instance
      * 2) Selected contains the code of selected row
      */
-    open(event: any) {
+    open(event: any, content:any) {
         this.selectedRecrdToDel = 0;
-        if (event.id) {
-            this.selectedRecrdToDel = event.id;
+        if (event) {
+            this.selectedRecrdToDel = event;
         }
         // if (event.type === this.download) {
         //     // this.getFilesById(this.selectedRecrdToDel); TODO:Need to fix for multiple downloads
@@ -212,7 +246,7 @@ export class ClientComponent implements OnInit {
         //             window.open(err.url);
         //     });
         // } else {
-            this.modalRef = this.modalService.open(event.content);
+            this.modalRef = this.modalService.open(content);
             this.modalRef.result.then((result) => {
                 this.closeResult = `Closed with: ${result}`;
             }, (reason) => {
