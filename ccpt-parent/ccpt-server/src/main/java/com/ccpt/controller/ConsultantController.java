@@ -57,7 +57,7 @@ public class ConsultantController extends BaseController<ConsultantDTO, Consulta
 
 		List<Consultant> matchingConsultants = consultantService.find(model.getFullname(), model.getEmail(),
 				model.getPhone());
-		if (!CollectionUtils.isEmpty(matchingConsultants)) {
+		if (!CollectionUtils.isEmpty(matchingConsultants) && model.getId() == null) {
 			for (Consultant entity : matchingConsultants) {
 				if (!entity.getActiveFlag()) {
 					throw new DataIntegrityViolationException(
