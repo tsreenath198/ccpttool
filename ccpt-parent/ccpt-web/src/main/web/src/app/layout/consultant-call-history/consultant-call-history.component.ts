@@ -39,14 +39,14 @@ export class ConsultantCallHistoryComponent implements OnInit {
   public enableButtonType = '';
   public showAction: boolean = false;
   public actionsList = new ActionsList();
-  public action:string = null;
-
+  public action: string = null;
+  public isCreate: boolean = false;
   public apName = '';
   public apValue = '';
 
   public page: number;
   public consultantListLength: number;
-  public pageSize: number = 10;
+  public pageSize: number = 13;
   public getCplPromise = this.http.get(this.urlConstants.CPDropdown);
   public getClPromise = this.http.get(this.urlConstants.CDropdown);
   public getRlPromise = this.http.get(this.urlConstants.RDropdown);
@@ -58,7 +58,7 @@ export class ConsultantCallHistoryComponent implements OnInit {
 
   @HostListener('window:resize', ['$event'])
   getScreenSize(event?) {
-    this.screenHeight = (window.innerHeight-237);
+    this.screenHeight = (window.innerHeight - 237);
   }
   ngOnInit() {
     this.joins();
@@ -69,8 +69,7 @@ export class ConsultantCallHistoryComponent implements OnInit {
       this.clientPositionList = listofrecords[0] as any;
       this.consultantList = listofrecords[1] as any;
       this.recruiterList = listofrecords[2] as any;
-      this.getRecruiterId();
-      this.getTodaysDate();
+      this.callAfterFormReset();
     });
   }
   init() {
@@ -81,37 +80,21 @@ export class ConsultantCallHistoryComponent implements OnInit {
       this.pageChange(this.page);
     });
     this.consultantCallHistoryModel.properties = [];
-    this.page=1
-  }
-  getRecruiterId() {
-    const temp = sessionStorage.getItem('username');
-    this.recruiterList.forEach(rl => {
-      if (rl.email === temp) {
-        this.consultantCallHistoryModel.calledBy = rl.id;
-      }
-    });
-  }
-  getTodaysDate() {
-    const today = new Date();
-    const dd = String(today.getDate()).padStart(2, '0');
-    const mm = String(today.getMonth() + 1).padStart(2, '0'); // January is 0!
-    const yyyy = today.getFullYear();
-    const temp = yyyy + '-' + mm + '-' + dd;
-    this.consultantCallHistoryModel.calledDate = temp;
+    this.page = 1
   }
   consultantCallHistoryEdit(data) {
     this.consultantCallHistoryModel = JSON.parse(JSON.stringify(data));
     this.readOnlyForm = 'U';
     this.enableButtonType = 'U';
     this.showAction = true;
-    this.action=null;
+    this.action = null;
   }
   readOnlyEnable(id: number) {
     this.getConsultantById(id);
     this.readOnlyForm = 'R';
     this.enableButtonType = 'E';
     this.showAction = true;
-    this.action=null;
+    this.action = null;
   }
   getConsultantById(id: number) {
     const temp = this.http.get(this.urlConstants.CoCHGetById + id);
@@ -143,18 +126,18 @@ export class ConsultantCallHistoryComponent implements OnInit {
       }
     }
   }
-  actions(value,trashContent,form){
+  actions(value, trashContent, form) {
     console.log(value);
-    switch(value){
-      case 'Delete':{
-        this.open(this.consultantCallHistoryModel.id,trashContent);
+    switch (value) {
+      case 'Delete': {
+        this.open(this.consultantCallHistoryModel.id, trashContent);
         break;
       }
-      case 'Edit':{
+      case 'Edit': {
         this.enableFormEditable();
         break;
       }
-      case 'Close':{
+      case 'Close': {
         this.cancelForm(form);
       }
     }
@@ -169,17 +152,19 @@ export class ConsultantCallHistoryComponent implements OnInit {
     this.enableButtonType = 'U';
   }
   formReset() {
-    this.consultantCallHistoryModel = <ConsultantCallHistoryModel>{};
+    this.consultantCallHistoryModel = <ConsultantCallHistoryModel>{ calledBy: 0, calledDate: '' };
     this.consultantCallHistoryModel.properties = [];
   }
   createConsultantCallHistory(consultantCallHistory: NgForm): void {
+    this.isCreate = true;
     const temp = this.http.post(this.consultantCallHistoryModel, this.urlConstants.CoCHCreate);
     temp.subscribe(
       resp => {
         this.toastr.success(this.urlConstants.SuccessMsg, 'Consultant Call History');
         this.init();
-        this.formReset();
         consultantCallHistory.resetForm();
+        this.formReset();
+        this.callAfterFormReset();
       },
       err => {
         this.toastr.error(err.error.message, 'Consultant Call History');
@@ -190,10 +175,11 @@ export class ConsultantCallHistoryComponent implements OnInit {
     const temp = this.http.update(this.consultantCallHistoryModel, this.urlConstants.CoCHUpdate);
     temp.subscribe(
       resp => {
+        consultantCallHistory.resetForm();
         this.formReset();
         this.toastr.success(this.urlConstants.UpdateMsg, 'Consultant Call History');
         this.init();
-        consultantCallHistory.resetForm();
+        this.callAfterFormReset();
         this.readOnlyForm = '';
         this.enableButtonType = '';
         this.showAction = false;
@@ -206,9 +192,8 @@ export class ConsultantCallHistoryComponent implements OnInit {
   cancelForm(consultantCallHistory: NgForm) {
     consultantCallHistory.resetForm();
     this.formReset();
-    this.getRecruiterId();
-    this.getTodaysDate();
     this.init();
+    this.callAfterFormReset();
     this.readOnlyForm = '';
     this.enableButtonType = '';
     this.showAction = false;
@@ -221,6 +206,7 @@ export class ConsultantCallHistoryComponent implements OnInit {
         this.init();
         this.close();
         this.formReset();
+        this.callAfterFormReset();
         this.readOnlyForm = '';
         this.enableButtonType = '';
         this.showAction = false;
@@ -229,6 +215,26 @@ export class ConsultantCallHistoryComponent implements OnInit {
         this.toastr.error(err.error.message, 'Consultant Call History');
       }
     );
+  }
+  getRecruiterId() {
+    const temp = sessionStorage.getItem('username');
+    this.recruiterList.forEach(rl => {
+      if (rl.email === temp) {
+        this.consultantCallHistoryModel.calledBy = rl.id;
+      }
+    });
+  }
+  getTodaysDate() {
+    const today = new Date();
+    const dd = String(today.getDate()).padStart(2, '0');
+    const mm = String(today.getMonth() + 1).padStart(2, '0'); // January is 0!
+    const yyyy = today.getFullYear();
+    const temp = yyyy + '-' + mm + '-' + dd;
+    this.consultantCallHistoryModel.calledDate = temp;
+  }
+  callAfterFormReset(): void {
+    this.getRecruiterId();
+    this.getTodaysDate();
   }
   /**
    * @param

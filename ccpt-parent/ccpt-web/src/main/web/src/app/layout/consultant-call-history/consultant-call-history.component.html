@@ -1,9 +1,11 @@
 <div [@routerTransition]>
-  <app-page-header [icon2]="'fa-users'" [icon1]="'fa-phone'" [heading1]="'Calls'" [heading2]="'Consultant Call History'"></app-page-header>
+  <app-page-header [icon2]="'fa-users'" [icon1]="'fa-phone'" [heading1]="'Calls'"
+    [heading2]="'Consultant Call History'"></app-page-header>
   <div class="row">
     <div class="col-md-7">
       <div class="row">
-        <div class="col-md-6"><input type="text" class="form-control" placeholder="search..." [(ngModel)]="currSearchTxt" /></div>
+        <div class="col-md-6"><input type="text" class="form-control" placeholder="search..."
+            [(ngModel)]="currSearchTxt" /></div>
       </div>
       <div class="table-responsive mt-2 table-wrapper-scroll-y my-custom-scrollbar" [style.height.px]="screenHeight">
         <table class="table table-hover table-striped">
@@ -24,11 +26,8 @@
             </tr>
           </thead>
           <tbody class="overflow-ele-scroll">
-            <tr
-              *ngFor="let cchl of pagedConsultantList | filter: 'consultantName':currSearchTxt; let i = index"
-              (click)="readOnlyEnable(cchl.id)"
-              (dblclick)="consultantCallHistoryEdit(cchl)"
-            >
+            <tr *ngFor="let cchl of pagedConsultantList | filter: 'consultantName':currSearchTxt; let i = index"
+              (click)="readOnlyEnable(cchl.id)" (dblclick)="consultantCallHistoryEdit(cchl)">
               <td>
                 {{ cchl.calledBy.fullname }}
               </td>
@@ -46,43 +45,43 @@
         </table>
       </div>
       <div class="col-12 justify-content-center mb-5">
-          <ngb-pagination [collectionSize]="consultantListLength" [(page)]="page" [ellipses]="false" (pageChange)="pageChange($event)" [maxSize]="pageSize" [rotate]="true" [boundaryLinks]="true">
-          </ngb-pagination>
-        </div>
+        <ngb-pagination [collectionSize]="consultantListLength" [(page)]="page" [ellipses]="false"
+          (pageChange)="pageChange($event)" [maxSize]="pageSize" [pageSize]="pageSize" [rotate]="true"
+          [boundaryLinks]="true">
+        </ngb-pagination>
+      </div>
     </div>
-    
+
     <div class="col-md-5">
-      <form name="form" id="clientPositionForm" (ngSubmit)="f.form.valid && createConsultantCallHistory(f)" #f="ngForm" novalidate>
+      <form name="form" id="clientPositionForm" (ngSubmit)="f.form.valid && createConsultantCallHistory(f)" #f="ngForm"
+        novalidate>
         <div class="row text-center">
           <div class="form-group col-md-12">
-             <button
-              type="submit"
-              *ngIf="enableButtonType == ''"
-              class="btn btn-secondary ml-3"
-              [disabled]="f.form.pristine || f.form.invalid"
-            >
+            <button type="submit" *ngIf="enableButtonType == ''" class="btn btn-secondary ml-3"
+              [disabled]="f.form.pristine || f.form.invalid || isCreate">
               Add
             </button>
-            <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2" (click)="updateConsultantCallHistory(f)">
+            <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2"
+              (click)="updateConsultantCallHistory(f)">
               Update
             </button>
             <!-- <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button" (click)="enableFormEditable()">
               Edit
             </button> -->
-            <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3" 
-            *ngIf="enableButtonType == ''">
+            <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3" *ngIf="enableButtonType == ''">
               {{ enableButtonType != '' ? 'Close' : 'Clear' }}
             </button>
-            
+
             <span class="pull-right" *ngIf="showAction">
-                <div class="form-group">
-                    <select class="form-control" [(ngModel)]="action" name="sel1" #sel1="ngModel" (change)="actions(action,trashContent,f)">
-                        <option [ngValue]="null" hidden selected>Choose action</option>  
-                      <option *ngFor="let al of actionsList.actions" [ngValue]="al.value">
-                            {{ al.key }}
-                          </option>
-                    </select>
-                  </div>
+              <div class="form-group">
+                <select class="form-control" [(ngModel)]="action" name="sel1" #sel1="ngModel"
+                  (change)="actions(action,trashContent,f)">
+                  <option [ngValue]="null" hidden selected>Choose action</option>
+                  <option *ngFor="let al of actionsList.actions" [ngValue]="al.value">
+                    {{ al.key }}
+                  </option>
+                </select>
+              </div>
             </span>
           </div>
         </div>
@@ -90,15 +89,9 @@
           <div class="col-md-6">
             <div class="form-group">
               <label>Called By<span class="required">*</span></label>
-              <select
-                class="form-control"
-                [disabled]="readOnlyForm == 'R'"
-                name="cn"
+              <select class="form-control" [disabled]="readOnlyForm == 'R'" name="cn"
                 [(ngModel)]="consultantCallHistoryModel.calledBy"
-                [ngClass]="{ 'is-invalid': f.submitted && cn.invalid }"
-                #cn="ngModel"
-                required
-              >
+                [ngClass]="{ 'is-invalid': f.submitted && cn.invalid }" #cn="ngModel" required>
                 <option *ngFor="let rl of recruiterList" [ngValue]="rl.id">
                   {{ rl.name }}
                 </option>
@@ -108,19 +101,12 @@
               </div>
             </div>
           </div>
-          
+
           <div class="col-md-6">
             <div class="form-group">
               <label>Called Date <span class="required">*</span></label>
-              <input
-                class="form-control"
-                type="date"
-                name="calledDate"
-                [readonly]="readOnlyForm == 'R'"
-                placeholder="Called Date"
-                [(ngModel)]="consultantCallHistoryModel.calledDate"
-                required
-              />
+              <input class="form-control" type="date" name="calledDate" [readonly]="readOnlyForm == 'R'"
+                placeholder="Called Date" [(ngModel)]="consultantCallHistoryModel.calledDate" required />
             </div>
             <div class="invalid-feedback">
               Called date is mandatory
@@ -133,14 +119,9 @@
             <div class="form-group">
               <label>Client Position</label>
 
-              <select
-                class="form-control"
-                [disabled]="readOnlyForm == 'R'"
-                name="cp"
-                [(ngModel)]="consultantCallHistoryModel.cpId"
-                [ngClass]="{ 'is-invalid': f.submitted && cp.invalid }"
-                #cp="ngModel"
-              >
+              <select class="form-control" [disabled]="readOnlyForm == 'R'" name="cp"
+                [(ngModel)]="consultantCallHistoryModel.cpId" [ngClass]="{ 'is-invalid': f.submitted && cp.invalid }"
+                #cp="ngModel">
                 <option *ngFor="let cpl of clientPositionList" [ngValue]="cpl.id">
                   {{ cpl.name }}
                 </option>
@@ -150,16 +131,11 @@
           <div class="col-md-12">
             <div class="form-group">
               <label>Consultant<span class="required">*</span></label>
-              <select
-                class="form-control"
-                name="consultant"
-                [disabled]="readOnlyForm == 'R'"
+              <select class="form-control" name="consultant" [disabled]="readOnlyForm == 'R'"
                 [(ngModel)]="consultantCallHistoryModel.consultantId"
-                [ngClass]="{ 'is-invalid': f.submitted && consultant.invalid }"
-                #consultant="ngModel"
-                required
-              >
-                <option *ngFor="let consultant of consultantList" [ngValue]="consultant.id">{{ consultant.name }} </option>
+                [ngClass]="{ 'is-invalid': f.submitted && consultant.invalid }" #consultant="ngModel" required>
+                <option *ngFor="let consultant of consultantList" [ngValue]="consultant.id">{{ consultant.name }}
+                </option>
               </select>
               <div class="invalid-feedback">
                 Consultant is mandatory
@@ -171,31 +147,16 @@
               <label>Additional Properties</label>
               <div class="row" *ngFor="let ap of consultantCallHistoryModel.properties; let i = index">
                 <div class="col-md-5">
-                  <input
-                    type="text"
-                    [(ngModel)]="ap.name"
-                    class="form-control"
-                    name="addPropName{{ i }}"
-                    [readonly]="readOnlyForm == 'R'"
-                  />
+                  <input type="text" [(ngModel)]="ap.name" class="form-control" name="addPropName{{ i }}"
+                    [readonly]="readOnlyForm == 'R'" />
                 </div>
                 <div class="col-md-5">
-                  <input
-                    type="text"
-                    [(ngModel)]="ap.value"
-                    class="form-control"
-                    name="addPropValue{{ i }}"
-                    [readonly]="readOnlyForm == 'R'"
-                  />
+                  <input type="text" [(ngModel)]="ap.value" class="form-control" name="addPropValue{{ i }}"
+                    [readonly]="readOnlyForm == 'R'" />
                 </div>
                 <div class="col-md-2">
-                  <i
-                    class="fa fa-minus"
-                    aria-hidden="true"
-                    id="decrease"
-                    *ngIf="enableButtonType != 'E'"
-                    (click)="propertiesListIncrement($event.target, i)"
-                  ></i>
+                  <i class="fa fa-minus" aria-hidden="true" id="decrease" *ngIf="enableButtonType != 'E'"
+                    (click)="propertiesListIncrement($event.target, i)"></i>
                 </div>
               </div>
             </div>
@@ -203,17 +164,10 @@
           <div class="col-md-12">
             <div class="form-group">
               <label>Notes<span class="required">*</span></label>
-              <textarea
-                class="form-control"
-                name="description"
-                [readonly]="readOnlyForm == 'R'"
+              <textarea class="form-control" name="description" [readonly]="readOnlyForm == 'R'"
                 [(ngModel)]="consultantCallHistoryModel.description"
-                [ngClass]="{ 'is-invalid': f.submitted && description.invalid }"
-                #description="ngModel"
-                cols="10"
-                rows="10"
-                required
-              ></textarea>
+                [ngClass]="{ 'is-invalid': f.submitted && description.invalid }" #description="ngModel" cols="10"
+                rows="10" required></textarea>
               <div class="invalid-feedback">
                 Notes is mandatory
               </div>
@@ -225,20 +179,16 @@
               <label>Additional Properties</label>
               <div class="row">
                 <div class="col-md-5">
-                  <input type="text" [(ngModel)]="apName" class="form-control" name="apName" [readonly]="readOnlyForm == 'R'" />
+                  <input type="text" [(ngModel)]="apName" class="form-control" name="apName"
+                    [readonly]="readOnlyForm == 'R'" />
                 </div>
                 <div class="col-md-5">
-                  <input type="text" [(ngModel)]="apValue" class="form-control" name="apValue" [readonly]="readOnlyForm == 'R'" 
-                  (keypress)="enter($event)"/>
+                  <input type="text" [(ngModel)]="apValue" class="form-control" name="apValue"
+                    [readonly]="readOnlyForm == 'R'" (keypress)="enter($event)" />
                 </div>
                 <div class="col-md-2">
-                  <i
-                    class="fa fa-plus"
-                    aria-hidden="true"
-                    id="increase"
-                    *ngIf="enableButtonType != 'E'"
-                    (click)="propertiesListIncrement($event.target, 0)"
-                  ></i>
+                  <i class="fa fa-plus" aria-hidden="true" id="increase" *ngIf="enableButtonType != 'E'"
+                    (click)="propertiesListIncrement($event.target, 0)"></i>
                 </div>
               </div>
             </div>
@@ -246,35 +196,32 @@
         </div>
         <div class="row text-center">
           <div class="col-md-12">
-            <button
-              type="submit"
-              *ngIf="enableButtonType == ''"
-              class="btn btn-secondary ml-3"
-              [disabled]="f.form.pristine || f.form.invalid"
-            >
+            <button type="submit" *ngIf="enableButtonType == ''" class="btn btn-secondary ml-3"
+              [disabled]="f.form.pristine || f.form.invalid || isCreate">
               Add
             </button>
-            <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2" (click)="updateConsultantCallHistory(f)">
+            <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2"
+              (click)="updateConsultantCallHistory(f)">
               Update
             </button>
-      
+
             <!-- <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button" (click)="enableFormEditable()">
               Edit
             </button> -->
-            <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3" 
-            *ngIf="enableButtonType == ''">
+            <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3" *ngIf="enableButtonType == ''">
               {{ enableButtonType != '' ? 'Close' : 'Clear' }}
             </button>
             <span class="pull-right" *ngIf="showAction">
-                <div class="form-group">
-                    <select class="form-control" [(ngModel)]="action" name="sel1" #sel1="ngModel" (change)="actions(action,trashContent,f)">
-                        <option [ngValue]="null" hidden selected>Choose action</option>
-                      <option *ngFor="let al of actionsList.actions" [ngValue]="al.value">
-                            {{ al.key }}
-                          </option>
-                    </select>
-                  </div>
-            </span> 
+              <div class="form-group">
+                <select class="form-control" [(ngModel)]="action" name="sel1" #sel1="ngModel"
+                  (change)="actions(action,trashContent,f)">
+                  <option [ngValue]="null" hidden selected>Choose action</option>
+                  <option *ngFor="let al of actionsList.actions" [ngValue]="al.value">
+                    {{ al.key }}
+                  </option>
+                </select>
+              </div>
+            </span>
           </div>
         </div>
       </form>
