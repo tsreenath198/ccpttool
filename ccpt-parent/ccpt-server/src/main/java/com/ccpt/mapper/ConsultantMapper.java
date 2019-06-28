@@ -9,6 +9,6 @@ import com.ccpt.model.Consultant;
 @Mapper
 public interface ConsultantMapper extends BaseMapper<ConsultantDTO, Consultant, Integer> {
 
-	@Mapping(source = "CStatus", target = "status.code")
+	@Mapping(source = "conStatus", target = "status.code")
 	public Consultant toModel(ConsultantDTO dto);
 }

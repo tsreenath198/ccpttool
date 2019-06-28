@@ -20,7 +20,7 @@ public class ConsultantDTO extends FileSupportEntityDTO {
 	private String currentLocation;
 	private Integer passoutYear;
 	private String expectedCTC;
-	private String cStatus;
+	private String conStatus;
 	private String experienceYrs;
 	private String experienceMonths;
 	private String currentCompany;

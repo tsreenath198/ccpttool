@@ -55,8 +55,8 @@ public class ConsultantController extends BaseController<ConsultantDTO, Consulta
 	@Override
 	protected void validateAndClean(Consultant model) {
 
-		List<Consultant> matchingConsultants = consultantService.find(model.getFullname(),
-				model.getEmail(), model.getPhone());
+		List<Consultant> matchingConsultants = consultantService.find(model.getFullname(), model.getEmail(),
+				model.getPhone());
 		if (!CollectionUtils.isEmpty(matchingConsultants)) {
 			for (Consultant entity : matchingConsultants) {
 				if (!entity.getActiveFlag()) {
@@ -80,12 +80,12 @@ public class ConsultantController extends BaseController<ConsultantDTO, Consulta
 		}
 		if (model.getStatus().getCode() == null)
 			throw new ValidationException("Consultant Status cannot be null");
-		else if (model.getFullname() == null)
-			throw new ValidationException("Client Name cannot be null");
-		else if (model.getPhone() == null && model.getEmail() == null)
-			throw new ValidationException("Phone number and Email Both cannot be null");
 		else
 			model.setStatus(consultantStatusService.findByCode(model.getStatus().getCode()));
+		if (model.getFullname() == null)
+			throw new ValidationException("Client Name cannot be null");
+		if (model.getPhone() == null && model.getEmail() == null)
+			throw new ValidationException("Phone number and Email Both cannot be null");
 
 	}
 
