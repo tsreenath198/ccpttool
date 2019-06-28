@@ -19,8 +19,14 @@
 td {
   dl {
     margin-bottom: -6px !important;
+
     dd {
       padding-left: 15px !important
     }
   }
+}
+
+.justify-content-center {
+  display: flex !important;
+  justify-content: center !important;
 }

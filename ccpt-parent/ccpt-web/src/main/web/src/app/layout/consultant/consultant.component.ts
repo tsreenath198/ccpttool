@@ -20,6 +20,7 @@ import { AdditionalPropertiesModel } from 'src/app/additional-properties.model';
 export class ConsultantComponent implements OnInit {
   public consultantModel: ConsultantModel = <ConsultantModel>{};
   public consultantList: Array<ConsultantModel> = [];
+  public pagedConsultantList: Array<ConsultantModel> = [];
   public consultantStatusList: Array<ConsultantStatusModel> = [];
   public formButtonsToggler = true;
   public readOnlyForm = '';
@@ -43,40 +44,50 @@ export class ConsultantComponent implements OnInit {
   public urlConstants = new URLConstants();
   public currSearchTxt: string;
   public idToActivate: number;
+  public page: number;
+  public consultantListLength: number;
+  public pageSize: number = 10;
+  public cSGetAllPromise = this.http.get(this.urlConstants.CSGetAll);
+  public cGetAllPromise = this.http.get(this.urlConstants.CGetAll);
   constructor(private http: HttpClientService, private toastr: ToastrCustomService, private modalService: NgbModal) {
     this.getScreenSize();
   }
   @HostListener('window:resize', ['$event'])
   getScreenSize(event?) {
-    this.screenHeight = window.innerHeight;
+    /* Here we are decreasing screenheight to 237 for pagination */
+    this.screenHeight = (window.innerHeight - 237);
   }
   ngOnInit() {
-    this.http.get(this.urlConstants.CSGetAll).subscribe(resp => {
+    this.cSGetAllPromise.subscribe(resp => {
       this.consultantStatusList = resp as any;
     });
     this.init();
   }
 
   init(): void {
-    this.http.get(this.urlConstants.CGetAll).subscribe(resp => {
+    this.cGetAllPromise.subscribe(resp => {
       this.consultantList = resp as any;
-      this.consultantList.forEach(cl => {
+      this.pagedConsultantList = resp as any;
+      this.consultantListLength = this.consultantList.length;
+      this.pagedConsultantList.forEach(cl => {
         if (this.validate(cl.fullname) || this.validate(cl.email) || this.validate(cl.phone) || this.validate(cl.dob)) {
           cl['isProfileCompleted'] = false;
         } else {
           cl['isProfileCompleted'] = true;
         }
       });
+      this.pageChange(this.page);
     });
     this.consultantModel['properties'] = [];
     this.consultantModel['cstatus'] = 'Active';
     this.consultantModel['phone'] = '+91';
+    this.page = 1;
   }
   private validate(value: any): boolean {
     const bool = value == null ? true : false;
     return bool;
   }
-  defaultValues(){
+  defaultValues() {
     this.consultantModel['properties'] = [];
     this.consultantModel['cstatus'] = 'Active';
     this.consultantModel['phone'] = '+91';
@@ -217,9 +228,9 @@ export class ConsultantComponent implements OnInit {
   }
   transformTitleCase(ip: HTMLInputElement) {
     let temp = ip.value.length === 0 ? '' :
-        ip.value.replace(/\w\S*/g, (txt => txt[0].toUpperCase() + txt.substr(1).toLowerCase()));
+      ip.value.replace(/\w\S*/g, (txt => txt[0].toUpperCase() + txt.substr(1).toLowerCase()));
     ip.value = temp;
-}
+  }
   /**
    * @param
    * 1) content consists the modal instance
@@ -238,12 +249,12 @@ export class ConsultantComponent implements OnInit {
     //           window.open(err.url);
     //   });
     // } else {
-      this.modalRef = this.modalService.open(event.content);
-      this.modalRef.result.then((result) => {
-        this.closeResult = `Closed with: ${result}`;
-      }, (reason) => {
-        this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-      });
+    this.modalRef = this.modalService.open(event.content);
+    this.modalRef.result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
     //}
 
   }
@@ -266,13 +277,13 @@ export class ConsultantComponent implements OnInit {
     });
   }
   /**Download file */
-  downloadFile(id:number){
+  downloadFile(id: number) {
     this.http.get(this.urlConstants.FileDownload + id).subscribe(resp => {
-            }, err => {
-                if (err.status == 200)
-                    window.open(err.url);
-            });
-}
+    }, err => {
+      if (err.status == 200)
+        window.open(err.url);
+    });
+  }
   /** Upload documents of respective consultant */
   uploadFiles() {
     const files = this.getFiles();
@@ -283,9 +294,9 @@ export class ConsultantComponent implements OnInit {
       let temp: any = resp;
       this.toastr.success(temp.message, 'Client');
       this.close();
-  }, err => {
+    }, err => {
       this.toastr.success(err.error.message, 'Client');
-  });
+    });
     /* let requests = [];
          files.forEach((file) => {
              let formData = new FormData();
@@ -305,5 +316,11 @@ export class ConsultantComponent implements OnInit {
             console.log(err);
           }
         );*/
+  }
+  pageChange(event) {
+    const from = ((event - 1) * this.pageSize);
+    const lst = this.consultantList;
+    const uplst = lst.slice(from, from + this.pageSize);
+    this.pagedConsultantList = uplst;
   }
 }
