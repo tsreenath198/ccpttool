@@ -5,7 +5,8 @@ import { URLConstants } from '../components/constants/url-constants';
 import { routerTransition } from '../../router.animations';
 import { ClientPositionModel } from '../client-position/client-position.model';
 import { forkJoin } from 'rxjs';
-import { NgbModal, ModalDismissReasons, NgbModalRef  } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, ModalDismissReasons, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { Keyvalue } from '../modals/action';
 
 @Component({
     selector: 'app-dashboard',
@@ -16,7 +17,8 @@ import { NgbModal, ModalDismissReasons, NgbModalRef  } from '@ng-bootstrap/ng-bo
 export class DashboardComponent implements OnInit {
     public alerts: Array<any> = [];
     public sliders: Array<any> = [];
-    public noOfDays: any = {  'Day': 1, 'Week': 7, 'Month': 30, 'Year': 365, };
+    //public noOfDays: any = { 'Day': 1, 'Week': 7, 'Month': 30, 'Year': 365 };
+    public noOfDays: Array<Keyvalue> = [{ key: 'Day', value: 1 }, { key: 'Week', value: 7 }, { key: 'Month', value: 30 }, { key: 'Year', value: 365 }];
     public ccptReportCLCH: Array<any> = [];
     public ccptReportCOCH: Array<any> = [];
     public ccptReportCC: any = {};
@@ -37,8 +39,8 @@ export class DashboardComponent implements OnInit {
     private modalRef: NgbModalRef;
 
 
-    public getAllReportCLCH = this.http.get(this.urlConstants.CCHGetCountByRecruiter + this.noOfDays['Day']);
-    public getAllReportCOCH = this.http.get(this.urlConstants.CoCHGetCountByRecruiter + this.noOfDays['Day']);
+    public getAllReportCLCH = this.http.get(this.urlConstants.CCHGetCountByRecruiter + this.clchChoosenDays);
+    public getAllReportCOCH = this.http.get(this.urlConstants.CoCHGetCountByRecruiter + this.cochChoosenDays);
     public getAllReportCPL = this.http.get(this.urlConstants.ReportingGetAllTop5CP);
     public getAllReportCC = this.http.get(this.urlConstants.ReportingGetClosures + this.rpChoosenDays);
     public getAllOpenCP = this.http.get(this.urlConstants.ReportingGetAllOpenCP);
@@ -115,13 +117,13 @@ export class DashboardComponent implements OnInit {
     }
     public cochGetAllByDays() {
         const numberOfDays = this.cochChoosenDays;
-        this.http.get(this.urlConstants.CoCHGetCountByRecruiter  + numberOfDays).subscribe(resp => {
+        this.http.get(this.urlConstants.CoCHGetCountByRecruiter + numberOfDays).subscribe(resp => {
             this.ccptReportCOCH = resp as any;
         });
     }
     public clchGetAllByDays() {
         const numberOfDays = this.clchChoosenDays;
-        this.http.get(this.urlConstants.CCHGetCountByRecruiter  + numberOfDays).subscribe(resp => {
+        this.http.get(this.urlConstants.CCHGetCountByRecruiter + numberOfDays).subscribe(resp => {
             this.ccptReportCLCH = resp as any;
         });
     }
@@ -131,16 +133,16 @@ export class DashboardComponent implements OnInit {
             this.activeCAById = resp as any;
         });
     }
-    getAllCoCHByID(recrd: number , days: number){
-        this.cochByIdList=[];
+    getAllCoCHByID(recrd: number, days: number) {
+        this.cochByIdList = [];
         http://210.16.76.202:8081/clientCallHistory/getAllCchByRecruiterId?rId=4&days=300
-        this.http.get(this.urlConstants.CoCHGetByRecruiterId + recrd + '&days='+days).subscribe(resp =>{
+        this.http.get(this.urlConstants.CoCHGetByRecruiterId + recrd + '&days=' + days).subscribe(resp => {
             this.cochByIdList = resp as any;
         })
     }
-    getAllClCHByID(recrd: number , days: number){
-        this.clchByIdList=[];
-        this.http.get(this.urlConstants.CCHGetByRecruiterId + recrd+'&days='+days).subscribe(resp =>{
+    getAllClCHByID(recrd: number, days: number) {
+        this.clchByIdList = [];
+        this.http.get(this.urlConstants.CCHGetByRecruiterId + recrd + '&days=' + days).subscribe(resp => {
             this.clchByIdList = resp as any;
         })
     }
@@ -149,24 +151,24 @@ export class DashboardComponent implements OnInit {
      * 1) content consists the modal instance
      * 2) Selected contains the code of selected row
      */
-    open(content, selected: number , type) {
+    open(content, selected: number, type) {
         if (selected) {
             this.selectedRecrd = selected;
         }
-        this.modalRef = this.modalService.open(content,{ size: 'lg', backdrop: 'static'});
+        this.modalRef = this.modalService.open(content, { size: 'lg', backdrop: 'static' });
         this.modalRef.result.then((result) => {
             this.closeResult = `Closed with: ${result}`;
         }, (reason) => {
             this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
         });
-        if(type == 'activeClientApplication'){
+        if (type == 'activeClientApplication') {
             this.getAllActiveCAById(this.selectedRecrd);
         }
-        if(type == 'ConsultantCallHistory'){
-            this.getAllCoCHByID(this.selectedRecrd , this.cochChoosenDays);
+        if (type == 'ConsultantCallHistory') {
+            this.getAllCoCHByID(this.selectedRecrd, this.cochChoosenDays);
         }
-        if(type == 'ClientCallHistory'){
-            this.getAllClCHByID(this.selectedRecrd , this.clchChoosenDays);
+        if (type == 'ClientCallHistory') {
+            this.getAllClCHByID(this.selectedRecrd, this.clchChoosenDays);
         }
     }
     close() {

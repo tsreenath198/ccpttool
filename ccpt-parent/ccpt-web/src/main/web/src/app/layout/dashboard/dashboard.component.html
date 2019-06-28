@@ -50,14 +50,14 @@
     </div>
   </div>
   <div class="row">
-    <div class="col col-xl-6 col-lg-12">
+    <div class="col-4">
       <div class="card mb-3 ">
         <div class="card-header bg-dark text-clr-white">
           Consultant Call History
           <span class="pull-right">
-            <select class="form-control form-control-sm" name="cp" #t [(ngModel)]="cochChoosenDays"
+            <select class="form-control form-control-sm" name="cochChoosenDays" [(ngModel)]="cochChoosenDays"
               (change)="cochGetAllByDays()">
-              <option *ngFor="let nod of noOfDays | keyvalue" [ngValue]="nod.value">{{nod.key}}
+              <option *ngFor="let nod of noOfDays" [ngValue]="nod.value">{{nod.key}}
               </option>
             </select>
           </span>
@@ -71,11 +71,8 @@
               </tr>
             </thead>
             <tbody>
-              <tr
-                *ngFor="let cch of ccptReportCOCH"
-                data-toggle="tooltip"
-                (click)="open(contentCoCH, cch.recruiterId, 'ConsultantCallHistory')"
-              >
+              <tr *ngFor="let cch of ccptReportCOCH" data-toggle="tooltip"
+                (click)="open(contentCoCH, cch.recruiterId, 'ConsultantCallHistory')">
                 <td>{{ cch.fullName }}</td>
                 <td>{{ cch.count }}</td>
               </tr>
@@ -84,14 +81,14 @@
         </div>
       </div>
     </div>
-    <div class="col col-xl-6 col-lg-12">
+    <div class="col-4">
       <div class="card mb-3">
         <div class="card-header bg-dark text-clr-white">
           Client Call History
           <span class="pull-right">
-            <select class="form-control form-control-sm" name="cp" #t [(ngModel)]="clchChoosenDays"
+            <select class="form-control form-control-sm" name="clchChoosenDays" [(ngModel)]="clchChoosenDays"
               (change)="clchGetAllByDays()">
-              <option *ngFor="let nod of noOfDays | keyvalue" [ngValue]="nod.value">{{nod.key}}
+              <option *ngFor="let nod of noOfDays" [ngValue]="nod.value">{{nod.key}}
               </option>
             </select>
           </span>
@@ -105,11 +102,8 @@
               </tr>
             </thead>
             <tbody>
-              <tr
-                *ngFor="let cch of ccptReportCLCH"
-                data-toggle="tooltip"
-                (click)="open(contentClch, cch.recruiterId, 'ClientCallHistory')"
-              >
+              <tr *ngFor="let cch of ccptReportCLCH" data-toggle="tooltip"
+                (click)="open(contentClch, cch.recruiterId, 'ClientCallHistory')">
                 <td>{{ cch.fullName }}</td>
                 <td>{{ cch.count }}</td>
               </tr>
@@ -118,54 +112,14 @@
         </div>
       </div>
     </div>
-    <!-- </div>
-    <div class="row">
-      <div class="col-xl-3 col-lg-6">
-        <app-stat [bgClass]="'primary'" [icon]="'fa-comments'" [count]="26" [label]="'New Comments!'"></app-stat>
-      </div>
-      <div class="col-xl-3 col-lg-6">
-        <app-stat [bgClass]="'warning'" [icon]="'fa-tasks'" [count]="12" [label]="'New task!'"></app-stat>
-      </div>
-      <div class="col-xl-3 col-lg-6">
-        <app-stat [bgClass]="'success'" [icon]="'fa-shopping-cart'" [count]="124" [label]="'New Orders!'"></app-stat>
-      </div>
-      <div class="col-xl-3 col-lg-6">
-        <app-stat [bgClass]="'danger'" [icon]="'fa-support'" [count]="13" [label]="'New Tickets!'"></app-stat>
-      </div>
-    </div>
-    <hr />
-    <ngb-alert [type]="alert.type" (close)="closeAlert(alert)" *ngFor="let alert of alerts">{{ alert.message }}
-    </ngb-alert>
-    <hr />
-    <div class="row">
-      <div class="col-lg-8">
-        <div class="card card-default">
-          <div class="card-header">
-            <i class="fa fa-clock-o fa-fw"></i> Responsive Timeline
-          </div>
-          <app-timeline></app-timeline>
-        </div>
-      </div>
-      <div class="col-lg-4">
-        <div class="card card-default mb-3">
-          <div class="card-header">
-            <i class="fa fa-bell fa-fw"></i> Notifications card
-          </div>
-          <app-notification></app-notification>
-        </div>
-  
-        <app-chat></app-chat>
-      </div>
-    </div> -->
-  </div>
-  <div class="row">
-    <div class="col col-xl-6 col-lg-12">
+    <div class="col-4">
       <div class="card mb-3">
         <div class="card-header bg-dark text-clr-white">
           Recruiter Performance
           <span class="pull-right">
-            <select class="form-control form-control-sm" name="cp" #t [(ngModel)]="rpChoosenDays" (change)="rpGetAllByDays()">
-              <option *ngFor="let nod of noOfDays | keyvalue" [ngValue]="nod.value">{{ nod.key }} </option>
+            <select class="form-control form-control-sm" name="rpChoosenDays" [(ngModel)]="rpChoosenDays"
+              (change)="rpGetAllByDays()">
+              <option *ngFor="let nod of noOfDays" [ngValue]="nod.value">{{ nod.key }} </option>
             </select>
           </span>
         </div>
@@ -187,7 +141,10 @@
         </div>
       </div>
     </div>
-    <div class="col col-xl-6 col-lg-12">
+
+  </div>
+  <div class="row">
+    <div class="col-4">
       <div class="card mb-3">
         <div class="card-header bg-dark text-clr-white">Latest Client Positions (Top 5)</div>
         <div class="table-scroll">
@@ -210,10 +167,7 @@
         </div>
       </div>
     </div>
-  </div>
-
-  <div class="row">
-    <div class="col col-xl-6 col-lg-12">
+    <div class="col-4">
       <div class="card mb-3">
         <div class="card-header bg-dark text-clr-white">Open Client Positions</div>
         <div class="table-scroll">
@@ -236,21 +190,22 @@
         </div>
       </div>
     </div>
-    <div class="col col-xl-6 col-lg-12">
+    <div class="col-4">
       <div class="card mb-3">
         <div class="card-header bg-dark text-clr-white">Active Client Applications</div>
         <div class="table-scroll">
           <table class="table table-sm">
             <thead>
               <tr>
-                <th>Count</th>
                 <th>Code</th>
+                <th>Count</th>
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let aca of activeCA" data-toggle="tooltip" (click)="open(contentACA, aca.cpId, 'activeClientApplication')">
-                <td>{{ aca.count }}</td>
+              <tr *ngFor="let aca of activeCA" data-toggle="tooltip"
+                (click)="open(contentACA, aca.cpId, 'activeClientApplication')">
                 <td>{{ aca.generatedCode }}</td>
+                <td>{{ aca.count }}</td>
               </tr>
             </tbody>
           </table>
@@ -381,3 +336,44 @@
     <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
   </div>
 </ng-template>
+
+
+    <!-- </div>
+    <div class="row">
+      <div class="col-xl-3 col-lg-6">
+        <app-stat [bgClass]="'primary'" [icon]="'fa-comments'" [count]="26" [label]="'New Comments!'"></app-stat>
+      </div>
+      <div class="col-xl-3 col-lg-6">
+        <app-stat [bgClass]="'warning'" [icon]="'fa-tasks'" [count]="12" [label]="'New task!'"></app-stat>
+      </div>
+      <div class="col-xl-3 col-lg-6">
+        <app-stat [bgClass]="'success'" [icon]="'fa-shopping-cart'" [count]="124" [label]="'New Orders!'"></app-stat>
+      </div>
+      <div class="col-xl-3 col-lg-6">
+        <app-stat [bgClass]="'danger'" [icon]="'fa-support'" [count]="13" [label]="'New Tickets!'"></app-stat>
+      </div>
+    </div>
+    <hr />
+    <ngb-alert [type]="alert.type" (close)="closeAlert(alert)" *ngFor="let alert of alerts">{{ alert.message }}
+    </ngb-alert>
+    <hr />
+    <div class="row">
+      <div class="col-lg-8">
+        <div class="card card-default">
+          <div class="card-header">
+            <i class="fa fa-clock-o fa-fw"></i> Responsive Timeline
+          </div>
+          <app-timeline></app-timeline>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="card card-default mb-3">
+          <div class="card-header">
+            <i class="fa fa-bell fa-fw"></i> Notifications card
+          </div>
+          <app-notification></app-notification>
+        </div>
+  
+        <app-chat></app-chat>
+      </div>
+    </div> -->
