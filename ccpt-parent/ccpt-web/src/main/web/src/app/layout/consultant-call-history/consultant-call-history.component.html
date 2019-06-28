@@ -18,14 +18,14 @@
               <th width="150">
                 Called Date
               </th>
-              <th>
+              <!-- <th>
                 <span class="pull-right">Action</span>
-              </th>
+              </th> -->
             </tr>
           </thead>
           <tbody class="overflow-ele-scroll">
             <tr
-              *ngFor="let cchl of consultantCallHistoryList | filter: 'consultantName':currSearchTxt; let i = index"
+              *ngFor="let cchl of pagedConsultantList | filter: 'consultantName':currSearchTxt; let i = index"
               (click)="readOnlyEnable(cchl.id)"
               (dblclick)="consultantCallHistoryEdit(cchl)"
             >
@@ -38,30 +38,20 @@
               <td>
                 {{ cchl.calledDate }}
               </td>
-              <td width="100">
+              <!-- <td width="100">
                 <app-action [trashContent]="trashContent" [id]="cchl.id" [isTrash]="trash" (trash)="open($event)"></app-action>
-              </td>
+              </td> -->
             </tr>
           </tbody>
         </table>
       </div>
+      <div class="col-12 justify-content-center mb-5">
+          <ngb-pagination [collectionSize]="consultantListLength" [(page)]="page" [ellipses]="false" (pageChange)="pageChange($event)" [maxSize]="pageSize" [rotate]="true" [boundaryLinks]="true">
+          </ngb-pagination>
+        </div>
     </div>
     
     <div class="col-md-5">
-        <!-- <div class="row text-center">
-            <div class="form-group col-md-12">
-              <span class="pull-right">
-                 <div class="dropdown theme-dropdown clearfix" ngbDropdown>
-                  <button class="btn btn-secondary" ngbDropdownToggle>
-                    Actions
-                  </button>
-                  <div class="dropdown-menu" aria-labelledby="dropdownMenu1" ngbDropdownMenu>
-                    <a class="dropdown-item" (click)="open($event,trashContent)">Delete</a>
-                  </div>
-                </div>
-              </span>
-            </div>
-          </div> -->
       <form name="form" id="clientPositionForm" (ngSubmit)="f.form.valid && createConsultantCallHistory(f)" #f="ngForm" novalidate>
         <div class="row text-center">
           <div class="form-group col-md-12">
@@ -79,19 +69,21 @@
             <!-- <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button" (click)="enableFormEditable()">
               Edit
             </button> -->
-            <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3">
+            <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3" 
+            *ngIf="enableButtonType == ''">
               {{ enableButtonType != '' ? 'Close' : 'Clear' }}
             </button>
             
-             <span class="pull-right" *ngIf="showAction">
+            <span class="pull-right" *ngIf="showAction">
                 <div class="form-group">
-                    <select class="form-control" id="sel1" (change)="actions($event.target.value,trashContent)">
-                      <option selected hidden>Choose Action</option>
-                      <option >Delete</option>
-                      <option >Edit</option>
+                    <select class="form-control" [(ngModel)]="action" name="sel1" #sel1="ngModel" (change)="actions(action,trashContent,f)">
+                        <option [ngValue]="null" hidden selected>Choose action</option>  
+                      <option *ngFor="let al of actionsList.actions" [ngValue]="al.value">
+                            {{ al.key }}
+                          </option>
                     </select>
                   </div>
-            </span> 
+            </span>
           </div>
         </div>
         <div class="row">
@@ -116,6 +108,7 @@
               </div>
             </div>
           </div>
+          
           <div class="col-md-6">
             <div class="form-group">
               <label>Called Date <span class="required">*</span></label>
@@ -268,9 +261,20 @@
             <!-- <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button" (click)="enableFormEditable()">
               Edit
             </button> -->
-            <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3">
+            <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3" 
+            *ngIf="enableButtonType == ''">
               {{ enableButtonType != '' ? 'Close' : 'Clear' }}
             </button>
+            <span class="pull-right" *ngIf="showAction">
+                <div class="form-group">
+                    <select class="form-control" [(ngModel)]="action" name="sel1" #sel1="ngModel" (change)="actions(action,trashContent,f)">
+                        <option [ngValue]="null" hidden selected>Choose action</option>
+                      <option *ngFor="let al of actionsList.actions" [ngValue]="al.value">
+                            {{ al.key }}
+                          </option>
+                    </select>
+                  </div>
+            </span> 
           </div>
         </div>
       </form>

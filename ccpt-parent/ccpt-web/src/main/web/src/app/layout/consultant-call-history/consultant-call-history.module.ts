@@ -8,7 +8,7 @@ import { ConsultantCallHistoryComponent } from './consultant-call-history.compon
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
-    imports: [NgbModule,CommonModule, ConsultantCallHistoryRoutingModule, FormsModule, PageHeaderModule, SharedPipesModule, ActionListModule],
+    imports: [NgbModule,CommonModule, ConsultantCallHistoryRoutingModule, FormsModule, PageHeaderModule, SharedPipesModule, ActionListModule,NgbModule],
     declarations: [ConsultantCallHistoryComponent]
 })
 export class ConsultantCallHistoryModule {}

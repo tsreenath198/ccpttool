@@ -1,7 +1,7 @@
 import { Component, OnInit, HostListener } from '@angular/core';
 import { routerTransition } from '../../router.animations';
 import { NgbModal, ModalDismissReasons, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { ConsultantCallHistoryModel } from './consultant-call-history.model';
+import { ConsultantCallHistoryModel, ActionsList } from './consultant-call-history.model';
 import { HttpClientService } from 'src/app/shared/services/http.service';
 import { ConsultantModel } from '../consultant/consultant.model';
 import { ToastrCustomService } from 'src/app/shared/services/toastr.service';
@@ -22,6 +22,7 @@ export class ConsultantCallHistoryComponent implements OnInit {
   public consultantCallHistoryModel: ConsultantCallHistoryModel = <any>{};
   public consultantCallHistoryList: Array<any> = [];
   public currSearchTxt = '';
+  public pagedConsultantList: Array<ConsultantCallHistoryModel> = [];
   public formButtonsToggler = true;
   public editButtonToggler = true;
   public consultantList: Array<any> = [];
@@ -37,10 +38,15 @@ export class ConsultantCallHistoryComponent implements OnInit {
   public readOnlyForm = '';
   public enableButtonType = '';
   public showAction: boolean = false;
+  public actionsList = new ActionsList();
+  public action:string = null;
 
   public apName = '';
   public apValue = '';
 
+  public page: number;
+  public consultantListLength: number;
+  public pageSize: number = 10;
   public getCplPromise = this.http.get(this.urlConstants.CPDropdown);
   public getClPromise = this.http.get(this.urlConstants.CDropdown);
   public getRlPromise = this.http.get(this.urlConstants.RDropdown);
@@ -52,7 +58,7 @@ export class ConsultantCallHistoryComponent implements OnInit {
 
   @HostListener('window:resize', ['$event'])
   getScreenSize(event?) {
-    this.screenHeight = window.innerHeight;
+    this.screenHeight = (window.innerHeight-237);
   }
   ngOnInit() {
     this.joins();
@@ -70,8 +76,12 @@ export class ConsultantCallHistoryComponent implements OnInit {
   init() {
     this.cochGetAllPromise.subscribe(resp => {
       this.consultantCallHistoryList = resp as Array<ConsultantCallHistoryModel>;
+      this.pagedConsultantList = resp as any;
+      this.consultantListLength = this.consultantCallHistoryList.length;
+      this.pageChange(this.page);
     });
     this.consultantCallHistoryModel.properties = [];
+    this.page=1
   }
   getRecruiterId() {
     const temp = sessionStorage.getItem('username');
@@ -94,12 +104,14 @@ export class ConsultantCallHistoryComponent implements OnInit {
     this.readOnlyForm = 'U';
     this.enableButtonType = 'U';
     this.showAction = true;
+    this.action=null;
   }
   readOnlyEnable(id: number) {
     this.getConsultantById(id);
     this.readOnlyForm = 'R';
     this.enableButtonType = 'E';
     this.showAction = true;
+    this.action=null;
   }
   getConsultantById(id: number) {
     const temp = this.http.get(this.urlConstants.CoCHGetById + id);
@@ -131,7 +143,7 @@ export class ConsultantCallHistoryComponent implements OnInit {
       }
     }
   }
-  actions(value,trashContent){
+  actions(value,trashContent,form){
     console.log(value);
     switch(value){
       case 'Delete':{
@@ -141,6 +153,9 @@ export class ConsultantCallHistoryComponent implements OnInit {
       case 'Edit':{
         this.enableFormEditable();
         break;
+      }
+      case 'Close':{
+        this.cancelForm(form);
       }
     }
   }
@@ -208,6 +223,7 @@ export class ConsultantCallHistoryComponent implements OnInit {
         this.formReset();
         this.readOnlyForm = '';
         this.enableButtonType = '';
+        this.showAction = false;
       },
       err => {
         this.toastr.error(err.error.message, 'Consultant Call History');
@@ -244,5 +260,11 @@ export class ConsultantCallHistoryComponent implements OnInit {
     } else {
       return `with: ${reason}`;
     }
+  }
+  pageChange(event) {
+    const from = ((event - 1) * this.pageSize);
+    const lst = this.consultantCallHistoryList;
+    const uplst = lst.slice(from, from + this.pageSize);
+    this.pagedConsultantList = uplst;
   }
 }
