@@ -23,6 +23,30 @@
     </div>
     <div class="col-md-6">
       <form name="form" id="UserForm" (ngSubmit)="f.form.valid&&createUser(f)" #f="ngForm" novalidate>
+          <div class="row text-center" >
+              <div class="col-md-12 form-group">
+                <button type="submit" *ngIf="enableButtonType == ''" class="btn btn-secondary ml-3" [disabled]="f.form.pristine || f.form.invalid || isCreate"
+  >Add</button>
+                <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2"
+                  (click)="updateUsers(f)">Update</button>
+                <!-- <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button"
+                  (click)="enableFormEditable()">Edit</button> -->
+                  <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3" *ngIf="enableButtonType == ''">
+                      {{ enableButtonType != '' ? 'Close' : 'Clear' }}
+                    </button>
+        
+                    <span class="pull-right" *ngIf="showAction">
+                      <div class="form-group">
+                        <select class="form-control" [(ngModel)]="action" name="sel1" #sel1="ngModel"
+                          (change)="actions(action,trashContent,f)">
+                          <option [ngValue]="null" hidden selected>Choose action</option>
+                          <option *ngFor="let al of actionsList.actions" [ngValue]="al.value">
+                            {{ al.key }}
+                          </option>
+                        </select>
+                      </div>
+                    </span>            </div>
+            </div>
         <div class="row">
           <div class="col-md-6">
             <div class="form-group">
@@ -127,8 +151,7 @@
                       <input type="text" [(ngModel)]="apName" class="form-control" name="apName" [readonly]="readOnlyForm == 'R'" />
                     </div>
                     <div class="col-md-5">
-                      <input type="text" [(ngModel)]="apValue" class="form-control" name="apValue" [readonly]="readOnlyForm == 'R'" 
-                      (keypress)="enter($event)"/>
+                      <input type="text" [(ngModel)]="apValue" class="form-control" name="apValue" [readonly]="readOnlyForm == 'R'" />
                     </div>
                     <div class="col-md-2">
                       <i
@@ -145,13 +168,27 @@
         </div>
         <div class="row text-center" >
             <div class="col-md-12">
-              <button type="submit" *ngIf="enableButtonType == ''" class="btn btn-secondary ml-3" [disabled]="f.form.pristine || f.form.invalid">Add</button>
+              <button type="submit" *ngIf="enableButtonType == ''" class="btn btn-secondary ml-3" [disabled]="f.form.pristine || f.form.invalid || isCreate"
+>Add</button>
               <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2"
                 (click)="updateUsers(f)">Update</button>
-              <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button"
-                (click)="enableFormEditable()">Edit</button>
-                <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3" >{{enableButtonType != '' ? 'Close' : 'Clear'}}</button>
-            </div>
+              <!-- <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button"
+                (click)="enableFormEditable()">Edit</button> -->
+                <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3" *ngIf="enableButtonType == ''">
+                    {{ enableButtonType != '' ? 'Close' : 'Clear' }}
+                  </button>
+      
+                  <span class="pull-right" *ngIf="showAction">
+                    <div class="form-group">
+                      <select class="form-control" [(ngModel)]="action" name="sel1" #sel1="ngModel"
+                        (change)="actions(action,trashContent,f)">
+                        <option [ngValue]="null" hidden selected>Choose action</option>
+                        <option *ngFor="let al of actionsList.actions" [ngValue]="al.value">
+                          {{ al.key }}
+                        </option>
+                      </select>
+                    </div>
+                  </span>            </div>
           </div>
       </form>
     </div>

@@ -5,7 +5,7 @@ import { URLConstants } from '../components/constants/url-constants';
 import { ToastrCustomService } from 'src/app/shared/services/toastr.service';
 import { NgbModal, ModalDismissReasons, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { NgForm } from '@angular/forms';
-import { MessageTemplateModel } from './message-template.model';
+import { MessageTemplateModel,ActionsList } from './message-template.model';
 
 @Component({
     selector: 'app-message-template',
@@ -25,6 +25,10 @@ export class MessageTemplateComponent implements OnInit {
     private selectedRecrdToDel = 0;
     public closeResult = '';
     private modalRef: NgbModalRef;
+    public isCreate: boolean =false;
+    public showAction: boolean = false;
+    public actionsList = new ActionsList();
+    public action: string = null;
     public screenHeight: any;
     constructor(private http: HttpClientService, private toastr: ToastrCustomService, private modalService: NgbModal) {
         this.getScreenSize();
@@ -45,6 +49,8 @@ export class MessageTemplateComponent implements OnInit {
         this.messageTemplateModel = JSON.parse(JSON.stringify(data));
         this.readOnlyForm = 'U';
         this.enableButtonType = 'U';
+        this.showAction = true;
+        this.action = null;
     }
     enableFormEditable(): void {
         this.readOnlyForm = 'U';
@@ -54,6 +60,8 @@ export class MessageTemplateComponent implements OnInit {
         this.getSMSById(id);
         this.readOnlyForm = 'R';
         this.enableButtonType = 'E';
+        this.showAction = true;
+        this.action = null;
     }
     getSMSById(id: number) {
         const temp = this.http.get(this.urlConstants.SMSTemplateGetById + id);
@@ -66,10 +74,27 @@ export class MessageTemplateComponent implements OnInit {
         this.messageTemplateModel = temp;
         return this.messageTemplateModel;
     }
+    actions(value, trashContent, form) {
+        console.log(value);
+        switch (value) {
+          case 'Delete': {
+            this.open(this.messageTemplateModel.id, trashContent);
+            break;
+          }
+          case 'Edit': {
+            this.enableFormEditable();
+            break;
+          }
+          case 'Close': {
+            this.cancelForm(form);
+          }
+        }
+      }
     formReset() {
         this.messageTemplateModel = <MessageTemplateModel>{};
     }
     messageTemplateCreate(messageTemplateForm: NgForm): void {
+        this.isCreate=true
         const temp = this.http.post(this.messageTemplateModel, this.urlConstants.SMSTemplateCreate);
         temp.subscribe(resp => {
             this.toastr.success(this.urlConstants.SuccessMsg, 'Contact');
@@ -89,6 +114,7 @@ export class MessageTemplateComponent implements OnInit {
             messageTemplateForm.resetForm();
             this.readOnlyForm = '';
             this.enableButtonType = '';
+            this.showAction = false;
         }, err => {
             this.toastr.error(err.statusText, 'Message Template ');
         });
@@ -98,6 +124,7 @@ export class MessageTemplateComponent implements OnInit {
         messageTemplateForm.resetForm();
         this.readOnlyForm = '';
         this.enableButtonType = '';
+        this.showAction = false;
     }
     deleteClientRecord(): void {
         const temp = this.http.delete(this.urlConstants.SMSTemplateDelete + this.selectedRecrdToDel);
@@ -106,6 +133,7 @@ export class MessageTemplateComponent implements OnInit {
             this.init();
             this.close();
             this.formReset();
+            this.showAction = false;
         }, err => {
             if (err.status === 200) {
                 this.init();
@@ -121,11 +149,11 @@ export class MessageTemplateComponent implements OnInit {
      * 1) content consists the modal instance
      * 2) Selected contains the code of selected row
      */
-    open(event: any) {
-        if (event.id) {
-            this.selectedRecrdToDel = event.id;
+    open(event: any  ,content:any) {
+        if (event) {
+            this.selectedRecrdToDel = event;
         }
-        this.modalRef = this.modalService.open(event.content);
+        this.modalRef = this.modalService.open(content);
         this.modalRef.result.then((result) => {
             this.closeResult = `Closed with: ${result}`;
         }, (reason) => {

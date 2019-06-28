@@ -44,6 +44,7 @@ export class ClientComponent implements OnInit {
     public apName = '';
     public apValue = '';
     public loggedInRole = '';
+    public isCreate: boolean = false;
     public config: AngularEditorConfig = {
         editable: true,
         spellcheck: true,
@@ -117,6 +118,7 @@ export class ClientComponent implements OnInit {
         this.clientModel.phone = '+91';
     }
     clientCreate(clientForm: NgForm): void {
+        this.isCreate = true;
         const temp = this.http.post(this.clientModel, this.urlConstants.ClientCreate);
         temp.subscribe(resp => {
             this.toastr.success(this.urlConstants.SuccessMsg, 'Client');

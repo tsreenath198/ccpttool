@@ -10,7 +10,7 @@ import { AngularEditorModule } from '@kolkov/angular-editor';
 import { FileUploadModule } from 'ng2-file-upload';
 
 @NgModule({
-    imports: [CommonModule, ClientApplicationRoutingModule, FormsModule, PageHeaderModule, SharedPipesModule, NgbModule, ActionListModule,AngularEditorModule,FileUploadModule],
+    imports: [CommonModule, ClientApplicationRoutingModule, FormsModule, PageHeaderModule, SharedPipesModule, NgbModule, ActionListModule,AngularEditorModule,FileUploadModule,NgbModule],
     declarations: [ClientApplicationComponent],
     providers: [NgbActiveModal]
 })

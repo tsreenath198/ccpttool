@@ -7,7 +7,7 @@ import { ToastrCustomService } from 'src/app/shared/services/toastr.service';
 import { NgbModal, ModalDismissReasons, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { NgForm } from '@angular/forms';
 import { AdditionalPropertiesModel } from 'src/app/additional-properties.model';
-import { AngularEditorConfig } from '@kolkov/angular-editor';
+import { ActionsList } from './other-contacts.model';
 
 @Component({
     selector: 'app-other-contacts',
@@ -20,10 +20,16 @@ export class OtherContactsComponent implements OnInit {
     public OCModel: OtherContactsModel = <OtherContactsModel>{};
     public OCList: any = [];
     private urlConstants = new URLConstants();
+    
+    public showAction: boolean = false;
+    public actionsList = new ActionsList();
+    public action:string = null;
+
     public readOnlyForm = '';
     public enableButtonType = '';
     public currSearchTxt = '';
 
+    public isCreate: boolean = false;
     public screenHeight: any;
     private selectedRecrdToDel = 0;
     public closeResult = '';
@@ -64,6 +70,8 @@ export class OtherContactsComponent implements OnInit {
         this.readOnlyForm = 'U';
         //this.config.editable = true;
         this.enableButtonType = 'U';
+        this.showAction = true;
+        this.action=null;
     }
     enableFormEditable(): void {
 
@@ -77,6 +85,8 @@ export class OtherContactsComponent implements OnInit {
         this.readOnlyForm = 'R';
        // this.config.editable = false;
         this.enableButtonType = 'E';
+        this.showAction = true;
+        this.action=null;
     }
     getById(id) {
         const temp = this.http.get(this.urlConstants.OCGetById + id);
@@ -107,12 +117,29 @@ export class OtherContactsComponent implements OnInit {
             }
           }
     }
+    actions(value,trashContent,form){
+        console.log(value);
+        switch(value){
+          case 'Delete':{
+            this.open(this.OCModel.id,trashContent);
+            break;
+          }
+          case 'Edit':{
+            this.enableFormEditable();
+            break;
+          }
+          case 'Close':{
+            this.cancelForm(form);
+          }
+        }
+      }
     formReset() {
         this.OCModel = <OtherContactsModel>{}; 
         this.OCModel.properties = [];
         this.OCModel['phone'] = '+91';
     }
     create(otherContactForm: NgForm): void {
+        this.isCreate= true;
         const temp = this.http.post(this.OCModel, this.urlConstants.OCCreate);
         temp.subscribe(resp => {
             this.toastr.success(this.urlConstants.SuccessMsg, 'Contact');
@@ -132,6 +159,7 @@ export class OtherContactsComponent implements OnInit {
             otherContactForm.resetForm();
             this.readOnlyForm = '';
             this.enableButtonType = '';
+            this.showAction = false;
         }, err => {
             this.toastr.error(err.error.message, 'Contact');
         });
@@ -142,6 +170,7 @@ export class OtherContactsComponent implements OnInit {
         this.init();
         this.readOnlyForm = '';
         this.enableButtonType = '';
+        this.showAction = false;
     }
     delete(): void {
         const temp = this.http.delete(this.urlConstants.OCDelete + this.selectedRecrdToDel);
@@ -152,6 +181,7 @@ export class OtherContactsComponent implements OnInit {
             this.formReset();
             this.readOnlyForm = '';
             this.enableButtonType = '';
+            this.showAction = false;
         }, err => {
             this.toastr.error(err.error.message, 'Contact');
         });
@@ -166,11 +196,11 @@ export class OtherContactsComponent implements OnInit {
      * 1) content consists the modal instance
      * 2) Selected contains the code of selected row
      */
-    open(event: any) {
-        if (event.id) {
-            this.selectedRecrdToDel = event.id;
+    open(event: any , content:any) {
+        if (event) {
+            this.selectedRecrdToDel = event;
         }
-        this.modalRef = this.modalService.open(event.content);
+        this.modalRef = this.modalService.open(content);
         this.modalRef.result.then((result) => {
             this.closeResult = `Closed with: ${result}`;
         }, (reason) => {

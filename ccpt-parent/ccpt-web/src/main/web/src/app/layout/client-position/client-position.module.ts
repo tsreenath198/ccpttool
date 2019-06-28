@@ -7,10 +7,11 @@ import { PageHeaderModule, SharedPipesModule, ActionListModule } from '../../sha
 import { ClientPositionRoutingModule } from './client-position-routing.module';
 import { ClientPositionComponent } from './client-position.component';
 import { AngularEditorModule } from '@kolkov/angular-editor';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
     // tslint:disable-next-line:max-line-length
-    imports: [CommonModule, ClientPositionRoutingModule, FormsModule, PageHeaderModule, SharedPipesModule, ActionListModule, AngularEditorModule, NgMultiSelectDropDownModule.forRoot()],
+    imports: [CommonModule, ClientPositionRoutingModule, FormsModule, PageHeaderModule, SharedPipesModule, ActionListModule, AngularEditorModule, NgbModule,NgMultiSelectDropDownModule.forRoot()],
     declarations: [ClientPositionComponent]
 })
 export class ClientPositionModule { }

@@ -26,6 +26,8 @@ import { AngularEditorConfig } from '@kolkov/angular-editor';
 export class ClientPositionComponent implements OnInit {
   public clientPositionModel: ClientPositionModel = <ClientPositionModel>{};
   public clientPositionList: Array<ClientPositionModel> = [];
+  
+  public pagedCPList: Array<ClientPositionModel> = [];
   public consultantCreateList: Array<any> = [];
   public consultantList: Array<ConsultantModel> = [];
   public smsList: Array<MessageTemplateModel> = [];
@@ -62,6 +64,10 @@ export class ClientPositionComponent implements OnInit {
   public apName = '';
   public apValue = '';
   public loggedInRole = '';
+  public isCreate: boolean = false;
+  public page: number;
+  public cpListLength: number;
+  public pageSize: number = 10;
   public getAllCPS = this.http.get(this.urlConstants.CPSGetAll);
   public getAllR = this.http.get(this.urlConstants.RDropdown);
   public getAllC = this.http.get(this.urlConstants.ClientDropdown);
@@ -100,9 +106,13 @@ export class ClientPositionComponent implements OnInit {
   init() {
     this.http.get(this.urlConstants.CPGetAll).subscribe(resp => {
       this.clientPositionList = resp as any;
+      this.pagedCPList = resp as any;
+      this.cpListLength = this.clientPositionList.length;
+      this.pageChange(this.page);
     });
     this.clientPositionModel.properties = [];
     this.clientPositionModel.cpstatus = 'Open';
+    this.page = 1;
   }
   getAllDropdowns() {
     forkJoin(
@@ -176,6 +186,7 @@ export class ClientPositionComponent implements OnInit {
     this.clientPositionModel.cpstatus = 'Open';
   }
   createClientPosition(clientPositionForm: NgForm): void {
+    this.isCreate=true;
     // tslint:disable-next-line:max-line-length
     this.clientPositionModel.generatedCode = this.generateCPCode(this.clientPositionModel.clientId,this.clientPositionModel.role  ,this.clientPositionModel.location);
     const temp = this.http.post(this.clientPositionModel, this.urlConstants.CPCreate);
@@ -370,5 +381,11 @@ export class ClientPositionComponent implements OnInit {
     } else {
       return `with: ${reason}`;
     }
+  }
+  pageChange(event) {
+    const from = ((event - 1) * this.pageSize);
+    const lst = this.clientPositionList;
+    const uplst = lst.slice(from, from + this.pageSize);
+    this.pagedCPList = uplst;
   }
 }

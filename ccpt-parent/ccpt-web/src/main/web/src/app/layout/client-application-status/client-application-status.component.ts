@@ -1,7 +1,7 @@
 import { Component, OnInit, HostListener } from '@angular/core';
 import { routerTransition } from '../../router.animations';
 import { URLConstants } from '../components/constants/url-constants';
-import { ClientApplicationStatusModel } from './client-application-status.model';
+import { ClientApplicationStatusModel, ActionsList } from './client-application-status.model';
 import { HttpClientService } from 'src/app/shared/services/http.service';
 import { ToastrCustomService } from 'src/app/shared/services/toastr.service';
 import { NgbModal, ModalDismissReasons, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
@@ -24,7 +24,10 @@ export class ClientApplicationStatusComponent implements OnInit {
     private selectedRecrdToDel = 0;
     public closeResult = '';
     private modalRef: NgbModalRef;
-
+    public isCreate: boolean =false;
+    public showAction: boolean = false;
+    public actionsList = new ActionsList();
+    public action: string = null;
     public screenHeight: any;
 
     public trash = 'trash';
@@ -49,6 +52,8 @@ export class ClientApplicationStatusComponent implements OnInit {
     editClientApplicationStatus(data): void {
         this.readOnlyForm = 'U';
         this.enableButtonType = 'U';
+        this.showAction = true;
+        this.action = null;
     }
     enableFormEditable(): void {
         this.readOnlyForm = 'U';
@@ -61,6 +66,8 @@ export class ClientApplicationStatusComponent implements OnInit {
         this.getById(id);
         this.readOnlyForm = 'R';
         this.enableButtonType = 'E';
+        this.showAction = true;
+        this.action = null;
     }
     getById(id) {
         const temp = this.http.get(this.urlConstants.CASGetById + id);
@@ -76,10 +83,27 @@ export class ClientApplicationStatusComponent implements OnInit {
     formReset(): void {
         this.clientApplicationStatusModel = <ClientApplicationStatusModel>{};
     }
+    actions(value, trashContent, form) {
+        console.log(value);
+        switch (value) {
+          case 'Delete': {
+            this.open(this.clientApplicationStatusModel.id, trashContent);
+            break;
+          }
+          case 'Edit': {
+            this.enableFormEditable();
+            break;
+          }
+          case 'Close': {
+            this.cancelForm(form);
+          }
+        }
+      }
     /**
     * @param CASForm consists the form instance
     */
    createCAStatus(CASForm: NgForm): void {
+       this.isCreate=true;
     const temp = this.http.post(this.clientApplicationStatusModel, this.urlConstants.CASCreate);
     temp.subscribe(resp => {
             this.toastr.success(this.urlConstants.SuccessMsg, 'Client Application Status');
@@ -102,6 +126,7 @@ export class ClientApplicationStatusComponent implements OnInit {
             CASForm.resetForm();
             this.readOnlyForm = '';
             this.enableButtonType = '';
+            this.showAction = false;
         }, err => {
             this.toastr.error(err.error.message, 'Client Application Status');
         });
@@ -114,6 +139,7 @@ export class ClientApplicationStatusComponent implements OnInit {
         CASForm.resetForm();
         this.readOnlyForm = '';
         this.enableButtonType = '';
+        this.showAction = false;
     }
     deleteCASRecord(): void {
         const temp = this.http.delete(this.urlConstants.CASDelete + this.selectedRecrdToDel);
@@ -124,6 +150,7 @@ export class ClientApplicationStatusComponent implements OnInit {
             this.formReset();
             this.readOnlyForm = '';
             this.enableButtonType = '';
+            this.showAction = false;
         }, err => {
             this.toastr.error(err.error.message, 'Client Application Status');
         });
@@ -133,11 +160,11 @@ export class ClientApplicationStatusComponent implements OnInit {
      * 1) content consists the modal instance
      * 2) Selected contains the code of selected row
      */
-    open(event: any) {
-        if (event.id) {
-            this.selectedRecrdToDel = event.id;
+    open(event: any , content: any) {
+        if (event) {
+            this.selectedRecrdToDel = event;
         }
-        this.modalRef = this.modalService.open(event.content);
+        this.modalRef = this.modalService.open(content);
         this.modalRef.result.then((result) => {
             this.closeResult = `Closed with: ${result}`;
         }, (reason) => {

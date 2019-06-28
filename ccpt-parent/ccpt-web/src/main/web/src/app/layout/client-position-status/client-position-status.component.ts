@@ -1,6 +1,6 @@
 import { Component, OnInit, HostListener } from '@angular/core';
 import { routerTransition } from '../../router.animations';
-import { ClientpositionStatusModel } from './client-position-status.model';
+import { ClientpositionStatusModel,ActionsList } from './client-position-status.model';
 import { HttpClientService } from 'src/app/shared/services/http.service';
 import { ToastrCustomService } from 'src/app/shared/services/toastr.service';
 import {URLConstants} from '../components/constants/url-constants';
@@ -28,6 +28,10 @@ export class ClientPositionStatusComponent implements OnInit {
     public enableButtonType = '';
     public trash = 'trash';
     public screenHeight: any;
+    public isCreate: boolean =false;
+    public showAction: boolean = false;
+    public actionsList = new ActionsList();
+    public action: string = null;
 
     constructor(private http: HttpClientService, private toastr: ToastrCustomService, private modalService: NgbModal) {
         this.getScreenSize();
@@ -47,6 +51,8 @@ export class ClientPositionStatusComponent implements OnInit {
     editClientPositionStatus(data) {
         this.readOnlyForm = 'U';
         this.enableButtonType = 'U';
+        this.showAction = true;
+        this.action = null;
     }
     enableFormEditable(): void {
         this.readOnlyForm = 'U';
@@ -56,6 +62,8 @@ export class ClientPositionStatusComponent implements OnInit {
         this.getById(id);
         this.readOnlyForm = 'R';
         this.enableButtonType = 'E';
+        this.showAction = true;
+        this.action = null;
     }
     getById(id) {
         this.http.get(this.urlConstants.CPSGetById + id).subscribe(resp => {
@@ -71,6 +79,7 @@ export class ClientPositionStatusComponent implements OnInit {
         this.clientPositionStatusModel = <ClientpositionStatusModel>{};
     }
     createClientPositionStatus(clientPositionStatusForm: NgForm): void {
+        this.isCreate=true;
         this.http.post(this.clientPositionStatusModel, this.urlConstants.CPSCreate).subscribe(resp => {
             this.toastr.success(this.urlConstants.SuccessMsg, 'Client Position Status');
             this.init();
@@ -88,6 +97,7 @@ export class ClientPositionStatusComponent implements OnInit {
             clientApplicationStatusForm.resetForm();
             this.readOnlyForm = '';
             this.enableButtonType = '';
+            this.showAction = false;
         }, err => {
             this.toastr.error(err.error.message, 'Client Position Status');
         });
@@ -105,6 +115,7 @@ export class ClientPositionStatusComponent implements OnInit {
         clientApplicationStatusForm.resetForm();
         this.readOnlyForm = '';
         this.enableButtonType = '';
+        this.showAction = false;
     }
     deleteCPSRecord(): void {
         this.http.delete(this.urlConstants.CPSDelete + this.selectedRecrdToDel).subscribe(resp => {
@@ -114,20 +125,37 @@ export class ClientPositionStatusComponent implements OnInit {
             this.formReset();
             this.readOnlyForm = '';
             this.enableButtonType = '';
+            this.showAction = false;
         }, err => {
             this.toastr.error(err.error.message, 'Client Position Status');
         });
     }
+    actions(value, trashContent, form) {
+        console.log(value);
+        switch (value) {
+          case 'Delete': {
+            this.open(this.clientPositionStatusModel.id, trashContent);
+            break;
+          }
+          case 'Edit': {
+            this.enableFormEditable();
+            break;
+          }
+          case 'Close': {
+            this.cancelForm(form);
+          }
+        }
+      }
     /**
      * @param
      * 1) content consists the modal instance
      * 2) Selected contains the code of selected row
      */
-    open(event: any) {
-        if (event.id) {
-            this.selectedRecrdToDel = event.id;
+    open(event: any , content) {
+        if (event) {
+            this.selectedRecrdToDel = event;
         }
-        this.modalRef = this.modalService.open(event.content);
+        this.modalRef = this.modalService.open(content);
         this.modalRef.result.then((result) => {
             this.closeResult = `Closed with: ${result}`;
         }, (reason) => {

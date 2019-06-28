@@ -1,7 +1,7 @@
 import { Component, OnInit, HostListener } from '@angular/core';
 import { routerTransition } from '../../router.animations';
 import { NgbModal, ModalDismissReasons, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { RecruiterModel, Roles } from './recruiter.model';
+import { RecruiterModel, Roles, ActionsList } from './recruiter.model';
 import { HttpClientService } from 'src/app/shared/services/http.service';
 import { ToastrCustomService } from 'src/app/shared/services/toastr.service';
 import { URLConstants } from '../components/constants/url-constants';
@@ -22,6 +22,12 @@ export class RecruiterComponent implements OnInit {
   public rolesModel = new Roles();
   public rolesList: any = [];
   public urlConstants = new URLConstants();
+  
+  public showAction: boolean = false;
+  public actionsList = new ActionsList();
+  public action:string = null;
+  
+  public isCreate: boolean = false;
   private selectedRecrdToDel = 0;
   public closeResult = '';
   private modalRef: NgbModalRef;
@@ -56,6 +62,8 @@ export class RecruiterComponent implements OnInit {
   recruiterEdit(data) {
     this.readOnlyForm = 'U';
     this.enableButtonType = 'U';
+    this.showAction = true;
+    this.action=null;
   }
   enableFormEditable(): void {
     this.readOnlyForm = 'U';
@@ -65,6 +73,8 @@ export class RecruiterComponent implements OnInit {
     this.getById(id);
     this.readOnlyForm = 'R';
     this.enableButtonType = 'E';
+    this.showAction = true;
+    this.action=null;
   }
   getById(id) {
     const temp = this.http.get(this.urlConstants.RGetById + id);
@@ -101,10 +111,27 @@ export class RecruiterComponent implements OnInit {
       }
     }
   }
+  actions(value,trashContent,form){
+    console.log(value);
+    switch(value){
+      case 'Delete':{
+        this.open(this.recruiterModel.id,trashContent);
+        break;
+      }
+      case 'Edit':{
+        this.enableFormEditable();
+        break;
+      }
+      case 'Close':{
+        this.cancelForm(form);
+      }
+    }
+  }
   formReset() {
     this.recruiterModel = <RecruiterModel>{properties: []};
   }
   createRecruiter(recruiterForm: NgForm): void {
+    this.isCreate=true;
     const temp = this.http.post(this.recruiterModel, this.urlConstants.RCreate);
     temp.subscribe(
       resp => {
@@ -129,6 +156,7 @@ export class RecruiterComponent implements OnInit {
 
         this.readOnlyForm = '';
         this.enableButtonType = '';
+        this.showAction = false;
       },
       err => {
         this.toastr.error(err.error.message, 'Recruiter');
@@ -141,6 +169,7 @@ export class RecruiterComponent implements OnInit {
     this.init();
     this.readOnlyForm = '';
     this.enableButtonType = '';
+    this.showAction = false;
   }
   deleteRecruiterRecord(): void {
     const temp = this.http.delete(this.urlConstants.RDelete + this.selectedRecrdToDel);
@@ -153,6 +182,7 @@ export class RecruiterComponent implements OnInit {
         this.formReset();
         this.readOnlyForm = '';
         this.enableButtonType = '';
+        this.showAction = false;
       },
       err => {
         this.toastr.error(err.error.message, 'Recruiter');
@@ -169,11 +199,11 @@ export class RecruiterComponent implements OnInit {
    * 1) content consists the modal instance
    * 2) Selected contains the code of selected row
    */
-  open(event: any) {
-    if (event.id) {
-      this.selectedRecrdToDel = event.id;
+  open(event: any, content: any) {
+    if (event) {
+      this.selectedRecrdToDel = event;
     }
-    this.modalRef = this.modalService.open(event.content);
+    this.modalRef = this.modalService.open(content);
     this.modalRef.result.then(
       result => {
         this.closeResult = `Closed with: ${result}`;

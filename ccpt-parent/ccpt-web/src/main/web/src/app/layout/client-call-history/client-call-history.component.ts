@@ -11,6 +11,7 @@ import { ClientModel } from '../client/client.model';
 import { AdditionalPropertiesModel } from 'src/app/additional-properties.model';
 import { RecruiterModel } from '../recruiter/recruiter.model';
 import { forkJoin } from 'rxjs';
+import { ActionsList } from '../consultant-call-history/consultant-call-history.model';
 
 @Component({
   selector: 'app-client-call-history',
@@ -27,6 +28,9 @@ export class ClientCallHistoryComponent implements OnInit {
   public formButtonsToggler = true;
   public editButtonToggler = true;
   public urlConstants = new URLConstants();
+  public showAction: boolean = false;
+  public actionsList = new ActionsList();
+  public action:string;
   private selectedRecrdToDel = 0;
   public closeResult = '';
   private modalRef: NgbModalRef;
@@ -38,6 +42,10 @@ export class ClientCallHistoryComponent implements OnInit {
   public apName = '';
   public apValue = '';
   public loggedInRole = '';
+  public isCreate: boolean = false;
+  public page: number;
+  public consultantListLength: number;
+  public pageSize: number = 10;
   public getCplPromise = this.http.get(this.urlConstants.CPDropdown);
   public getClPromise = this.http.get(this.urlConstants.ClientGetAll);
   public getRlPromise = this.http.get(this.urlConstants.RDropdown);
@@ -82,6 +90,7 @@ export class ClientCallHistoryComponent implements OnInit {
       }
     });
   }
+
   getTodaysDate() {
     const today = new Date();
     const dd = String(today.getDate()).padStart(2, '0');
@@ -93,18 +102,20 @@ export class ClientCallHistoryComponent implements OnInit {
   editClientCallHistory(data) {
     this.readOnlyForm = 'U';
     this.enableButtonType = 'U';
+    this.showAction = true;
+    this.action=null;
   }
   readOnlyEnable(id: number) {
     this.getCCHById(id);
     this.readOnlyForm = 'R';
     this.enableButtonType = 'E';
+    this.showAction = true;
+    this.action=null;
   }
   getCCHById(id: number) {
     const temp = this.http.get(this.urlConstants.CCHGetById + id);
     temp.subscribe(resp => {
       this.clientCallHistoryModel = this.mapToUpdateModel(resp);
-      // tslint:disable-next-line:no-shadowed-variable
-      const temp = resp as any;
     });
   }
   mapToUpdateModel(response): ClientCallHistoryModel {
@@ -128,6 +139,22 @@ export class ClientCallHistoryComponent implements OnInit {
       }
   }
   }
+  actions(value,trashContent,form){
+    console.log(value);
+    switch(value){
+      case 'Delete':{
+        this.open(this.clientCallHistoryModel.id,trashContent);
+        break;
+      }
+      case 'Edit':{
+        this.enableFormEditable();
+        break;
+      }
+      case 'Close':{
+        this.cancelForm(form);
+      }
+    }
+  }
   enableFormEditable(): void {
     this.readOnlyForm = 'U';
     this.enableButtonType = 'U';
@@ -135,9 +162,11 @@ export class ClientCallHistoryComponent implements OnInit {
   formReset() {
     this.clientCallHistoryModel = <ClientCallHistoryModel>{};
     this.clientCallHistoryModel.properties = [];
-    this.loggedInRole = sessionStorage.getItem('role');
+    this.getRecruiterId();
+    this.getTodaysDate();
   }
   createClientCallHistory(clientCallHistoryForm: NgForm): void {
+    this.isCreate=true;
     const temp = this.http.post(this.clientCallHistoryModel, this.urlConstants.CCHCreate);
     temp.subscribe(
       resp => {
@@ -162,7 +191,10 @@ export class ClientCallHistoryComponent implements OnInit {
         this.formReset();
         this.init();
         this.getRecruiterId();
-    this.getTodaysDate();
+        this.getTodaysDate();
+        this.readOnlyForm = '';
+        this.enableButtonType = '';
+        this.showAction = false;
         clientCallHistoryForm.resetForm();
       },
       err => {
@@ -172,11 +204,12 @@ export class ClientCallHistoryComponent implements OnInit {
   }
 
   cancelForm(clientCallHistoryForm: NgForm) {
-    this.formReset();
     clientCallHistoryForm.resetForm();
+    this.formReset();
     this.init();
     this.readOnlyForm = '';
     this.enableButtonType = '';
+    this.showAction = false;
   }
   deleteCCHRecord(): void {
     const temp = this.http.delete(this.urlConstants.CCHDelete + this.selectedRecrdToDel);
@@ -187,9 +220,10 @@ export class ClientCallHistoryComponent implements OnInit {
         this.getRecruiterId();
         this.readOnlyForm = '';
         this.enableButtonType = '';
-    this.getTodaysDate();
+        this.getTodaysDate();
         this.close();
         this.formReset();
+        this.showAction = false;
       },
       err => {
         this.toastr.error(err.error.message, 'Client Call History');
@@ -201,11 +235,11 @@ export class ClientCallHistoryComponent implements OnInit {
    * 1) content consists the modal instance
    * 2) Selected contains the code of selected row
    */
-  open(event: any) {
-    if (event.id) {
-      this.selectedRecrdToDel = event.id;
+  open(event: any , content) {
+    if (event) {
+      this.selectedRecrdToDel = event;
     }
-    this.modalRef = this.modalService.open(event.content);
+    this.modalRef = this.modalService.open(content);
     this.modalRef.result.then(
       result => {
         this.closeResult = `Closed with: ${result}`;

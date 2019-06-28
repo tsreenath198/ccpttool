@@ -3,72 +3,117 @@
   <div class="row">
     <div class="col-md-7">
       <div class="row">
-        <div class="col-md-6"> <input type="text" class="form-control" placeholder="search..."
-            [(ngModel)]="currSearchTxt" /></div>
+        <div class="col-md-6"><input type="text" class="form-control" placeholder="search..." [(ngModel)]="currSearchTxt" /></div>
       </div>
       <div class="table-responsive mt-2 table-wrapper-scroll-y my-custom-scrollbar" [style.height.px]="screenHeight">
         <table class="table table-hover table-striped">
-            <thead>
-                <tr>
-                  <th>
-                    Consultant
-                  </th>
-                  <th>
-                    Client Pos
-                  </th>
-                  <th >
-                    Status
-                  </th>
-                  <th >
-                      Creator
-                    </th>
-                  <th>
+          <thead>
+            <tr>
+              <th>
+                Consultant
+              </th>
+              <th>
+                Client Pos
+              </th>
+              <th>
+                Status
+              </th>
+              <th>
+                Creator
+              </th>
+              <!-- <th>
                       <span class="pull-right">Action</span>
-                  </th>
-                </tr>
-              </thead>
+                  </th> -->
+            </tr>
+          </thead>
           <tbody class="overflow-ele-scroll">
-            <tr class="table-data-padding" *ngFor="let cal of clientApplicationList |  filter : 'clientPositionId' : currSearchTxt ; let i = index"
-              (click)="readOnlyEnable(cal.id)" (dblclick)="editClientApplication(cal)">
-              <td>{{cal.consultant.fullname}}</td>
-              <td> {{cal.clientPosition.generatedCode}}</td>
-              
-              <td>{{cal.status.code}}</td>
-              <td>{{cal.creator.fullname }}</td>
-              
-              <td width="140">
+            <tr
+              class="table-data-padding"
+              *ngFor="let cal of pagedCAList | filter: 'clientPositionId':currSearchTxt; let i = index"
+              (click)="readOnlyEnable(cal.id)"
+              (dblclick)="editClientApplication(cal)"
+            >
+              <td>{{ cal.consultant.fullname }}</td>
+              <td>{{ cal.clientPosition.generatedCode }}</td>
+
+              <td>{{ cal.status.code }}</td>
+              <td>{{ cal.creator.fullname }}</td>
+
+              <!-- <td width="140">
                   <app-action [trashContent]="trashContent" [uploadContent]="uploadContent"
                   [downloadContent]="downloadContent" [id]="cal.id" [isTrash]="trash" [isUpload]="upload"
                   [isDownload]="download" (upload)="open($event)" (download)="open($event)" (trash)="open($event)">
                 </app-action>
-              </td>
+              </td> -->
             </tr>
           </tbody>
         </table>
+        <div class="col-12 justify-content-center mb-5">
+          <ngb-pagination
+            [collectionSize]="caListLength"
+            [(page)]="page"
+            [ellipses]="false"
+            (pageChange)="pageChange($event)"
+            [maxSize]="pageSize"
+            [rotate]="true"
+            [boundaryLinks]="true"
+          >
+          </ngb-pagination>
+        </div>
       </div>
     </div>
     <div class="col-md-5">
-      <form name="form" id="clientApplicationForm" (ngSubmit)="f.form.valid&&createClientApplication(f)" #f="ngForm"
-        novalidate>
-        <div class="row text-center" >
-            <div class="col-md-12 form-group">
-              <button type="submit" *ngIf="enableButtonType == ''" class="btn btn-secondary ml-3" [disabled]="f.form.pristine || f.form.invalid">Add</button>
-              <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2"
-                (click)="updateClientApplication(f)">Update</button>
-              <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button"
-                (click)="enableFormEditable()">Edit</button>
-                <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3">{{enableButtonType != '' ? 'Close' : 'Clear'}}
-                </button>  
-            </div>
+      <form name="form" id="clientApplicationForm" (ngSubmit)="f.form.valid && createClientApplication(f)" #f="ngForm" novalidate>
+        <div class="row text-center">
+          <div class="col-md-12 form-group">
+            <button
+              type="submit"
+              *ngIf="enableButtonType == ''"
+              class="btn btn-secondary ml-3"
+              [disabled]="f.form.pristine || f.form.invalid || isCreate"
+            >
+              Add
+            </button>
+            <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2" (click)="updateClientApplication(f)">
+              Update
+            </button>
+            <!-- <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button"
+                (click)="enableFormEditable()">Edit</button> -->
+            <button type="button" (click)="cancelForm(f)" *ngIf="enableButtonType == ''" class="btn btn-secondary ml-3">
+              {{ enableButtonType != '' ? 'Close' : 'Clear' }}
+            </button>
+            <span class="pull-right" *ngIf="showAction">
+              <div class="form-group">
+                <select
+                  class="form-control"
+                  [(ngModel)]="action"
+                  name="sel1"
+                  #sel1="ngModel"
+                  (change)="actions(action, trashContent, uploadContent, downloadContent, f)"
+                >
+                  <option [ngValue]="null" hidden selected>Choose action</option>
+                  <option *ngFor="let al of actionsList.actions" [ngValue]="al.value">
+                    {{ al.key }}
+                  </option>
+                </select>
+              </div>
+            </span>
           </div>
+        </div>
         <div class="row">
           <div class="col-md-6">
             <div class="form-group">
               <label>Client Position<span class="required">*</span></label>
-              <select class="form-control" name="cp" [disabled]="readOnlyForm == 'R'" [(ngModel)]="CAModel.cpId"
-                [ngClass]="{'is-invalid': f.submitted && cp.invalid}" #cp="ngModel" required>
-                <option *ngFor="let cpl of clientPositionList" [ngValue]="cpl.id">{{cpl.name}}
-                </option>
+              <select
+                class="form-control"
+                name="cp"
+                [disabled]="readOnlyForm == 'R'"
+                [(ngModel)]="CAModel.cpId"
+                [ngClass]="{ 'is-invalid': f.submitted && cp.invalid }"
+                #cp="ngModel"
+                required
+              >
+                <option *ngFor="let cpl of clientPositionList" [ngValue]="cpl.id">{{ cpl.name }} </option>
               </select>
               <div class="invalid-feedback">
                 Client Position is mandatory
@@ -78,9 +123,16 @@
           <div class="col-md-6">
             <div class="form-group">
               <label>Consultant<span class="required">*</span></label>
-              <select class="form-control" [disabled]="readOnlyForm == 'R'" [(ngModel)]="CAModel.consultantId"
-                name="con" [ngClass]="{'is-invalid': f.submitted && con.invalid}" #con="ngModel" required>
-                <option *ngFor="let cl of consultantList" [ngValue]="cl.id">{{cl.name}}</option>
+              <select
+                class="form-control"
+                [disabled]="readOnlyForm == 'R'"
+                [(ngModel)]="CAModel.consultantId"
+                name="con"
+                [ngClass]="{ 'is-invalid': f.submitted && con.invalid }"
+                #con="ngModel"
+                required
+              >
+                <option *ngFor="let cl of consultantList" [ngValue]="cl.id">{{ cl.name }}</option>
               </select>
               <div class="invalid-feedback">
                 Consultant is mandatory
@@ -92,10 +144,17 @@
           <div class="col-md-6">
             <div class="form-group">
               <label>Client Application Status<span class="required">*</span></label>
-              <select class="form-control" name="cas" [disabled]="readOnlyForm == 'R'" [(ngModel)]="CAModel.caStatus"
-                [ngClass]="{'is-invalid': f.submitted && cas.invalid}" #cas="ngModel" required>
+              <select
+                class="form-control"
+                name="cas"
+                [disabled]="readOnlyForm == 'R'"
+                [(ngModel)]="CAModel.caStatus"
+                [ngClass]="{ 'is-invalid': f.submitted && cas.invalid }"
+                #cas="ngModel"
+                required
+              >
                 <option *ngFor="let casl of clientApplicationStatusList" [ngValue]="casl.code">
-                  {{casl.description}}
+                  {{ casl.description }}
                 </option>
               </select>
               <div class="invalid-feedback">
@@ -106,10 +165,16 @@
           <div class="col-md-6">
             <div class="form-group">
               <label>Creator<span class="required">*</span></label>
-              <select class="form-control" name="creator" [disabled]="readOnlyForm == 'R'"
-                [(ngModel)]="CAModel.creatorId" [ngClass]="{'is-invalid': f.submitted && cas.invalid}" required>
+              <select
+                class="form-control"
+                name="creator"
+                [disabled]="readOnlyForm == 'R'"
+                [(ngModel)]="CAModel.creatorId"
+                [ngClass]="{ 'is-invalid': f.submitted && cas.invalid }"
+                required
+              >
                 <option *ngFor="let rl of recruiterList" [ngValue]="rl.id">
-                  {{rl.name}}
+                  {{ rl.name }}
                 </option>
               </select>
               <div class="invalid-feedback">
@@ -119,96 +184,113 @@
           </div>
         </div>
         <div class="row">
-            <div class="col-md-6">
-                <label >Sent On</label>
-                <input type="date" class="form-control" name="senton" #senton="ngModel"
-                  [readonly]="readOnlyForm == 'R'" [(ngModel)]="CAModel.sentOn">
-                <div class="input-group-addon">
-                  <span class="glyphicon glyphicon-th"></span>
-                </div>
+          <div class="col-md-6">
+            <label>Sent On</label>
+            <input
+              type="date"
+              class="form-control"
+              name="senton"
+              #senton="ngModel"
+              [readonly]="readOnlyForm == 'R'"
+              [(ngModel)]="CAModel.sentOn"
+            />
+            <div class="input-group-addon">
+              <span class="glyphicon glyphicon-th"></span>
             </div>
           </div>
+        </div>
         <div class="row">
           <div class="col-md-12">
             <div class="form-group" data-provide="datepicker">
-              <input class="mt-2" type="checkbox" [(ngModel)]="isInterviewScheduled" name="interviewCheckbox">&nbsp;<small>Interview
-                Scheduled</small>
+              <input class="mt-2" type="checkbox" [(ngModel)]="isInterviewScheduled" name="interviewCheckbox" />&nbsp;<small
+                >Interview Scheduled</small
+              >
               <div *ngIf="isInterviewScheduled">
-                <div class ="row">
+                <div class="row">
                   <div class="col-md-6">
-                      <label class='pt-2'>Interview Date</label>
-                      <input type="date" class="form-control" name="intDate" #intDate="ngModel"
-                        [readonly]="readOnlyForm == 'R'" [(ngModel)]="CAModel.interviewDate">
-                      <div class="input-group-addon">
-                        <span class="glyphicon glyphicon-th"></span>
-                      </div>
+                    <label class="pt-2">Interview Date</label>
+                    <input
+                      type="date"
+                      class="form-control"
+                      name="intDate"
+                      #intDate="ngModel"
+                      [readonly]="readOnlyForm == 'R'"
+                      [(ngModel)]="CAModel.interviewDate"
+                    />
+                    <div class="input-group-addon">
+                      <span class="glyphicon glyphicon-th"></span>
+                    </div>
                   </div>
                   <div class="col-md-6">
-                      <label class='pt-2'>Interview Time</label>
-                      <input type="time" class="form-control" name="intTime" #intTime="ngModel"
-                        [readonly]="readOnlyForm == 'R'" [(ngModel)]="CAModel.interviewTime">
-                      <div class="input-group-addon">
-                        <span class="glyphicon glyphicon-th"></span>
-                      </div>
+                    <label class="pt-2">Interview Time</label>
+                    <input
+                      type="time"
+                      class="form-control"
+                      name="intTime"
+                      #intTime="ngModel"
+                      [readonly]="readOnlyForm == 'R'"
+                      [(ngModel)]="CAModel.interviewTime"
+                    />
+                    <div class="input-group-addon">
+                      <span class="glyphicon glyphicon-th"></span>
                     </div>
+                  </div>
                 </div>
-                <div class ="row">
-                    <div class="col-md-6">
-                        <label class='pt-2'>Interview Location</label>
-                        <input class="form-control" name="loc" [readonly]="readOnlyForm == 'R'"
-                          [(ngModel)]="CAModel.interviewLocation">
-                        <div class="input-group-addon">
-                          <span class="glyphicon glyphicon-th"></span>
-                        </div>
+                <div class="row">
+                  <div class="col-md-6">
+                    <label class="pt-2">Interview Location</label>
+                    <input class="form-control" name="loc" [readonly]="readOnlyForm == 'R'" [(ngModel)]="CAModel.interviewLocation" />
+                    <div class="input-group-addon">
+                      <span class="glyphicon glyphicon-th"></span>
                     </div>
-                    <div class="col-md-6">
-                        <label class='pt-2'>Interview Mode</label>
-                        <input class="form-control" name="mode" [readonly]="readOnlyForm == 'R'"
-                          [(ngModel)]="CAModel.interviewMode">
-                        <div class="input-group-addon">
-                          <span class="glyphicon glyphicon-th"></span>
-                        </div>
-                      </div>
                   </div>
+                  <div class="col-md-6">
+                    <label class="pt-2">Interview Mode</label>
+                    <input class="form-control" name="mode" [readonly]="readOnlyForm == 'R'" [(ngModel)]="CAModel.interviewMode" />
+                    <div class="input-group-addon">
+                      <span class="glyphicon glyphicon-th"></span>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-          <div class="row" *ngIf="CAModel.properties.length>0">
-              <div class="col-md-12 ml-3" *ngIf="CAModel.properties.length > 0">
-                  <div class="form-group">
-                    <label>Additional Properties</label>
-                    <div class="row" *ngFor="let ap of CAModel.properties; let i = index">
-                      <div class="col-md-5">
-                        <input
-                          type="text"
-                          [(ngModel)]="ap.name"
-                          class="form-control"
-                          name="addPropName{{ i }}"
-                          [readonly]="readOnlyForm == 'R'"
-                        />
-                      </div>
-                      <div class="col-md-5">
-                        <input
-                          type="text"
-                          [(ngModel)]="ap.value"
-                          class="form-control"
-                          name="addPropValue{{ i }}"
-                          [readonly]="readOnlyForm == 'R'"
-                        />
-                      </div>
-                      <div class="col-md-2">
-                        <i
-                          class="fa fa-minus"
-                          aria-hidden="true"
-                          id="decrease"
-                          *ngIf="enableButtonType != 'E'"
-                          (click)="propertiesListIncrement($event.target, i)"
-                        ></i>
-                      </div>
-                    </div>
+          <div class="row" *ngIf="CAModel.properties.length > 0">
+            <div class="col-md-12 ml-3" *ngIf="CAModel.properties.length > 0">
+              <div class="form-group">
+                <label>Additional Properties</label>
+                <div class="row" *ngFor="let ap of CAModel.properties; let i = index">
+                  <div class="col-md-5">
+                    <input
+                      type="text"
+                      [(ngModel)]="ap.name"
+                      class="form-control"
+                      name="addPropName{{ i }}"
+                      [readonly]="readOnlyForm == 'R'"
+                    />
+                  </div>
+                  <div class="col-md-5">
+                    <input
+                      type="text"
+                      [(ngModel)]="ap.value"
+                      class="form-control"
+                      name="addPropValue{{ i }}"
+                      [readonly]="readOnlyForm == 'R'"
+                    />
+                  </div>
+                  <div class="col-md-2">
+                    <i
+                      class="fa fa-minus"
+                      aria-hidden="true"
+                      id="decrease"
+                      *ngIf="enableButtonType != 'E'"
+                      (click)="propertiesListIncrement($event.target, i)"
+                    ></i>
                   </div>
                 </div>
+              </div>
             </div>
+          </div>
           <div class="col-md-12">
             <div class="form-group">
               <label>Description</label>
@@ -217,45 +299,68 @@
           </div>
         </div>
         <div class="row">
-            <div class="col-md-12">
-                <div class="form-group">
-                  <label>Additional Properties</label>
-                  <div class="row">
-                    <div class="col-md-5">
-                      <input type="text" [(ngModel)]="apName" class="form-control" name="apName" [readonly]="readOnlyForm == 'R'" />
-                    </div>
-                    <div class="col-md-5">
-                      <input type="text" [(ngModel)]="apValue" class="form-control" name="apValue" [readonly]="readOnlyForm == 'R'" 
-                      (keypress)="enter($event)"/>
-                    </div>
-                    <div class="col-md-2">
-                      <i
-                        class="fa fa-plus"
-                        aria-hidden="true"
-                        id="increase"
-                        *ngIf="enableButtonType != 'E'"
-                        (click)="propertiesListIncrement($event.target, 0)"
-                      ></i>
-                    </div>
-                  </div>
+          <div class="col-md-12">
+            <div class="form-group">
+              <label>Additional Properties</label>
+              <div class="row">
+                <div class="col-md-5">
+                  <input type="text" [(ngModel)]="apName" class="form-control" name="apName" [readonly]="readOnlyForm == 'R'" />
+                </div>
+                <div class="col-md-5">
+                  <input type="text" [(ngModel)]="apValue" class="form-control" name="apValue" [readonly]="readOnlyForm == 'R'" />
+                </div>
+                <div class="col-md-2">
+                  <i
+                    class="fa fa-plus"
+                    aria-hidden="true"
+                    id="increase"
+                    *ngIf="enableButtonType != 'E'"
+                    (click)="propertiesListIncrement($event.target, 0)"
+                  ></i>
                 </div>
               </div>
+            </div>
           </div>
-        <div class="row text-center" >
-          <div class="col-md-12">
-            <button type="submit" *ngIf="enableButtonType == ''" class="btn btn-secondary ml-3" [disabled]="f.form.pristine || f.form.invalid">Add</button>
-            <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2"
-              (click)="updateClientApplication(f)">Update</button>
-            <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button"
-              (click)="enableFormEditable()">Edit</button>
-              <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3">{{enableButtonType != '' ? 'Close' : 'Clear'}}
-              </button>
+        </div>
+        <div class="row text-center">
+          <div class="col-md-12 form-group">
+            <button
+              type="submit"
+              *ngIf="enableButtonType == ''"
+              class="btn btn-secondary ml-3"
+              [disabled]="f.form.pristine || f.form.invalid || isCreate"
+            >
+              Add
+            </button>
+            <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2" (click)="updateClientApplication(f)">
+              Update
+            </button>
+            <!-- <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button"
+                  (click)="enableFormEditable()">Edit</button> -->
+            <button type="button" (click)="cancelForm(f)" *ngIf="enableButtonType == ''" class="btn btn-secondary ml-3">
+              {{ enableButtonType != '' ? 'Close' : 'Clear' }}
+            </button>
+            <span class="pull-right" *ngIf="showAction">
+              <div class="form-group">
+                <select
+                  class="form-control"
+                  [(ngModel)]="action"
+                  name="sel1"
+                  #sel1="ngModel"
+                  (change)="actions(action, trashContent, uploadContent, downloadContent, f)"
+                >
+                  <option [ngValue]="null" hidden selected>Choose action</option>
+                  <option *ngFor="let al of actionsList.actions" [ngValue]="al.value">
+                    {{ al.key }}
+                  </option>
+                </select>
+              </div>
+            </span>
           </div>
         </div>
       </form>
     </div>
   </div>
-
 </div>
 
 <ng-template #trashContent let-c="close" let-d="dismiss">
@@ -288,8 +393,8 @@
         <th>Action</th>
       </thead>
       <tbody *ngFor="let fl of CAModel.files">
-        <td>{{fl.fileName}}</td>
-        <td>{{fl.Description}}</td>
+        <td>{{ fl.fileName }}</td>
+        <td>{{ fl.Description }}</td>
         <td>
           <button type="button" class="btn btn-secondary btn-sm" (click)="downloadFile(fl.id)">Download</button>
         </td>
@@ -300,22 +405,22 @@
     <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
   </div>
 </ng-template>
-<ng-template #emptyMsg >
+<ng-template #emptyMsg>
   <h3 class="text-center">No Files to download</h3>
 </ng-template>
-  <ng-template #uploadContent let-c="close" let-d="dismiss">
-    <div class="modal-header">
-      <h4 class="modal-title">{{ urlConstants.UploadFilesMsg }}</h4>
-      <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-    <div class="modal-body">
-      <input class="form-control" type="file" ng2FileSelect [uploader]="uploader" />
-      <textarea class="form-control mt-3" placeholder="comments" cols="5" rows="5" [(ngModel)]="comments"></textarea>
-    </div>
-    <div class="modal-footer">
-      <button type="button" class="btn btn-secondary" (click)="uploadFiles()">Upload</button>
-      <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
-    </div>
-  </ng-template>
+<ng-template #uploadContent let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title">{{ urlConstants.UploadFilesMsg }}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <input class="form-control" type="file" ng2FileSelect [uploader]="uploader" />
+    <textarea class="form-control mt-3" placeholder="comments" cols="5" rows="5" [(ngModel)]="comments"></textarea>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="uploadFiles()">Upload</button>
+    <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
+  </div>
+</ng-template>

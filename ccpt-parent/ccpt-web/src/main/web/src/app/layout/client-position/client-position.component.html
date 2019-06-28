@@ -9,7 +9,7 @@
         <table class="table table-hover table-striped">
           <tbody class="overflow-ele-scroll">
             <tr
-              *ngFor="let cpl of clientPositionList | filter: 'technology':currSearchTxt; let i = index"  (click)="readOnlyEnable(cpl.id)" (dblclick)="editClientPosition(cpl)"
+              *ngFor="let cpl of pagedCPList | filter: 'technology':currSearchTxt; let i = index"  (click)="readOnlyEnable(cpl.id)" (dblclick)="editClientPosition(cpl)"
               [ngClass]="{ 'bl-closed': cpl.status.code === 'Closed', 'bl-on-hold': cpl.status.code === 'On Hold' }"
             >
               <td class="table-data-padding">
@@ -41,6 +41,10 @@
             </tr>
           </tbody>
         </table>
+        <div class="col-12 justify-content-center mb-5">
+            <ngb-pagination [collectionSize]="cpListLength" [(page)]="page" [ellipses]="false" (pageChange)="pageChange($event)" [maxSize]="pageSize" [rotate]="true" [boundaryLinks]="true">
+            </ngb-pagination>
+          </div>
       </div>
     </div>
     <div class="col-md-5">
@@ -52,7 +56,8 @@
                 type="submit"
                 *ngIf="enableButtonType == ''"
                 class="btn btn-secondary ml-3"
-                [disabled]="f.form.pristine || f.form.invalid"
+                [disabled]="f.form.pristine || f.form.invalid || isCreate"
+
               >
                 Add
               </button>
@@ -216,7 +221,7 @@
                 />
               </div>
             </div>
-          <div class="col-md-6" *ngIf="closedByEnable">
+          <div class="col-md-6" *ngIf="clientPositionModel.cpstatus == 'Closed'">
             <div class="form-group">
               <label>Closed By</label>
               <select class="form-control" name="closedBy" [disabled]="readOnlyForm == 'R'" [(ngModel)]="clientPositionModel.closedBy">
@@ -248,7 +253,7 @@
           </div>
         </div>
         <div class="row" *ngIf="clientPositionModel.properties.length>0">
-            <div class="col-md-12" *ngIf="clientPositionModel.properties.length > 0">
+            <div class="col-md-12 mb-5" *ngIf="clientPositionModel.properties.length > 0">
                 <div class="form-group">
                   <label>Additional Properties</label>
                   <div class="row" *ngFor="let ap of clientPositionModel.properties; let i = index">
@@ -300,8 +305,7 @@
                       <input type="text" [(ngModel)]="apName" class="form-control" name="apName" [readonly]="readOnlyForm == 'R'" />
                     </div>
                     <div class="col-md-5">
-                      <input type="text" [(ngModel)]="apValue" class="form-control" name="apValue" [readonly]="readOnlyForm == 'R'" 
-                      (keypress)="enter($event)"/>
+                      <input type="text" [(ngModel)]="apValue" class="form-control" name="apValue" [readonly]="readOnlyForm == 'R'"/>
                     </div>
                     <div class="col-md-2">
                       <i
@@ -321,7 +325,8 @@
             <button
               type="submit"
               *ngIf="enableButtonType == ''"
-              [disabled]="f.form.pristine || f.form.invalid"
+              [disabled]="f.form.pristine || f.form.invalid || isCreate"
+
               class="btn btn-secondary ml-3"
             >
               Add

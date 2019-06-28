@@ -22,9 +22,9 @@
                     <th width="150">
                       Called Date
                     </th>
-                    <th>
+                    <!-- <th>
                         <span class="pull-right">Action</span>
-                    </th>
+                    </th> -->
                   </tr>
                 </thead>
             <tbody class="overflow-ele-scroll">
@@ -39,9 +39,9 @@
                 <td>
                   {{cchl.calledDate}}
                 </td>
-                <td width="100">
+                <!-- <td width="100">
                   <app-action [trashContent]="trashContent" [id]="cchl.id" [isTrash]="trash" (trash)="open($event)"></app-action>
-                </td>
+                </td> -->
               </tr>
             </tbody>
           </table>
@@ -56,13 +56,23 @@
         novalidate>
         <div class="row text-center" *ngIf="loggedInRole != 'User'">
             <div class="form-group col-md-12">
-              <button type="submit" *ngIf="enableButtonType == ''" class="btn btn-secondary ml-3" [disabled]="f.form.pristine || f.form.invalid">Add</button>
+              <button type="submit" *ngIf="enableButtonType == ''" class="btn btn-secondary ml-3" [disabled]="f.form.pristine || f.form.invalid || isCreate"
+>Add</button>
               <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2"
                 (click)="updateClientCallHistory(f)">Update</button>
-              <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button"
-                (click)="enableFormEditable()">Edit</button>
-               <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3" >{{enableButtonType != '' ? 'Close' : 'Clear'}}</button>
-
+              <!-- <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button"
+                (click)="enableFormEditable()">Edit</button> -->
+               <button type="button" (click)="cancelForm(f)" *ngIf="enableButtonType == ''" class="btn btn-secondary ml-3" >{{enableButtonType != '' ? 'Close' : 'Clear'}}</button>
+               <span class="pull-right" *ngIf="showAction">
+                  <div class="form-group">
+                      <select class="form-control" [(ngModel)]="action" name="sel1" #sel1="ngModel" (change)="actions(action,trashContent,f)">
+                          <option [ngValue]="null" hidden selected>Choose action</option>  
+                        <option *ngFor="let al of actionsList.actions" [ngValue]="al.value">
+                              {{ al.key }}
+                            </option>
+                      </select>
+                    </div>
+              </span>
             </div>
           </div>
         <div class="row">
@@ -185,17 +195,27 @@
                 </div>
               </div>
           </div>
-        <div class="row text-center" *ngIf="loggedInRole != 'User'">
-          <div class="col-md-12">
-            <button type="submit" *ngIf="enableButtonType == ''" class="btn btn-secondary ml-3" [disabled]="f.form.pristine || f.form.invalid">Add</button>
-            <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2"
-              (click)="updateClientCallHistory(f)">Update</button>
-            <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button"
-              (click)="enableFormEditable()">Edit</button>
-            <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3" >{{enableButtonType != ''? 'Close' : 'Clear'}}</button>
-
-          </div>
-        </div>
+          <div class="row text-center" *ngIf="loggedInRole != 'User'">
+              <div class="form-group col-md-12">
+                <button type="submit" *ngIf="enableButtonType == ''" class="btn btn-secondary ml-3" [disabled]="f.form.pristine || f.form.invalid || isCreate"
+>Add</button>
+                <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2"
+                  (click)="updateClientCallHistory(f)">Update</button>
+                <!-- <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button"
+                  (click)="enableFormEditable()">Edit</button> -->
+                 <button type="button" (click)="cancelForm(f)" *ngIf="enableButtonType == ''" class="btn btn-secondary ml-3" >{{enableButtonType != '' ? 'Close' : 'Clear'}}</button>
+                 <span class="pull-right" *ngIf="showAction">
+                    <div class="form-group">
+                        <select class="form-control" [(ngModel)]="action" name="sel1" #sel1="ngModel" (change)="actions(action,trashContent,f)">
+                            <option [ngValue]="null" hidden selected>Choose action</option>  
+                          <option *ngFor="let al of actionsList.actions" [ngValue]="al.value">
+                                {{ al.key }}
+                              </option>
+                        </select>
+                      </div>
+                </span>
+              </div>
+            </div>
       </form>
     </div>
   </div>

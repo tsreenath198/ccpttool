@@ -464,8 +464,7 @@
                       <input type="text" [(ngModel)]="apName" class="form-control" name="apName" [readonly]="readOnlyForm == 'R'" />
                     </div>
                     <div class="col-md-5">
-                      <input type="text" [(ngModel)]="apValue" class="form-control" name="apValue" [readonly]="readOnlyForm == 'R'" 
-                      (keypress)="enter($event)"/>
+                      <input type="text" [(ngModel)]="apValue" class="form-control" name="apValue" [readonly]="readOnlyForm == 'R'" />
                     </div>
                     <div class="col-md-2">
                       <i
@@ -486,7 +485,8 @@
               type="submit"
               *ngIf="enableButtonType == ''"
               class="btn btn-secondary ml-3"
-              [disabled]="f.form.pristine || f.form.invalid"
+              [disabled]="f.form.pristine || f.form.invalid || isCreate"
+
             >
               Add
             </button>

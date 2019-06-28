@@ -16,9 +16,9 @@
               <td>
                 {{mtl.type}}
               </td>
-              <td width="100">
+              <!-- <td width="100">
                 <app-action [trashContent]="trashContent" [id]="mtl.id" [isTrash]="trash" (trash)="open($event)"></app-action>
-              </td>
+              </td> -->
             </tr>
           </tbody>
         </table>
@@ -27,6 +27,30 @@
     <div class=" col-md-5">
       <form name="form" id="messageTemplateForm" (ngSubmit)="f.form.valid&&messageTemplateCreate(f)" #f="ngForm"
         novalidate>
+        <div class="row text-center">
+            <div class="col-md-12">
+              <button type="submit" *ngIf="enableButtonType == ''" class="btn btn-secondary ml-3">Add</button>
+              <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2"
+                (click)="updateMessageTemplate(f)">Update</button>
+              <!-- <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button"
+                (click)="enableFormEditable()">Edit</button> -->
+                <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3" *ngIf="enableButtonType == ''">
+                    {{ enableButtonType != '' ? 'Close' : 'Clear' }}
+                  </button>
+      
+                  <span class="pull-right" *ngIf="showAction">
+                    <div class="form-group">
+                      <select class="form-control" [(ngModel)]="action" name="sel1" #sel1="ngModel"
+                        (change)="actions(action,trashContent,f)">
+                        <option [ngValue]="null" hidden selected>Choose action</option>
+                        <option *ngFor="let al of actionsList.actions" [ngValue]="al.value">
+                          {{ al.key }}
+                        </option>
+                      </select>
+                    </div>
+                  </span>         
+                </div>
+          </div>
         <div class="row">
           <div class="col-md-12">
             <div class="form-group">
@@ -55,10 +79,24 @@
             <button type="submit" *ngIf="enableButtonType == ''" class="btn btn-secondary ml-3">Add</button>
             <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2"
               (click)="updateMessageTemplate(f)">Update</button>
-            <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button"
-              (click)="enableFormEditable()">Edit</button>
-              <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3" >{{enableButtonType != '' ? 'Close' : 'Clear'}}</button>
-          </div>
+            <!-- <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button"
+              (click)="enableFormEditable()">Edit</button> -->
+              <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3" *ngIf="enableButtonType == ''">
+                  {{ enableButtonType != '' ? 'Close' : 'Clear' }}
+                </button>
+    
+                <span class="pull-right" *ngIf="showAction">
+                  <div class="form-group">
+                    <select class="form-control" [(ngModel)]="action" name="sel1" #sel1="ngModel"
+                      (change)="actions(action,trashContent,f)">
+                      <option [ngValue]="null" hidden selected>Choose action</option>
+                      <option *ngFor="let al of actionsList.actions" [ngValue]="al.value">
+                        {{ al.key }}
+                      </option>
+                    </select>
+                  </div>
+                </span>         
+              </div>
         </div>
       </form>
     </div>

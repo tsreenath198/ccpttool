@@ -15,6 +15,7 @@ import { RecruiterModel } from '../recruiter/recruiter.model';
 import { AdditionalPropertiesModel } from 'src/app/additional-properties.model';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { FileUploader, FileLikeObject } from 'ng2-file-upload';
+import { ActionsList } from '../client-call-history/client-call-history.model';
 
 
 @Component({
@@ -26,11 +27,18 @@ import { FileUploader, FileLikeObject } from 'ng2-file-upload';
 export class ClientApplicationComponent implements OnInit {
     public CAModel: ClientApplicationModel = <ClientApplicationModel>{};
     public clientApplicationList: Array<any> = [];
+    public pagedCAList: Array<any> = [];
     public consultantList: Array<any> = [];
     public clientApplicationStatusList: Array<ClientApplicationStatusModel> = [];
     public clientPositionList: Array<any> = [];
     public recruiterList: Array<any> = [];
     public urlConstants = new URLConstants();
+
+    
+    public showAction: boolean = false;
+    public actionsList = new ActionsList();
+    public action:string;
+    
     public currSearchTxt = '';
     public formButtonsToggler = true;
     public editButtonToggler = true;
@@ -50,6 +58,10 @@ export class ClientApplicationComponent implements OnInit {
     public apValue = '';
     public loggedInRole = '';
     public comments = '';
+    public isCreate: boolean = false;
+    public page: number;
+    public caListLength: number;
+    public pageSize: number = 10;
     public fileList: Array<any> = [];
     public config: AngularEditorConfig = {
         editable: true,
@@ -80,9 +92,13 @@ export class ClientApplicationComponent implements OnInit {
     init() {
         this.http.get(this.urlConstants.CAGetAll).subscribe(resp => {
             this.clientApplicationList = resp as any;
+            this.pagedCAList = resp as any;
+            this.caListLength = this.clientPositionList.length;
+            this.pageChange(this.page);
         });
         this.CAModel.properties = [];
         this.CAModel.caStatus = 'New';
+        this.page=1;
     }
     getAllDropdowns() {
         forkJoin(
@@ -114,6 +130,8 @@ export class ClientApplicationComponent implements OnInit {
         this.getCAById(id);
         this.readOnlyForm = 'R';
         this.enableButtonType = 'E';
+        this.showAction = true;
+        this.action=null;
     }
     getCAById(id: number) {
         const temp = this.http.get(this.urlConstants.CAGetById + id);
@@ -153,7 +171,31 @@ export class ClientApplicationComponent implements OnInit {
             }
         }
     }
+    actions(value,trashContent,uploadContent,downloadContent,form){
+        switch(value){
+          case 'Delete':{
+            this.open(this.CAModel.id,trashContent);
+            break;
+          }
+          case 'File Upload':{
+            this.open(this.CAModel.id,uploadContent);
+            break;
+          }
+          case 'File Download':{
+            this.open(this.CAModel.id,downloadContent);
+            break;
+          }
+          case 'Edit':{
+            this.enableFormEditable();
+            break;
+          }
+          case 'Close':{
+            this.cancelForm(form);
+          }
+        }
+      }
     createClientApplication(clientApplicationForm: NgForm): void {
+        this.isCreate= true;
         const temp = this.http.post(this.CAModel, this.urlConstants.CACreate);
         temp.subscribe(resp => {
             this.toastr.success(this.urlConstants.SuccessMsg, 'Client Application');
@@ -171,6 +213,8 @@ export class ClientApplicationComponent implements OnInit {
         this.CAModel = JSON.parse(JSON.stringify(data));
         this.readOnlyForm = 'U';
         this.enableButtonType = 'U';
+        this.showAction = true;
+        this.action=null;
     }
     updateClientApplication(clientApplicationForm: NgForm) {
         const temp = this.http.update(this.CAModel, this.urlConstants.CAUpdate);
@@ -181,6 +225,7 @@ export class ClientApplicationComponent implements OnInit {
             clientApplicationForm.resetForm();
             this.readOnlyForm = '';
             this.enableButtonType = '';
+            this.showAction = false;
         }, err => {
             this.toastr.error(err.error.message, 'Client Application');
         });
@@ -193,7 +238,7 @@ export class ClientApplicationComponent implements OnInit {
         this.formReset();
         this.readOnlyForm = '';
         this.enableButtonType = '';
-
+        this.showAction = false;
     }
     deleteCARecord(): void {
         const temp = this.http.delete(this.urlConstants.CADelete + this.selectedRecrdToDel);
@@ -204,6 +249,7 @@ export class ClientApplicationComponent implements OnInit {
             this.formReset();
             this.readOnlyForm = '';
             this.enableButtonType = '';
+            this.showAction = false;
         }, err => {
             if (err.status === 200) {
                 this.init();
@@ -219,10 +265,10 @@ export class ClientApplicationComponent implements OnInit {
      * 1) content consists the modal instance
      * 2) Selected contains the code of selected row
      */
-    open(event: any) {
+    open(event: any , content) {
         this.selectedRecrdToDel = 0;
-        if (event.id) {
-            this.selectedRecrdToDel = event.id;
+        if (event) {
+            this.selectedRecrdToDel = event;
         }
         // if (event.type === this.download) {
         //     // this.getFilesById(this.selectedRecrdToDel); TODO:Need to fix for multiple downloads
@@ -233,7 +279,7 @@ export class ClientApplicationComponent implements OnInit {
         //             window.open(err.url);
         //     });
         // } else {
-            this.modalRef = this.modalService.open(event.content);
+            this.modalRef = this.modalService.open(content);
             this.modalRef.result.then((result) => {
                 this.closeResult = `Closed with: ${result}`;
             }, (reason) => {
@@ -301,4 +347,10 @@ export class ClientApplicationComponent implements OnInit {
           }
         );*/
     }
+    pageChange(event) {
+        const from = ((event - 1) * this.pageSize);
+        const lst = this.clientApplicationList;
+        const uplst = lst.slice(from, from + this.pageSize);
+        this.pagedCAList = uplst;
+      }
 }

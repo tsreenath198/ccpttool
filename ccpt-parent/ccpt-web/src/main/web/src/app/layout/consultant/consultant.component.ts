@@ -47,6 +47,7 @@ export class ConsultantComponent implements OnInit {
   public actionsList = new ActionsList();
   public action:string;
 
+  public isCreate: boolean = false;
   public currSearchTxt: string;
   public idToActivate: number;
   public page: number;
@@ -120,6 +121,7 @@ export class ConsultantComponent implements OnInit {
     this.consultantModel['phone'] = '+91';
   }
   createConsultant(consultantForm: NgForm): void {
+    this.isCreate= true;
     const temp = this.http.post(this.consultantModel, this.urlConstants.CCreate);
     temp.subscribe(
       resp => {

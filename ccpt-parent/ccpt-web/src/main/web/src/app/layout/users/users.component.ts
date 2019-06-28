@@ -1,6 +1,6 @@
 import { Component, OnInit, HostListener, ElementRef } from '@angular/core';
 import { routerTransition } from '../../router.animations';
-import { UsersModel, UserRoles } from './users.model';
+import { UsersModel, UserRoles,ActionsList } from './users.model';
 import { HttpClientService } from 'src/app/shared/services/http.service';
 import { URLConstants } from '../components/constants/url-constants';
 import { NgForm } from '@angular/forms';
@@ -28,6 +28,10 @@ export class UsersComponent implements OnInit {
     public closeResult = '';
     public apName = '';
     public apValue = '';
+    public isCreate: boolean =false;
+    public showAction: boolean = false;
+    public actionsList = new ActionsList();
+    public action: string = null;
     private modalRef: NgbModalRef;
     public trash: string = 'trash';
     public screenHeight: any;
@@ -60,6 +64,8 @@ export class UsersComponent implements OnInit {
         this.usersModel = JSON.parse(JSON.stringify(data));
         this.readOnlyForm = 'U';
         this.enableButtonType = 'U';
+        this.showAction = true;
+        this.action = null;
     }
     enableFormEditable(): void {
         this.readOnlyForm = 'U';
@@ -69,6 +75,8 @@ export class UsersComponent implements OnInit {
         this.getUserById(id);
         this.readOnlyForm = 'R';
         this.enableButtonType = 'E';
+        this.showAction = true;
+        this.action = null;
     }
     getUserById(id: number) {
         let temp = this.http.get(this.urlConstants.UserGetById + id);
@@ -98,6 +106,22 @@ export class UsersComponent implements OnInit {
             }
         }
     }
+    actions(value, trashContent, form) {
+        console.log(value);
+        switch (value) {
+          case 'Delete': {
+            this.open(this.usersModel.id, trashContent);
+            break;
+          }
+          case 'Edit': {
+            this.enableFormEditable();
+            break;
+          }
+          case 'Close': {
+            this.cancelForm(form);
+          }
+        }
+      }
     toogle(html: HTMLInputElement) {
         if(html.type === 'password'){
             html.type = 'text';
@@ -112,6 +136,7 @@ export class UsersComponent implements OnInit {
         this.usersModel = <UsersModel>{ properties: [] };
     }
     createUser(usersForm: NgForm): void {
+        this.isCreate=true;
         let temp = this.http.post(this.usersModel, this.urlConstants.UserCreate);
         temp.subscribe(resp => {
             this.toastr.success(this.urlConstants.SuccessMsg, 'User');
@@ -130,6 +155,7 @@ export class UsersComponent implements OnInit {
             usersForm.resetForm();
             this.readOnlyForm = '';
             this.enableButtonType = '';
+            this.showAction = false;
         }, err => {
             this.toastr.error(err.error.message, 'User');
         });
@@ -143,6 +169,7 @@ export class UsersComponent implements OnInit {
             this.formReset();
             this.readOnlyForm = '';
             this.enableButtonType = '';
+            this.showAction = false;
         }, err => {
             this.toastr.error(err.error.message, 'User');
         });
@@ -152,17 +179,18 @@ export class UsersComponent implements OnInit {
         usersForm.resetForm();
         this.readOnlyForm = '';
         this.enableButtonType = '';
+        this.showAction = false;
     }
     /**
     * @param
     * 1) content consists the modal instance
     * 2) Selected contains the code of selected row
     */
-    open(event: any) {
-        if (event.id) {
-            this.selectedRecrdToDel = event.id;
+    open(event: any, content:any) {
+        if (event) {
+            this.selectedRecrdToDel = event;
         }
-        this.modalRef = this.modalService.open(event.content);
+        this.modalRef = this.modalService.open(content);
         this.modalRef.result.then((result) => {
             this.closeResult = `Closed with: ${result}`;
         }, (reason) => {

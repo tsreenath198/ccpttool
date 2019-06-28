@@ -1,7 +1,7 @@
 import { Component, OnInit, HostListener } from '@angular/core';
 import { NgbModal, ModalDismissReasons, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { routerTransition } from '../../router.animations';
-import { ConsultantStatusModel } from './consultant-status.model';
+import { ConsultantStatusModel ,ActionsList} from './consultant-status.model';
 import { HttpClientService } from 'src/app/shared/services/http.service';
 import { ToastrCustomService } from 'src/app/shared/services/toastr.service';
 import { URLConstants } from '../components/constants/url-constants';
@@ -24,6 +24,10 @@ export class ConsultantStatusComponent implements OnInit {
     public closeResult = '';
     private modalRef: NgbModalRef;
     public trash = 'trash';
+    public isCreate: boolean =false;
+    public showAction: boolean = false;
+    public actionsList = new ActionsList();
+    public action: string = null;
     public screenHeight: any;
 
     public readOnlyForm = '';
@@ -47,6 +51,8 @@ export class ConsultantStatusComponent implements OnInit {
         this.consultantStatusModel = JSON.parse(JSON.stringify(data));
         this.readOnlyForm = 'U';
         this.enableButtonType = 'U';
+        this.showAction = true;
+        this.action = null;
     }
     enableFormEditable(): void {
         this.readOnlyForm = 'U';
@@ -56,6 +62,8 @@ export class ConsultantStatusComponent implements OnInit {
         this.getById(id);
         this.readOnlyForm = 'R';
         this.enableButtonType = 'E';
+        this.showAction = true;
+        this.action = null;
     }
     getById(id) {
         const temp = this.http.get(this.urlConstants.CSGetById + id);
@@ -71,7 +79,24 @@ export class ConsultantStatusComponent implements OnInit {
     public formReset() {
         this.consultantStatusModel = <ConsultantStatusModel>{};
     }
+    actions(value, trashContent, form) {
+        console.log(value);
+        switch (value) {
+          case 'Delete': {
+            this.open(this.consultantStatusModel.id, trashContent);
+            break;
+          }
+          case 'Edit': {
+            this.enableFormEditable();
+            break;
+          }
+          case 'Close': {
+            this.cancelForm(form);
+          }
+        }
+      }
     public createConsultantStatus(consultantStatusForm: NgForm): void {
+        this.isCreate=true;
         const temp = this.http.post(this.consultantStatusModel, this.urlConstants.CSCreate);
         temp.subscribe(resp => {
             this.toastr.success(this.urlConstants.SuccessMsg, 'Consultant Status');
@@ -92,6 +117,7 @@ export class ConsultantStatusComponent implements OnInit {
             consultantStatusForm.resetForm();
             this.readOnlyForm = '';
             this.enableButtonType = '';
+            this.showAction = false;
         }, err => {
             this.toastr.error(err.error.message, 'Consultant Status');
         });
@@ -102,6 +128,7 @@ export class ConsultantStatusComponent implements OnInit {
         consultantStatusForm.resetForm();
         this.readOnlyForm = '';
         this.enableButtonType = '';
+        this.showAction = false;
     }
     deleteCSRecord(): void {
         const temp = this.http.delete(this.urlConstants.CSDelete + this.selectedRecrdToDel);
@@ -112,15 +139,16 @@ export class ConsultantStatusComponent implements OnInit {
             this.formReset();
             this.readOnlyForm = '';
             this.enableButtonType = '';
+            this.showAction = false;
         }, err => {
             this.toastr.error(err.error.message, 'Consultant Status');
         });
     }
-    open(event: any) {
-        if (event.id) {
-            this.selectedRecrdToDel = event.id;
+    open(event: any , content:any) {
+        if (event) {
+            this.selectedRecrdToDel = event;
         }
-        this.modalRef = this.modalService.open(event.content);
+        this.modalRef = this.modalService.open(content);
         this.modalRef.result.then((result) => {
             this.closeResult = `Closed with: ${result}`;
         }, (reason) => {
