@@ -49,7 +49,7 @@
     <div class=" col-md-5">
       <form name="form" id="otherContactForm" (ngSubmit)="f.form.valid && create(f)" #f="ngForm" novalidate>
         <div class="row">
-          <div class="col-md-12">
+          <div class="col-md-6">
             <div class="form-group">
               <label>Name<span class="required">*</span></label>
               <input class="form-control capi" [readonly]="readOnlyForm == 'R'" [(ngModel)]="OCModel.name" name="name"
@@ -59,14 +59,14 @@
               </div>
             </div>
           </div>
-          <div class="col-md-12">
+          <div class="col-md-6">
             <div class="form-group">
               <label>Phone</label>
               <input class="form-control" [readonly]="readOnlyForm == 'R'" [(ngModel)]="OCModel.phone" name="phone"
                 [ngClass]="{ 'is-invalid': f.submitted && name.invalid }" #phone="ngModel" />
             </div>
           </div>
-          <div class="col-md-12">
+          <div class="col-md-6">
             <div class="form-group">
               <label>E-Mail</label>
               <input class="form-control" [readonly]="readOnlyForm == 'R'" [(ngModel)]="OCModel.email" name="email"
@@ -74,44 +74,40 @@
             </div>
           </div>
           <div class="row" *ngIf="OCModel.properties.length>0">
-              <div class="col-md-12">
-                <div class="form-group">
-                  <label>Additional Properties</label>
-                  <table class="table">
-                    <tbody>
-                      <tr *ngFor="let cpmp of OCModel.properties; let i = index">
-                        <td>
-                          <input
-                            type="text"
-                            [(ngModel)]="cpmp.name"
-                            class="form-control"
-                            name="addPropName{{ i }}"
-                            [readonly]="readOnlyForm == 'R'"
-                          />
-                        </td>
-                        <td>
-                          <input
-                            type="text"
-                            [(ngModel)]="cpmp.value"
-                            class="form-control"
-                            name="addPropValue{{ i }}"
-                            [readonly]="readOnlyForm == 'R'"
-                          />
-                        </td>
-                        <td>
-                          <i
-                            class="fa fa-minus"
-                            aria-hidden="true"
-                            id="decrease"
-                            *ngIf="enableButtonType != 'E'"
-                            (click)="propertiesListIncrement($event.target, i)"
-                          ></i>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
+              <div class="col-md-12 ml-3" *ngIf="OCModel.properties.length > 0">
+                  <div class="form-group">
+                    <label>Additional Properties</label>
+                    <div class="row" *ngFor="let ap of OCModel.properties; let i = index">
+                      <div class="col-md-5">
+                        <input
+                          type="text"
+                          [(ngModel)]="ap.name"
+                          class="form-control"
+                          name="addPropName{{ i }}"
+                          [readonly]="readOnlyForm == 'R'"
+                        />
+                      </div>
+                      <div class="col-md-5">
+                        <input
+                          type="text"
+                          [(ngModel)]="ap.value"
+                          class="form-control"
+                          name="addPropValue{{ i }}"
+                          [readonly]="readOnlyForm == 'R'"
+                        />
+                      </div>
+                      <div class="col-md-2">
+                        <i
+                          class="fa fa-minus"
+                          aria-hidden="true"
+                          id="decrease"
+                          *ngIf="enableButtonType != 'E'"
+                          (click)="propertiesListIncrement($event.target, i)"
+                        ></i>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-              </div>
             </div>
           <div class="col-md-12">
             <div class="form-group">
@@ -123,33 +119,28 @@
         </div>
         <div class="row">
             <div class="col-md-12">
-              <div class="form-group">
-                <label>Additional Properties</label>
-                <div class="table-responsive">
-                  <table class="table">
-                    <tbody>
-                      <tr>
-                        <td>
-                          <input type="text" [(ngModel)]="apName" class="form-control" name="apName" [readonly]="readOnlyForm == 'R'" />
-                        </td>
-                        <td>
-                          <input type="text" [(ngModel)]="apValue" class="form-control" name="apValue" [readonly]="readOnlyForm == 'R'" />
-                        </td>
-                        <td>
-                          <i
-                            class="fa fa-plus"
-                            aria-hidden="true"
-                            id="increase"
-                            *ngIf="enableButtonType != 'E'"
-                            (click)="propertiesListIncrement($event.target, i)"
-                          ></i>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
+                <div class="form-group">
+                  <label>Additional Properties</label>
+                  <div class="row">
+                    <div class="col-md-5">
+                      <input type="text" [(ngModel)]="apName" class="form-control" name="apName" [readonly]="readOnlyForm == 'R'" />
+                    </div>
+                    <div class="col-md-5">
+                      <input type="text" [(ngModel)]="apValue" class="form-control" name="apValue" [readonly]="readOnlyForm == 'R'" 
+                      (keypress)="enter($event)"/>
+                    </div>
+                    <div class="col-md-2">
+                      <i
+                        class="fa fa-plus"
+                        aria-hidden="true"
+                        id="increase"
+                        *ngIf="enableButtonType != 'E'"
+                        (click)="propertiesListIncrement($event.target, 0)"
+                      ></i>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
           </div>
         <div class="row text-center">
           <div class="col-md-12">

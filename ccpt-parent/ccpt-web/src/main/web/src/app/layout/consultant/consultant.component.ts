@@ -77,6 +77,9 @@ export class ConsultantComponent implements OnInit {
     return bool;
   }
   defaultValues(){
+    this.consultantModel['properties'] = [];
+    this.consultantModel['cstatus'] = 'Active';
+    this.consultantModel['phone'] = '+91';
   }
   consultantEdit(id: number) {
     this.readOnlyForm = 'U';
@@ -144,8 +147,8 @@ export class ConsultantComponent implements OnInit {
     });
   }
   cancelForm(consultantForm: NgForm) {
-    this.formReset();
     consultantForm.resetForm();
+    this.formReset();
     this.readOnlyForm = '';
     this.enableButtonType = '';
     this.defaultValues();

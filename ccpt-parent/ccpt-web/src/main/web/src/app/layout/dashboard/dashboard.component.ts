@@ -37,8 +37,8 @@ export class DashboardComponent implements OnInit {
     private modalRef: NgbModalRef;
 
 
-    public getAllReportCLCH = this.http.get(this.urlConstants.CCHGetCountByRecruiter);
-    public getAllReportCOCH = this.http.get(this.urlConstants.CoCHGetCountByRecruiter);
+    public getAllReportCLCH = this.http.get(this.urlConstants.CCHGetCountByRecruiter + this.noOfDays['Day']);
+    public getAllReportCOCH = this.http.get(this.urlConstants.CoCHGetCountByRecruiter + this.noOfDays['Day']);
     public getAllReportCPL = this.http.get(this.urlConstants.ReportingGetAllTop5CP);
     public getAllReportCC = this.http.get(this.urlConstants.ReportingGetClosures + this.rpChoosenDays);
     public getAllOpenCP = this.http.get(this.urlConstants.ReportingGetAllOpenCP);
@@ -113,33 +113,34 @@ export class DashboardComponent implements OnInit {
             this.ccptReportCC = resp;
         });
     }
-    // public cochGetAllByDays() {
-    //     const numberOfDays = this.cochChoosenDays;
-    //     this.http.get(this.urlConstants.ReportingGetAllCOCH  + numberOfDays).subscribe(resp => {
-    //         this.ccptReportCOCH = resp as any;
-    //     });
-    // }
-    // public clchGetAllByDays() {
-    //     const numberOfDays = this.clchChoosenDays;
-    //     this.http.get(this.urlConstants.ReportingGetAllCLCH  + numberOfDays).subscribe(resp => {
-    //         this.ccptReportCLCH = resp as any;
-    //     });
-    // }
+    public cochGetAllByDays() {
+        const numberOfDays = this.cochChoosenDays;
+        this.http.get(this.urlConstants.CoCHGetCountByRecruiter  + numberOfDays).subscribe(resp => {
+            this.ccptReportCOCH = resp as any;
+        });
+    }
+    public clchGetAllByDays() {
+        const numberOfDays = this.clchChoosenDays;
+        this.http.get(this.urlConstants.CCHGetCountByRecruiter  + numberOfDays).subscribe(resp => {
+            this.ccptReportCLCH = resp as any;
+        });
+    }
     getAllActiveCAById(recrd: number) {
         this.activeCAById = [];
         this.http.get(this.urlConstants.ReportingGetAllActiveCAById + recrd).subscribe(resp => {
             this.activeCAById = resp as any;
         });
     }
-    getAllCoCHByID(recrd: number){
+    getAllCoCHByID(recrd: number , days: number){
         this.cochByIdList=[];
-        this.http.get(this.urlConstants.CoCHGetByRecruiterId + recrd).subscribe(resp =>{
+        http://210.16.76.202:8081/clientCallHistory/getAllCchByRecruiterId?rId=4&days=300
+        this.http.get(this.urlConstants.CoCHGetByRecruiterId + recrd + '&days='+days).subscribe(resp =>{
             this.cochByIdList = resp as any;
         })
     }
-    getAllClCHByID(recrd: number){
+    getAllClCHByID(recrd: number , days: number){
         this.clchByIdList=[];
-        this.http.get(this.urlConstants.CCHGetByRecruiterId + recrd).subscribe(resp =>{
+        this.http.get(this.urlConstants.CCHGetByRecruiterId + recrd+'&days='+days).subscribe(resp =>{
             this.clchByIdList = resp as any;
         })
     }
@@ -162,10 +163,10 @@ export class DashboardComponent implements OnInit {
             this.getAllActiveCAById(this.selectedRecrd);
         }
         if(type == 'ConsultantCallHistory'){
-            this.getAllCoCHByID(this.selectedRecrd);
+            this.getAllCoCHByID(this.selectedRecrd , this.cochChoosenDays);
         }
         if(type == 'ClientCallHistory'){
-            this.getAllClCHByID(this.selectedRecrd);
+            this.getAllClCHByID(this.selectedRecrd , this.clchChoosenDays);
         }
     }
     close() {

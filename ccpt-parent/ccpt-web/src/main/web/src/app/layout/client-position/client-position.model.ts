@@ -17,6 +17,7 @@ export interface ClientPositionModel {
     location: string;
     createdDate: string;
     requiredPositions: string;
+    qualification: string;
     properties: Array<AdditionalPropertiesModel>;
 }
 

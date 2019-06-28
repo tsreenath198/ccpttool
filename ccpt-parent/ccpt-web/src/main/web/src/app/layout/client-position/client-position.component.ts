@@ -156,7 +156,7 @@ export class ClientPositionComponent implements OnInit {
     this.clientPositionModel['closedBy'] = temp.closedBy ? temp.closedBy.id : 0;
     return this.clientPositionModel;
   }
-  propertiesListIncrement(event, i: number) {
+  propertiesListIncrement(event, i) {
     switch (event.id) {
       case 'decrease': {
         this.clientPositionModel.properties.splice(i, 1);
@@ -177,7 +177,7 @@ export class ClientPositionComponent implements OnInit {
   }
   createClientPosition(clientPositionForm: NgForm): void {
     // tslint:disable-next-line:max-line-length
-    this.clientPositionModel.generatedCode = this.generateCPCode(this.clientPositionModel.clientId, this.clientPositionModel.location);
+    this.clientPositionModel.generatedCode = this.generateCPCode(this.clientPositionModel.clientId,this.clientPositionModel.role  ,this.clientPositionModel.location);
     const temp = this.http.post(this.clientPositionModel, this.urlConstants.CPCreate);
     temp.subscribe(
       resp => {
@@ -191,11 +191,11 @@ export class ClientPositionComponent implements OnInit {
       }
     );
   }
-  private generateCPCode(cnt, loc): string {
+  private generateCPCode(cnt,role ,loc): string {
     if (loc == null || loc === undefined) {
-      return this.getClientNameById(cnt);
+      return this.getClientNameById(cnt) + role;
     } else {
-      return this.getClientNameById(cnt) + '-' + loc;
+      return this.getClientNameById(cnt) +'-'+ role+ '-' + loc;
     }
   }
   private getClientNameById(clientId: number) {
@@ -217,7 +217,7 @@ export class ClientPositionComponent implements OnInit {
   }
   updateClientPosition(clientPositionForm: NgForm) {
     // tslint:disable-next-line:max-line-length
-    this.clientPositionModel.generatedCode = this.generateCPCode(this.clientPositionModel.clientId, this.clientPositionModel.location);
+    this.clientPositionModel.generatedCode = this.generateCPCode(this.clientPositionModel.clientId, this.clientPositionModel.role ,this.clientPositionModel.location);
     const temp = this.http.update(this.clientPositionModel, this.urlConstants.CPUpdate);
     temp.subscribe(
       resp => {

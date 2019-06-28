@@ -19,7 +19,7 @@
                 Called Date
               </th>
               <th>
-                  <span class="pull-right">Action</span>
+                <span class="pull-right">Action</span>
               </th>
             </tr>
           </thead>
@@ -46,21 +46,54 @@
         </table>
       </div>
     </div>
+    
     <div class="col-md-5">
-      <form name="form" id="clientPositionForm" (ngSubmit)="f.form.valid && createConsultantCallHistory(f)" #f="ngForm" novalidate>
-          <div class="row text-center">
-              <div class="col-md-12">
-                <button type="submit" *ngIf="enableButtonType == ''" class="btn btn-secondary ml-3" [disabled]="f.form.pristine || f.form.invalid">Add</button>
-                <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2" (click)="updateConsultantCallHistory(f)">
-                  Update
-                </button>
-                <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button" (click)="enableFormEditable()">
-                  Edit
-                </button>
-                                       <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3" >{{enableButtonType != '' ? 'Close' : 'Clear'}}</button>
-
-              </div>
+        <!-- <div class="row text-center">
+            <div class="form-group col-md-12">
+              <span class="pull-right">
+                 <div class="dropdown theme-dropdown clearfix" ngbDropdown>
+                  <button class="btn btn-secondary" ngbDropdownToggle>
+                    Actions
+                  </button>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenu1" ngbDropdownMenu>
+                    <a class="dropdown-item" (click)="open($event,trashContent)">Delete</a>
+                  </div>
+                </div>
+              </span>
             </div>
+          </div> -->
+      <form name="form" id="clientPositionForm" (ngSubmit)="f.form.valid && createConsultantCallHistory(f)" #f="ngForm" novalidate>
+        <div class="row text-center">
+          <div class="form-group col-md-12">
+             <button
+              type="submit"
+              *ngIf="enableButtonType == ''"
+              class="btn btn-secondary ml-3"
+              [disabled]="f.form.pristine || f.form.invalid"
+            >
+              Add
+            </button>
+            <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2" (click)="updateConsultantCallHistory(f)">
+              Update
+            </button>
+            <!-- <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button" (click)="enableFormEditable()">
+              Edit
+            </button> -->
+            <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3">
+              {{ enableButtonType != '' ? 'Close' : 'Clear' }}
+            </button>
+            
+             <span class="pull-right" *ngIf="showAction">
+                <div class="form-group">
+                    <select class="form-control" id="sel1" (change)="actions($event.target.value,trashContent)">
+                      <option selected hidden>Choose Action</option>
+                      <option >Delete</option>
+                      <option >Edit</option>
+                    </select>
+                  </div>
+            </span> 
+          </div>
+        </div>
         <div class="row">
           <div class="col-md-6">
             <div class="form-group">
@@ -131,7 +164,8 @@
                 [(ngModel)]="consultantCallHistoryModel.consultantId"
                 [ngClass]="{ 'is-invalid': f.submitted && consultant.invalid }"
                 #consultant="ngModel"
-                required>
+                required
+              >
                 <option *ngFor="let consultant of consultantList" [ngValue]="consultant.id">{{ consultant.name }} </option>
               </select>
               <div class="invalid-feedback">
@@ -139,31 +173,40 @@
               </div>
             </div>
           </div>
-          <div class="row" *ngIf="consultantCallHistoryModel.properties.length>0">
-              <div class="col-md-12">
-                <div class="form-group">
-                  <label>Additional Properties</label>
-                  <table class="table">
-                    <tbody>
-                      <tr *ngFor="let ap of consultantCallHistoryModel.properties;let i=index">
-                        <td>
-                          <input type="text" [(ngModel)]="ap.name" class="form-control" name="addPropName{{i}}"
-                            [readonly]="readOnlyForm == 'R'">
-                        </td>
-                        <td>
-                          <input type="text" [(ngModel)]="ap.value" class="form-control" name="addPropValue{{i}}"
-                            [readonly]="readOnlyForm == 'R'">
-                        </td>
-                        <td>
-                          <i class="fa fa-minus" aria-hidden="true" id="decrease" *ngIf="enableButtonType != 'E'"
-                            (click)="propertiesListIncrement($event.target,i)"></i>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
+          <div class="col-md-12" *ngIf="consultantCallHistoryModel.properties.length > 0">
+            <div class="form-group">
+              <label>Additional Properties</label>
+              <div class="row" *ngFor="let ap of consultantCallHistoryModel.properties; let i = index">
+                <div class="col-md-5">
+                  <input
+                    type="text"
+                    [(ngModel)]="ap.name"
+                    class="form-control"
+                    name="addPropName{{ i }}"
+                    [readonly]="readOnlyForm == 'R'"
+                  />
+                </div>
+                <div class="col-md-5">
+                  <input
+                    type="text"
+                    [(ngModel)]="ap.value"
+                    class="form-control"
+                    name="addPropValue{{ i }}"
+                    [readonly]="readOnlyForm == 'R'"
+                  />
+                </div>
+                <div class="col-md-2">
+                  <i
+                    class="fa fa-minus"
+                    aria-hidden="true"
+                    id="decrease"
+                    *ngIf="enableButtonType != 'E'"
+                    (click)="propertiesListIncrement($event.target, i)"
+                  ></i>
                 </div>
               </div>
             </div>
+          </div>
           <div class="col-md-12">
             <div class="form-group">
               <label>Notes<span class="required">*</span></label>
@@ -183,45 +226,51 @@
               </div>
             </div>
           </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
-              <div class="form-group">
-                <label>Additional Properties</label>
-                <div class="table-responsive">
-                  <table class="table">
-                    <tbody>
-                      <tr>
-                        <td>
-                          <input type="text" [(ngModel)]="apName" class="form-control" name="apName"
-                            [readonly]="readOnlyForm == 'R'">
-                        </td>
-                        <td>
-                          <input type="text" [(ngModel)]="apValue" class="form-control" name="apValue"
-                            [readonly]="readOnlyForm == 'R'">
-                        </td>
-                        <td>
-                          <i class="fa fa-plus" aria-hidden="true" id="increase" *ngIf="enableButtonType != 'E'"
-                            (click)="propertiesListIncrement($event.target,i)"></i>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
+
+          <div class="col-md-12">
+            <div class="form-group">
+              <label>Additional Properties</label>
+              <div class="row">
+                <div class="col-md-5">
+                  <input type="text" [(ngModel)]="apName" class="form-control" name="apName" [readonly]="readOnlyForm == 'R'" />
+                </div>
+                <div class="col-md-5">
+                  <input type="text" [(ngModel)]="apValue" class="form-control" name="apValue" [readonly]="readOnlyForm == 'R'" 
+                  (keypress)="enter($event)"/>
+                </div>
+                <div class="col-md-2">
+                  <i
+                    class="fa fa-plus"
+                    aria-hidden="true"
+                    id="increase"
+                    *ngIf="enableButtonType != 'E'"
+                    (click)="propertiesListIncrement($event.target, 0)"
+                  ></i>
                 </div>
               </div>
             </div>
           </div>
+        </div>
         <div class="row text-center">
           <div class="col-md-12">
-            <button type="submit" *ngIf="enableButtonType == ''" class="btn btn-secondary ml-3" [disabled]="f.form.pristine || f.form.invalid">Add</button>
+            <button
+              type="submit"
+              *ngIf="enableButtonType == ''"
+              class="btn btn-secondary ml-3"
+              [disabled]="f.form.pristine || f.form.invalid"
+            >
+              Add
+            </button>
             <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2" (click)="updateConsultantCallHistory(f)">
               Update
             </button>
-            <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button" (click)="enableFormEditable()">
+      
+            <!-- <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button" (click)="enableFormEditable()">
               Edit
+            </button> -->
+            <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3">
+              {{ enableButtonType != '' ? 'Close' : 'Clear' }}
             </button>
-               <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3" >{{enableButtonType != '' ? 'Close' : 'Clear'}}</button>
-
           </div>
         </div>
       </form>

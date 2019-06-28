@@ -5,9 +5,10 @@ import {FormsModule} from '@angular/forms';
 import { ConsultantCallHistoryRoutingModule } from './consultant-call-history-routing.module';
 import { PageHeaderModule, SharedPipesModule, ActionListModule } from '../../shared';
 import { ConsultantCallHistoryComponent } from './consultant-call-history.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
-    imports: [CommonModule, ConsultantCallHistoryRoutingModule, FormsModule, PageHeaderModule, SharedPipesModule, ActionListModule],
+    imports: [NgbModule,CommonModule, ConsultantCallHistoryRoutingModule, FormsModule, PageHeaderModule, SharedPipesModule, ActionListModule],
     declarations: [ConsultantCallHistoryComponent]
 })
 export class ConsultantCallHistoryModule {}

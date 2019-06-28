@@ -16,8 +16,8 @@
                 <dl>
                   <dt>{{ cpl.generatedCode }} ({{ cpl.assignedTo.aliasName }})</dt>
                   <dd>
-                    Need {{ cpl.requiredPositions }} candidate(s) with minimun {{ cpl.experience }} yrs ({{ cpl.minCtc }} -
-                    {{ cpl.maxCtc }} )
+                    Need {{ cpl.requiredPositions }} candidate(s)  ({{ cpl.minCtc }} -
+                    {{ cpl.maxCtc }} ) experience.
                   </dd>
                 </dl>
               </td>
@@ -47,22 +47,24 @@
       <form name="form" id="clientPositionForm" (ngSubmit)="f.form.valid && createClientPosition(f)" #f="ngForm" novalidate>
         <div class="row text-center" *ngIf="loggedInRole != 'User'">
           <div class="col-md-12">
-            <button
-              type="submit"
-              *ngIf="enableButtonType == ''"
-              class="btn btn-secondary ml-3"
-              [disabled]="f.form.pristine || f.form.invalid"
-            >
-              Add
-            </button>
-            <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2" (click)="updateClientPosition(f)">
-              Update
-            </button>
-            <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button" (click)="enableFormEditable()">
-              Edit
-            </button>
-            <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3" >{{enableButtonType != '' ? 'Close' : 'Clear'}}
-            </button>
+            <div class="form-group">
+                <button
+                type="submit"
+                *ngIf="enableButtonType == ''"
+                class="btn btn-secondary ml-3"
+                [disabled]="f.form.pristine || f.form.invalid"
+              >
+                Add
+              </button>
+              <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2" (click)="updateClientPosition(f)">
+                Update
+              </button>
+              <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button" (click)="enableFormEditable()">
+                Edit
+              </button>
+              <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3" >{{enableButtonType != '' ? 'Close' : 'Clear'}}
+              </button>
+            </div>
           </div>
         </div>
         <div class="row">
@@ -134,28 +136,32 @@
         </div>
         <div class="row">
           <div class="col-md-6">
-            <label>Min CTC</label>
-            <input
-              class="form-control"
-              [readonly]="readOnlyForm == 'R'"
-              type="text"
-              [(ngModel)]="clientPositionModel.minCtc"
-              name="minctc"
-              [ngClass]="{ 'is-invalid': f.submitted && minctc.invalid }"
-              #minctc="ngModel"
-            />
+            <div class="form-group">
+                <label>Min CTC</label>
+                <input
+                  class="form-control"
+                  [readonly]="readOnlyForm == 'R'"
+                  type="text"
+                  [(ngModel)]="clientPositionModel.minCtc"
+                  name="minctc"
+                  [ngClass]="{ 'is-invalid': f.submitted && minctc.invalid }"
+                  #minctc="ngModel"
+                />
+            </div>
           </div>
           <div class="col-md-6">
-            <label>Max CTC</label>
-            <input
-              class="form-control"
-              [readonly]="readOnlyForm == 'R'"
-              type="text"
-              [(ngModel)]="clientPositionModel.maxCtc"
-              name="maxctc"
-              [ngClass]="{ 'is-invalid': f.submitted && maxctc.invalid }"
-              #maxctc="ngModel"
-            />
+            <div class="form-group">
+                <label>Max CTC</label>
+                <input
+                  class="form-control"
+                  [readonly]="readOnlyForm == 'R'"
+                  type="text"
+                  [(ngModel)]="clientPositionModel.maxCtc"
+                  name="maxctc"
+                  [ngClass]="{ 'is-invalid': f.submitted && maxctc.invalid }"
+                  #maxctc="ngModel"
+                />
+            </div>
           </div>
         </div>
         <div class="row">
@@ -183,18 +189,33 @@
         </div>
         <div class="row">
           <div class="col-md-6">
-            <label>Assign To</label>
-            <select
-              class="form-control"
-              name="assign"
-              [disabled]="readOnlyForm == 'R'"
-              [(ngModel)]="clientPositionModel.assignedTo"
-              [ngClass]="{ 'is-invalid': f.submitted && assign.invalid }"
-              #assign="ngModel"
-            >
-              <option *ngFor="let rl of recruiterList" [ngValue]="rl.id"> {{ rl.name }}</option>
-            </select>
+            <div class="form-group">
+                <label>Assign To</label>
+                <select
+                  class="form-control"
+                  name="assign"
+                  [disabled]="readOnlyForm == 'R'"
+                  [(ngModel)]="clientPositionModel.assignedTo"
+                  [ngClass]="{ 'is-invalid': f.submitted && assign.invalid }"
+                  #assign="ngModel"
+                >
+                  <option *ngFor="let rl of recruiterList" [ngValue]="rl.id"> {{ rl.name }}</option>
+                </select>
+            </div>
           </div>
+          <div class="col-md-6">
+              <div class="form-group">
+                <label>Qualification</label>
+                <input
+                  class="form-control"
+                  [readonly]="readOnlyForm == 'R'"
+                  [(ngModel)]="clientPositionModel.qualification"
+                  name="qual"
+                  [ngClass]="{ 'is-invalid': f.submitted && qual.invalid }"
+                  #qual="ngModel"
+                />
+              </div>
+            </div>
           <div class="col-md-6" *ngIf="closedByEnable">
             <div class="form-group">
               <label>Closed By</label>
@@ -203,6 +224,7 @@
               </select>
             </div>
           </div>
+          
         </div>
         <div class="row">
           <div class="col-md-12">
@@ -226,31 +248,29 @@
           </div>
         </div>
         <div class="row" *ngIf="clientPositionModel.properties.length>0">
-          <div class="col-md-12">
-            <div class="form-group">
-              <label>Additional Properties</label>
-              <table class="table">
-                <tbody>
-                  <tr *ngFor="let cpmp of clientPositionModel.properties; let i = index">
-                    <td>
+            <div class="col-md-12" *ngIf="clientPositionModel.properties.length > 0">
+                <div class="form-group">
+                  <label>Additional Properties</label>
+                  <div class="row" *ngFor="let ap of clientPositionModel.properties; let i = index">
+                    <div class="col-md-5">
                       <input
                         type="text"
-                        [(ngModel)]="cpmp.name"
+                        [(ngModel)]="ap.name"
                         class="form-control"
                         name="addPropName{{ i }}"
                         [readonly]="readOnlyForm == 'R'"
                       />
-                    </td>
-                    <td>
+                    </div>
+                    <div class="col-md-5">
                       <input
                         type="text"
-                        [(ngModel)]="cpmp.value"
+                        [(ngModel)]="ap.value"
                         class="form-control"
                         name="addPropValue{{ i }}"
                         [readonly]="readOnlyForm == 'R'"
                       />
-                    </td>
-                    <td>
+                    </div>
+                    <div class="col-md-2">
                       <i
                         class="fa fa-minus"
                         aria-hidden="true"
@@ -258,12 +278,10 @@
                         *ngIf="enableButtonType != 'E'"
                         (click)="propertiesListIncrement($event.target, i)"
                       ></i>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
         </div>
         <div class="row">
           <div class="col-md-12">
@@ -274,34 +292,29 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-md-12">
-            <div class="form-group">
-              <label>Additional Properties</label>
-              <div class="table-responsive">
-                <table class="table">
-                  <tbody>
-                    <tr>
-                      <td>
-                        <input type="text" [(ngModel)]="apName" class="form-control" name="apName" [readonly]="readOnlyForm == 'R'" />
-                      </td>
-                      <td>
-                        <input type="text" [(ngModel)]="apValue" class="form-control" name="apValue" [readonly]="readOnlyForm == 'R'" />
-                      </td>
-                      <td>
-                        <i
-                          class="fa fa-plus"
-                          aria-hidden="true"
-                          id="increase"
-                          *ngIf="enableButtonType != 'E'"
-                          (click)="propertiesListIncrement($event.target, i)"
-                        ></i>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
+            <div class="col-md-12">
+                <div class="form-group">
+                  <label>Additional Properties</label>
+                  <div class="row">
+                    <div class="col-md-5">
+                      <input type="text" [(ngModel)]="apName" class="form-control" name="apName" [readonly]="readOnlyForm == 'R'" />
+                    </div>
+                    <div class="col-md-5">
+                      <input type="text" [(ngModel)]="apValue" class="form-control" name="apValue" [readonly]="readOnlyForm == 'R'" 
+                      (keypress)="enter($event)"/>
+                    </div>
+                    <div class="col-md-2">
+                      <i
+                        class="fa fa-plus"
+                        aria-hidden="true"
+                        id="increase"
+                        *ngIf="enableButtonType != 'E'"
+                        (click)="propertiesListIncrement($event.target, 0)"
+                      ></i>
+                    </div>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
         </div>
         <div class="row text-center" *ngIf="loggedInRole != 'User'">
           <div class="col-md-12">

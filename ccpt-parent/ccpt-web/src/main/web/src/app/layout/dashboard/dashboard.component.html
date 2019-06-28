@@ -54,13 +54,13 @@
       <div class="card mb-3 ">
         <div class="card-header bg-dark text-clr-white">
           Consultant Call History
-          <!-- <span class="pull-right">
+          <span class="pull-right">
             <select class="form-control form-control-sm" name="cp" #t [(ngModel)]="cochChoosenDays"
               (change)="cochGetAllByDays()">
               <option *ngFor="let nod of noOfDays | keyvalue" [ngValue]="nod.value">{{nod.key}}
               </option>
             </select>
-          </span> -->
+          </span>
         </div>
         <div class="table-scroll">
           <table class="table table-sm ">
@@ -88,13 +88,13 @@
       <div class="card mb-3">
         <div class="card-header bg-dark text-clr-white">
           Client Call History
-          <!-- <span class="pull-right">
+          <span class="pull-right">
             <select class="form-control form-control-sm" name="cp" #t [(ngModel)]="clchChoosenDays"
               (change)="clchGetAllByDays()">
               <option *ngFor="let nod of noOfDays | keyvalue" [ngValue]="nod.value">{{nod.key}}
               </option>
             </select>
-          </span> -->
+          </span>
         </div>
         <div class="table-scroll">
           <table class="table table-sm">
@@ -189,7 +189,7 @@
     </div>
     <div class="col col-xl-6 col-lg-12">
       <div class="card mb-3">
-        <div class="card-header bg-dark text-clr-white">Latest Client Positions</div>
+        <div class="card-header bg-dark text-clr-white">Latest Client Positions (Top 5)</div>
         <div class="table-scroll">
           <table class="table table-sm">
             <thead>
@@ -314,6 +314,9 @@
         <thead>
           <tr>
             <th>
+              S.No
+            </th>
+            <th>
               Caller
             </th>
             <th>
@@ -328,7 +331,8 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let aca of cochByIdList">
+          <tr *ngFor="let aca of cochByIdList; let i=index">
+            <td>{{i+1}}.</td>
             <td>{{ aca.calledBy.fullname }}</td>
             <td>{{ aca.consultant.fullname }}</td>
             <td>{{ aca.calledDate }}</td>
