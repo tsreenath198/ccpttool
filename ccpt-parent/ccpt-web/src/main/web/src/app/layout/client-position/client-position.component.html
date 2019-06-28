@@ -21,7 +21,7 @@
                   </dd>
                 </dl>
               </td>
-              <td width="140">
+              <!-- <td width="140">
                 <app-action
                   [trashContent]="trashContent"
                   [shortListContent]="shortListContent"
@@ -37,7 +37,7 @@
                   (trash)="open($event)"
                   (sendMail)="open($event)"
                 ></app-action>
-              </td>
+              </td> -->
             </tr>
           </tbody>
         </table>
@@ -64,11 +64,29 @@
               <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2" (click)="updateClientPosition(f)">
                 Update
               </button>
-              <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button" (click)="enableFormEditable()">
+              <!-- <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button" (click)="enableFormEditable()">
                 Edit
-              </button>
-              <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3" >{{enableButtonType != '' ? 'Close' : 'Clear'}}
-              </button>
+              </button> -->
+              <button type="button" (click)="cancelForm(f)" *ngIf="enableButtonType == ''" class="btn btn-secondary ml-3">
+                  {{ enableButtonType != '' ? 'Close' : 'Clear' }}
+                </button>
+    
+                <span class="pull-right" *ngIf="showAction">
+                  <div class="form-group">
+                    <select
+                      class="form-control"
+                      [(ngModel)]="action"
+                      name="sel1"
+                      #sel1="ngModel"
+                      (change)="actions(action, trashContent,shortListContent , f)"
+                    >
+                      <option [ngValue]="null" hidden selected>Choose action</option>
+                      <option *ngFor="let al of actionsList.actions" [ngValue]="al.value">
+                        {{ al.key }}
+                      </option>
+                    </select>
+                  </div>
+                </span>
             </div>
           </div>
         </div>

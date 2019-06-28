@@ -2,7 +2,7 @@ import { Component, OnInit, HostListener } from '@angular/core';
 import { NgbModal, ModalDismissReasons, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { URLConstants } from '../components/constants/url-constants';
 import { routerTransition } from '../../router.animations';
-import { ClientPositionModel, SendSmsModel, SendEmailModel } from './client-position.model';
+import { ClientPositionModel, SendSmsModel, SendEmailModel,ActionsList } from './client-position.model';
 import { HttpClientService } from 'src/app/shared/services/http.service';
 import { ClientpositionStatusModel } from '../client-position-status/client-position-status.model';
 import { ToastrCustomService } from 'src/app/shared/services/toastr.service';
@@ -64,6 +64,9 @@ export class ClientPositionComponent implements OnInit {
   public apName = '';
   public apValue = '';
   public loggedInRole = '';
+  public showAction: boolean = false;
+  public actionsList = new ActionsList();
+  public action:string;
   public isCreate: boolean = false;
   public page: number;
   public cpListLength: number;
@@ -134,6 +137,8 @@ export class ClientPositionComponent implements OnInit {
     this.config.editable = true;
     this.enableButtonType = 'U';
     this.closedByEnable = true;
+    this.showAction = true;
+    this.action=null;
   }
   enableFormEditable(): void {
     this.readOnlyForm = 'U';
@@ -146,6 +151,8 @@ export class ClientPositionComponent implements OnInit {
     this.config.editable = false;
     this.readOnlyForm = 'R';
     this.enableButtonType = 'E';
+    this.showAction = true;
+    this.action=null;
   }
   getCPById(id: number) {
     const temp = this.http.get(this.urlConstants.CPGetById + id);
@@ -177,6 +184,25 @@ export class ClientPositionComponent implements OnInit {
         this.apName = '';
         this.apValue = '';
         break;
+      }
+    }
+  }
+  actions(value,trashContent,shortListContent,form){
+    switch(value){
+      case 'Delete':{
+        this.open(this.clientPositionModel.id,trashContent);
+        break;
+      }
+      case 'Create Application':{
+        this.open(this.clientPositionModel.id,shortListContent);
+        break;
+      }
+      case 'Edit':{
+        this.enableFormEditable();
+        break;
+      }
+      case 'Close':{
+        this.cancelForm(form);
       }
     }
   }
@@ -239,6 +265,7 @@ export class ClientPositionComponent implements OnInit {
         this.readOnlyForm = '';
         this.enableButtonType = '';
         this.closedByEnable = false;
+        this.showAction = false;
       },
       err => {
         this.toastr.error(err.error.message, 'Client Position');
@@ -252,6 +279,7 @@ export class ClientPositionComponent implements OnInit {
     this.readOnlyForm = '';
     this.enableButtonType = '';
     this.closedByEnable = false;
+    this.showAction = false;
   }
   deleteCPRecord(): void {
     const temp = this.http.delete(this.urlConstants.CPDelete + this.selectedRecrd);
@@ -263,6 +291,7 @@ export class ClientPositionComponent implements OnInit {
         this.formReset();
         this.readOnlyForm = '';
         this.enableButtonType = '';
+        this.showAction = false;
       },
       err => {
         if (err.status === 200) {
@@ -332,12 +361,12 @@ export class ClientPositionComponent implements OnInit {
    * 1) content consists the modal instance
    * 2) Selected contains the code of selected row
    */
-  open(event: any) {
+  open(event: any , content) {
     // content, selected: number, type: string
-    if (event.id) {
-      this.selectedRecrd = event.id;
+    if (event) {
+      this.selectedRecrd = event;
     }
-    this.modalRef = this.modalService.open(event.content);
+    this.modalRef = this.modalService.open(content);
     this.modalRef.result.then(
       result => {
         this.closeResult = `Closed with: ${result}`;
@@ -346,14 +375,14 @@ export class ClientPositionComponent implements OnInit {
         this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
       }
     );
-    if (event.content) {
-      if (event.type === this.email) {
+    if (content) {
+      if (content.type === this.email) {
         for (let i = 0; i < this.consultantList.length; i++) {
           const temp = { item_id: this.consultantList[i].phone, item_text: this.consultantList[i].fullname, notes: '' };
           this.mailIdForMails.push(this.consultantList[i].email);
         }
       }
-      if (event.type === this.sms) {
+      if (content.type === this.sms) {
         this.http.get(this.urlConstants.SMSTemplateGetAll).subscribe(resp => {
           this.smsList = resp as any;
         });
@@ -362,7 +391,7 @@ export class ClientPositionComponent implements OnInit {
           this.numbersForSmsDropdown.push(temp);
         }
       }
-      if (event.type === this.shortList) {
+      if (content.type === this.shortList) {
         for (let i = 0; i < this.consultantList.length; i++) {
           const temp = { item_id: this.consultantList[i].id, item_text: this.consultantList[i].fullname, notes: '' };
           this.consultantNames.push(temp);

@@ -5,7 +5,7 @@ import { URLConstants } from '../components/constants/url-constants';
 import { ToastrCustomService } from 'src/app/shared/services/toastr.service';
 import { NgbModal, ModalDismissReasons, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { NgForm } from '@angular/forms';
-import { EmailTemplateModel } from './email-template.model';
+import { EmailTemplateModel,ActionsList } from './email-template.model';
 
 @Component({
     selector: 'app-email-template',
@@ -21,6 +21,10 @@ export class EmailTemplateComponent implements OnInit {
     public readOnlyForm = '';
     public enableButtonType = '';
     public currSearchTxt = '';
+    public isCreate: boolean =false;
+    public showAction: boolean = false;
+    public actionsList = new ActionsList();
+    public action: string = null;
 
     public trash = 'trash';
     private selectedRecrdToDel = 0;
@@ -47,6 +51,8 @@ export class EmailTemplateComponent implements OnInit {
         this.emailTemplateModel = JSON.parse(JSON.stringify(data));
         this.readOnlyForm = 'U';
         this.enableButtonType = 'U';
+        this.showAction = true;
+        this.action = null;
     }
     enableFormEditable(): void {
         this.readOnlyForm = 'U';
@@ -56,6 +62,8 @@ export class EmailTemplateComponent implements OnInit {
         this.getEmailById(id);
         this.readOnlyForm = 'R';
         this.enableButtonType = 'E';
+        this.showAction = true;
+        this.action = null;
     }
     getEmailById(id: number) {
         const temp = this.http.get(this.urlConstants.SMSTemplateGetById + id);
@@ -72,6 +80,7 @@ export class EmailTemplateComponent implements OnInit {
         this.emailTemplateModel = <EmailTemplateModel>{};
     }
     emailTemplateCreate(emailTemplateForm: NgForm): void {
+        this.isCreate=true;
         const temp = this.http.post(this.emailTemplateModel, this.urlConstants.EmailTemplateCreate);
         temp.subscribe(resp => {
             this.toastr.success(this.urlConstants.SuccessMsg, 'Contact');
@@ -91,6 +100,7 @@ export class EmailTemplateComponent implements OnInit {
             emailTemplateForm.resetForm();
             this.readOnlyForm = '';
             this.enableButtonType = '';
+            this.showAction = false;
         }, err => {
             this.toastr.error(err.statusText, 'Email Template ');
         });
@@ -100,6 +110,7 @@ export class EmailTemplateComponent implements OnInit {
         emailTemplateForm.resetForm();
         this.readOnlyForm = '';
         this.enableButtonType = '';
+        this.showAction = false;
     }
     deleteClientRecord(): void {
         const temp = this.http.delete(this.urlConstants.EmailTemplateDelete + this.selectedRecrdToDel);
@@ -108,6 +119,7 @@ export class EmailTemplateComponent implements OnInit {
             this.init();
             this.close();
             this.formReset();
+            this.showAction = false;
         }, err => {
             if (err.status === 200) {
                 this.init();
@@ -123,11 +135,11 @@ export class EmailTemplateComponent implements OnInit {
      * 1) content consists the modal instance
      * 2) Selected contains the code of selected row
      */
-    open(event: any) {
-        if (event.id) {
-            this.selectedRecrdToDel = event.id;
+    open(event: any , content:any) {
+        if (event) {
+            this.selectedRecrdToDel = event;
         }
-        this.modalRef = this.modalService.open(event.content);
+        this.modalRef = this.modalService.open(content);
         this.modalRef.result.then((result) => {
             this.closeResult = `Closed with: ${result}`;
         }, (reason) => {

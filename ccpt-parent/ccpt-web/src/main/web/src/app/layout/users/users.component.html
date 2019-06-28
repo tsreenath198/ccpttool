@@ -12,10 +12,10 @@
             <tr *ngFor="let ul of usersList |  filter : 'username' : currSearchTxt ; let i = index"
               (click)="readOnlyEnable(ul.id)" (dblclick)="editUser(ul)">
               <td>{{ul.username}}</td>
-              <td width="100">
+              <!-- <td width="100">
                 <app-action [trashContent]="trashContent" [id]="ul.id" [isTrash]="trash" (trash)="open($event)">
                 </app-action>
-              </td>
+              </td> -->
             </tr>
           </tbody>
         </table>

@@ -31,3 +31,6 @@ export class SendEmailModel {
     subject: string;
     body: string;
 }
+export class ActionsList {
+    actions = [{key: 'Edit' , value:'Edit'},{key: 'Create Application' , value:'Create Application'}, {key: 'Delete' , value:'Delete'}, {key: 'Close' , value:'Close'}];
+}
