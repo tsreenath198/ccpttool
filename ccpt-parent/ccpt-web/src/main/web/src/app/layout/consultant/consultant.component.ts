@@ -4,7 +4,7 @@ import { FileUploader, FileLikeObject } from 'ng2-file-upload';
 import { NgForm } from '@angular/forms';
 
 import { routerTransition } from '../../router.animations';
-import { ConsultantModel } from './consultant.model';
+import { ConsultantModel, ActionsList } from './consultant.model';
 import { HttpClientService } from 'src/app/shared/services/http.service';
 import { ConsultantStatusModel } from '../consultant-status/consultant-status.model';
 import { ToastrCustomService } from 'src/app/shared/services/toastr.service';
@@ -42,6 +42,11 @@ export class ConsultantComponent implements OnInit {
   public screenHeight: any;
   private modalRef: NgbModalRef;
   public urlConstants = new URLConstants();
+
+  public showAction: boolean = false;
+  public actionsList = new ActionsList();
+  public action:string;
+
   public currSearchTxt: string;
   public idToActivate: number;
   public page: number;
@@ -79,7 +84,7 @@ export class ConsultantComponent implements OnInit {
       this.pageChange(this.page);
     });
     this.consultantModel['properties'] = [];
-    this.consultantModel['cstatus'] = 'Active';
+    this.consultantModel['conStatus'] = 'Active';
     this.consultantModel['phone'] = '+91';
     this.page = 1;
   }
@@ -89,17 +94,21 @@ export class ConsultantComponent implements OnInit {
   }
   defaultValues() {
     this.consultantModel['properties'] = [];
-    this.consultantModel['cstatus'] = 'Active';
+    this.consultantModel['conStatus'] = 'Active';
     this.consultantModel['phone'] = '+91';
   }
   consultantEdit(id: number) {
     this.readOnlyForm = 'U';
     this.enableButtonType = 'U';
+    this.showAction = true;
+    this.action=null;
   }
   readOnlyEnable(id: number) {
     this.getConsultantById(id);
     this.readOnlyForm = 'R';
     this.enableButtonType = 'E';
+    this.showAction = true;
+    this.action=null;
   }
   enableFormEditable(): void {
     this.readOnlyForm = 'U';
@@ -107,7 +116,7 @@ export class ConsultantComponent implements OnInit {
   }
   formReset() {
     this.consultantModel = <ConsultantModel>{ properties: [] };
-    this.consultantModel['cstatus'] = 'Active';
+    this.consultantModel['conStatus'] = 'Active';
     this.consultantModel['phone'] = '+91';
   }
   createConsultant(consultantForm: NgForm): void {
@@ -115,9 +124,9 @@ export class ConsultantComponent implements OnInit {
     temp.subscribe(
       resp => {
         this.toastr.success(this.urlConstants.SuccessMsg, 'Consultant');
+        consultantForm.resetForm();
         this.init();
         this.formReset();
-        consultantForm.resetForm();
       },
       err => {
         this.toastr.error(err.error.message, 'Consultant');
@@ -128,12 +137,13 @@ export class ConsultantComponent implements OnInit {
     const temp = this.http.update(this.consultantModel, this.urlConstants.CUpdate);
     temp.subscribe(
       resp => {
-        this.formReset();
-        this.toastr.success(this.urlConstants.UpdateMsg, 'Consultant');
-        this.init();
         consultantForm.resetForm();
+        this.toastr.success(this.urlConstants.UpdateMsg, 'Consultant');
+        this.formReset();
+        this.init();
         this.readOnlyForm = '';
         this.enableButtonType = '';
+        this.showAction = false;
       },
       err => {
         this.toastr.error(err.statusText, 'Consultant');
@@ -162,6 +172,7 @@ export class ConsultantComponent implements OnInit {
     this.formReset();
     this.readOnlyForm = '';
     this.enableButtonType = '';
+    this.showAction = false;
     this.defaultValues();
   }
   deleteConsultantRecord(): void {
@@ -174,6 +185,7 @@ export class ConsultantComponent implements OnInit {
         this.formReset();
         this.readOnlyForm = '';
         this.enableButtonType = '';
+        this.showAction = false;
       },
       err => {
         if (err.status === 200) {
@@ -189,7 +201,7 @@ export class ConsultantComponent implements OnInit {
   mapToUpdateModel(response): ConsultantModel {
     const temp = response;
     this.consultantModel = temp;
-    this.consultantModel['cstatus'] = temp.status.code;
+    this.consultantModel['conStatus'] = temp.status.code;
     return this.consultantModel;
   }
   propertiesListIncrement(event, i: number) {
@@ -203,6 +215,29 @@ export class ConsultantComponent implements OnInit {
         this.apName = '';
         this.apValue = '';
         break;
+      }
+    }
+  }
+  actions(value,trashContent,uploadContent,downloadContent,form){
+    switch(value){
+      case 'Delete':{
+        this.open(this.consultantModel.id,trashContent);
+        break;
+      }
+      case 'File Upload':{
+        this.open(this.consultantModel.id,uploadContent);
+        break;
+      }
+      case 'File Download':{
+        this.open(this.consultantModel.id,downloadContent);
+        break;
+      }
+      case 'Edit':{
+        this.enableFormEditable();
+        break;
+      }
+      case 'Close':{
+        this.cancelForm(form);
       }
     }
   }
@@ -236,10 +271,10 @@ export class ConsultantComponent implements OnInit {
    * 1) content consists the modal instance
    * 2) Selected contains the code of selected row
    */
-  open(event: any) {
+  open(event: any , content: any) {
     this.selectedRecrdToDel = 0;
-    if (event.id) {
-      this.selectedRecrdToDel = event.id;
+    if (event) {
+      this.selectedRecrdToDel = event;
     }
     // if (event.type === this.download) {
     //     // this.getFilesById(this.selectedRecrdToDel); TODO:Need to fix for multiple downloads
@@ -249,7 +284,7 @@ export class ConsultantComponent implements OnInit {
     //           window.open(err.url);
     //   });
     // } else {
-    this.modalRef = this.modalService.open(event.content);
+    this.modalRef = this.modalService.open(content);
     this.modalRef.result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
     }, (reason) => {

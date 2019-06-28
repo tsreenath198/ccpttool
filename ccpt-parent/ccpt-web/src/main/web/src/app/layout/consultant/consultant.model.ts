@@ -16,7 +16,7 @@ export interface ConsultantModel {
     prefferedLocation: string;
     skills: string;
     passoutYear: number;
-    cstatus: string;
+    conStatus: string;
     description: string;
     id: string;
     currentJobTitle: string;
@@ -29,5 +29,7 @@ export interface ConsultantModel {
     files: Array<any>;
     properties: Array<AdditionalPropertiesModel>;
 }
-
+export class ActionsList {
+    actions = [{key: 'Edit' , value:'Edit'},{key: 'File Upload' , value:'File Upload'},{key: 'File Download' , value:'File Download'}, {key: 'Delete' , value:'Delete'}, {key: 'Close' , value:'Close'}];
+}
 
