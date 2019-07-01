@@ -25,7 +25,7 @@ public class PaymentDTO extends IDEntityDTO {
 
 	private Date joiningDate;
 
-	private Long annualPackage;
+	private String annualPackage;
 
 	private String companyName;
 
@@ -43,10 +43,10 @@ public class PaymentDTO extends IDEntityDTO {
 
 	private String contactPersonEmail;
 
-	private Float serviceCharge;
+	private String serviceCharge;
 
-	private Integer creditPeriod;
+	private String creditPeriod;
 
-	private Integer gauranteePeriod;
+	private String gauranteePeriod;
 
 }
