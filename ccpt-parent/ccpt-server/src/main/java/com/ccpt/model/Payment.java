@@ -22,7 +22,7 @@ public class Payment extends IDEntity {
 	 */
 
 	private static final long serialVersionUID = 1L;
-	
+
 	@Column
 	@NotNull
 	private Date invoiceDate;
@@ -53,7 +53,7 @@ public class Payment extends IDEntity {
 
 	@Column
 	@NotNull
-	private Long annualPackage;
+	private String annualPackage;
 
 	@Column
 	@NotNull
@@ -89,14 +89,14 @@ public class Payment extends IDEntity {
 
 	@Column
 	@NotNull
-	private Float serviceCharge;
+	private String serviceCharge;
 
 	@Column
 	@NotNull
-	private Integer creditPeriod;
+	private String creditPeriod;
 
 	@Column
 	@NotNull
-	private Integer gauranteePeriod;
+	private String gauranteePeriod;
 
 }
