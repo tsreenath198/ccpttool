@@ -173,9 +173,11 @@ export class ClientCallHistoryComponent implements OnInit {
         this.toastr.success(this.urlConstants.SuccessMsg, 'Client Call History');
         this.init();
         this.getRecruiterId();
+        this.isCreate= false;
     this.getTodaysDate();
         this.formReset();
         clientCallHistoryForm.resetForm();
+        this.isCreate= false;
       },
       err => {
         this.toastr.error(err.error.message, 'Client Call History');

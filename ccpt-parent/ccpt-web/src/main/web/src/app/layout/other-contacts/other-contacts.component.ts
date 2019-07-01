@@ -146,8 +146,10 @@ export class OtherContactsComponent implements OnInit {
             this.init();
             this.formReset();
             otherContactForm.resetForm();
+            this.isCreate= false;
         }, err => {
             this.toastr.error(err.error.message, 'Contact');
+            this.isCreate= false;
         });
     }
     update(otherContactForm: NgForm) {

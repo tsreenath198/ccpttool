@@ -222,9 +222,11 @@ export class ClientPositionComponent implements OnInit {
         this.init();
         this.formReset();
         clientPositionForm.resetForm();
+        this.isCreate= false;
       },
       err => {
         this.toastr.error(err.error.message, 'Client Position');
+        this.isCreate= false;
       }
     );
   }

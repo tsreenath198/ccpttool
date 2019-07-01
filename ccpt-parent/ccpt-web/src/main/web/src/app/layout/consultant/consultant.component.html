@@ -159,8 +159,8 @@
                 name="phone"
                 [readonly]="readOnlyForm == 'R'"
                 [(ngModel)]="consultantModel.phone"
-                maxlength="12"
-                onKeyPress="if(this.value.length==12) return false;"
+                maxlength="13"
+                onKeyPress="if(this.value.length==13) return false;"
                 #phone="ngModel"
                 type="tel"
               />

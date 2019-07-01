@@ -142,8 +142,10 @@ export class UsersComponent implements OnInit {
             this.toastr.success(this.urlConstants.SuccessMsg, 'User');
             usersForm.resetForm();
             this.init();
+            this.isCreate= false;
         }, err => {
             this.toastr.error(err.error.message, 'Users');
+            this.isCreate= false;
         });
     }
     updateUsers(usersForm: NgForm): void {

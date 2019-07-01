@@ -165,9 +165,11 @@ export class ConsultantCallHistoryComponent implements OnInit {
         consultantCallHistory.resetForm();
         this.formReset();
         this.callAfterFormReset();
+        this.isCreate= false;
       },
       err => {
         this.toastr.error(err.error.message, 'Consultant Call History');
+        this.isCreate= false;
       }
     );
   }

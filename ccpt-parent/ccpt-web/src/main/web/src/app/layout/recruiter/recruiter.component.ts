@@ -139,9 +139,11 @@ export class RecruiterComponent implements OnInit {
         this.init();
         this.formReset();
         recruiterForm.resetForm();
+        this.isCreate= false;
       },
       err => {
         this.toastr.error(err.error.message + err.status, 'Recruiter');
+        this.isCreate= false;
       }
     );
   }

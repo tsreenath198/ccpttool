@@ -87,8 +87,10 @@ export class EmailTemplateComponent implements OnInit {
             this.init();
             this.formReset();
             emailTemplateForm.resetForm();
+            this.isCreate= false;
         }, err => {
             this.toastr.error(err.statusText, 'Contact');
+            this.isCreate= false;
         });
     }
     updateEmailTemplate(emailTemplateForm: NgForm) {

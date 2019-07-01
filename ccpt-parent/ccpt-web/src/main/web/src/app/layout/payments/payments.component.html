@@ -17,10 +17,10 @@
               </th>
               <th>
                 Consultant
-              </th>
+              <!-- </th>
               <th>
                 <span class="pull-right">Action</span>
-              </th>
+              </th> -->
             </tr>
           </thead>
           <tbody>
@@ -48,6 +48,38 @@
     </div>
     <div class=" col-md-5">
       <form name="form" id="paymentsForm" (ngSubmit)="f.form.valid && create(f)" #f="ngForm" novalidate>
+          <div class="row text-center">
+              <div class="col-md-12 form-group">
+                <button
+                  type="submit"
+                  *ngIf="enableButtonType == ''"
+                  class="btn btn-secondary ml-3"
+                  [disabled]="f.form.pristine || f.form.invalid || isCreate"
+    
+                >
+                  Add
+                </button>
+                <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2" (click)="update(f)">Update</button>
+                <!-- <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button" (click)="enableFormEditable()">
+                  Edit
+                </button> -->
+                <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3" 
+                    *ngIf="enableButtonType == ''">
+                      {{ enableButtonType != '' ? 'Close' : 'Clear' }}
+                    </button>
+                    
+                    <span class="pull-right" *ngIf="showAction">
+                        <div class="form-group">
+                            <select class="form-control" [(ngModel)]="action" name="sel1" #sel1="ngModel" (change)="actions(action,trashContent,f)">
+                                <option [ngValue]="null" hidden selected>Choose action</option>  
+                              <option *ngFor="let al of actionsList.actions" [ngValue]="al.value">
+                                    {{ al.key }}
+                                  </option>
+                            </select>
+                          </div>
+                    </span>
+              </div>
+            </div>
         <div class="row">
           <div class="col-md-6">
             <div class="form-group " data-provide="datepicker">
@@ -67,6 +99,26 @@
               </div>
             </div>
           </div>
+          <div class="col-md-6">
+              <div class="form-group">
+                <label>Client Position<span class="required">*</span></label>
+                <select
+                  class="form-control"
+                  name="cp"
+                  [disabled]="readOnlyForm == 'R'"
+                  [(ngModel)]="cpId"
+                  [ngClass]="{ 'is-invalid': f.submitted && cp.invalid }"
+                  #cp="ngModel"
+                  (change)="getCPDetails(cpId)"
+                  required
+                >
+                  <option *ngFor="let cpl of clientPositionList" [ngValue]="cpl.id">{{ cpl.name }} </option>
+                </select>
+                <div class="invalid-feedback">
+                  Client Position is mandatory
+                </div>
+              </div>
+            </div>
         </div>
         <div class="row">
           <div class="col-md-6">
@@ -93,7 +145,7 @@
                 class="form-control"
                 [readonly]="readOnlyForm == 'R'"
                 [(ngModel)]="paymentModel.companyWebsite"
-                name="phone"
+                name="web"
                 [ngClass]="{ 'is-invalid': f.submitted && web.invalid }"
                 #web="ngModel"
                 required
@@ -112,7 +164,7 @@
                 class="form-control capi"
                 [readonly]="readOnlyForm == 'R'"
                 [(ngModel)]="paymentModel.companyGstNum"
-                name="name"
+                name="companyGstNum"
                 [ngClass]="{ 'is-invalid': f.submitted && companyGstNum.invalid }"
                 #companyGstNum="ngModel"
                 required
@@ -126,7 +178,7 @@
             <div class="form-group">
               <label>Credit Period<span class="required">*</span></label>
               <input
-                type="number"
+                type="text"
                 class="form-control"
                 [readonly]="readOnlyForm == 'R'"
                 [(ngModel)]="paymentModel.creditPeriod"
@@ -146,7 +198,7 @@
             <div class="form-group">
               <label>Guarentee Period<span class="required">*</span></label>
               <input
-                type="number"
+                type="text"
                 class="form-control capi"
                 [readonly]="readOnlyForm == 'R'"
                 [(ngModel)]="paymentModel.gauranteePeriod"
@@ -169,7 +221,7 @@
                 class="form-control"
                 [readonly]="readOnlyForm == 'R'"
                 [(ngModel)]="paymentModel.contactPerson"
-                name="phone"
+                name="contactPerson"
                 [ngClass]="{ 'is-invalid': f.submitted && contactPerson.invalid }"
                 #contactPerson="ngModel"
                 required
@@ -186,7 +238,7 @@
                 class="form-control"
                 [readonly]="readOnlyForm == 'R'"
                 [(ngModel)]="paymentModel.contactPersonDesignation"
-                name="phone"
+                name="contactPersonDesignation"
                 [ngClass]="{ 'is-invalid': f.submitted && contactPersonDesignation.invalid }"
                 #contactPersonDesignation="ngModel"
                 required
@@ -205,7 +257,7 @@
                 class="form-control capi"
                 [readonly]="readOnlyForm == 'R'"
                 [(ngModel)]="paymentModel.contactPersonNum"
-                name="name"
+                name="contactPersonNum"
                 [ngClass]="{ 'is-invalid': f.submitted && contactPersonNum.invalid }"
                 #contactPersonNum="ngModel"
                 required
@@ -222,7 +274,7 @@
                 class="form-control"
                 [readonly]="readOnlyForm == 'R'"
                 [(ngModel)]="paymentModel.contactPersonEmail"
-                name="phone"
+                name="contactPersonEmail"
                 [ngClass]="{ 'is-invalid': f.submitted && contactPersonEmail.invalid }"
                 #contactPersonEmail="ngModel"
                 required
@@ -253,22 +305,25 @@
             </div>
           </div>
           <div class="col-md-6">
-            <div class="form-group">
-              <label>Candidate Name<span class="required">*</span></label>
-              <input
-                class="form-control"
-                [readonly]="readOnlyForm == 'R'"
-                [(ngModel)]="paymentModel.candidateName"
-                name="candidateName"
-                [ngClass]="{ 'is-invalid': f.submitted && candidateName.invalid }"
-                #candidateName="ngModel"
-                required
-              />
-              <div class="invalid-feedback">
-                Candidate name is mandatory
+              <div class="form-group">
+                <label>Candidate Name<span class="required">*</span></label>
+                <select
+                  class="form-control"
+                  [disabled]="readOnlyForm == 'R'"
+                  [(ngModel)]="paymentModel.candidateName"
+                  name="con"
+                  [ngClass]="{ 'is-invalid': f.submitted && con.invalid }"
+                  #con="ngModel"
+                  (change)="getConsultantDetails()"
+                  required
+                >
+                  <option *ngFor="let cl of consultantList" [ngValue]="cl.name">{{ cl.name }}</option>
+                </select>
+                <div class="invalid-feedback">
+                  Consultant is mandatory
+                </div>
               </div>
             </div>
-          </div>
         </div>
         <div class="row">
           <div class="col-md-6">
@@ -293,7 +348,7 @@
             <div class="form-group">
               <label>Annual Package<span class="required">*</span></label>
               <input
-                type="number"
+                type="text"
                 class="form-control"
                 name="annualPackage"
                 [(ngModel)]="paymentModel.annualPackage"
@@ -491,12 +546,24 @@
               Add
             </button>
             <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2" (click)="update(f)">Update</button>
-            <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button" (click)="enableFormEditable()">
+            <!-- <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button" (click)="enableFormEditable()">
               Edit
-            </button>
-            <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3">
-              {{ enableButtonType != '' ? 'Close' : 'Clear' }}
-            </button>
+            </button> -->
+            <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3" 
+                *ngIf="enableButtonType == ''">
+                  {{ enableButtonType != '' ? 'Close' : 'Clear' }}
+                </button>
+                
+                <span class="pull-right" *ngIf="showAction">
+                    <div class="form-group">
+                        <select class="form-control" [(ngModel)]="action" name="sel1" #sel1="ngModel" (change)="actions(action,trashContent,f)">
+                            <option [ngValue]="null" hidden selected>Choose action</option>  
+                          <option *ngFor="let al of actionsList.actions" [ngValue]="al.value">
+                                {{ al.key }}
+                              </option>
+                        </select>
+                      </div>
+                </span>
           </div>
         </div>
       </form>

@@ -85,8 +85,10 @@ export class ClientPositionStatusComponent implements OnInit {
             this.init();
             this.formReset();
             clientPositionStatusForm.resetForm();
+            this.isCreate= false;
         }, err => {
             this.toastr.error(err.error.message, 'Client Position Status');
+            this.isCreate= false;
         });
     }
     updateClientPositionStatus(clientApplicationStatusForm: NgForm) {

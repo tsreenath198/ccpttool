@@ -101,6 +101,7 @@ export class MessageTemplateComponent implements OnInit {
             this.init();
             this.formReset();
             messageTemplateForm.resetForm();
+            this.isCreate= false;
         }, err => {
             this.toastr.error(err.statusText, 'Contact');
         });
@@ -115,6 +116,7 @@ export class MessageTemplateComponent implements OnInit {
             this.readOnlyForm = '';
             this.enableButtonType = '';
             this.showAction = false;
+            this.isCreate= false;
         }, err => {
             this.toastr.error(err.statusText, 'Message Template ');
         });

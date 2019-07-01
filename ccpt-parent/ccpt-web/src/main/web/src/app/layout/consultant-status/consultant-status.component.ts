@@ -103,8 +103,10 @@ export class ConsultantStatusComponent implements OnInit {
             this.init();
             this.formReset();
             consultantStatusForm.resetForm();
+            this.isCreate= false;
         }, err => {
             this.toastr.error(err.error.message, 'Consultant Status');
+            this.isCreate= false;
         });
     }
     public updateConsultantStatus(consultantStatusForm: NgForm) {
