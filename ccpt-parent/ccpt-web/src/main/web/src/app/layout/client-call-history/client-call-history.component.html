@@ -28,8 +28,8 @@
                   </tr>
                 </thead>
             <tbody class="overflow-ele-scroll">
-              <tr *ngFor="let cchl of clientCallHistoryList" (click)="readOnlyEnable(cchl.id)"
-                (dblclick)="editClientCallHistory(cchl)">
+              <tr *ngFor="let cchl of clientCallHistoryList" (click)="setModel(cchl.id)"
+                (dblclick)="dblSetModel()">
                 <td>
                   {{cchl.calledBy.fullname}}
                 </td>
@@ -52,14 +52,13 @@
       </div>
     </div>
     <div class="col-md-5">
-      <form name="form" id="clientCallHistoryForm" (ngSubmit)="f.form.valid&&createClientCallHistory(f)" #f="ngForm"
+      <form name="form" id="clientCallHistoryForm" (ngSubmit)="f.form.valid&&create(f)" #f="ngForm"
         novalidate>
         <div class="row text-center" *ngIf="loggedInRole != 'User'">
             <div class="form-group col-md-12">
-              <button type="submit" *ngIf="enableButtonType == ''" class="btn btn-secondary ml-3" [disabled]="f.form.pristine || f.form.invalid || isCreate"
->Add</button>
+              <button type="submit" *ngIf="enableButtonType == ''" class="btn btn-secondary ml-3" [disabled]="f.form.pristine || f.form.invalid || isCreate">Add</button>
               <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2"
-                (click)="updateClientCallHistory(f)">Update</button>
+                (click)="update(f)">Update</button>
               <!-- <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button"
                 (click)="enableFormEditable()">Edit</button> -->
                <button type="button" (click)="cancelForm(f)" *ngIf="enableButtonType == ''" class="btn btn-secondary ml-3" >{{enableButtonType != '' ? 'Close' : 'Clear'}}</button>
@@ -80,7 +79,7 @@
             <div class="form-group">
               <label>Called By<span class="required">*</span></label>
               <select class="form-control" [disabled]="readOnlyForm == 'R'" name="cn"
-                [(ngModel)]="clientCallHistoryModel.calledBy" [ngClass]="{'is-invalid': f.submitted && cn.invalid}"
+                [(ngModel)]="model.calledBy" [ngClass]="{'is-invalid': f.submitted && cn.invalid}"
                 #cn="ngModel" required>
                 <option *ngFor="let rl of recruiterList" [ngValue]="rl.id">
                   {{rl.name}}
@@ -95,7 +94,7 @@
               <div class="form-group">
                 <label>Called Date <span class="required">*</span></label>
                 <input class="form-control" type="date" name="calledDate" [readonly]="readOnlyForm == 'R'"
-                  placeholder="Called Date" [(ngModel)]="clientCallHistoryModel.calledDate" required>
+                  placeholder="Called Date" [(ngModel)]="model.calledDate" required>
               </div>
               <div class="invalid-feedback">
                 Called Date is mandatory
@@ -110,7 +109,7 @@
               <label>Client Position<span class="required">*</span></label>
 
               <select class="form-control" [disabled]="readOnlyForm == 'R'" name="cp"
-                [(ngModel)]="clientCallHistoryModel.cpId" [ngClass]="{'is-invalid': f.submitted && cp.invalid}"
+                [(ngModel)]="model.cpId" [ngClass]="{'is-invalid': f.submitted && cp.invalid}"
                 #cp="ngModel" required>
                 <option *ngFor="let cpl of clientPositionList" [ngValue]="cpl.id">
                   {{cpl.name}}
@@ -123,10 +122,10 @@
           </div>
         </div>
         <div class="row" >
-            <div class="col-md-12" *ngIf="clientCallHistoryModel.properties.length > 0">
+            <div class="col-md-12" *ngIf="model.properties.length > 0">
                 <div class="form-group">
                   <label>Additional Properties</label>
-                  <div class="row" *ngFor="let ap of clientCallHistoryModel.properties; let i = index">
+                  <div class="row" *ngFor="let ap of model.properties; let i = index">
                     <div class="col-md-5">
                       <input
                         type="text"
@@ -163,7 +162,7 @@
             <div class="form-group">
               <label>Notes<span class="required">*</span></label>
               <textarea class="form-control" name="note" cols="10" rows="10" [readonly]="readOnlyForm == 'R'"
-                [(ngModel)]="clientCallHistoryModel.description" [ngClass]="{'is-invalid': f.submitted && note.invalid}"
+                [(ngModel)]="model.description" [ngClass]="{'is-invalid': f.submitted && note.invalid}"
                 #note="ngModel" required></textarea>
                 <div class="invalid-feedback">
                   Notes is mandatory
@@ -197,10 +196,9 @@
           </div>
           <div class="row text-center" *ngIf="loggedInRole != 'User'">
               <div class="form-group col-md-12">
-                <button type="submit" *ngIf="enableButtonType == ''" class="btn btn-secondary ml-3" [disabled]="f.form.pristine || f.form.invalid || isCreate"
->Add</button>
+                <button type="submit" *ngIf="enableButtonType == ''" class="btn btn-secondary ml-3" [disabled]="f.form.pristine || f.form.invalid || isCreate">Add</button>
                 <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2"
-                  (click)="updateClientCallHistory(f)">Update</button>
+                  (click)="update(f)">Update</button>
                 <!-- <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button"
                   (click)="enableFormEditable()">Edit</button> -->
                  <button type="button" (click)="cancelForm(f)" *ngIf="enableButtonType == ''" class="btn btn-secondary ml-3" >{{enableButtonType != '' ? 'Close' : 'Clear'}}</button>
@@ -231,7 +229,7 @@
     <p>Are you sure you want to delete ? &hellip;</p>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-secondary" (click)="deleteCCHRecord()">Ok</button>
+    <button type="button" class="btn btn-secondary" (click)="trash()">Ok</button>
     <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
   </div>
 </ng-template>

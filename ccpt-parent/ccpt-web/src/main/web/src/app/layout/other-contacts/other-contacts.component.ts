@@ -8,6 +8,7 @@ import { NgbModal, ModalDismissReasons, NgbModalRef } from '@ng-bootstrap/ng-boo
 import { NgForm } from '@angular/forms';
 import { AdditionalPropertiesModel } from 'src/app/additional-properties.model';
 import { ActionsList } from './other-contacts.model';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-other-contacts',
@@ -17,7 +18,7 @@ import { ActionsList } from './other-contacts.model';
 })
 export class OtherContactsComponent implements OnInit {
 
-    public OCModel: OtherContactsModel = <OtherContactsModel>{};
+    public model: OtherContactsModel = <OtherContactsModel>{};
     public OCList: any = [];
     private urlConstants = new URLConstants();
     
@@ -33,22 +34,25 @@ export class OtherContactsComponent implements OnInit {
     public screenHeight: any;
     private selectedRecrdToDel = 0;
     public closeResult = '';
-    public trash = 'trash';
     public apName = '';
     public apValue = '';
     private modalRef: NgbModalRef;
 
-    constructor(private http: HttpClientService, private toastr: ToastrCustomService, private modalService: NgbModal) {
+    constructor(private http: HttpClientService, private router: Router, private toastr: ToastrCustomService, private modalService: NgbModal) {
         this.getScreenSize();
      }
-     @HostListener('window:resize', ['$event'])
+     @HostListener('window:resize', ['$event'])Router
      getScreenSize(event?) {
            this.screenHeight = window.innerHeight;
      }
     ngOnInit() {
+        /*Autheticate user with the token */
+    if (!this.http.isAuthenticate()){
+        this.router.navigate(['/login']);
+      }
         this.init();
     }
-    init() {
+    private init() {
         this.http.get(this.urlConstants.OCGetAll).subscribe(resp => {
             this.OCList = resp as any;
             this.OCList.forEach(cl => {
@@ -59,28 +63,28 @@ export class OtherContactsComponent implements OnInit {
                 }
             });
         });
-    this.OCModel.properties = [];
-    this.OCModel['phone'] = '+91';
+    this.model.properties = [];
+    this.model['phone'] = '+91';
     }
     private validate(value: any): boolean {
         const bool = (value == null) ? true : false;
         return bool;
     }
-    edit() {
+    public dblSetModel() {
         this.readOnlyForm = 'U';
         //this.config.editable = true;
         this.enableButtonType = 'U';
         this.showAction = true;
         this.action=null;
     }
-    enableFormEditable(): void {
+    private enableFormEditable(): void {
 
         this.readOnlyForm = 'U';
         //this.config.editable = true;
         this.enableButtonType = 'U';
     }
 
-    readOnlyEnable(id) {
+    public setModel(id) {
         this.getById(id);
         this.readOnlyForm = 'R';
        // this.config.editable = false;
@@ -88,40 +92,40 @@ export class OtherContactsComponent implements OnInit {
         this.showAction = true;
         this.action=null;
     }
-    getById(id) {
+    private getById(id) {
         const temp = this.http.get(this.urlConstants.OCGetById + id);
         temp.subscribe(resp => {
-            this.OCModel = this.mapToUpdateModel(resp);
+            this.model = this.mapToUpdateModel(resp);
             // tslint:disable-next-line:no-shadowed-variable
-             if (this.OCModel.properties == null) {
-                    this.OCModel.properties = [];
+             if (this.model.properties == null) {
+                    this.model.properties = [];
                 }
             });
     }
-    mapToUpdateModel(response) {
+    private mapToUpdateModel(response) {
         const temp = response;
-        this.OCModel = temp;
-        return this.OCModel;
+        this.model = temp;
+        return this.model;
     }
-    propertiesListIncrement(event, i: number) {
+    public propertiesListIncrement(event, i: number) {
         switch (event.id) {
             case 'decrease': {
-              this.OCModel.properties.splice(i, 1);
+              this.model.properties.splice(i, 1);
               break;
             }
             case 'increase': {
-              this.OCModel.properties.push(<AdditionalPropertiesModel>{ 'name': this.apName, 'value': this.apValue });
+              this.model.properties.push(<AdditionalPropertiesModel>{ 'name': this.apName, 'value': this.apValue });
               this.apName = '';
               this.apValue = '';
               break;
             }
           }
     }
-    actions(value,trashContent,form){
+    public actions(value,trashContent,form){
         console.log(value);
         switch(value){
           case 'Delete':{
-            this.open(this.OCModel.id,trashContent);
+            this.open(this.model.id,trashContent);
             break;
           }
           case 'Edit':{
@@ -133,14 +137,14 @@ export class OtherContactsComponent implements OnInit {
           }
         }
       }
-    formReset() {
-        this.OCModel = <OtherContactsModel>{}; 
-        this.OCModel.properties = [];
-        this.OCModel['phone'] = '+91';
+    private formReset() {
+        this.model = <OtherContactsModel>{}; 
+        this.model.properties = [];
+        this.model['phone'] = '+91';
     }
-    create(otherContactForm: NgForm): void {
+    public create(otherContactForm: NgForm): void {
         this.isCreate= true;
-        const temp = this.http.post(this.OCModel, this.urlConstants.OCCreate);
+        const temp = this.http.post(this.model, this.urlConstants.OCCreate);
         temp.subscribe(resp => {
             this.toastr.success(this.urlConstants.SuccessMsg, 'Contact');
             this.init();
@@ -152,8 +156,8 @@ export class OtherContactsComponent implements OnInit {
             this.isCreate= false;
         });
     }
-    update(otherContactForm: NgForm) {
-        const temp = this.http.update(this.OCModel, this.urlConstants.OCUpdate);
+    public update(otherContactForm: NgForm) {
+        const temp = this.http.update(this.model, this.urlConstants.OCUpdate);
         temp.subscribe(resp => {
             this.formReset();
             this.toastr.success(this.urlConstants.UpdateMsg, 'Contact ');
@@ -166,7 +170,7 @@ export class OtherContactsComponent implements OnInit {
             this.toastr.error(err.error.message, 'Contact');
         });
     }
-    cancelForm(consultantCallHistory: NgForm) {
+    public cancelForm(consultantCallHistory: NgForm) {
         consultantCallHistory.resetForm();
         this.formReset();
         this.init();
@@ -174,7 +178,7 @@ export class OtherContactsComponent implements OnInit {
         this.enableButtonType = '';
         this.showAction = false;
     }
-    delete(): void {
+    public trash(): void {
         const temp = this.http.delete(this.urlConstants.OCDelete + this.selectedRecrdToDel);
         temp.subscribe(resp => {
             this.toastr.success(this.urlConstants.DeleteMsg, 'Contact');

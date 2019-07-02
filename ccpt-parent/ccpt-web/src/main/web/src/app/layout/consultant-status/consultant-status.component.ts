@@ -6,6 +6,7 @@ import { HttpClientService } from 'src/app/shared/services/http.service';
 import { ToastrCustomService } from 'src/app/shared/services/toastr.service';
 import { URLConstants } from '../components/constants/url-constants';
 import { NgForm } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-consultant-status',
@@ -14,7 +15,7 @@ import { NgForm } from '@angular/forms';
     animations: [routerTransition()]
 })
 export class ConsultantStatusComponent implements OnInit {
-    public consultantStatusModel: ConsultantStatusModel = <ConsultantStatusModel>{};
+    public model: ConsultantStatusModel = <ConsultantStatusModel>{};
     public consultantStatusList: Array<ConsultantStatusModel> = [];
     private urlConstants = new URLConstants();
     public formButtonsToggler = true;
@@ -23,7 +24,6 @@ export class ConsultantStatusComponent implements OnInit {
     private selectedRecrdToDel = 0;
     public closeResult = '';
     private modalRef: NgbModalRef;
-    public trash = 'trash';
     public isCreate: boolean =false;
     public showAction: boolean = false;
     public actionsList = new ActionsList();
@@ -32,7 +32,7 @@ export class ConsultantStatusComponent implements OnInit {
 
     public readOnlyForm = '';
     public enableButtonType = '';
-    constructor(private http: HttpClientService, private toastr: ToastrCustomService, private modalService: NgbModal) {
+    constructor(private http: HttpClientService, private router: Router, private toastr: ToastrCustomService, private modalService: NgbModal) {
         this.getScreenSize();
     }
     @HostListener('window:resize', ['$event'])
@@ -40,6 +40,10 @@ export class ConsultantStatusComponent implements OnInit {
           this.screenHeight = window.innerHeight;
     }
     ngOnInit() {
+        /*Autheticate user with the token */
+        if (!this.http.isAuthenticate()){
+            this.router.navigate(['/login']);
+        }
         this.init();
     }
     public init() {
@@ -47,43 +51,42 @@ export class ConsultantStatusComponent implements OnInit {
             this.consultantStatusList = resp as Array<any>;
         });
     }
-    editClientApplicationStatus(data) {
-        this.consultantStatusModel = JSON.parse(JSON.stringify(data));
+    public dblSetModel() {
         this.readOnlyForm = 'U';
         this.enableButtonType = 'U';
         this.showAction = true;
         this.action = null;
     }
-    enableFormEditable(): void {
+    private enableFormEditable(): void {
         this.readOnlyForm = 'U';
         this.enableButtonType = 'U';
     }
-    readOnlyEnable(id) {
+    public setModel(id) {
         this.getById(id);
         this.readOnlyForm = 'R';
         this.enableButtonType = 'E';
         this.showAction = true;
         this.action = null;
     }
-    getById(id) {
+    private getById(id) {
         const temp = this.http.get(this.urlConstants.CSGetById + id);
         temp.subscribe(resp => {
-            this.consultantStatusModel = this.mapToUpdateModel(resp);
+            this.model = this.mapToUpdateModel(resp);
             });
     }
-    mapToUpdateModel(response) {
+    private mapToUpdateModel(response) {
         const temp = response;
-        this.consultantStatusModel = temp;
-        return this.consultantStatusModel;
+        this.model = temp;
+        return this.model;
     }
     public formReset() {
-        this.consultantStatusModel = <ConsultantStatusModel>{};
+        this.model = <ConsultantStatusModel>{};
     }
-    actions(value, trashContent, form) {
+    public actions(value, trashContent, form) {
         console.log(value);
         switch (value) {
           case 'Delete': {
-            this.open(this.consultantStatusModel.id, trashContent);
+            this.open(this.model.id, trashContent);
             break;
           }
           case 'Edit': {
@@ -95,9 +98,9 @@ export class ConsultantStatusComponent implements OnInit {
           }
         }
       }
-    public createConsultantStatus(consultantStatusForm: NgForm): void {
+    public create(consultantStatusForm: NgForm): void {
         this.isCreate=true;
-        const temp = this.http.post(this.consultantStatusModel, this.urlConstants.CSCreate);
+        const temp = this.http.post(this.model, this.urlConstants.CSCreate);
         temp.subscribe(resp => {
             this.toastr.success(this.urlConstants.SuccessMsg, 'Consultant Status');
             this.init();
@@ -109,8 +112,8 @@ export class ConsultantStatusComponent implements OnInit {
             this.isCreate= false;
         });
     }
-    public updateConsultantStatus(consultantStatusForm: NgForm) {
-        const temp = this.http.update(this.consultantStatusModel, this.urlConstants.CSUpdate);
+    public update(consultantStatusForm: NgForm) {
+        const temp = this.http.update(this.model, this.urlConstants.CSUpdate);
         temp.subscribe(resp => {
             this.toastr.success(this.urlConstants.UpdateMsg, 'Consultant Status');
             this.formButtonsToggler = true;
@@ -132,7 +135,7 @@ export class ConsultantStatusComponent implements OnInit {
         this.enableButtonType = '';
         this.showAction = false;
     }
-    deleteCSRecord(): void {
+    public trash(): void {
         const temp = this.http.delete(this.urlConstants.CSDelete + this.selectedRecrdToDel);
         temp.subscribe(resp => {
             this.toastr.success(this.urlConstants.DeleteMsg, 'Consultant Status');
@@ -146,7 +149,7 @@ export class ConsultantStatusComponent implements OnInit {
             this.toastr.error(err.error.message, 'Consultant Status');
         });
     }
-    open(event: any , content:any) {
+    public open(event: any , content:any) {
         if (event) {
             this.selectedRecrdToDel = event;
         }
@@ -157,7 +160,7 @@ export class ConsultantStatusComponent implements OnInit {
             this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
         });
     }
-    close() {
+    public close() {
         this.modalRef.close();
     }
     private getDismissReason(reason: any): string {

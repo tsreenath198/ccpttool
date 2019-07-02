@@ -25,7 +25,7 @@ import { Router } from '@angular/router';
   animations: [routerTransition()]
 })
 export class ClientPositionComponent implements OnInit {
-  public clientPositionModel: ClientPositionModel = <ClientPositionModel>{};
+  public model: ClientPositionModel = <ClientPositionModel>{};
   public clientPositionList: Array<ClientPositionModel> = [];
 
   public pagedCPList: Array<ClientPositionModel> = [];
@@ -55,7 +55,6 @@ export class ClientPositionComponent implements OnInit {
   public currSearchTxt: string;
   public readOnlyForm = '';
   public enableButtonType = '';
-  public trash = 'trash';
   public shortList = 'shortList';
   public sms = 'sms';
   public email = 'email';
@@ -89,7 +88,7 @@ export class ClientPositionComponent implements OnInit {
     this.getScreenSize();
   }
   @HostListener('window:resize', ['$event'])
-  getScreenSize(event?) {
+  private getScreenSize(event?) {
     this.screenHeight = window.innerHeight;
   }
 
@@ -111,18 +110,18 @@ export class ClientPositionComponent implements OnInit {
     };
     this.init();
   }
-  init() {
+  private init() {
     this.http.get(this.urlConstants.CPGetAll).subscribe(resp => {
       this.clientPositionList = resp as any;
       this.pagedCPList = resp as any;
       this.cpListLength = this.clientPositionList.length;
       this.pageChange(this.page);
     });
-    this.clientPositionModel.properties = [];
-    this.clientPositionModel.cpstatus = 'Open';
+    this.model.properties = [];
+    this.model.cpstatus = 'Open';
     this.page = 1;
   }
-  getAllDropdowns() {
+  private getAllDropdowns() {
     forkJoin(
       this.getAllCPS,
       this.getAllR,
@@ -136,8 +135,7 @@ export class ClientPositionComponent implements OnInit {
       this.consultantList = listofrecords[3] as any;
     });
   }
-  editClientPosition(data) {
-    this.clientPositionModel = JSON.parse(JSON.stringify(data));
+  public dblSetModel() {
     this.readOnlyForm = 'U';
     this.config.editable = true;
     this.enableButtonType = 'U';
@@ -145,13 +143,13 @@ export class ClientPositionComponent implements OnInit {
     this.showAction = true;
     this.action = null;
   }
-  enableFormEditable(): void {
+  private enableFormEditable(): void {
     this.readOnlyForm = 'U';
     this.enableButtonType = 'U';
     this.config.editable = true;
     this.closedByEnable = true;
   }
-  readOnlyEnable(id: number) {
+  public setModel(id: number) {
     this.getCPById(id);
     this.config.editable = false;
     this.readOnlyForm = 'R';
@@ -159,47 +157,47 @@ export class ClientPositionComponent implements OnInit {
     this.showAction = true;
     this.action = null;
   }
-  getCPById(id: number) {
+  private getCPById(id: number) {
     const temp = this.http.get(this.urlConstants.CPGetById + id);
     temp.subscribe(resp => {
-      this.clientPositionModel = this.mapToUpdateModel(resp);
+      this.model = this.mapToUpdateModel(resp);
       // tslint:disable-next-line:no-shadowed-variable
-      if (this.clientPositionModel.properties == null) {
-        this.clientPositionModel.properties = [];
+      if (this.model.properties == null) {
+        this.model.properties = [];
       }
     });
   }
-  mapToUpdateModel(response): ClientPositionModel {
+  private mapToUpdateModel(response): ClientPositionModel {
     const temp = response;
-    this.clientPositionModel = temp;
-    this.clientPositionModel['clientId'] = temp.client.id;
-    this.clientPositionModel['cpstatus'] = temp.status.code;
-    this.clientPositionModel['assignedTo'] = temp.assignedTo ? temp.assignedTo.id : 0;
-    this.clientPositionModel['closedBy'] = temp.closedBy ? temp.closedBy.id : 0;
-    return this.clientPositionModel;
+    this.model = temp;
+    this.model['clientId'] = temp.client.id;
+    this.model['cpstatus'] = temp.status.code;
+    this.model['assignedTo'] = temp.assignedTo ? temp.assignedTo.id : 0;
+    this.model['closedBy'] = temp.closedBy ? temp.closedBy.id : 0;
+    return this.model;
   }
-  propertiesListIncrement(event, i) {
+  public propertiesListIncrement(event, i) {
     switch (event.id) {
       case 'decrease': {
-        this.clientPositionModel.properties.splice(i, 1);
+        this.model.properties.splice(i, 1);
         break;
       }
       case 'increase': {
-        this.clientPositionModel.properties.push(<AdditionalPropertiesModel>{ 'name': this.apName, 'value': this.apValue });
+        this.model.properties.push(<AdditionalPropertiesModel>{ 'name': this.apName, 'value': this.apValue });
         this.apName = '';
         this.apValue = '';
         break;
       }
     }
   }
-  actions(value, trashContent, shortListContent, form) {
+  public actions(value, trashContent, shortListContent, form) {
     switch (value) {
       case 'Delete': {
-        this.open(this.clientPositionModel.id, trashContent);
+        this.open(this.model.id, trashContent);
         break;
       }
       case 'Create Application': {
-        this.open(this.clientPositionModel.id, shortListContent);
+        this.open(this.model.id, shortListContent);
         break;
       }
       case 'Edit': {
@@ -211,16 +209,16 @@ export class ClientPositionComponent implements OnInit {
       }
     }
   }
-  formReset() {
-    this.clientPositionModel = <ClientPositionModel>{};
-    this.clientPositionModel.properties = [];
-    this.clientPositionModel.cpstatus = 'Open';
+  private formReset() {
+    this.model = <ClientPositionModel>{};
+    this.model.properties = [];
+    this.model.cpstatus = 'Open';
   }
-  createClientPosition(clientPositionForm: NgForm): void {
+  public create(clientPositionForm: NgForm): void {
     this.isCreate = true;
     // tslint:disable-next-line:max-line-length
-    this.clientPositionModel.generatedCode = this.generateCPCode(this.clientPositionModel.clientId, this.clientPositionModel.role, this.clientPositionModel.location);
-    const temp = this.http.post(this.clientPositionModel, this.urlConstants.CPCreate);
+    this.model.generatedCode = this.generateCPCode(this.model.clientId, this.model.role, this.model.location);
+    const temp = this.http.post(this.model, this.urlConstants.CPCreate);
     temp.subscribe(
       resp => {
         this.toastr.success(this.urlConstants.SuccessMsg, 'Client Position');
@@ -259,10 +257,10 @@ export class ClientPositionComponent implements OnInit {
     }
     return isStr;
   }
-  updateClientPosition(clientPositionForm: NgForm) {
+  public update(clientPositionForm: NgForm) {
     // tslint:disable-next-line:max-line-length
-    this.clientPositionModel.generatedCode = this.generateCPCode(this.clientPositionModel.clientId, this.clientPositionModel.role, this.clientPositionModel.location);
-    const temp = this.http.update(this.clientPositionModel, this.urlConstants.CPUpdate);
+    this.model.generatedCode = this.generateCPCode(this.model.clientId, this.model.role, this.model.location);
+    const temp = this.http.update(this.model, this.urlConstants.CPUpdate);
     temp.subscribe(
       resp => {
         this.toastr.success(this.urlConstants.UpdateMsg, 'Client Position');
@@ -279,7 +277,7 @@ export class ClientPositionComponent implements OnInit {
       }
     );
   }
-  cancelForm(clientPositionForm: NgForm) {
+  public cancelForm(clientPositionForm: NgForm) {
     clientPositionForm.resetForm();
     this.formReset();
     this.init();
@@ -288,7 +286,7 @@ export class ClientPositionComponent implements OnInit {
     this.closedByEnable = false;
     this.showAction = false;
   }
-  deleteCPRecord(): void {
+  public trash(): void {
     const temp = this.http.delete(this.urlConstants.CPDelete + this.selectedRecrd);
     temp.subscribe(
       resp => {
@@ -339,7 +337,7 @@ export class ClientPositionComponent implements OnInit {
       this.close();
     });
   }
-  createClientApplication(data: any) {
+  public createClientApplication(data: any) {
     // TODO:Need to check the code
     // tslint:disable-next-line:max-line-length
     const dataToCreate = {
@@ -368,7 +366,7 @@ export class ClientPositionComponent implements OnInit {
    * 1) content consists the modal instance
    * 2) Selected contains the code of selected row
    */
-  open(event: any, content) {
+  public open(event: any, content) {
     // content, selected: number, type: string
     if (event) {
       this.selectedRecrd = event;
@@ -406,7 +404,7 @@ export class ClientPositionComponent implements OnInit {
       }
     }
   }
-  close() {
+  public close() {
     this.modalRef.close();
   }
   private getDismissReason(reason: any): string {
@@ -418,7 +416,7 @@ export class ClientPositionComponent implements OnInit {
       return `with: ${reason}`;
     }
   }
-  pageChange(event) {
+  public pageChange(event) {
     const from = ((event - 1) * this.pageSize);
     const lst = this.clientPositionList;
     const uplst = lst.slice(from, from + this.pageSize);

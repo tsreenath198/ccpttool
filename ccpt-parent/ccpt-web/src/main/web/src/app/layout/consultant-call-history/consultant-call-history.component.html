@@ -27,7 +27,7 @@
           </thead>
           <tbody class="overflow-ele-scroll">
             <tr *ngFor="let cchl of pagedConsultantList | filter: 'consultantName':currSearchTxt; let i = index"
-              (click)="readOnlyEnable(cchl.id)" (dblclick)="consultantCallHistoryEdit(cchl)">
+              (click)="setModel(cchl.id)" (dblclick)="dblSetModel()">
               <td>
                 {{ cchl.calledBy.fullname }}
               </td>
@@ -53,7 +53,7 @@
     </div>
 
     <div class="col-md-5">
-      <form name="form" id="clientPositionForm" (ngSubmit)="f.form.valid && createConsultantCallHistory(f)" #f="ngForm"
+      <form name="form" id="clientPositionForm" (ngSubmit)="f.form.valid && create(f)" #f="ngForm"
         novalidate>
         <div class="row text-center">
           <div class="form-group col-md-12">
@@ -62,7 +62,7 @@
               Add
             </button>
             <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2"
-              (click)="updateConsultantCallHistory(f)">
+              (click)="update(f)">
               Update
             </button>
             <!-- <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button" (click)="enableFormEditable()">
@@ -90,7 +90,7 @@
             <div class="form-group">
               <label>Called By<span class="required">*</span></label>
               <select class="form-control" [disabled]="readOnlyForm == 'R'" name="cn"
-                [(ngModel)]="consultantCallHistoryModel.calledBy"
+                [(ngModel)]="model.calledBy"
                 [ngClass]="{ 'is-invalid': f.submitted && cn.invalid }" #cn="ngModel" required>
                 <option *ngFor="let rl of recruiterList" [ngValue]="rl.id">
                   {{ rl.name }}
@@ -106,7 +106,7 @@
             <div class="form-group">
               <label>Called Date <span class="required">*</span></label>
               <input class="form-control" type="date" name="calledDate" [readonly]="readOnlyForm == 'R'"
-                placeholder="Called Date" [(ngModel)]="consultantCallHistoryModel.calledDate" required />
+                placeholder="Called Date" [(ngModel)]="model.calledDate" required />
             </div>
             <div class="invalid-feedback">
               Called date is mandatory
@@ -120,7 +120,7 @@
               <label>Client Position</label>
 
               <select class="form-control" [disabled]="readOnlyForm == 'R'" name="cp"
-                [(ngModel)]="consultantCallHistoryModel.cpId" [ngClass]="{ 'is-invalid': f.submitted && cp.invalid }"
+                [(ngModel)]="model.cpId" [ngClass]="{ 'is-invalid': f.submitted && cp.invalid }"
                 #cp="ngModel">
                 <option *ngFor="let cpl of clientPositionList" [ngValue]="cpl.id">
                   {{ cpl.name }}
@@ -132,7 +132,7 @@
             <div class="form-group">
               <label>Consultant<span class="required">*</span></label>
               <select class="form-control" name="consultant" [disabled]="readOnlyForm == 'R'"
-                [(ngModel)]="consultantCallHistoryModel.consultantId"
+                [(ngModel)]="model.consultantId"
                 [ngClass]="{ 'is-invalid': f.submitted && consultant.invalid }" #consultant="ngModel" required>
                 <option *ngFor="let consultant of consultantList" [ngValue]="consultant.id">{{ consultant.name }}
                 </option>
@@ -142,10 +142,10 @@
               </div>
             </div>
           </div>
-          <div class="col-md-12" *ngIf="consultantCallHistoryModel.properties.length > 0">
+          <div class="col-md-12" *ngIf="model.properties.length > 0">
             <div class="form-group">
               <label>Additional Properties</label>
-              <div class="row" *ngFor="let ap of consultantCallHistoryModel.properties; let i = index">
+              <div class="row" *ngFor="let ap of model.properties; let i = index">
                 <div class="col-md-5">
                   <input type="text" [(ngModel)]="ap.name" class="form-control" name="addPropName{{ i }}"
                     [readonly]="readOnlyForm == 'R'" />
@@ -165,7 +165,7 @@
             <div class="form-group">
               <label>Notes<span class="required">*</span></label>
               <textarea class="form-control" name="description" [readonly]="readOnlyForm == 'R'"
-                [(ngModel)]="consultantCallHistoryModel.description"
+                [(ngModel)]="model.description"
                 [ngClass]="{ 'is-invalid': f.submitted && description.invalid }" #description="ngModel" cols="10"
                 rows="10" required></textarea>
               <div class="invalid-feedback">
@@ -201,7 +201,7 @@
               Add
             </button>
             <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2"
-              (click)="updateConsultantCallHistory(f)">
+              (click)="update(f)">
               Update
             </button>
 
@@ -239,7 +239,7 @@
     <p>Are you sure you want to delete ? &hellip;</p>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-secondary" (click)="deleteCoCHRecord()">Ok</button>
+    <button type="button" class="btn btn-secondary" (click)="trash()">Ok</button>
     <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
   </div>
 </ng-template>

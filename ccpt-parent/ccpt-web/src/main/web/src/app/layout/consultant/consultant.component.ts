@@ -10,6 +10,7 @@ import { ConsultantStatusModel } from '../consultant-status/consultant-status.mo
 import { ToastrCustomService } from 'src/app/shared/services/toastr.service';
 import { URLConstants } from '../components/constants/url-constants';
 import { AdditionalPropertiesModel } from 'src/app/additional-properties.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-consultant',
@@ -18,7 +19,7 @@ import { AdditionalPropertiesModel } from 'src/app/additional-properties.model';
   animations: [routerTransition()]
 })
 export class ConsultantComponent implements OnInit {
-  public consultantModel: ConsultantModel = <ConsultantModel>{};
+  public model: ConsultantModel = <ConsultantModel>{};
   public consultantList: Array<ConsultantModel> = [];
   public pagedConsultantList: Array<ConsultantModel> = [];
   public consultantStatusList: Array<ConsultantStatusModel> = [];
@@ -35,7 +36,6 @@ export class ConsultantComponent implements OnInit {
   private selectedRecrdToDel = 0;
   public closeResult = '';
   public download = 'download';
-  public trash = 'trash';
   public upload = 'upload';
   public apName = '';
   public apValue = '';
@@ -55,7 +55,7 @@ export class ConsultantComponent implements OnInit {
   public pageSize: number = 10;
   public cSGetAllPromise = this.http.get(this.urlConstants.CSGetAll);
   public cGetAllPromise = this.http.get(this.urlConstants.CGetAll);
-  constructor(private http: HttpClientService, private toastr: ToastrCustomService, private modalService: NgbModal) {
+  constructor(private http: HttpClientService, private router: Router, private toastr: ToastrCustomService, private modalService: NgbModal) {
     this.getScreenSize();
   }
   @HostListener('window:resize', ['$event'])
@@ -64,6 +64,10 @@ export class ConsultantComponent implements OnInit {
     this.screenHeight = (window.innerHeight - 237);
   }
   ngOnInit() {
+    /*Autheticate user with the token */
+    if (!this.http.isAuthenticate()){
+      this.router.navigate(['/login']);
+    }
     this.cSGetAllPromise.subscribe(resp => {
       this.consultantStatusList = resp as any;
     });
@@ -84,9 +88,9 @@ export class ConsultantComponent implements OnInit {
       });
       this.pageChange(this.page);
     });
-    this.consultantModel['properties'] = [];
-    this.consultantModel['conStatus'] = 'Active';
-    this.consultantModel['phone'] = '+91';
+    this.model['properties'] = [];
+    this.model['conStatus'] = 'Active';
+    this.model['phone'] = '+91';
     this.page = 1;
   }
   private validate(value: any): boolean {
@@ -94,35 +98,35 @@ export class ConsultantComponent implements OnInit {
     return bool;
   }
   defaultValues() {
-    this.consultantModel['properties'] = [];
-    this.consultantModel['conStatus'] = 'Active';
-    this.consultantModel['phone'] = '+91';
+    this.model['properties'] = [];
+    this.model['conStatus'] = 'Active';
+    this.model['phone'] = '+91';
   }
-  consultantEdit(id: number) {
+  public dblSetModel() {
     this.readOnlyForm = 'U';
     this.enableButtonType = 'U';
     this.showAction = true;
     this.action=null;
   }
-  readOnlyEnable(id: number) {
+  public setModel(id: number) {
     this.getConsultantById(id);
     this.readOnlyForm = 'R';
     this.enableButtonType = 'E';
     this.showAction = true;
     this.action=null;
   }
-  enableFormEditable(): void {
+  private enableFormEditable(): void {
     this.readOnlyForm = 'U';
     this.enableButtonType = 'U';
   }
-  formReset() {
-    this.consultantModel = <ConsultantModel>{ properties: [] };
-    this.consultantModel['conStatus'] = 'Active';
-    this.consultantModel['phone'] = '+91';
+  private formReset() {
+    this.model = <ConsultantModel>{ properties: [] };
+    this.model['conStatus'] = 'Active';
+    this.model['phone'] = '+91';
   }
-  createConsultant(consultantForm: NgForm): void {
+  public create(consultantForm: NgForm): void {
     this.isCreate= true;
-    const temp = this.http.post(this.consultantModel, this.urlConstants.CCreate);
+    const temp = this.http.post(this.model, this.urlConstants.CCreate);
     temp.subscribe(
       resp => {
         this.toastr.success(this.urlConstants.SuccessMsg, 'Consultant');
@@ -137,8 +141,8 @@ export class ConsultantComponent implements OnInit {
       }
     );
   }
-  updateConsultant(consultantForm: NgForm) {
-    const temp = this.http.update(this.consultantModel, this.urlConstants.CUpdate);
+  public update(consultantForm: NgForm) {
+    const temp = this.http.update(this.model, this.urlConstants.CUpdate);
     temp.subscribe(
       resp => {
         consultantForm.resetForm();
@@ -154,24 +158,24 @@ export class ConsultantComponent implements OnInit {
       }
     );
   }
-  getConsultantById(id: number) {
+  private getConsultantById(id: number) {
     const temp = this.http.get(this.urlConstants.CGetById + id);
     temp.subscribe(resp => {
-      this.consultantModel = this.mapToUpdateModel(resp);
+      this.model = this.mapToUpdateModel(resp);
       // tslint:disable-next-line:no-shadowed-variable
 
-      if (this.consultantModel.properties == null) {
-        this.consultantModel.properties = [];
+      if (this.model.properties == null) {
+        this.model.properties = [];
       }
     });
   }
-  getFilesById(id: number) {
+  private getFilesById(id: number) {
     this.http.get('/uploadFile/id?id=' + id).subscribe(resp => {
       this.fileList.push(resp);
       console.log(this.fileList);
     });
   }
-  cancelForm(consultantForm: NgForm) {
+  public cancelForm(consultantForm: NgForm) {
     consultantForm.resetForm();
     this.formReset();
     this.readOnlyForm = '';
@@ -179,7 +183,7 @@ export class ConsultantComponent implements OnInit {
     this.showAction = false;
     this.defaultValues();
   }
-  deleteConsultantRecord(): void {
+  public trash(): void {
     const temp = this.http.delete(this.urlConstants.CDelete + this.selectedRecrdToDel);
     temp.subscribe(
       resp => {
@@ -202,38 +206,38 @@ export class ConsultantComponent implements OnInit {
       }
     );
   }
-  mapToUpdateModel(response): ConsultantModel {
+  private mapToUpdateModel(response): ConsultantModel {
     const temp = response;
-    this.consultantModel = temp;
-    this.consultantModel['conStatus'] = temp.status.code;
-    return this.consultantModel;
+    this.model = temp;
+    this.model['conStatus'] = temp.status.code;
+    return this.model;
   }
-  propertiesListIncrement(event, i: number) {
+  public propertiesListIncrement(event, i: number) {
     switch (event.id) {
       case 'decrease': {
-        this.consultantModel.properties.splice(i, 1);
+        this.model.properties.splice(i, 1);
         break;
       }
       case 'increase': {
-        this.consultantModel.properties.push(<AdditionalPropertiesModel>{ 'name': this.apName, 'value': this.apValue });
+        this.model.properties.push(<AdditionalPropertiesModel>{ 'name': this.apName, 'value': this.apValue });
         this.apName = '';
         this.apValue = '';
         break;
       }
     }
   }
-  actions(value,trashContent,uploadContent,downloadContent,form){
+  public actions(value,trashContent,uploadContent,downloadContent,form){
     switch(value){
       case 'Delete':{
-        this.open(this.consultantModel.id,trashContent);
+        this.open(this.model.id,trashContent);
         break;
       }
       case 'File Upload':{
-        this.open(this.consultantModel.id,uploadContent);
+        this.open(this.model.id,uploadContent);
         break;
       }
       case 'File Download':{
-        this.open(this.consultantModel.id,downloadContent);
+        this.open(this.model.id,downloadContent);
         break;
       }
       case 'Edit':{
@@ -245,7 +249,7 @@ export class ConsultantComponent implements OnInit {
       }
     }
   }
-  imposeMinMax(el) {
+  public imposeMinMax(el) {
     if (el.value !== '') {
       // tslint:disable-next-line:radix
       if (parseInt(el.value) < parseInt(el.min)) {
@@ -257,7 +261,7 @@ export class ConsultantComponent implements OnInit {
       }
     }
   }
-  activateId() {
+  public activateId() {
     const id = this.idToActivate;
     const temp = this.http.get(this.urlConstants.CActivate + id);
     temp.subscribe(resp => {
@@ -265,7 +269,7 @@ export class ConsultantComponent implements OnInit {
       this.init();
     });
   }
-  transformTitleCase(ip: HTMLInputElement) {
+  public transformTitleCase(ip: HTMLInputElement) {
     let temp = ip.value.length === 0 ? '' :
       ip.value.replace(/\w\S*/g, (txt => txt[0].toUpperCase() + txt.substr(1).toLowerCase()));
     ip.value = temp;
@@ -275,7 +279,7 @@ export class ConsultantComponent implements OnInit {
    * 1) content consists the modal instance
    * 2) Selected contains the code of selected row
    */
-  open(event: any , content: any) {
+  public open(event: any , content: any) {
     this.selectedRecrdToDel = 0;
     if (event) {
       this.selectedRecrdToDel = event;
@@ -297,7 +301,7 @@ export class ConsultantComponent implements OnInit {
     //}
 
   }
-  close() {
+  public close() {
     this.modalRef.close();
   }
   private getDismissReason(reason: any): string {
@@ -310,13 +314,13 @@ export class ConsultantComponent implements OnInit {
     }
   }
   /** Get Uploaded files */
-  getFiles(): FileLikeObject[] {
+  private getFiles(): FileLikeObject[] {
     return this.uploader.queue.map(fileItem => {
       return fileItem.file;
     });
   }
   /**Download file */
-  downloadFile(id: number) {
+  public downloadFile(id: number) {
     this.http.get(this.urlConstants.FileDownload + id).subscribe(resp => {
     }, err => {
       if (err.status == 200)
@@ -324,7 +328,7 @@ export class ConsultantComponent implements OnInit {
     });
   }
   /** Upload documents of respective consultant */
-  uploadFiles() {
+  public uploadFiles() {
     const files = this.getFiles();
     const formData = new FormData();
     formData.append('file', files[0].rawFile, files[0].name);
@@ -356,7 +360,7 @@ export class ConsultantComponent implements OnInit {
           }
         );*/
   }
-  pageChange(event) {
+  public pageChange(event) {
     const from = ((event - 1) * this.pageSize);
     const lst = this.consultantList;
     const uplst = lst.slice(from, from + this.pageSize);

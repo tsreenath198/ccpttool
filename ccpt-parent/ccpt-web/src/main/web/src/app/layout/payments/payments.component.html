@@ -26,8 +26,8 @@
           <tbody>
             <tr
               *ngFor="let pl of paymentsList | filter: 'name':currSearchTxt; let i = index"
-              (click)="readOnlyEnable(pl.id)"
-              (dblclick)="edit(pl)"
+              (click)="setModel(pl.id)"
+              (dblclick)="dblSetModel()"
             >
               <td>
                 {{ pl.invoiceDate | date}}
@@ -88,7 +88,7 @@
                 type="date"
                 class="form-control"
                 name="invoiceDate"
-                [(ngModel)]="paymentModel.invoiceDate"
+                [(ngModel)]="model.invoiceDate"
                 [ngClass]="{ 'is-invalid': f.submitted && invoiceDate.invalid }"
                 #invoiceDate="ngModel"
                 [readonly]="readOnlyForm == 'R'"
@@ -127,7 +127,7 @@
               <input
                 class="form-control capi"
                 [readonly]="readOnlyForm == 'R'"
-                [(ngModel)]="paymentModel.companyName"
+                [(ngModel)]="model.companyName"
                 name="name"
                 [ngClass]="{ 'is-invalid': f.submitted && name.invalid }"
                 #name="ngModel"
@@ -144,7 +144,7 @@
               <input
                 class="form-control"
                 [readonly]="readOnlyForm == 'R'"
-                [(ngModel)]="paymentModel.companyWebsite"
+                [(ngModel)]="model.companyWebsite"
                 name="web"
                 [ngClass]="{ 'is-invalid': f.submitted && web.invalid }"
                 #web="ngModel"
@@ -163,7 +163,7 @@
               <input
                 class="form-control capi"
                 [readonly]="readOnlyForm == 'R'"
-                [(ngModel)]="paymentModel.companyGstNum"
+                [(ngModel)]="model.companyGstNum"
                 name="companyGstNum"
                 [ngClass]="{ 'is-invalid': f.submitted && companyGstNum.invalid }"
                 #companyGstNum="ngModel"
@@ -181,7 +181,7 @@
                 type="text"
                 class="form-control"
                 [readonly]="readOnlyForm == 'R'"
-                [(ngModel)]="paymentModel.creditPeriod"
+                [(ngModel)]="model.creditPeriod"
                 name="creditPeriod"
                 [ngClass]="{ 'is-invalid': f.submitted && creditPeriod.invalid }"
                 #creditPeriod="ngModel"
@@ -201,7 +201,7 @@
                 type="text"
                 class="form-control capi"
                 [readonly]="readOnlyForm == 'R'"
-                [(ngModel)]="paymentModel.gauranteePeriod"
+                [(ngModel)]="model.gauranteePeriod"
                 name="gauranteePeriod"
                 [ngClass]="{ 'is-invalid': f.submitted && gauranteePeriod.invalid }"
                 #gauranteePeriod="ngModel"
@@ -220,7 +220,7 @@
               <input
                 class="form-control"
                 [readonly]="readOnlyForm == 'R'"
-                [(ngModel)]="paymentModel.contactPerson"
+                [(ngModel)]="model.contactPerson"
                 name="contactPerson"
                 [ngClass]="{ 'is-invalid': f.submitted && contactPerson.invalid }"
                 #contactPerson="ngModel"
@@ -237,7 +237,7 @@
               <input
                 class="form-control"
                 [readonly]="readOnlyForm == 'R'"
-                [(ngModel)]="paymentModel.contactPersonDesignation"
+                [(ngModel)]="model.contactPersonDesignation"
                 name="contactPersonDesignation"
                 [ngClass]="{ 'is-invalid': f.submitted && contactPersonDesignation.invalid }"
                 #contactPersonDesignation="ngModel"
@@ -256,7 +256,7 @@
               <input
                 class="form-control capi"
                 [readonly]="readOnlyForm == 'R'"
-                [(ngModel)]="paymentModel.contactPersonNum"
+                [(ngModel)]="model.contactPersonNum"
                 name="contactPersonNum"
                 [ngClass]="{ 'is-invalid': f.submitted && contactPersonNum.invalid }"
                 #contactPersonNum="ngModel"
@@ -273,7 +273,7 @@
               <input
                 class="form-control"
                 [readonly]="readOnlyForm == 'R'"
-                [(ngModel)]="paymentModel.contactPersonEmail"
+                [(ngModel)]="model.contactPersonEmail"
                 name="contactPersonEmail"
                 [ngClass]="{ 'is-invalid': f.submitted && contactPersonEmail.invalid }"
                 #contactPersonEmail="ngModel"
@@ -293,7 +293,7 @@
                 type="date"
                 class="form-control"
                 name="joiningDate"
-                [(ngModel)]="paymentModel.joiningDate"
+                [(ngModel)]="model.joiningDate"
                 [ngClass]="{ 'is-invalid': f.submitted && joiningDate.invalid }"
                 #joiningDate="ngModel"
                 [readonly]="readOnlyForm == 'R'"
@@ -310,7 +310,7 @@
                 <select
                   class="form-control"
                   [disabled]="readOnlyForm == 'R'"
-                  [(ngModel)]="paymentModel.candidateName"
+                  [(ngModel)]="model.candidateName"
                   name="con"
                   [ngClass]="{ 'is-invalid': f.submitted && con.invalid }"
                   #con="ngModel"
@@ -333,7 +333,7 @@
                 type="text"
                 class="form-control"
                 name="dob"
-                [(ngModel)]="paymentModel.designation"
+                [(ngModel)]="model.designation"
                 [ngClass]="{ 'is-invalid': f.submitted && designation.invalid }"
                 #designation="ngModel"
                 [readonly]="readOnlyForm == 'R'"
@@ -351,7 +351,7 @@
                 type="text"
                 class="form-control"
                 name="annualPackage"
-                [(ngModel)]="paymentModel.annualPackage"
+                [(ngModel)]="model.annualPackage"
                 [ngClass]="{ 'is-invalid': f.submitted && annualPackage.invalid }"
                 #annualPackage="ngModel"
                 [readonly]="readOnlyForm == 'R'"
@@ -370,7 +370,7 @@
               <input
                 class="form-control"
                 [readonly]="readOnlyForm == 'R'"
-                [(ngModel)]="paymentModel.phone"
+                [(ngModel)]="model.phone"
                 name="phone"
                 [ngClass]="{ 'is-invalid': f.submitted && phone.invalid }"
                 #phone="ngModel"
@@ -388,7 +388,7 @@
                 type="text"
                 class="form-control"
                 name="dob"
-                [(ngModel)]="paymentModel.branchHeadName"
+                [(ngModel)]="model.branchHeadName"
                 [ngClass]="{ 'is-invalid': f.submitted && branchHeadName.invalid }"
                 #branchHeadName="ngModel"
                 [readonly]="readOnlyForm == 'R'"
@@ -407,7 +407,7 @@
               <input
                 class="form-control"
                 [readonly]="readOnlyForm == 'R'"
-                [(ngModel)]="paymentModel.branchLocation"
+                [(ngModel)]="model.branchLocation"
                 name="branchLocation"
                 [ngClass]="{ 'is-invalid': f.submitted && branchLocation.invalid }"
                 #branchLocation="ngModel"
@@ -422,10 +422,10 @@
             <div class="form-group">
               <label>Service Charge <span class="required">*</span></label>
               <input
-                type="number"
+                type="text"
                 class="form-control"
                 [readonly]="readOnlyForm == 'R'"
-                [(ngModel)]="paymentModel.serviceCharge"
+                [(ngModel)]="model.serviceCharge"
                 name="serviceCharge"
                 [ngClass]="{ 'is-invalid': f.submitted && serviceCharge.invalid }"
                 #serviceCharge="ngModel"
@@ -446,7 +446,7 @@
                 cols="5"
                 rows="5"
                 [readonly]="readOnlyForm == 'R'"
-                [(ngModel)]="paymentModel.billingAddress"
+                [(ngModel)]="model.billingAddress"
                 name="billingAddress"
                 [ngClass]="{ 'is-invalid': f.submitted && billingAddress.invalid }"
                 #billingAddress="ngModel"
@@ -459,11 +459,11 @@
           </div>
         </div>
         <div class="row">
-          <div class="row" *ngIf="paymentModel.properties.length > 0">
-              <div class="col-md-12 ml-3" *ngIf="paymentModel.properties.length > 0">
+          <div class="row" *ngIf="model.properties.length > 0">
+              <div class="col-md-12 ml-3" *ngIf="model.properties.length > 0">
                   <div class="form-group">
                     <label>Additional Properties</label>
-                    <div class="row" *ngFor="let ap of paymentModel.properties; let i = index">
+                    <div class="row" *ngFor="let ap of model.properties; let i = index">
                       <div class="col-md-5">
                         <input
                           type="text"
@@ -503,7 +503,7 @@
                 cols="5"
                 rows="5"
                 [readonly]="readOnlyForm == 'R'"
-                [(ngModel)]="paymentModel.description"
+                [(ngModel)]="model.description"
                 name="description"
                 #notes="ngModel"
               ></textarea>
@@ -582,7 +582,7 @@
     <p>Are you sure you want to delete ? &hellip;</p>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-secondary" (click)="delete()">Ok</button>
+    <button type="button" class="btn btn-secondary" (click)="trash()">Ok</button>
     <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
   </div>
 </ng-template>

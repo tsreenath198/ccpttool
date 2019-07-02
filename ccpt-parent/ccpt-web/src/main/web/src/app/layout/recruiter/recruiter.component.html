@@ -22,7 +22,7 @@
               </thead>
           <tbody class="overflow-ele-scroll">
             <tr *ngFor="let rl of recruiterList |  filter : 'fullname' :currSearchTxt ; let i = index"
-              (click)="readOnlyEnable(rl.id)" (dblclick)="recruiterEdit(rl)">
+              (click)="setModel(rl.id)" (dblclick)="dblSetModel()">
               <td>
                 <dl>
                   <dt> {{rl.fullname}}</dt>
@@ -38,13 +38,12 @@
       </div>
     </div>
     <div class="col-md-5">
-      <form name="form" id="clientPositionForm" (ngSubmit)="f.form.valid&&createRecruiter(f)" #f="ngForm" novalidate>
+      <form name="form" id="clientPositionForm" (ngSubmit)="f.form.valid&&create(f)" #f="ngForm" novalidate>
           <div class="row text-center">
               <div class="col-md-12 form-group">
-                <button type="submit" *ngIf="enableButtonType == ''" class="btn btn-secondary ml-3" [disabled]="f.form.pristine || f.form.invalid || isCreate"
->Add</button>
+                <button type="submit" *ngIf="enableButtonType == ''" class="btn btn-secondary ml-3" [disabled]="f.form.pristine || f.form.invalid || isCreate">Add</button>
                 <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2"
-                  (click)="updateRecruiter(f)">Update</button>
+                  (click)="update(f)">Update</button>
                 <!-- <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button"
                   (click)="enableFormEditable()">Edit</button> -->
                   <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3" 
@@ -69,7 +68,7 @@
             <div class="form-group">
               <label>Full Name<span class="required">*</span></label>
               <input class="form-control" name="fullname" [readonly]="readOnlyForm== 'R'"
-                [(ngModel)]="recruiterModel.fullname" [ngClass]="{'is-invalid': f.submitted && fullname.invalid}"
+                [(ngModel)]="model.fullname" [ngClass]="{'is-invalid': f.submitted && fullname.invalid}"
                 #fullname="ngModel" #recruiterName (keyup)="transformTitleCase(recruiterName)" required>
               <div class="invalid-feedback">
                 fullname is mandatory
@@ -79,7 +78,7 @@
           <div class="col-md-6">
             <div class="form-group" data-provide="datepicker">
               <label>Date of Birth</label>
-              <input type="date" class="form-control" name="dob" [(ngModel)]="recruiterModel.dob"
+              <input type="date" class="form-control" name="dob" [(ngModel)]="model.dob"
                 [ngClass]="{'is-invalid': f.submitted && dob.invalid}" #dob="ngModel" [readonly]="readOnlyForm == 'R'"
                 >
               <div class="input-group-addon">
@@ -93,7 +92,7 @@
             <div class="form-group">
               <label>Gender<span class="required">*</span></label>
               <select class="form-control" name="gender" [disabled]="readOnlyForm == 'R'"
-                [(ngModel)]="recruiterModel.gender" [ngClass]="{'is-invalid': f.submitted && gender.invalid}"
+                [(ngModel)]="model.gender" [ngClass]="{'is-invalid': f.submitted && gender.invalid}"
                 #gender="ngModel" required>
                 <option *ngFor="let gl of genderList" [ngValue]="gl">{{gl}}</option>
               </select>
@@ -105,7 +104,7 @@
           <div class="col-md-6">
               <div class="form-group">
                 <label>Role<span class="required">*</span></label>
-                <select class="form-control" name="role" [(ngModel)]="recruiterModel.role"
+                <select class="form-control" name="role" [(ngModel)]="model.role"
                   [disabled]="readOnlyForm == 'R'" [ngClass]="{'is-invalid': f.submitted && role.invalid}" #role="ngModel"
                   required>
                   <option *ngFor="let role of rolesList" [ngValue]="role">{{role}}</option>
@@ -122,7 +121,7 @@
               <!--pattern="/^-?\d+\.?\d*$/" onKeyPress="if(this.value.length==12) return false;" -->
               <label>Phone<span class="required">*</span></label>
               <input class="form-control" name="phone" [readonly]="readOnlyForm == 'R'"
-                [(ngModel)]="recruiterModel.phone" [ngClass]="{'is-invalid': f.submitted && phone.invalid}"
+                [(ngModel)]="model.phone" [ngClass]="{'is-invalid': f.submitted && phone.invalid}"
                 type="text" #phone="ngModel" required>
               <div class="invalid-feedback">
                 phone is mandatory
@@ -133,7 +132,7 @@
             <div class="form-group">
               <label>E-Mail<span class="required">*</span></label>
               <input class="form-control" name="email" type="email" [readonly]="readOnlyForm == 'R'"
-                [(ngModel)]="recruiterModel.email" [ngClass]="{'is-invalid': f.submitted && email.invalid}"
+                [(ngModel)]="model.email" [ngClass]="{'is-invalid': f.submitted && email.invalid}"
                 #email="ngModel" required>
               <div class="invalid-feedback">
                 phone is mandatory
@@ -146,7 +145,7 @@
               <div class="form-group">
                   <label>Alias<span class="required">*</span></label>
                   <input class="form-control" name="alias" type="text" [readonly]="readOnlyForm == 'R'"
-                    [(ngModel)]="recruiterModel.aliasName" [ngClass]="{'is-invalid': f.submitted && alias.invalid}"
+                    [(ngModel)]="model.aliasName" [ngClass]="{'is-invalid': f.submitted && alias.invalid}"
                     #alias="ngModel" required>
                   <div class="invalid-feedback">
                     alias name is mandatory
@@ -159,16 +158,16 @@
             <div class="form-group">
               <label>Address</label>
               <textarea class="form-control" cols="10" rows="10" name="address" [readonly]="readOnlyForm == 'R'"
-                [(ngModel)]="recruiterModel.address" [ngClass]="{'is-invalid': f.submitted && address.invalid}"
+                [(ngModel)]="model.address" [ngClass]="{'is-invalid': f.submitted && address.invalid}"
                 #address="ngModel" ></textarea>
             </div>
           </div>
         </div>
-        <div class="row" *ngIf="recruiterModel.properties.length>0">
-            <div class="col-md-12" *ngIf="recruiterModel.properties.length > 0">
+        <div class="row" *ngIf="model.properties.length>0">
+            <div class="col-md-12" *ngIf="model.properties.length > 0">
                 <div class="form-group">
                   <label>Additional Properties</label>
-                  <div class="row" *ngFor="let ap of recruiterModel.properties; let i = index">
+                  <div class="row" *ngFor="let ap of model.properties; let i = index">
                     <div class="col-md-5">
                       <input
                         type="text"
@@ -208,7 +207,7 @@
                       class="form-control"
                       name="description"
                       [readonly]="readOnlyForm == 'R'"
-                      [(ngModel)]="recruiterModel.description"
+                      [(ngModel)]="model.description"
                       rows="10"
                     ></textarea>
                   </div>
@@ -244,7 +243,7 @@
                 <button type="submit" *ngIf="enableButtonType == ''" class="btn btn-secondary ml-3" [disabled]="f.form.pristine || f.form.invalid || isCreate"
 >Add</button>
                 <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2"
-                  (click)="updateRecruiter(f)">Update</button>
+                  (click)="update(f)">Update</button>
                 <!-- <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button"
                   (click)="enableFormEditable()">Edit</button> -->
                   <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3" 
@@ -280,7 +279,7 @@
     <p>Are you sure you want to delete ? &hellip;</p>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-secondary" (click)="deleteRecruiterRecord()">Ok</button>
+    <button type="button" class="btn btn-secondary" (click)="trash()">Ok</button>
     <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
   </div>
 </ng-template>

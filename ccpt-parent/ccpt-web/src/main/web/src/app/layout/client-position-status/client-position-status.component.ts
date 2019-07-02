@@ -6,6 +6,7 @@ import { ToastrCustomService } from 'src/app/shared/services/toastr.service';
 import {URLConstants} from '../components/constants/url-constants';
 import { NgForm } from '@angular/forms';
 import { NgbModal, ModalDismissReasons, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -15,7 +16,7 @@ import { NgbModal, ModalDismissReasons, NgbModalRef } from '@ng-bootstrap/ng-boo
     animations: [routerTransition()]
 })
 export class ClientPositionStatusComponent implements OnInit {
-    public clientPositionStatusModel: ClientpositionStatusModel = <ClientpositionStatusModel>{};
+    public model: ClientpositionStatusModel = <ClientpositionStatusModel>{};
     public clientPositionStatusList: Array<ClientpositionStatusModel> = [];
     private urlConstants = new URLConstants();
     public formButtonsToggler = true;
@@ -26,14 +27,13 @@ export class ClientPositionStatusComponent implements OnInit {
     public currSearchTxt: string ;
     public readOnlyForm = '';
     public enableButtonType = '';
-    public trash = 'trash';
     public screenHeight: any;
     public isCreate: boolean =false;
     public showAction: boolean = false;
     public actionsList = new ActionsList();
     public action: string = null;
 
-    constructor(private http: HttpClientService, private toastr: ToastrCustomService, private modalService: NgbModal) {
+    constructor(private http: HttpClientService, private router: Router, private toastr: ToastrCustomService, private modalService: NgbModal) {
         this.getScreenSize();
     }
     @HostListener('window:resize', ['$event'])
@@ -41,6 +41,10 @@ export class ClientPositionStatusComponent implements OnInit {
           this.screenHeight = window.innerHeight;
     }
     ngOnInit() {
+         /*Autheticate user with the token */
+         if (!this.http.isAuthenticate()){
+            this.router.navigate(['/login']);
+          }
         this.init();
     }
     init() {
@@ -48,39 +52,39 @@ export class ClientPositionStatusComponent implements OnInit {
             this.clientPositionStatusList = resp as Array<ClientpositionStatusModel>;
         });
     }
-    editClientPositionStatus(data) {
+    public dblSetModel() {
         this.readOnlyForm = 'U';
         this.enableButtonType = 'U';
         this.showAction = true;
         this.action = null;
     }
-    enableFormEditable(): void {
+    private enableFormEditable(): void {
         this.readOnlyForm = 'U';
         this.enableButtonType = 'U';
     }
-    readOnlyEnable(id) {
+    public setModel(id) {
         this.getById(id);
         this.readOnlyForm = 'R';
         this.enableButtonType = 'E';
         this.showAction = true;
         this.action = null;
     }
-    getById(id) {
+    private getById(id) {
         this.http.get(this.urlConstants.CPSGetById + id).subscribe(resp => {
-            this.clientPositionStatusModel = this.mapToUpdateModel(resp);
+            this.model = this.mapToUpdateModel(resp);
             });
     }
-    mapToUpdateModel(response) {
+    private mapToUpdateModel(response) {
         const temp = response;
-        this.clientPositionStatusModel = temp;
-        return this.clientPositionStatusModel;
+        this.model = temp;
+        return this.model;
     }
-    formReset() {
-        this.clientPositionStatusModel = <ClientpositionStatusModel>{};
+    private formReset() {
+        this.model = <ClientpositionStatusModel>{};
     }
-    createClientPositionStatus(clientPositionStatusForm: NgForm): void {
+    public create(clientPositionStatusForm: NgForm): void {
         this.isCreate=true;
-        this.http.post(this.clientPositionStatusModel, this.urlConstants.CPSCreate).subscribe(resp => {
+        this.http.post(this.model, this.urlConstants.CPSCreate).subscribe(resp => {
             this.toastr.success(this.urlConstants.SuccessMsg, 'Client Position Status');
             this.init();
             this.formReset();
@@ -91,8 +95,8 @@ export class ClientPositionStatusComponent implements OnInit {
             this.isCreate= false;
         });
     }
-    updateClientPositionStatus(clientApplicationStatusForm: NgForm) {
-        this.http.update(this.clientPositionStatusModel, this.urlConstants.CPSUpdate).subscribe(resp => {
+    public update(clientApplicationStatusForm: NgForm) {
+        this.http.update(this.model, this.urlConstants.CPSUpdate).subscribe(resp => {
             this.toastr.success(this.urlConstants.UpdateMsg, 'Client Position Status');
             this.formReset();
             this.init();
@@ -112,14 +116,14 @@ export class ClientPositionStatusComponent implements OnInit {
     //         this.editButtonToggler=false;
     //     }
     // }
-    cancelForm(clientApplicationStatusForm: NgForm) {
+    public cancelForm(clientApplicationStatusForm: NgForm) {
         this.formReset();
         clientApplicationStatusForm.resetForm();
         this.readOnlyForm = '';
         this.enableButtonType = '';
         this.showAction = false;
     }
-    deleteCPSRecord(): void {
+    public trash(): void {
         this.http.delete(this.urlConstants.CPSDelete + this.selectedRecrdToDel).subscribe(resp => {
             this.toastr.success(this.urlConstants.DeleteMsg, 'Client Position Status');
             this.init();
@@ -132,11 +136,11 @@ export class ClientPositionStatusComponent implements OnInit {
             this.toastr.error(err.error.message, 'Client Position Status');
         });
     }
-    actions(value, trashContent, form) {
+    public actions(value, trashContent, form) {
         console.log(value);
         switch (value) {
           case 'Delete': {
-            this.open(this.clientPositionStatusModel.id, trashContent);
+            this.open(this.model.id, trashContent);
             break;
           }
           case 'Edit': {
@@ -153,7 +157,7 @@ export class ClientPositionStatusComponent implements OnInit {
      * 1) content consists the modal instance
      * 2) Selected contains the code of selected row
      */
-    open(event: any , content) {
+    public open(event: any , content) {
         if (event) {
             this.selectedRecrdToDel = event;
         }
@@ -164,7 +168,7 @@ export class ClientPositionStatusComponent implements OnInit {
             this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
         });
     }
-    close() {
+    public close() {
         this.modalRef.close();
     }
     private getDismissReason(reason: any): string {

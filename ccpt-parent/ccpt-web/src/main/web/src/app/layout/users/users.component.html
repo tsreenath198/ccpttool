@@ -10,7 +10,7 @@
         <table class="table table-hover table-striped">
           <tbody>
             <tr *ngFor="let ul of usersList |  filter : 'username' : currSearchTxt ; let i = index"
-              (click)="readOnlyEnable(ul.id)" (dblclick)="editUser(ul)">
+              (click)="setModel(ul.id)" (dblclick)="dblSetModel()">
               <td>{{ul.username}}</td>
               <!-- <td width="100">
                 <app-action [trashContent]="trashContent" [id]="ul.id" [isTrash]="trash" (trash)="open($event)">
@@ -22,13 +22,12 @@
       </div>
     </div>
     <div class="col-md-6">
-      <form name="form" id="UserForm" (ngSubmit)="f.form.valid&&createUser(f)" #f="ngForm" novalidate>
+      <form name="form" id="UserForm" (ngSubmit)="f.form.valid&&create(f)" #f="ngForm" novalidate>
           <div class="row text-center" >
               <div class="col-md-12 form-group">
-                <button type="submit" *ngIf="enableButtonType == ''" class="btn btn-secondary ml-3" [disabled]="f.form.pristine || f.form.invalid || isCreate"
-  >Add</button>
+                <button type="submit" *ngIf="enableButtonType == ''" class="btn btn-secondary ml-3" [disabled]="f.form.pristine || f.form.invalid || isCreate">Add</button>
                 <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2"
-                  (click)="updateUsers(f)">Update</button>
+                  (click)="update(f)">Update</button>
                 <!-- <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button"
                   (click)="enableFormEditable()">Edit</button> -->
                   <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3" *ngIf="enableButtonType == ''">
@@ -51,7 +50,7 @@
           <div class="col-md-6">
             <div class="form-group">
               <label>Username<span class="required">*</span></label>
-              <select class="form-control" name="uname" [(ngModel)]="usersModel.username"
+              <select class="form-control" name="uname" [(ngModel)]="model.username"
                 [disabled]="readOnlyForm == 'R'" [ngClass]="{'is-invalid': f.submitted && uname.invalid}"
                 #uname="ngModel" required>
                 <option *ngFor="let gar of getAllR" [ngValue]="gar.email">{{gar.fullname}}
@@ -66,7 +65,7 @@
             <div class="form-group">
               <label>Password<span class="required">*</span></label>
               <div class="input-group mb-3">
-                <input type="password" class="form-control" [(ngModel)]="usersModel.password"
+                <input type="password" class="form-control" [(ngModel)]="model.password"
                   [readonly]="readOnlyForm == 'R'" name="pwd" [ngClass]="{'is-invalid': f.submitted && pwd.invalid}"
                   #pwd="ngModel" #password required>
 
@@ -86,7 +85,7 @@
           <div class="col-md-6">
             <div class="form-group">
               <label>Role<span class="required">*</span></label>
-              <select class="form-control" name="role" [(ngModel)]="usersModel.role" [disabled]="readOnlyForm == 'R'"
+              <select class="form-control" name="role" [(ngModel)]="model.role" [disabled]="readOnlyForm == 'R'"
                 [ngClass]="{'is-invalid': f.submitted && role.invalid}" #role="ngModel" required>
                 <option *ngFor="let rl of rolesList">{{rl}}
                 </option>
@@ -97,11 +96,11 @@
             </div>
           </div>
         </div>
-        <div class="row" *ngIf="usersModel.properties.length>0">
-            <div class="col-md-12" *ngIf="usersModel.properties.length > 0">
+        <div class="row" *ngIf="model.properties.length>0">
+            <div class="col-md-12" *ngIf="model.properties.length > 0">
                 <div class="form-group">
                   <label>Additional Properties</label>
-                  <div class="row" *ngFor="let ap of usersModel.properties; let i = index">
+                  <div class="row" *ngFor="let ap of model.properties; let i = index">
                     <div class="col-md-5">
                       <input
                         type="text"
@@ -138,7 +137,7 @@
             <div class="form-group">
               <label>Description</label>
               <textarea rows="5" cols="5" type="password" class="form-control" name="description"
-                [readonly]="readOnlyForm == 'R'" [(ngModel)]="usersModel.description"></textarea>
+                [readonly]="readOnlyForm == 'R'" [(ngModel)]="model.description"></textarea>
             </div>
           </div>
         </div>
@@ -171,7 +170,7 @@
               <button type="submit" *ngIf="enableButtonType == ''" class="btn btn-secondary ml-3" [disabled]="f.form.pristine || f.form.invalid || isCreate"
 >Add</button>
               <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2"
-                (click)="updateUsers(f)">Update</button>
+                (click)="update(f)">Update</button>
               <!-- <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button"
                 (click)="enableFormEditable()">Edit</button> -->
                 <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3" *ngIf="enableButtonType == ''">
@@ -206,7 +205,7 @@
     <p>Are you sure you want to delete ? &hellip;</p>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-secondary" (click)="deleteUserRecord()">Ok</button>
+    <button type="button" class="btn btn-secondary" (click)="trash()">Ok</button>
     <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
   </div>
 </ng-template>

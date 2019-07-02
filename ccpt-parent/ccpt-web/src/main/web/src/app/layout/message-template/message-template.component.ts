@@ -6,6 +6,7 @@ import { ToastrCustomService } from 'src/app/shared/services/toastr.service';
 import { NgbModal, ModalDismissReasons, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { NgForm } from '@angular/forms';
 import { MessageTemplateModel,ActionsList } from './message-template.model';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-message-template',
@@ -15,13 +16,12 @@ import { MessageTemplateModel,ActionsList } from './message-template.model';
 })
 export class MessageTemplateComponent implements OnInit {
 
-    public messageTemplateModel: MessageTemplateModel = <MessageTemplateModel>{};
+    public model: MessageTemplateModel = <MessageTemplateModel>{};
     public messageTemplateList: any = [];
     private urlConstants = new URLConstants();
     public readOnlyForm = '';
     public enableButtonType = '';
     public currSearchTxt = '';
-    public trash = 'trash';
     private selectedRecrdToDel = 0;
     public closeResult = '';
     private modalRef: NgbModalRef;
@@ -30,7 +30,7 @@ export class MessageTemplateComponent implements OnInit {
     public actionsList = new ActionsList();
     public action: string = null;
     public screenHeight: any;
-    constructor(private http: HttpClientService, private toastr: ToastrCustomService, private modalService: NgbModal) {
+    constructor(private http: HttpClientService, private router: Router, private toastr: ToastrCustomService, private modalService: NgbModal) {
         this.getScreenSize();
     }
     @HostListener('window:resize', ['$event'])
@@ -38,47 +38,50 @@ export class MessageTemplateComponent implements OnInit {
           this.screenHeight = window.innerHeight;
     }
     ngOnInit() {
+        /*Autheticate user with the token */
+    if (!this.http.isAuthenticate()){
+        this.router.navigate(['/login']);
+      }
         this.init();
     }
-    init() {
+    private init() {
         this.http.get(this.urlConstants.SMSTemplateGetAll).subscribe(resp => {
             this.messageTemplateList = resp as any;
         });
     }
-    editMessageTemplate(data) {
-        this.messageTemplateModel = JSON.parse(JSON.stringify(data));
+    public dblSetModel(data) {
         this.readOnlyForm = 'U';
         this.enableButtonType = 'U';
         this.showAction = true;
         this.action = null;
     }
-    enableFormEditable(): void {
+    private enableFormEditable(): void {
         this.readOnlyForm = 'U';
         this.enableButtonType = 'U';
     }
-    readOnlyEnable(id) {
+    public setModel(id) {
         this.getSMSById(id);
         this.readOnlyForm = 'R';
         this.enableButtonType = 'E';
         this.showAction = true;
         this.action = null;
     }
-    getSMSById(id: number) {
+    private getSMSById(id: number) {
         const temp = this.http.get(this.urlConstants.SMSTemplateGetById + id);
         temp.subscribe(resp => {
-            this.messageTemplateModel = this.mapToUpdateModel(resp);
+            this.model = this.mapToUpdateModel(resp);
         });
     }
-    mapToUpdateModel(response): MessageTemplateModel {
+    private mapToUpdateModel(response): MessageTemplateModel {
         const temp = response;
-        this.messageTemplateModel = temp;
-        return this.messageTemplateModel;
+        this.model = temp;
+        return this.model;
     }
-    actions(value, trashContent, form) {
+    public actions(value, trashContent, form) {
         console.log(value);
         switch (value) {
           case 'Delete': {
-            this.open(this.messageTemplateModel.id, trashContent);
+            this.open(this.model.id, trashContent);
             break;
           }
           case 'Edit': {
@@ -90,12 +93,12 @@ export class MessageTemplateComponent implements OnInit {
           }
         }
       }
-    formReset() {
-        this.messageTemplateModel = <MessageTemplateModel>{};
+    private formReset() {
+        this.model = <MessageTemplateModel>{};
     }
-    messageTemplateCreate(messageTemplateForm: NgForm): void {
+    public create(messageTemplateForm: NgForm): void {
         this.isCreate=true
-        const temp = this.http.post(this.messageTemplateModel, this.urlConstants.SMSTemplateCreate);
+        const temp = this.http.post(this.model, this.urlConstants.SMSTemplateCreate);
         temp.subscribe(resp => {
             this.toastr.success(this.urlConstants.SuccessMsg, 'Contact');
             this.init();
@@ -106,8 +109,8 @@ export class MessageTemplateComponent implements OnInit {
             this.toastr.error(err.statusText, 'Contact');
         });
     }
-    updateMessageTemplate(messageTemplateForm: NgForm) {
-        const temp = this.http.update(this.messageTemplateModel, this.urlConstants.SMSTemplateUpdate);
+    public update(messageTemplateForm: NgForm) {
+        const temp = this.http.update(this.model, this.urlConstants.SMSTemplateUpdate);
         temp.subscribe(resp => {
             this.formReset();
             this.toastr.success(this.urlConstants.UpdateMsg, 'Message Template ');
@@ -121,14 +124,14 @@ export class MessageTemplateComponent implements OnInit {
             this.toastr.error(err.statusText, 'Message Template ');
         });
     }
-    cancelForm(messageTemplateForm: NgForm) {
+    public cancelForm(messageTemplateForm: NgForm) {
         this.formReset();
         messageTemplateForm.resetForm();
         this.readOnlyForm = '';
         this.enableButtonType = '';
         this.showAction = false;
     }
-    deleteClientRecord(): void {
+    public trash(): void {
         const temp = this.http.delete(this.urlConstants.SMSTemplateDelete + this.selectedRecrdToDel);
         temp.subscribe(resp => {
             this.toastr.success(this.urlConstants.DeleteMsg, 'Client');
@@ -151,7 +154,7 @@ export class MessageTemplateComponent implements OnInit {
      * 1) content consists the modal instance
      * 2) Selected contains the code of selected row
      */
-    open(event: any  ,content:any) {
+    public open(event: any  ,content:any) {
         if (event) {
             this.selectedRecrdToDel = event;
         }
@@ -162,7 +165,7 @@ export class MessageTemplateComponent implements OnInit {
             this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
         });
     }
-    close() {
+    public close() {
         this.modalRef.close();
     }
     private getDismissReason(reason: any): string {

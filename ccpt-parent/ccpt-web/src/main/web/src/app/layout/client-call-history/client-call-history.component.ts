@@ -12,6 +12,7 @@ import { AdditionalPropertiesModel } from 'src/app/additional-properties.model';
 import { RecruiterModel } from '../recruiter/recruiter.model';
 import { forkJoin } from 'rxjs';
 import { ActionsList } from '../consultant-call-history/consultant-call-history.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-client-call-history',
@@ -20,7 +21,7 @@ import { ActionsList } from '../consultant-call-history/consultant-call-history.
   animations: [routerTransition()]
 })
 export class ClientCallHistoryComponent implements OnInit {
-  public clientCallHistoryModel: ClientCallHistoryModel = <ClientCallHistoryModel>{};
+  public model: ClientCallHistoryModel = <ClientCallHistoryModel>{};
   public clientCallHistoryList: Array<any> = [];
   public clientPositionList: Array<any> = [];
   public clientList: Array<any> = [];
@@ -30,7 +31,7 @@ export class ClientCallHistoryComponent implements OnInit {
   public urlConstants = new URLConstants();
   public showAction: boolean = false;
   public actionsList = new ActionsList();
-  public action:string;
+  public action: string;
   private selectedRecrdToDel = 0;
   public closeResult = '';
   private modalRef: NgbModalRef;
@@ -38,7 +39,6 @@ export class ClientCallHistoryComponent implements OnInit {
   public currSearchTxt: string;
   public readOnlyForm = '';
   public enableButtonType = '';
-  public trash = 'trash';
   public apName = '';
   public apValue = '';
   public loggedInRole = '';
@@ -51,7 +51,12 @@ export class ClientCallHistoryComponent implements OnInit {
   public getRlPromise = this.http.get(this.urlConstants.RDropdown);
   public cchGetAllPromise = this.http.get(this.urlConstants.CCHGetAll);
 
-  constructor(private http: HttpClientService, private toastr: ToastrCustomService, private modalService: NgbModal) {
+  constructor(
+    private http: HttpClientService,
+    private toastr: ToastrCustomService,
+    private modalService: NgbModal,
+    private router: Router
+  ) {
     this.getScreenSize();
   }
   @HostListener('window:resize', ['$event'])
@@ -60,11 +65,15 @@ export class ClientCallHistoryComponent implements OnInit {
   }
 
   ngOnInit() {
+    /*Autheticate user with the token */
+    if (!this.http.isAuthenticate()) {
+      this.router.navigate(['/login']);
+    }
     this.joins();
     this.init();
     this.loggedInRole = sessionStorage.getItem('role');
   }
-  joins() {
+  private joins() {
     forkJoin(this.getCplPromise, this.getClPromise, this.getRlPromise).subscribe(listofrecords => {
       this.clientPositionList = listofrecords[0] as any;
       this.clientList = listofrecords[1] as any;
@@ -73,119 +82,119 @@ export class ClientCallHistoryComponent implements OnInit {
       this.getTodaysDate();
     });
   }
-  init() {
+  private init() {
     this.cchGetAllPromise.subscribe(resp => {
       this.clientCallHistoryList = resp as Array<ClientCallHistoryModel>;
     });
-    this.clientCallHistoryModel.properties = [];
+    this.model.properties = [];
   }
-  getRecruiterId() {
+  private getRecruiterId() {
     const temp = sessionStorage.getItem('username');
     this.recruiterList.forEach(rl => {
       if (rl.email === temp) {
-        this.clientCallHistoryModel.calledBy = rl.id;
+        this.model.calledBy = rl.id;
       }
-      if(this.clientCallHistoryModel.properties == null){
-        this.clientCallHistoryModel.properties = [];
+      if (this.model.properties == null) {
+        this.model.properties = [];
       }
     });
   }
 
-  getTodaysDate() {
+  private getTodaysDate() {
     const today = new Date();
     const dd = String(today.getDate()).padStart(2, '0');
     const mm = String(today.getMonth() + 1).padStart(2, '0'); // January is 0!
     const yyyy = today.getFullYear();
-    const temp = yyyy + '-' + mm + '-' + dd ;
-    this.clientCallHistoryModel.calledDate = temp;
+    const temp = yyyy + '-' + mm + '-' + dd;
+    this.model.calledDate = temp;
   }
-  editClientCallHistory(data) {
+  public dblSetModel() {
     this.readOnlyForm = 'U';
     this.enableButtonType = 'U';
     this.showAction = true;
-    this.action=null;
+    this.action = null;
   }
-  readOnlyEnable(id: number) {
+  public setModel(id: number) {
     this.getCCHById(id);
     this.readOnlyForm = 'R';
     this.enableButtonType = 'E';
     this.showAction = true;
-    this.action=null;
+    this.action = null;
   }
-  getCCHById(id: number) {
+  private getCCHById(id: number) {
     const temp = this.http.get(this.urlConstants.CCHGetById + id);
     temp.subscribe(resp => {
-      this.clientCallHistoryModel = this.mapToUpdateModel(resp);
+      this.model = this.mapToUpdateModel(resp);
     });
   }
-  mapToUpdateModel(response): ClientCallHistoryModel {
+  private mapToUpdateModel(response): ClientCallHistoryModel {
     const temp = response;
-    this.clientCallHistoryModel = temp;
-    this.clientCallHistoryModel['cpId'] = temp.clientPosition.id;
-    this.clientCallHistoryModel['calledBy'] = temp.calledBy.id;
-    return this.clientCallHistoryModel;
+    this.model = temp;
+    this.model['cpId'] = temp.clientPosition.id;
+    this.model['calledBy'] = temp.calledBy.id;
+    return this.model;
   }
-  propertiesListIncrement(event, i: number) {
+  public propertiesListIncrement(event, i: number) {
     switch (event.id) {
       case 'decrease': {
-          this.clientCallHistoryModel.properties.splice(i, 1);
-          break;
-      }
-      case 'increase': {
-          this.clientCallHistoryModel.properties.push(<AdditionalPropertiesModel>{ 'name': this.apName, 'value': this.apValue });
-          this.apName = '';
-          this.apValue = '';
-          break;
-      }
-  }
-  }
-  actions(value,trashContent,form){
-    console.log(value);
-    switch(value){
-      case 'Delete':{
-        this.open(this.clientCallHistoryModel.id,trashContent);
+        this.model.properties.splice(i, 1);
         break;
       }
-      case 'Edit':{
+      case 'increase': {
+        this.model.properties.push(<AdditionalPropertiesModel>{ name: this.apName, value: this.apValue });
+        this.apName = '';
+        this.apValue = '';
+        break;
+      }
+    }
+  }
+  public actions(value, trashContent, form) {
+    console.log(value);
+    switch (value) {
+      case 'Delete': {
+        this.open(this.model.id, trashContent);
+        break;
+      }
+      case 'Edit': {
         this.enableFormEditable();
         break;
       }
-      case 'Close':{
+      case 'Close': {
         this.cancelForm(form);
       }
     }
   }
-  enableFormEditable(): void {
+  private enableFormEditable(): void {
     this.readOnlyForm = 'U';
     this.enableButtonType = 'U';
   }
-  formReset() {
-    this.clientCallHistoryModel = <ClientCallHistoryModel>{};
-    this.clientCallHistoryModel.properties = [];
+  private formReset() {
+    this.model = <ClientCallHistoryModel>{};
+    this.model.properties = [];
     this.getRecruiterId();
     this.getTodaysDate();
   }
-  createClientCallHistory(clientCallHistoryForm: NgForm): void {
-    this.isCreate=true;
-    const temp = this.http.post(this.clientCallHistoryModel, this.urlConstants.CCHCreate);
+  public create(clientCallHistoryForm: NgForm): void {
+    this.isCreate = true;
+    const temp = this.http.post(this.model, this.urlConstants.CCHCreate);
     temp.subscribe(
       resp => {
         this.toastr.success(this.urlConstants.SuccessMsg, 'Client Call History');
         this.init();
         this.getRecruiterId();
-        this.isCreate= false;
-    this.getTodaysDate();
+        this.isCreate = false;
+        this.getTodaysDate();
         this.formReset();
         clientCallHistoryForm.resetForm();
-        this.isCreate= false;
+        this.isCreate = false;
       },
       err => {
         this.toastr.error(err.error.message, 'Client Call History');
       }
     );
   }
-  updateClientCallHistory(clientCallHistoryForm: NgForm) {
-    const temp = this.http.update(this.clientCallHistoryModel, this.urlConstants.CCHUpdate);
+  public update(clientCallHistoryForm: NgForm) {
+    const temp = this.http.update(this.model, this.urlConstants.CCHUpdate);
     temp.subscribe(
       resp => {
         this.toastr.success(this.urlConstants.UpdateMsg, 'Client Call History');
@@ -205,7 +214,7 @@ export class ClientCallHistoryComponent implements OnInit {
     );
   }
 
-  cancelForm(clientCallHistoryForm: NgForm) {
+  public cancelForm(clientCallHistoryForm: NgForm) {
     clientCallHistoryForm.resetForm();
     this.formReset();
     this.init();
@@ -213,7 +222,7 @@ export class ClientCallHistoryComponent implements OnInit {
     this.enableButtonType = '';
     this.showAction = false;
   }
-  deleteCCHRecord(): void {
+  public trash(): void {
     const temp = this.http.delete(this.urlConstants.CCHDelete + this.selectedRecrdToDel);
     temp.subscribe(
       resp => {
@@ -237,7 +246,7 @@ export class ClientCallHistoryComponent implements OnInit {
    * 1) content consists the modal instance
    * 2) Selected contains the code of selected row
    */
-  open(event: any , content) {
+  public open(event: any, content) {
     if (event) {
       this.selectedRecrdToDel = event;
     }
@@ -251,7 +260,7 @@ export class ClientCallHistoryComponent implements OnInit {
       }
     );
   }
-  close() {
+  public close() {
     this.modalRef.close();
   }
   private getDismissReason(reason: any): string {

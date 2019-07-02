@@ -30,8 +30,8 @@
             <tr
               class="table-data-padding"
               *ngFor="let cal of pagedCAList | filter: 'clientPositionId':currSearchTxt; let i = index"
-              (click)="readOnlyEnable(cal.id)"
-              (dblclick)="editClientApplication(cal)"
+              (click)="setModel(cal.id)"
+              (dblclick)="dblSetModel(cal)"
             >
               <td>{{ cal.consultant.fullname }}</td>
               <td>{{ cal.clientPosition.generatedCode }}</td>
@@ -63,7 +63,7 @@
       </div>
     </div>
     <div class="col-md-5">
-      <form name="form" id="clientApplicationForm" (ngSubmit)="f.form.valid && createClientApplication(f)" #f="ngForm" novalidate>
+      <form name="form" id="clientApplicationForm" (ngSubmit)="f.form.valid && create(f)" #f="ngForm" novalidate>
         <div class="row text-center">
           <div class="col-md-12 form-group">
             <button
@@ -74,7 +74,7 @@
             >
               Add
             </button>
-            <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2" (click)="updateClientApplication(f)">
+            <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2" (click)="update(f)">
               Update
             </button>
             <!-- <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button"
@@ -108,7 +108,7 @@
                 class="form-control"
                 name="cp"
                 [disabled]="readOnlyForm == 'R'"
-                [(ngModel)]="CAModel.cpId"
+                [(ngModel)]="model.cpId"
                 [ngClass]="{ 'is-invalid': f.submitted && cp.invalid }"
                 #cp="ngModel"
                 required
@@ -126,7 +126,7 @@
               <select
                 class="form-control"
                 [disabled]="readOnlyForm == 'R'"
-                [(ngModel)]="CAModel.consultantId"
+                [(ngModel)]="model.consultantId"
                 name="con"
                 [ngClass]="{ 'is-invalid': f.submitted && con.invalid }"
                 #con="ngModel"
@@ -148,7 +148,7 @@
                 class="form-control"
                 name="cas"
                 [disabled]="readOnlyForm == 'R'"
-                [(ngModel)]="CAModel.caStatus"
+                [(ngModel)]="model.caStatus"
                 [ngClass]="{ 'is-invalid': f.submitted && cas.invalid }"
                 #cas="ngModel"
                 required
@@ -169,7 +169,7 @@
                 class="form-control"
                 name="creator"
                 [disabled]="readOnlyForm == 'R'"
-                [(ngModel)]="CAModel.creatorId"
+                [(ngModel)]="model.creatorId"
                 [ngClass]="{ 'is-invalid': f.submitted && cas.invalid }"
                 required
               >
@@ -192,7 +192,7 @@
               name="senton"
               #senton="ngModel"
               [readonly]="readOnlyForm == 'R'"
-              [(ngModel)]="CAModel.sentOn"
+              [(ngModel)]="model.sentOn"
             />
             <div class="input-group-addon">
               <span class="glyphicon glyphicon-th"></span>
@@ -215,7 +215,7 @@
                       name="intDate"
                       #intDate="ngModel"
                       [readonly]="readOnlyForm == 'R'"
-                      [(ngModel)]="CAModel.interviewDate"
+                      [(ngModel)]="model.interviewDate"
                     />
                     <div class="input-group-addon">
                       <span class="glyphicon glyphicon-th"></span>
@@ -229,7 +229,7 @@
                       name="intTime"
                       #intTime="ngModel"
                       [readonly]="readOnlyForm == 'R'"
-                      [(ngModel)]="CAModel.interviewTime"
+                      [(ngModel)]="model.interviewTime"
                     />
                     <div class="input-group-addon">
                       <span class="glyphicon glyphicon-th"></span>
@@ -239,14 +239,14 @@
                 <div class="row">
                   <div class="col-md-6">
                     <label class="pt-2">Interview Location</label>
-                    <input class="form-control" name="loc" [readonly]="readOnlyForm == 'R'" [(ngModel)]="CAModel.interviewLocation" />
+                    <input class="form-control" name="loc" [readonly]="readOnlyForm == 'R'" [(ngModel)]="model.interviewLocation" />
                     <div class="input-group-addon">
                       <span class="glyphicon glyphicon-th"></span>
                     </div>
                   </div>
                   <div class="col-md-6">
                     <label class="pt-2">Interview Mode</label>
-                    <input class="form-control" name="mode" [readonly]="readOnlyForm == 'R'" [(ngModel)]="CAModel.interviewMode" />
+                    <input class="form-control" name="mode" [readonly]="readOnlyForm == 'R'" [(ngModel)]="model.interviewMode" />
                     <div class="input-group-addon">
                       <span class="glyphicon glyphicon-th"></span>
                     </div>
@@ -255,11 +255,11 @@
               </div>
             </div>
           </div>
-          <div class="row" *ngIf="CAModel.properties.length > 0">
-            <div class="col-md-12 ml-3" *ngIf="CAModel.properties.length > 0">
+          <div class="row" *ngIf="model.properties.length > 0">
+            <div class="col-md-12 ml-3" *ngIf="model.properties.length > 0">
               <div class="form-group">
                 <label>Additional Properties</label>
-                <div class="row" *ngFor="let ap of CAModel.properties; let i = index">
+                <div class="row" *ngFor="let ap of model.properties; let i = index">
                   <div class="col-md-5">
                     <input
                       type="text"
@@ -294,7 +294,7 @@
           <div class="col-md-12">
             <div class="form-group">
               <label>Description</label>
-              <angular-editor [(ngModel)]="CAModel.description" name="description" [config]="config"></angular-editor>
+              <angular-editor [(ngModel)]="model.description" name="description" [config]="config"></angular-editor>
             </div>
           </div>
         </div>
@@ -332,7 +332,7 @@
             >
               Add
             </button>
-            <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2" (click)="updateClientApplication(f)">
+            <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2" (click)="update(f)">
               Update
             </button>
             <!-- <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button"
@@ -374,7 +374,7 @@
     <p>Are you sure you want to delete ? &hellip;</p>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-secondary" (click)="deleteCARecord()">Ok</button>
+    <button type="button" class="btn btn-secondary" (click)="trash()">Ok</button>
     <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
   </div>
 </ng-template>
@@ -385,14 +385,14 @@
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
-  <div class="modal-body" *ngIf="CAModel.files.length > 0; else emptyMsg">
+  <div class="modal-body" *ngIf="model.files.length > 0; else emptyMsg">
     <table class="table">
       <thead>
         <th>File Name</th>
         <th>Description</th>
         <th>Action</th>
       </thead>
-      <tbody *ngFor="let fl of CAModel.files">
+      <tbody *ngFor="let fl of model.files">
         <td>{{ fl.fileName }}</td>
         <td>{{ fl.Description }}</td>
         <td>

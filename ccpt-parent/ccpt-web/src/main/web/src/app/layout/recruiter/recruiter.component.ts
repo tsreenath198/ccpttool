@@ -7,6 +7,7 @@ import { ToastrCustomService } from 'src/app/shared/services/toastr.service';
 import { URLConstants } from '../components/constants/url-constants';
 import { NgForm } from '@angular/forms';
 import { AdditionalPropertiesModel } from 'src/app/additional-properties.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-recruiter',
@@ -15,7 +16,7 @@ import { AdditionalPropertiesModel } from 'src/app/additional-properties.model';
   animations: [routerTransition()]
 })
 export class RecruiterComponent implements OnInit {
-  public recruiterModel: RecruiterModel = <RecruiterModel>{};
+  public model: RecruiterModel = <RecruiterModel>{};
   public formButtonsToggler = true;
   public editButtonToggler = true;
   public recruiterList: Array<RecruiterModel> = [];
@@ -33,14 +34,13 @@ export class RecruiterComponent implements OnInit {
   private modalRef: NgbModalRef;
   public genderList = ['Male', 'Female', 'Other'];
   public currSearchTxt: string;
-  public trash = 'trash';
   public screenHeight: any;
   public readOnlyForm = '';
   public enableButtonType = '';
   public apName = '';
   public apValue = '';
 
-  constructor(private http: HttpClientService, private toastr: ToastrCustomService, private modalService: NgbModal) {
+  constructor(private http: HttpClientService, private router: Router, private toastr: ToastrCustomService, private modalService: NgbModal) {
     this.getScreenSize();
   }
   @HostListener('window:resize', ['$event'])
@@ -48,6 +48,10 @@ export class RecruiterComponent implements OnInit {
     this.screenHeight = window.innerHeight;
   }
   ngOnInit() {
+    /*Autheticate user with the token */
+    if (!this.http.isAuthenticate()){
+      this.router.navigate(['/login']);
+    }
     this.init();
     this.rolesList = this.rolesModel.roles;
   }
@@ -56,53 +60,53 @@ export class RecruiterComponent implements OnInit {
       this.recruiterList = resp as any;
     });
 
-    this.recruiterModel.properties = [];
-    this.recruiterModel['phone'] = '+91';
+    this.model.properties = [];
+    this.model['phone'] = '+91';
   }
-  recruiterEdit(data) {
+  public dblSetModel() {
     this.readOnlyForm = 'U';
     this.enableButtonType = 'U';
     this.showAction = true;
     this.action=null;
   }
-  enableFormEditable(): void {
+  private enableFormEditable(): void {
     this.readOnlyForm = 'U';
     this.enableButtonType = 'U';
   }
-  readOnlyEnable(id: number) {
+  public setModel(id: number) {
     this.getById(id);
     this.readOnlyForm = 'R';
     this.enableButtonType = 'E';
     this.showAction = true;
     this.action=null;
   }
-  getById(id) {
+  private getById(id) {
     const temp = this.http.get(this.urlConstants.RGetById + id);
     temp.subscribe(resp => {
-      this.recruiterModel = this.mapToUpdateModel(resp);
+      this.model = this.mapToUpdateModel(resp);
       
-      if(this.recruiterModel.properties == null){
-        this.recruiterModel.properties = [];
+      if(this.model.properties == null){
+        this.model.properties = [];
       }
     });
   }
-  mapToUpdateModel(response) {
+  private mapToUpdateModel(response) {
     const temp = response;
-    this.recruiterModel = temp;
-    return this.recruiterModel;
+    this.model = temp;
+    return this.model;
   }
-  additionalPropertiesDeclare() {
-    this.recruiterModel.properties = [<AdditionalPropertiesModel>{}];
-    this.recruiterModel['phone'] = '+91';
+  public additionalPropertiesDeclare() {
+    this.model.properties = [<AdditionalPropertiesModel>{}];
+    this.model['phone'] = '+91';
   }
-  propertiesListIncrement(event, i: number) {
+  public propertiesListIncrement(event, i: number) {
     switch (event.id) {
       case 'decrease': {
-        this.recruiterModel.properties.splice(i, 1);
+        this.model.properties.splice(i, 1);
         break;
       }
       case 'increase': {
-        this.recruiterModel.properties.push(
+        this.model.properties.push(
             <AdditionalPropertiesModel>{ 'name': this.apName, 'value': this.apValue }
         );
         this.apName = '';
@@ -111,11 +115,11 @@ export class RecruiterComponent implements OnInit {
       }
     }
   }
-  actions(value,trashContent,form){
+  public actions(value,trashContent,form){
     console.log(value);
     switch(value){
       case 'Delete':{
-        this.open(this.recruiterModel.id,trashContent);
+        this.open(this.model.id,trashContent);
         break;
       }
       case 'Edit':{
@@ -127,12 +131,12 @@ export class RecruiterComponent implements OnInit {
       }
     }
   }
-  formReset() {
-    this.recruiterModel = <RecruiterModel>{properties: []};
+  private formReset() {
+    this.model = <RecruiterModel>{properties: []};
   }
-  createRecruiter(recruiterForm: NgForm): void {
+  public create(recruiterForm: NgForm): void {
     this.isCreate=true;
-    const temp = this.http.post(this.recruiterModel, this.urlConstants.RCreate);
+    const temp = this.http.post(this.model, this.urlConstants.RCreate);
     temp.subscribe(
       resp => {
         this.toastr.success(this.urlConstants.SuccessMsg, 'Recruiter');
@@ -147,8 +151,8 @@ export class RecruiterComponent implements OnInit {
       }
     );
   }
-  updateRecruiter(recruiterForm: NgForm) {
-    const temp = this.http.update(this.recruiterModel, this.urlConstants.RUpdate);
+  public update(recruiterForm: NgForm) {
+    const temp = this.http.update(this.model, this.urlConstants.RUpdate);
     temp.subscribe(
       resp => {
         this.toastr.success(this.urlConstants.UpdateMsg, 'Recruiter');
@@ -165,7 +169,7 @@ export class RecruiterComponent implements OnInit {
       }
     );
   }
-  cancelForm(recruiterForm: NgForm) {
+  public cancelForm(recruiterForm: NgForm) {
     recruiterForm.resetForm();
     this.formReset();
     this.init();
@@ -173,7 +177,7 @@ export class RecruiterComponent implements OnInit {
     this.enableButtonType = '';
     this.showAction = false;
   }
-  deleteRecruiterRecord(): void {
+  public trash(): void {
     const temp = this.http.delete(this.urlConstants.RDelete + this.selectedRecrdToDel);
     temp.subscribe(
       resp => {
@@ -191,7 +195,7 @@ export class RecruiterComponent implements OnInit {
       }
     );
   }
-  transformTitleCase(ip: HTMLInputElement) {
+  public transformTitleCase(ip: HTMLInputElement) {
     let temp = ip.value.length === 0 ? '' :
         ip.value.replace(/\w\S*/g, (txt => txt[0].toUpperCase() + txt.substr(1).toLowerCase()));
     ip.value = temp;
@@ -201,7 +205,7 @@ export class RecruiterComponent implements OnInit {
    * 1) content consists the modal instance
    * 2) Selected contains the code of selected row
    */
-  open(event: any, content: any) {
+  public open(event: any, content: any) {
     if (event) {
       this.selectedRecrdToDel = event;
     }
@@ -215,7 +219,7 @@ export class RecruiterComponent implements OnInit {
       }
     );
   }
-  close() {
+  public close() {
     this.modalRef.close();
   }
   private getDismissReason(reason: any): string {

@@ -9,6 +9,7 @@ import { NgForm } from '@angular/forms';
 import { AdditionalPropertiesModel } from 'src/app/additional-properties.model';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { forkJoin } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-payments',
@@ -18,7 +19,7 @@ import { forkJoin } from 'rxjs';
 })
 export class PaymentsComponent implements OnInit {
 
-    public paymentModel: PaymentsModel = <PaymentsModel>{};
+    public model: PaymentsModel = <PaymentsModel>{};
     public paymentsList: any = [];
     public clientPositionList: Array<any> = [];
     public consultantList: Array<any> = [];
@@ -30,7 +31,6 @@ export class PaymentsComponent implements OnInit {
     public screenHeight: any;
     private selectedRecrdToDel = 0;
     public closeResult = '';
-    public trash = 'trash';
     public apName = '';
     public apValue = '';
     public showAction: boolean = false;
@@ -40,7 +40,7 @@ export class PaymentsComponent implements OnInit {
     private getAllCP = this.http.get(this.urlConstants.CPDropdown);
     private getAllC = this.http.get(this.urlConstants.CDropdown);
 
-    constructor(private http: HttpClientService, private toastr: ToastrCustomService, private modalService: NgbModal) {
+    constructor(private http: HttpClientService, private router: Router, private toastr: ToastrCustomService, private modalService: NgbModal) {
         this.getScreenSize();
      }
      @HostListener('window:resize', ['$event'])
@@ -48,6 +48,10 @@ export class PaymentsComponent implements OnInit {
            this.screenHeight = window.innerHeight;
      }
     ngOnInit() {
+        /*Autheticate user with the token */
+    if (!this.http.isAuthenticate()){
+        this.router.navigate(['/login']);
+      }
         this.init();
         this.getAllDropdowns();
     }
@@ -56,7 +60,7 @@ export class PaymentsComponent implements OnInit {
             this.paymentsList = resp as any;
         });
          this.getTodaysDate();
-    this.paymentModel.properties = [];
+    this.model.properties = [];
     }
     getAllDropdowns() {
         forkJoin(
@@ -78,9 +82,9 @@ export class PaymentsComponent implements OnInit {
         const mm = String(today.getMonth() + 1).padStart(2, '0'); // January is 0!
         const yyyy = today.getFullYear();
         const temp = yyyy + '-' + mm + '-' + dd ;
-        this.paymentModel.invoiceDate = temp;
+        this.model.invoiceDate = temp;
       }
-    edit() {
+    public dblSetModel() {
         this.readOnlyForm = 'U';
         this.enableButtonType = 'U';
         this.showAction = true;
@@ -92,74 +96,75 @@ export class PaymentsComponent implements OnInit {
         this.enableButtonType = 'U';
     }
 
-    readOnlyEnable(id) {
+    public setModel(id) {
         this.getById(id);
         this.readOnlyForm = 'R';
         this.enableButtonType = 'E';
         this.showAction = true;
         this.action=null;
     }
-    getById(id) {
+    private getById(id) {
         const temp = this.http.get(this.urlConstants.PaymentGetById + id);
         temp.subscribe(resp => {
-            this.paymentModel = this.mapToUpdateModel(resp);
+            this.model = this.mapToUpdateModel(resp);
             // tslint:disable-next-line:no-shadowed-variable
-             if (this.paymentModel.properties == null) {
-                    this.paymentModel.properties = [];
+             if (this.model.properties == null) {
+                    this.model.properties = [];
                 }
             });
     }
-    getCPDetails(cpId){
+    private getCPDetails(cpId){
         this.http.get(this.urlConstants.CPGetById + cpId).subscribe(resp=>{
             let  temp = resp as any;
-            this.paymentModel.companyName = temp.client.name;
-            this.paymentModel.companyWebsite = temp.client.website;
-            this.paymentModel.companyGstNum = temp.client.gst;
-            this.paymentModel.creditPeriod = temp.client.creditPeriod;
-            this.paymentModel.gauranteePeriod = temp.client.guaranteePeriod;
-            this.paymentModel.contactPerson = temp.client.clientContacts[0].fullname;
-            this.paymentModel.contactPersonNum = temp.client.clientContacts[0].phone;
-            this.paymentModel.contactPersonEmail = temp.client.clientContacts[0].email;
-            this.paymentModel.designation = temp.role;
-            this.paymentModel.billingAddress = temp.client.billingAddress;
+            this.model.companyName = temp.client.name;
+            this.model.companyWebsite = temp.client.website;
+            this.model.companyGstNum = temp.client.gst;
+            this.model.creditPeriod = temp.client.creditPeriod;
+            this.model.gauranteePeriod = temp.client.guaranteePeriod;
+            this.model.contactPerson = temp.client.clientContacts[0].fullname;
+            this.model.contactPersonNum = temp.client.clientContacts[0].phone;
+            this.model.contactPersonEmail = temp.client.clientContacts[0].email;
+            this.model.designation = temp.role;
+            this.model.billingAddress = temp.client.billingAddress;
+            this.model.serviceCharge = temp.client.serviceCharge;
         })
     }
-    getConsultantDetails(){
+    private getConsultantDetails(){
         let id=0;
         for(let i=0 ;i<this.consultantList.length;i++){
-            if(this.paymentModel.candidateName == this.consultantList[i].name){
+            if(this.model.candidateName == this.consultantList[i].name){
                 id=this.consultantList[i].id;
             }
         }
         this.http.get(this.urlConstants.CGetById+id).subscribe(resp=>{
             let temp = resp as any;
-            this.paymentModel.phone = temp.phone;
+            this.model.phone = temp.phone;
         })
     }
-    mapToUpdateModel(response) {
+    private mapToUpdateModel(response) {
         const temp = response;
-        this.paymentModel = temp;
-        return this.paymentModel;
+        this.model = temp;
+        return this.model;
     }
-    propertiesListIncrement(event, i: number) {
+    public propertiesListIncrement(event, i: number) {
         switch (event.id) {
             case 'decrease': {
-              this.paymentModel.properties.splice(i, 1);
+              this.model.properties.splice(i, 1);
               break;
             }
             case 'increase': {
-              this.paymentModel.properties.push(<AdditionalPropertiesModel>{ 'name': this.apName, 'value': this.apValue });
+              this.model.properties.push(<AdditionalPropertiesModel>{ 'name': this.apName, 'value': this.apValue });
               this.apName = '';
               this.apValue = '';
               break;
             }
           }
     }
-    actions(value,trashContent,form){
+    public actions(value,trashContent,form){
         console.log(value);
         switch(value){
           case 'Delete':{
-            this.open(this.paymentModel.id,trashContent);
+            this.open(this.model.id,trashContent);
             break;
           }
           case 'Edit':{
@@ -171,11 +176,11 @@ export class PaymentsComponent implements OnInit {
           }
         }
       }
-    formReset() {
-        this.paymentModel = <PaymentsModel>{properties: []};
+    private formReset() {
+        this.model = <PaymentsModel>{properties: []};
     }
-    create(paymentsForm: NgForm): void {
-        const temp = this.http.post(this.paymentModel, this.urlConstants.PaymentCreate);
+    public create(paymentsForm: NgForm): void {
+        const temp = this.http.post(this.model, this.urlConstants.PaymentCreate);
         temp.subscribe(resp => {
             this.toastr.success(this.urlConstants.SuccessMsg, 'Contact');
             this.init();
@@ -185,8 +190,8 @@ export class PaymentsComponent implements OnInit {
             this.toastr.error(err.error.message, 'Contact');
         });
     }
-    update(paymentsForm: NgForm) {
-        const temp = this.http.update(this.paymentModel, this.urlConstants.PaymentUpdate);
+    public update(paymentsForm: NgForm) {
+        const temp = this.http.update(this.model, this.urlConstants.PaymentUpdate);
         temp.subscribe(resp => {
             this.formReset();
             this.toastr.success(this.urlConstants.UpdateMsg, 'Contact ');
@@ -199,7 +204,7 @@ export class PaymentsComponent implements OnInit {
             this.toastr.error(err.error.message, 'Contact');
         });
     }
-    cancelForm(consultantCallHistory: NgForm) {
+    public cancelForm(consultantCallHistory: NgForm) {
         consultantCallHistory.resetForm();
         this.formReset();
         this.init();
@@ -207,7 +212,7 @@ export class PaymentsComponent implements OnInit {
         this.enableButtonType = '';
         this.showAction = false;
     }
-    delete(): void {
+    public trash(): void {
         const temp = this.http.delete(this.urlConstants.PaymentDelete + this.selectedRecrdToDel);
         temp.subscribe(resp => {
             this.toastr.success(this.urlConstants.DeleteMsg, 'Contact');
@@ -226,7 +231,7 @@ export class PaymentsComponent implements OnInit {
      * 1) content consists the modal instance
      * 2) Selected contains the code of selected row
      */
-    open(event: any, content:any) {
+    public open(event: any, content:any) {
         if (event) {
             this.selectedRecrdToDel = event;
         }
@@ -237,7 +242,7 @@ export class PaymentsComponent implements OnInit {
             this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
         });
     }
-    close() {
+    public close() {
         this.modalRef.close();
     }
     private getDismissReason(reason: any): string {

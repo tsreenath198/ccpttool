@@ -11,7 +11,7 @@
         <table class="table table-hover table-striped">
           <tbody>
             <tr *ngFor="let csl of consultantStatusList |  filter : 'description' :currSearchTxt ; let i = index"
-            (click)="readOnlyEnable(csl.id)" (dblclick)="editClientApplicationStatus(csl)">
+            (click)="setModel(csl.id)" (dblclick)="dblSetModel()">
               <td>
                 {{csl.description}}</td>
               <td>
@@ -26,14 +26,14 @@
       </div>
     </div>
     <div class="col-md-5">
-      <form name="form" id="consultantStatusForm" (ngSubmit)="f.form.valid && createConsultantStatus(f)" #f="ngForm"
+      <form name="form" id="consultantStatusForm" (ngSubmit)="f.form.valid && create(f)" #f="ngForm"
         novalidate>
         <div class="row text-center">
             <div class="col-md-12 form-group">
               <button type="submit" *ngIf="enableButtonType == ''" class="btn btn-secondary ml-3" [disabled]="f.form.pristine || f.form.invalid || isCreate"
   >Add</button>
               <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2"
-                (click)="updateConsultantStatus(f)">Update</button>
+                (click)="update(f)">Update</button>
               <!-- <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button"
                 (click)="enableFormEditable()">Edit</button> -->
                 <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3" *ngIf="enableButtonType == ''">
@@ -57,7 +57,7 @@
             <div class="form-group">
               <label>Code<span class="required">*</span></label>
               <input class="form-control" maxlength="30" [readonly]="readOnlyForm == 'R' || readOnlyForm == 'U'"
-                [(ngModel)]="consultantStatusModel.code" name="code"
+                [(ngModel)]="model.code" name="code"
                 [ngClass]="{'is-invalid': f.submitted && code.invalid}" #code="ngModel" required>
               <div class="invalid-feedback">
                 code is mandatory
@@ -68,7 +68,7 @@
             <div class="form-group">
               <label>Description<span class="required">*</span></label>
               <textarea cols="10" rows="10" class="form-control" [readonly]="readOnlyForm == 'R'"
-                [(ngModel)]="consultantStatusModel.description" name="decription"
+                [(ngModel)]="model.description" name="decription"
                 [ngClass]="{'is-invalid': f.submitted && description.invalid}" #description="ngModel"
                 required></textarea>
               <div class="invalid-feedback">
@@ -82,7 +82,7 @@
             <button type="submit" *ngIf="enableButtonType == ''" class="btn btn-secondary ml-3" [disabled]="f.form.pristine || f.form.invalid || isCreate"
 >Add</button>
             <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2"
-              (click)="updateConsultantStatus(f)">Update</button>
+              (click)="update(f)">Update</button>
             <!-- <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button"
               (click)="enableFormEditable()">Edit</button> -->
               <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3" *ngIf="enableButtonType == ''">
@@ -118,7 +118,7 @@
     <p>Are you sure you want to delete ? &hellip;</p>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-secondary" (click)="deleteCSRecord()">Ok</button>
+    <button type="button" class="btn btn-secondary" (click)="trash()">Ok</button>
     <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
   </div>
 </ng-template>

@@ -26,8 +26,8 @@
           <tbody>
             <tr
               *ngFor="let cl of clientList | filter: 'name':currSearchTxt; let i = index"
-              (click)="readOnlyEnable(cl.id)"
-              (dblclick)="editClient(cl)"
+              (click)="setModel(cl.id)"
+              (dblclick)="dblSetModel(cl)"
             >
               <td>
                 {{ cl.name }}
@@ -50,7 +50,7 @@
       </div>
     </div>
     <div class=" col-md-5">
-      <form name="form" id="clientForm" (ngSubmit)="f.form.valid && clientCreate(f)" #f="ngForm" novalidate>
+      <form name="form" id="clientForm" (ngSubmit)="f.form.valid && create(f)" #f="ngForm" novalidate>
         <div class="row text-center" *ngIf="loggedInRole != 'User'">
           <div class="col-md-12 form-group">
             <button
@@ -61,7 +61,7 @@
             >
               Add
             </button>
-            <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2" (click)="updateClient(f)">Update</button>
+            <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2" (click)="update(f)">Update</button>
             <!-- <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button"
               (click)="enableFormEditable()">Edit</button> -->
             <button type="button" (click)="cancelForm(f)" *ngIf="enableButtonType == ''" class="btn btn-secondary ml-3">
@@ -93,7 +93,7 @@
               <input
                 class="form-control"
                 [readonly]="readOnlyForm == 'R'"
-                [(ngModel)]="clientModel.name"
+                [(ngModel)]="model.name"
                 name="code"
                 [ngClass]="{ 'is-invalid': f.submitted && code.invalid }"
                 #code="ngModel"
@@ -112,7 +112,7 @@
               <input
                 class="form-control"
                 [readonly]="readOnlyForm == 'R'"
-                [(ngModel)]="clientModel.industry"
+                [(ngModel)]="model.industry"
                 name="industry"
                 [ngClass]="{ 'is-invalid': f.submitted && industry.invalid }"
                 #industry="ngModel"
@@ -127,7 +127,7 @@
               <input
                 class="form-control"
                 [readonly]="readOnlyForm == 'R'"
-                [(ngModel)]="clientModel.phone"
+                [(ngModel)]="model.phone"
                 name="phone"
                 [ngClass]="{ 'is-invalid': f.submitted && phone.invalid }"
                 #phone="ngModel"
@@ -140,7 +140,7 @@
               <input
                 class="form-control"
                 [readonly]="readOnlyForm == 'R'"
-                [(ngModel)]="clientModel.email"
+                [(ngModel)]="model.email"
                 name="email"
                 [ngClass]="{ 'is-invalid': f.submitted && email.invalid }"
                 #email="ngModel"
@@ -156,7 +156,7 @@
                 type="text"
                 class="form-control"
                 [readonly]="readOnlyForm == 'R'"
-                [(ngModel)]="clientModel.guaranteePeriod"
+                [(ngModel)]="model.guaranteePeriod"
                 name="guaranteePeriod"
                 [ngClass]="{ 'is-invalid': f.submitted && guaranteePeriod.invalid }"
                 #guaranteePeriod="ngModel"
@@ -170,7 +170,7 @@
                 class="form-control"
                 type="text"
                 [readonly]="readOnlyForm == 'R'"
-                [(ngModel)]="clientModel.creditPeriod"
+                [(ngModel)]="model.creditPeriod"
                 name="creditPeriod"
                 [ngClass]="{ 'is-invalid': f.submitted && creditPeriod.invalid }"
                 #creditPeriod="ngModel"
@@ -185,7 +185,7 @@
               <input
                 class="form-control"
                 [readonly]="readOnlyForm == 'R'"
-                [(ngModel)]="clientModel.servicetaxNo"
+                [(ngModel)]="model.servicetaxNo"
                 name="servicetaxNo"
                 [ngClass]="{ 'is-invalid': f.submitted && servicetaxNo.invalid }"
                 #servicetaxNo="ngModel"
@@ -198,7 +198,7 @@
               <input
                 class="form-control"
                 [readonly]="readOnlyForm == 'R'"
-                [(ngModel)]="clientModel.serviceCharge"
+                [(ngModel)]="model.serviceCharge"
                 name="serviceCharge"
                 [ngClass]="{ 'is-invalid': f.submitted && serviceCharge.invalid }"
                 #serviceCharge="ngModel"
@@ -213,7 +213,7 @@
               <input
                 class="form-control"
                 [readonly]="readOnlyForm == 'R'"
-                [(ngModel)]="clientModel.gst"
+                [(ngModel)]="model.gst"
                 name="gst"
                 [ngClass]="{ 'is-invalid': f.submitted && gst.invalid }"
                 #gst="ngModel"
@@ -226,7 +226,7 @@
               <input
                 class="form-control"
                 [readonly]="readOnlyForm == 'R'"
-                [(ngModel)]="clientModel.website"
+                [(ngModel)]="model.website"
                 name="web"
                 [ngClass]="{ 'is-invalid': f.submitted && web.invalid }"
                 #web="ngModel"
@@ -234,11 +234,11 @@
             </div>
           </div>
         </div>
-        <div class="row" *ngIf="clientModel.properties.length > 0">
-          <div class="col-md-12" *ngIf="clientModel.properties.length > 0">
+        <div class="row" *ngIf="model.properties.length > 0">
+          <div class="col-md-12" *ngIf="model.properties.length > 0">
             <div class="form-group">
               <label>Additional Properties</label>
-              <div class="row" *ngFor="let ap of clientModel.properties; let i = index">
+              <div class="row" *ngFor="let ap of model.properties; let i = index">
                 <div class="col-md-5">
                   <input
                     type="text"
@@ -274,7 +274,7 @@
           <div class="col-md-12">
             <div class="form-group">
               <label>Description</label>
-              <angular-editor [(ngModel)]="clientModel.description" name="description" [config]="config"></angular-editor>
+              <angular-editor [(ngModel)]="model.description" name="description" [config]="config"></angular-editor>
             </div>
           </div>
         </div>
@@ -287,7 +287,7 @@
                 cols="5"
                 rows="5"
                 [readonly]="readOnlyForm == 'R'"
-                [(ngModel)]="clientModel.address"
+                [(ngModel)]="model.address"
                 name="add"
                 [ngClass]="{ 'is-invalid': f.submitted && add.invalid }"
                 #add="ngModel"
@@ -311,7 +311,7 @@
                 cols="5"
                 rows="5"
                 [readonly]="readOnlyForm == 'R'"
-                [(ngModel)]="clientModel.billingAddress"
+                [(ngModel)]="model.billingAddress"
                 name="billingAddress"
                 [ngClass]="{ 'is-invalid': f.submitted && billingAddress.invalid }"
                 #billingAddress="ngModel"
@@ -324,7 +324,7 @@
           <div class="table-responsive">
             <table class="table table-hover table-striped">
               <tbody>
-                <tr *ngFor="let cc of clientModel.clientContacts; let i = index">
+                <tr *ngFor="let cc of model.clientContacts; let i = index">
                   <td>
                     <input
                       class="form-control"
@@ -365,7 +365,7 @@
                     <i class="fa fa-minus" aria-hidden="true" id="decrease" (click)="clientContactListIncrement($event.target, i)"></i>
                     <i
                       class="fa fa-plus"
-                      *ngIf="i + 1 == clientModel.clientContacts.length"
+                      *ngIf="i + 1 == model.clientContacts.length"
                       aria-hidden="true"
                       id="increase"
                       (click)="clientContactListIncrement($event.target, i)"
@@ -410,7 +410,7 @@
             >
               Add
             </button>
-            <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2" (click)="updateClient(f)">Update</button>
+            <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2" (click)="update(f)">Update</button>
             <!-- <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button"
                   (click)="enableFormEditable()">Edit</button> -->
             <button type="button" (click)="cancelForm(f)" *ngIf="enableButtonType == ''" class="btn btn-secondary ml-3">
@@ -450,7 +450,7 @@
     <p>Are you sure you want to delete ? &hellip;</p>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-secondary" (click)="deleteClientRecord()">Ok</button>
+    <button type="button" class="btn btn-secondary" (click)="trash()">Ok</button>
     <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
   </div>
 </ng-template>
@@ -479,14 +479,14 @@
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
-  <div class="modal-body" *ngIf="clientModel.files.length > 0; else emptyMsg">
+  <div class="modal-body" *ngIf="model.files.length > 0; else emptyMsg">
     <table class="table">
       <thead>
         <th>File Name</th>
         <th>Description</th>
         <th>Action</th>
       </thead>
-      <tbody *ngFor="let fl of clientModel.files">
+      <tbody *ngFor="let fl of model.files">
         <td>{{ fl.fileName }}</td>
         <td>{{ fl.Description }}</td>
         <td>

@@ -7,6 +7,7 @@ import { ClientPositionModel } from '../client-position/client-position.model';
 import { forkJoin } from 'rxjs';
 import { NgbModal, ModalDismissReasons, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { Keyvalue } from '../modals/action';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-dashboard',
@@ -46,7 +47,7 @@ export class DashboardComponent implements OnInit {
     public getAllOpenCP = this.http.get(this.urlConstants.ReportingGetAllOpenCP);
     public getAllActiveCA = this.http.get(this.urlConstants.ReportingGetAllActiveCA);
     public getAllInterviewsToday = this.http.get(this.urlConstants.ReportingGetAllInterviewsToday);
-    constructor(private http: HttpClientService, private toastr: ToastrCustomService, private modalService: NgbModal) {
+    constructor(private http: HttpClientService, private router: Router, private toastr: ToastrCustomService, private modalService: NgbModal) {
         // this.sliders.push(
         //     {
         //         imagePath: 'assets/images/slider1.jpg',
@@ -88,6 +89,10 @@ export class DashboardComponent implements OnInit {
     }
 
     ngOnInit() {
+        /*Autheticate user with the token */
+    if (!this.http.isAuthenticate()){
+        this.router.navigate(['/login']);
+      }
         this.init();
     }
     public init() {

@@ -9,6 +9,7 @@ import { ClientModel, ClientContactsModel, ActionsList } from './client.model';
 import { FileUploader, FileLikeObject } from 'ng2-file-upload';
 import { AdditionalPropertiesModel } from 'src/app/additional-properties.model';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
+import { Router } from '@angular/router';
 
 
 
@@ -19,7 +20,7 @@ import { AngularEditorConfig } from '@kolkov/angular-editor';
     animations: [routerTransition()]
 })
 export class ClientComponent implements OnInit {
-    public clientModel: ClientModel = <ClientModel>{};
+    public model: ClientModel = <ClientModel>{};
     public clientList: any = [];
     public currSearchTxt = '';
     public urlConstants = new URLConstants();
@@ -39,7 +40,6 @@ export class ClientComponent implements OnInit {
     private modalRef: NgbModalRef;
     public screenHeight: any;
     public download = 'download';
-    public trash = 'trash';
     public upload = 'upload';
     public apName = '';
     public apValue = '';
@@ -53,14 +53,18 @@ export class ClientComponent implements OnInit {
         translate: 'no'
     };
 
-    constructor(private http: HttpClientService, private toastr: ToastrCustomService, private modalService: NgbModal) {
+    constructor(private http: HttpClientService, private toastr: ToastrCustomService, private modalService: NgbModal, private router: Router) {
         this.getScreenSize();
     }
     @HostListener('window:resize', ['$event'])
-    getScreenSize(event?) {
+    private getScreenSize(event?) {
         this.screenHeight = window.innerHeight;
     }
     ngOnInit() {
+        /*Autheticate user with the token */
+        if (!this.http.isAuthenticate()){
+          this.router.navigate(['/login']);
+        }
         this.loggedInRole = sessionStorage.getItem('role');
         this.clientContactDeclare();
         this.init();
@@ -69,57 +73,57 @@ export class ClientComponent implements OnInit {
         this.http.get(this.urlConstants.ClientGetAll).subscribe(resp => {
             this.clientList = resp as any;
         });
-        this.clientModel.properties = [];
-        this.clientModel.serviceCharge = '8.33';
-        this.clientModel.guaranteePeriod = '3 months';
-        this.clientModel.creditPeriod = '1 month';
-        this.clientModel.phone = '+91';
+        this.model.properties = [];
+        this.model.serviceCharge = '8.33';
+        this.model.guaranteePeriod = '3 months';
+        this.model.creditPeriod = '1 month';
+        this.model.phone = '+91';
     }
-    clientContactDeclare() {
-        this.clientModel.clientContacts = [{ 'fullname': '', 'email': '', 'phone': '' }];
+    private clientContactDeclare() {
+        this.model.clientContacts = [{ 'fullname': '', 'email': '', 'phone': '' }];
     }
-    editClient(data) {
+    public dblSetModel() {
         this.readOnlyForm = 'U';
         this.enableButtonType = 'U';
         this.showAction = true;
         this.action=null;
     }
-    enableFormEditable(): void {
+    private enableFormEditable(): void {
         this.readOnlyForm = 'U';
         this.enableButtonType = 'U';
     }
-    readOnlyEnable(id) {
+    public setModel(id) {
         this.getById(id);
         this.readOnlyForm = 'R';
         this.enableButtonType = 'E';
         this.showAction = true;
         this.action=null;
     }
-    getById(id) {
+    private getById(id) {
         const temp = this.http.get(this.urlConstants.ClientGetById + id);
         temp.subscribe(resp => {
-            this.clientModel = this.mapToUpdateModel(resp);
+            this.model = this.mapToUpdateModel(resp);
             // tslint:disable-next-line:no-shadowed-variable
-            if (this.clientModel.properties == null) {
-                this.clientModel.properties = [];
+            if (this.model.properties == null) {
+                this.model.properties = [];
             }
         });
     }
-    mapToUpdateModel(response) {
+    private mapToUpdateModel(response) {
         const temp = response;
-        this.clientModel = temp;
-        return this.clientModel;
+        this.model = temp;
+        return this.model;
     }
-    formReset() {
-        this.clientModel = <ClientModel>{properties : []};
-        this.clientModel.serviceCharge = '8.33';
-        this.clientModel.guaranteePeriod = '3 months';
-        this.clientModel.creditPeriod = '1 month';
-        this.clientModel.phone = '+91';
+    private formReset() {
+        this.model = <ClientModel>{properties : []};
+        this.model.serviceCharge = '8.33';
+        this.model.guaranteePeriod = '3 months';
+        this.model.creditPeriod = '1 month';
+        this.model.phone = '+91';
     }
-    clientCreate(clientForm: NgForm): void {
+    public create(clientForm: NgForm): void {
         this.isCreate = true;
-        const temp = this.http.post(this.clientModel, this.urlConstants.ClientCreate);
+        const temp = this.http.post(this.model, this.urlConstants.ClientCreate);
         temp.subscribe(resp => {
             this.toastr.success(this.urlConstants.SuccessMsg, 'Client');
             this.init();
@@ -132,8 +136,8 @@ export class ClientComponent implements OnInit {
             this.isCreate= false;
         });
     }
-    updateClient(clientForm: NgForm) {
-        const temp = this.http.update(this.clientModel, this.urlConstants.ClientUpdate);
+    public update(clientForm: NgForm) {
+        const temp = this.http.update(this.model, this.urlConstants.ClientUpdate);
         temp.subscribe(resp => {
             this.formReset();
             this.toastr.success(this.urlConstants.UpdateMsg, 'Client');
@@ -148,7 +152,7 @@ export class ClientComponent implements OnInit {
             this.toastr.error(err.error.message, 'Client');
         });
     }
-    cancelForm(consultantCallHistory: NgForm) {
+    public cancelForm(consultantCallHistory: NgForm) {
         consultantCallHistory.resetForm();
         this.formReset();
         this.readOnlyForm = '';
@@ -156,44 +160,44 @@ export class ClientComponent implements OnInit {
         this.showAction = false;
         this.clientContactDeclare();
     }
-    clientContactListIncrement(event, i: number) {
+    public clientContactListIncrement(event, i: number) {
         switch (event.id) {
             case 'decrease': {
-                this.clientModel.clientContacts.splice(i, 1);
+                this.model.clientContacts.splice(i, 1);
                 break;
             }
             case 'increase': {
-                this.clientModel.clientContacts.push({ 'fullname': '', 'email': '', 'phone': '' });
+                this.model.clientContacts.push({ 'fullname': '', 'email': '', 'phone': '' });
                 break;
             }
         }
     }
-    propertiesListIncrement(event, i: number) {
+    public propertiesListIncrement(event, i: number) {
         switch (event.id) {
             case 'decrease': {
-                this.clientModel.properties.splice(i, 1);
+                this.model.properties.splice(i, 1);
                 break;
             }
             case 'increase': {
-                this.clientModel.properties.push(<AdditionalPropertiesModel>{ 'name': this.apName, 'value': this.apValue });
+                this.model.properties.push(<AdditionalPropertiesModel>{ 'name': this.apName, 'value': this.apValue });
                 this.apName = '';
                 this.apValue = '';
                 break;
             }
         }
     }
-    actions(value,trashContent,uploadContent,downloadContent,form){
+    public actions(value,trashContent,uploadContent,downloadContent,form){
         switch(value){
           case 'Delete':{
-            this.open(this.clientModel.id,trashContent);
+            this.open(this.model.id,trashContent);
             break;
           }
           case 'File Upload':{
-            this.open(this.clientModel.id,uploadContent);
+            this.open(this.model.id,uploadContent);
             break;
           }
           case 'File Download':{
-            this.open(this.clientModel.id,downloadContent);
+            this.open(this.model.id,downloadContent);
             break;
           }
           case 'Edit':{
@@ -205,14 +209,14 @@ export class ClientComponent implements OnInit {
           }
         }
       }
-    billngAddressMatch() {
+    public billngAddressMatch() {
         if (this.address === true) {
-            this.clientModel.billingAddress = this.clientModel.address;
+            this.model.billingAddress = this.model.address;
         } else {
-            this.clientModel.billingAddress = '';
+            this.model.billingAddress = '';
         }
     }
-    deleteClientRecord(): void {
+    public trash(): void {
         const temp = this.http.delete(this.urlConstants.ClientDelete + this.selectedRecrdToDel);
         temp.subscribe(resp => {
             this.toastr.success(this.urlConstants.DeleteMsg, 'Client');
@@ -226,7 +230,7 @@ export class ClientComponent implements OnInit {
             this.toastr.error(err.error.message, 'Client');
         });
     }
-    getFilesById(id: number) {
+    public getFilesById(id: number) {
         this.http.get('/uploadFile/id?id=' + id).subscribe(resp => {
             this.fileList.push(resp);
             console.log(this.fileList);
@@ -237,7 +241,7 @@ export class ClientComponent implements OnInit {
      * 1) content consists the modal instance
      * 2) Selected contains the code of selected row
      */
-    open(event: any, content:any) {
+    public open(event: any, content:any) {
         this.selectedRecrdToDel = 0;
         if (event) {
             this.selectedRecrdToDel = event;
@@ -259,7 +263,7 @@ export class ClientComponent implements OnInit {
         //}
 
     }
-    close() {
+    public close() {
         this.modalRef.close();
     }
     private getDismissReason(reason: any): string {
@@ -272,13 +276,13 @@ export class ClientComponent implements OnInit {
         }
     }
     /** Get Uploaded files */
-    getFiles(): FileLikeObject[] {
+    private getFiles(): FileLikeObject[] {
         return this.uploader.queue.map((fileItem) => {
             return fileItem.file;
         });
     }
     /**Download file */
-    downloadFile(id:number){
+    public downloadFile(id:number){
         this.http.get(this.urlConstants.FileDownload + id).subscribe(resp => {
                 }, err => {
                     if (err.status == 200)
@@ -286,7 +290,7 @@ export class ClientComponent implements OnInit {
                 });
     }
     /** Upload documents of respective consultant */
-    uploadFiles() {
+    public uploadFiles() {
         const files = this.getFiles();
         const formData = new FormData();
         formData.append('file', files[0].rawFile, files[0].name);
@@ -318,7 +322,7 @@ export class ClientComponent implements OnInit {
           }
         );*/
     }
-    transformTitleCase(ip: HTMLInputElement) {
+    public transformTitleCase(ip: HTMLInputElement) {
         let temp = ip.value.length === 0 ? '' :
             ip.value.replace(/\w\S*/g, (txt => txt[0].toUpperCase() + txt.substr(1).toLowerCase()));
         ip.value = temp;

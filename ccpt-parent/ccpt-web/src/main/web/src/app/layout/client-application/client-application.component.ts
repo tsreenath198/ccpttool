@@ -16,6 +16,7 @@ import { AdditionalPropertiesModel } from 'src/app/additional-properties.model';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { FileUploader, FileLikeObject } from 'ng2-file-upload';
 import { ActionsList } from '../client-call-history/client-call-history.model';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -25,7 +26,7 @@ import { ActionsList } from '../client-call-history/client-call-history.model';
     animations: [routerTransition()]
 })
 export class ClientApplicationComponent implements OnInit {
-    public CAModel: ClientApplicationModel = <ClientApplicationModel>{};
+    public model: ClientApplicationModel = <ClientApplicationModel>{};
     public clientApplicationList: Array<any> = [];
     public pagedCAList: Array<any> = [];
     public consultantList: Array<any> = [];
@@ -51,7 +52,6 @@ export class ClientApplicationComponent implements OnInit {
     public readOnlyForm = '';
     public enableButtonType = '';
     public download = 'download';
-    public trash = 'trash';
     public upload = 'upload';
     public uploader: FileUploader = new FileUploader({});
     public apName = '';
@@ -76,7 +76,7 @@ export class ClientApplicationComponent implements OnInit {
     private getAllCP = this.http.get(this.urlConstants.CPDropdown);
     private getAllR = this.http.get(this.urlConstants.RDropdown);
 
-    constructor(private http: HttpClientService, private toastr: ToastrCustomService, private modalService: NgbModal) {
+    constructor(private http: HttpClientService, private toastr: ToastrCustomService, private modalService: NgbModal, private router: Router) {
         this.getScreenSize();
     }
     @HostListener('window:resize', ['$event'])
@@ -85,22 +85,26 @@ export class ClientApplicationComponent implements OnInit {
     }
 
     ngOnInit() {
+        /*Autheticate user with the token */
+        if (!this.http.isAuthenticate()){
+            this.router.navigate(['/login']);
+          }
         this.loggedInRole = sessionStorage.getItem('role');
         this.init();
         this.getAllDropdowns();
     }
-    init() {
+    private init() {
         this.http.get(this.urlConstants.CAGetAll).subscribe(resp => {
             this.clientApplicationList = resp as any;
             this.pagedCAList = resp as any;
             this.caListLength = this.clientPositionList.length;
             this.pageChange(this.page);
         });
-        this.CAModel.properties = [];
-        this.CAModel.caStatus = 'New';
+        this.model.properties = [];
+        this.model.caStatus = 'New';
         this.page=1;
     }
-    getAllDropdowns() {
+    private getAllDropdowns() {
         forkJoin(
             this.getAllCAS,
             this.getAllC,
@@ -115,16 +119,16 @@ export class ClientApplicationComponent implements OnInit {
         });
     }
 
-    formReset() {
-        this.CAModel = <ClientApplicationModel>{};
-        this.CAModel.properties = [];
-        this.CAModel.caStatus = 'New';
+    private formReset() {
+        this.model = <ClientApplicationModel>{};
+        this.model.properties = [];
+        this.model.caStatus = 'New';
     }
-    enableFormEditable(): void {
+    private enableFormEditable(): void {
         this.readOnlyForm = 'U';
         this.enableButtonType = 'U';
     }
-    readOnlyEnable(id: number) {
+    public setModel(id: number) {
 
         // this.isInterviewScheduled = true;
         this.getCAById(id);
@@ -133,56 +137,56 @@ export class ClientApplicationComponent implements OnInit {
         this.showAction = true;
         this.action=null;
     }
-    getCAById(id: number) {
+    private getCAById(id: number) {
         const temp = this.http.get(this.urlConstants.CAGetById + id);
         temp.subscribe(resp => {
-            this.CAModel = this.mapToUpdateModel(resp);
+            this.model = this.mapToUpdateModel(resp);
             // tslint:disable-next-line:no-shadowed-variable
-            if(this.CAModel.interviewDate != null){
+            if(this.model.interviewDate != null){
                 this.isInterviewScheduled = true;
             }else{
                 this.isInterviewScheduled = false;
             }
-            if(this.CAModel.properties == null){
-                this.CAModel.properties = [];
+            if(this.model.properties == null){
+                this.model.properties = [];
               }
         });
     }
-    mapToUpdateModel(response): ClientApplicationModel {
+    private mapToUpdateModel(response): ClientApplicationModel {
         const temp = response;
-        this.CAModel = temp;
-        this.CAModel['cpId'] = temp.clientPosition.id;
-        this.CAModel['consultantId'] = temp.consultant.id;
-        this.CAModel['caStatus'] = temp.status.code;
-        this.CAModel['creatorId'] = temp.creator.id;
-        return this.CAModel;
+        this.model = temp;
+        this.model['cpId'] = temp.clientPosition.id;
+        this.model['consultantId'] = temp.consultant.id;
+        this.model['caStatus'] = temp.status.code;
+        this.model['creatorId'] = temp.creator.id;
+        return this.model;
     }
-    propertiesListIncrement(event, i: number) {
+    public propertiesListIncrement(event, i: number) {
         switch (event.id) {
             case 'decrease': {
-                this.CAModel.properties.splice(i, 1);
+                this.model.properties.splice(i, 1);
                 break;
             }
             case 'increase': {
-                this.CAModel.properties.push(<AdditionalPropertiesModel>{ 'name': this.apName, 'value': this.apValue });
+                this.model.properties.push(<AdditionalPropertiesModel>{ 'name': this.apName, 'value': this.apValue });
                 this.apName = '';
                 this.apValue = '';
                 break;
             }
         }
     }
-    actions(value,trashContent,uploadContent,downloadContent,form){
+    public actions(value,trashContent,uploadContent,downloadContent,form){
         switch(value){
           case 'Delete':{
-            this.open(this.CAModel.id,trashContent);
+            this.open(this.model.id,trashContent);
             break;
           }
           case 'File Upload':{
-            this.open(this.CAModel.id,uploadContent);
+            this.open(this.model.id,uploadContent);
             break;
           }
           case 'File Download':{
-            this.open(this.CAModel.id,downloadContent);
+            this.open(this.model.id,downloadContent);
             break;
           }
           case 'Edit':{
@@ -194,9 +198,9 @@ export class ClientApplicationComponent implements OnInit {
           }
         }
       }
-    createClientApplication(clientApplicationForm: NgForm): void {
+    public create(clientApplicationForm: NgForm): void {
         this.isCreate= true;
-        const temp = this.http.post(this.CAModel, this.urlConstants.CACreate);
+        const temp = this.http.post(this.model, this.urlConstants.CACreate);
         temp.subscribe(resp => {
             this.toastr.success(this.urlConstants.SuccessMsg, 'Client Application');
             this.init();
@@ -210,16 +214,16 @@ export class ClientApplicationComponent implements OnInit {
         });
 
     }
-    editClientApplication(data) {
+    public dblSetModel(data) {
         this.isInterviewScheduled = true;
-        this.CAModel = JSON.parse(JSON.stringify(data));
+        this.model = JSON.parse(JSON.stringify(data));
         this.readOnlyForm = 'U';
         this.enableButtonType = 'U';
         this.showAction = true;
         this.action=null;
     }
-    updateClientApplication(clientApplicationForm: NgForm) {
-        const temp = this.http.update(this.CAModel, this.urlConstants.CAUpdate);
+    public update(clientApplicationForm: NgForm) {
+        const temp = this.http.update(this.model, this.urlConstants.CAUpdate);
         temp.subscribe(resp => {
             this.toastr.success(this.urlConstants.UpdateMsg, 'Client Application');
             this.formReset();
@@ -234,7 +238,7 @@ export class ClientApplicationComponent implements OnInit {
         this.formReset();
     }
 
-    cancelForm(clientApplicationForm: NgForm) {
+    public cancelForm(clientApplicationForm: NgForm) {
         clientApplicationForm.resetForm();
         this.init();
         this.formReset();
@@ -242,7 +246,7 @@ export class ClientApplicationComponent implements OnInit {
         this.enableButtonType = '';
         this.showAction = false;
     }
-    deleteCARecord(): void {
+    public trash(): void {
         const temp = this.http.delete(this.urlConstants.CADelete + this.selectedRecrdToDel);
         temp.subscribe(resp => {
             this.toastr.success(this.urlConstants.DeleteMsg, 'Client Application');
@@ -267,7 +271,7 @@ export class ClientApplicationComponent implements OnInit {
      * 1) content consists the modal instance
      * 2) Selected contains the code of selected row
      */
-    open(event: any , content) {
+    public open(event: any , content) {
         this.selectedRecrdToDel = 0;
         if (event) {
             this.selectedRecrdToDel = event;
@@ -291,14 +295,14 @@ export class ClientApplicationComponent implements OnInit {
 
     }
     /**Download file */
-    downloadFile(id:number){
+    public downloadFile(id:number){
         this.http.get(this.urlConstants.FileDownload + id).subscribe(resp => {
                 }, err => {
                     if (err.status == 200)
                         window.open(err.url);
                 });
     }
-    close() {
+    public close() {
         this.modalRef.close();
     }
     private getDismissReason(reason: any): string {
@@ -311,13 +315,13 @@ export class ClientApplicationComponent implements OnInit {
         }
     }
     /** Get Uploaded files */
-    getFiles(): FileLikeObject[] {
+    private getFiles(): FileLikeObject[] {
         return this.uploader.queue.map((fileItem) => {
             return fileItem.file;
         });
     }
     /** Upload documents of respective consultant */
-    uploadFiles() {
+    public uploadFiles() {
         const files = this.getFiles();
         const formData = new FormData();
         formData.append('file', files[0].rawFile, files[0].name);
@@ -349,7 +353,7 @@ export class ClientApplicationComponent implements OnInit {
           }
         );*/
     }
-    pageChange(event) {
+    public pageChange(event) {
         const from = ((event - 1) * this.pageSize);
         const lst = this.clientApplicationList;
         const uplst = lst.slice(from, from + this.pageSize);

@@ -9,7 +9,7 @@
         <table class="table table-hover table-striped">
           <tbody class="overflow-ele-scroll">
             <tr
-              *ngFor="let cpl of pagedCPList | filter: 'technology':currSearchTxt; let i = index"  (click)="readOnlyEnable(cpl.id)" (dblclick)="editClientPosition(cpl)"
+              *ngFor="let cpl of pagedCPList | filter: 'technology':currSearchTxt; let i = index"  (click)="setModel(cpl.id)" (dblclick)="dblSetModel()"
               [ngClass]="{ 'bl-closed': cpl.status.code === 'Closed', 'bl-on-hold': cpl.status.code === 'On Hold' }"
             >
               <td class="table-data-padding">
@@ -48,7 +48,7 @@
       </div>
     </div>
     <div class="col-md-5">
-      <form name="form" id="clientPositionForm" (ngSubmit)="f.form.valid && createClientPosition(f)" #f="ngForm" novalidate>
+      <form name="form" id="clientPositionForm" (ngSubmit)="f.form.valid &&  create(f)" #f="ngForm" novalidate>
         <div class="row text-center" *ngIf="loggedInRole != 'User'">
           <div class="col-md-12">
             <div class="form-group">
@@ -61,7 +61,7 @@
               >
                 Add
               </button>
-              <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2" (click)="updateClientPosition(f)">
+              <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2" (click)="update(f)">
                 Update
               </button>
               <!-- <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button" (click)="enableFormEditable()">
@@ -98,7 +98,7 @@
                 class="form-control"
                 name="cn"
                 [disabled]="readOnlyForm == 'R'"
-                [(ngModel)]="clientPositionModel.clientId"
+                [(ngModel)]="model.clientId"
                 [ngClass]="{ 'is-invalid': f.submitted && cn.invalid }"
                 #cn="ngModel"
                 required
@@ -116,7 +116,7 @@
               <input
                 class="form-control"
                 [readonly]="readOnlyForm == 'R'"
-                [(ngModel)]="clientPositionModel.role"
+                [(ngModel)]="model.role"
                 name="technology"
                 [ngClass]="{ 'is-invalid': f.submitted && technology.invalid }"
                 #technology="ngModel"
@@ -137,7 +137,7 @@
                 type="number"
                 min="0"
                 [readonly]="readOnlyForm == 'R'"
-                [(ngModel)]="clientPositionModel.requiredPositions"
+                [(ngModel)]="model.requiredPositions"
                 name="nofpos"
                 #nofpos="ngModel"
               />
@@ -149,7 +149,7 @@
               <input
                 class="form-control"
                 [readonly]="readOnlyForm == 'R'"
-                [(ngModel)]="clientPositionModel.experience"
+                [(ngModel)]="model.experience"
                 name="experience"
                 [ngClass]="{ 'is-invalid': f.submitted && experience.invalid }"
                 #experience="ngModel"
@@ -165,7 +165,7 @@
                   class="form-control"
                   [readonly]="readOnlyForm == 'R'"
                   type="text"
-                  [(ngModel)]="clientPositionModel.minCtc"
+                  [(ngModel)]="model.minCtc"
                   name="minctc"
                   [ngClass]="{ 'is-invalid': f.submitted && minctc.invalid }"
                   #minctc="ngModel"
@@ -179,7 +179,7 @@
                   class="form-control"
                   [readonly]="readOnlyForm == 'R'"
                   type="text"
-                  [(ngModel)]="clientPositionModel.maxCtc"
+                  [(ngModel)]="model.maxCtc"
                   name="maxctc"
                   [ngClass]="{ 'is-invalid': f.submitted && maxctc.invalid }"
                   #maxctc="ngModel"
@@ -194,7 +194,7 @@
               <input
                 class="form-control"
                 [readonly]="readOnlyForm == 'R'"
-                [(ngModel)]="clientPositionModel.location"
+                [(ngModel)]="model.location"
                 name="loc"
                 [ngClass]="{ 'is-invalid': f.submitted && loc.invalid }"
                 #loc="ngModel"
@@ -204,7 +204,7 @@
           <div class="col-md-6">
             <div class="form-group">
               <label>Client Position Status </label>
-              <select class="form-control" name="cps" [disabled]="readOnlyForm == 'R'" [(ngModel)]="clientPositionModel.cpstatus">
+              <select class="form-control" name="cps" [disabled]="readOnlyForm == 'R'" [(ngModel)]="model.cpstatus">
                 <option *ngFor="let cpsl of clientPositionStatusList" [ngValue]="cpsl.code"> {{ cpsl.description }} </option>
               </select>
             </div>
@@ -218,7 +218,7 @@
                   class="form-control"
                   name="assign"
                   [disabled]="readOnlyForm == 'R'"
-                  [(ngModel)]="clientPositionModel.assignedTo"
+                  [(ngModel)]="model.assignedTo"
                   [ngClass]="{ 'is-invalid': f.submitted && assign.invalid }"
                   #assign="ngModel"
                 >
@@ -232,17 +232,17 @@
                 <input
                   class="form-control"
                   [readonly]="readOnlyForm == 'R'"
-                  [(ngModel)]="clientPositionModel.qualification"
+                  [(ngModel)]="model.qualification"
                   name="qual"
                   [ngClass]="{ 'is-invalid': f.submitted && qual.invalid }"
                   #qual="ngModel"
                 />
               </div>
             </div>
-          <div class="col-md-6" *ngIf="clientPositionModel.cpstatus == 'Closed'">
+          <div class="col-md-6" *ngIf="model.cpstatus == 'Closed'">
             <div class="form-group">
               <label>Closed By</label>
-              <select class="form-control" name="closedBy" [disabled]="readOnlyForm == 'R'" [(ngModel)]="clientPositionModel.closedBy">
+              <select class="form-control" name="closedBy" [disabled]="readOnlyForm == 'R'" [(ngModel)]="model.closedBy">
                 <option *ngFor="let rl of recruiterList" [ngValue]="rl.id"> {{ rl.name }}</option>
               </select>
             </div>
@@ -257,7 +257,7 @@
                 class="form-control"
                 cols="10"
                 rows="10"
-                [(ngModel)]="clientPositionModel.requiredSkills"
+                [(ngModel)]="model.requiredSkills"
                 name="requiredskills"
                 [ngClass]="{ 'is-invalid': f.submitted && requiredskills.invalid }"
                 #requiredskills="ngModel"
@@ -270,11 +270,11 @@
             </div>
           </div>
         </div>
-        <div class="row" *ngIf="clientPositionModel.properties.length>0">
-            <div class="col-md-12 mb-5" *ngIf="clientPositionModel.properties.length > 0">
+        <div class="row" *ngIf="model.properties.length>0">
+            <div class="col-md-12 mb-5" *ngIf="model.properties.length > 0">
                 <div class="form-group">
                   <label>Additional Properties</label>
-                  <div class="row" *ngFor="let ap of clientPositionModel.properties; let i = index">
+                  <div class="row" *ngFor="let ap of model.properties; let i = index">
                     <div class="col-md-5">
                       <input
                         type="text"
@@ -310,7 +310,7 @@
           <div class="col-md-12">
             <div class="form-group">
               <label>Description</label>
-              <angular-editor [(ngModel)]="clientPositionModel.description" name="description" [config]="config"> </angular-editor>
+              <angular-editor [(ngModel)]="model.description" name="description" [config]="config"> </angular-editor>
             </div>
           </div>
         </div>
@@ -349,7 +349,7 @@
             >
               Add
             </button>
-            <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2" (click)="updateClientPosition(f)">
+            <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2" (click)="update(f)">
               Update
             </button>
             <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button" (click)="enableFormEditable()">
@@ -485,7 +485,7 @@
     <p>Are you sure you want to delete ? &hellip;</p>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-secondary" (click)="deleteCPRecord()">Ok</button>
+    <button type="button" class="btn btn-secondary" (click)="trash()">Ok</button>
     <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
   </div>
 </ng-template>

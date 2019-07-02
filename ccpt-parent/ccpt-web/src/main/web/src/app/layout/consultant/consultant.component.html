@@ -32,8 +32,8 @@
           <tbody class="overflow-ele-scroll ">
             <tr
               *ngFor="let cl of pagedConsultantList | filter: 'fullname':currSearchTxt; let i = index"
-              (click)="readOnlyEnable(cl.id)"
-              (dblclick)="consultantEdit(cl.id)"
+              (click)="setModel(cl.id)"
+              (dblclick)="dblSetModel()"
               [ngClass]="!cl.isProfileCompleted ? 'bl-red' : 'bl-trans'"
             >
               <td class="table-data-padding ">
@@ -73,7 +73,7 @@
       </div>
     </div>
     <div class="col-md-5">
-      <form name="form" id="clientPositionForm" (ngSubmit)="f.form.valid && createConsultant(f)" #f="ngForm" novalidate>
+      <form name="form" id="clientPositionForm" (ngSubmit)="f.form.valid && create(f)" #f="ngForm" novalidate>
         <div class="row text-center">
           <div class="col-md-12 form-group">
             <button
@@ -84,7 +84,7 @@
             >
               Add
             </button>
-            <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2" (click)="updateConsultant(f)">
+            <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2" (click)="update(f)">
               Update
             </button>
             <!-- <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button"
@@ -121,7 +121,7 @@
                 class="form-control"
                 name="fullname"
                 [readonly]="readOnlyForm == 'R'"
-                [(ngModel)]="consultantModel.fullname"
+                [(ngModel)]="model.fullname"
                 [ngClass]="{ 'is-invalid': f.submitted && fullname.invalid }"
                 #fullname="ngModel"
                 #consultantName
@@ -141,7 +141,7 @@
                 class="form-control"
                 name="email"
                 [readonly]="readOnlyForm == 'R'"
-                [(ngModel)]="consultantModel.email"
+                [(ngModel)]="model.email"
                 #email="ngModel"
                 type="email"
               />
@@ -158,7 +158,7 @@
                 class="form-control"
                 name="phone"
                 [readonly]="readOnlyForm == 'R'"
-                [(ngModel)]="consultantModel.phone"
+                [(ngModel)]="model.phone"
                 maxlength="13"
                 onKeyPress="if(this.value.length==13) return false;"
                 #phone="ngModel"
@@ -173,7 +173,7 @@
                 class="form-control"
                 name="gender"
                 [disabled]="readOnlyForm == 'R'"
-                [(ngModel)]="consultantModel.gender"
+                [(ngModel)]="model.gender"
                 [ngClass]="{ 'is-invalid': f.submitted && gender.invalid }"
                 #gender="ngModel"
                 required
@@ -194,7 +194,7 @@
                 type="date"
                 class="form-control"
                 name="dob"
-                [(ngModel)]="consultantModel.dob"
+                [(ngModel)]="model.dob"
                 [ngClass]="{ 'is-invalid': f.submitted && dob.invalid }"
                 #dob="ngModel"
                 [readonly]="readOnlyForm == 'R'"
@@ -211,7 +211,7 @@
                 class="form-control"
                 name="highesteducation"
                 [readonly]="readOnlyForm == 'R'"
-                [(ngModel)]="consultantModel.highestEducation"
+                [(ngModel)]="model.highestEducation"
                 #highesteducation="ngModel"
               />
             </div>
@@ -226,7 +226,7 @@
                 name="passoutyear"
                 [readonly]="readOnlyForm == 'R'"
                 type="number"
-                [(ngModel)]="consultantModel.passoutYear"
+                [(ngModel)]="model.passoutYear"
               />
             </div>
           </div>
@@ -237,7 +237,7 @@
                 class="form-control"
                 name="constat"
                 [disabled]="readOnlyForm == 'R'"
-                [(ngModel)]="consultantModel.conStatus"
+                [(ngModel)]="model.conStatus"
                 [ngClass]="{ 'is-invalid': f.submitted && constat.invalid }"
                 #constat="ngModel"
                 required
@@ -265,7 +265,7 @@
                   name="currentCompany"
                   class="form-control"
                   [readonly]="readOnlyForm == 'R'"
-                  [(ngModel)]="consultantModel.currentCompany"
+                  [(ngModel)]="model.currentCompany"
                 />
               </div>
             </div>
@@ -277,7 +277,7 @@
                   name="currentLocation"
                   [readonly]="readOnlyForm == 'R'"
                   class="form-control"
-                  [(ngModel)]="consultantModel.currentLocation"
+                  [(ngModel)]="model.currentLocation"
                 />
               </div>
             </div>
@@ -291,7 +291,7 @@
                   name="currentCTC"
                   [readonly]="readOnlyForm == 'R'"
                   class="form-control"
-                  [(ngModel)]="consultantModel.currentCTC"
+                  [(ngModel)]="model.currentCTC"
                 />
               </div>
             </div>
@@ -304,7 +304,7 @@
                     name="expyears"
                     class="form-control col-md-4"
                     [readonly]="readOnlyForm == 'R'"
-                    [(ngModel)]="consultantModel.experienceYrs"
+                    [(ngModel)]="model.experienceYrs"
                     min="0"
                     placeholder="Years"
                   />
@@ -313,7 +313,7 @@
                     class="form-control col-md-5"
                     name="expmonths"
                     [readonly]="readOnlyForm == 'R'"
-                    [(ngModel)]="consultantModel.experienceMonths"
+                    [(ngModel)]="model.experienceMonths"
                     min="0"
                     max="11"
                     placeholder="Months"
@@ -332,7 +332,7 @@
                   name="currentJobTitle"
                   [readonly]="readOnlyForm == 'R'"
                   class="form-control"
-                  [(ngModel)]="consultantModel.currentJobTitle"
+                  [(ngModel)]="model.currentJobTitle"
                 />
               </div>
             </div>
@@ -344,7 +344,7 @@
                   name="currentFunctionalArea"
                   [readonly]="readOnlyForm == 'R'"
                   class="form-control"
-                  [(ngModel)]="consultantModel.currentFunctionalArea"
+                  [(ngModel)]="model.currentFunctionalArea"
                 />
               </div>
             </div>
@@ -358,7 +358,7 @@
                   name="currentIndustry"
                   [readonly]="readOnlyForm == 'R'"
                   class="form-control"
-                  [(ngModel)]="consultantModel.currentIndustry"
+                  [(ngModel)]="model.currentIndustry"
                 />
               </div>
             </div>
@@ -371,7 +371,7 @@
                     name="yearsInCurrentJob"
                     class="form-control col-md-4"
                     [readonly]="readOnlyForm == 'R'"
-                    [(ngModel)]="consultantModel.yearsInCurrentJob"
+                    [(ngModel)]="model.yearsInCurrentJob"
                     min="0"
                     placeholder="Years"
                   />&nbsp;<span>/</span>&nbsp;<input
@@ -379,7 +379,7 @@
                     class="form-control col-md-5"
                     name="monthsInCurrentJob"
                     [readonly]="readOnlyForm == 'R'"
-                    [(ngModel)]="consultantModel.monthsInCurrentJob"
+                    [(ngModel)]="model.monthsInCurrentJob"
                     min="0"
                     max="12"
                     placeholder="Months"
@@ -397,7 +397,7 @@
                   name="noticePeriod"
                   [readonly]="readOnlyForm == 'R'"
                   class="form-control"
-                  [(ngModel)]="consultantModel.noticePeriod"
+                  [(ngModel)]="model.noticePeriod"
                 />
               </div>
             </div>
@@ -412,7 +412,7 @@
                 name="expectedCTC"
                 [readonly]="readOnlyForm == 'R'"
                 class="form-control"
-                [(ngModel)]="consultantModel.expectedCTC"
+                [(ngModel)]="model.expectedCTC"
               />
             </div>
           </div>
@@ -424,7 +424,7 @@
                 class="form-control"
                 name="prefferedLocation"
                 [readonly]="readOnlyForm == 'R'"
-                [(ngModel)]="consultantModel.prefferedLocation"
+                [(ngModel)]="model.prefferedLocation"
               />
             </div>
           </div>
@@ -440,16 +440,16 @@
                 rows="10"
                 name="skills"
                 [readonly]="readOnlyForm == 'R'"
-                [(ngModel)]="consultantModel.skills"
+                [(ngModel)]="model.skills"
               >
               </textarea>
             </div>
           </div>
-          <div class="row" *ngIf="consultantModel.properties.length > 0">
+          <div class="row" *ngIf="model.properties.length > 0">
             <div class="col-md-12 ml-3">
               <div class="form-group">
                 <label>Additional Properties</label>
-                <div class="row" *ngFor="let ap of consultantModel.properties; let i = index">
+                <div class="row" *ngFor="let ap of model.properties; let i = index">
                   <div class="col-md-5">
                     <input
                       type="text"
@@ -488,7 +488,7 @@
                 class="form-control"
                 name="description"
                 [readonly]="readOnlyForm == 'R'"
-                [(ngModel)]="consultantModel.description"
+                [(ngModel)]="model.description"
                 rows="10"
               ></textarea>
             </div>
@@ -529,7 +529,7 @@
             >
               Add
             </button>
-            <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2" (click)="updateConsultant(f)">
+            <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2" (click)="update(f)">
               Update
             </button>
             <!-- <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button"
@@ -573,7 +573,7 @@
     <p>Are you sure you want to delete ? &hellip;</p>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-secondary" (click)="deleteConsultantRecord()">Ok</button>
+    <button type="button" class="btn btn-secondary" (click)="trash()">Ok</button>
     <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
   </div>
 </ng-template>
@@ -584,14 +584,14 @@
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
-  <div class="modal-body" *ngIf="consultantModel.files.length > 0; else emptyMsg">
+  <div class="modal-body" *ngIf="model.files.length > 0; else emptyMsg">
     <table class="table">
       <thead>
         <th>File Name</th>
         <th>Description</th>
         <th>Action</th>
       </thead>
-      <tbody *ngFor="let fl of consultantModel.files">
+      <tbody *ngFor="let fl of model.files">
         <td>{{ fl.fileName }}</td>
         <td>{{ fl.Description }}</td>
         <td>

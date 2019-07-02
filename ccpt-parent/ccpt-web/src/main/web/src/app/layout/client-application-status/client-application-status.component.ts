@@ -6,6 +6,7 @@ import { HttpClientService } from 'src/app/shared/services/http.service';
 import { ToastrCustomService } from 'src/app/shared/services/toastr.service';
 import { NgbModal, ModalDismissReasons, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { NgForm } from '@angular/forms';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -15,7 +16,7 @@ import { NgForm } from '@angular/forms';
     animations: [routerTransition()]
 })
 export class ClientApplicationStatusComponent implements OnInit {
-    public clientApplicationStatusModel: ClientApplicationStatusModel = <ClientApplicationStatusModel>{};
+    public model: ClientApplicationStatusModel = <ClientApplicationStatusModel>{};
     public clientApplicationStatusList: Array<ClientApplicationStatusModel> = [];
     private urlConstants = new URLConstants();
     public readOnlyForm = '';
@@ -29,9 +30,7 @@ export class ClientApplicationStatusComponent implements OnInit {
     public actionsList = new ActionsList();
     public action: string = null;
     public screenHeight: any;
-
-    public trash = 'trash';
-    constructor(private http: HttpClientService, private toastr: ToastrCustomService, private modalService: NgbModal) {
+    constructor(private http: HttpClientService, private toastr: ToastrCustomService, private modalService: NgbModal, private router: Router) {
         this.getScreenSize();
     }
     @HostListener('window:resize', ['$event'])
@@ -39,6 +38,10 @@ export class ClientApplicationStatusComponent implements OnInit {
            this.screenHeight = window.innerHeight;
      }
     ngOnInit() {
+        /*Autheticate user with the token */
+        if (!this.http.isAuthenticate()){
+            this.router.navigate(['/login']);
+          }
         this.init();
     }
     init() {
@@ -49,45 +52,45 @@ export class ClientApplicationStatusComponent implements OnInit {
     /**
      * @param data consists the  table current selected row data
      */
-    editClientApplicationStatus(data): void {
+    public dblSetModel(): void {
         this.readOnlyForm = 'U';
         this.enableButtonType = 'U';
         this.showAction = true;
         this.action = null;
     }
-    enableFormEditable(): void {
+    private enableFormEditable(): void {
         this.readOnlyForm = 'U';
         this.enableButtonType = 'U';
     }
     /**
      * @param data consists the  table current selected row data
      */
-    readOnlyEnable(id): void {
+    public setModel(id): void {
         this.getById(id);
         this.readOnlyForm = 'R';
         this.enableButtonType = 'E';
         this.showAction = true;
         this.action = null;
     }
-    getById(id) {
+    private getById(id) {
         const temp = this.http.get(this.urlConstants.CASGetById + id);
         temp.subscribe(resp => {
-            this.clientApplicationStatusModel = this.mapToUpdateModel(resp);
+            this.model = this.mapToUpdateModel(resp);
             });
     }
-    mapToUpdateModel(response) {
+    private mapToUpdateModel(response) {
         const temp = response;
-        this.clientApplicationStatusModel = temp;
-        return this.clientApplicationStatusModel;
+        this.model = temp;
+        return this.model;
     }
-    formReset(): void {
-        this.clientApplicationStatusModel = <ClientApplicationStatusModel>{};
+    private formReset(): void {
+        this.model = <ClientApplicationStatusModel>{};
     }
-    actions(value, trashContent, form) {
+    public actions(value, trashContent, form) {
         console.log(value);
         switch (value) {
           case 'Delete': {
-            this.open(this.clientApplicationStatusModel.id, trashContent);
+            this.open(this.model.id, trashContent);
             break;
           }
           case 'Edit': {
@@ -102,9 +105,9 @@ export class ClientApplicationStatusComponent implements OnInit {
     /**
     * @param CASForm consists the form instance
     */
-   createCAStatus(CASForm: NgForm): void {
+   public create(CASForm: NgForm): void {
        this.isCreate=true;
-    const temp = this.http.post(this.clientApplicationStatusModel, this.urlConstants.CASCreate);
+    const temp = this.http.post(this.model, this.urlConstants.CASCreate);
     temp.subscribe(resp => {
             this.toastr.success(this.urlConstants.SuccessMsg, 'Client Application Status');
             this.init();
@@ -119,8 +122,8 @@ export class ClientApplicationStatusComponent implements OnInit {
     /**
      * @param CASForm consists the form instance
      */
-    updateClientApplicationStatus(CASForm: NgForm): void {
-        const temp = this.http.post(this.clientApplicationStatusModel, this.urlConstants.CASCreate);
+    public update(CASForm: NgForm): void {
+        const temp = this.http.post(this.model, this.urlConstants.CASCreate);
         temp.subscribe(resp => {
             this.toastr.success(this.urlConstants.UpdateMsg, 'Client Application Status');
             this.formReset();
@@ -136,14 +139,14 @@ export class ClientApplicationStatusComponent implements OnInit {
     /**
      * @param CASForm consists the form instance
      */
-    cancelForm(CASForm: NgForm): void {
+    public cancelForm(CASForm: NgForm): void {
         this.formReset();
         CASForm.resetForm();
         this.readOnlyForm = '';
         this.enableButtonType = '';
         this.showAction = false;
     }
-    deleteCASRecord(): void {
+    public trash(): void {
         const temp = this.http.delete(this.urlConstants.CASDelete + this.selectedRecrdToDel);
         temp.subscribe(resp => {
             this.toastr.success(this.urlConstants.DeleteMsg, 'Client Application Status');
@@ -162,7 +165,7 @@ export class ClientApplicationStatusComponent implements OnInit {
      * 1) content consists the modal instance
      * 2) Selected contains the code of selected row
      */
-    open(event: any , content: any) {
+    public open(event: any , content: any) {
         if (event) {
             this.selectedRecrdToDel = event;
         }
@@ -173,7 +176,7 @@ export class ClientApplicationStatusComponent implements OnInit {
             this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
         });
     }
-    close() {
+    public close() {
         this.modalRef.close();
     }
     private getDismissReason(reason: any): string {
