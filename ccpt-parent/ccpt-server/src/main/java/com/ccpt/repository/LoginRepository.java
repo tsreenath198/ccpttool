@@ -9,4 +9,6 @@ public interface LoginRepository extends BaseRepository<Login, Integer> {
 
 	@Query("select l from Login l where l.username = :username and l.password=:password")
 	Login login(@Param(value = "username") String username, @Param(value = "password") String password);
+
+	Integer countByUsername(String username);
 }

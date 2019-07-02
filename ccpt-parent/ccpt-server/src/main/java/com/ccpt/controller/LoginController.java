@@ -29,18 +29,23 @@ public class LoginController extends BaseController<LoginDTO, Login, Integer> {
 	@Autowired
 	private LoginService loginService;
 
-
 	@PostMapping(CCPTConstants.LOGIN)
 	public ResponseEntity<Login> login(@RequestBody Login login, HttpSession session) throws AuthenticationException {
 		String username = login.getUsername();
 		String password = login.getPassword();
 		session.setAttribute("username", username);
 		session.setAttribute("password", password);
-		Login log = loginService.login(username, password);
-		if (log != null) {
-			return new ResponseEntity<Login>(log, HttpStatus.OK);
+		Integer count = loginService.checkUser(username);
+		if (count == 1) {
+			Login log = loginService.login(username, password);
+			if (log != null) {
+				return new ResponseEntity<Login>(log, HttpStatus.OK);
+			}
+			throw new AuthenticationException("Invalid  password");
+
+		} else {
+			throw new AuthenticationException("Invalid  username");
 		}
-		throw new AuthenticationException("Invalid username or password");
 	}
 
 	@Override

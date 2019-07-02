@@ -66,15 +66,15 @@ public class ConsultantController extends BaseController<ConsultantDTO, Consulta
 				}
 				if (model.getFullname().equals(entity.getFullname())) {
 					throw new DataIntegrityViolationException(
-							"Consultant(" + entity.getId() + ") is already exists with this Fullname");
+							"Consultant(" + entity.getId() + ") is already exists with this " + entity.getFullname());
 				}
 				if (model.getEmail() != null && model.getEmail().equals(entity.getEmail())) {
 					throw new DataIntegrityViolationException(
-							"Consultant (" + entity.getId() + ")  is already exists with this Email");
+							"Consultant (" + entity.getId() + ")  is already exists with this " + entity.getEmail());
 				}
 				if (model.getPhone() != null && model.getPhone().equals(entity.getPhone())) {
 					throw new DataIntegrityViolationException(
-							"Consultant (" + entity.getId() + ")  is already exists with this Phone");
+							"Consultant (" + entity.getId() + ")  is already exists with this " + entity.getPhone());
 				}
 			}
 		}

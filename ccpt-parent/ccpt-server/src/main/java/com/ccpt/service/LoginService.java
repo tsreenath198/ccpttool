@@ -24,4 +24,9 @@ public class LoginService extends BaseService<Login, Integer> {
 	public BaseRepository<Login, Integer> getRepository() {
 		return loginRepository;
 	}
+
+	public Integer checkUser(String username) {
+		return loginRepository.countByUsername(username);
+	}
+
 }
