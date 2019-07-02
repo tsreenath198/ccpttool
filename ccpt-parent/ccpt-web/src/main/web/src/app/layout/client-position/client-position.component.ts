@@ -2,7 +2,7 @@ import { Component, OnInit, HostListener } from '@angular/core';
 import { NgbModal, ModalDismissReasons, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { URLConstants } from '../components/constants/url-constants';
 import { routerTransition } from '../../router.animations';
-import { ClientPositionModel, SendSmsModel, SendEmailModel,ActionsList } from './client-position.model';
+import { ClientPositionModel, SendSmsModel, SendEmailModel, ActionsList } from './client-position.model';
 import { HttpClientService } from 'src/app/shared/services/http.service';
 import { ClientpositionStatusModel } from '../client-position-status/client-position-status.model';
 import { ToastrCustomService } from 'src/app/shared/services/toastr.service';
@@ -16,6 +16,7 @@ import { EmailTemplateModel } from '../email-template/email-template.model';
 import { AdditionalPropertiesModel } from 'src/app/additional-properties.model';
 import { ActionModel } from '../modals/action';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-client-position',
@@ -26,7 +27,7 @@ import { AngularEditorConfig } from '@kolkov/angular-editor';
 export class ClientPositionComponent implements OnInit {
   public clientPositionModel: ClientPositionModel = <ClientPositionModel>{};
   public clientPositionList: Array<ClientPositionModel> = [];
-  
+
   public pagedCPList: Array<ClientPositionModel> = [];
   public consultantCreateList: Array<any> = [];
   public consultantList: Array<ConsultantModel> = [];
@@ -66,7 +67,7 @@ export class ClientPositionComponent implements OnInit {
   public loggedInRole = '';
   public showAction: boolean = false;
   public actionsList = new ActionsList();
-  public action:string;
+  public action: string;
   public isCreate: boolean = false;
   public page: number;
   public cpListLength: number;
@@ -82,7 +83,7 @@ export class ClientPositionComponent implements OnInit {
     minHeight: '5rem',
     translate: 'no'
   };
-  constructor(private http: HttpClientService, private toastr: ToastrCustomService, private modalService: NgbModal) {
+  constructor(private http: HttpClientService, private toastr: ToastrCustomService, private modalService: NgbModal, private router: Router) {
     // tslint:disable-next-line:no-unused-expression
     this.actionModel.sendMail;
     this.getScreenSize();
@@ -93,6 +94,10 @@ export class ClientPositionComponent implements OnInit {
   }
 
   ngOnInit() {
+    /*Autheticate user with the token */
+    if (!this.http.isAuthenticate()){
+      this.router.navigate(['/login']);
+    }
     this.getAllDropdowns();
     this.loggedInRole = sessionStorage.getItem('role');
     this.dropdownSettings = {
@@ -138,7 +143,7 @@ export class ClientPositionComponent implements OnInit {
     this.enableButtonType = 'U';
     this.closedByEnable = true;
     this.showAction = true;
-    this.action=null;
+    this.action = null;
   }
   enableFormEditable(): void {
     this.readOnlyForm = 'U';
@@ -152,14 +157,14 @@ export class ClientPositionComponent implements OnInit {
     this.readOnlyForm = 'R';
     this.enableButtonType = 'E';
     this.showAction = true;
-    this.action=null;
+    this.action = null;
   }
   getCPById(id: number) {
     const temp = this.http.get(this.urlConstants.CPGetById + id);
     temp.subscribe(resp => {
       this.clientPositionModel = this.mapToUpdateModel(resp);
       // tslint:disable-next-line:no-shadowed-variable
-      if(this.clientPositionModel.properties == null){
+      if (this.clientPositionModel.properties == null) {
         this.clientPositionModel.properties = [];
       }
     });
@@ -187,21 +192,21 @@ export class ClientPositionComponent implements OnInit {
       }
     }
   }
-  actions(value,trashContent,shortListContent,form){
-    switch(value){
-      case 'Delete':{
-        this.open(this.clientPositionModel.id,trashContent);
+  actions(value, trashContent, shortListContent, form) {
+    switch (value) {
+      case 'Delete': {
+        this.open(this.clientPositionModel.id, trashContent);
         break;
       }
-      case 'Create Application':{
-        this.open(this.clientPositionModel.id,shortListContent);
+      case 'Create Application': {
+        this.open(this.clientPositionModel.id, shortListContent);
         break;
       }
-      case 'Edit':{
+      case 'Edit': {
         this.enableFormEditable();
         break;
       }
-      case 'Close':{
+      case 'Close': {
         this.cancelForm(form);
       }
     }
@@ -212,9 +217,9 @@ export class ClientPositionComponent implements OnInit {
     this.clientPositionModel.cpstatus = 'Open';
   }
   createClientPosition(clientPositionForm: NgForm): void {
-    this.isCreate=true;
+    this.isCreate = true;
     // tslint:disable-next-line:max-line-length
-    this.clientPositionModel.generatedCode = this.generateCPCode(this.clientPositionModel.clientId,this.clientPositionModel.role  ,this.clientPositionModel.location);
+    this.clientPositionModel.generatedCode = this.generateCPCode(this.clientPositionModel.clientId, this.clientPositionModel.role, this.clientPositionModel.location);
     const temp = this.http.post(this.clientPositionModel, this.urlConstants.CPCreate);
     temp.subscribe(
       resp => {
@@ -230,11 +235,11 @@ export class ClientPositionComponent implements OnInit {
       }
     );
   }
-  private generateCPCode(cnt,role ,loc): string {
+  private generateCPCode(cnt, role, loc): string {
     if (loc == null || loc === undefined) {
       return this.getClientNameById(cnt) + role;
     } else {
-      return this.getClientNameById(cnt) +'-'+ role+ '-' + loc;
+      return this.getClientNameById(cnt) + '-' + role + '-' + loc;
     }
   }
   private getClientNameById(clientId: number) {
@@ -256,7 +261,7 @@ export class ClientPositionComponent implements OnInit {
   }
   updateClientPosition(clientPositionForm: NgForm) {
     // tslint:disable-next-line:max-line-length
-    this.clientPositionModel.generatedCode = this.generateCPCode(this.clientPositionModel.clientId, this.clientPositionModel.role ,this.clientPositionModel.location);
+    this.clientPositionModel.generatedCode = this.generateCPCode(this.clientPositionModel.clientId, this.clientPositionModel.role, this.clientPositionModel.location);
     const temp = this.http.update(this.clientPositionModel, this.urlConstants.CPUpdate);
     temp.subscribe(
       resp => {
@@ -363,7 +368,7 @@ export class ClientPositionComponent implements OnInit {
    * 1) content consists the modal instance
    * 2) Selected contains the code of selected row
    */
-  open(event: any , content) {
+  open(event: any, content) {
     // content, selected: number, type: string
     if (event) {
       this.selectedRecrd = event;

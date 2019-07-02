@@ -39,4 +39,10 @@ export class HttpClientService {
     };
     return this.http.post(this.base_url + URL, formData);
   }
+  isAuthenticate(): boolean {
+    if (sessionStorage.getItem('token') !== "null")
+      return true
+    else
+      return false;
+  }
 }

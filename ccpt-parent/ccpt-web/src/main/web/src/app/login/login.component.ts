@@ -15,30 +15,36 @@ export class LoginComponent implements OnInit {
     constructor(public router: Router, public http: HttpClientService, private toastr: ToastrCustomService) { }
     public loginDetails: LoginModel = <LoginModel>{};
     public urlConstants = new URLConstants();
-
+    public loggingIn: boolean = false;
     ngOnInit() {
-        this.reset();
+        this.session(null);
     }
-    onLoggedin() {
+    public onLoggedin(): void {
+        this.loggingIn = true;
         this.http.post(this.loginDetails, this.urlConstants.UserLogin).subscribe(resp => {
-            const response = resp as any;
+            this.loggingIn = false;
+            this.session(resp);
             this.toastr.success('User Logged In Successfully', 'Login');
-            sessionStorage.setItem('username', response.username);
-            sessionStorage.setItem('token', response.token);
-            sessionStorage.setItem('role', response.role);
             this.router.navigate(['/layout']);
         }, error => {
+            this.loggingIn = false
             this.toastr.error(error.error.message, 'Login');
-            this.reset();
+            this.session(null);
         });
     }
-    login(event): void {
+    public login(event): void {
         if (event.keyCode === 13)
             this.onLoggedin()
     }
-    reset(): void {
-        sessionStorage.setItem('username', null);
-        sessionStorage.setItem('token', null);
-        sessionStorage.setItem('role', null);
+    public session(res: any): void {
+        if (res != null) {
+            sessionStorage.setItem('username', res.username);
+            sessionStorage.setItem('token', res.token);
+            sessionStorage.setItem('role', res.role);
+        } else {
+            sessionStorage.setItem('username', null);
+            sessionStorage.setItem('token', null);
+            sessionStorage.setItem('role', null);
+        }
     }
 }
