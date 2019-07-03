@@ -3,10 +3,14 @@ package com.ccpt.service;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
+
+import javax.persistence.EntityNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ccpt.model.ApplicationBody;
 import com.ccpt.model.ClientApplication;
 import com.ccpt.model.InterviewSummaryStatistics;
 import com.ccpt.model.PositionSummaryStatistics;
@@ -56,6 +60,35 @@ public class ClientApplicationService extends BaseService<ClientApplication, Int
 
 	public List<ClientApplication> findByConsultantIdAndActiveFlag(Integer consultantId) {
 		return clientApplicationRepository.findByConsultantIdAndActiveFlag(consultantId, true);
+	}
+
+	public ApplicationBody showBodyMail(Integer caId) {
+		// TODO Auto-generated method stub
+		Optional<ClientApplication> clientApplication = clientApplicationRepository.findByIdAndActiveFlag(caId, true);
+		ClientApplication ca = null;
+		if (clientApplication.isPresent()) {
+			ca = clientApplication.get();
+		} else {
+			throw new EntityNotFoundException("Could not find ClientApplication for id : " + caId);
+		}
+		ApplicationBody body = new ApplicationBody();
+
+		if (ca.getConsultant() != null && ca.getClientPosition() != null) {
+			body.setFullname(ca.getConsultant().getFullname());
+			body.setRole(ca.getClientPosition().getRole());
+			body.setDescription(ca.getConsultant().getDescription());
+			body.setExpectedCTC(ca.getConsultant().getExpectedCTC());
+			body.setNoticePeriod(ca.getConsultant().getNoticePeriod());
+			body.setCurrentCTC(ca.getConsultant().getCurrentCTC());
+			body.setCpLocation(ca.getClientPosition().getLocation());
+			body.setConLocation(ca.getConsultant().getCurrentLocation());
+			body.setExperienceYrs(ca.getConsultant().getExperienceYrs());
+			body.setExperienceMonths(ca.getConsultant().getExperienceMonths());
+		} else {
+			throw new EntityNotFoundException(
+					"Could not find ClientPosition and Consultant for  clientApplication id:" + ca.getId());
+		}
+		return body;
 	}
 
 }

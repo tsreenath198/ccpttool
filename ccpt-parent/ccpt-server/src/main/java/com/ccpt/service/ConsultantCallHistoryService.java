@@ -1,6 +1,8 @@
 package com.ccpt.service;
 
 import java.text.ParseException;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,4 +53,12 @@ public class ConsultantCallHistoryService extends BaseService<ConsultantCallHist
 				true);
 	}
 
+	public Day getDays(Integer days) {
+		Day day = new Day();
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.DATE, -days);
+		day.setStartDate(cal.getTime());
+		day.setEndDate(new Date());
+		return day;
+	}
 }

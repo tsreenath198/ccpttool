@@ -19,6 +19,7 @@ import com.ccpt.constants.CCPTConstants;
 import com.ccpt.dto.ClientApplicationDTO;
 import com.ccpt.mapper.BaseMapper;
 import com.ccpt.mapper.ClientApplicationMapper;
+import com.ccpt.model.ApplicationBody;
 import com.ccpt.model.ClientApplication;
 import com.ccpt.model.InterviewSummaryStatistics;
 import com.ccpt.model.PositionSummaryStatistics;
@@ -77,6 +78,13 @@ public class ClientApplicationController extends BaseController<ClientApplicatio
 	public ResponseEntity<List<InterviewSummaryStatistics>> getAllOneWeekInterviews() {
 		List<InterviewSummaryStatistics> result = clientApplicationService.getAllOneWeekInterviews();
 		return new ResponseEntity<List<InterviewSummaryStatistics>>(result, HttpStatus.OK);
+
+	}
+
+	@GetMapping("/showBodyMail")
+	public ResponseEntity<ApplicationBody> showBodyMail(@RequestParam Integer caId) {
+		ApplicationBody result = clientApplicationService.showBodyMail(caId);
+		return new ResponseEntity<ApplicationBody>(result, HttpStatus.OK);
 
 	}
 
