@@ -57,7 +57,7 @@ public class ReportController {
 
 	@GetMapping("getClosedCountOfAllRecruitersFromLastGivenDays")
 	public ResponseEntity<Map<String, Long>> getClosedCountOfAllRecruitersFromLastGivenDays(
-			@RequestParam Integer days) {
+			@RequestParam Integer days) throws ParseException {
 		Map<String, Long> map = new HashMap<>();
 		List<Object[]> results = consultantCallHistoryService.getClosedCountOfAllRecruitersFromLastGivenDays(days);
 		for (Object[] object : results) {
