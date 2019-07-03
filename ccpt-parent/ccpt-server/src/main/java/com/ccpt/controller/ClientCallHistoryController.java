@@ -1,5 +1,6 @@
 package com.ccpt.controller;
 
+import java.text.ParseException;
 import java.util.List;
 
 import javax.validation.ValidationException;
@@ -50,7 +51,8 @@ public class ClientCallHistoryController extends BaseController<ClientCallHistor
 	}
 
 	@GetMapping("/getAllCchCountByRecruiters")
-	public ResponseEntity<List<CallHistorySummaryStatistics>> getAllCchCountByRecruiters(@RequestParam Integer days) {
+	public ResponseEntity<List<CallHistorySummaryStatistics>> getAllCchCountByRecruiters(@RequestParam Integer days)
+			throws ParseException {
 		List<CallHistorySummaryStatistics> result = clientCallHistoryService.getAllCchCountByRecruiters(days);
 		return new ResponseEntity<List<CallHistorySummaryStatistics>>(result, HttpStatus.OK);
 
@@ -58,7 +60,7 @@ public class ClientCallHistoryController extends BaseController<ClientCallHistor
 
 	@GetMapping("/getAllCchByRecruiterId")
 	public ResponseEntity<List<ClientCallHistory>> getAllCchByRecruiterId(@RequestParam Integer rId,
-			@RequestParam Integer days) {
+			@RequestParam Integer days) throws ParseException {
 		List<ClientCallHistory> result = clientCallHistoryService.getAllCchByRecruiterId(rId, days);
 		return new ResponseEntity<List<ClientCallHistory>>(result, HttpStatus.OK);
 
