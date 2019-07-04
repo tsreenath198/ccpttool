@@ -3,13 +3,10 @@ import { routerTransition } from '../../router.animations';
 import { NgbModal, ModalDismissReasons, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ConsultantCallHistoryModel, ActionsList } from './consultant-call-history.model';
 import { HttpClientService } from 'src/app/shared/services/http.service';
-import { ConsultantModel } from '../consultant/consultant.model';
 import { ToastrCustomService } from 'src/app/shared/services/toastr.service';
 import { URLConstants } from '../components/constants/url-constants';
 import { NgForm } from '@angular/forms';
-import { ClientPositionModel } from '../client-position/client-position.model';
 import { AdditionalPropertiesModel } from 'src/app/additional-properties.model';
-import { RecruiterModel } from '../recruiter/recruiter.model';
 import { forkJoin } from 'rxjs';
 import { Router } from '@angular/router';
 
@@ -43,10 +40,11 @@ export class ConsultantCallHistoryComponent implements OnInit {
   public isCreate: boolean = false;
   public apName = '';
   public apValue = '';
-
-  public page: number;
+  public key: string = 'name'; 
+  public reverse: boolean = false;
+  public page: number = 1;
   public consultantListLength: number;
-  public pageSize: number = 13;
+  public pageSize: number = 20;
   public getCplPromise = this.http.get(this.urlConstants.CPDropdown);
   public getClPromise = this.http.get(this.urlConstants.CDropdown);
   public getRlPromise = this.http.get(this.urlConstants.RDropdown);
@@ -79,9 +77,9 @@ export class ConsultantCallHistoryComponent implements OnInit {
   private init() {
     this.cochGetAllPromise.subscribe(resp => {
       this.consultantCallHistoryList = resp as Array<ConsultantCallHistoryModel>;
-      this.pagedConsultantList = resp as any;
-      this.consultantListLength = this.consultantCallHistoryList.length;
-      this.pageChange(this.page);
+      // this.pagedConsultantList = resp as any;
+      // this.consultantListLength = this.consultantCallHistoryList.length;
+      // this.pageChange(this.page);
     });
     this.model.properties = [];
     this.page = 1
@@ -271,11 +269,15 @@ export class ConsultantCallHistoryComponent implements OnInit {
     } else {
       return `with: ${reason}`;
     }
-  }
-  public pageChange(event) {
-    const from = ((event - 1) * this.pageSize);
-    const lst = this.consultantCallHistoryList;
-    const uplst = lst.slice(from, from + this.pageSize);
-    this.pagedConsultantList = uplst;
+ }
+  // public pageChange(event) {
+  //   const from = ((event - 1) * this.pageSize);
+  //   const lst = this.consultantCallHistoryList;
+  //   const uplst = lst.slice(from, from + this.pageSize);
+  //   this.pagedConsultantList = uplst;
+  // }
+  public  sort(key){
+    this.key = key;
+    this.reverse = !this.reverse;
   }
 }

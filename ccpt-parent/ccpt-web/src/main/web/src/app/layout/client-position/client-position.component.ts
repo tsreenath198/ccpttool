@@ -70,7 +70,7 @@ export class ClientPositionComponent implements OnInit {
   public isCreate: boolean = false;
   public page: number;
   public cpListLength: number;
-  public pageSize: number = 10;
+  public pageSize: number = 20;
   public getAllCPS = this.http.get(this.urlConstants.CPSGetAll);
   public getAllR = this.http.get(this.urlConstants.RDropdown);
   public getAllC = this.http.get(this.urlConstants.ClientDropdown);

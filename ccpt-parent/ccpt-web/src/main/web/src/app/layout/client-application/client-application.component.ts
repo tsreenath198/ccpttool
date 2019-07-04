@@ -3,7 +3,7 @@ import { routerTransition } from '../../router.animations';
 import { forkJoin } from 'rxjs';
 import { URLConstants } from '../components/constants/url-constants';
 import { map } from 'rxjs/operators';
-import { ClientApplicationModel } from './client-application.model';
+import { ClientApplicationModel,ActionsList } from './client-application.model';
 import { HttpClientService } from 'src/app/shared/services/http.service';
 import { ClientApplicationStatusModel } from '../client-application-status/client-application-status.model';
 import { ConsultantModel } from '../consultant/consultant.model';
@@ -15,7 +15,6 @@ import { RecruiterModel } from '../recruiter/recruiter.model';
 import { AdditionalPropertiesModel } from 'src/app/additional-properties.model';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { FileUploader, FileLikeObject } from 'ng2-file-upload';
-import { ActionsList } from '../client-call-history/client-call-history.model';
 import { Router } from '@angular/router';
 
 
@@ -27,6 +26,8 @@ import { Router } from '@angular/router';
 })
 export class ClientApplicationComponent implements OnInit {
     public model: ClientApplicationModel = <ClientApplicationModel>{};
+    
+    public bodyMailModel: any = <any>{};
     public clientApplicationList: Array<any> = [];
     public pagedCAList: Array<any> = [];
     public consultantList: Array<any> = [];
@@ -45,7 +46,7 @@ export class ClientApplicationComponent implements OnInit {
     public editButtonToggler = true;
     public isInterviewScheduled = false;
     public showProperties = false;
-    private selectedRecrdToDel = 0;
+    private selectedRecrd = 0;
     public closeResult = '';
     private modalRef: NgbModalRef;
     public screenHeight: any;
@@ -61,7 +62,7 @@ export class ClientApplicationComponent implements OnInit {
     public isCreate: boolean = false;
     public page: number;
     public caListLength: number;
-    public pageSize: number = 10;
+    public pageSize: number = 20;
     public fileList: Array<any> = [];
     public config: AngularEditorConfig = {
         editable: true,
@@ -175,10 +176,15 @@ export class ClientApplicationComponent implements OnInit {
             }
         }
     }
-    public actions(value,trashContent,uploadContent,downloadContent,form){
+    public actions(value,trashContent,bodyMail,uploadContent,downloadContent,form){
         switch(value){
           case 'Delete':{
             this.open(this.model.id,trashContent);
+            break;
+          }
+          case 'Body Mail':{
+            this.open(this.model.id,bodyMail);
+            this.getBodyMail();
             break;
           }
           case 'File Upload':{
@@ -247,7 +253,7 @@ export class ClientApplicationComponent implements OnInit {
         this.showAction = false;
     }
     public trash(): void {
-        const temp = this.http.delete(this.urlConstants.CADelete + this.selectedRecrdToDel);
+        const temp = this.http.delete(this.urlConstants.CADelete + this.selectedRecrd);
         temp.subscribe(resp => {
             this.toastr.success(this.urlConstants.DeleteMsg, 'Client Application');
             this.init();
@@ -266,31 +272,38 @@ export class ClientApplicationComponent implements OnInit {
             this.toastr.error(err.error.message, 'Client Application');
         });
     }
+    public getBodyMail(): void{
+        let id=this.selectedRecrd
+        this.http.get(this.urlConstants.CABodyMail+id).subscribe(resp=>{
+            this.bodyMailModel = resp as any;
+        })
+    }
     /**
      * @param
      * 1) content consists the modal instance
      * 2) Selected contains the code of selected row
      */
     public open(event: any , content) {
-        this.selectedRecrdToDel = 0;
+        this.selectedRecrd = 0;
         if (event) {
-            this.selectedRecrdToDel = event;
+            this.selectedRecrd = event;
         }
         // if (event.type === this.download) {
-        //     // this.getFilesById(this.selectedRecrdToDel); TODO:Need to fix for multiple downloads
-        //     this.http.get('file/download?refType=ClientApplication&refId=' + this.selectedRecrdToDel).subscribe(resp => {
+        //     // this.getFilesById(this.selectedRecrd); TODO:Need to fix for multiple downloads
+        //     this.http.get('file/download?refType=ClientApplication&refId=' + this.selectedRecrd).subscribe(resp => {
 
         //     }, err => {
         //         if (err.status == 200)
         //             window.open(err.url);
         //     });
         // } else {
-            this.modalRef = this.modalService.open(content);
+            this.modalRef = this.modalService.open(content, { size: 'lg', backdrop: 'static' });
             this.modalRef.result.then((result) => {
                 this.closeResult = `Closed with: ${result}`;
             }, (reason) => {
                 this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
             });
+            
         //}
 
     }
@@ -325,7 +338,7 @@ export class ClientApplicationComponent implements OnInit {
         const files = this.getFiles();
         const formData = new FormData();
         formData.append('file', files[0].rawFile, files[0].name);
-        const params = 'refId=' + this.selectedRecrdToDel + '&refType=Client Application&comments=' + this.comments;
+        const params = 'refId=' + this.selectedRecrd + '&refType=Client Application&comments=' + this.comments;
         this.http.upload(this.urlConstants.FileUpload + params, formData).subscribe(resp => {
             let temp: any = resp;
             this.toastr.success(temp.message, 'Client');

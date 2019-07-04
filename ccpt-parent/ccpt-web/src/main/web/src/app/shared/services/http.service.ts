@@ -8,7 +8,6 @@ export class HttpClientService {
 
   constructor(private http: HttpClient) { }
   private base_url = 'http://210.16.76.202:8081/';
-
   public getLogin(URL: string) {
     return this.http.get(URL);
   }

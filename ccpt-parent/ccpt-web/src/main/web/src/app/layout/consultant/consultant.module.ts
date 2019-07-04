@@ -7,9 +7,10 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { PageHeaderModule, SharedPipesModule, ActionListModule } from '../../shared';
 import { ConsultantRoutingModule } from './consultant-routing.module';
 import { ConsultantComponent } from './consultant.component';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @NgModule({
-    imports: [CommonModule, ConsultantRoutingModule, FormsModule, PageHeaderModule, ActionListModule, SharedPipesModule, FileUploadModule,NgbModule],
+    imports: [CommonModule, ConsultantRoutingModule, NgxPaginationModule, FormsModule, PageHeaderModule, ActionListModule, SharedPipesModule, FileUploadModule,NgbModule],
     declarations: [ConsultantComponent]
 })
 export class ConsultantModule { }

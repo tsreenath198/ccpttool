@@ -52,7 +52,7 @@ export class ConsultantComponent implements OnInit {
   public idToActivate: number;
   public page: number;
   public consultantListLength: number;
-  public pageSize: number = 10;
+  public pageSize: number = 20;
   public cSGetAllPromise = this.http.get(this.urlConstants.CSGetAll);
   public cGetAllPromise = this.http.get(this.urlConstants.CGetAll);
   constructor(private http: HttpClientService, private router: Router, private toastr: ToastrCustomService, private modalService: NgbModal) {

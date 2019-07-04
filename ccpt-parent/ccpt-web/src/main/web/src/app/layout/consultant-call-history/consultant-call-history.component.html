@@ -11,22 +11,24 @@
         <table class="table table-hover table-striped">
           <thead>
             <tr>
+                <!-- (click)="sort('caller')" -->
               <th>
                 Caller
+                <!-- <span class="fa fa-sort" *ngIf="key =='caller'" [ngClass]="{'fa fa-chevron-up':reverse,'fa fa-chevron-down':!reverse}"></span> -->
               </th>
+              <!-- (click)="sort('consultant')" -->
               <th>
                 Consultant
+                <!-- <span class="fa fa-sort" *ngIf="key =='consultant'" [ngClass]="{'fa fa-chevron-up':reverse,'fa fa-chevron-down':!reverse}"></span> -->
               </th>
               <th width="150">
                 Called Date
               </th>
-              <!-- <th>
-                <span class="pull-right">Action</span>
-              </th> -->
             </tr>
           </thead>
           <tbody class="overflow-ele-scroll">
-            <tr *ngFor="let cchl of pagedConsultantList | filter: 'consultantName':currSearchTxt; let i = index"
+              <!-- | orderBy: key : reverse -->
+            <tr *ngFor="let cchl of consultantCallHistoryList  | filter: 'consultantName':currSearchTxt | paginate: { itemsPerPage: 20, currentPage: page }; let i = index"
               (click)="setModel(cchl.id)" (dblclick)="dblSetModel()">
               <td>
                 {{ cchl.calledBy.fullname }}
@@ -37,18 +39,16 @@
               <td>
                 {{ cchl.calledDate }}
               </td>
-              <!-- <td width="100">
-                <app-action [trashContent]="trashContent" [id]="cchl.id" [isTrash]="trash" (trash)="open($event)"></app-action>
-              </td> -->
             </tr>
           </tbody>
         </table>
       </div>
       <div class="col-12 justify-content-center mb-5">
-        <ngb-pagination [collectionSize]="consultantListLength" [(page)]="page" [ellipses]="false"
+          <pagination-controls (pageChange)="page = $event"></pagination-controls>
+        <!-- <ngb-pagination [collectionSize]="consultantListLength" [(page)]="page" [ellipses]="false"
           (pageChange)="pageChange($event)" [maxSize]="pageSize" [pageSize]="pageSize" [rotate]="true"
           [boundaryLinks]="true">
-        </ngb-pagination>
+        </ngb-pagination> -->
       </div>
     </div>
 

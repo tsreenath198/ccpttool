@@ -31,7 +31,7 @@
           </thead>
           <tbody class="overflow-ele-scroll ">
             <tr
-              *ngFor="let cl of pagedConsultantList | filter: 'fullname':currSearchTxt; let i = index"
+              *ngFor="let cl of consultantList| filter: 'fullname':currSearchTxt | paginate: { itemsPerPage: 20, currentPage: page } ; let i = index"
               (click)="setModel(cl.id)"
               (dblclick)="dblSetModel()"
               [ngClass]="!cl.isProfileCompleted ? 'bl-red' : 'bl-trans'"
@@ -60,7 +60,8 @@
         </table>
       </div>
       <div class="col-12 justify-content-center mb-5">
-        <ngb-pagination
+        <pagination-controls (pageChange)="page = $event"></pagination-controls>
+        <!-- <ngb-pagination
           [collectionSize]="consultantListLength"
           [(page)]="page"
           [ellipses]="false"
@@ -69,7 +70,7 @@
           [rotate]="true"
           [boundaryLinks]="true"
         >
-        </ngb-pagination>
+        </ngb-pagination> -->
       </div>
     </div>
     <div class="col-md-5">

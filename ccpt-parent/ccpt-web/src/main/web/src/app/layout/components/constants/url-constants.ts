@@ -43,6 +43,7 @@ export class URLConstants {
     CAUpdate = 'clientApplication';
     CADelete = 'clientApplication/';
     CAGetById = 'clientApplication/';
+    CABodyMail = 'clientApplication/showBodyMail?caId='
 
 
     /* Client Call History */

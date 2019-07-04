@@ -8,9 +8,10 @@ import { ClientApplicationRoutingModule } from './client-application-routing.mod
 import { NgbModule, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { AngularEditorModule } from '@kolkov/angular-editor';
 import { FileUploadModule } from 'ng2-file-upload';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @NgModule({
-    imports: [CommonModule, ClientApplicationRoutingModule, FormsModule, PageHeaderModule, SharedPipesModule, NgbModule, ActionListModule,AngularEditorModule,FileUploadModule,NgbModule],
+    imports: [CommonModule, ClientApplicationRoutingModule,NgxPaginationModule , FormsModule, PageHeaderModule, SharedPipesModule, NgbModule, ActionListModule,AngularEditorModule,FileUploadModule,NgbModule],
     declarations: [ClientApplicationComponent],
     providers: [NgbActiveModal]
 })
