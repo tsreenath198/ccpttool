@@ -113,7 +113,7 @@ export class PaymentsComponent implements OnInit {
                 }
             });
     }
-    private getCPDetails(cpId){
+    public getCPDetails(cpId){
         this.http.get(this.urlConstants.CPGetById + cpId).subscribe(resp=>{
             let  temp = resp as any;
             this.model.companyName = temp.client.name;
@@ -129,7 +129,7 @@ export class PaymentsComponent implements OnInit {
             this.model.serviceCharge = temp.client.serviceCharge;
         })
     }
-    private getConsultantDetails(){
+    public getConsultantDetails(){
         let id=0;
         for(let i=0 ;i<this.consultantList.length;i++){
             if(this.model.candidateName == this.consultantList[i].name){
