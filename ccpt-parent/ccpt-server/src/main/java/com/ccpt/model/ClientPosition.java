@@ -32,7 +32,6 @@ public class ClientPosition extends FileSupportEntity {
 	private String requiredSkills;
 
 	@Column
-	@NotNull
 	private String requiredPositions;
 
 	@Column
@@ -68,5 +67,11 @@ public class ClientPosition extends FileSupportEntity {
 	
 	@Column
 	private String qualification;
+	
+	@Column
+	private String availability;
+	
+	@Column
+	private String jobType;
 
 }

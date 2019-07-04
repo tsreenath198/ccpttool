@@ -1,7 +1,5 @@
 package com.ccpt.service;
 
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -48,14 +46,8 @@ public class ClientApplicationService extends BaseService<ClientApplication, Int
 		return clientApplicationRepository.checkPositionWithConsultant(cpId, consultantId);
 	}
 
-	public List<InterviewSummaryStatistics> getAllOneWeekInterviews() {
-		Date today = new Date();
-		Date week = new Date();
-		Calendar c = Calendar.getInstance();
-		c.setTime(week);
-		c.add(Calendar.DATE, 6);
-		week = c.getTime();
-		return clientApplicationRepository.getAllInterviewsToday(today, week);
+	public List<InterviewSummaryStatistics> getAllInterviewsFromToday() {
+		return clientApplicationRepository.getAllInterviewsFromToday();
 	}
 
 	public List<ClientApplication> findByConsultantIdAndActiveFlag(Integer consultantId) {
@@ -63,7 +55,6 @@ public class ClientApplicationService extends BaseService<ClientApplication, Int
 	}
 
 	public ApplicationBody showBodyMail(Integer caId) {
-		// TODO Auto-generated method stub
 		Optional<ClientApplication> clientApplication = clientApplicationRepository.findByIdAndActiveFlag(caId, true);
 		ClientApplication ca = null;
 		if (clientApplication.isPresent()) {

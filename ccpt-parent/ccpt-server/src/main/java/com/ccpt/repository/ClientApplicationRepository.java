@@ -1,6 +1,5 @@
 package com.ccpt.repository;
 
-import java.util.Date;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -24,9 +23,8 @@ public interface ClientApplicationRepository extends BaseRepository<ClientApplic
 	List<ClientApplication> findByClientPositionIdAndActiveFlag(@Param("clientPositionId") Integer clientPositionId,
 			@Param("activeFlag") Boolean activeFlag);
 
-	@Query("SELECT  cl.name as clientName,cl.phone as clientPhone,con.fullname as consultantName,con.phone as consultantPhone,ca.interviewMode as interviewMode,ca.interviewDate as interviewDate,ca.interviewLocation as interviewLocation,ca.interviewTime  as interviewTime FROM ClientApplication ca,ClientPosition cp ,Client cl,Consultant con WHERE ca.clientPosition=cp.id AND cp.client =cl.id AND ca.consultant=con.id AND ca.interviewDate BETWEEN :currentDate AND :week")
-	List<InterviewSummaryStatistics> getAllInterviewsToday(@Param(value = "currentDate") Date currentDate,
-			@Param(value = "week") Date week);
+	@Query(value = "SELECT  client.name as clientName,client.phone as clientPhone,consultant.fullname as consultantName,consultant.phone as consultantPhone,client_application.interview_mode as interviewMode,client_application.interview_date as interviewDate,client_application.interview_location as interviewLocation,client_application.interview_time  as interviewTime FROM client_application,client_position,client,consultant WHERE client_application.client_position_id=client_position.id AND client_position.client_id =client.id AND client_application.consultant_id=consultant.id AND client_application.interview_date >=curDate() ORDER BY client_application.interview_date ", nativeQuery = true)
+	List<InterviewSummaryStatistics> getAllInterviewsFromToday();
 
 	List<ClientApplication> findByConsultantIdAndActiveFlag(@Param("consultantId") Integer consultantId,
 			@Param("activeFlag") Boolean activeFlag);
