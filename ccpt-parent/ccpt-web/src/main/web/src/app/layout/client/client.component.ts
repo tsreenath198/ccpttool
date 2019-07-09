@@ -80,7 +80,7 @@ export class ClientComponent implements OnInit {
         this.model.phone = '+91';
     }
     private clientContactDeclare() {
-        this.model.clientContacts = [{ 'fullname': '', 'email': '', 'phone': '' }];
+        this.model.clientContacts = [{ 'fullname': '', 'email': '', 'phone': '+91' }];
     }
     public dblSetModel() {
         this.readOnlyForm = 'U';
@@ -167,7 +167,7 @@ export class ClientComponent implements OnInit {
                 break;
             }
             case 'increase': {
-                this.model.clientContacts.push({ 'fullname': '', 'email': '', 'phone': '' });
+                this.model.clientContacts.push({ 'fullname': '', 'email': '', 'phone': '+91' });
                 break;
             }
         }

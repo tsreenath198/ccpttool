@@ -21,8 +21,9 @@
               <th>
                 Phone
               </th>
+              <th>Email</th>
               <th>
-                Experience
+                Experience/Qualification 
               </th>
               <!-- <th width="140">
                 <span class="pull-right">Action</span>
@@ -46,6 +47,9 @@
               </td>
               <td>
                 {{ cl.phone }}
+              </td>
+              <td>
+                {{cl.email}}
               </td>
               <td>{{ cl.experienceYrs != null ? cl.experienceYrs + ' years - ' + cl.experienceMonths + ' months' : '' }}</td>
               <!--  <input type="file" (change)="fileChange($event)" > <span class="fa fa-upload pull-right"></span> -->
@@ -115,7 +119,26 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-md-6">
+            <div class="col-md-2">
+                <div class="form-group">
+                  <label>Gender<span class="required">*</span></label>
+                  <select
+                    class="form-control"
+                    name="gender"
+                    [disabled]="readOnlyForm == 'R'"
+                    [(ngModel)]="model.gender"
+                    [ngClass]="{ 'is-invalid': f.submitted && gender.invalid }"
+                    #gender="ngModel"
+                    required
+                  >
+                    <option *ngFor="let gl of genderList" [ngValue]="gl.value">{{ gl.key }}</option>
+                  </select>
+                  <div class="invalid-feedback">
+                    gender is mandatory
+                  </div>
+                </div>
+              </div>
+          <div class="col-md-5">
             <div class="form-group">
               <label>Full Name<span class="required">*</span></label>
               <input
@@ -134,20 +157,24 @@
               </div>
             </div>
           </div>
-          <div class="col-md-6">
-            <div class="form-group">
-              <label>E-Mail</label>
-              <!-- ng-pattern="/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/" -->
-              <input
-                class="form-control"
-                name="email"
-                [readonly]="readOnlyForm == 'R'"
-                [(ngModel)]="model.email"
-                #email="ngModel"
-                type="email"
-              />
+          
+          <div class="col-md-5">
+              <div class="form-group" data-provide="datepicker">
+                <label>Date of Birth</label>
+                <input
+                  type="date"
+                  class="form-control"
+                  name="dob"
+                  [(ngModel)]="model.dob"
+                  [ngClass]="{ 'is-invalid': f.submitted && dob.invalid }"
+                  #dob="ngModel"
+                  [readonly]="readOnlyForm == 'R'"
+                />
+                <div class="input-group-addon">
+                  <span class="glyphicon glyphicon-th"></span>
+                </div>
+              </div>
             </div>
-          </div>
         </div>
         <div class="row">
           <div class="col-md-6">
@@ -168,46 +195,24 @@
             </div>
           </div>
           <div class="col-md-6">
-            <div class="form-group">
-              <label>Gender<span class="required">*</span></label>
-              <select
-                class="form-control"
-                name="gender"
-                [disabled]="readOnlyForm == 'R'"
-                [(ngModel)]="model.gender"
-                [ngClass]="{ 'is-invalid': f.submitted && gender.invalid }"
-                #gender="ngModel"
-                required
-              >
-                <option *ngFor="let gl of genderList" [ngValue]="gl">{{ gl }}</option>
-              </select>
-              <div class="invalid-feedback">
-                gender is mandatory
+              <div class="form-group">
+                <label>E-Mail</label>
+                <!-- ng-pattern="/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/" -->
+                <input
+                  class="form-control"
+                  name="email"
+                  [readonly]="readOnlyForm == 'R'"
+                  [(ngModel)]="model.email"
+                  #email="ngModel"
+                  type="email"
+                />
               </div>
             </div>
-          </div>
         </div>
         <div class="row">
           <div class="col-md-6">
-            <div class="form-group" data-provide="datepicker">
-              <label>Date of Birth</label>
-              <input
-                type="date"
-                class="form-control"
-                name="dob"
-                [(ngModel)]="model.dob"
-                [ngClass]="{ 'is-invalid': f.submitted && dob.invalid }"
-                #dob="ngModel"
-                [readonly]="readOnlyForm == 'R'"
-              />
-              <div class="input-group-addon">
-                <span class="glyphicon glyphicon-th"></span>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-6">
             <div class="form-group">
-              <label>Highest Education</label>
+              <label>Qualification</label>
               <input
                 class="form-control"
                 name="highesteducation"
@@ -295,32 +300,17 @@
                   [(ngModel)]="model.currentCTC"
                 />
               </div>
-            </div>
-            <div class="col-md-6">
+            </div>  
+          <div class="col-md-6">
               <div class="form-group">
-                <label>Experience</label>
-                <div class="form-inline">
-                  <input
-                    type="text"
-                    name="expyears"
-                    class="form-control col-md-4"
-                    [readonly]="readOnlyForm == 'R'"
-                    [(ngModel)]="model.experienceYrs"
-                    min="0"
-                    placeholder="Years"
-                  />
-                  &nbsp;<span>/</span>&nbsp;<input
-                    type="text"
-                    class="form-control col-md-5"
-                    name="expmonths"
-                    [readonly]="readOnlyForm == 'R'"
-                    [(ngModel)]="model.experienceMonths"
-                    min="0"
-                    max="11"
-                    placeholder="Months"
-                    (onkeyup)="imposeMinMax(this)"
-                  />
-                </div>
+                <label>Expected CTC</label>
+                <input
+                  type="text"
+                  name="expectedCTC"
+                  [readonly]="readOnlyForm == 'R'"
+                  class="form-control"
+                  [(ngModel)]="model.expectedCTC"
+                />
               </div>
             </div>
           </div>
@@ -390,6 +380,33 @@
             </div>
           </div>
           <div class="row">
+              <div class="col-md-6">
+                  <div class="form-group">
+                    <label>Total Experience</label>
+                    <div class="form-inline">
+                      <input
+                        type="text"
+                        name="expyears"
+                        class="form-control col-md-4"
+                        [readonly]="readOnlyForm == 'R'"
+                        [(ngModel)]="model.experienceYrs"
+                        min="0"
+                        placeholder="Years"
+                      />
+                      &nbsp;<span>/</span>&nbsp;<input
+                        type="text"
+                        class="form-control col-md-5"
+                        name="expmonths"
+                        [readonly]="readOnlyForm == 'R'"
+                        [(ngModel)]="model.experienceMonths"
+                        min="0"
+                        max="11"
+                        placeholder="Months"
+                        (onkeyup)="imposeMinMax(this)"
+                      />
+                    </div>
+                  </div>
+                </div>
             <div class="col-md-6">
               <div class="form-group">
                 <label>Notice period</label>
@@ -405,7 +422,7 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-md-6">
+          <div *ngIf="isFresher" class="col-md-6">
             <div class="form-group">
               <label>Expected CTC</label>
               <input

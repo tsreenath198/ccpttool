@@ -14,7 +14,7 @@
   </div>
   <hr> -->
 
-  <div class="row" *ngIf="interviewsToday">
+  <div class="row" *ngIf="interviewsToday.length != 0">
     <div class="col col-xl-12 col-lg-12">
       <div class="card mb-3">
         <div class="card-header bg-dark text-clr-white">Interviews this week</div>
@@ -62,7 +62,7 @@
             </select>
           </span>
         </div>
-        <div class="table-scroll">
+        <div *ngIf="ccptReportCOCH.length != 0" class="table-scroll">
           <table class="table table-sm ">
             <thead>
               <tr>
@@ -93,7 +93,7 @@
             </select>
           </span>
         </div>
-        <div class="table-scroll">
+        <div *ngIf="ccptReportCLCH.length != 0" class="table-scroll">
           <table class="table table-sm">
             <thead>
               <tr>
@@ -123,7 +123,9 @@
             </select>
           </span>
         </div>
-        <div class="table-scroll">
+        
+
+        <div *ngIf="(ccptReportCC | json) != ({} | json) " class="table-scroll">
           <table class="table table-sm">
             <thead>
               <tr>
@@ -213,7 +215,7 @@
       </div>
     </div>
   </div>
-</div>
+ </div>
 <ng-template #contentClch let-c="close" let-d="dismiss">
   <div class="modal-header">
     <h4 class="modal-title">Client Call History</h4>
@@ -336,7 +338,6 @@
     <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
   </div>
 </ng-template>
-
 
     <!-- </div>
     <div class="row">

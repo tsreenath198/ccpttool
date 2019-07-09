@@ -26,7 +26,7 @@ export class ConsultantComponent implements OnInit {
   public formButtonsToggler = true;
   public readOnlyForm = '';
   public enableButtonType = '';
-  public genderList = ['Male', 'Female', 'Other'];
+  public genderList = [{ key: 'Mr.', value:'Male' }, { key: 'Mrs.', value:'Female'}];
   public uploadFileList: Array<any> = [];
   public fileList: Array<any> = [];
   public refType = '';

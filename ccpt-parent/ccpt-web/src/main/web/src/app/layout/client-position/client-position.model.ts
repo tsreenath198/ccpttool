@@ -18,6 +18,8 @@ export interface ClientPositionModel {
     createdDate: string;
     requiredPositions: string;
     qualification: string;
+    availability: string;
+    jobCode: string;
     properties: Array<AdditionalPropertiesModel>;
 }
 

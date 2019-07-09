@@ -17,7 +17,7 @@
                   <dt>{{ cpl.generatedCode }} ({{ cpl.assignedTo.aliasName }})</dt>
                   <dd>
                     Need {{ cpl.requiredPositions }} candidate(s)  ({{ cpl.minCtc }} -
-                    {{ cpl.maxCtc }} ) experience.
+                    {{ cpl.maxCtc }} ) with {{cpl.experience}} experience.
                   </dd>
                 </dl>
               </td>
@@ -126,6 +126,34 @@
               <div class="invalid-feedback">
                 Role is mandatory
               </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>Job Type</label>
+              <input
+                class="form-control"
+                [readonly]="readOnlyForm == 'R'"
+                [(ngModel)]="model.jobType"
+                name="jobType"
+                [ngClass]="{ 'is-invalid': f.submitted && jobType.invalid }"
+                #jobType="ngModel"
+              />
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>Availability</label>
+              <input
+                class="form-control"
+                [readonly]="readOnlyForm == 'R'"
+                [(ngModel)]="model.availability"
+                name="availability"
+                [ngClass]="{ 'is-invalid': f.submitted && availability.invalid }"
+                #availability="ngModel"
+              />
             </div>
           </div>
         </div>

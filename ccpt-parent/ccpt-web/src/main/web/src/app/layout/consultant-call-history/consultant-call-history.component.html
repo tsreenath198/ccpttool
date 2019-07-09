@@ -21,6 +21,9 @@
                 Consultant
                 <!-- <span class="fa fa-sort" *ngIf="key =='consultant'" [ngClass]="{'fa fa-chevron-up':reverse,'fa fa-chevron-down':!reverse}"></span> -->
               </th>
+              <th>
+                Client Position
+              </th>
               <th width="150">
                 Called Date
               </th>
@@ -35,6 +38,9 @@
               </td>
               <td>
                 {{ cchl.consultant.fullname }}
+              </td>
+              <td>
+                {{cchl.clientPosition.generatedCode}}
               </td>
               <td>
                 {{ cchl.calledDate }}
