@@ -14,7 +14,7 @@
             >
               <td class="table-data-padding">
                 <dl>
-                  <dt>{{ cpl.generatedCode }} ({{ cpl.assignedTo.aliasName }})</dt>
+                  <dt>{{ cpl.generatedCode }}  </dt>
                   <dd>
                     Need {{ cpl.requiredPositions }} candidate(s)  ({{ cpl.minCtc }} -
                     {{ cpl.maxCtc }} ) with {{cpl.experience}} experience.
@@ -404,7 +404,7 @@
   <div class="modal-body">
     <label>Creator</label>
     <select class="form-control" name="creator" [(ngModel)]="creator">
-      <option *ngFor="let rl of recruiterList" [ngValue]="rl.id"> {{ rl.fullname }}</option>
+      <option *ngFor="let rl of recruiterList" [ngValue]="rl.id"> {{ rl.name }}</option>
     </select>
     <label>Consultants</label>
     <ng-multiselect-dropdown
@@ -434,7 +434,7 @@
               <input class="form-control" [(ngModel)]="cnt.notes" name="experience" />
             </td>
             <td>
-              <button type="button" class="btn btn-secondary" (click)="createClientApplication(cnt)">Create</button>
+              <button type="button" class="btn btn-secondary" (click)="createClientApplication(cnt,f)">Create</button>
             </td>
           </tr>
         </tbody>

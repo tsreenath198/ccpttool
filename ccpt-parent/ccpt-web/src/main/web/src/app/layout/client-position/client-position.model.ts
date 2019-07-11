@@ -19,7 +19,7 @@ export interface ClientPositionModel {
     requiredPositions: string;
     qualification: string;
     availability: string;
-    jobCode: string;
+    jobType: string;
     properties: Array<AdditionalPropertiesModel>;
 }
 
@@ -34,5 +34,5 @@ export class SendEmailModel {
     body: string;
 }
 export class ActionsList {
-    actions = [{key: 'Edit' , value:'Edit'},{key: 'Create Application' , value:'Create Application'}, {key: 'Delete' , value:'Delete'}, {key: 'Close' , value:'Close'}];
+    actions = [{key: 'Edit' , value:'Edit'},{key: 'Clone' , value:'Clone'},{key: 'Create Application' , value:'Create Application'}, {key: 'Delete' , value:'Delete'}, {key: 'Close' , value:'Close'}];
 }

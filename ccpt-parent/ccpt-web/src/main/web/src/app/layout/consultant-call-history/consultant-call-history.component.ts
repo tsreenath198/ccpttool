@@ -45,6 +45,7 @@ export class ConsultantCallHistoryComponent implements OnInit {
   public page: number = 1;
   public consultantListLength: number;
   public pageSize: number = 20;
+  public incr:number = 0;
   public getCplPromise = this.http.get(this.urlConstants.CPDropdown);
   public getClPromise = this.http.get(this.urlConstants.CDropdown);
   public getRlPromise = this.http.get(this.urlConstants.RDropdown);
@@ -81,11 +82,13 @@ export class ConsultantCallHistoryComponent implements OnInit {
       // this.consultantListLength = this.consultantCallHistoryList.length;
       // this.pageChange(this.page);
     });
-    this.model.properties = [];
+    this.model.properties = [{name :'' , value :'' , id :0
+  
+  }];
     this.page = 1
   }
   public dblSetModel() {
-    this.readOnlyForm = 'U';
+    this.readOnlyForm = 'U'; 
     this.enableButtonType = 'U';
     this.showAction = true;
     this.action = null;

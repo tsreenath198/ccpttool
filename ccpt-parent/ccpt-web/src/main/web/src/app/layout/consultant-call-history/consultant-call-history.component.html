@@ -5,7 +5,8 @@
     <div class="col-md-7">
       <div class="row">
         <div class="col-md-6"><input type="text" class="form-control" placeholder="search..."
-            [(ngModel)]="currSearchTxt" /></div>
+            [(ngModel)]="currSearchTxt" />
+          </div>
       </div>
       <div class="table-responsive mt-2 table-wrapper-scroll-y my-custom-scrollbar" [style.height.px]="screenHeight">
         <table class="table table-hover table-striped">
@@ -29,7 +30,7 @@
               </th>
             </tr>
           </thead>
-          <tbody class="overflow-ele-scroll">
+          <tbody class="overflow-ele-scroll" >
               <!-- | orderBy: key : reverse -->
             <tr *ngFor="let cchl of consultantCallHistoryList  | filter: 'consultantName':currSearchTxt | paginate: { itemsPerPage: 20, currentPage: page }; let i = index"
               (click)="setModel(cchl.id)" (dblclick)="dblSetModel()">
@@ -39,8 +40,9 @@
               <td>
                 {{ cchl.consultant.fullname }}
               </td>
-              <td>
-                {{cchl.clientPosition.generatedCode}}
+              <td >
+                <span *ngIf="cchl.clientPosition != null">{{cchl.clientPosition.generatedCode}}</span>
+                <span *ngIf="cchl.clientPosition == null">&nbsp;</span>
               </td>
               <td>
                 {{ cchl.calledDate }}
@@ -123,15 +125,18 @@
           </div>
           <div class="col-md-12">
             <div class="form-group">
-              <label>Client Position</label>
+              <label>Client Position<span class="required">*</span></label>
 
               <select class="form-control" [disabled]="readOnlyForm == 'R'" name="cp"
                 [(ngModel)]="model.cpId" [ngClass]="{ 'is-invalid': f.submitted && cp.invalid }"
-                #cp="ngModel">
+                #cp="ngModel" required>
                 <option *ngFor="let cpl of clientPositionList" [ngValue]="cpl.id">
                   {{ cpl.name }}
                 </option>
               </select>
+              <div class="invalid-feedback">
+                Client Position is mandatory
+              </div>
             </div>
           </div>
           <div class="col-md-12">
@@ -190,7 +195,7 @@
                 </div>
                 <div class="col-md-5">
                   <input type="text" [(ngModel)]="apValue" class="form-control" name="apValue"
-                    [readonly]="readOnlyForm == 'R'" (keypress)="enter($event)" />
+                    [readonly]="readOnlyForm == 'R'" (keyup)="enter($event)" />
                 </div>
                 <div class="col-md-2">
                   <i class="fa fa-plus" aria-hidden="true" id="increase" *ngIf="enableButtonType != 'E'"

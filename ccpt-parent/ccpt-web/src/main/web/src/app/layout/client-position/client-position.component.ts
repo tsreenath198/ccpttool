@@ -119,6 +119,7 @@ export class ClientPositionComponent implements OnInit {
     });
     this.model.properties = [];
     this.model.cpstatus = 'Open';
+    this.model.requiredPositions ='1';
     this.page = 1;
   }
   private getAllDropdowns() {
@@ -197,6 +198,10 @@ export class ClientPositionComponent implements OnInit {
         break;
       }
       case 'Create Application': {
+        for (let i = 0; i < this.consultantList.length; i++) {
+          const temp = { item_id: this.consultantList[i].id, item_text: this.consultantList[i].fullname, notes: '' };
+          this.consultantNames.push(temp);
+        }
         this.open(this.model.id, shortListContent);
         break;
       }
@@ -206,13 +211,27 @@ export class ClientPositionComponent implements OnInit {
       }
       case 'Close': {
         this.cancelForm(form);
+        break;
+      }
+      case 'Clone' : {
+        this.cloneData(this.model);
+        break;
       }
     }
+  }
+  private cloneData(data: any){
+    data.id = null;
+    data.assignedTo = null;
+    data.role = null;
+    this.readOnlyForm = '';
+    this.enableButtonType = '';
+    this.closedByEnable = false;
   }
   private formReset() {
     this.model = <ClientPositionModel>{};
     this.model.properties = [];
     this.model.cpstatus = 'Open';
+    this.model.requiredPositions ='1';
   }
   public create(clientPositionForm: NgForm): void {
     this.isCreate = true;
@@ -226,6 +245,9 @@ export class ClientPositionComponent implements OnInit {
         this.formReset();
         clientPositionForm.resetForm();
         this.isCreate= false;
+        if(this.showAction){
+          this.showAction = false;
+        }
       },
       err => {
         this.toastr.error(err.error.message, 'Client Position');
@@ -337,7 +359,7 @@ export class ClientPositionComponent implements OnInit {
       this.close();
     });
   }
-  public createClientApplication(data: any) {
+  public createClientApplication(data: any,clientPositionForm: NgForm) {
     // TODO:Need to check the code
     // tslint:disable-next-line:max-line-length
     const dataToCreate = {
@@ -353,7 +375,11 @@ export class ClientPositionComponent implements OnInit {
         this.toastr.success(this.urlConstants.SuccessMsg, 'Client Application');
         this.init();
         this.formReset();
-        this.close();
+        clientPositionForm.resetForm();
+        this.isCreate= false;
+        if(this.showAction){
+          this.showAction = false;
+        }
         this.shortListConsultants = [];
       },
       err => {
