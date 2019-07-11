@@ -25,7 +25,7 @@
                 </tr>
               </thead>
           <tbody>
-            <tr *ngFor="let ocl of OCList | filter: 'name':currSearchTxt; let i = index"
+            <tr *ngFor="let ocl of OCList | filter: currSearchTxt; let i = index"
               [ngClass]="!ocl.isProfileCompleted ? 'bl-red' : 'bl-trans'" (click)="setModel(ocl.id)"
               (dblclick)="dblSetModel(ocl)">
               <td>

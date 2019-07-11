@@ -6,12 +6,12 @@ import { Pipe, PipeTransform, Injectable } from '@angular/core';
 @Injectable()
 export class FilterPipe implements PipeTransform {
     transform(items: any[], value: string): any[] {
-        if (!items) {
+        if (!items.length) {
             return [];
         }
-        // if (!field || !value) {
-        //     return items;
-        // }
+        if (!value) {
+            return items;
+        }
         //item[field].toLowerCase().indexOf(value.toLowerCase()) !== -1
         return items.filter(item => JSON.stringify(item).toLowerCase().indexOf(value.toLowerCase()) !== -1);
     }

@@ -25,7 +25,7 @@
           </thead>
           <tbody>
             <tr
-              *ngFor="let cl of clientList | filter: 'name':currSearchTxt; let i = index"
+              *ngFor="let cl of clientList | filter:currSearchTxt; let i = index"
               (click)="setModel(cl.id)"
               (dblclick)="dblSetModel(cl)"
             >

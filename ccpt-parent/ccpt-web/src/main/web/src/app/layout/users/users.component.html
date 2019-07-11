@@ -9,7 +9,7 @@
       <div class="table-responsive mt-2 table-wrapper-scroll-y my-custom-scrollbar" [style.height.px]="screenHeight">
         <table class="table table-hover table-striped">
           <tbody>
-            <tr *ngFor="let ul of usersList |  filter : 'username' : currSearchTxt ; let i = index"
+            <tr *ngFor="let ul of usersList |  filter : currSearchTxt ; let i = index"
               (click)="setModel(ul.id)" (dblclick)="dblSetModel()">
               <td>{{ul.username}}</td>
               <!-- <td width="100">

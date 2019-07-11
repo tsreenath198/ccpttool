@@ -33,7 +33,7 @@
           </thead>
           <tbody class="overflow-ele-scroll">
             <tr class="table-data-padding"
-              *ngFor="let cal of clientApplicationList | filter: 'clientPositionId':currSearchTxt| paginate: { itemsPerPage: 20, currentPage: page }; let i = index"
+              *ngFor="let cal of clientApplicationList | filter: currSearchTxt| paginate: { itemsPerPage: 20, currentPage: page }; let i = index"
               (click)="setModel(cal.id)" (dblclick)="dblSetModel(cal)">
               <td>{{ cal.consultant.fullname }}</td>
               <td>{{ cal.clientPosition.generatedCode }}</td>

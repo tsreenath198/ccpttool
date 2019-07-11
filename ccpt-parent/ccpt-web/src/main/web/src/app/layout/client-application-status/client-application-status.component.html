@@ -11,7 +11,7 @@
         <table class="table table-hover table-striped">
           <tbody>
             <tr
-              *ngFor="let casl of clientApplicationStatusList |  filter : 'description' :currSearchTxt ; let i = index"
+              *ngFor="let casl of clientApplicationStatusList |  filter :currSearchTxt ; let i = index"
               (click)="setModel(casl.id)" (dblclick)="dblSetModel()">
               <td >
                 {{casl.description}}
