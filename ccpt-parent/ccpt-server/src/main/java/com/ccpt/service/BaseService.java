@@ -80,7 +80,7 @@ public abstract class BaseService<T extends BaseEntity<ID>, ID> {
 	}
 
 	public T update(T entity) {
-		Optional<T> existing = getRepository().findById(entity.getKey());
+		Optional<T> existing = getRepository().findByIdAndActiveFlag(entity.getKey(), true);
 		if (entity.getKey() == null) {
 			throw new EntityNotFoundException("No primary key passed for " + ENTITY);
 		}
