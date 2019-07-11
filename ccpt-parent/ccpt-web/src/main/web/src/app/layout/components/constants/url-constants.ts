@@ -97,7 +97,7 @@ export class URLConstants {
     ReportingGetAllOpenCP = 'report/getAllOpenCP';
     ReportingGetAllActiveCA = 'clientApplication/getAllActiveCACountByCpID';
     ReportingGetAllActiveCAById = 'clientApplication/getAllActiveCAByCpID?cpId=';
-    ReportingGetAllInterviewsToday = 'clientApplication/getAllOneWeekInterviews';
+    ReportingGetAllInterviewsToday = 'clientApplication/getAllInterviewsFromToday';
 
     /**Email Template */
     EmailTemplateCreate = 'template';
