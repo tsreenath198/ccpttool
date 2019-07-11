@@ -8,6 +8,6 @@ import com.ccpt.model.Client;
 import com.ccpt.model.DropDownStatistics;
 
 public interface ClientRepository extends BaseRepository<Client, Integer> {
-	@Query("SELECT id as id,name as name FROM Client WHERE active_flag=1")
+	@Query("SELECT id as id,name as name FROM Client WHERE active_flag=1 ORDER BY createdDate ASC")
 	List<DropDownStatistics> getAllClients();
 }

@@ -2,6 +2,7 @@ package com.ccpt.exception;
 
 import java.util.Date;
 
+import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 import javax.security.sasl.AuthenticationException;
 import javax.validation.ConstraintViolationException;
@@ -175,6 +176,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 			HttpStatus status, WebRequest request) {
 		ErrorDetails errorDetails = new ErrorDetails(new Date(), ex.getMessage(), request.getDescription(false));
 		return new ResponseEntity<>(errorDetails, status);
+	}
+
+	@ExceptionHandler(EntityExistsException.class)
+	public ResponseEntity<Object> entityExistsExceptionHandler(EntityExistsException ex, WebRequest request) {
+		ErrorDetails errorDetails = new ErrorDetails(new Date(), ex.getMessage(), request.getDescription(false));
+		return new ResponseEntity<>(errorDetails, HttpStatus.CONFLICT);
 	}
 
 }
