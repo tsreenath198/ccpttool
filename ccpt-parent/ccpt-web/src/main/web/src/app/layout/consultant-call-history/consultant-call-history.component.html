@@ -32,7 +32,7 @@
           </thead>
           <tbody class="overflow-ele-scroll" >
               <!-- | orderBy: key : reverse -->
-            <tr *ngFor="let cchl of consultantCallHistoryList  | filter: 'consultantName':currSearchTxt | paginate: { itemsPerPage: 20, currentPage: page }; let i = index"
+            <tr *ngFor="let cchl of consultantCallHistoryList  | filter: currSearchTxt | paginate: { itemsPerPage: 20, currentPage: page }; let i = index"
               (click)="setModel(cchl.id)" (dblclick)="dblSetModel()">
               <td>
                 {{ cchl.calledBy.fullname }}
