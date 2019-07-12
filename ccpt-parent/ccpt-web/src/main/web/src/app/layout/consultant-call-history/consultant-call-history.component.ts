@@ -82,9 +82,7 @@ export class ConsultantCallHistoryComponent implements OnInit {
       // this.consultantListLength = this.consultantCallHistoryList.length;
       // this.pageChange(this.page);
     });
-    this.model.properties = [{name :'' , value :'' , id :0
-  
-  }];
+    this.model.properties = [];
     this.page = 1
   }
   public dblSetModel() {

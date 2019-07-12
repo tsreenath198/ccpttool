@@ -70,7 +70,7 @@ export class EmailTemplateComponent implements OnInit {
         this.action = null;
     }
     private getEmailById(id: number) {
-        const temp = this.http.get(this.urlConstants.SMSTemplateGetById + id);
+        const temp = this.http.get(this.urlConstants.EmailTemplateGetById + id);
         temp.subscribe(resp => {
             this.model = this.mapToUpdateModel(resp);
         });

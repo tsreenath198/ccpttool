@@ -11,6 +11,7 @@ import {
 } from './components';
 import { StatModule } from '../../shared';
 import { FormsModule } from '@angular/forms';
+import { AngularEditorModule } from '@kolkov/angular-editor';
 
 @NgModule({
     imports: [
@@ -19,7 +20,8 @@ import { FormsModule } from '@angular/forms';
         NgbAlertModule,
         DashboardRoutingModule,
         StatModule,
-        FormsModule
+        FormsModule,
+        AngularEditorModule
     ],
     declarations: [
         DashboardComponent,

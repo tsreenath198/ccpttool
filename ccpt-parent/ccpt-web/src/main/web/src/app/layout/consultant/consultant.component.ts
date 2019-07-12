@@ -366,4 +366,19 @@ export class ConsultantComponent implements OnInit {
     const uplst = lst.slice(from, from + this.pageSize);
     this.pagedConsultantList = uplst;
   }
+  public emptyExperience(){
+    if(this.isFresher == true){
+      this.model.currentCompany='';
+      this.model.currentCTC = '';
+      this.model.expectedCTC = '';
+      this.model.currentJobTitle = '';
+      this.model.currentFunctionalArea = '';
+      this.model.currentIndustry = '';
+      this.model.yearsInCurrentJob = '';
+      this.model.monthsInCurrentJob = '';
+      this.model.experienceYrs ='';
+      this.model.experienceMonths = '';
+      this.model.noticePeriod = '';
+    }
+  }
 }

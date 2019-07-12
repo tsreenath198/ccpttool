@@ -159,7 +159,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let cpl of ccptReportCPL">
+              <tr *ngFor="let cpl of ccptReportCPL" (click)="open(top5CP, cpl.id, 'latestCPTop5')">
                 <td>{{ cpl.client.name }}</td>
                 <td>{{ cpl.generatedCode }}</td>
                 <td>{{ cpl.createdDate | date }}</td>
@@ -316,6 +316,7 @@
       <table class="table table-sm">
         <thead>
           <tr>
+            <th>S.No</th>
             <th>Position</th>
             <th>Client</th>
             <th>Consultant</th>
@@ -323,7 +324,8 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let aca of activeCAById">
+          <tr *ngFor="let aca of activeCAById; let i=index">
+            <td>{{i+1}}</td>
             <td>{{ aca.clientPosition.generatedCode }}</td>
             <td>{{ aca.clientPosition.client.name }}</td>
             <td>{{ aca.consultant.fullname }}</td>
@@ -338,6 +340,302 @@
     <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
   </div>
 </ng-template>
+<ng-template #top5CP let-c="close" let-d="dismiss">
+    <div class="modal-header">
+      <h4 class="modal-title">Client Position</h4>
+      <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+
+
+
+        <form name="form" id="clientPositionForm" (ngSubmit)="f.form.valid &&  create(f)" #f="ngForm" novalidate>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Client Name </label>
+                  <input
+                    class="form-control"
+                    [readonly]="readOnlyForm == 'R'"
+                    [(ngModel)]="top5ById.client.name"
+                    name="cn"
+                    [ngClass]="{ 'is-invalid': f.submitted && cn.invalid }"
+                    #cn="ngModel"
+                    required
+                  />
+                  <!-- <select
+                    class="form-control"
+                    name="cn"
+                    [disabled]="readOnlyForm == 'R'"
+                    [(ngModel)]="top5ById.clientId"
+                    [ngClass]="{ 'is-invalid': f.submitted && cn.invalid }"
+                    #cn="ngModel"
+                    required
+                  >
+                    <option *ngFor="let cls of clientList" [ngValue]="cls.id"> {{ cls.name }}</option>
+                  </select>
+                  <div class="invalid-feedback">
+                    Client Name is mandatory
+                  </div> -->
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Job Title </label>
+                  <input
+                    class="form-control"
+                    [readonly]="readOnlyForm == 'R'"
+                    [(ngModel)]="top5ById.role"
+                    name="technology"
+                    [ngClass]="{ 'is-invalid': f.submitted && technology.invalid }"
+                    #technology="ngModel"
+                    required
+                  />
+                  <div class="invalid-feedback">
+                    Role is mandatory
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Job Type</label>
+                  <input
+                    class="form-control"
+                    [readonly]="readOnlyForm == 'R'"
+                    [(ngModel)]="top5ById.jobType"
+                    name="jobType"
+                    [ngClass]="{ 'is-invalid': f.submitted && jobType.invalid }"
+                    #jobType="ngModel"
+                  />
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Availability</label>
+                  <input
+                    class="form-control"
+                    [readonly]="readOnlyForm == 'R'"
+                    [(ngModel)]="top5ById.availability"
+                    name="availability"
+                    [ngClass]="{ 'is-invalid': f.submitted && availability.invalid }"
+                    #availability="ngModel"
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Required Positions</label>
+                  <input
+                    class="form-control"
+                    type="number"
+                    min="0"
+                    [readonly]="readOnlyForm == 'R'"
+                    [(ngModel)]="top5ById.requiredPositions"
+                    name="nofpos"
+                    #nofpos="ngModel"
+                  />
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Required Experience</label>
+                  <input
+                    class="form-control"
+                    [readonly]="readOnlyForm == 'R'"
+                    [(ngModel)]="top5ById.experience"
+                    name="experience"
+                    [ngClass]="{ 'is-invalid': f.submitted && experience.invalid }"
+                    #experience="ngModel"
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                    <label>Min CTC</label>
+                    <input
+                      class="form-control"
+                      [readonly]="readOnlyForm == 'R'"
+                      type="text"
+                      [(ngModel)]="top5ById.minCtc"
+                      name="minctc"
+                      [ngClass]="{ 'is-invalid': f.submitted && minctc.invalid }"
+                      #minctc="ngModel"
+                    />
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                    <label>Max CTC</label>
+                    <input
+                      class="form-control"
+                      [readonly]="readOnlyForm == 'R'"
+                      type="text"
+                      [(ngModel)]="top5ById.maxCtc"
+                      name="maxctc"
+                      [ngClass]="{ 'is-invalid': f.submitted && maxctc.invalid }"
+                      #maxctc="ngModel"
+                    />
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Location</label>
+                  <input
+                    class="form-control"
+                    [readonly]="readOnlyForm == 'R'"
+                    [(ngModel)]="top5ById.location"
+                    name="loc"
+                    [ngClass]="{ 'is-invalid': f.submitted && loc.invalid }"
+                    #loc="ngModel"
+                  />
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Client Position Status </label>
+                  <input
+                  class="form-control"
+                  [readonly]="readOnlyForm == 'R'"
+                  [(ngModel)]="top5ById.status.description"
+                  name="cps"
+                  [ngClass]="{ 'is-invalid': f.submitted && cps.invalid }"
+                  #cps="ngModel"
+                />
+                  <!-- <select class="form-control" name="cps" [disabled]="readOnlyForm == 'R'" [(ngModel)]="top5ById.cpstatus">
+                     <option *ngFor="let cpsl of clientPositionStatusList" [ngValue]="cpsl.code"> {{ cpsl.description }} </option>
+                  </select> -->
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                    <label>Assign To</label>
+                    <input
+                  class="form-control"
+                  [readonly]="readOnlyForm == 'R'"
+                  [(ngModel)]="top5ById.assignedTo.fullname"
+                  name="assign"
+                  [ngClass]="{ 'is-invalid': f.submitted && assign.invalid }"
+                  #assign="ngModel"
+                />
+                    <!-- <select
+                      class="form-control"
+                      name="assign"
+                      [disabled]="readOnlyForm == 'R'"
+                      [(ngModel)]="top5ById.assignedTo"
+                      [ngClass]="{ 'is-invalid': f.submitted && assign.invalid }"
+                      #assign="ngModel"
+                    >
+                      <option *ngFor="let rl of recruiterList" [ngValue]="rl.id"> {{ rl.name }}</option>
+                    </select> -->
+                </div>
+              </div>
+              <div class="col-md-6">
+                  <div class="form-group">
+                    <label>Qualification</label>
+                    <input
+                      class="form-control"
+                      [readonly]="readOnlyForm == 'R'"
+                      [(ngModel)]="top5ById.qualification"
+                      name="qual"
+                      [ngClass]="{ 'is-invalid': f.submitted && qual.invalid }"
+                      #qual="ngModel"
+                    />
+                  </div>
+                </div>
+              <div class="col-md-6" *ngIf="top5ById.cpstatus == 'Closed'">
+                <div class="form-group">
+                  <label>Closed By</label>
+                  <select class="form-control" name="closedBy" [disabled]="readOnlyForm == 'R'" [(ngModel)]="top5ById.closedBy">
+                    <!-- <option *ngFor="let rl of recruiterList" [ngValue]="rl.id"> {{ rl.name }}</option> -->
+                  </select>
+                </div>
+              </div>
+              
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>Required Skills </label>
+                  <textarea
+                    class="form-control"
+                    cols="10"
+                    rows="10"
+                    [(ngModel)]="top5ById.requiredSkills"
+                    name="requiredskills"
+                    [ngClass]="{ 'is-invalid': f.submitted && requiredskills.invalid }"
+                    #requiredskills="ngModel"
+                    required
+                    [readonly]="readOnlyForm == 'R'"
+                  ></textarea>
+                  <div class="invalid-feedback">
+                    Required Skills are mandatory
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row" *ngIf="top5ById.properties.length>0">
+                <div class="col-md-12 mb-5" *ngIf="top5ById.properties.length > 0">
+                    <div class="form-group">
+                      <label>Additional Properties</label>
+                      <div class="row" *ngFor="let ap of top5ById.properties; let i = index">
+                        <div class="col-md-5 pt-3">
+                          <input
+                            type="text"
+                            [(ngModel)]="ap.name"
+                            class="form-control"
+                            name="addPropName{{ i }}"
+                            [readonly]="readOnlyForm == 'R'"
+                          />
+                        </div>
+                        <div class="col-md-5 pt-3">
+                          <input
+                            type="text"
+                            [(ngModel)]="ap.value"
+                            class="form-control"
+                            name="addPropValue{{ i }}"
+                            [readonly]="readOnlyForm == 'R'"
+                          />
+                        </div>
+                        <!-- <div class="col-md-2 pt-3">
+                          <i
+                            class="fa fa-minus"
+                            aria-hidden="true"
+                            id="decrease"
+                            *ngIf="enableButtonType != 'E'"
+                            (click)="propertiesListIncrement($event.target, i)"
+                          ></i>
+                        </div> -->
+                      </div>
+                    </div>
+                  </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>Description</label>
+                  <angular-editor [(ngModel)]="top5ById.description" name="description" [config]="config"> </angular-editor>
+                </div>
+              </div>
+            </div>
+          </form>
+    </div>
+    <div class="modal-footer">
+      <!-- <button type="button" class="btn btn-secondary" (click)="deleteCoCHRecord()">Ok</button> -->
+      <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
+    </div>
+  </ng-template>
 
     <!-- </div>
     <div class="row">

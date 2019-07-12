@@ -60,6 +60,7 @@ export class ClientApplicationComponent implements OnInit {
     public page: number;
     public caListLength: number;
     public pageSize: number = 20;
+    public cpGeneratedCode: string = '';
     public fileList: Array<any> = [];
     public config: AngularEditorConfig = {
         editable: true,
@@ -88,8 +89,8 @@ export class ClientApplicationComponent implements OnInit {
             this.router.navigate(['/login']);
           }
         this.loggedInRole = sessionStorage.getItem('role');
-        this.init();
         this.getAllDropdowns();
+        this.init();
     }
     private init() {
         this.http.get(this.urlConstants.CAGetAll).subscribe(resp => {
@@ -114,9 +115,17 @@ export class ClientApplicationComponent implements OnInit {
             this.consultantList = listofrecords[1] as any;
             this.clientPositionList = listofrecords[2] as any;
             this.recruiterList = listofrecords[3] as any;
+            this.getRecruiterId();
         });
     }
-
+    private getRecruiterId() {
+        const temp = sessionStorage.getItem('username');
+        this.recruiterList.forEach(rl => {
+          if (rl.email === temp) {
+            this.model.creatorId = rl.id;
+          }
+        });
+      }
     private formReset() {
         this.model = <ClientApplicationModel>{};
         this.model.properties = [];
@@ -153,6 +162,7 @@ export class ClientApplicationComponent implements OnInit {
     private mapToUpdateModel(response): ClientApplicationModel {
         const temp = response;
         this.model = temp;
+        this.cpGeneratedCode = temp.clientPosition.generatedCode; 
         this.model['cpId'] = temp.clientPosition.id;
         this.model['consultantId'] = temp.consultant.id;
         this.model['caStatus'] = temp.status.code;
@@ -210,6 +220,7 @@ export class ClientApplicationComponent implements OnInit {
             this.formReset();
             clientApplicationForm.resetForm();
             this.isCreate= false;
+            this.getRecruiterId();
 
         }, err => {
             this.toastr.error(err.error.message, 'Client Application');
@@ -235,6 +246,7 @@ export class ClientApplicationComponent implements OnInit {
             this.readOnlyForm = '';
             this.enableButtonType = '';
             this.showAction = false;
+            this.getRecruiterId();
         }, err => {
             this.toastr.error(err.error.message, 'Client Application');
         });
@@ -248,6 +260,7 @@ export class ClientApplicationComponent implements OnInit {
         this.readOnlyForm = '';
         this.enableButtonType = '';
         this.showAction = false;
+        this.getRecruiterId();
     }
     public trash(): void {
         const temp = this.http.delete(this.urlConstants.CADelete + this.selectedRecrd);
@@ -259,6 +272,7 @@ export class ClientApplicationComponent implements OnInit {
             this.readOnlyForm = '';
             this.enableButtonType = '';
             this.showAction = false;
+            this.getRecruiterId();
         }, err => {
             if (err.status === 200) {
                 this.init();

@@ -8,6 +8,7 @@ import { forkJoin } from 'rxjs';
 import { NgbModal, ModalDismissReasons, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { Keyvalue } from '../modals/action';
 import { Router } from '@angular/router';
+import { AngularEditorConfig } from '@kolkov/angular-editor';
 
 @Component({
     selector: 'app-dashboard',
@@ -23,6 +24,7 @@ export class DashboardComponent implements OnInit {
     public ccptReportCLCH: Array<any> = [];
     public ccptReportCOCH: Array<any> = [];
     public ccptReportCC: any = {};
+    public top5ById: any = {};
     public ccptReportCPL: Array<any> = [];
     public openCP: Array<any> = [];
     public activeCA: Array<any> = [];
@@ -38,7 +40,13 @@ export class DashboardComponent implements OnInit {
     private selectedRecrd = 0;
     public closeResult = '';
     private modalRef: NgbModalRef;
-
+    public config: AngularEditorConfig = {
+        editable: true,
+        spellcheck: true,
+        height: '15rem',
+        minHeight: '5rem',
+        translate: 'no'
+      };
 
     public getAllReportCLCH = this.http.get(this.urlConstants.CCHGetCountByRecruiter + this.clchChoosenDays);
     public getAllReportCOCH = this.http.get(this.urlConstants.CoCHGetCountByRecruiter + this.cochChoosenDays);
@@ -151,6 +159,11 @@ export class DashboardComponent implements OnInit {
             this.clchByIdList = resp as any;
         })
     }
+    public getTop5ById(recrd){
+        this.http.get(this.urlConstants.CPGetById+recrd).subscribe(resp => {
+            this.top5ById = resp as any;
+        })
+    }
     /**
      * @param
      * 1) content consists the modal instance
@@ -174,6 +187,9 @@ export class DashboardComponent implements OnInit {
         }
         if (type == 'ClientCallHistory') {
             this.getAllClCHByID(this.selectedRecrd, this.clchChoosenDays);
+        }
+        if(type == 'latestCPTop5'){
+            this.getTop5ById(this.selectedRecrd)
         }
     }
     close() {

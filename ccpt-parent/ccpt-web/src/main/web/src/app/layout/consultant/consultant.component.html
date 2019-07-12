@@ -223,8 +223,6 @@
               />
             </div>
           </div>
-        </div>
-        <div class="row">
           <div class="col-md-6">
             <div class="form-group">
               <label>Passout Year</label>
@@ -237,6 +235,46 @@
               />
             </div>
           </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Current Location</label>
+                <input
+                  type="text"
+                  name="currentLocation"
+                  [readonly]="readOnlyForm == 'R'"
+                  class="form-control"
+                  [(ngModel)]="model.currentLocation"
+                />
+              </div>
+            </div>
+
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>Prefer Location</label>
+              <input
+                class="form-control"
+                name="prefferedLocation"
+                [readonly]="readOnlyForm == 'R'"
+                [(ngModel)]="model.prefferedLocation"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="row"> 
+            <div *ngIf="isFresher" class="col-md-6">
+                <div class="form-group">
+                  <label>Expected CTC</label>
+                  <input
+                    type="text"
+                    name="expectedCTC"
+                    [readonly]="readOnlyForm == 'R'"
+                    class="form-control"
+                    [(ngModel)]="model.expectedCTC"
+                  />
+                </div>
+              </div>
           <div class="col-md-6">
             <div class="form-group">
               <label>Consultant Status<span class="required">*</span></label>
@@ -259,7 +297,7 @@
         </div>
         <div class="row">
           <div class="col-md-12 pb-2">
-            <input type="checkbox" class="" [(ngModel)]="isFresher" name="interviewCheckbox" />&nbsp;<label>Fresher</label>
+            <input type="checkbox" class="" [(ngModel)]="isFresher" (click)="emptyExperience()" name="interviewCheckbox" />&nbsp;<label>Fresher</label>
           </div>
         </div>
         <div *ngIf="!isFresher">
@@ -273,18 +311,6 @@
                   class="form-control"
                   [readonly]="readOnlyForm == 'R'"
                   [(ngModel)]="model.currentCompany"
-                />
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="form-group">
-                <label>Current Location</label>
-                <input
-                  type="text"
-                  name="currentLocation"
-                  [readonly]="readOnlyForm == 'R'"
-                  class="form-control"
-                  [(ngModel)]="model.currentLocation"
                 />
               </div>
             </div>
@@ -366,7 +392,7 @@
                     [(ngModel)]="model.yearsInCurrentJob"
                     min="0"
                     placeholder="Years"
-                  />&nbsp;<span>/</span>&nbsp;<input
+                  />&nbsp;<small>yrs</small><span>/</span>&nbsp;<input
                     type="text"
                     class="form-control col-md-5"
                     name="monthsInCurrentJob"
@@ -375,7 +401,7 @@
                     min="0"
                     max="12"
                     placeholder="Months"
-                  />
+                  /><small>mon</small>
                 </div>
               </div>
             </div>
@@ -394,7 +420,7 @@
                         min="0"
                         placeholder="Years"
                       />
-                      &nbsp;<span>/</span>&nbsp;<input
+                      &nbsp;<small>yrs</small><span>/</span>&nbsp;<input
                         type="text"
                         class="form-control col-md-5"
                         name="expmonths"
@@ -404,7 +430,7 @@
                         max="11"
                         placeholder="Months"
                         (onkeyup)="imposeMinMax(this)"
-                      />
+                      /><small>mon</small>
                     </div>
                   </div>
                 </div>
@@ -419,32 +445,6 @@
                   [(ngModel)]="model.noticePeriod"
                 />
               </div>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div *ngIf="isFresher" class="col-md-6">
-            <div class="form-group">
-              <label>Expected CTC</label>
-              <input
-                type="text"
-                name="expectedCTC"
-                [readonly]="readOnlyForm == 'R'"
-                class="form-control"
-                [(ngModel)]="model.expectedCTC"
-              />
-            </div>
-          </div>
-
-          <div class="col-md-6">
-            <div class="form-group">
-              <label>Prefer Location</label>
-              <input
-                class="form-control"
-                name="prefferedLocation"
-                [readonly]="readOnlyForm == 'R'"
-                [(ngModel)]="model.prefferedLocation"
-              />
             </div>
           </div>
         </div>
