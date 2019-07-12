@@ -7,6 +7,7 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
@@ -24,6 +25,9 @@ import com.ccpt.service.EmailContentService;
 @Controller
 @CrossOrigin
 public class EmailController {
+
+	@Value("${spring.mail.username}")
+	private String bcc;
 
 	@Autowired
 	private JavaMailSender javaMailSender;
@@ -47,6 +51,7 @@ public class EmailController {
 		msg.setTo(toCSV);
 		msg.setSubject(subject);
 		msg.setText(body);
+		msg.setBcc(bcc);
 		javaMailSender.send(msg);
 	}
 
@@ -55,6 +60,7 @@ public class EmailController {
 		MimeMessageHelper helper = new MimeMessageHelper(msg, true);
 		helper.setTo(to);
 		helper.setSubject(subject);
+		helper.setBcc(bcc);
 		helper.setText(body, true);
 		FileSystemResource file = new FileSystemResource(
 				new File("C:\\Users\\lenovo\\Desktop\\GIT Total Commands with examples.txt.docx"));
