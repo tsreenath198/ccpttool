@@ -1,26 +1,27 @@
 <nav class="sidebar" [ngClass]="{sidebarPushRight: isActive, collapsed: collapsed}">
   <div class="list-group">
 
-    <a routerLink="/layout/dashboard" [routerLinkActive]="['router-link-active']" class="list-group-item">
+    <a routerLink="/layout/dashboard" (click)="toggleCollapsed()" [routerLinkActive]="['router-link-active']"
+      class="list-group-item">
       <i class="fa fa-fw fa-home"></i>&nbsp;
       <span>{{ 'Dashboard' | translate }}</span>
     </a>
     <div class="nested-menu">
-      <a class="list-group-item" (click)="addExpandClass('page')">
+      <a class="list-group-item" (click)="addExpandClass('calls');toggleCollapsed('calls');">
         <i class="fa fa-fw fa-phone"></i>&nbsp;
         <span>{{ 'Calls' | translate }}</span>
       </a>
-      <li class="nested" [class.expand]="showMenu === 'page'">
+      <li class="nested" [class.expand]="showMenu === 'calls'">
         <ul class="submenu">
           <li>
-            <a class="list-group-item " [routerLink]="['/layout/consultant-call-history']"
+            <a class="list-group-item " (click)="toggleCollapsed()" [routerLink]="['/layout/consultant-call-history']"
               [routerLinkActive]="['router-link-active']">
               <span class="fa fa-fw fa-users"></span>
               <span>{{ 'Consultants' | translate }}</span>
             </a>
           </li>
-          <li >
-            <a  class="list-group-item " [routerLink]="['/layout/client-call-history']"
+          <li>
+            <a class="list-group-item " (click)="toggleCollapsed()" [routerLink]="['/layout/client-call-history']"
               [routerLinkActive]="['router-link-active']">
               <span class="fa fa-fw fa-building"></span>
               <span>{{ 'Clients' | translate }}</span>
@@ -29,78 +30,87 @@
         </ul>
       </li>
     </div>
-    <a [routerLink]="['/layout/consultant']" [routerLinkActive]="['router-link-active']" class="list-group-item">
+    <a [routerLink]="['/layout/consultant']" (click)="toggleCollapsed()" [routerLinkActive]="['router-link-active']"
+      class="list-group-item">
       <i class="fa fa-fw fa-users"></i>&nbsp;
       <span>{{ 'Consultants' | translate }}</span>
     </a>
-    <a  [routerLink]="['/layout/client']" [routerLinkActive]="['router-link-active']" class="list-group-item">
+    <a [routerLink]="['/layout/client']" (click)="toggleCollapsed()" [routerLinkActive]="['router-link-active']"
+      class="list-group-item">
       <i class="fa fa-fw fa-building"></i>&nbsp;
       <span>{{ 'Clients' | translate }}</span>
     </a>
-    <a  [routerLink]="['/layout/client-position']" [routerLinkActive]="['router-link-active']" class="list-group-item">
+    <a [routerLink]="['/layout/client-position']" (click)="toggleCollapsed()"
+      [routerLinkActive]="['router-link-active']" class="list-group-item">
       <i class="fa fa-fw fa-briefcase"></i>&nbsp;
       <span>{{ 'Client Positions' | translate }}</span>
     </a>
-    <a [routerLink]="['/layout/client-application']" [routerLinkActive]="['router-link-active']"
-      class="list-group-item">
+    <a [routerLink]="['/layout/client-application']" (click)="toggleCollapsed()"
+      [routerLinkActive]="['router-link-active']" class="list-group-item">
       <i class="fa fa-fw fa-paper-plane"></i>&nbsp;
       <span>{{ 'Client Applications' | translate }}</span>
     </a>
-    <a *ngIf="loggedInRole == 'Admin' " [routerLink]="['/layout/payments']" [routerLinkActive]="['router-link-active']"
-    class="list-group-item"><i class="fa fa-fw fa-inr"></i>&nbsp;
-    <span>{{ 'Payments' | translate }}</span>
+    <a *ngIf="loggedInRole == 'Admin' " [routerLink]="['/layout/payments']" (click)="toggleCollapsed()"
+      [routerLinkActive]="['router-link-active']" class="list-group-item"><i class="fa fa-fw fa-inr"></i>&nbsp;
+      <span>{{ 'Payments' | translate }}</span>
     </a>
-    <a [routerLink]="['/layout/other-contacts']" [routerLinkActive]="['router-link-active']" class="list-group-item">
+    <a [routerLink]="['/layout/other-contacts']" (click)="toggleCollapsed()" [routerLinkActive]="['router-link-active']"
+      class="list-group-item">
       <i class="fa fa-fw fa-address-book"></i>&nbsp;
       <span>{{ 'Other Contacts' | translate }}</span>
     </a>
     <div class="nested-menu" *ngIf="loggedInRole == 'Admin' ">
-      <a class="list-group-item" (click)="addExpandClass('pages')">
+      <a class="list-group-item" (click)="addExpandClass('administration');toggleCollapsed('administration');">
         <i class="fa fa-fw fa-user"></i>&nbsp;
         <span>{{ 'Administration' | translate }}</span>
       </a>
-      <li class="nested" [class.expand]="showMenu === 'pages'">
+      <li class="nested" [class.expand]="showMenu === 'administration'">
         <ul class="submenu">
           <li>
-            <a [routerLink]="['/layout/recruiter']" [routerLinkActive]="['router-link-active']" class="list-group-item">
+            <a (click)="toggleCollapsed()" [routerLink]="['/layout/recruiter']"
+              [routerLinkActive]="['router-link-active']" class="list-group-item">
               <i class="fa fa-fw fa-id-card"></i>&nbsp;
               <span>{{ 'Recruiters' | translate }}</span>
             </a>
           </li>
           <li>
-            <a [routerLink]="['/layout/client-application-status']" [routerLinkActive]="['router-link-active']"
-              class="list-group-item">
+            <a [routerLink]="['/layout/client-application-status']" (click)="toggleCollapsed()"
+              [routerLinkActive]="['router-link-active']" class="list-group-item">
               <i class="fa fa-fw fa-filter"></i>&nbsp;
               <span>{{ 'Application Status' | translate }}</span>
             </a>
           </li>
           <li>
-            <a [routerLink]="['/layout/client-position-status']" [routerLinkActive]="['router-link-active']"
-              class="list-group-item"><i class="fa fa-fw fa-filter"></i>&nbsp;
+            <a [routerLink]="['/layout/client-position-status']" (click)="toggleCollapsed()"
+              [routerLinkActive]="['router-link-active']" class="list-group-item"><i
+                class="fa fa-fw fa-filter"></i>&nbsp;
               <span>{{ 'Position Status' | translate }}</span>
             </a>
           </li>
           <li>
-            <a [routerLink]="['/layout/consultant-status']" [routerLinkActive]="['router-link-active']"
-              class="list-group-item"><i class="fa fa-fw fa-filter"></i>&nbsp;
+            <a [routerLink]="['/layout/consultant-status']" (click)="toggleCollapsed()"
+              [routerLinkActive]="['router-link-active']" class="list-group-item"><i
+                class="fa fa-fw fa-filter"></i>&nbsp;
               <span>{{ 'Consultant Status' | translate }}</span>
             </a>
           </li>
           <li>
-            <a [routerLink]="['/layout/user']" [routerLinkActive]="['router-link-active']" class="list-group-item"><i
-                class="fa fa-fw fa-user-circle"></i>&nbsp;
+            <a [routerLink]="['/layout/user']" (click)="toggleCollapsed()" [routerLinkActive]="['router-link-active']"
+              class="list-group-item"><i class="fa fa-fw fa-user-circle"></i>&nbsp;
               <span>{{ 'Users' | translate }}</span>
             </a>
           </li>
           <li>
-            <a [routerLink]="['/layout/email-template']" [routerLinkActive]="['router-link-active']"
-              class="list-group-item"><i class="fa fa-fw fa-envelope"></i>&nbsp;
+            <a [routerLink]="['/layout/email-template']" (click)="toggleCollapsed()"
+              [routerLinkActive]="['router-link-active']" class="list-group-item"><i
+                class="fa fa-fw fa-envelope"></i>&nbsp;
               <span>{{ 'Emails' | translate }}</span>
             </a>
           </li>
           <li>
-            <a [routerLink]="['/layout/message-template']" [routerLinkActive]="['router-link-active']"
-              class="list-group-item"><i class="fa fa-fw fa-comment"></i>&nbsp;
+            <a [routerLink]="['/layout/message-template']" (click)="toggleCollapsed()"
+              [routerLinkActive]="['router-link-active']" class="list-group-item"><i
+                class="fa fa-fw fa-comment"></i>&nbsp;
               <span>{{ 'Messages' | translate }}</span>
             </a>
           </li>
@@ -119,7 +129,7 @@
             <i class="fa fa-fw fa-edit"></i>&nbsp;
             <span>{{ 'Forms' | translate }}</span>
         </a> -->
-     <!-- <a [routerLink]="['/layout/bs-element']" [routerLinkActive]="['router-link-active']" class="list-group-item">
+    <!-- <a [routerLink]="['/layout/bs-element']" [routerLinkActive]="['router-link-active']" class="list-group-item">
             <i class="fa fa-fw fa-desktop"></i>&nbsp;
             <span>{{ 'Bootstrap Element' | translate }}</span>
         </a>   -->
@@ -219,9 +229,9 @@
                 </li>
             </div>
         </div> -->
-        <div class="toggle-button" [ngClass]="{collapsed: collapsed}" (click)="toggleCollapsed()">
-          <i class="fa fa-fw fa-angle-double-{{collapsed?'right':'left'}}"></i>&nbsp;
-          <span>{{ 'Collapse ' | translate }}</span>
-        </div>
+    <div class="toggle-button" [ngClass]="{collapsed: collapsed}" (click)="toggleCollapsed()">
+      <i class="fa fa-fw fa-angle-double-{{collapsed?'right':'left'}}"></i>&nbsp;
+      <span>{{ 'Collapse ' | translate }}</span>
+    </div>
   </div>
 </nav>
