@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.ccpt.model.ClientApplication;
 import com.ccpt.model.Consultant;
-import com.ccpt.model.DropDownStatistics;
+import com.ccpt.model.ConsultantStatistics;
 import com.ccpt.repository.BaseRepository;
 import com.ccpt.repository.ConsultantRepository;
 
@@ -54,7 +54,7 @@ public class ConsultantService extends BaseService<Consultant, Integer> {
 		}
 	}
 
-	public List<DropDownStatistics> getAllConsultants() {
+	public List<ConsultantStatistics> getAllConsultants() {
 		return consultantRepository.getAllConsultants();
 	}
 

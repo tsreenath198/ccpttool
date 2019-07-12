@@ -20,7 +20,7 @@ import com.ccpt.dto.ConsultantDTO;
 import com.ccpt.mapper.BaseMapper;
 import com.ccpt.mapper.ConsultantMapper;
 import com.ccpt.model.Consultant;
-import com.ccpt.model.DropDownStatistics;
+import com.ccpt.model.ConsultantStatistics;
 import com.ccpt.service.BaseService;
 import com.ccpt.service.ConsultantService;
 import com.ccpt.service.ConsultantStatusService;
@@ -46,9 +46,9 @@ public class ConsultantController extends BaseController<ConsultantDTO, Consulta
 	}
 
 	@GetMapping("/getAllConsultants")
-	public ResponseEntity<List<DropDownStatistics>> getAllConsultants() {
-		List<DropDownStatistics> result = consultantService.getAllConsultants();
-		return new ResponseEntity<List<DropDownStatistics>>(result, HttpStatus.OK);
+	public ResponseEntity<List<ConsultantStatistics>> getAllConsultants() {
+		List<ConsultantStatistics> result = consultantService.getAllConsultants();
+		return new ResponseEntity<List<ConsultantStatistics>>(result, HttpStatus.OK);
 
 	}
 
