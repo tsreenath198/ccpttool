@@ -46,8 +46,9 @@ public class JobDescriptionSubstitutor implements ContentSubstitutor {
 			if (consultant != null) {
 				valuesMap.put("consultantName", consultant.getFullname());
 			} else {
-				throw new Exception("consultant is null for given id:" + cid);
+				throw new Exception("consultant is null for given id:" + id);
 			}
+
 			String templateSubject = emailTemplate.getSubject();
 			String templateBody = emailTemplate.getDescription();
 			String subject = StrSubstitutor.replace(templateSubject, valuesMap);
@@ -140,6 +141,25 @@ public class JobDescriptionSubstitutor implements ContentSubstitutor {
 
 		sb.append("</tbody>");
 		sb.append("</table>");
+		sb.append("<p>");
+		sb.append("<table>");
+		sb.append("<tbody>");
+		sb.append("<tr><td><b>Thanks &amp; Regards</b></td></tr>");
+		sb.append("<tr><td><img src=\"signature.png\"></td></tr>");
+		sb.append("<tr><td><b>Sreenath</b></td></tr>");
+		sb.append("<tr><td rowspan=\"3\"><img src=\"talentcornerlogo.jpg\"></td><td>Branch&nbsp;Head</td></tr>");
+		sb.append(
+				"<tr><td style=\"font-size: 11.0pt;font-family: 'Calibri',sans-serif;color: #1f497d;\">Talent Corner HR services Pvt. Ltd.</td></tr>");
+		sb.append(
+				"<tr><td style=\"font-size: 11.0pt;font-family: 'Calibri',sans-serif;color: #1f497d;\">(D) 9848071296 &nbsp; (W)&nbsp;<a href=\"http://www.talentcorner.in/\" data-saferedirecturl=\"https://www.google.com/url?q=http://www.talentcorner.in/&amp;source=gmail&amp;ust=1563428769215000&amp;usg=AFQjCNFet2kPL5oLLvDUSpWHxioT4LijGA\">www.talentcorner.in</a>&nbsp;(E)&nbsp;<a href=\"mailto:sreenath.t@talentcorner.in\">sreenath.t@talentcorner.in</a></td></tr>");
+		sb.append("</tbody>\r\n" + "</table>");
+		sb.append("<div style=\"font-size: 11.0pt;font-family: 'Calibri',sans-serif;color: #1f497d;\">\r\n"
+				+ "	You can also follow us on Facebook &amp; Twitter. Just search for Talent Corner.\r\n" + "</div>");
+		sb.append("<div style=\"font-size: 10.0pt;font-family: 'Calibri',sans-serif;color: #7030a0;\">\r\n"
+				+ "<strong>Offices : |Mumbai||Gurgaon||Gujarat||Kota||Pune| |Banglore||Chennai| |Hyderabad||Ahmedabad||Kolkata|</strong></div>");
+		sb.append(
+				"<div style=\"font-size: 10.0pt;font-family: 'Calibri',sans-serif;color: #7030a0;\"><strong>Vision 2025</strong>: On&nbsp;<strong>1<sup>st</sup>&nbsp;January 2025</strong>, Talent Corner will be an Organization, having operations in&nbsp;<strong>10</strong>&nbsp;Countries, with&nbsp;<strong>100</strong>&nbsp;Offices &amp; a Team of&nbsp;<strong>1000</strong>&nbsp;People ,Successfully Executing<strong>10000</strong>&nbsp;Recruitment Assignments every Year. We would have recruited&nbsp;<strong>1,00,000</strong>&nbsp;People by then. For every Successful Recruitment we will invest Rs<strong>. 100</strong>&nbsp;towards Girl Child Education, thus by&nbsp;<strong>2025</strong>&nbsp;we would have educated&nbsp;<strong>1000</strong>&nbsp;Girls&rdquo;</div>");
+		sb.append("</p>");
 		String jd = sb.toString();
 		return jd;
 	}
