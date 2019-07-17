@@ -1,5 +1,6 @@
 package com.ccpt.service;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -68,7 +69,16 @@ public abstract class BaseService<T extends BaseEntity<ID>, ID> {
 	private void saveAddnProps(T entity) {
 		if (entity instanceof IDEntity) {
 			IDEntity idEntity = (IDEntity) entity;
-
+			Optional<List<AdditionalProperty>> addnProps = apRepo.findByRefIdAndRefType(idEntity.getId(), ENTITY);
+			if (addnProps.isPresent()) {
+				List<AdditionalProperty> addPropList = addnProps.get();
+				if (!CollectionUtils.isEmpty(addPropList)) {
+					for (AdditionalProperty additionalProperty : addPropList) {
+						// delete previous properties of sameid and entity
+						apRepo.deletePropsWithIds(Arrays.asList(additionalProperty.getRefId()));
+					}
+				}
+			}
 			if (!CollectionUtils.isEmpty(idEntity.getProperties())) {
 				for (AdditionalProperty prop : idEntity.getProperties()) {
 					prop.setRefId(idEntity.getId());

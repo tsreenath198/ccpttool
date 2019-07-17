@@ -145,7 +145,6 @@ public class JobDescriptionSubstitutor implements ContentSubstitutor {
 		sb.append("<table>");
 		sb.append("<tbody>");
 		sb.append("<tr><td><b>Thanks &amp; Regards</b></td></tr>");
-//		sb.append("<tr></tr>");
 		sb.append("<tr><td><b>Sreenath</b></td></tr>");
 		sb.append("<tr><td>Branch&nbsp;Head</td></tr>");
 		sb.append(
