@@ -2,8 +2,17 @@ package com.ccpt.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Date;
+import java.util.Properties;
 
+import javax.mail.Authenticator;
+import javax.mail.Message;
 import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +38,18 @@ public class EmailController {
 	@Value("${spring.mail.username}")
 	private String bcc;
 
+	@Value("${spring.mail.host}")
+	private String mailHost;
+
+	@Value("${spring.mail.port}")
+	private Integer port;
+
+	@Value("${spring.mail.username}")
+	private String username;
+
+	@Value("${spring.mail.password}")
+	private String password;
+
 	@Autowired
 	private JavaMailSender javaMailSender;
 
@@ -38,7 +59,7 @@ public class EmailController {
 	@PostMapping(CCPTConstants.SEND_EMAIL)
 	public ResponseEntity<String> sendEmail(@RequestBody EmailContent emailContent) throws Exception {
 		try {
-			sendmail(emailContent.getToEmails(), emailContent.getSubject(), emailContent.getBody());
+			sendHtmlEmail(emailContent.getToEmails(), emailContent.getSubject(), emailContent.getBody());
 			emailContentService.save(emailContent);
 		} catch (Exception e) {
 			throw new Exception("Sending Email is Failed");
@@ -53,6 +74,43 @@ public class EmailController {
 		msg.setText(body);
 		msg.setBcc(bcc);
 		javaMailSender.send(msg);
+	}
+
+	public void sendHtmlEmail(String toAddress, String subject, String message)
+			throws AddressException, MessagingException {
+
+		// sets SMTP server properties
+		Properties properties = new Properties();
+		properties.put("mail.smtp.host", mailHost);
+		properties.put("mail.smtp.port", port);
+		properties.put("mail.smtp.auth", "true");
+		properties.put("mail.smtp.starttls.enable", "true");
+
+		// creates a new session with an authenticator
+		Authenticator auth = new Authenticator() {
+			public PasswordAuthentication getPasswordAuthentication() {
+				return new PasswordAuthentication(username, password);
+			}
+		};
+
+		Session session = Session.getInstance(properties, auth);
+
+		// creates a new e-mail message
+		Message msg = new MimeMessage(session);
+
+		msg.setFrom(new InternetAddress(username));
+		InternetAddress[] toAddresses = { new InternetAddress(toAddress) };
+		InternetAddress[] bccAddresses = { new InternetAddress(username) };
+		msg.setRecipients(Message.RecipientType.TO, toAddresses);
+		msg.setRecipients(Message.RecipientType.BCC, bccAddresses);
+		msg.setSubject(subject);
+		msg.setSentDate(new Date());
+		// set plain text message
+		msg.setContent(message, "text/html");
+
+		// sends the e-mail
+		Transport.send(msg);
+
 	}
 
 	void sendEmailWithAttachment(String to, String subject, String body) throws MessagingException, IOException {

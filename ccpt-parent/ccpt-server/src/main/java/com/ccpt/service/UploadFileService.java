@@ -31,4 +31,9 @@ public class UploadFileService extends BaseService<UploadFile, Integer> {
 		return uploadFileRepository.countByRefIdAndRefTypeAndFileName(refId, refType, fileName) > 0;
 	}
 
+	@Override
+	public void delete(Integer id) {
+		uploadFileRepository.deleteById(id);
+	}
+
 }

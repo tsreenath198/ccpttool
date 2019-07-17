@@ -64,7 +64,8 @@ public class JobDescriptionSubstitutor implements ContentSubstitutor {
 
 	private String appendTemplate(ClientPosition clientPosition) {
 		StringBuilder sb = new StringBuilder();
-		sb.append("<table width=\"728\" border=\"1\" style=\"border-collapse : collapse\">");
+		sb.append("<p>");
+		sb.append("<table width=\"728\" border=\"1\" style=\"border-collapse : collapse\" cellspacing=\"0\" cellpadding=\"0\">");
 		sb.append("<tbody>");
 		sb.append("<tr>\r\n" + "<td colspan=\"2\" width=\"728\" >\r\n" + "<p><strong>JOB DESCRIPTION</strong></p>\r\n"
 				+ "</td>\r\n" + "</tr>");
@@ -138,16 +139,15 @@ public class JobDescriptionSubstitutor implements ContentSubstitutor {
 			}
 
 		}
-
 		sb.append("</tbody>");
 		sb.append("</table>");
 		sb.append("<p>");
 		sb.append("<table>");
 		sb.append("<tbody>");
 		sb.append("<tr><td><b>Thanks &amp; Regards</b></td></tr>");
-		sb.append("<tr><td><img src=\"signature.png\"></td></tr>");
+//		sb.append("<tr></tr>");
 		sb.append("<tr><td><b>Sreenath</b></td></tr>");
-		sb.append("<tr><td rowspan=\"3\"><img src=\"talentcornerlogo.jpg\"></td><td>Branch&nbsp;Head</td></tr>");
+		sb.append("<tr><td>Branch&nbsp;Head</td></tr>");
 		sb.append(
 				"<tr><td style=\"font-size: 11.0pt;font-family: 'Calibri',sans-serif;color: #1f497d;\">Talent Corner HR services Pvt. Ltd.</td></tr>");
 		sb.append(
