@@ -260,6 +260,26 @@
             </div>
           </div>
         </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="modal-body" *ngIf="model.files.length > 0">
+                    <table class="table">
+                      <thead>
+                        <th>File Name</th>
+                        <th>Description</th>
+                        <th>Action</th>
+                      </thead>
+                      <tbody *ngFor="let fl of model.files">
+                        <td>{{ fl.fileName }}</td>
+                        <td>{{ fl.Description }}</td>
+                        <td>
+                          <button type="button" class="btn btn-secondary btn-sm" (click)="downloadFile(fl.id)">Download</button>
+                        </td>
+                      </tbody>
+                    </table>
+                  </div>
+            </div>
+          </div>
         <div class="row text-center">
           <div class="col-md-12 form-group">
             <button type="submit" *ngIf="enableButtonType == ''" class="btn btn-secondary ml-3"

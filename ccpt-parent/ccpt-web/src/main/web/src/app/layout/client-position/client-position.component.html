@@ -79,7 +79,7 @@
                       [(ngModel)]="action"
                       name="sel1"
                       #sel1="ngModel"
-                      (change)="actions(action, trashContent,shortListContent , f)"
+                      (change)="actions(action,sendMailContent, trashContent,shortListContent , f)"
                     >
                       <option [ngValue]="null" hidden selected>Choose action</option>
                       <option *ngFor="let al of actionsList.actions" [ngValue]="al.value">
@@ -448,7 +448,7 @@
 
 <ng-template #sendMailContent let-c="close" let-d="dismiss">
   <div class="modal-header">
-    <h4 class="modal-title">Send SMS</h4>
+    <h4 class="modal-title">Send Mail</h4>
     <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
       <span aria-hidden="true">&times;</span>
     </button>
@@ -456,15 +456,30 @@
   <div class="modal-body">
     <label>E-Mail</label>
     <!-- <ng-multiselect-dropdown [placeholder]="'choose numbers..'" [data]="mailIdForMails" [(ngModel)]="sendEmailModel.to"
-      [settings]="dropdownSettings">
-    </ng-multiselect-dropdown> -->
+      [settings]="dropdownSettings" (onSelect)="onItemSelect($event)">
+    </ng-multiselect-dropdown>  -->
 
-    <!-- (onSelect)="onItemSelect($event)"
+    <!-- 
     (onSelectAll)="onSelectAll($event)" -->
+    <div class="form-group">
+        <select
+          class="form-control"
+          [(ngModel)]="sendTo"
+          name="sel1"
+          (change)="onItemSelect(sendTo)"
+        >
+          <option [ngValue]="null" hidden selected>Choose action</option>
+          <option *ngFor="let cl of consultantList" [ngValue]="cl">
+            {{cl.name}}
+          </option>
+        </select>
+      </div>
     <label>Subject</label>
     <input class="form-control" [(ngModel)]="sendEmailModel.subject" name="sub" />
     <label>Message Body</label>
-    <textarea class="form-control" cols="5" rows="8" [(ngModel)]="sendEmailModel.body" name="body"></textarea>
+    <textarea class="form-control" cols="5" rows="8" [(ngModel)]="sendEmailModel.body" name="body">
+      <p ng-bind-html="sendEmailModel.body"></p>
+    </textarea>
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-secondary" (click)="sendEmailReq()">Send</button>

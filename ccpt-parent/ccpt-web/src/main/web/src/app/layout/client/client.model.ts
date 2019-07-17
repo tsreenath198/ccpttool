@@ -21,7 +21,7 @@ export interface ClientModel {
 
 }
 export class ActionsList {
-    actions = [{key: 'Edit' , value:'Edit'},{key: 'File Upload' , value:'File Upload'},{key: 'File Download' , value:'File Download'}, {key: 'Delete' , value:'Delete'}, {key: 'Close' , value:'Close'}];
+    actions = [{key: 'Edit' , value:'Edit'},{key: 'File Upload' , value:'File Upload'}, {key: 'Delete' , value:'Delete'}, {key: 'Close' , value:'Close'}];
 }
 export interface ClientContactsModel {
       email: string;

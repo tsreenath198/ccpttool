@@ -100,6 +100,7 @@ export class ClientApplicationComponent implements OnInit {
             this.pageChange(this.page);
         });
         this.model.properties = [];
+        this.model['files'] = [];
         this.model.caStatus = 'New';
         this.page=1;
     }
@@ -154,9 +155,6 @@ export class ClientApplicationComponent implements OnInit {
             }else{
                 this.isInterviewScheduled = false;
             }
-            if(this.model.properties == null){
-                this.model.properties = [];
-              }
         });
     }
     private mapToUpdateModel(response): ClientApplicationModel {

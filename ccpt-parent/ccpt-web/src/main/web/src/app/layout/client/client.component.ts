@@ -74,6 +74,7 @@ export class ClientComponent implements OnInit {
             this.clientList = resp as any;
         });
         this.model.properties = [];
+        this.model['files'] = [];
         this.model.serviceCharge = '8.33';
         this.model.guaranteePeriod = '3 months';
         this.model.creditPeriod = '1 month';

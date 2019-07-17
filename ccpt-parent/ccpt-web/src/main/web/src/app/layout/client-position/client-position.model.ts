@@ -29,10 +29,10 @@ export class SendSmsModel {
 }
 
 export class SendEmailModel {
-    to: Array<string> = [];
+    toEmails: Array<string> = [];
     subject: string;
     body: string;
 }
 export class ActionsList {
-    actions = [{key: 'Edit' , value:'Edit'},{key: 'Clone' , value:'Clone'},{key: 'Create Application' , value:'Create Application'}, {key: 'Delete' , value:'Delete'}, {key: 'Close' , value:'Close'}];
+    actions = [{key: 'Edit' , value:'Edit'},{key: 'Send JD' , value:'Send JD'},{key: 'Clone' , value:'Clone'},{key: 'Create Application' , value:'Create Application'}, {key: 'Delete' , value:'Delete'}, {key: 'Close' , value:'Close'}];
 }

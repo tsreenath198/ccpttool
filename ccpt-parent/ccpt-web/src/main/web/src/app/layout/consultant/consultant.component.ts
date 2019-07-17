@@ -26,7 +26,7 @@ export class ConsultantComponent implements OnInit {
   public formButtonsToggler = true;
   public readOnlyForm = '';
   public enableButtonType = '';
-  public genderList = [{ key: 'Mr.', value:'Male' }, { key: 'Mrs.', value:'Female'}];
+  public genderList = [{ key: 'Mr.', value: 'Male' }, { key: 'Mrs.', value: 'Female' }];
   public uploadFileList: Array<any> = [];
   public fileList: Array<any> = [];
   public refType = '';
@@ -45,7 +45,7 @@ export class ConsultantComponent implements OnInit {
 
   public showAction: boolean = false;
   public actionsList = new ActionsList();
-  public action:string;
+  public action: string;
 
   public isCreate: boolean = false;
   public currSearchTxt: string;
@@ -55,17 +55,22 @@ export class ConsultantComponent implements OnInit {
   public pageSize: number = 20;
   public cSGetAllPromise = this.http.get(this.urlConstants.CSGetAll);
   public cGetAllPromise = this.http.get(this.urlConstants.CGetAll);
-  constructor(private http: HttpClientService, private router: Router, private toastr: ToastrCustomService, private modalService: NgbModal) {
+  constructor(
+    private http: HttpClientService,
+    private router: Router,
+    private toastr: ToastrCustomService,
+    private modalService: NgbModal
+  ) {
     this.getScreenSize();
   }
   @HostListener('window:resize', ['$event'])
   getScreenSize(event?) {
     /* Here we are decreasing screenheight to 237 for pagination */
-    this.screenHeight = (window.innerHeight - 237);
+    this.screenHeight = window.innerHeight - 237;
   }
   ngOnInit() {
     /*Autheticate user with the token */
-    if (!this.http.isAuthenticate()){
+    if (!this.http.isAuthenticate()) {
       this.router.navigate(['/login']);
     }
     this.cSGetAllPromise.subscribe(resp => {
@@ -80,21 +85,24 @@ export class ConsultantComponent implements OnInit {
       this.pagedConsultantList = resp as any;
       this.consultantListLength = this.consultantList.length;
       this.pagedConsultantList.forEach(cl => {
-        if (this.validate(cl.fullname) || this.validate(cl.email) || this.validate(cl.phone) || this.validate(cl.dob)) {
-          cl['isProfileCompleted'] = false;
+        if (this.validate(cl.fullname) || this.validate(cl.email) || this.validate(cl.phone)) {
+          cl['isProfileCompleted'] = 'profile';
+        } else if (this.validate(cl.files)) {
+          cl['isProfileCompleted'] = 'files';
         } else {
-          cl['isProfileCompleted'] = true;
+          cl['isProfileCompleted'] = 'nothing';
         }
       });
       this.pageChange(this.page);
     });
     this.model['properties'] = [];
+    this.model['files'] = [];
     this.model['conStatus'] = 'Active';
     this.model['phone'] = '+91';
     this.page = 1;
   }
   private validate(value: any): boolean {
-    const bool = value == null ? true : false;
+    const bool = value ? false : true;
     return bool;
   }
   defaultValues() {
@@ -106,14 +114,14 @@ export class ConsultantComponent implements OnInit {
     this.readOnlyForm = 'U';
     this.enableButtonType = 'U';
     this.showAction = true;
-    this.action=null;
+    this.action = null;
   }
   public setModel(id: number) {
     this.getConsultantById(id);
     this.readOnlyForm = 'R';
     this.enableButtonType = 'E';
     this.showAction = true;
-    this.action=null;
+    this.action = null;
   }
   private enableFormEditable(): void {
     this.readOnlyForm = 'U';
@@ -125,7 +133,7 @@ export class ConsultantComponent implements OnInit {
     this.model['phone'] = '+91';
   }
   public create(consultantForm: NgForm): void {
-    this.isCreate= true;
+    this.isCreate = true;
     const temp = this.http.post(this.model, this.urlConstants.CCreate);
     temp.subscribe(
       resp => {
@@ -133,11 +141,11 @@ export class ConsultantComponent implements OnInit {
         consultantForm.resetForm();
         this.init();
         this.formReset();
-        this.isCreate= false;
+        this.isCreate = false;
       },
       err => {
         this.toastr.error(err.error.message, 'Consultant');
-        this.isCreate= false;
+        this.isCreate = false;
       }
     );
   }
@@ -206,6 +214,27 @@ export class ConsultantComponent implements OnInit {
       }
     );
   }
+  public trashFile(id: number, con: ConsultantModel) {
+    const temp = this.http.delete(this.urlConstants.FileDelete + id);
+    /** Delete the loop code once it fix with Backend API */
+    this.model.files.forEach(f => {
+      if (f.id === id) {
+        let ind = this.model.files.indexOf(f);
+        this.model.files.splice(ind, 1);
+      }
+    });
+    temp.subscribe(
+      resp => {
+        this.toastr.success(this.urlConstants.DeleteMsg, 'Consultant');
+      },
+      err => {
+        if (err.status === 200) {
+          return this.toastr.success(this.urlConstants.DeleteMsg, 'Consultant');
+        }
+        this.toastr.error(err.statusText, 'Consultant');
+      }
+    );
+  }
   private mapToUpdateModel(response): ConsultantModel {
     const temp = response;
     this.model = temp;
@@ -219,32 +248,32 @@ export class ConsultantComponent implements OnInit {
         break;
       }
       case 'increase': {
-        this.model.properties.push(<AdditionalPropertiesModel>{ 'name': this.apName, 'value': this.apValue });
+        this.model.properties.push(<AdditionalPropertiesModel>{ name: this.apName, value: this.apValue });
         this.apName = '';
         this.apValue = '';
         break;
       }
     }
   }
-  public actions(value,trashContent,uploadContent,downloadContent,form){
-    switch(value){
-      case 'Delete':{
-        this.open(this.model.id,trashContent);
+  public actions(value, trashContent, uploadContent, downloadContent, form) {
+    switch (value) {
+      case 'Delete': {
+        this.open(this.model.id, trashContent);
         break;
       }
-      case 'File Upload':{
-        this.open(this.model.id,uploadContent);
+      case 'File Upload': {
+        this.open(this.model.id, uploadContent);
         break;
       }
-      case 'File Download':{
-        this.open(this.model.id,downloadContent);
+      case 'File Download': {
+        this.open(this.model.id, downloadContent);
         break;
       }
-      case 'Edit':{
+      case 'Edit': {
         this.enableFormEditable();
         break;
       }
-      case 'Close':{
+      case 'Close': {
         this.cancelForm(form);
       }
     }
@@ -270,8 +299,7 @@ export class ConsultantComponent implements OnInit {
     });
   }
   public transformTitleCase(ip: HTMLInputElement) {
-    let temp = ip.value.length === 0 ? '' :
-      ip.value.replace(/\w\S*/g, (txt => txt[0].toUpperCase() + txt.substr(1).toLowerCase()));
+    let temp = ip.value.length === 0 ? '' : ip.value.replace(/\w\S*/g, txt => txt[0].toUpperCase() + txt.substr(1).toLowerCase());
     ip.value = temp;
   }
   /**
@@ -279,7 +307,7 @@ export class ConsultantComponent implements OnInit {
    * 1) content consists the modal instance
    * 2) Selected contains the code of selected row
    */
-  public open(event: any , content: any) {
+  public open(event: any, content: any) {
     this.selectedRecrdToDel = 0;
     if (event) {
       this.selectedRecrdToDel = event;
@@ -293,13 +321,15 @@ export class ConsultantComponent implements OnInit {
     //   });
     // } else {
     this.modalRef = this.modalService.open(content);
-    this.modalRef.result.then((result) => {
-      this.closeResult = `Closed with: ${result}`;
-    }, (reason) => {
-      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-    });
+    this.modalRef.result.then(
+      result => {
+        this.closeResult = `Closed with: ${result}`;
+      },
+      reason => {
+        this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+      }
+    );
     //}
-
   }
   public close() {
     this.modalRef.close();
@@ -321,11 +351,12 @@ export class ConsultantComponent implements OnInit {
   }
   /**Download file */
   public downloadFile(id: number) {
-    this.http.get(this.urlConstants.FileDownload + id).subscribe(resp => {
-    }, err => {
-      if (err.status == 200)
-        window.open(err.url);
-    });
+    this.http.get(this.urlConstants.FileDownload + id).subscribe(
+      resp => {},
+      err => {
+        if (err.status == 200) window.open(err.url);
+      }
+    );
   }
   /** Upload documents of respective consultant */
   public uploadFiles() {
@@ -333,13 +364,16 @@ export class ConsultantComponent implements OnInit {
     const formData = new FormData();
     formData.append('file', files[0].rawFile, files[0].name);
     const params = 'refId=' + this.selectedRecrdToDel + '&refType=Consultant&comments=' + this.comments;
-    this.http.upload(this.urlConstants.FileUpload + params, formData).subscribe(resp => {
-      let temp: any = resp;
-      this.toastr.success(temp.message, 'Client');
-      this.close();
-    }, err => {
-      this.toastr.success(err.error.message, 'Client');
-    });
+    this.http.upload(this.urlConstants.FileUpload + params, formData).subscribe(
+      resp => {
+        let temp: any = resp;
+        this.toastr.success(temp.message, 'Client');
+        this.close();
+      },
+      err => {
+        this.toastr.success(err.error.message, 'Client');
+      }
+    );
     /* let requests = [];
          files.forEach((file) => {
              let formData = new FormData();
@@ -361,14 +395,14 @@ export class ConsultantComponent implements OnInit {
         );*/
   }
   public pageChange(event) {
-    const from = ((event - 1) * this.pageSize);
+    const from = (event - 1) * this.pageSize;
     const lst = this.consultantList;
     const uplst = lst.slice(from, from + this.pageSize);
     this.pagedConsultantList = uplst;
   }
-  public emptyExperience(){
-    if(this.isFresher == true){
-      this.model.currentCompany='';
+  public emptyExperience() {
+    if (this.isFresher == true) {
+      this.model.currentCompany = '';
       this.model.currentCTC = '';
       this.model.expectedCTC = '';
       this.model.currentJobTitle = '';
@@ -376,7 +410,7 @@ export class ConsultantComponent implements OnInit {
       this.model.currentIndustry = '';
       this.model.yearsInCurrentJob = '';
       this.model.monthsInCurrentJob = '';
-      this.model.experienceYrs ='';
+      this.model.experienceYrs = '';
       this.model.experienceMonths = '';
       this.model.noticePeriod = '';
     }

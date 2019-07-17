@@ -30,7 +30,7 @@ export class ClientPositionComponent implements OnInit {
 
   public pagedCPList: Array<ClientPositionModel> = [];
   public consultantCreateList: Array<any> = [];
-  public consultantList: Array<ConsultantModel> = [];
+  public consultantList: Array<any> = [];
   public smsList: Array<MessageTemplateModel> = [];
   public clientPositionStatusList: Array<any> = [];
   public clientList: Array<any> = [];
@@ -71,10 +71,11 @@ export class ClientPositionComponent implements OnInit {
   public page: number;
   public cpListLength: number;
   public pageSize: number = 20;
+  public sendTo: any;
   public getAllCPS = this.http.get(this.urlConstants.CPSGetAll);
   public getAllR = this.http.get(this.urlConstants.RDropdown);
   public getAllC = this.http.get(this.urlConstants.ClientDropdown);
-  public getAllCon = this.http.get(this.urlConstants.CGetAll);
+  public getAllCon = this.http.get(this.urlConstants.CDropdown);
   public config: AngularEditorConfig = {
     editable: true,
     spellcheck: true,
@@ -157,6 +158,7 @@ export class ClientPositionComponent implements OnInit {
     this.enableButtonType = 'E';
     this.showAction = true;
     this.action = null;
+
   }
   private getCPById(id: number) {
     const temp = this.http.get(this.urlConstants.CPGetById + id);
@@ -191,10 +193,18 @@ export class ClientPositionComponent implements OnInit {
       }
     }
   }
-  public actions(value, trashContent, shortListContent, form) {
+  public actions(value,sendMailContent, trashContent, shortListContent, form) {
     switch (value) {
       case 'Delete': {
         this.open(this.model.id, trashContent);
+        break;
+      }
+      case 'Send JD':{
+        for (let i = 0; i < this.consultantList.length; i++) {
+          const temp = { item_id: this.consultantList[i].id, item_text: this.consultantList[i].fullname, notes: '' };
+          this.mailIdForMails.push(temp);
+        }
+        this.open(this.model.id, sendMailContent);
         break;
       }
       case 'Create Application': {
@@ -387,6 +397,13 @@ export class ClientPositionComponent implements OnInit {
       }
     );
   }
+  public onItemSelect(event){
+    let temp={"cpId":this.model.id,"cId":event.id};
+    this.http.post(temp,this.urlConstants.EmailTemplateBuildContent+'Job Description').subscribe(resp => {
+      this.sendEmailModel = resp as any;
+      this.sendEmailModel.toEmails = event.email;
+    });
+  }
   /**
    * @param
    * 1) content consists the modal instance
@@ -409,7 +426,7 @@ export class ClientPositionComponent implements OnInit {
     if (content) {
       if (content.type === this.email) {
         for (let i = 0; i < this.consultantList.length; i++) {
-          const temp = { item_id: this.consultantList[i].phone, item_text: this.consultantList[i].fullname, notes: '' };
+          const temp = { item_id: this.consultantList[i].id, item_text: this.consultantList[i].fullname, notes: '' };
           this.mailIdForMails.push(this.consultantList[i].email);
         }
       }

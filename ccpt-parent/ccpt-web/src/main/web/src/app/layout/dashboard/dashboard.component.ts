@@ -33,9 +33,9 @@ export class DashboardComponent implements OnInit {
     public clchByIdList: Array<any> = [];
     public interviewsToday: Array<any> = [];
     private urlConstants = new URLConstants();
-    public rpChoosenDays: any = 1;
-    public cochChoosenDays: any = 1;
-    public clchChoosenDays: any = 1;
+    public rpChoosenDays: any = 7;
+    public cochChoosenDays: any = 7;
+    public clchChoosenDays: any = 7;
 
     private selectedRecrd = 0;
     public closeResult = '';
@@ -121,6 +121,7 @@ export class DashboardComponent implements OnInit {
             this.activeCA = listofrecords[5] as any;
             this.interviewsToday = listofrecords[6] as any;
         });
+        this.top5ById.properties=[]
     }
     public rpGetAllByDays() {
         const numberOfDays = this.rpChoosenDays;

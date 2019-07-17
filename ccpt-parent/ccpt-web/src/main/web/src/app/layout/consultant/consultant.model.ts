@@ -30,6 +30,6 @@ export interface ConsultantModel {
     properties: Array<AdditionalPropertiesModel>;
 }
 export class ActionsList {
-    actions = [{key: 'Edit' , value:'Edit'},{key: 'File Upload' , value:'File Upload'},{key: 'File Download' , value:'File Download'}, {key: 'Delete' , value:'Delete'}, {key: 'Close' , value:'Close'}];
+    actions = [{key: 'Edit' , value:'Edit'},{key: 'File Upload' , value:'File Upload'}, {key: 'Delete' , value:'Delete'}, {key: 'Close' , value:'Close'}];
 }
 
