@@ -45,6 +45,7 @@ export class ClientComponent implements OnInit {
     public apValue = '';
     public loggedInRole = '';
     public isCreate: boolean = false;
+    public listReturned: boolean;
     public config: AngularEditorConfig = {
         editable: true,
         spellcheck: true,
@@ -70,8 +71,10 @@ export class ClientComponent implements OnInit {
         this.init();
     }
     init() {
+        this.spinner(false);
         this.http.get(this.urlConstants.ClientGetAll).subscribe(resp => {
             this.clientList = resp as any;
+            this.spinner(true);
         });
         this.model.properties = [];
         this.model['files'] = [];
@@ -124,6 +127,7 @@ export class ClientComponent implements OnInit {
     }
     public create(clientForm: NgForm): void {
         this.isCreate = true;
+        this.spinner(false);
         const temp = this.http.post(this.model, this.urlConstants.ClientCreate);
         temp.subscribe(resp => {
             this.toastr.success(this.urlConstants.SuccessMsg, 'Client');
@@ -131,6 +135,7 @@ export class ClientComponent implements OnInit {
             this.formReset();
             clientForm.resetForm();
             this.clientContactDeclare();
+            this.spinner(true);
             this.isCreate= false;
         }, err => {
             this.toastr.error(err.error.message, 'Client');
@@ -138,6 +143,7 @@ export class ClientComponent implements OnInit {
         });
     }
     public update(clientForm: NgForm) {
+        this.spinner(false);
         const temp = this.http.update(this.model, this.urlConstants.ClientUpdate);
         temp.subscribe(resp => {
             this.formReset();
@@ -145,6 +151,7 @@ export class ClientComponent implements OnInit {
             this.init();
             clientForm.resetForm();
             this.clientContactDeclare();
+            this.spinner(true);
 
             this.readOnlyForm = '';
             this.enableButtonType = '';
@@ -218,12 +225,14 @@ export class ClientComponent implements OnInit {
         }
     }
     public trash(): void {
+        this.spinner(false);
         const temp = this.http.delete(this.urlConstants.ClientDelete + this.selectedRecrdToDel);
         temp.subscribe(resp => {
             this.toastr.success(this.urlConstants.DeleteMsg, 'Client');
             this.init();
             this.close();
             this.formReset();
+            this.spinner(true);
             this.readOnlyForm = '';
             this.enableButtonType = '';
             this.showAction = false;
@@ -328,4 +337,7 @@ export class ClientComponent implements OnInit {
             ip.value.replace(/\w\S*/g, (txt => txt[0].toUpperCase() + txt.substr(1).toLowerCase()));
         ip.value = temp;
     }
+    private spinner(isSpinner: boolean){
+        this.listReturned = isSpinner;
+      }
 }

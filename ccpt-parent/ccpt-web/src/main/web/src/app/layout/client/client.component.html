@@ -1,6 +1,13 @@
 <div [@routerTransition]>
   <app-page-header [icon1]="'fa-building'" [heading1]="'Client'"></app-page-header>
-  <div class="row">
+  <ng-template #spinner >
+      <div class="spinner padding-top justify-content-md-center">
+        <div class="bounce1"></div>
+        <div class="bounce2"></div>
+        <div class="bounce3"></div>
+    </div>
+    </ng-template>
+  <div class="row" *ngIf="listReturned == true; else spinner">
     <div class="col-md-7">
       <div class="row">
         <div class="col-md-6"><input type="text" class="form-control" placeholder="search..." [(ngModel)]="currSearchTxt" /></div>

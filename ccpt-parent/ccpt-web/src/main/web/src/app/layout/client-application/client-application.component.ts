@@ -62,6 +62,10 @@ export class ClientApplicationComponent implements OnInit {
     public pageSize: number = 20;
     public cpGeneratedCode: string = '';
     public fileList: Array<any> = [];
+    public listReturned:boolean;
+    public isCRF: boolean
+    public refType='Client Application';
+    public crfFile : any;
     public config: AngularEditorConfig = {
         editable: true,
         spellcheck: true,
@@ -93,16 +97,20 @@ export class ClientApplicationComponent implements OnInit {
         this.init();
     }
     private init() {
+        
+    this.spinner(false);
         this.http.get(this.urlConstants.CAGetAll).subscribe(resp => {
             this.clientApplicationList = resp as any;
             this.pagedCAList = resp as any;
             this.caListLength = this.clientPositionList.length;
             this.pageChange(this.page);
+            this.spinner(true);
         });
         this.model.properties = [];
         this.model['files'] = [];
         this.model.caStatus = 'New';
         this.page=1;
+        this.isCRF= false;
     }
     private getAllDropdowns() {
         forkJoin(
@@ -155,7 +163,20 @@ export class ClientApplicationComponent implements OnInit {
             }else{
                 this.isInterviewScheduled = false;
             }
+            const crf = this.http.get(this.urlConstants.getCRF+ this.model.id + '&refType=crf');
+            crf.subscribe(resp =>{
+                this.crfFile = resp as any;
+                console.log(this.crfFile.length)
+                if(this.crfFile.length!=0){
+                    this.isCRF = true;
+                }
+                else
+                {
+                this.isCRF = false;
+                }
+            })
         });
+       
     }
     private mapToUpdateModel(response): ClientApplicationModel {
         const temp = response;
@@ -210,6 +231,7 @@ export class ClientApplicationComponent implements OnInit {
         }
       }
     public create(clientApplicationForm: NgForm): void {
+        this.spinner(false);
         this.isCreate= true;
         const temp = this.http.post(this.model, this.urlConstants.CACreate);
         temp.subscribe(resp => {
@@ -217,6 +239,7 @@ export class ClientApplicationComponent implements OnInit {
             this.init();
             this.formReset();
             clientApplicationForm.resetForm();
+            this.spinner(true);
             this.isCreate= false;
             this.getRecruiterId();
 
@@ -235,12 +258,14 @@ export class ClientApplicationComponent implements OnInit {
         this.action=null;
     }
     public update(clientApplicationForm: NgForm) {
+        this.spinner(false);
         const temp = this.http.update(this.model, this.urlConstants.CAUpdate);
         temp.subscribe(resp => {
             this.toastr.success(this.urlConstants.UpdateMsg, 'Client Application');
             this.formReset();
             this.init();
             clientApplicationForm.resetForm();
+            this.spinner(false);
             this.readOnlyForm = '';
             this.enableButtonType = '';
             this.showAction = false;
@@ -261,12 +286,14 @@ export class ClientApplicationComponent implements OnInit {
         this.getRecruiterId();
     }
     public trash(): void {
+        this.spinner(false);
         const temp = this.http.delete(this.urlConstants.CADelete + this.selectedRecrd);
         temp.subscribe(resp => {
             this.toastr.success(this.urlConstants.DeleteMsg, 'Client Application');
             this.init();
             this.close();
             this.formReset();
+            this.spinner(true);
             this.readOnlyForm = '';
             this.enableButtonType = '';
             this.showAction = false;
@@ -342,12 +369,16 @@ export class ClientApplicationComponent implements OnInit {
             return fileItem.file;
         });
     }
+    public uploadCRF(content){
+        this.refType= 'crf';
+        this.open(this.model.id,content);
+    }
     /** Upload documents of respective consultant */
     public uploadFiles() {
         const files = this.getFiles();
         const formData = new FormData();
         formData.append('file', files[0].rawFile, files[0].name);
-        const params = 'refId=' + this.selectedRecrd + '&refType=Client Application&comments=' + this.comments;
+        const params = 'refId=' + this.selectedRecrd + '&refType='+this.refType+'&comments=' + this.comments;
         this.http.upload(this.urlConstants.FileUpload + params, formData).subscribe(resp => {
             let temp: any = resp;
             this.toastr.success(temp.message, 'Client');
@@ -380,5 +411,8 @@ export class ClientApplicationComponent implements OnInit {
         const lst = this.clientApplicationList;
         const uplst = lst.slice(from, from + this.pageSize);
         this.pagedCAList = uplst;
+      }
+      private spinner(isSpinner: boolean){
+        this.listReturned = isSpinner;
       }
 }

@@ -30,6 +30,7 @@ export class ClientApplicationStatusComponent implements OnInit {
     public actionsList = new ActionsList();
     public action: string = null;
     public screenHeight: any;
+    public listReturned:boolean;
     constructor(private http: HttpClientService, private toastr: ToastrCustomService, private modalService: NgbModal, private router: Router) {
         this.getScreenSize();
     }
@@ -45,8 +46,10 @@ export class ClientApplicationStatusComponent implements OnInit {
         this.init();
     }
     init() {
+        this.spinner(false);
         this.http.get(this.urlConstants.CASGetAll).subscribe(resp => {
             this.clientApplicationStatusList = resp as any;
+            this.spinner(true);
         });
     }
     /**
@@ -107,12 +110,14 @@ export class ClientApplicationStatusComponent implements OnInit {
     */
    public create(CASForm: NgForm): void {
        this.isCreate=true;
+       this.spinner(false);
     const temp = this.http.post(this.model, this.urlConstants.CASCreate);
     temp.subscribe(resp => {
             this.toastr.success(this.urlConstants.SuccessMsg, 'Client Application Status');
             this.init();
             this.formReset();
             CASForm.resetForm();
+            this.spinner(true);
             this.isCreate= false;
         }, err => {
             this.toastr.error(err.error.message, 'Client Application Status');
@@ -123,12 +128,14 @@ export class ClientApplicationStatusComponent implements OnInit {
      * @param CASForm consists the form instance
      */
     public update(CASForm: NgForm): void {
+        this.spinner(false);
         const temp = this.http.post(this.model, this.urlConstants.CASCreate);
         temp.subscribe(resp => {
             this.toastr.success(this.urlConstants.UpdateMsg, 'Client Application Status');
             this.formReset();
             this.init();
             CASForm.resetForm();
+            this.spinner(true);
             this.readOnlyForm = '';
             this.enableButtonType = '';
             this.showAction = false;
@@ -147,12 +154,14 @@ export class ClientApplicationStatusComponent implements OnInit {
         this.showAction = false;
     }
     public trash(): void {
+        this.spinner(false);
         const temp = this.http.delete(this.urlConstants.CASDelete + this.selectedRecrdToDel);
         temp.subscribe(resp => {
             this.toastr.success(this.urlConstants.DeleteMsg, 'Client Application Status');
             this.init();
             this.close();
             this.formReset();
+            this.spinner(true);
             this.readOnlyForm = '';
             this.enableButtonType = '';
             this.showAction = false;
@@ -188,4 +197,7 @@ export class ClientApplicationStatusComponent implements OnInit {
             return `with: ${reason}`;
         }
     }
+    private spinner(isSpinner: boolean){
+        this.listReturned = isSpinner;
+      }
 }

@@ -41,6 +41,7 @@ export class ConsultantComponent implements OnInit {
   public apValue = '';
   public screenHeight: any;
   private modalRef: NgbModalRef;
+  public listReturned:boolean;
   public urlConstants = new URLConstants();
 
   public showAction: boolean = false;
@@ -80,7 +81,9 @@ export class ConsultantComponent implements OnInit {
   }
 
   init(): void {
+    this.spinner(false);
     this.cGetAllPromise.subscribe(resp => {
+
       this.consultantList = resp as any;
       this.pagedConsultantList = resp as any;
       this.consultantListLength = this.consultantList.length;
@@ -94,6 +97,8 @@ export class ConsultantComponent implements OnInit {
         }
       });
       this.pageChange(this.page);
+      
+      this.spinner(true);
     });
     this.model['properties'] = [];
     this.model['files'] = [];
@@ -133,6 +138,7 @@ export class ConsultantComponent implements OnInit {
     this.model['phone'] = '+91';
   }
   public create(consultantForm: NgForm): void {
+    this.spinner(false);
     this.isCreate = true;
     const temp = this.http.post(this.model, this.urlConstants.CCreate);
     temp.subscribe(
@@ -141,6 +147,7 @@ export class ConsultantComponent implements OnInit {
         consultantForm.resetForm();
         this.init();
         this.formReset();
+        this.spinner(true);
         this.isCreate = false;
       },
       err => {
@@ -150,6 +157,7 @@ export class ConsultantComponent implements OnInit {
     );
   }
   public update(consultantForm: NgForm) {
+    this.spinner(false);
     const temp = this.http.update(this.model, this.urlConstants.CUpdate);
     temp.subscribe(
       resp => {
@@ -157,6 +165,7 @@ export class ConsultantComponent implements OnInit {
         this.toastr.success(this.urlConstants.UpdateMsg, 'Consultant');
         this.formReset();
         this.init();
+        this.spinner(true);
         this.readOnlyForm = '';
         this.enableButtonType = '';
         this.showAction = false;
@@ -192,6 +201,7 @@ export class ConsultantComponent implements OnInit {
     this.defaultValues();
   }
   public trash(): void {
+    this.spinner(false);
     const temp = this.http.delete(this.urlConstants.CDelete + this.selectedRecrdToDel);
     temp.subscribe(
       resp => {
@@ -199,6 +209,7 @@ export class ConsultantComponent implements OnInit {
         this.init();
         this.close();
         this.formReset();
+        this.spinner(true);
         this.readOnlyForm = '';
         this.enableButtonType = '';
         this.showAction = false;
@@ -415,4 +426,7 @@ export class ConsultantComponent implements OnInit {
       this.model.noticePeriod = '';
     }
   }
+  private spinner(isSpinner: boolean){
+      this.listReturned = isSpinner;
+    }
 }

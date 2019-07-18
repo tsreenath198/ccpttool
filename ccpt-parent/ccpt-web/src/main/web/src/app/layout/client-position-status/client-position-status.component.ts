@@ -32,6 +32,7 @@ export class ClientPositionStatusComponent implements OnInit {
     public showAction: boolean = false;
     public actionsList = new ActionsList();
     public action: string = null;
+    public listReturned:boolean;
 
     constructor(private http: HttpClientService, private router: Router, private toastr: ToastrCustomService, private modalService: NgbModal) {
         this.getScreenSize();
@@ -48,7 +49,9 @@ export class ClientPositionStatusComponent implements OnInit {
         this.init();
     }
     init() {
+        this.spinner(false);
         this.http.get(this.urlConstants.CPSGetAll).subscribe(resp => {
+            this.spinner(true);
             this.clientPositionStatusList = resp as Array<ClientpositionStatusModel>;
         });
     }
@@ -84,10 +87,12 @@ export class ClientPositionStatusComponent implements OnInit {
     }
     public create(clientPositionStatusForm: NgForm): void {
         this.isCreate=true;
+        this.spinner(false);
         this.http.post(this.model, this.urlConstants.CPSCreate).subscribe(resp => {
             this.toastr.success(this.urlConstants.SuccessMsg, 'Client Position Status');
             this.init();
             this.formReset();
+            this.spinner(true);
             clientPositionStatusForm.resetForm();
             this.isCreate= false;
         }, err => {
@@ -96,10 +101,12 @@ export class ClientPositionStatusComponent implements OnInit {
         });
     }
     public update(clientApplicationStatusForm: NgForm) {
+        this.spinner(false);
         this.http.update(this.model, this.urlConstants.CPSUpdate).subscribe(resp => {
             this.toastr.success(this.urlConstants.UpdateMsg, 'Client Position Status');
             this.formReset();
             this.init();
+            this.spinner(true);
             clientApplicationStatusForm.resetForm();
             this.readOnlyForm = '';
             this.enableButtonType = '';
@@ -124,11 +131,13 @@ export class ClientPositionStatusComponent implements OnInit {
         this.showAction = false;
     }
     public trash(): void {
+        this.spinner(false);
         this.http.delete(this.urlConstants.CPSDelete + this.selectedRecrdToDel).subscribe(resp => {
             this.toastr.success(this.urlConstants.DeleteMsg, 'Client Position Status');
             this.init();
             this.close();
             this.formReset();
+            this.spinner(true);
             this.readOnlyForm = '';
             this.enableButtonType = '';
             this.showAction = false;
@@ -179,6 +188,9 @@ export class ClientPositionStatusComponent implements OnInit {
         } else {
             return `with: ${reason}`;
         }
-    }
+    } 
+    private spinner(isSpinner: boolean){
+        this.listReturned = isSpinner;
+      }
 }
 

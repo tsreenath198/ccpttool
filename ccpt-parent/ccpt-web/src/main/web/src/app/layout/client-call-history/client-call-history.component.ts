@@ -46,6 +46,7 @@ export class ClientCallHistoryComponent implements OnInit {
   public page: number;
   public consultantListLength: number;
   public pageSize: number = 10;
+  public listReturned:boolean;
   public getCplPromise = this.http.get(this.urlConstants.CPDropdown);
   public getClPromise = this.http.get(this.urlConstants.ClientGetAll);
   public getRlPromise = this.http.get(this.urlConstants.RDropdown);
@@ -83,8 +84,10 @@ export class ClientCallHistoryComponent implements OnInit {
     });
   }
   private init() {
+    this.spinner(false);
     this.cchGetAllPromise.subscribe(resp => {
       this.clientCallHistoryList = resp as Array<ClientCallHistoryModel>;
+      this.spinner(true);
     });
     this.model.properties = [];
   }
@@ -176,6 +179,7 @@ export class ClientCallHistoryComponent implements OnInit {
   }
   public create(clientCallHistoryForm: NgForm): void {
     this.isCreate = true;
+    this.spinner(false);
     const temp = this.http.post(this.model, this.urlConstants.CCHCreate);
     temp.subscribe(
       resp => {
@@ -185,6 +189,7 @@ export class ClientCallHistoryComponent implements OnInit {
         this.isCreate = false;
         this.getTodaysDate();
         this.formReset();
+        this.spinner(true);
         clientCallHistoryForm.resetForm();
         this.isCreate = false;
       },
@@ -194,6 +199,7 @@ export class ClientCallHistoryComponent implements OnInit {
     );
   }
   public update(clientCallHistoryForm: NgForm) {
+    this.spinner(false);
     const temp = this.http.update(this.model, this.urlConstants.CCHUpdate);
     temp.subscribe(
       resp => {
@@ -203,6 +209,7 @@ export class ClientCallHistoryComponent implements OnInit {
         this.init();
         this.getRecruiterId();
         this.getTodaysDate();
+        this.spinner(true);
         this.readOnlyForm = '';
         this.enableButtonType = '';
         this.showAction = false;
@@ -223,6 +230,7 @@ export class ClientCallHistoryComponent implements OnInit {
     this.showAction = false;
   }
   public trash(): void {
+    this.spinner(false);
     const temp = this.http.delete(this.urlConstants.CCHDelete + this.selectedRecrdToDel);
     temp.subscribe(
       resp => {
@@ -234,6 +242,7 @@ export class ClientCallHistoryComponent implements OnInit {
         this.getTodaysDate();
         this.close();
         this.formReset();
+        this.spinner(true);
         this.showAction = false;
       },
       err => {
@@ -272,4 +281,7 @@ export class ClientCallHistoryComponent implements OnInit {
       return `with: ${reason}`;
     }
   }
+  private spinner(isSpinner: boolean){
+      this.listReturned = isSpinner;
+    }
 }

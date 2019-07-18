@@ -145,4 +145,5 @@ export class URLConstants {
     FileUpload = 'uploadFile/save?';
     FileDownload = 'uploadFile/download/';
     FileDelete = 'uploadFile/'
+    getCRF = 'uploadFile/getCRFResume?refId=' ;
 }

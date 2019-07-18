@@ -29,6 +29,7 @@ export class ConsultantStatusComponent implements OnInit {
     public actionsList = new ActionsList();
     public action: string = null;
     public screenHeight: any;
+    public listReturned:boolean;
 
     public readOnlyForm = '';
     public enableButtonType = '';
@@ -47,8 +48,10 @@ export class ConsultantStatusComponent implements OnInit {
         this.init();
     }
     public init() {
+        this.spinner(false);
         this.http.get(this.urlConstants.CSGetAll).subscribe(resp => {
             this.consultantStatusList = resp as Array<any>;
+            this.spinner(true);
         });
     }
     public dblSetModel() {
@@ -100,11 +103,13 @@ export class ConsultantStatusComponent implements OnInit {
       }
     public create(consultantStatusForm: NgForm): void {
         this.isCreate=true;
+        this.spinner(false);
         const temp = this.http.post(this.model, this.urlConstants.CSCreate);
         temp.subscribe(resp => {
             this.toastr.success(this.urlConstants.SuccessMsg, 'Consultant Status');
             this.init();
             this.formReset();
+            this.spinner(true);
             consultantStatusForm.resetForm();
             this.isCreate= false;
         }, err => {
@@ -113,6 +118,7 @@ export class ConsultantStatusComponent implements OnInit {
         });
     }
     public update(consultantStatusForm: NgForm) {
+        this.spinner(false);
         const temp = this.http.update(this.model, this.urlConstants.CSUpdate);
         temp.subscribe(resp => {
             this.toastr.success(this.urlConstants.UpdateMsg, 'Consultant Status');
@@ -120,6 +126,7 @@ export class ConsultantStatusComponent implements OnInit {
             this.formReset();
             this.init();
             consultantStatusForm.resetForm();
+            this.spinner(true);
             this.readOnlyForm = '';
             this.enableButtonType = '';
             this.showAction = false;
@@ -136,12 +143,14 @@ export class ConsultantStatusComponent implements OnInit {
         this.showAction = false;
     }
     public trash(): void {
+        this.spinner(false);
         const temp = this.http.delete(this.urlConstants.CSDelete + this.selectedRecrdToDel);
         temp.subscribe(resp => {
             this.toastr.success(this.urlConstants.DeleteMsg, 'Consultant Status');
             this.init();
             this.close();
             this.formReset();
+            this.spinner(true);
             this.readOnlyForm = '';
             this.enableButtonType = '';
             this.showAction = false;
@@ -172,4 +181,7 @@ export class ConsultantStatusComponent implements OnInit {
             return `with: ${reason}`;
         }
     }
+    private spinner(isSpinner: boolean){
+        this.listReturned = isSpinner;
+      }
 }

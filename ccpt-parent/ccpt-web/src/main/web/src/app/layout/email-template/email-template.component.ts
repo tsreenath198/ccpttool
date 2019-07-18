@@ -26,6 +26,7 @@ export class EmailTemplateComponent implements OnInit {
     public showAction: boolean = false;
     public actionsList = new ActionsList();
     public action: string = null;
+    public listReturned:boolean;
 
     private selectedRecrdToDel = 0;
     public closeResult = '';
@@ -47,8 +48,10 @@ export class EmailTemplateComponent implements OnInit {
         this.init();
     }
     private init() {
+        this.spinner(false);
         this.http.get(this.urlConstants.EmailTemplateGetAll).subscribe(resp => {
             this.emailTemplateList = resp as any;
+            this.spinner(true);
         });
     }
     public dblSetModel(data) {
@@ -85,12 +88,14 @@ export class EmailTemplateComponent implements OnInit {
     }
     public create(emailTemplateForm: NgForm): void {
         this.isCreate=true;
+        this.spinner(false);
         const temp = this.http.post(this.model, this.urlConstants.EmailTemplateCreate);
         temp.subscribe(resp => {
             this.toastr.success(this.urlConstants.SuccessMsg, 'Contact');
             this.init();
             this.formReset();
             emailTemplateForm.resetForm();
+            this.spinner(true);
             this.isCreate= false;
         }, err => {
             this.toastr.error(err.statusText, 'Contact');
@@ -98,12 +103,14 @@ export class EmailTemplateComponent implements OnInit {
         });
     }
     public update(emailTemplateForm: NgForm) {
+        this.spinner(false);
         const temp = this.http.update(this.model, this.urlConstants.EmailTemplateUpdate);
         temp.subscribe(resp => {
             this.formReset();
             this.toastr.success(this.urlConstants.UpdateMsg, 'Email Template ');
             this.init();
             emailTemplateForm.resetForm();
+            this.spinner(true);
             this.readOnlyForm = '';
             this.enableButtonType = '';
             this.showAction = false;
@@ -119,12 +126,14 @@ export class EmailTemplateComponent implements OnInit {
         this.showAction = false;
     }
     public trash(): void {
+        this.spinner(false);
         const temp = this.http.delete(this.urlConstants.EmailTemplateDelete + this.selectedRecrdToDel);
         temp.subscribe(resp => {
             this.toastr.success(this.urlConstants.DeleteMsg, 'Client');
             this.init();
             this.close();
             this.formReset();
+            this.spinner(true);
             this.showAction = false;
         }, err => {
             if (err.status === 200) {
@@ -164,4 +173,7 @@ export class EmailTemplateComponent implements OnInit {
             return `with: ${reason}`;
         }
     }
+    private spinner(isSpinner: boolean){
+        this.listReturned = isSpinner;
+      }
 }

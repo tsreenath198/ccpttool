@@ -46,6 +46,7 @@ export class ConsultantCallHistoryComponent implements OnInit {
   public consultantListLength: number;
   public pageSize: number = 20;
   public incr:number = 0;
+  public listReturned:boolean;
   public getCplPromise = this.http.get(this.urlConstants.CPDropdown);
   public getClPromise = this.http.get(this.urlConstants.CDropdown);
   public getRlPromise = this.http.get(this.urlConstants.RDropdown);
@@ -76,8 +77,10 @@ export class ConsultantCallHistoryComponent implements OnInit {
     });
   }
   private init() {
+    this.spinner(false);
     this.cochGetAllPromise.subscribe(resp => {
       this.consultantCallHistoryList = resp as Array<ConsultantCallHistoryModel>;
+      this.spinner(true);
       // this.pagedConsultantList = resp as any;
       // this.consultantListLength = this.consultantCallHistoryList.length;
       // this.pageChange(this.page);
@@ -159,6 +162,7 @@ export class ConsultantCallHistoryComponent implements OnInit {
   }
   public create(consultantCallHistory: NgForm): void {
     this.isCreate = true;
+    this.spinner(false);
     const temp = this.http.post(this.model, this.urlConstants.CoCHCreate);
     temp.subscribe(
       resp => {
@@ -167,6 +171,7 @@ export class ConsultantCallHistoryComponent implements OnInit {
         consultantCallHistory.resetForm();
         this.formReset();
         this.callAfterFormReset();
+        this.spinner(true);
         this.isCreate= false;
       },
       err => {
@@ -176,6 +181,7 @@ export class ConsultantCallHistoryComponent implements OnInit {
     );
   }
   public update(consultantCallHistory: NgForm) {
+    this.spinner(false);
     const temp = this.http.update(this.model, this.urlConstants.CoCHUpdate);
     temp.subscribe(
       resp => {
@@ -184,6 +190,7 @@ export class ConsultantCallHistoryComponent implements OnInit {
         this.toastr.success(this.urlConstants.UpdateMsg, 'Consultant Call History');
         this.init();
         this.callAfterFormReset();
+        this.spinner(true);
         this.readOnlyForm = '';
         this.enableButtonType = '';
         this.showAction = false;
@@ -203,6 +210,7 @@ export class ConsultantCallHistoryComponent implements OnInit {
     this.showAction = false;
   }
   public trash(): void {
+    this.spinner(false);
     const temp = this.http.delete(this.urlConstants.CoCHDelete + this.selectedRecrdToDel);
     temp.subscribe(
       resp => {
@@ -211,6 +219,7 @@ export class ConsultantCallHistoryComponent implements OnInit {
         this.close();
         this.formReset();
         this.callAfterFormReset();
+        this.spinner(true);
         this.readOnlyForm = '';
         this.enableButtonType = '';
         this.showAction = false;
@@ -280,5 +289,8 @@ export class ConsultantCallHistoryComponent implements OnInit {
   public  sort(key){
     this.key = key;
     this.reverse = !this.reverse;
-  }
+  } 
+  private spinner(isSpinner: boolean){
+      this.listReturned = isSpinner;
+    }
 }
