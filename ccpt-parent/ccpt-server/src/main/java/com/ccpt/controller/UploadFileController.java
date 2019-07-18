@@ -1,6 +1,7 @@
 package com.ccpt.controller;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
@@ -72,6 +73,14 @@ public class UploadFileController {
 		} else {
 			throw new ValidationException("File with file name : " + fileName + " already exists !");
 		}
+	}
+
+	@GetMapping("getCRFResume")
+	public ResponseEntity<List<UploadFile>> getFile(@RequestParam("refId") int refId,
+			@RequestParam("refType") String refType) {
+		List<UploadFile> result = uploadFileService.findByRefIdAndRefType(refId, refType);
+		return new ResponseEntity<List<UploadFile>>(result, HttpStatus.OK);
+
 	}
 
 	@DeleteMapping(CCPTConstants.ID_PARAM)
