@@ -13,6 +13,5 @@ public interface UploadFileRepository extends BaseRepository<UploadFile, Integer
 	long countByRefIdAndRefTypeAndFileName(Integer refId, String refType, String fileName);
 
 	@Query("SELECT u FROM UploadFile u WHERE refId=:refId AND refType=:refType")
-	List<UploadFile> getByRefIdAndRefType(@Param(value = "refId") Integer refId,
-			@Param(value = "refType") String refType);
+	UploadFile getByRefIdAndRefType(@Param(value = "refId") Integer refId, @Param(value = "refType") String refType);
 }
