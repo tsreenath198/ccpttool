@@ -1,6 +1,7 @@
 package com.ccpt.controller;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
@@ -75,10 +76,10 @@ public class UploadFileController {
 	}
 
 	@GetMapping("getCRFResume")
-	public ResponseEntity<UploadFile> getFile(@RequestParam("refId") int refId,
+	public ResponseEntity<List<UploadFile>> getFile(@RequestParam("refId") int refId,
 			@RequestParam("refType") String refType) {
-		UploadFile result = uploadFileService.findByRefIdAndRefType(refId, refType);
-		return new ResponseEntity<UploadFile>(result, HttpStatus.OK);
+		List<UploadFile> result = uploadFileService.findByRefIdAndRefType(refId, refType);
+		return new ResponseEntity<List<UploadFile>>(result, HttpStatus.OK);
 
 	}
 
