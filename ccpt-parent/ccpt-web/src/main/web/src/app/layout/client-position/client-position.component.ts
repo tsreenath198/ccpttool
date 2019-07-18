@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener } from '@angular/core';
+import { Component, OnInit, HostListener, ElementRef, ViewChild } from '@angular/core';
 import { NgbModal, ModalDismissReasons, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { URLConstants } from '../components/constants/url-constants';
 import { routerTransition } from '../../router.animations';
@@ -85,7 +85,7 @@ export class ClientPositionComponent implements OnInit {
     minHeight: '5rem',
     translate: 'no'
   };
-  constructor(private http: HttpClientService, private toastr: ToastrCustomService,
+  constructor(private http: HttpClientService, private toastr: ToastrCustomService,private elRef: ElementRef,
     private modalService: NgbModal, private router: Router, private titleService: Title) {
     // tslint:disable-next-line:no-unused-expression
     this.actionModel.sendMail;
@@ -199,6 +199,9 @@ export class ClientPositionComponent implements OnInit {
       }
     }
   }
+  /*editableBody(avv,fd){
+    debugger
+  }*/
   public actions(value, sendMailContent, trashContent, shortListContent, form) {
     switch (value) {
       case 'Delete': {

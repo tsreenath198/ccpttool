@@ -484,9 +484,14 @@
     <label>Subject</label>
     <input class="form-control" [(ngModel)]="sendEmailModel.subject" name="sub" />
     <label>Message Body</label>
-    <textarea class="form-control" cols="5" rows="8" [(ngModel)]="sendEmailModel.body" name="body">
-      <p ng-bind-html="sendEmailModel.body"></p>
-    </textarea>
+    <!-- <textarea class="form-control" cols="5" rows="8" [innerHTML]="sendEmailModel.body" name="body">
+      
+    </textarea> -->
+    <!-- <div [innerHTML]="sendEmailModel.body" contenteditable="true" (blur)="editableBody()" #emailEditableBody></div> -->
+    <div [innerHTML]="sendEmailModel.body"
+    contenteditable="true"
+    (input)="editableBody(sendEmailModel.body=$event.target.innerHTML)"
+    >{{ sendEmailModel.body }}</div>
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-secondary" (click)="sendEmailReq()">Send</button>
