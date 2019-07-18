@@ -70,6 +70,7 @@ export class ClientPositionComponent implements OnInit {
   public isCreate: boolean = false;
   public page: number;
   public cpListLength: number;
+  public listReturned: boolean;
   public pageSize: number = 20;
   public sendTo: any;
   public getAllCPS = this.http.get(this.urlConstants.CPSGetAll);
@@ -112,9 +113,11 @@ export class ClientPositionComponent implements OnInit {
     this.init();
   }
   private init() {
+    this.spinner(false);
     this.http.get(this.urlConstants.CPGetAll).subscribe(resp => {
       this.clientPositionList = resp as any;
       this.pagedCPList = resp as any;
+      this.spinner(true);
       this.cpListLength = this.clientPositionList.length;
       this.pageChange(this.page);
     });
@@ -245,6 +248,8 @@ export class ClientPositionComponent implements OnInit {
   }
   public create(clientPositionForm: NgForm): void {
     this.isCreate = true;
+    
+    this.spinner(false);
     // tslint:disable-next-line:max-line-length
     this.model.generatedCode = this.generateCPCode(this.model.clientId, this.model.role, this.model.location);
     const temp = this.http.post(this.model, this.urlConstants.CPCreate);
@@ -253,6 +258,7 @@ export class ClientPositionComponent implements OnInit {
         this.toastr.success(this.urlConstants.SuccessMsg, 'Client Position');
         this.init();
         this.formReset();
+        this.spinner(true);
         clientPositionForm.resetForm();
         this.isCreate= false;
         if(this.showAction){
@@ -291,6 +297,7 @@ export class ClientPositionComponent implements OnInit {
   }
   public update(clientPositionForm: NgForm) {
     // tslint:disable-next-line:max-line-length
+        this.spinner(false);
     this.model.generatedCode = this.generateCPCode(this.model.clientId, this.model.role, this.model.location);
     const temp = this.http.update(this.model, this.urlConstants.CPUpdate);
     temp.subscribe(
@@ -298,6 +305,7 @@ export class ClientPositionComponent implements OnInit {
         this.toastr.success(this.urlConstants.UpdateMsg, 'Client Position');
         this.formReset();
         this.init();
+        this.spinner(true);
         clientPositionForm.resetForm();
         this.readOnlyForm = '';
         this.enableButtonType = '';
@@ -319,6 +327,7 @@ export class ClientPositionComponent implements OnInit {
     this.showAction = false;
   }
   public trash(): void {
+    this.spinner(false);
     const temp = this.http.delete(this.urlConstants.CPDelete + this.selectedRecrd);
     temp.subscribe(
       resp => {
@@ -326,6 +335,7 @@ export class ClientPositionComponent implements OnInit {
         this.init();
         this.close();
         this.formReset();
+        this.spinner(true);
         this.readOnlyForm = '';
         this.enableButtonType = '';
         this.showAction = false;
@@ -414,7 +424,7 @@ export class ClientPositionComponent implements OnInit {
     if (event) {
       this.selectedRecrd = event;
     }
-    this.modalRef = this.modalService.open(content);
+    this.modalRef = this.modalService.open(content, { size: 'lg', backdrop: 'static' });
     this.modalRef.result.then(
       result => {
         this.closeResult = `Closed with: ${result}`;
@@ -464,5 +474,8 @@ export class ClientPositionComponent implements OnInit {
     const lst = this.clientPositionList;
     const uplst = lst.slice(from, from + this.pageSize);
     this.pagedCPList = uplst;
+  }
+  private spinner(isSpinner: boolean){
+    this.listReturned = isSpinner;
   }
 }

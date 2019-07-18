@@ -23,3 +23,12 @@
   .modal-dialog {
     max-width: 565px !important;
   }
+  .container {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.padding-top{
+  padding-top: 60px;
+}
