@@ -17,6 +17,7 @@ import { AdditionalPropertiesModel } from 'src/app/additional-properties.model';
 import { ActionModel } from '../modals/action';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { Router } from '@angular/router';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-client-position',
@@ -84,7 +85,8 @@ export class ClientPositionComponent implements OnInit {
     minHeight: '5rem',
     translate: 'no'
   };
-  constructor(private http: HttpClientService, private toastr: ToastrCustomService, private modalService: NgbModal, private router: Router) {
+  constructor(private http: HttpClientService, private toastr: ToastrCustomService,
+    private modalService: NgbModal, private router: Router, private titleService: Title) {
     // tslint:disable-next-line:no-unused-expression
     this.actionModel.sendMail;
     this.getScreenSize();
@@ -96,7 +98,7 @@ export class ClientPositionComponent implements OnInit {
 
   ngOnInit() {
     /*Autheticate user with the token */
-    if (!this.http.isAuthenticate()){
+    if (!this.http.isAuthenticate()) {
       this.router.navigate(['/login']);
     }
     this.getAllDropdowns();
@@ -123,7 +125,7 @@ export class ClientPositionComponent implements OnInit {
     });
     this.model.properties = [];
     this.model.cpstatus = 'Open';
-    this.model.requiredPositions ='1';
+    this.model.requiredPositions = '1';
     this.page = 1;
   }
   private getAllDropdowns() {
@@ -180,6 +182,7 @@ export class ClientPositionComponent implements OnInit {
     this.model['cpstatus'] = temp.status.code;
     this.model['assignedTo'] = temp.assignedTo ? temp.assignedTo.id : 0;
     this.model['closedBy'] = temp.closedBy ? temp.closedBy.id : 0;
+    this.titleService.setTitle('CCPT-' + temp.client.name + '-' + temp.role);
     return this.model;
   }
   public propertiesListIncrement(event, i) {
@@ -196,13 +199,13 @@ export class ClientPositionComponent implements OnInit {
       }
     }
   }
-  public actions(value,sendMailContent, trashContent, shortListContent, form) {
+  public actions(value, sendMailContent, trashContent, shortListContent, form) {
     switch (value) {
       case 'Delete': {
         this.open(this.model.id, trashContent);
         break;
       }
-      case 'Send JD':{
+      case 'Send JD': {
         for (let i = 0; i < this.consultantList.length; i++) {
           const temp = { item_id: this.consultantList[i].id, item_text: this.consultantList[i].fullname, notes: '' };
           this.mailIdForMails.push(temp);
@@ -226,13 +229,13 @@ export class ClientPositionComponent implements OnInit {
         this.cancelForm(form);
         break;
       }
-      case 'Clone' : {
+      case 'Clone': {
         this.cloneData(this.model);
         break;
       }
     }
   }
-  private cloneData(data: any){
+  private cloneData(data: any) {
     data.id = null;
     data.assignedTo = null;
     data.role = null;
@@ -244,11 +247,11 @@ export class ClientPositionComponent implements OnInit {
     this.model = <ClientPositionModel>{};
     this.model.properties = [];
     this.model.cpstatus = 'Open';
-    this.model.requiredPositions ='1';
+    this.model.requiredPositions = '1';
   }
   public create(clientPositionForm: NgForm): void {
     this.isCreate = true;
-    
+
     this.spinner(false);
     // tslint:disable-next-line:max-line-length
     this.model.generatedCode = this.generateCPCode(this.model.clientId, this.model.role, this.model.location);
@@ -260,14 +263,14 @@ export class ClientPositionComponent implements OnInit {
         this.formReset();
         this.spinner(true);
         clientPositionForm.resetForm();
-        this.isCreate= false;
-        if(this.showAction){
+        this.isCreate = false;
+        if (this.showAction) {
           this.showAction = false;
         }
       },
       err => {
         this.toastr.error(err.error.message, 'Client Position');
-        this.isCreate= false;
+        this.isCreate = false;
       }
     );
   }
@@ -297,7 +300,7 @@ export class ClientPositionComponent implements OnInit {
   }
   public update(clientPositionForm: NgForm) {
     // tslint:disable-next-line:max-line-length
-        this.spinner(false);
+    this.spinner(false);
     this.model.generatedCode = this.generateCPCode(this.model.clientId, this.model.role, this.model.location);
     const temp = this.http.update(this.model, this.urlConstants.CPUpdate);
     temp.subscribe(
@@ -379,7 +382,7 @@ export class ClientPositionComponent implements OnInit {
       this.close();
     });
   }
-  public createClientApplication(data: any,clientPositionForm: NgForm) {
+  public createClientApplication(data: any, clientPositionForm: NgForm) {
     // TODO:Need to check the code
     // tslint:disable-next-line:max-line-length
     const dataToCreate = {
@@ -396,8 +399,8 @@ export class ClientPositionComponent implements OnInit {
         this.init();
         this.formReset();
         clientPositionForm.resetForm();
-        this.isCreate= false;
-        if(this.showAction){
+        this.isCreate = false;
+        if (this.showAction) {
           this.showAction = false;
         }
         this.shortListConsultants = [];
@@ -407,9 +410,9 @@ export class ClientPositionComponent implements OnInit {
       }
     );
   }
-  public onItemSelect(event){
-    let temp={"cpId":this.model.id,"cId":event.id};
-    this.http.post(temp,this.urlConstants.EmailTemplateBuildContent+'Job Description').subscribe(resp => {
+  public onItemSelect(event) {
+    let temp = { "cpId": this.model.id, "cId": event.id };
+    this.http.post(temp, this.urlConstants.EmailTemplateBuildContent + 'Job Description').subscribe(resp => {
       this.sendEmailModel = resp as any;
       this.sendEmailModel.toEmails = event.email;
     });
@@ -475,7 +478,7 @@ export class ClientPositionComponent implements OnInit {
     const uplst = lst.slice(from, from + this.pageSize);
     this.pagedCPList = uplst;
   }
-  private spinner(isSpinner: boolean){
+  private spinner(isSpinner: boolean) {
     this.listReturned = isSpinner;
   }
 }
