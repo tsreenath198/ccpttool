@@ -72,9 +72,11 @@ export class ConsultantStatusComponent implements OnInit {
         this.action = null;
     }
     private getById(id) {
+        this.spinner(false);
         const temp = this.http.get(this.urlConstants.CSGetById + id);
         temp.subscribe(resp => {
             this.model = this.mapToUpdateModel(resp);
+            this.spinner(true);
             });
     }
     private mapToUpdateModel(response) {
@@ -115,6 +117,7 @@ export class ConsultantStatusComponent implements OnInit {
         }, err => {
             this.toastr.error(err.error.message, 'Consultant Status');
             this.isCreate= false;
+            this.spinner(true);
         });
     }
     public update(consultantStatusForm: NgForm) {
@@ -132,6 +135,7 @@ export class ConsultantStatusComponent implements OnInit {
             this.showAction = false;
         }, err => {
             this.toastr.error(err.error.message, 'Consultant Status');
+            this.spinner(true);
         });
     }
 
@@ -156,6 +160,7 @@ export class ConsultantStatusComponent implements OnInit {
             this.showAction = false;
         }, err => {
             this.toastr.error(err.error.message, 'Consultant Status');
+            this.spinner(true);
         });
     }
     public open(event: any , content:any) {

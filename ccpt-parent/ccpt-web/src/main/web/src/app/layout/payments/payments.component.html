@@ -1,5 +1,10 @@
 <div [@routerTransition]>
   <app-page-header [icon1]="'fa-inr'" [heading1]="'Payments'"></app-page-header>
+  <div class="spinner padding-top justify-content-md-center" *ngIf="listReturned == true">
+    <div class="bounce1"></div>
+    <div class="bounce2"></div>
+    <div class="bounce3"></div>
+  </div>
   <div class="row">
     <div class="col-md-7">
       <div class="row">

@@ -41,7 +41,7 @@ export class ConsultantComponent implements OnInit {
   public apValue = '';
   public screenHeight: any;
   private modalRef: NgbModalRef;
-  public listReturned:boolean;
+  public listReturned: boolean;
   public urlConstants = new URLConstants();
 
   public showAction: boolean = false;
@@ -83,7 +83,6 @@ export class ConsultantComponent implements OnInit {
   init(): void {
     this.spinner(false);
     this.cGetAllPromise.subscribe(resp => {
-
       this.consultantList = resp as any;
       this.pagedConsultantList = resp as any;
       this.consultantListLength = this.consultantList.length;
@@ -97,7 +96,6 @@ export class ConsultantComponent implements OnInit {
         }
       });
       this.pageChange(this.page);
-      
       this.spinner(true);
     });
     this.model['properties'] = [];
@@ -153,6 +151,7 @@ export class ConsultantComponent implements OnInit {
       err => {
         this.toastr.error(err.error.message, 'Consultant');
         this.isCreate = false;
+        this.spinner(true);
       }
     );
   }
@@ -172,24 +171,24 @@ export class ConsultantComponent implements OnInit {
       },
       err => {
         this.toastr.error(err.statusText, 'Consultant');
+        this.spinner(true);
       }
     );
   }
   private getConsultantById(id: number) {
+    this.spinner(false);
     const temp = this.http.get(this.urlConstants.CGetById + id);
     temp.subscribe(resp => {
       this.model = this.mapToUpdateModel(resp);
-      // tslint:disable-next-line:no-shadowed-variable
-
       if (this.model.properties == null) {
         this.model.properties = [];
       }
+      this.spinner(true);
     });
   }
   private getFilesById(id: number) {
     this.http.get('/uploadFile/id?id=' + id).subscribe(resp => {
       this.fileList.push(resp);
-      console.log(this.fileList);
     });
   }
   public cancelForm(consultantForm: NgForm) {
@@ -222,6 +221,7 @@ export class ConsultantComponent implements OnInit {
           return this.toastr.success(this.urlConstants.DeleteMsg, 'Consultant');
         }
         this.toastr.error(err.statusText, 'Consultant');
+        this.spinner(true);
       }
     );
   }
@@ -291,11 +291,9 @@ export class ConsultantComponent implements OnInit {
   }
   public imposeMinMax(el) {
     if (el.value !== '') {
-      // tslint:disable-next-line:radix
       if (parseInt(el.value) < parseInt(el.min)) {
         el.value = el.min;
       }
-      // tslint:disable-next-line:radix
       if (parseInt(el.value) > parseInt(el.max)) {
         el.value = el.max;
       }
@@ -363,7 +361,7 @@ export class ConsultantComponent implements OnInit {
   /**Download file */
   public downloadFile(id: number) {
     this.http.get(this.urlConstants.FileDownload + id).subscribe(
-      resp => {},
+      resp => { },
       err => {
         if (err.status == 200) window.open(err.url);
       }
@@ -412,7 +410,7 @@ export class ConsultantComponent implements OnInit {
     this.pagedConsultantList = uplst;
   }
   public emptyExperience() {
-    if (this.isFresher == true) {
+    if (this.isFresher) {
       this.model.currentCompany = '';
       this.model.currentCTC = '';
       this.model.expectedCTC = '';
@@ -426,7 +424,7 @@ export class ConsultantComponent implements OnInit {
       this.model.noticePeriod = '';
     }
   }
-  private spinner(isSpinner: boolean){
-      this.listReturned = isSpinner;
-    }
+  private spinner(isSpinner: boolean) {
+    this.listReturned = isSpinner;
+  }
 }

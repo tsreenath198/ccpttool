@@ -104,6 +104,7 @@ export class ClientComponent implements OnInit {
         this.action=null;
     }
     private getById(id) {
+        this.spinner(false);
         const temp = this.http.get(this.urlConstants.ClientGetById + id);
         temp.subscribe(resp => {
             this.model = this.mapToUpdateModel(resp);
@@ -111,6 +112,7 @@ export class ClientComponent implements OnInit {
             if (this.model.properties == null) {
                 this.model.properties = [];
             }
+            this.spinner(true);
         });
     }
     private mapToUpdateModel(response) {
@@ -140,6 +142,7 @@ export class ClientComponent implements OnInit {
         }, err => {
             this.toastr.error(err.error.message, 'Client');
             this.isCreate= false;
+            this.spinner(true);
         });
     }
     public update(clientForm: NgForm) {
@@ -158,6 +161,7 @@ export class ClientComponent implements OnInit {
             this.showAction = false;
         }, err => {
             this.toastr.error(err.error.message, 'Client');
+            this.spinner(true);
         });
     }
     public cancelForm(consultantCallHistory: NgForm) {
@@ -238,12 +242,14 @@ export class ClientComponent implements OnInit {
             this.showAction = false;
         }, err => {
             this.toastr.error(err.error.message, 'Client');
+            this.spinner(true);
         });
     }
     public getFilesById(id: number) {
+        this.spinner(false);
         this.http.get('/uploadFile/id?id=' + id).subscribe(resp => {
             this.fileList.push(resp);
-            console.log(this.fileList);
+            this.spinner(true);
         });
     }
     /**

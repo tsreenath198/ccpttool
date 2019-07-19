@@ -14,7 +14,13 @@
   </div>
   <hr> -->
 
-  <div class="row" *ngIf="interviewsToday.length != 0">
+  <div class="spinner padding-top justify-content-md-center" *ngIf="!listReturned">
+    <div class="bounce1"></div>
+    <div class="bounce2"></div>
+    <div class="bounce3"></div>
+  </div>
+
+  <div class="row" *ngIf="interviewsToday.length != 0" *ngIf="listReturned">
     <div class="col col-xl-12 col-lg-12">
       <div class="card mb-3">
         <div class="card-header bg-dark text-clr-white">Interviews this week</div>
@@ -49,7 +55,7 @@
       </div>
     </div>
   </div>
-  <div class="row">
+  <div class="row"  *ngIf="listReturned">
     <div class="col-4">
       <div class="card mb-3 ">
         <div class="card-header bg-dark text-clr-white">
@@ -145,7 +151,7 @@
     </div>
 
   </div>
-  <div class="row">
+  <div class="row"  *ngIf="listReturned">
     <div class="col-4">
       <div class="card mb-3">
         <div class="card-header bg-dark text-clr-white">Latest Client Positions (Top 5)</div>

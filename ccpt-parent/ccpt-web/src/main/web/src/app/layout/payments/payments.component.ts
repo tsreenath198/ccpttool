@@ -35,34 +35,38 @@ export class PaymentsComponent implements OnInit {
     public apValue = '';
     public showAction: boolean = false;
     public actionsList = new ActionsList();
-    public action:string = null;
+    public action: string = null;
     private modalRef: NgbModalRef;
     private getAllCP = this.http.get(this.urlConstants.CPDropdown);
     private getAllC = this.http.get(this.urlConstants.CDropdown);
+    public listReturned: boolean;
 
     constructor(private http: HttpClientService, private router: Router, private toastr: ToastrCustomService, private modalService: NgbModal) {
         this.getScreenSize();
-     }
-     @HostListener('window:resize', ['$event'])
-     getScreenSize(event?) {
-           this.screenHeight = window.innerHeight;
-     }
+    }
+    @HostListener('window:resize', ['$event'])
+    getScreenSize(event?) {
+        this.screenHeight = window.innerHeight;
+    }
     ngOnInit() {
         /*Autheticate user with the token */
-    if (!this.http.isAuthenticate()){
-        this.router.navigate(['/login']);
-      }
+        if (!this.http.isAuthenticate()) {
+            this.router.navigate(['/login']);
+        }
         this.init();
         this.getAllDropdowns();
     }
     init() {
+        this.spinner(false);
         this.http.get(this.urlConstants.PaymentGetAll).subscribe(resp => {
             this.paymentsList = resp as any;
+            this.spinner(true);
         });
-         this.getTodaysDate();
-    this.model.properties = [];
+        this.getTodaysDate();
+        this.model.properties = [];
     }
     getAllDropdowns() {
+        this.spinner(false);
         forkJoin(
             this.getAllC,
             this.getAllCP,
@@ -70,6 +74,7 @@ export class PaymentsComponent implements OnInit {
         ).subscribe(listofrecords => {
             this.consultantList = listofrecords[0] as any;
             this.clientPositionList = listofrecords[1] as any;
+            this.spinner(true);
         });
     }
     private validate(value: any): boolean {
@@ -81,14 +86,14 @@ export class PaymentsComponent implements OnInit {
         const dd = String(today.getDate()).padStart(2, '0');
         const mm = String(today.getMonth() + 1).padStart(2, '0'); // January is 0!
         const yyyy = today.getFullYear();
-        const temp = yyyy + '-' + mm + '-' + dd ;
+        const temp = yyyy + '-' + mm + '-' + dd;
         this.model.invoiceDate = temp;
-      }
+    }
     public dblSetModel() {
         this.readOnlyForm = 'U';
         this.enableButtonType = 'U';
         this.showAction = true;
-        this.action=null;
+        this.action = null;
     }
     enableFormEditable(): void {
 
@@ -97,25 +102,27 @@ export class PaymentsComponent implements OnInit {
     }
 
     public setModel(id) {
+        this.spinner(false);
         this.getById(id);
         this.readOnlyForm = 'R';
         this.enableButtonType = 'E';
         this.showAction = true;
-        this.action=null;
+        this.action = null;
     }
     private getById(id) {
         const temp = this.http.get(this.urlConstants.PaymentGetById + id);
         temp.subscribe(resp => {
             this.model = this.mapToUpdateModel(resp);
-            // tslint:disable-next-line:no-shadowed-variable
-             if (this.model.properties == null) {
-                    this.model.properties = [];
-                }
-            });
+            this.spinner(true);
+            if (this.model.properties == null) {
+                this.model.properties = [];
+            }
+        });
     }
-    public getCPDetails(cpId){
-        this.http.get(this.urlConstants.CPGetById + cpId).subscribe(resp=>{
-            let  temp = resp as any;
+    public getCPDetails(cpId) {
+        this.spinner(false);
+        this.http.get(this.urlConstants.CPGetById + cpId).subscribe(resp => {
+            let temp = resp as any;
             this.model.companyName = temp.client.name;
             this.model.companyWebsite = temp.client.website;
             this.model.companyGstNum = temp.client.gst;
@@ -127,16 +134,17 @@ export class PaymentsComponent implements OnInit {
             this.model.designation = temp.role;
             this.model.billingAddress = temp.client.billingAddress;
             this.model.serviceCharge = temp.client.serviceCharge;
+            this.spinner(true);
         })
     }
-    public getConsultantDetails(){
-        let id=0;
-        for(let i=0 ;i<this.consultantList.length;i++){
-            if(this.model.candidateName == this.consultantList[i].name){
-                id=this.consultantList[i].id;
+    public getConsultantDetails() {
+        let id = 0;
+        for (let i = 0; i < this.consultantList.length; i++) {
+            if (this.model.candidateName == this.consultantList[i].name) {
+                id = this.consultantList[i].id;
             }
         }
-        this.http.get(this.urlConstants.CGetById+id).subscribe(resp=>{
+        this.http.get(this.urlConstants.CGetById + id).subscribe(resp => {
             let temp = resp as any;
             this.model.phone = temp.phone;
         })
@@ -149,48 +157,52 @@ export class PaymentsComponent implements OnInit {
     public propertiesListIncrement(event, i: number) {
         switch (event.id) {
             case 'decrease': {
-              this.model.properties.splice(i, 1);
-              break;
+                this.model.properties.splice(i, 1);
+                break;
             }
             case 'increase': {
-              this.model.properties.push(<AdditionalPropertiesModel>{ 'name': this.apName, 'value': this.apValue });
-              this.apName = '';
-              this.apValue = '';
-              break;
+                this.model.properties.push(<AdditionalPropertiesModel>{ 'name': this.apName, 'value': this.apValue });
+                this.apName = '';
+                this.apValue = '';
+                break;
             }
-          }
-    }
-    public actions(value,trashContent,form){
-        console.log(value);
-        switch(value){
-          case 'Delete':{
-            this.open(this.model.id,trashContent);
-            break;
-          }
-          case 'Edit':{
-            this.enableFormEditable();
-            break;
-          }
-          case 'Close':{
-            this.cancelForm(form);
-          }
         }
-      }
+    }
+    public actions(value, trashContent, form) {
+        console.log(value);
+        switch (value) {
+            case 'Delete': {
+                this.open(this.model.id, trashContent);
+                break;
+            }
+            case 'Edit': {
+                this.enableFormEditable();
+                break;
+            }
+            case 'Close': {
+                this.cancelForm(form);
+            }
+        }
+    }
     private formReset() {
-        this.model = <PaymentsModel>{properties: []};
+        this.model = <PaymentsModel>{ properties: [] };
     }
     public create(paymentsForm: NgForm): void {
+        this.spinner(false);
         const temp = this.http.post(this.model, this.urlConstants.PaymentCreate);
         temp.subscribe(resp => {
             this.toastr.success(this.urlConstants.SuccessMsg, 'Contact');
             this.init();
             this.formReset();
             paymentsForm.resetForm();
+            this.spinner(true);
         }, err => {
             this.toastr.error(err.error.message, 'Contact');
+            this.spinner(true);
         });
     }
     public update(paymentsForm: NgForm) {
+        this.spinner(false);
         const temp = this.http.update(this.model, this.urlConstants.PaymentUpdate);
         temp.subscribe(resp => {
             this.formReset();
@@ -200,8 +212,10 @@ export class PaymentsComponent implements OnInit {
             this.readOnlyForm = '';
             this.enableButtonType = '';
             this.showAction = false;
+            this.spinner(true);
         }, err => {
             this.toastr.error(err.error.message, 'Contact');
+            this.spinner(true);
         });
     }
     public cancelForm(consultantCallHistory: NgForm) {
@@ -213,6 +227,7 @@ export class PaymentsComponent implements OnInit {
         this.showAction = false;
     }
     public trash(): void {
+        this.spinner(false);
         const temp = this.http.delete(this.urlConstants.PaymentDelete + this.selectedRecrdToDel);
         temp.subscribe(resp => {
             this.toastr.success(this.urlConstants.DeleteMsg, 'Contact');
@@ -222,8 +237,10 @@ export class PaymentsComponent implements OnInit {
             this.readOnlyForm = '';
             this.enableButtonType = '';
             this.showAction = false;
+            this.spinner(true);
         }, err => {
             this.toastr.error(err.error.message, 'Contact');
+            this.spinner(true);
         });
     }
     /**
@@ -231,7 +248,7 @@ export class PaymentsComponent implements OnInit {
      * 1) content consists the modal instance
      * 2) Selected contains the code of selected row
      */
-    public open(event: any, content:any) {
+    public open(event: any, content: any) {
         if (event) {
             this.selectedRecrdToDel = event;
         }
@@ -253,5 +270,8 @@ export class PaymentsComponent implements OnInit {
         } else {
             return `with: ${reason}`;
         }
+    }
+    private spinner(isSpinner: boolean) {
+        this.listReturned = isSpinner;
     }
 }

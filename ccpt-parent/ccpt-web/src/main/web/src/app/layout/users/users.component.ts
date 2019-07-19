@@ -1,6 +1,6 @@
 import { Component, OnInit, HostListener, ElementRef } from '@angular/core';
 import { routerTransition } from '../../router.animations';
-import { UsersModel, UserRoles,ActionsList } from './users.model';
+import { UsersModel, UserRoles, ActionsList } from './users.model';
 import { HttpClientService } from 'src/app/shared/services/http.service';
 import { URLConstants } from '../components/constants/url-constants';
 import { NgForm } from '@angular/forms';
@@ -29,13 +29,14 @@ export class UsersComponent implements OnInit {
     public closeResult = '';
     public apName = '';
     public apValue = '';
-    public isCreate: boolean =false;
+    public isCreate: boolean = false;
     public showAction: boolean = false;
     public actionsList = new ActionsList();
     public action: string = null;
     private modalRef: NgbModalRef;
     public screenHeight: any;
     public viewPassword: boolean;
+    public listReturned: boolean;
 
     constructor(private http: HttpClientService, private router: Router, private toastr: ToastrCustomService, private modalService: NgbModal,
         private el: ElementRef) {
@@ -48,9 +49,9 @@ export class UsersComponent implements OnInit {
 
     ngOnInit() {
         /*Autheticate user with the token */
-    if (!this.http.isAuthenticate()){
-        this.router.navigate(['/login']);
-      }
+        if (!this.http.isAuthenticate()) {
+            this.router.navigate(['/login']);
+        }
         this.http.get(this.urlConstants.RGetAll).subscribe(resp => {
             this.getAllR = resp as any;
         });
@@ -59,8 +60,10 @@ export class UsersComponent implements OnInit {
         this.viewPassword = false;
     }
     private init() {
+        this.spinner(false);
         this.http.get(this.urlConstants.UserGetAll).subscribe(resp => {
             this.usersList = resp as any;
+            this.spinner(true);
         });
         this.model.properties = [];
     }
@@ -75,6 +78,7 @@ export class UsersComponent implements OnInit {
         this.enableButtonType = 'U';
     }
     public setModel(id: number) {
+        this.spinner(false);
         this.getUserById(id);
         this.readOnlyForm = 'R';
         this.enableButtonType = 'E';
@@ -88,6 +92,7 @@ export class UsersComponent implements OnInit {
             if (this.model.properties == null) {
                 this.model.properties = [];
             }
+            this.spinner(true);
         });
     }
     private mapToUpdateModel(response): UsersModel {
@@ -112,46 +117,50 @@ export class UsersComponent implements OnInit {
     public actions(value, trashContent, form) {
         console.log(value);
         switch (value) {
-          case 'Delete': {
-            this.open(this.model.id, trashContent);
-            break;
-          }
-          case 'Edit': {
-            this.enableFormEditable();
-            break;
-          }
-          case 'Close': {
-            this.cancelForm(form);
-          }
+            case 'Delete': {
+                this.open(this.model.id, trashContent);
+                break;
+            }
+            case 'Edit': {
+                this.enableFormEditable();
+                break;
+            }
+            case 'Close': {
+                this.cancelForm(form);
+            }
         }
-      }
-      public toogle(html: HTMLInputElement) {
-        if(html.type === 'password'){
+    }
+    public toogle(html: HTMLInputElement) {
+        if (html.type === 'password') {
             html.type = 'text';
             this.viewPassword = true;
-        }else{
+        } else {
             html.type = 'password';
-            this.viewPassword = false; 
+            this.viewPassword = false;
         }
-        
+
     }
     private formReset() {
         this.model = <UsersModel>{ properties: [] };
     }
     public create(usersForm: NgForm): void {
-        this.isCreate=true;
+        this.spinner(false);
+        this.isCreate = true;
         let temp = this.http.post(this.model, this.urlConstants.UserCreate);
         temp.subscribe(resp => {
             this.toastr.success(this.urlConstants.SuccessMsg, 'User');
             usersForm.resetForm();
             this.init();
-            this.isCreate= false;
+            this.isCreate = false;
+            this.spinner(true);
         }, err => {
             this.toastr.error(err.error.message, 'Users');
-            this.isCreate= false;
+            this.isCreate = false;
+            this.spinner(true);
         });
     }
     public update(usersForm: NgForm): void {
+        this.spinner(false);
         let temp = this.http.update(this.model, this.urlConstants.UserUpdate);
         temp.subscribe(resp => {
             this.formReset();
@@ -161,11 +170,14 @@ export class UsersComponent implements OnInit {
             this.readOnlyForm = '';
             this.enableButtonType = '';
             this.showAction = false;
+            this.spinner(true);
         }, err => {
             this.toastr.error(err.error.message, 'User');
+            this.spinner(true);
         });
     }
     public trash(): void {
+        this.spinner(false);
         let temp = this.http.delete(this.urlConstants.UserDelete + this.selectedRecrdToDel);
         temp.subscribe(resp => {
             this.toastr.success(this.urlConstants.DeleteMsg, 'User');
@@ -175,8 +187,10 @@ export class UsersComponent implements OnInit {
             this.readOnlyForm = '';
             this.enableButtonType = '';
             this.showAction = false;
+            this.spinner(true);
         }, err => {
             this.toastr.error(err.error.message, 'User');
+            this.spinner(true);
         });
     }
     public cancelForm(usersForm: NgForm) {
@@ -191,7 +205,7 @@ export class UsersComponent implements OnInit {
     * 1) content consists the modal instance
     * 2) Selected contains the code of selected row
     */
-   public open(event: any, content:any) {
+    public open(event: any, content: any) {
         if (event) {
             this.selectedRecrdToDel = event;
         }
@@ -213,5 +227,8 @@ export class UsersComponent implements OnInit {
         } else {
             return `with: ${reason}`;
         }
+    }
+    private spinner(isSpinner: boolean) {
+        this.listReturned = isSpinner;
     }
 }

@@ -36,6 +36,7 @@ export class DashboardComponent implements OnInit {
     public rpChoosenDays: any = 7;
     public cochChoosenDays: any = 7;
     public clchChoosenDays: any = 7;
+    public listReturned: boolean = false;
 
     private selectedRecrd = 0;
     public closeResult = '';
@@ -46,7 +47,7 @@ export class DashboardComponent implements OnInit {
         height: '15rem',
         minHeight: '5rem',
         translate: 'no'
-      };
+    };
 
     public getAllReportCLCH = this.http.get(this.urlConstants.CCHGetCountByRecruiter + this.clchChoosenDays);
     public getAllReportCOCH = this.http.get(this.urlConstants.CoCHGetCountByRecruiter + this.cochChoosenDays);
@@ -55,7 +56,8 @@ export class DashboardComponent implements OnInit {
     public getAllOpenCP = this.http.get(this.urlConstants.ReportingGetAllOpenCP);
     public getAllActiveCA = this.http.get(this.urlConstants.ReportingGetAllActiveCA);
     public getAllInterviewsToday = this.http.get(this.urlConstants.ReportingGetAllInterviewsToday);
-    constructor(private http: HttpClientService, private router: Router, private toastr: ToastrCustomService, private modalService: NgbModal) {
+    constructor(private http: HttpClientService, private router: Router, private toastr: ToastrCustomService,
+        private modalService: NgbModal) {
         // this.sliders.push(
         //     {
         //         imagePath: 'assets/images/slider1.jpg',
@@ -98,12 +100,13 @@ export class DashboardComponent implements OnInit {
 
     ngOnInit() {
         /*Autheticate user with the token */
-    if (!this.http.isAuthenticate()){
-        this.router.navigate(['/login']);
-      }
+        if (!this.http.isAuthenticate()) {
+            this.router.navigate(['/login']);
+        }
         this.init();
     }
     public init() {
+        this.spinner(false);
         forkJoin(
             this.getAllReportCLCH,
             this.getAllReportCOCH,
@@ -120,49 +123,66 @@ export class DashboardComponent implements OnInit {
             this.openCP = listofrecords[4] as any;
             this.activeCA = listofrecords[5] as any;
             this.interviewsToday = listofrecords[6] as any;
+            this.spinner(true);
         });
-        this.top5ById.properties=[]
+        this.top5ById.properties = []
     }
     public rpGetAllByDays() {
+        this.spinner(false);
         const numberOfDays = this.rpChoosenDays;
         this.http.get(this.urlConstants.ReportingGetClosures + numberOfDays).subscribe(resp => {
             this.ccptReportCC = resp;
+            this.spinner(true);
         });
     }
     public cochGetAllByDays() {
+        this.spinner(false);
         const numberOfDays = this.cochChoosenDays;
         this.http.get(this.urlConstants.CoCHGetCountByRecruiter + numberOfDays).subscribe(resp => {
             this.ccptReportCOCH = resp as any;
+            this.spinner(true);
         });
     }
     public clchGetAllByDays() {
+        this.spinner(false);
         const numberOfDays = this.clchChoosenDays;
         this.http.get(this.urlConstants.CCHGetCountByRecruiter + numberOfDays).subscribe(resp => {
             this.ccptReportCLCH = resp as any;
+            this.spinner(true);
         });
     }
+    private spinner(isSpinner: boolean) {
+        this.listReturned = isSpinner;
+    }
     getAllActiveCAById(recrd: number) {
+        this.spinner(false);
         this.activeCAById = [];
         this.http.get(this.urlConstants.ReportingGetAllActiveCAById + recrd).subscribe(resp => {
             this.activeCAById = resp as any;
+            this.spinner(true);
         });
     }
     getAllCoCHByID(recrd: number, days: number) {
+        this.spinner(false);
         this.cochByIdList = [];
-        http://210.16.76.202:8081/clientCallHistory/getAllCchByRecruiterId?rId=4&days=300
         this.http.get(this.urlConstants.CoCHGetByRecruiterId + recrd + '&days=' + days).subscribe(resp => {
             this.cochByIdList = resp as any;
+            this.spinner(true);
         })
     }
     getAllClCHByID(recrd: number, days: number) {
+        this.spinner(false);
         this.clchByIdList = [];
         this.http.get(this.urlConstants.CCHGetByRecruiterId + recrd + '&days=' + days).subscribe(resp => {
             this.clchByIdList = resp as any;
+            this.spinner(true);
         })
     }
-    public getTop5ById(recrd){
-        this.http.get(this.urlConstants.CPGetById+recrd).subscribe(resp => {
+    public getTop5ById(recrd) {
+        this.spinner(false);
+        this.http.get(this.urlConstants.CPGetById + recrd).subscribe(resp => {
             this.top5ById = resp as any;
+            this.spinner(true);
         })
     }
     /**
@@ -189,7 +209,7 @@ export class DashboardComponent implements OnInit {
         if (type == 'ClientCallHistory') {
             this.getAllClCHByID(this.selectedRecrd, this.clchChoosenDays);
         }
-        if(type == 'latestCPTop5'){
+        if (type == 'latestCPTop5') {
             this.getTop5ById(this.selectedRecrd)
         }
     }

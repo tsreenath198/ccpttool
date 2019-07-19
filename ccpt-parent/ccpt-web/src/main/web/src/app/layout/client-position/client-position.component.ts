@@ -4,14 +4,10 @@ import { URLConstants } from '../components/constants/url-constants';
 import { routerTransition } from '../../router.animations';
 import { ClientPositionModel, SendSmsModel, SendEmailModel, ActionsList } from './client-position.model';
 import { HttpClientService } from 'src/app/shared/services/http.service';
-import { ClientpositionStatusModel } from '../client-position-status/client-position-status.model';
 import { ToastrCustomService } from 'src/app/shared/services/toastr.service';
 import { NgForm } from '@angular/forms';
-import { ClientModel } from '../client/client.model';
 import { forkJoin } from 'rxjs';
-import { RecruiterModel } from '../recruiter/recruiter.model';
 import { MessageTemplateModel } from '../message-template/message-template.model';
-import { ConsultantModel } from '../consultant/consultant.model';
 import { EmailTemplateModel } from '../email-template/email-template.model';
 import { AdditionalPropertiesModel } from 'src/app/additional-properties.model';
 import { ActionModel } from '../modals/action';
@@ -166,13 +162,17 @@ export class ClientPositionComponent implements OnInit {
 
   }
   private getCPById(id: number) {
+    this.spinner(false);
     const temp = this.http.get(this.urlConstants.CPGetById + id);
     temp.subscribe(resp => {
-      this.model = this.mapToUpdateModel(resp);
+      if(resp){
+        this.model = this.mapToUpdateModel(resp);
+      }
       // tslint:disable-next-line:no-shadowed-variable
       if (this.model.properties == null) {
         this.model.properties = [];
       }
+      this.spinner(true);
     });
   }
   private mapToUpdateModel(response): ClientPositionModel {
@@ -274,6 +274,7 @@ export class ClientPositionComponent implements OnInit {
       err => {
         this.toastr.error(err.error.message, 'Client Position');
         this.isCreate = false;
+        this.spinner(true);
       }
     );
   }
@@ -320,6 +321,7 @@ export class ClientPositionComponent implements OnInit {
       },
       err => {
         this.toastr.error(err.error.message, 'Client Position');
+        this.spinner(true);
       }
     );
   }
@@ -353,6 +355,7 @@ export class ClientPositionComponent implements OnInit {
           this.formReset();
           return this.toastr.success(this.urlConstants.DeleteMsg, 'Client Position');
         }
+        this.spinner(true);
         this.toastr.error(err.error.message, 'Client Position');
       }
     );
@@ -378,11 +381,13 @@ export class ClientPositionComponent implements OnInit {
     console.log(this.sendSmsModel);
   }
   public sendEmailReq(): void {
+    this.spinner(false);
     const temp = this.http.post(this.sendEmailModel, this.urlConstants.EmailTemplateSend);
     temp.subscribe(resp => {
       this.sendEmailModel = <SendEmailModel>{};
       this.toastr.success('Email/Emails sent successfully', 'Sent!');
       this.close();
+      this.spinner(true);
     });
   }
   public createClientApplication(data: any, clientPositionForm: NgForm) {
@@ -395,6 +400,7 @@ export class ClientPositionComponent implements OnInit {
       description: data.notes,
       creatorId: this.creator
     };
+    this.spinner(false);
     const temp = this.http.post(dataToCreate, this.urlConstants.CACreate);
     temp.subscribe(
       resp => {
@@ -407,9 +413,11 @@ export class ClientPositionComponent implements OnInit {
           this.showAction = false;
         }
         this.shortListConsultants = [];
+        this.spinner(true);
       },
       err => {
         this.toastr.error(err.statusText, 'Client Application');
+        this.spinner(true);
       }
     );
   }

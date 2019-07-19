@@ -66,6 +66,7 @@ export class ClientPositionStatusComponent implements OnInit {
         this.enableButtonType = 'U';
     }
     public setModel(id) {
+        this.spinner(false);
         this.getById(id);
         this.readOnlyForm = 'R';
         this.enableButtonType = 'E';
@@ -75,6 +76,7 @@ export class ClientPositionStatusComponent implements OnInit {
     private getById(id) {
         this.http.get(this.urlConstants.CPSGetById + id).subscribe(resp => {
             this.model = this.mapToUpdateModel(resp);
+            this.spinner(true);
             });
     }
     private mapToUpdateModel(response) {
@@ -98,6 +100,7 @@ export class ClientPositionStatusComponent implements OnInit {
         }, err => {
             this.toastr.error(err.error.message, 'Client Position Status');
             this.isCreate= false;
+            this.spinner(true);
         });
     }
     public update(clientApplicationStatusForm: NgForm) {
@@ -113,6 +116,7 @@ export class ClientPositionStatusComponent implements OnInit {
             this.showAction = false;
         }, err => {
             this.toastr.error(err.error.message, 'Client Position Status');
+            this.spinner(true);
         });
     }
     // editableForm(){
@@ -143,6 +147,7 @@ export class ClientPositionStatusComponent implements OnInit {
             this.showAction = false;
         }, err => {
             this.toastr.error(err.error.message, 'Client Position Status');
+            this.spinner(true);
         });
     }
     public actions(value, trashContent, form) {

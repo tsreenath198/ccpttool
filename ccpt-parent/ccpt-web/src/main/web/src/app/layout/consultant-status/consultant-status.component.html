@@ -1,16 +1,14 @@
 <div [@routerTransition]>
   <app-page-header [icon2]="'fa-filter'" [heading2]="'Consultant Status'" [icon1]="'fa-user'"
     [heading1]="'Administration'"></app-page-header>
-    <ng-template #spinner >
-        <div class="spinner padding-top justify-content-md-center">
-          <div class="bounce1"></div>
-          <div class="bounce2"></div>
-          <div class="bounce3"></div>
-      </div>
-      </ng-template>
-  <div class="row">
+  <div class="spinner padding-top justify-content-md-center" *ngIf="!listReturned">
+    <div class="bounce1"></div>
+    <div class="bounce2"></div>
+    <div class="bounce3"></div>
+  </div>
+  <div class="row" *ngIf="listReturned">
     <div class="col-md-7">
-      <div class="row" *ngIf="listReturned == true; else spinner">
+      <div class="row">
         <div class="col-md-6"> <input type="text" class="form-control" placeholder="search..."
             [(ngModel)]="currSearchTxt" /></div>
       </div>
@@ -18,7 +16,7 @@
         <table class="table table-hover table-striped">
           <tbody>
             <tr *ngFor="let csl of consultantStatusList |  filter : currSearchTxt ; let i = index"
-            (click)="setModel(csl.id)" (dblclick)="dblSetModel()">
+              (click)="setModel(csl.id)" (dblclick)="dblSetModel()">
               <td>
                 {{csl.description}}</td>
               <td>
@@ -33,39 +31,38 @@
       </div>
     </div>
     <div class="col-md-5">
-      <form name="form" id="consultantStatusForm" (ngSubmit)="f.form.valid && create(f)" #f="ngForm"
-        novalidate>
+      <form name="form" id="consultantStatusForm" (ngSubmit)="f.form.valid && create(f)" #f="ngForm" novalidate>
         <div class="row text-center">
-            <div class="col-md-12 form-group">
-              <button type="submit" *ngIf="enableButtonType == ''" class="btn btn-secondary ml-3" [disabled]="f.form.pristine || f.form.invalid || isCreate"
-  >Add</button>
-              <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2"
-                (click)="update(f)">Update</button>
-              <!-- <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button"
+          <div class="col-md-12 form-group">
+            <button type="submit" *ngIf="enableButtonType == ''" class="btn btn-secondary ml-3"
+              [disabled]="f.form.pristine || f.form.invalid || isCreate">Add</button>
+            <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2"
+              (click)="update(f)">Update</button>
+            <!-- <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button"
                 (click)="enableFormEditable()">Edit</button> -->
-                <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3" *ngIf="enableButtonType == ''">
-                    {{ enableButtonType != '' ? 'Close' : 'Clear' }}
-                  </button>
-      
-                  <span class="pull-right" *ngIf="showAction">
-                    <div class="form-group">
-                      <select class="form-control" [(ngModel)]="action" name="sel1" #sel1="ngModel"
-                        (change)="actions(action,trashContent,f)">
-                        <option [ngValue]="null" hidden selected>Choose action</option>
-                        <option *ngFor="let al of actionsList.actions" [ngValue]="al.value">
-                          {{ al.key }}
-                        </option>
-                      </select>
-                    </div>
-                  </span>          </div>
-          </div>
+            <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3" *ngIf="enableButtonType == ''">
+              {{ enableButtonType != '' ? 'Close' : 'Clear' }}
+            </button>
+
+            <span class="pull-right" *ngIf="showAction">
+              <div class="form-group">
+                <select class="form-control" [(ngModel)]="action" name="sel1" #sel1="ngModel"
+                  (change)="actions(action,trashContent,f)">
+                  <option [ngValue]="null" hidden selected>Choose action</option>
+                  <option *ngFor="let al of actionsList.actions" [ngValue]="al.value">
+                    {{ al.key }}
+                  </option>
+                </select>
+              </div>
+            </span> </div>
+        </div>
         <div class="row">
           <div class="col-md-12">
             <div class="form-group">
               <label>Code<span class="required">*</span></label>
               <input class="form-control" maxlength="30" [readonly]="readOnlyForm == 'R' || readOnlyForm == 'U'"
-                [(ngModel)]="model.code" name="code"
-                [ngClass]="{'is-invalid': f.submitted && code.invalid}" #code="ngModel" required>
+                [(ngModel)]="model.code" name="code" [ngClass]="{'is-invalid': f.submitted && code.invalid}"
+                #code="ngModel" required>
               <div class="invalid-feedback">
                 code is mandatory
               </div>
@@ -86,27 +83,27 @@
         </div>
         <div class="row text-center">
           <div class="col-md-12">
-            <button type="submit" *ngIf="enableButtonType == ''" class="btn btn-secondary ml-3" [disabled]="f.form.pristine || f.form.invalid || isCreate"
->Add</button>
+            <button type="submit" *ngIf="enableButtonType == ''" class="btn btn-secondary ml-3"
+              [disabled]="f.form.pristine || f.form.invalid || isCreate">Add</button>
             <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2"
               (click)="update(f)">Update</button>
             <!-- <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button"
               (click)="enableFormEditable()">Edit</button> -->
-              <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3" *ngIf="enableButtonType == ''">
-                  {{ enableButtonType != '' ? 'Close' : 'Clear' }}
-                </button>
-    
-                <span class="pull-right" *ngIf="showAction">
-                  <div class="form-group">
-                    <select class="form-control" [(ngModel)]="action" name="sel1" #sel1="ngModel"
-                      (change)="actions(action,trashContent,f)">
-                      <option [ngValue]="null" hidden selected>Choose action</option>
-                      <option *ngFor="let al of actionsList.actions" [ngValue]="al.value">
-                        {{ al.key }}
-                      </option>
-                    </select>
-                  </div>
-                </span>          </div>
+            <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3" *ngIf="enableButtonType == ''">
+              {{ enableButtonType != '' ? 'Close' : 'Clear' }}
+            </button>
+
+            <span class="pull-right" *ngIf="showAction">
+              <div class="form-group">
+                <select class="form-control" [(ngModel)]="action" name="sel1" #sel1="ngModel"
+                  (change)="actions(action,trashContent,f)">
+                  <option [ngValue]="null" hidden selected>Choose action</option>
+                  <option *ngFor="let al of actionsList.actions" [ngValue]="al.value">
+                    {{ al.key }}
+                  </option>
+                </select>
+              </div>
+            </span> </div>
         </div>
       </form>
     </div>

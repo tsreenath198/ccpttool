@@ -95,6 +95,7 @@ export class ConsultantCallHistoryComponent implements OnInit {
     this.action = null;
   }
   public setModel(id: number) {
+    this.spinner(false);
     this.getConsultantById(id);
     this.readOnlyForm = 'R';
     this.enableButtonType = 'E';
@@ -105,6 +106,7 @@ export class ConsultantCallHistoryComponent implements OnInit {
     const temp = this.http.get(this.urlConstants.CoCHGetById + id);
     temp.subscribe(resp => {
       this.model = this.mapToUpdateModel(resp);
+      this.spinner(true);
     });
   }
   private mapToUpdateModel(response): ConsultantCallHistoryModel {
@@ -177,6 +179,7 @@ export class ConsultantCallHistoryComponent implements OnInit {
       err => {
         this.toastr.error(err.error.message, 'Consultant Call History');
         this.isCreate= false;
+        this.spinner(true);
       }
     );
   }
@@ -197,6 +200,7 @@ export class ConsultantCallHistoryComponent implements OnInit {
       },
       err => {
         this.toastr.error(err.error.message, 'Consultant Call History');
+        this.spinner(true);
       }
     );
   }
@@ -226,6 +230,7 @@ export class ConsultantCallHistoryComponent implements OnInit {
       },
       err => {
         this.toastr.error(err.error.message, 'Consultant Call History');
+        this.spinner(true);
       }
     );
   }

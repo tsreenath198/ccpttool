@@ -25,24 +25,24 @@ export class ClientApplicationStatusComponent implements OnInit {
     private selectedRecrdToDel = 0;
     public closeResult = '';
     private modalRef: NgbModalRef;
-    public isCreate: boolean =false;
+    public isCreate: boolean = false;
     public showAction: boolean = false;
     public actionsList = new ActionsList();
     public action: string = null;
     public screenHeight: any;
-    public listReturned:boolean;
+    public listReturned: boolean;
     constructor(private http: HttpClientService, private toastr: ToastrCustomService, private modalService: NgbModal, private router: Router) {
         this.getScreenSize();
     }
     @HostListener('window:resize', ['$event'])
-     getScreenSize(event?) {
-           this.screenHeight = window.innerHeight;
-     }
+    getScreenSize(event?) {
+        this.screenHeight = window.innerHeight;
+    }
     ngOnInit() {
         /*Autheticate user with the token */
-        if (!this.http.isAuthenticate()){
+        if (!this.http.isAuthenticate()) {
             this.router.navigate(['/login']);
-          }
+        }
         this.init();
     }
     init() {
@@ -69,6 +69,7 @@ export class ClientApplicationStatusComponent implements OnInit {
      * @param data consists the  table current selected row data
      */
     public setModel(id): void {
+        this.spinner(false);
         this.getById(id);
         this.readOnlyForm = 'R';
         this.enableButtonType = 'E';
@@ -79,7 +80,8 @@ export class ClientApplicationStatusComponent implements OnInit {
         const temp = this.http.get(this.urlConstants.CASGetById + id);
         temp.subscribe(resp => {
             this.model = this.mapToUpdateModel(resp);
-            });
+            this.spinner(true);
+        });
     }
     private mapToUpdateModel(response) {
         const temp = response;
@@ -92,36 +94,37 @@ export class ClientApplicationStatusComponent implements OnInit {
     public actions(value, trashContent, form) {
         console.log(value);
         switch (value) {
-          case 'Delete': {
-            this.open(this.model.id, trashContent);
-            break;
-          }
-          case 'Edit': {
-            this.enableFormEditable();
-            break;
-          }
-          case 'Close': {
-            this.cancelForm(form);
-          }
+            case 'Delete': {
+                this.open(this.model.id, trashContent);
+                break;
+            }
+            case 'Edit': {
+                this.enableFormEditable();
+                break;
+            }
+            case 'Close': {
+                this.cancelForm(form);
+            }
         }
-      }
+    }
     /**
     * @param CASForm consists the form instance
     */
-   public create(CASForm: NgForm): void {
-       this.isCreate=true;
-       this.spinner(false);
-    const temp = this.http.post(this.model, this.urlConstants.CASCreate);
-    temp.subscribe(resp => {
+    public create(CASForm: NgForm): void {
+        this.isCreate = true;
+        this.spinner(false);
+        const temp = this.http.post(this.model, this.urlConstants.CASCreate);
+        temp.subscribe(resp => {
             this.toastr.success(this.urlConstants.SuccessMsg, 'Client Application Status');
             this.init();
             this.formReset();
             CASForm.resetForm();
             this.spinner(true);
-            this.isCreate= false;
+            this.isCreate = false;
         }, err => {
             this.toastr.error(err.error.message, 'Client Application Status');
-            this.isCreate= false;
+            this.isCreate = false;
+            this.spinner(true);
         });
     }
     /**
@@ -141,6 +144,7 @@ export class ClientApplicationStatusComponent implements OnInit {
             this.showAction = false;
         }, err => {
             this.toastr.error(err.error.message, 'Client Application Status');
+            this.spinner(true);
         });
     }
     /**
@@ -167,6 +171,7 @@ export class ClientApplicationStatusComponent implements OnInit {
             this.showAction = false;
         }, err => {
             this.toastr.error(err.error.message, 'Client Application Status');
+            this.spinner(true);
         });
     }
     /**
@@ -174,7 +179,7 @@ export class ClientApplicationStatusComponent implements OnInit {
      * 1) content consists the modal instance
      * 2) Selected contains the code of selected row
      */
-    public open(event: any , content: any) {
+    public open(event: any, content: any) {
         if (event) {
             this.selectedRecrdToDel = event;
         }
@@ -197,7 +202,7 @@ export class ClientApplicationStatusComponent implements OnInit {
             return `with: ${reason}`;
         }
     }
-    private spinner(isSpinner: boolean){
+    private spinner(isSpinner: boolean) {
         this.listReturned = isSpinner;
-      }
+    }
 }

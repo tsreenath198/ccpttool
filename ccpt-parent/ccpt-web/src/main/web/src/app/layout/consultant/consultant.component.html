@@ -1,6 +1,6 @@
 <div [@routerTransition]>
   <app-page-header [icon1]="'fa-users'" [heading1]="'Consultants'"></app-page-header>
-  <ng-template #spinner >
+  <ng-template #spinner>
       <div class="spinner padding-top justify-content-md-center">
         <div class="bounce1"></div>
         <div class="bounce2"></div>
@@ -293,7 +293,7 @@
         </div>
         <div class="row">
           <div class="col-md-12 pb-2">
-            <input type="checkbox" class="" [(ngModel)]="isFresher" (click)="emptyExperience()" name="interviewCheckbox" />&nbsp;<label
+            <input type="checkbox" class="" [(ngModel)]="isFresher" (change)="emptyExperience()" name="interviewCheckbox" />&nbsp;<label
               >Fresher</label
             >
           </div>

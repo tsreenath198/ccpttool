@@ -2,7 +2,7 @@ import { Component, OnInit, HostListener } from '@angular/core';
 import { routerTransition } from '../../router.animations';
 import { forkJoin } from 'rxjs';
 import { URLConstants } from '../components/constants/url-constants';
-import { ClientApplicationModel,ActionsList } from './client-application.model';
+import { ClientApplicationModel, ActionsList } from './client-application.model';
 import { HttpClientService } from 'src/app/shared/services/http.service';
 import { ClientApplicationStatusModel } from '../client-application-status/client-application-status.model';
 import { ToastrCustomService } from 'src/app/shared/services/toastr.service';
@@ -23,7 +23,7 @@ import { Router } from '@angular/router';
 })
 export class ClientApplicationComponent implements OnInit {
     public model: ClientApplicationModel = <ClientApplicationModel>{};
-    
+
     public bodyMailModel: any = <any>{};
     public clientApplicationList: Array<any> = [];
     public pagedCAList: Array<any> = [];
@@ -33,11 +33,11 @@ export class ClientApplicationComponent implements OnInit {
     public recruiterList: Array<any> = [];
     public urlConstants = new URLConstants();
 
-    
+
     public showAction: boolean = false;
     public actionsList = new ActionsList();
-    public action:string;
-    
+    public action: string;
+
     public currSearchTxt = '';
     public formButtonsToggler = true;
     public editButtonToggler = true;
@@ -62,10 +62,10 @@ export class ClientApplicationComponent implements OnInit {
     public pageSize: number = 20;
     public cpGeneratedCode: string = '';
     public fileList: Array<any> = [];
-    public listReturned:boolean;
+    public listReturned: boolean;
     public isCRF: boolean
-    public refType='Client Application';
-    public crfFile : any;
+    public refType = 'Client Application';
+    public crfFile: any;
     public config: AngularEditorConfig = {
         editable: true,
         spellcheck: true,
@@ -84,21 +84,21 @@ export class ClientApplicationComponent implements OnInit {
     }
     @HostListener('window:resize', ['$event'])
     getScreenSize(event?) {
-          this.screenHeight = window.innerHeight;
+        this.screenHeight = window.innerHeight;
     }
 
     ngOnInit() {
         /*Autheticate user with the token */
-        if (!this.http.isAuthenticate()){
+        if (!this.http.isAuthenticate()) {
             this.router.navigate(['/login']);
-          }
+        }
         this.loggedInRole = sessionStorage.getItem('role');
         this.getAllDropdowns();
         this.init();
     }
     private init() {
-        
-    this.spinner(false);
+
+        this.spinner(false);
         this.http.get(this.urlConstants.CAGetAll).subscribe(resp => {
             this.clientApplicationList = resp as any;
             this.pagedCAList = resp as any;
@@ -109,8 +109,8 @@ export class ClientApplicationComponent implements OnInit {
         this.model.properties = [];
         this.model['files'] = [];
         this.model.caStatus = 'New';
-        this.page=1;
-        this.isCRF= false;
+        this.page = 1;
+        this.isCRF = false;
     }
     private getAllDropdowns() {
         forkJoin(
@@ -130,11 +130,11 @@ export class ClientApplicationComponent implements OnInit {
     private getRecruiterId() {
         const temp = sessionStorage.getItem('username');
         this.recruiterList.forEach(rl => {
-          if (rl.email === temp) {
-            this.model.creatorId = rl.id;
-          }
+            if (rl.email === temp) {
+                this.model.creatorId = rl.id;
+            }
         });
-      }
+    }
     private formReset() {
         this.model = <ClientApplicationModel>{};
         this.model.properties = [];
@@ -151,37 +151,37 @@ export class ClientApplicationComponent implements OnInit {
         this.readOnlyForm = 'R';
         this.enableButtonType = 'E';
         this.showAction = true;
-        this.action=null;
+        this.action = null;
     }
     private getCAById(id: number) {
+        this.spinner(false);
         const temp = this.http.get(this.urlConstants.CAGetById + id);
         temp.subscribe(resp => {
             this.model = this.mapToUpdateModel(resp);
             // tslint:disable-next-line:no-shadowed-variable
-            if(this.model.interviewDate != null){
+            if (this.model.interviewDate != null) {
                 this.isInterviewScheduled = true;
-            }else{
+            } else {
                 this.isInterviewScheduled = false;
             }
-            const crf = this.http.get(this.urlConstants.getCRF+ this.model.id + '&refType=crf');
-            crf.subscribe(resp =>{
+            const crf = this.http.get(this.urlConstants.getCRF + this.model.id + '&refType=crf');
+            crf.subscribe(resp => {
                 this.crfFile = resp as any;
-                console.log(this.crfFile.length)
-                if(this.crfFile.length!=0){
+                this.spinner(true);
+                if (this.crfFile.length != 0) {
                     this.isCRF = true;
                 }
-                else
-                {
-                this.isCRF = false;
+                else {
+                    this.isCRF = false;
                 }
             })
         });
-       
+
     }
     private mapToUpdateModel(response): ClientApplicationModel {
         const temp = response;
         this.model = temp;
-        this.cpGeneratedCode = temp.clientPosition.generatedCode; 
+        this.cpGeneratedCode = temp.clientPosition.generatedCode;
         this.model['cpId'] = temp.clientPosition.id;
         this.model['consultantId'] = temp.consultant.id;
         this.model['caStatus'] = temp.status.code;
@@ -202,37 +202,37 @@ export class ClientApplicationComponent implements OnInit {
             }
         }
     }
-    public actions(value,trashContent,bodyMail,uploadContent,downloadContent,form){
-        switch(value){
-          case 'Delete':{
-            this.open(this.model.id,trashContent);
-            break;
-          }
-          case 'Body Mail':{
-            this.open(this.model.id,bodyMail);
-            this.getBodyMail();
-            break;
-          }
-          case 'File Upload':{
-            this.open(this.model.id,uploadContent);
-            break;
-          }
-          case 'File Download':{
-            this.open(this.model.id,downloadContent);
-            break;
-          }
-          case 'Edit':{
-            this.enableFormEditable();
-            break;
-          }
-          case 'Close':{
-            this.cancelForm(form);
-          }
+    public actions(value, trashContent, bodyMail, uploadContent, downloadContent, form) {
+        switch (value) {
+            case 'Delete': {
+                this.open(this.model.id, trashContent);
+                break;
+            }
+            case 'Body Mail': {
+                this.open(this.model.id, bodyMail);
+                this.getBodyMail();
+                break;
+            }
+            case 'File Upload': {
+                this.open(this.model.id, uploadContent);
+                break;
+            }
+            case 'File Download': {
+                this.open(this.model.id, downloadContent);
+                break;
+            }
+            case 'Edit': {
+                this.enableFormEditable();
+                break;
+            }
+            case 'Close': {
+                this.cancelForm(form);
+            }
         }
-      }
+    }
     public create(clientApplicationForm: NgForm): void {
         this.spinner(false);
-        this.isCreate= true;
+        this.isCreate = true;
         const temp = this.http.post(this.model, this.urlConstants.CACreate);
         temp.subscribe(resp => {
             this.toastr.success(this.urlConstants.SuccessMsg, 'Client Application');
@@ -240,12 +240,13 @@ export class ClientApplicationComponent implements OnInit {
             this.formReset();
             clientApplicationForm.resetForm();
             this.spinner(true);
-            this.isCreate= false;
+            this.isCreate = false;
             this.getRecruiterId();
 
         }, err => {
             this.toastr.error(err.error.message, 'Client Application');
-            this.isCreate= false;
+            this.isCreate = false;
+            this.spinner(true);
         });
 
     }
@@ -255,7 +256,7 @@ export class ClientApplicationComponent implements OnInit {
         this.readOnlyForm = 'U';
         this.enableButtonType = 'U';
         this.showAction = true;
-        this.action=null;
+        this.action = null;
     }
     public update(clientApplicationForm: NgForm) {
         this.spinner(false);
@@ -265,13 +266,14 @@ export class ClientApplicationComponent implements OnInit {
             this.formReset();
             this.init();
             clientApplicationForm.resetForm();
-            this.spinner(false);
+            this.spinner(true);
             this.readOnlyForm = '';
             this.enableButtonType = '';
             this.showAction = false;
             this.getRecruiterId();
         }, err => {
             this.toastr.error(err.error.message, 'Client Application');
+            this.spinner(true);
         });
         this.formReset();
     }
@@ -305,12 +307,13 @@ export class ClientApplicationComponent implements OnInit {
                 this.formReset();
                 return this.toastr.success(this.urlConstants.DeleteMsg, 'Client Application');
             }
+            this.spinner(true);
             this.toastr.error(err.error.message, 'Client Application');
         });
     }
-    public getBodyMail(): void{
-        let id=this.selectedRecrd
-        this.http.get(this.urlConstants.CABodyMail+id).subscribe(resp=>{
+    public getBodyMail(): void {
+        let id = this.selectedRecrd
+        this.http.get(this.urlConstants.CABodyMail + id).subscribe(resp => {
             this.bodyMailModel = resp as any;
         })
     }
@@ -319,7 +322,7 @@ export class ClientApplicationComponent implements OnInit {
      * 1) content consists the modal instance
      * 2) Selected contains the code of selected row
      */
-    public open(event: any , content) {
+    public open(event: any, content) {
         this.selectedRecrd = 0;
         if (event) {
             this.selectedRecrd = event;
@@ -333,23 +336,23 @@ export class ClientApplicationComponent implements OnInit {
         //             window.open(err.url);
         //     });
         // } else {
-            this.modalRef = this.modalService.open(content, { size: 'lg', backdrop: 'static' });
-            this.modalRef.result.then((result) => {
-                this.closeResult = `Closed with: ${result}`;
-            }, (reason) => {
-                this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-            });
-            
+        this.modalRef = this.modalService.open(content, { size: 'lg', backdrop: 'static' });
+        this.modalRef.result.then((result) => {
+            this.closeResult = `Closed with: ${result}`;
+        }, (reason) => {
+            this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+        });
+
         //}
 
     }
     /**Download file */
-    public downloadFile(id:number){
+    public downloadFile(id: number) {
         this.http.get(this.urlConstants.FileDownload + id).subscribe(resp => {
-                }, err => {
-                    if (err.status == 200)
-                        window.open(err.url);
-                });
+        }, err => {
+            if (err.status == 200)
+                window.open(err.url);
+        });
     }
     public close() {
         this.modalRef.close();
@@ -369,16 +372,16 @@ export class ClientApplicationComponent implements OnInit {
             return fileItem.file;
         });
     }
-    public uploadCRF(content){
-        this.refType= 'crf';
-        this.open(this.model.id,content);
+    public uploadCRF(content) {
+        this.refType = 'crf';
+        this.open(this.model.id, content);
     }
     /** Upload documents of respective consultant */
     public uploadFiles() {
         const files = this.getFiles();
         const formData = new FormData();
         formData.append('file', files[0].rawFile, files[0].name);
-        const params = 'refId=' + this.selectedRecrd + '&refType='+this.refType+'&comments=' + this.comments;
+        const params = 'refId=' + this.selectedRecrd + '&refType=' + this.refType + '&comments=' + this.comments;
         this.http.upload(this.urlConstants.FileUpload + params, formData).subscribe(resp => {
             let temp: any = resp;
             this.toastr.success(temp.message, 'Client');
@@ -411,8 +414,8 @@ export class ClientApplicationComponent implements OnInit {
         const lst = this.clientApplicationList;
         const uplst = lst.slice(from, from + this.pageSize);
         this.pagedCAList = uplst;
-      }
-      private spinner(isSpinner: boolean){
+    }
+    private spinner(isSpinner: boolean) {
         this.listReturned = isSpinner;
-      }
+    }
 }

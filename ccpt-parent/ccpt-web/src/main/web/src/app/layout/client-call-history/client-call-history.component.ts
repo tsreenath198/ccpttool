@@ -118,6 +118,7 @@ export class ClientCallHistoryComponent implements OnInit {
     this.action = null;
   }
   public setModel(id: number) {
+    this.spinner(false);
     this.getCCHById(id);
     this.readOnlyForm = 'R';
     this.enableButtonType = 'E';
@@ -128,6 +129,7 @@ export class ClientCallHistoryComponent implements OnInit {
     const temp = this.http.get(this.urlConstants.CCHGetById + id);
     temp.subscribe(resp => {
       this.model = this.mapToUpdateModel(resp);
+      this.spinner(true);
     });
   }
   private mapToUpdateModel(response): ClientCallHistoryModel {
@@ -195,6 +197,7 @@ export class ClientCallHistoryComponent implements OnInit {
       },
       err => {
         this.toastr.error(err.error.message, 'Client Call History');
+        this.spinner(true);
       }
     );
   }
@@ -217,6 +220,7 @@ export class ClientCallHistoryComponent implements OnInit {
       },
       err => {
         this.toastr.error(err.error.message, 'Client Call History');
+        this.spinner(true);
       }
     );
   }
@@ -247,6 +251,7 @@ export class ClientCallHistoryComponent implements OnInit {
       },
       err => {
         this.toastr.error(err.error.message, 'Client Call History');
+        this.spinner(true);
       }
     );
   }
