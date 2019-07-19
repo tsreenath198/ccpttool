@@ -41,6 +41,7 @@ public class JobDescriptionSubstitutor implements ContentSubstitutor {
 		if (clientPosition != null) {
 			Map<String, String> valuesMap = new HashMap<String, String>();
 			String jd = appendTemplate(clientPosition);
+			jd.concat(getSign(new StringBuilder(jd)));
 			valuesMap.put("jd", jd);
 			valuesMap.put("jobTitle", clientPosition.getRole());
 			if (consultant != null) {
@@ -62,10 +63,11 @@ public class JobDescriptionSubstitutor implements ContentSubstitutor {
 		}
 	}
 
-	private String appendTemplate(ClientPosition clientPosition) {
+	public static String appendTemplate(ClientPosition clientPosition) {
 		StringBuilder sb = new StringBuilder();
 		sb.append("<p>");
-		sb.append("<table width=\"728\" border=\"1\" style=\"border-collapse : collapse\" cellspacing=\"0\" cellpadding=\"0\">");
+		sb.append(
+				"<table width=\"728\" border=\"1\" style=\"border-collapse : collapse\" cellspacing=\"0\" cellpadding=\"0\">");
 		sb.append("<tbody>");
 		sb.append("<tr>\r\n" + "<td colspan=\"2\" width=\"728\" >\r\n" + "<p><strong>JOB DESCRIPTION</strong></p>\r\n"
 				+ "</td>\r\n" + "</tr>");
@@ -131,16 +133,24 @@ public class JobDescriptionSubstitutor implements ContentSubstitutor {
 					+ "</td>\r\n" + "</tr>");
 		}
 		List<AdditionalProperty> propList = clientPosition.getProperties();
-		for (AdditionalProperty additionalProperty : propList) {
-			if (additionalProperty.getName() != null) {
-				sb.append("<tr>\r\n" + "<td width=\"199\">\r\n" + "<p><strong>" + additionalProperty.getName()
-						+ "</strong></p>\r\n" + "</td>\r\n" + "<td width=\"529\">\r\n" + "<p>"
-						+ additionalProperty.getValue() + "</p>\r\n" + "</td>\r\n" + "</tr>");
-			}
+		if (propList != null) {
+			for (AdditionalProperty additionalProperty : propList) {
+				if (additionalProperty.getName() != null) {
+					sb.append("<tr>\r\n" + "<td width=\"199\">\r\n" + "<p><strong>" + additionalProperty.getName()
+							+ "</strong></p>\r\n" + "</td>\r\n" + "<td width=\"529\">\r\n" + "<p>"
+							+ additionalProperty.getValue() + "</p>\r\n" + "</td>\r\n" + "</tr>");
+				}
 
+			}
 		}
 		sb.append("</tbody>");
 		sb.append("</table>");
+		// getSign(sb);
+		String jd = sb.toString();
+		return jd;
+	}
+
+	public static String getSign(StringBuilder sb) {
 		sb.append("<p>");
 		sb.append("<table>");
 		sb.append("<tbody>");
@@ -159,8 +169,7 @@ public class JobDescriptionSubstitutor implements ContentSubstitutor {
 		sb.append(
 				"<div style=\"font-size: 10.0pt;font-family: 'Calibri',sans-serif;color: #7030a0;\"><strong>Vision 2025</strong>: On&nbsp;<strong>1<sup>st</sup>&nbsp;January 2025</strong>, Talent Corner will be an Organization, having operations in&nbsp;<strong>10</strong>&nbsp;Countries, with&nbsp;<strong>100</strong>&nbsp;Offices &amp; a Team of&nbsp;<strong>1000</strong>&nbsp;People ,Successfully Executing<strong>10000</strong>&nbsp;Recruitment Assignments every Year. We would have recruited&nbsp;<strong>1,00,000</strong>&nbsp;People by then. For every Successful Recruitment we will invest Rs<strong>. 100</strong>&nbsp;towards Girl Child Education, thus by&nbsp;<strong>2025</strong>&nbsp;we would have educated&nbsp;<strong>1000</strong>&nbsp;Girls&rdquo;</div>");
 		sb.append("</p>");
-		String jd = sb.toString();
-		return jd;
+		return sb.toString();
 	}
 
 	@Override

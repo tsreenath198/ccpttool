@@ -1,5 +1,6 @@
 package com.ccpt.controller;
 
+import java.util.List;
 import java.util.Map;
 
 import org.mapstruct.factory.Mappers;
@@ -36,10 +37,18 @@ public class EmailTemplateController extends BaseController<EmailTemplateDTO, Em
 
 	@PostMapping("/build/{type}")
 	@ResponseBody
-	public EmailContent buildContent(@PathVariable String type, @RequestBody Map<String, String> params) throws Exception {
+	public EmailContent buildContent(@PathVariable String type, @RequestBody Map<String, String> params)
+			throws Exception {
 		EmailTemplate emailTemplate = emailTemplateService.getTemplateByType(type);
 		ContentSubstitutor substitutor = factory.getSubstitutor(type);
 		return substitutor.generate(emailTemplate, params);
+	}
+
+	@PostMapping("/getClientApps")
+	@ResponseBody
+	public String getClientApps(@RequestBody List<Integer> ids) throws Exception {
+		return emailTemplateService.getClientApps(ids);
+
 	}
 
 	@Override
