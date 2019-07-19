@@ -1,21 +1,20 @@
 <div [@routerTransition]>
   <app-page-header [icon1]="'fa-paper-plane'" [heading1]="'Client Applications'"></app-page-header>
-  <ng-template #spinner >
-      <div class="spinner padding-top justify-content-md-center">
-        <div class="bounce1"></div>
-        <div class="bounce2"></div>
-        <div class="bounce3"></div>
+  <ng-template #spinner>
+    <div class="spinner padding-top justify-content-md-center">
+      <div class="bounce1"></div>
+      <div class="bounce2"></div>
+      <div class="bounce3"></div>
     </div>
-    </ng-template>
+  </ng-template>
   <div class="row " *ngIf="listReturned == true; else spinner">
     <div class="col-md-7">
       <div class="row">
-        <div class="col-md-6"><input type="text" class="form-control" placeholder="search..."
-            [(ngModel)]="currSearchTxt" /></div>
-         
-      <div class="col-md-6" *ngIf="currSearchTxt.length > 0">
-        <b>Filtered list count:{{(clientApplicationList|filter:currSearchTxt).length}}</b>
-      </div>   
+        <div class="col-md-6"><input type="text" class="form-control" placeholder="search..." [(ngModel)]="currSearchTxt" /></div>
+
+        <div class="col-md-6" *ngIf="currSearchTxt.length > 0">
+          <b>Filtered list count:{{ (clientApplicationList | filter: currSearchTxt).length }}</b>
+        </div>
       </div>
       <div class="table-responsive mt-2 table-wrapper-scroll-y my-custom-scrollbar" [style.height.px]="screenHeight">
         <table class="table table-hover table-striped">
@@ -39,9 +38,14 @@
             </tr>
           </thead>
           <tbody class="overflow-ele-scroll">
-            <tr class="table-data-padding"
-              *ngFor="let cal of clientApplicationList | filter: currSearchTxt| paginate: { itemsPerPage: 20, currentPage: page }; let i = index"
-              (click)="setModel(cal.id)" (dblclick)="dblSetModel(cal)">
+            <tr
+              class="table-data-padding"
+              *ngFor="
+                let cal of clientApplicationList | filter: currSearchTxt | paginate: { itemsPerPage: 20, currentPage: page };
+                let i = index
+              "
+              (click)="setModel(cal.id)"
+            >
               <td>{{ cal.consultant.fullname }}</td>
               <td>{{ cal.clientPosition.generatedCode }}</td>
 
@@ -76,8 +80,12 @@
       <form name="form" id="clientApplicationForm" (ngSubmit)="f.form.valid && create(f)" #f="ngForm" novalidate>
         <div class="row text-center">
           <div class="col-md-12 form-group">
-            <button type="submit" *ngIf="enableButtonType == ''" class="btn btn-secondary ml-3"
-              [disabled]="f.form.pristine || f.form.invalid || isCreate">
+            <button
+              type="submit"
+              *ngIf="enableButtonType == ''"
+              class="btn btn-secondary ml-3"
+              [disabled]="f.form.pristine || f.form.invalid || isCreate"
+            >
               Add
             </button>
             <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2" (click)="update(f)">
@@ -90,8 +98,13 @@
             </button>
             <span class="pull-right" *ngIf="showAction">
               <div class="form-group">
-                <select class="form-control" [(ngModel)]="action" name="sel1" #sel1="ngModel"
-                  (change)="actions(action, trashContent, bodyMail, uploadContent, downloadContent, f)">
+                <select
+                  class="form-control"
+                  [(ngModel)]="action"
+                  name="sel1"
+                  #sel1="ngModel"
+                  (change)="actions(action, trashContent, bodyMail, uploadContent, downloadContent, f)"
+                >
                   <option [ngValue]="null" hidden selected>Choose action</option>
                   <option *ngFor="let al of actionsList.actions" [ngValue]="al.value">
                     {{ al.key }}
@@ -104,27 +117,46 @@
         <div class="row">
           <div class="col-md-6">
             <div class="form-group">
-                <label>Client Position<span class="required">*</span></label>
+              <label>Client Position<span class="required">*</span></label>
               <span *ngIf="readOnlyForm == 'U' || readOnlyForm == ''">
-                  <select class="form-control" name="cp"  [(ngModel)]="model.cpId"
-                    [ngClass]="{ 'is-invalid': f.submitted && cp.invalid }" #cp="ngModel" required>
-                    <option *ngFor="let cpl of clientPositionList" [ngValue]="cpl.id">{{ cpl.name }} </option>
-                  </select>
-                  <div class="invalid-feedback">
-                    Client Position is mandatory
-                  </div>
+                <select
+                  class="form-control"
+                  name="cp"
+                  [(ngModel)]="model.cpId"
+                  [ngClass]="{ 'is-invalid': f.submitted && cp.invalid }"
+                  #cp="ngModel"
+                  required
+                >
+                  <option *ngFor="let cpl of clientPositionList" [ngValue]="cpl.id">{{ cpl.name }} </option>
+                </select>
+                <div class="invalid-feedback">
+                  Client Position is mandatory
+                </div>
               </span>
               <span *ngIf="readOnlyForm == 'R'">
-                  <input type="text" class="form-control" name="generatedcode" #generatedcode="ngModel"
-                  readonly [(ngModel)]="cpGeneratedCode" />
+                <input
+                  type="text"
+                  class="form-control"
+                  name="generatedcode"
+                  #generatedcode="ngModel"
+                  readonly
+                  [(ngModel)]="cpGeneratedCode"
+                />
               </span>
             </div>
           </div>
           <div class="col-md-6">
             <div class="form-group">
               <label>Consultant<span class="required">*</span></label>
-              <select class="form-control" [disabled]="readOnlyForm == 'R'" [(ngModel)]="model.consultantId" name="con"
-                [ngClass]="{ 'is-invalid': f.submitted && con.invalid }" #con="ngModel" required>
+              <select
+                class="form-control"
+                [disabled]="readOnlyForm == 'R'"
+                [(ngModel)]="model.consultantId"
+                name="con"
+                [ngClass]="{ 'is-invalid': f.submitted && con.invalid }"
+                #con="ngModel"
+                required
+              >
                 <option *ngFor="let cl of consultantList" [ngValue]="cl.id">{{ cl.name }}</option>
               </select>
               <div class="invalid-feedback">
@@ -137,8 +169,15 @@
           <div class="col-md-6">
             <div class="form-group">
               <label>Client Application Status<span class="required">*</span></label>
-              <select class="form-control" name="cas" [disabled]="readOnlyForm == 'R'" [(ngModel)]="model.caStatus"
-                [ngClass]="{ 'is-invalid': f.submitted && cas.invalid }" #cas="ngModel" required>
+              <select
+                class="form-control"
+                name="cas"
+                [disabled]="readOnlyForm == 'R'"
+                [(ngModel)]="model.caStatus"
+                [ngClass]="{ 'is-invalid': f.submitted && cas.invalid }"
+                #cas="ngModel"
+                required
+              >
                 <option *ngFor="let casl of clientApplicationStatusList" [ngValue]="casl.code">
                   {{ casl.description }}
                 </option>
@@ -151,8 +190,14 @@
           <div class="col-md-6">
             <div class="form-group">
               <label>Creator<span class="required">*</span></label>
-              <select class="form-control" name="creator" [disabled]="readOnlyForm == 'R'" [(ngModel)]="model.creatorId"
-                [ngClass]="{ 'is-invalid': f.submitted && cas.invalid }" required>
+              <select
+                class="form-control"
+                name="creator"
+                [disabled]="readOnlyForm == 'R'"
+                [(ngModel)]="model.creatorId"
+                [ngClass]="{ 'is-invalid': f.submitted && cas.invalid }"
+                required
+              >
                 <option *ngFor="let rl of recruiterList" [ngValue]="rl.id">
                   {{ rl.name }}
                 </option>
@@ -166,39 +211,57 @@
         <div class="row">
           <div class="col-md-6">
             <label>Sent On</label>
-            <input type="date" class="form-control" name="senton" #senton="ngModel" [readonly]="readOnlyForm == 'R'"
-              [(ngModel)]="model.sentOn" />
+            <input
+              type="date"
+              class="form-control"
+              name="senton"
+              #senton="ngModel"
+              [readonly]="readOnlyForm == 'R'"
+              [(ngModel)]="model.sentOn"
+            />
             <div class="input-group-addon">
               <span class="glyphicon glyphicon-th"></span>
             </div>
           </div>
           <div class="col-md-6 mt-4">
-            <span *ngIf="isCRF; else noCRF" class="crf" (click)="downloadFile(crfFile.id)">{{ crfFile.fileName }}</span> 
+            <span *ngIf="isCRF; else noCRF" class="crf" (click)="downloadFile(crfFile.id)">{{ crfFile.fileName }}</span>
             <ng-template #noCRF>
-                <button  class="btn btn-secondary ml-2" type="button"
-                      (click)="uploadCRF(uploadContent)">Upload CRF</button>
+              <button class="btn btn-secondary ml-2" type="button" (click)="uploadCRF(uploadContent)">Upload CRF</button>
             </ng-template>
           </div>
         </div>
         <div class="row">
           <div class="col-md-12">
             <div class="form-group" data-provide="datepicker">
-              <input class="mt-2" type="checkbox" [(ngModel)]="isInterviewScheduled"
-                name="interviewCheckbox" />&nbsp;<small>Interview Scheduled</small>
+              <input class="mt-2" type="checkbox" [(ngModel)]="isInterviewScheduled" name="interviewCheckbox" />&nbsp;<small
+                >Interview Scheduled</small
+              >
               <div *ngIf="isInterviewScheduled">
                 <div class="row">
                   <div class="col-md-6">
                     <label class="pt-2">Interview Date</label>
-                    <input type="date" class="form-control" name="intDate" #intDate="ngModel"
-                      [readonly]="readOnlyForm == 'R'" [(ngModel)]="model.interviewDate" />
+                    <input
+                      type="date"
+                      class="form-control"
+                      name="intDate"
+                      #intDate="ngModel"
+                      [readonly]="readOnlyForm == 'R'"
+                      [(ngModel)]="model.interviewDate"
+                    />
                     <div class="input-group-addon">
                       <span class="glyphicon glyphicon-th"></span>
                     </div>
                   </div>
                   <div class="col-md-6">
                     <label class="pt-2">Interview Time</label>
-                    <input type="time" class="form-control" name="intTime" #intTime="ngModel"
-                      [readonly]="readOnlyForm == 'R'" [(ngModel)]="model.interviewTime" />
+                    <input
+                      type="time"
+                      class="form-control"
+                      name="intTime"
+                      #intTime="ngModel"
+                      [readonly]="readOnlyForm == 'R'"
+                      [(ngModel)]="model.interviewTime"
+                    />
                     <div class="input-group-addon">
                       <span class="glyphicon glyphicon-th"></span>
                     </div>
@@ -207,16 +270,14 @@
                 <div class="row">
                   <div class="col-md-6">
                     <label class="pt-2">Interview Location</label>
-                    <input class="form-control" name="loc" [readonly]="readOnlyForm == 'R'"
-                      [(ngModel)]="model.interviewLocation" />
+                    <input class="form-control" name="loc" [readonly]="readOnlyForm == 'R'" [(ngModel)]="model.interviewLocation" />
                     <div class="input-group-addon">
                       <span class="glyphicon glyphicon-th"></span>
                     </div>
                   </div>
                   <div class="col-md-6">
                     <label class="pt-2">Interview Mode</label>
-                    <input class="form-control" name="mode" [readonly]="readOnlyForm == 'R'"
-                      [(ngModel)]="model.interviewMode" />
+                    <input class="form-control" name="mode" [readonly]="readOnlyForm == 'R'" [(ngModel)]="model.interviewMode" />
                     <div class="input-group-addon">
                       <span class="glyphicon glyphicon-th"></span>
                     </div>
@@ -225,22 +286,37 @@
               </div>
             </div>
           </div>
-          <div class="row" *ngIf="model.properties.length > 0">
-            <div class="col-md-12 ml-3" *ngIf="model.properties.length > 0">
+          <div class="row" *ngIf="model.properties !== null">
+            <div class="col-md-12 ml-3">
               <div class="form-group">
                 <label>Additional Properties</label>
                 <div class="row" *ngFor="let ap of model.properties; let i = index">
                   <div class="col-md-5">
-                    <input type="text" [(ngModel)]="ap.name" class="form-control" name="addPropName{{ i }}"
-                      [readonly]="readOnlyForm == 'R'" />
+                    <input
+                      type="text"
+                      [(ngModel)]="ap.name"
+                      class="form-control"
+                      name="addPropName{{ i }}"
+                      [readonly]="readOnlyForm == 'R'"
+                    />
                   </div>
                   <div class="col-md-5">
-                    <input type="text" [(ngModel)]="ap.value" class="form-control" name="addPropValue{{ i }}"
-                      [readonly]="readOnlyForm == 'R'" />
+                    <input
+                      type="text"
+                      [(ngModel)]="ap.value"
+                      class="form-control"
+                      name="addPropValue{{ i }}"
+                      [readonly]="readOnlyForm == 'R'"
+                    />
                   </div>
                   <div class="col-md-2">
-                    <i class="fa fa-minus" aria-hidden="true" id="decrease" *ngIf="enableButtonType != 'E'"
-                      (click)="propertiesListIncrement($event.target, i)"></i>
+                    <i
+                      class="fa fa-minus"
+                      aria-hidden="true"
+                      id="decrease"
+                      *ngIf="enableButtonType != 'E'"
+                      (click)="propertiesListIncrement($event.target, i)"
+                    ></i>
                   </div>
                 </div>
               </div>
@@ -259,45 +335,52 @@
               <label>Additional Properties</label>
               <div class="row">
                 <div class="col-md-5">
-                  <input type="text" [(ngModel)]="apName" class="form-control" name="apName"
-                    [readonly]="readOnlyForm == 'R'" />
+                  <input type="text" [(ngModel)]="apName" class="form-control" name="apName" [readonly]="readOnlyForm == 'R'" />
                 </div>
                 <div class="col-md-5">
-                  <input type="text" [(ngModel)]="apValue" class="form-control" name="apValue"
-                    [readonly]="readOnlyForm == 'R'" />
+                  <input type="text" [(ngModel)]="apValue" class="form-control" name="apValue" [readonly]="readOnlyForm == 'R'" />
                 </div>
                 <div class="col-md-2">
-                  <i class="fa fa-plus" aria-hidden="true" id="increase" *ngIf="enableButtonType != 'E'"
-                    (click)="propertiesListIncrement($event.target, 0)"></i>
+                  <i
+                    class="fa fa-plus"
+                    aria-hidden="true"
+                    id="increase"
+                    *ngIf="enableButtonType != 'E'"
+                    (click)="propertiesListIncrement($event.target, 0)"
+                  ></i>
                 </div>
               </div>
             </div>
           </div>
         </div>
         <div class="row">
-            <div class="col-md-12">
-                <div class="modal-body" *ngIf="model.files.length > 0">
-                    <table class="table">
-                      <thead>
-                        <th>File Name</th>
-                        <th>Description</th>
-                        <th>Action</th>
-                      </thead>
-                      <tbody *ngFor="let fl of model.files">
-                        <td>{{ fl.fileName }}</td>
-                        <td>{{ fl.Description }}</td>
-                        <td>
-                          <button type="button" class="btn btn-secondary btn-sm" (click)="downloadFile(fl.id)">Download</button>
-                        </td>
-                      </tbody>
-                    </table>
-                  </div>
+          <div class="col-md-12">
+            <div class="modal-body" *ngIf="model.files.length > 0">
+              <table class="table">
+                <thead>
+                  <th>File Name</th>
+                  <th>Description</th>
+                  <th>Action</th>
+                </thead>
+                <tbody *ngFor="let fl of model.files">
+                  <td>{{ fl.fileName }}</td>
+                  <td>{{ fl.Description }}</td>
+                  <td>
+                    <button type="button" class="btn btn-secondary btn-sm" (click)="downloadFile(fl.id)">Download</button>
+                  </td>
+                </tbody>
+              </table>
             </div>
           </div>
+        </div>
         <div class="row text-center">
           <div class="col-md-12 form-group">
-            <button type="submit" *ngIf="enableButtonType == ''" class="btn btn-secondary ml-3"
-              [disabled]="f.form.pristine || f.form.invalid || isCreate">
+            <button
+              type="submit"
+              *ngIf="enableButtonType == ''"
+              class="btn btn-secondary ml-3"
+              [disabled]="f.form.pristine || f.form.invalid || isCreate"
+            >
               Add
             </button>
             <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2" (click)="update(f)">
@@ -310,8 +393,13 @@
             </button>
             <span class="pull-right" *ngIf="showAction">
               <div class="form-group">
-                <select class="form-control" [(ngModel)]="action" name="sel1" #sel1="ngModel"
-                  (change)="actions(action, trashContent, uploadContent, downloadContent, f)">
+                <select
+                  class="form-control"
+                  [(ngModel)]="action"
+                  name="sel1"
+                  #sel1="ngModel"
+                  (change)="actions(action, trashContent, uploadContent, downloadContent, f)"
+                >
                   <option [ngValue]="null" hidden selected>Choose action</option>
                   <option *ngFor="let al of actionsList.actions" [ngValue]="al.value">
                     {{ al.key }}

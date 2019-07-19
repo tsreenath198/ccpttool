@@ -36,7 +36,7 @@
             </thead>
             <tbody class="overflow-ele-scroll">
               <tr *ngFor="let cchl of clientCallHistoryList | filter :currSearchTxt ; let i = index"
-                (click)="setModel(cchl.id)" (dblclick)="dblSetModel()">
+                (click)="setModel(cchl.id)" >
                 <td>
                   {{cchl.calledBy.fullname}}
                 </td>

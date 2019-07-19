@@ -117,9 +117,30 @@ export class OtherContactsComponent implements OnInit {
                 break;
             }
             case 'increase': {
-                this.model.properties.push(<AdditionalPropertiesModel>{ 'name': this.apName, 'value': this.apValue });
-                this.apName = '';
-                this.apValue = '';
+                if(this.model.properties.length==0){
+                    this.model.properties.push(<AdditionalPropertiesModel>{ 'name': this.apName, 'value': this.apValue });      
+                    this.apName = '';
+                    this.apValue = '';
+                }
+                else{
+                    let propertyExist :boolean;
+                    for(let i=0; i<this.model.properties.length; i++){
+                        if(this.model.properties[i].name==this.apName&&this.model.properties[i].value==this.apValue){
+                            propertyExist = true;
+                        }
+                        else{
+                            propertyExist = false;
+                        }
+                    }
+                    if(propertyExist){
+                        this.toastr.error('Property already exists', 'Properties');
+                    }
+                    else{ 
+                        this.model.properties.push(<AdditionalPropertiesModel>{ 'name': this.apName, 'value': this.apValue });     
+                        this.apName = '';
+                        this.apValue = '';
+                    }
+                }
                 break;
             }
         }

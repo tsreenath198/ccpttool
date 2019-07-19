@@ -18,7 +18,7 @@
         <table class="table table-hover table-striped">
           <tbody>
             <tr *ngFor="let etl of emailTemplateList |  filter : 'type' : currSearchTxt ; let i = index"
-              (click)="setModel(etl.id)" (dblclick)="dblSetModel(etl)">
+              (click)="setModel(etl.id)">
               <td>
                 {{etl.type}}
               </td>

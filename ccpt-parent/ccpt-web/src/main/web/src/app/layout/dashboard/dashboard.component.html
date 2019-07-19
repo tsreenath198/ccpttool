@@ -20,8 +20,8 @@
     <div class="bounce3"></div>
   </div>
 
-  <div class="row" *ngIf="interviewsToday.length != 0" *ngIf="listReturned">
-    <div class="col col-xl-12 col-lg-12">
+  <div class="row"  *ngIf="listReturned">
+    <div class="col col-xl-12 col-lg-12" *ngIf="interviewsToday.length != 0">
       <div class="card mb-3">
         <div class="card-header bg-dark text-clr-white">Interviews this week</div>
         <div class="table-scroll">

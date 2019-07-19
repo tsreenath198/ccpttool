@@ -41,7 +41,6 @@
             <tr
               *ngFor="let cl of consultantList | filter: currSearchTxt | paginate: { itemsPerPage: 20, currentPage: page }; let i = index"
               (click)="setModel(cl.id)"
-              (dblclick)="dblSetModel()"
               [ngClass]="cl.isProfileCompleted == 'profile' ? 'bl-red' : cl.isProfileCompleted == 'files' ? 'bl-orange' : 'bl-trans'"
             >
               <td class="table-data-padding ">

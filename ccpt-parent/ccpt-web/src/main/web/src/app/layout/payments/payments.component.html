@@ -32,7 +32,6 @@
             <tr
               *ngFor="let pl of paymentsList | filter: currSearchTxt; let i = index"
               (click)="setModel(pl.id)"
-              (dblclick)="dblSetModel()"
             >
               <td>
                 {{ pl.invoiceDate | date}}

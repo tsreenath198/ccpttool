@@ -19,7 +19,7 @@
           <tbody>
             <tr
               *ngFor="let casl of clientApplicationStatusList |  filter :currSearchTxt ; let i = index"
-              (click)="setModel(casl.id)" (dblclick)="dblSetModel()">
+              (click)="setModel(casl.id)" >
               <td >
                 {{casl.description}}
               </td>

@@ -27,7 +27,7 @@
               </thead>
           <tbody class="overflow-ele-scroll">
             <tr *ngFor="let rl of recruiterList |  filter : currSearchTxt ; let i = index"
-              (click)="setModel(rl.id)" (dblclick)="dblSetModel()">
+              (click)="setModel(rl.id)">
               <td>
                 <dl>
                   <dt> {{rl.fullname}}</dt>
