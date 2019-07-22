@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import com.ccpt.model.ClientApplication;
 import com.ccpt.model.ClientPosition;
+import com.ccpt.model.EmailContent;
 import com.ccpt.model.EmailTemplate;
 import com.ccpt.repository.BaseRepository;
 import com.ccpt.repository.ClientApplicationRepository;
@@ -44,15 +45,16 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 		}
 	}
 
-	public String getClientApps(List<Integer> ids) throws Exception {
+	public EmailContent getClientApps(List<Integer> ids) throws Exception {
+		EmailContent emailContent = new EmailContent();
 		StringBuilder body = new StringBuilder();
 		List<String> names = new ArrayList<String>();
 		List<ClientApplication> clientApplications = new ArrayList<ClientApplication>();
+		List<String> cpNames = new ArrayList<String>();
 		for (Integer id : ids) {
 			Optional<ClientApplication> ca = clientApplicationRepository.findById(id);
-			String name = ca.get().getClientPosition().getClient().getName();
-			names.add(name);
 			clientApplications.add(ca.get());
+
 		}
 		boolean allEqual = names.isEmpty() || names.stream().allMatch(names.get(0)::equals);
 		if (allEqual) {
@@ -60,10 +62,17 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 				ClientPosition clientPosition = clientApplication.getClientPosition();
 				String template = JobDescriptionSubstitutor.appendTemplate(clientPosition);
 				body.append(template);
+				String name = clientApplication.getClientPosition().getClient().getName();
+				names.add(name);
+				cpNames.add(clientApplication.getClientPosition().getRole());
 			}
 		} else {
 			throw new Exception("please select same client application ");
 		}
-		return JobDescriptionSubstitutor.getSign(body);
+		emailContent.setBody(JobDescriptionSubstitutor.getSign(body));
+		emailContent.setToEmails(
+				clientApplications.get(0).getClientPosition().getClient().getClientContacts().get(0).getEmail());
+		emailContent.setSubject("Shorlisted candidates for " + cpNames);
+		return emailContent;
 	}
 }
