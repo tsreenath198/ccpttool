@@ -43,7 +43,9 @@ public class JobDescriptionSubstitutor implements ContentSubstitutor {
 			String jd = appendTemplate(clientPosition);
 			jd.concat(getSign(new StringBuilder(jd)));
 			valuesMap.put("jd", jd);
-			valuesMap.put("location", clientPosition.getLocation());
+			if (clientPosition.getLocation() != null) {
+				valuesMap.put("location", clientPosition.getLocation());
+			}
 			valuesMap.put("jobTitle", clientPosition.getRole());
 			if (consultant != null) {
 				valuesMap.put("consultantName", consultant.getFullname());
