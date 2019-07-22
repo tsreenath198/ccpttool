@@ -44,7 +44,7 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 		}
 	}
 
-	public String getClientApps(List<Integer> ids) {
+	public String getClientApps(List<Integer> ids) throws Exception {
 		StringBuilder body = new StringBuilder();
 		List<String> names = new ArrayList<String>();
 		List<ClientApplication> clientApplications = new ArrayList<ClientApplication>();
@@ -61,10 +61,9 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 				String template = JobDescriptionSubstitutor.appendTemplate(clientPosition);
 				body.append(template);
 			}
+		} else {
+			throw new Exception("please select same client application ");
 		}
-//		 JobDescriptionSubstitutor.getSign(body);
 		return JobDescriptionSubstitutor.getSign(body);
-
 	}
-
 }
