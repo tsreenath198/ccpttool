@@ -9,6 +9,7 @@ import javax.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.ccpt.exception.CAException;
 import com.ccpt.model.ClientApplication;
 import com.ccpt.model.ClientPosition;
 import com.ccpt.model.EmailContent;
@@ -53,6 +54,8 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 		List<String> cpNames = new ArrayList<String>();
 		for (Integer id : ids) {
 			Optional<ClientApplication> ca = clientApplicationRepository.findById(id);
+			String name = ca.get().getClientPosition().getClient().getName();
+			names.add(name);
 			clientApplications.add(ca.get());
 
 		}
@@ -67,7 +70,7 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 				cpNames.add(clientApplication.getClientPosition().getRole());
 			}
 		} else {
-			throw new Exception("please select same client application ");
+			throw new CAException("please select same client application ");
 		}
 		emailContent.setBody(JobDescriptionSubstitutor.getSign(body));
 		emailContent.setToEmails(
