@@ -58,10 +58,19 @@ public class UploadFileController {
 	@PostMapping("save")
 	public ResponseEntity<GenericResponse> uploadFile(@RequestParam("file") MultipartFile file,
 			@RequestParam("refId") int refId, @RequestParam("refType") String refType,
-			@RequestParam("comments") String comments) throws IOException {
+			@RequestParam("comments") String comments) throws Exception {
 
 		String fileName = StringUtils.cleanPath(file.getOriginalFilename());
 		String fileType = file.getContentType();
+		if (refType.equalsIgnoreCase("Client Application")) {
+			if (fileName.endsWith("doc") || fileName.endsWith("docx")) {
+				if (!fileName.contains("_crf")) {
+					throw new ValidationException("file name doesnot contain _crf extension");
+				}
+			} else {
+				throw new ValidationException("please upload only documents");
+			}
+		}
 		boolean isDuplicate = uploadFileService.isDuplicate(refId, refType, fileName);
 		if (!isDuplicate) {
 			UploadFile uploadFile = new UploadFile(file.getBytes(), refId, refType, comments, fileName, fileType);

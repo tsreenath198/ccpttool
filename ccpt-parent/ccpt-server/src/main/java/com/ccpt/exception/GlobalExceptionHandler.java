@@ -6,6 +6,7 @@ import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 import javax.security.sasl.AuthenticationException;
 import javax.validation.ConstraintViolationException;
+import javax.validation.ValidationException;
 
 import org.springframework.beans.ConversionNotSupportedException;
 import org.springframework.beans.TypeMismatchException;
@@ -185,7 +186,13 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 	}
 
 	@ExceptionHandler(CAException.class)
-	public ResponseEntity<Object> CAExceptionHandler(CAException ex, WebRequest request) {
+	public ResponseEntity<Object> cAExceptionHandler(CAException ex, WebRequest request) {
+		ErrorDetails errorDetails = new ErrorDetails(new Date(), ex.getMessage(), request.getDescription(false));
+		return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
+	}
+
+	@ExceptionHandler(ValidationException.class)
+	public ResponseEntity<Object> validationExceptionHandler(ValidationException ex, WebRequest request) {
 		ErrorDetails errorDetails = new ErrorDetails(new Date(), ex.getMessage(), request.getDescription(false));
 		return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
 	}
