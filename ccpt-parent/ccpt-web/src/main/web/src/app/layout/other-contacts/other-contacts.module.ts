@@ -6,9 +6,10 @@ import { PageHeaderModule, SharedPipesModule, ActionListModule } from '../../sha
 import { OtherContactsRoutingModule } from './other-contacts-routing.module';
 import { AngularEditorModule } from '@kolkov/angular-editor';
 import { OtherContactsComponent } from './other-contacts.component';
+import { NgbDropdown } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
-    imports: [CommonModule, OtherContactsRoutingModule, FormsModule, PageHeaderModule, SharedPipesModule, AngularEditorModule, ActionListModule],
+    imports: [CommonModule, OtherContactsRoutingModule, FormsModule, NgbDropdown, PageHeaderModule, SharedPipesModule, AngularEditorModule, ActionListModule],
     declarations: [OtherContactsComponent]
 })
 export class OtherContactsModule { }

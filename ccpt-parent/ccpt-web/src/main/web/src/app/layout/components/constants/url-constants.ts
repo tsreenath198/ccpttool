@@ -107,6 +107,7 @@ export class URLConstants {
     EmailTemplateUpdate = 'template';
     EmailTemplateBuildContent = 'template/build/';
     EmailTemplateSend = 'sendEmail';
+    EmailGetClientApps = 'template/getClientApps'
 
     /**SMS template */
     SMSTemplateGetAll = 'template/sms/';

@@ -2,7 +2,7 @@ import { Component, OnInit, HostListener } from '@angular/core';
 import { routerTransition } from '../../router.animations';
 import { forkJoin } from 'rxjs';
 import { URLConstants } from '../components/constants/url-constants';
-import { ClientApplicationModel, ActionsList } from './client-application.model';
+import { ClientApplicationModel, ActionsList,SendEmailModel } from './client-application.model';
 import { HttpClientService } from 'src/app/shared/services/http.service';
 import { ClientApplicationStatusModel } from '../client-application-status/client-application-status.model';
 import { ToastrCustomService } from 'src/app/shared/services/toastr.service';
@@ -59,10 +59,13 @@ export class ClientApplicationComponent implements OnInit {
   public pageSize: number = 20;
   public cpGeneratedCode: string = '';
   public fileList: Array<any> = [];
+  public appIds:Array<any> = [];
   public listReturned: boolean;
   public isCRF: boolean;
   public refType = 'Client Application';
   public crfFile: any;
+  
+  public sendEmailModel: SendEmailModel = <SendEmailModel>{};
   public config: AngularEditorConfig = {
     editable: true,
     spellcheck: true,
@@ -224,6 +227,35 @@ export class ClientApplicationComponent implements OnInit {
       }
     }
   }
+  selectApplications(event , id){
+    if(event.target.checked){
+      this.appIds.push(id);
+      console.log(this.appIds);
+    }
+    else{
+      for(let i=0;i<this.appIds.length;i++){
+        if(id==this.appIds[i]){
+          this.appIds.splice(i, 1);
+          console.log(this.appIds);
+        }
+      }
+    }
+  }
+  sendIds(Ids: any , sendMailContent  :any){
+    this.spinner(false);
+    const temp = this.http.post(Ids, this.urlConstants.EmailGetClientApps);
+    temp.subscribe( resp =>{
+      this.sendEmailModel = resp as any;  
+      this.spinner(true);
+      this.appIds=[];
+      this.open(0, sendMailContent);
+     },
+     err => {
+       this.toastr.error(err.error.message, 'Client Application');
+       this.spinner(true);
+       this.appIds=[];
+     })
+  }
   public actions(value, trashContent, bodyMail, uploadContent, downloadContent, form) {
     switch (value) {
       case 'Delete': {
@@ -344,6 +376,21 @@ export class ClientApplicationComponent implements OnInit {
     let id = this.selectedRecrd;
     this.http.get(this.urlConstants.CABodyMail + id).subscribe(resp => {
       this.bodyMailModel = resp as any;
+    });
+  }
+  public sendEmailReq(): void {
+    this.spinner(false);
+    this.sendEmailModel.target="";
+    const temp = this.http.post(this.sendEmailModel, this.urlConstants.EmailTemplateSend);
+    temp.subscribe(resp => {
+      this.sendEmailModel = <SendEmailModel>{};
+      this.toastr.success('Email/Emails sent successfully', 'Sent!');
+      this.close();
+      this.spinner(true);
+    },
+    err => {
+      this.toastr.error(err.error.message, 'Client Application');
+      this.spinner(true);
     });
   }
   /**

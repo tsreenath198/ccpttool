@@ -462,9 +462,11 @@ export class ClientPositionComponent implements OnInit {
     this.modalRef = this.modalService.open(content, { size: 'lg', backdrop: 'static' });
     this.modalRef.result.then(
       result => {
+        this.action=null;
         this.closeResult = `Closed with: ${result}`;
       },
       reason => {
+        this.action=null;
         this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
       }
     );

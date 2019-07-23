@@ -49,15 +49,24 @@ export class SidebarComponent implements OnInit {
     }
 
     toggleCollapsed(str: string) {
+        // this.titleService.setTitle('CCPT');
+        // if (str) {
+        //     this.collapsed = false;
+        // } else {
+        //     this.collapsed = !this.collapsed;
+        // }
+        // this.collapsedEvent.emit(this.collapsed);
+    }
+    public sidebarCollapse(){
         this.titleService.setTitle('CCPT');
-        if (str) {
-            this.collapsed = false;
-        } else {
-            this.collapsed = !this.collapsed;
-        }
+        this.collapsed = false;
         this.collapsedEvent.emit(this.collapsed);
     }
-
+    public sidebarExpand(){
+        this.titleService.setTitle('CCPT');
+        this.collapsed = true;
+        this.collapsedEvent.emit(this.collapsed);
+    }
     isToggled(): boolean {
         const dom: Element = document.querySelector('body');
         return dom.classList.contains(this.pushRightClass);

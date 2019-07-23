@@ -18,3 +18,9 @@ export interface ClientApplicationModel {
 export class ActionsList {
     actions = [{key: 'Edit' , value:'Edit'},{key: 'Body Mail' , value:'Body Mail'},{key: 'File Upload' , value:'File Upload'}, {key: 'Delete' , value:'Delete'}, {key: 'Close' , value:'Close'}];
 }
+export class SendEmailModel {
+    toEmails: Array<string> = [];
+    subject: string;
+    body: any;
+    target: any;
+}
