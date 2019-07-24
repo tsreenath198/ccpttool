@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import javax.persistence.EntityNotFoundException;
+import javax.validation.ValidationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -110,6 +111,8 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 		valuesMap.put("clientName", ca.get().getClientPosition().getClient().getName());
 		valuesMap.put("consultantName", ca.get().getConsultant().getFullname());
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
+		if(ca.get().getInterviewDate()==null)
+			throw new ValidationException("this clientapplication id "+ca.get().getId()+" not shorlisted");
 		Date date = ca.get().getInterviewDate();
 		String strDate = dateFormat.format(date);
 		valuesMap.put("interviewDate", strDate);
