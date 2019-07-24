@@ -17,7 +17,7 @@
         </div>
         <div class="col-md-6" *ngIf ="loggedInRole=='Admin' && appIds.length > 0">
             <button type="button"  class="btn btn-secondary ml-2" (click)="sendIds(appIds ,sendMailContent)">
-                Send Id's
+                Send Mail
               </button>
         </div>
       </div>
@@ -109,20 +109,20 @@
               {{ enableButtonType != '' ? 'Close' : 'Clear' }}
             </button>
             <span class="pull-right" *ngIf="showAction">
-              <div class="form-group">
-                <select
-                  class="form-control"
-                  [(ngModel)]="action"
-                  name="sel1"
-                  #sel1="ngModel"
-                  (change)="actions(action, trashContent, bodyMail, uploadContent, downloadContent, f)"
-                >
-                  <option [ngValue]="null" hidden selected>Choose action</option>
-                  <option *ngFor="let al of actionsList.actions" [ngValue]="al.value">
-                    {{ al.key }}
-                  </option>
-                </select>
-              </div>
+                <div class="dropdown theme-dropdown clearfix" placement="bottom-right" ngbDropdown>
+                    <!-- <button class="btn btn-secondary" >
+                        Dropdown
+                    </button> -->
+                    <i class="fa fa-bars" ngbDropdownToggle></i>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenu1" ngbDropdownMenu>
+                        <a class="dropdown-item drop-list" (click)="enableFormEditable()">Edit</a>
+                        <a class="dropdown-item drop-list" (click)="open(model.id, trashContent)">File Upload</a>
+                        <a class="dropdown-item drop-list" (click)="getBodyMail(bodyMail)">Body Mail</a>
+                        <a class="dropdown-item drop-list" (click)="getInterviewDetails(model.id,sendMailContent)">Send Interview Schedule</a>
+                        <a class="dropdown-item drop-list" (click)="open(model.id, trashContent)">Delete</a>
+                        <a class="dropdown-item drop-list" (click)="cancelForm(f)">Close</a>
+                    </div>
+                </div> 
             </span>
           </div>
         </div>
@@ -235,7 +235,7 @@
               <span class="glyphicon glyphicon-th"></span>
             </div>
           </div>
-          <div class="col-md-6 mt-4">
+          <div class="col-md-6 mt-4" *ngIf="readOnlyForm == 'R'">
             <span *ngIf="isCRF; else noCRF" class="crf" (click)="downloadFile(crfFile.id)">{{ crfFile.fileName }}</span>
             <ng-template #noCRF>
               <button class="btn btn-secondary ml-2" type="button" (click)="uploadCRF(uploadContent)">Upload CRF</button>
@@ -403,22 +403,6 @@
             <button type="button" (click)="cancelForm(f)" *ngIf="enableButtonType == ''" class="btn btn-secondary ml-3">
               {{ enableButtonType != '' ? 'Close' : 'Clear' }}
             </button>
-            <span class="pull-right" *ngIf="showAction">
-              <div class="form-group">
-                <select
-                  class="form-control"
-                  [(ngModel)]="action"
-                  name="sel1"
-                  #sel1="ngModel"
-                  (change)="actions(action, trashContent, uploadContent, downloadContent, f)"
-                >
-                  <option [ngValue]="null" hidden selected>Choose action</option>
-                  <option *ngFor="let al of actionsList.actions" [ngValue]="al.value">
-                    {{ al.key }}
-                  </option>
-                </select>
-              </div>
-            </span>
           </div>
         </div>
       </form>
@@ -493,7 +477,6 @@
     </div>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-secondary" (click)="trash()">Ok</button>
     <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
   </div>
 </ng-template>

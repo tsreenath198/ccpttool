@@ -25,3 +25,9 @@
     top: 50%;
     left: 20%;
 }
+.dropdown-toggle::after{
+  display:none;
+}
+.drop-list:hover{
+  cursor: pointer;
+}

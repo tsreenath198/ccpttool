@@ -230,13 +230,11 @@ export class ClientApplicationComponent implements OnInit {
   selectApplications(event , id){
     if(event.target.checked){
       this.appIds.push(id);
-      console.log(this.appIds);
     }
     else{
       for(let i=0;i<this.appIds.length;i++){
         if(id==this.appIds[i]){
           this.appIds.splice(i, 1);
-          console.log(this.appIds);
         }
       }
     }
@@ -256,33 +254,20 @@ export class ClientApplicationComponent implements OnInit {
        this.appIds=[];
      })
   }
-  public actions(value, trashContent, bodyMail, uploadContent, downloadContent, form) {
-    switch (value) {
-      case 'Delete': {
-        this.open(this.model.id, trashContent);
-        break;
-      }
-      case 'Body Mail': {
-        this.open(this.model.id, bodyMail);
-        this.getBodyMail();
-        break;
-      }
-      case 'File Upload': {
-        this.open(this.model.id, uploadContent);
-        break;
-      }
-      case 'File Download': {
-        this.open(this.model.id, downloadContent);
-        break;
-      }
-      case 'Edit': {
-        this.enableFormEditable();
-        break;
-      }
-      case 'Close': {
-        this.cancelForm(form);
-      }
-    }
+  public getInterviewDetails(id,sendMailContent){
+    this.spinner(false);
+    const temp = this.http.post(id, this.urlConstants.GetInterviewDetailsEmail);
+    temp.subscribe( resp =>{
+      this.sendEmailModel = resp as any;  
+      this.spinner(true);
+      this.appIds=[];
+      this.open(0, sendMailContent);
+     },
+     err => {
+       this.toastr.error(err.error.message, 'Client Application');
+       this.spinner(true);
+       this.appIds=[];
+     })
   }
   public create(clientApplicationForm: NgForm): void {
     this.spinner(false);
@@ -372,10 +357,11 @@ export class ClientApplicationComponent implements OnInit {
       }
     );
   }
-  public getBodyMail(): void {
+  public getBodyMail(bodyMail): void {
     let id = this.selectedRecrd;
     this.http.get(this.urlConstants.CABodyMail + id).subscribe(resp => {
       this.bodyMailModel = resp as any;
+      this.open(this.model.id, bodyMail)
     });
   }
   public sendEmailReq(): void {
@@ -384,7 +370,7 @@ export class ClientApplicationComponent implements OnInit {
     const temp = this.http.post(this.sendEmailModel, this.urlConstants.EmailTemplateSend);
     temp.subscribe(resp => {
       this.sendEmailModel = <SendEmailModel>{};
-      this.toastr.success('Email/Emails sent successfully', 'Sent!');
+      this.toastr.success('Email/Emails sent successfully', 'Client Application');
       this.close();
       this.spinner(true);
     },
