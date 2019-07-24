@@ -12,3 +12,9 @@
 .padding-top{
   padding-top: 60px;
 }
+.dropdown-toggle::after{
+  display:none;
+}
+.drop-list:hover{
+  cursor: pointer;
+}
