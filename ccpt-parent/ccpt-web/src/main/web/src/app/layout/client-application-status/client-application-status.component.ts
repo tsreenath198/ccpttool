@@ -91,22 +91,6 @@ export class ClientApplicationStatusComponent implements OnInit {
     private formReset(): void {
         this.model = <ClientApplicationStatusModel>{};
     }
-    public actions(value, trashContent, form) {
-        console.log(value);
-        switch (value) {
-            case 'Delete': {
-                this.open(this.model.id, trashContent);
-                break;
-            }
-            case 'Edit': {
-                this.enableFormEditable();
-                break;
-            }
-            case 'Close': {
-                this.cancelForm(form);
-            }
-        }
-    }
     /**
     * @param CASForm consists the form instance
     */
