@@ -5,9 +5,10 @@ import {FormsModule} from '@angular/forms';
 import { PageHeaderModule, SharedPipesModule, ActionListModule } from '../../shared';
 import { EmailTemplateRoutingModule } from './email-template-routing.module';
 import { EmailTemplateComponent } from './email-template.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
-    imports: [CommonModule, EmailTemplateRoutingModule, FormsModule, PageHeaderModule, SharedPipesModule, ActionListModule],
+    imports: [NgbModule,CommonModule, EmailTemplateRoutingModule, FormsModule, PageHeaderModule, SharedPipesModule, ActionListModule],
     declarations: [EmailTemplateComponent]
 })
 export class EmailTemplateModule {}

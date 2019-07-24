@@ -145,22 +145,6 @@ export class OtherContactsComponent implements OnInit {
             }
         }
     }
-    public actions(value, trashContent, form) {
-        console.log(value);
-        switch (value) {
-            case 'Delete': {
-                this.open(this.model.id, trashContent);
-                break;
-            }
-            case 'Edit': {
-                this.enableFormEditable();
-                break;
-            }
-            case 'Close': {
-                this.cancelForm(form);
-            }
-        }
-    }
     private formReset() {
         this.model = <OtherContactsModel>{};
         this.model.properties = [];
