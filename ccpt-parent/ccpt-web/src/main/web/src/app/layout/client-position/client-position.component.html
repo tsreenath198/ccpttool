@@ -57,43 +57,43 @@
     </div>
     <div class="col-md-5">
       <form name="form" id="clientPositionForm" (ngSubmit)="f.form.valid &&  create(f)" #f="ngForm" novalidate>
-        <div class="row text-center" *ngIf="loggedInRole != 'User'">
+        <div class="row text-center">
           <div class="col-md-12">
             <div class="form-group">
                 <button
                 type="submit"
-                *ngIf="enableButtonType == ''"
+                *ngIf="enableButtonType == ''&&loggedInRole != 'User'"
                 class="btn btn-secondary ml-3"
                 [disabled]="f.form.pristine || f.form.invalid || isCreate"
 
               >
                 Add
               </button>
-              <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2" (click)="update(f)">
+              <button type="button" *ngIf="enableButtonType == 'U'&&loggedInRole != 'User'" class="btn btn-secondary ml-2" (click)="update(f)">
                 Update
               </button>
               <!-- <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button" (click)="enableFormEditable()">
                 Edit
               </button> -->
-              <button type="button" (click)="cancelForm(f)" *ngIf="enableButtonType == ''" class="btn btn-secondary ml-3">
+              <button type="button" (click)="cancelForm(f)" *ngIf="enableButtonType == ''&&loggedInRole != 'User'" class="btn btn-secondary ml-3">
                   {{ enableButtonType != '' ? 'Close' : 'Clear' }}
                 </button>
     
                 <span class="pull-right" *ngIf="showAction">
-                  <div class="form-group">
-                    <select
-                      class="form-control"
-                      [(ngModel)]="action"
-                      name="sel1"
-                      #sel1="ngModel"
-                      (change)="actions(action,sendMailContent, trashContent,shortListContent , f)"
-                    >
-                      <option [ngValue]="null" hidden selected>Choose action</option>
-                      <option *ngFor="let al of actionsList.actions" [ngValue]="al.value">
-                        {{ al.key }}
-                      </option>
-                    </select>
-                  </div>
+                    <div class="dropdown theme-dropdown clearfix" placement="bottom-right" ngbDropdown>
+                        <!-- <button class="btn btn-secondary" >
+                            Dropdown
+                        </button> -->
+                        <i class="fa fa-bars" ngbDropdownToggle></i>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenu1" ngbDropdownMenu>
+                            <a class="dropdown-item drop-list" *ngIf="loggedInRole != 'User'" (click)="enableFormEditable()">Edit</a>
+                            <a class="dropdown-item drop-list" *ngIf="loggedInRole != 'User'" (click)="createApplication(shortListContent)">Create Application</a>
+                            <a class="dropdown-item drop-list" (click)="sendJd(sendMailContent)">Send JD</a>
+                            <a class="dropdown-item drop-list" *ngIf="loggedInRole != 'User'" (click)="cloneData(model)">Clone</a>
+                            <a class="dropdown-item drop-list" *ngIf="loggedInRole != 'User'" (click)="open(model.id, trashContent)">Delete</a>
+                            <a class="dropdown-item drop-list" (click)="cancelForm(f)">Close</a>
+                        </div>
+                    </div> 
                 </span>
             </div>
           </div>

@@ -230,19 +230,11 @@ export class ClientPositionComponent implements OnInit {
         break;
       }
       case 'Send JD': {
-        for (let i = 0; i < this.consultantList.length; i++) {
-          const temp = { item_id: this.consultantList[i].id, item_text: this.consultantList[i].fullname, notes: '' };
-          this.mailIdForMails.push(temp);
-        }
-        this.open(this.model.id, sendMailContent);
+        
         break;
       }
       case 'Create Application': {
-        for (let i = 0; i < this.consultantList.length; i++) {
-          const temp = { item_id: this.consultantList[i].id, item_text: this.consultantList[i].fullname, notes: '' };
-          this.consultantNames.push(temp);
-        }
-        this.open(this.model.id, shortListContent);
+        
         break;
       }
       case 'Edit': {
@@ -258,6 +250,20 @@ export class ClientPositionComponent implements OnInit {
         break;
       }
     }
+  }
+  public createApplication(shortListContent){
+    for (let i = 0; i < this.consultantList.length; i++) {
+      const temp = { item_id: this.consultantList[i].id, item_text: this.consultantList[i].fullname, notes: '' };
+      this.consultantNames.push(temp);
+    }
+    this.open(this.model.id, shortListContent);
+  }
+  public sendJd(sendMailContent){
+    for (let i = 0; i < this.consultantList.length; i++) {
+      const temp = { item_id: this.consultantList[i].id, item_text: this.consultantList[i].fullname, notes: '' };
+      this.mailIdForMails.push(temp);
+    }
+    this.open(this.model.id, sendMailContent);
   }
   private cloneData(data: any) {
     data.id = null;
