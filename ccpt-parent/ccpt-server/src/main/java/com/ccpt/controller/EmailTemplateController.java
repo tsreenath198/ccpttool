@@ -50,6 +50,13 @@ public class EmailTemplateController extends BaseController<EmailTemplateDTO, Em
 		return emailTemplateService.getClientApps(ids);
 
 	}
+	
+	@PostMapping("/getInterviewTemplate")
+	@ResponseBody
+	public EmailContent getInterviewTemplate(@RequestBody Integer id) throws Exception {
+		return emailTemplateService.getInterviewTemplate(id);
+
+	}
 
 	@Override
 	public BaseService<EmailTemplate, Integer> getService() {

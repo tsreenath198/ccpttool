@@ -159,7 +159,7 @@ public class JobDescriptionSubstitutor implements ContentSubstitutor {
 		sb.append("<table>");
 		sb.append("<tbody>");
 		sb.append("<tr><td><b>Thanks &amp; Regards</b></td></tr>");
-		sb.append("<tr><td><b>Sreenath</b></td></tr>");
+		sb.append("<tr><td><b>Sreenath Thatikonda</b></td></tr>");
 		sb.append("<tr><td>Branch&nbsp;Head</td></tr>");
 		sb.append(
 				"<tr><td style=\"font-size: 11.0pt;font-family: 'Calibri',sans-serif;color: #1f497d;\">Talent Corner HR services Pvt. Ltd.</td></tr>");
@@ -182,13 +182,10 @@ public class JobDescriptionSubstitutor implements ContentSubstitutor {
 	}
 
 	public static String appendCATemplate(ClientApplication clientApplication) {
-		ClientPosition clientPosition = clientApplication.getClientPosition();
 		Map<String, String> valuesMap = new HashMap<String, String>();
-		valuesMap.put("clientContactName", clientPosition.getClient().getClientContacts().get(0).getFullname());
-		valuesMap.put("jobTitle", clientPosition.getRole());
 		valuesMap.put("consultantName", clientApplication.getConsultant().getFullname());
 		StringBuilder sbPara = new StringBuilder();
-		sbPara.append("<p><strong>${consultantName}</strong></p>");
+		sbPara.append("<p></p><p></p><p><strong>${consultantName}</strong></p>");
 		sbPara.append("<p>");
 		String subject = StrSubstitutor.replace(sbPara.toString(), valuesMap);
 		StringBuilder sb = new StringBuilder(subject);
