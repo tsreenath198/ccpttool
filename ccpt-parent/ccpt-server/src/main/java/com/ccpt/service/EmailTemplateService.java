@@ -64,6 +64,10 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 		}
 		boolean allEqual = names.isEmpty() || names.stream().allMatch(names.get(0)::equals);
 		if (allEqual) {
+			StringBuilder sbPara = new StringBuilder();
+			sbPara.append("<p>Hi <strong>${clientContactName}</strong>,</p>");
+			sbPara.append("<p> Below are the profiles with ${jobTitle}  experience (CVs Attached)</p>");
+			sbPara.append("<p>");
 			for (ClientApplication clientApplication : clientApplications) {
 				String template = JobDescriptionSubstitutor.appendCATemplate(clientApplication);
 				files.add(uploadFileService.getByRefIdAndRefType(clientApplication.getConsultant().getId(),
@@ -73,14 +77,14 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 				names.add(name);
 				cpNames.add(clientApplication.getClientPosition().getRole());
 			}
+			emailContent.setBody(sbPara.toString().concat(JobDescriptionSubstitutor.getSign(body)));
+			emailContent.setUploadFiles(files);
+			emailContent.setToEmails(
+					clientApplications.get(0).getClientPosition().getClient().getClientContacts().get(0).getEmail());
+			emailContent.setSubject("Shorlisted candidates for " + cpNames);
+			return emailContent;
 		} else {
 			throw new CAException("please select same client application ");
 		}
-		emailContent.setBody(JobDescriptionSubstitutor.getSign(body));
-		emailContent.setUploadFiles(files);
-		emailContent.setToEmails(
-				clientApplications.get(0).getClientPosition().getClient().getClientContacts().get(0).getEmail());
-		emailContent.setSubject("Shorlisted candidates for " + cpNames);
-		return emailContent;
 	}
 }

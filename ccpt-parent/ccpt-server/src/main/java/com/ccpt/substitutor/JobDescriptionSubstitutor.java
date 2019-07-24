@@ -188,13 +188,10 @@ public class JobDescriptionSubstitutor implements ContentSubstitutor {
 		valuesMap.put("jobTitle", clientPosition.getRole());
 		valuesMap.put("consultantName", clientApplication.getConsultant().getFullname());
 		StringBuilder sbPara = new StringBuilder();
-		sbPara.append("<p>Hi <strong>${clientContactName}</strong>,</p>");
-		sbPara.append("<p> Below are the profiles with ${jobTitle}  experience (CVs Attached)</p>");
-		sbPara.append("<p>");
-		sbPara.append("<p>${consultantName}</p>");
+		sbPara.append("<p><strong>${consultantName}</strong></p>");
 		sbPara.append("<p>");
 		String subject = StrSubstitutor.replace(sbPara.toString(), valuesMap);
-		StringBuilder sb=new StringBuilder(subject);
+		StringBuilder sb = new StringBuilder(subject);
 		sb.append(
 				"<table width=\"728\" border=\"1\" style=\"border-collapse : collapse\" cellspacing=\"0\" cellpadding=\"0\">");
 		sb.append("<tbody>");
