@@ -223,34 +223,6 @@ export class ClientPositionComponent implements OnInit {
   /*editableBody(avv,fd){
     debugger
   }*/
-  public actions(value, sendMailContent, trashContent, shortListContent, form) {
-    switch (value) {
-      case 'Delete': {
-        this.open(this.model.id, trashContent);
-        break;
-      }
-      case 'Send JD': {
-        
-        break;
-      }
-      case 'Create Application': {
-        
-        break;
-      }
-      case 'Edit': {
-        this.enableFormEditable();
-        break;
-      }
-      case 'Close': {
-        this.cancelForm(form);
-        break;
-      }
-      case 'Clone': {
-        this.cloneData(this.model);
-        break;
-      }
-    }
-  }
   public createApplication(shortListContent){
     for (let i = 0; i < this.consultantList.length; i++) {
       const temp = { item_id: this.consultantList[i].id, item_text: this.consultantList[i].fullname, notes: '' };
