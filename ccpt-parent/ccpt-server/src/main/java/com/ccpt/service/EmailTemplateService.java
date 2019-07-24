@@ -111,8 +111,8 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 		valuesMap.put("clientName", ca.get().getClientPosition().getClient().getName());
 		valuesMap.put("consultantName", ca.get().getConsultant().getFullname());
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
-		if(ca.get().getInterviewDate()==null)
-			throw new ValidationException("this clientapplication id "+ca.get().getId()+" not shorlisted");
+		if (ca.get().getInterviewDate() == null)
+			throw new ValidationException("this clientapplication id " + ca.get().getId() + " not shorlisted");
 		Date date = ca.get().getInterviewDate();
 		String strDate = dateFormat.format(date);
 		valuesMap.put("interviewDate", strDate);
@@ -168,8 +168,8 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 		sbPara.append("<p></p>");
 		sbPara.append("<p></p>");
 		sbPara.append("<p>");
-		emailContent.setSubject(StrSubstitutor.replace(
-				"<strong>Congratulations! Your Interview is confirmed with ${clientName}</strong>", valuesMap));
+		emailContent.setSubject(
+				StrSubstitutor.replace("Congratulations! Your Interview is confirmed with ${clientName}", valuesMap));
 		String subject = StrSubstitutor.replace(sbPara.toString(), valuesMap);
 		StringBuilder sb = new StringBuilder(subject);
 
