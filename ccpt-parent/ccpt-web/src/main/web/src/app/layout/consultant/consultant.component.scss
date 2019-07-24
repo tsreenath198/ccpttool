@@ -4,11 +4,8 @@
 .bl-red{
   border-left: 10px solid red;
 }
-.bl-orange{
-  border-left: 10px solid orange;
-}
-.bl-trans{
-  border-left: 10px solid transparent;
+.bl-green{
+  border-left: 10px solid green;
 }
 .my-custom-scrollbar {
   position: relative;
@@ -21,4 +18,10 @@
   .padding-top{
    padding-top: 60px;
  }
+ .dropdown-toggle::after{
+  display:none;
+}
+.drop-list:hover{
+  cursor: pointer;
+}
 

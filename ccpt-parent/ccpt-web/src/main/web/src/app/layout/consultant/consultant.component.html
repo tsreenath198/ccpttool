@@ -41,7 +41,7 @@
             <tr
               *ngFor="let cl of consultantList | filter: currSearchTxt | paginate: { itemsPerPage: 20, currentPage: page }; let i = index"
               (click)="setModel(cl.id)"
-              [ngClass]="cl.isProfileCompleted == 'profile' ? 'bl-red' : cl.isProfileCompleted == 'files' ? 'bl-orange' : 'bl-trans'"
+              [ngClass]="{'bl-green':cl.isProfileCompleted=='profileComplete','bl-red':cl.isProfileCompleted=='profileInComplete'}"
             >
               <td class="table-data-padding ">
                 <dl>
@@ -107,20 +107,18 @@
             </button>
 
             <span class="pull-right" *ngIf="showAction">
-              <div class="form-group">
-                <select
-                  class="form-control"
-                  [(ngModel)]="action"
-                  name="sel1"
-                  #sel1="ngModel"
-                  (change)="actions(action, trashContent, uploadContent, downloadContent, f)"
-                >
-                  <option [ngValue]="null" hidden selected>Choose action</option>
-                  <option *ngFor="let al of actionsList.actions" [ngValue]="al.value">
-                    {{ al.key }}
-                  </option>
-                </select>
-              </div>
+                <div class="dropdown theme-dropdown clearfix" placement="bottom-right" ngbDropdown>
+                    <!-- <button class="btn btn-secondary" >
+                        Dropdown
+                    </button> -->
+                    <i class="fa fa-bars" ngbDropdownToggle></i>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenu1" ngbDropdownMenu>
+                        <a class="dropdown-item drop-list" (click)="enableFormEditable()">Edit</a>
+                        <a class="dropdown-item drop-list" (click)="open(model.id,uploadContent)">File Upload</a>
+                        <a class="dropdown-item drop-list" (click)="open(model.id, trashContent)">Delete</a>
+                        <a class="dropdown-item drop-list" (click)="cancelForm(f)">Close</a>
+                    </div>
+                </div>
             </span>
           </div>
         </div>
@@ -523,7 +521,7 @@
         </div>
         <div class="row">
           <div class="col-md-12">
-            <div class="modal-body" *ngIf="model.files.length > 0">
+            <div class="modal-body" *ngIf="model.files != null ">
               <table class="table">
                 <thead>
                   <th>File Name</th>
@@ -562,23 +560,6 @@
             <button type="button" (click)="cancelForm(f)" *ngIf="enableButtonType == ''" class="btn btn-secondary ml-3">
               {{ enableButtonType != '' ? 'Close' : 'Clear' }}
             </button>
-
-            <span class="pull-right" *ngIf="showAction">
-              <div class="form-group">
-                <select
-                  class="form-control"
-                  [(ngModel)]="action"
-                  name="sel1"
-                  #sel1="ngModel"
-                  (change)="actions(action, trashContent, uploadContent, downloadContent, f)"
-                >
-                  <option [ngValue]="null" hidden selected>Choose action</option>
-                  <option *ngFor="let al of actionsList.actions" [ngValue]="al.value">
-                    {{ al.key }}
-                  </option>
-                </select>
-              </div>
-            </span>
           </div>
         </div>
       </form>

@@ -86,13 +86,12 @@ export class ConsultantComponent implements OnInit {
       this.consultantList = resp as any;
       this.pagedConsultantList = resp as any;
       this.consultantListLength = this.consultantList.length;
-      this.pagedConsultantList.forEach(cl => {
-        if (this.validate(cl.fullname) || this.validate(cl.email) || this.validate(cl.phone)) {
-          cl['isProfileCompleted'] = 'profile';
-        } else if (this.validate(cl.files)) {
-          cl['isProfileCompleted'] = 'files';
-        } else {
-          cl['isProfileCompleted'] = 'nothing';
+      this.consultantList.forEach(cl => {
+        if (this.validate(cl.fullname) && this.validate(cl.email) && this.validate(cl.phone)) {
+            cl['isProfileCompleted'] = 'profileComplete';
+        } 
+         else {
+            cl['isProfileCompleted'] = 'profileInComplete';
         }
       });
       this.pageChange(this.page);
@@ -105,8 +104,16 @@ export class ConsultantComponent implements OnInit {
     this.page = 1;
   }
   private validate(value: any): boolean {
-    const bool = value ? false : true;
+    const bool = value ? true : false;
     return bool;
+  }
+  private validateFile(value: any): boolean{
+    if(value == null){
+      return false;
+    }
+    else{
+      return true;
+    }
   }
   defaultValues() {
     this.model['properties'] = [];
