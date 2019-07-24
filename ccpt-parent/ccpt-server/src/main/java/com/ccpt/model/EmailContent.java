@@ -1,8 +1,11 @@
 package com.ccpt.model;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
 import lombok.Getter;
@@ -36,4 +39,7 @@ public class EmailContent extends IDEntity {
 	@Column
 	@NotNull
 	private String target;
+	
+	@Transient
+	private List<UploadFile> uploadFiles;
 }

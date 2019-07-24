@@ -8,12 +8,15 @@ import java.util.Properties;
 import javax.mail.Authenticator;
 import javax.mail.Message;
 import javax.mail.MessagingException;
+import javax.mail.Multipart;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -59,7 +62,8 @@ public class EmailController {
 	@PostMapping(CCPTConstants.SEND_EMAIL)
 	public ResponseEntity<String> sendEmail(@RequestBody EmailContent emailContent) throws Exception {
 		try {
-			sendHtmlEmail(emailContent.getToEmails(), emailContent.getSubject(), emailContent.getBody());
+			sendEmailWithAttachments(emailContent.getToEmails(), emailContent.getSubject(), emailContent.getBody(),
+					null);
 			emailContentService.save(emailContent);
 		} catch (Exception e) {
 			throw new Exception("Sending Email is Failed");
@@ -67,9 +71,10 @@ public class EmailController {
 		return null;
 	}
 
-	void sendmail(String toCSV, String subject, String body) {
+	public void sendmail(String toCSV, String subject, String body) {
 		SimpleMailMessage msg = new SimpleMailMessage();
-		msg.setTo(toCSV);
+		String[] split = toCSV.split(",");
+		msg.setTo(split);
 		msg.setSubject(subject);
 		msg.setText(body);
 		msg.setBcc(bcc);
@@ -105,6 +110,7 @@ public class EmailController {
 		msg.setRecipients(Message.RecipientType.BCC, bccAddresses);
 		msg.setSubject(subject);
 		msg.setSentDate(new Date());
+
 		// set plain text message
 		msg.setContent(message, "text/html");
 
@@ -124,6 +130,65 @@ public class EmailController {
 				new File("C:\\Users\\lenovo\\Desktop\\GIT Total Commands with examples.txt.docx"));
 		helper.addAttachment("GIT Total Commands with examples.txt.docx", file);
 		javaMailSender.send(msg);
+
+	}
+
+	public void sendEmailWithAttachments(String toAddress, String subject, String message, String[] attachFiles)
+			throws AddressException, MessagingException {
+		// sets SMTP server properties
+		Properties properties = new Properties();
+		properties.put("mail.smtp.host", mailHost);
+		properties.put("mail.smtp.port", port);
+		properties.put("mail.smtp.auth", "true");
+		properties.put("mail.smtp.starttls.enable", "true");
+		// properties.put("mail.user", username);
+		// properties.put("mail.password", password);
+
+		// creates a new session with an authenticator
+		Authenticator auth = new Authenticator() {
+			public PasswordAuthentication getPasswordAuthentication() {
+				return new PasswordAuthentication(username, password);
+			}
+		};
+		Session session = Session.getInstance(properties, auth);
+
+		// creates a new e-mail message
+		Message msg = new MimeMessage(session);
+
+		msg.setFrom(new InternetAddress(username));
+		InternetAddress[] toAddresses = { new InternetAddress(toAddress) };
+		msg.setRecipients(Message.RecipientType.TO, toAddresses);
+		msg.setSubject(subject);
+		msg.setSentDate(new Date());
+
+		// creates message part
+		MimeBodyPart messageBodyPart = new MimeBodyPart();
+		messageBodyPart.setContent(message, "text/html");
+
+		// creates multi-part
+		Multipart multipart = new MimeMultipart();
+		multipart.addBodyPart(messageBodyPart);
+
+		// adds attachments
+		if (attachFiles != null && attachFiles.length > 0) {
+			for (String filePath : attachFiles) {
+				MimeBodyPart attachPart = new MimeBodyPart();
+
+				try {
+					attachPart.attachFile(filePath);
+				} catch (IOException ex) {
+					ex.printStackTrace();
+				}
+
+				multipart.addBodyPart(attachPart);
+			}
+		}
+
+		// sets the multi-part as e-mail's content
+		msg.setContent(multipart);
+
+		// sends the e-mail
+		Transport.send(msg);
 
 	}
 

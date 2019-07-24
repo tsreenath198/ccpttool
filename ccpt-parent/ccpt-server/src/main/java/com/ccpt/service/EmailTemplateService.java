@@ -11,9 +11,9 @@ import org.springframework.stereotype.Component;
 
 import com.ccpt.exception.CAException;
 import com.ccpt.model.ClientApplication;
-import com.ccpt.model.ClientPosition;
 import com.ccpt.model.EmailContent;
 import com.ccpt.model.EmailTemplate;
+import com.ccpt.model.UploadFile;
 import com.ccpt.repository.BaseRepository;
 import com.ccpt.repository.ClientApplicationRepository;
 import com.ccpt.repository.EmailTemplateRepository;
@@ -26,6 +26,8 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 		super("Email Template");
 	}
 
+	@Autowired
+	private UploadFileService uploadFileService;
 	@Autowired
 	private EmailTemplateRepository emailTemplateRepository;
 
@@ -50,6 +52,7 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 		EmailContent emailContent = new EmailContent();
 		StringBuilder body = new StringBuilder();
 		List<String> names = new ArrayList<String>();
+		List<UploadFile> files = new ArrayList<UploadFile>();
 		List<ClientApplication> clientApplications = new ArrayList<ClientApplication>();
 		List<String> cpNames = new ArrayList<String>();
 		for (Integer id : ids) {
@@ -62,8 +65,9 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 		boolean allEqual = names.isEmpty() || names.stream().allMatch(names.get(0)::equals);
 		if (allEqual) {
 			for (ClientApplication clientApplication : clientApplications) {
-				ClientPosition clientPosition = clientApplication.getClientPosition();
-				String template = JobDescriptionSubstitutor.appendTemplate(clientPosition);
+				String template = JobDescriptionSubstitutor.appendCATemplate(clientApplication);
+				files.add(uploadFileService.getByRefIdAndRefType(clientApplication.getConsultant().getId(),
+						"Consultant"));
 				body.append(template);
 				String name = clientApplication.getClientPosition().getClient().getName();
 				names.add(name);
@@ -73,6 +77,7 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 			throw new CAException("please select same client application ");
 		}
 		emailContent.setBody(JobDescriptionSubstitutor.getSign(body));
+		emailContent.setUploadFiles(files);
 		emailContent.setToEmails(
 				clientApplications.get(0).getClientPosition().getClient().getClientContacts().get(0).getEmail());
 		emailContent.setSubject("Shorlisted candidates for " + cpNames);

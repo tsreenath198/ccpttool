@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.ccpt.model.AdditionalProperty;
+import com.ccpt.model.ClientApplication;
 import com.ccpt.model.ClientPosition;
 import com.ccpt.model.Consultant;
 import com.ccpt.model.EmailContent;
@@ -178,6 +179,65 @@ public class JobDescriptionSubstitutor implements ContentSubstitutor {
 	@Override
 	public SMS generate(SmsTemplate template, Map<String, String> params) {
 		return null;
+	}
+
+	public static String appendCATemplate(ClientApplication clientApplication) {
+		ClientPosition clientPosition = clientApplication.getClientPosition();
+		Map<String, String> valuesMap = new HashMap<String, String>();
+		valuesMap.put("clientContactName", clientPosition.getClient().getClientContacts().get(0).getFullname());
+		valuesMap.put("jobTitle", clientPosition.getRole());
+		valuesMap.put("consultantName", clientApplication.getConsultant().getFullname());
+		StringBuilder sbPara = new StringBuilder();
+		sbPara.append("<p>Hi <strong>${clientContactName}</strong>,</p>");
+		sbPara.append("<p> Below are the profiles with ${jobTitle}  experience (CVs Attached)</p>");
+		sbPara.append("<p>");
+		sbPara.append("<p>${consultantName}</p>");
+		sbPara.append("<p>");
+		String subject = StrSubstitutor.replace(sbPara.toString(), valuesMap);
+		StringBuilder sb=new StringBuilder(subject);
+		sb.append(
+				"<table width=\"728\" border=\"1\" style=\"border-collapse : collapse\" cellspacing=\"0\" cellpadding=\"0\">");
+		sb.append("<tbody>");
+		if (clientApplication.getConsultant().getExperienceYrs() != null
+				&& clientApplication.getConsultant().getExperienceMonths() != null) {
+			sb.append("<tr>\r\n" + "<td width=\"199\">\r\n" + "<p><strong>Total Exp</strong></p>\r\n" + "</td>\r\n"
+					+ "<td width=\"529\">\r\n" + "<p>" + clientApplication.getConsultant().getExperienceYrs() + "yearrs"
+					+ clientApplication.getConsultant().getExperienceMonths() + "months" + "</p>\r\n" + "</td>\r\n"
+					+ "</tr>");
+		}
+		if (clientApplication.getConsultant().getCurrentCTC() != null) {
+			sb.append("<tr>\r\n" + "<td width=\"199\">\r\n" + "<p><strong>Current CTC</strong></p>\r\n" + "</td>\r\n"
+					+ "<td width=\"529\">\r\n" + "<p>" + clientApplication.getConsultant().getCurrentCTC() + "</p>\r\n"
+					+ "</td>\r\n" + "</tr>");
+		}
+		if (clientApplication.getConsultant().getExpectedCTC() != null) {
+			sb.append("<tr>\r\n" + "<td width=\"199\">\r\n" + "<p><strong>Expected CTC</strong></p>\r\n" + "</td>\r\n"
+					+ "<td width=\"529\">\r\n" + "<p>" + clientApplication.getConsultant().getExpectedCTC() + "</p>\r\n"
+					+ "</td>\r\n" + "</tr>");
+		}
+		if (clientApplication.getConsultant().getCurrentLocation() != null) {
+			sb.append("<tr>\r\n" + "<td width=\"199\">\r\n" + "<p><strong>Residing Location - specific</strong></p>\r\n"
+					+ "</td>\r\n" + "<td width=\"529\">\r\n" + "<p>"
+					+ clientApplication.getConsultant().getCurrentLocation() + "</p>\r\n" + "</td>\r\n" + "</tr>");
+		}
+		if (clientApplication.getConsultant().getNoticePeriod() != null) {
+			sb.append("<tr>\r\n" + "<td width=\"199\">\r\n" + "<p><strong>Availability</strong></p>\r\n" + "</td>\r\n"
+					+ "<td width=\"529\">\r\n" + "<p>" + clientApplication.getConsultant().getNoticePeriod()
+					+ "</p>\r\n" + "</td>\r\n" + "</tr>");
+		}
+		if (clientApplication.getConsultant().getSkills() != null) {
+			sb.append("<tr>\r\n" + "<td width=\"199\">\r\n" + "<p><strong>Note</strong></p>\r\n" + "</td>\r\n"
+					+ "<td width=\"529\">\r\n" + "<p>" + clientApplication.getConsultant().getSkills() + "</p>\r\n"
+					+ "</td>\r\n" + "</tr>");
+		}
+		if (clientApplication.getConsultant().getCurrentCompany() != null) {
+			sb.append("<tr>\r\n" + "<td width=\"199\">\r\n" + "<p><strong>Previous Company</strong></p>\r\n"
+					+ "</td>\r\n" + "<td width=\"529\">\r\n" + "<p>"
+					+ clientApplication.getConsultant().getCurrentCompany() + "</p>\r\n" + "</td>\r\n" + "</tr>");
+		}
+		sb.append("</tbody>");
+		sb.append("</table>");
+		return sb.toString();
 	}
 
 }
