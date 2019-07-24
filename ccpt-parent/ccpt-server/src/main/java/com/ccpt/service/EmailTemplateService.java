@@ -175,7 +175,7 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 
 		// body.append(subject);
 		emailContent.setBody(sb.toString().concat(JobDescriptionSubstitutor.getSign(body)));
-		emailContent.setToEmails(ca.get().getClientPosition().getClient().getClientContacts().get(0).getEmail());
+		emailContent.setToEmails(ca.get().getConsultant().getEmail());
 
 		return emailContent;
 	}
