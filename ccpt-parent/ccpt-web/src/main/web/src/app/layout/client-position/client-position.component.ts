@@ -138,16 +138,8 @@ export class ClientPositionComponent implements OnInit {
       this.consultantList = listofrecords[3] as any;
     });
   }
-  public dblSetModel() {
-    this.readOnlyForm = 'U';
-    this.config.editable = true;
-    this.enableButtonType = 'U';
-    this.closedByEnable = true;
-    this.showAction = true;
-    this.action = null;
-  }
   private enableFormEditable(): void {
-    this.readOnlyForm = 'U';
+    this.readOnlyForm = '';
     this.enableButtonType = 'U';
     this.config.editable = true;
     this.closedByEnable = true;
@@ -155,7 +147,7 @@ export class ClientPositionComponent implements OnInit {
   public setModel(id: number) {
     this.getCPById(id);
     this.config.editable = false;
-    this.readOnlyForm = 'R';
+    this.readOnlyForm = 'U';
     this.enableButtonType = 'E';
     this.showAction = true;
     this.action = null;

@@ -12,10 +12,10 @@
   height: 31.5em;
   overflow: auto;
   }
-  .table-wrapper-scroll-y {
+.table-wrapper-scroll-y {
   display: block;
-  }
-  .padding-top{
+}
+.padding-top{
    padding-top: 60px;
  }
  .dropdown-toggle::after{
@@ -24,4 +24,8 @@
 .drop-list:hover{
   cursor: pointer;
 }
-
+.crf:hover{
+  cursor: pointer;
+  color:blue;
+  text-decoration: underline;
+ }

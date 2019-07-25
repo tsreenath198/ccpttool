@@ -122,6 +122,98 @@
             </span>
           </div>
         </div>
+        <div *ngIf="readOnlyForm == 'U'; else notRead">
+          <table class="table table-borderless">
+            <tbody>
+              <tr>
+                <th>Name</th>
+                <td>{{model.fullname}}</td>
+              </tr>
+              <tr>
+                <th>Date of Birth</th>
+                <td>{{ model.dob }}</td>
+              </tr>
+              <tr>
+                <th>Phone</th>
+                <td>{{ model.phone }}</td>
+              </tr>
+              <tr>
+                <th>Email</th>
+                <td>{{ model.email }}</td>
+              </tr>
+              <tr>
+                <th>Qualification</th>
+                <td>{{ model.highestEducation }}</td>
+              </tr>
+              <tr>
+                <th>Passout Year</th>
+                <td>{{ model.passoutYear }}</td>
+              </tr>
+              <tr>
+                <th>Current Location</th>
+                <td>{{ model.currentLocation }}</td>
+              </tr>
+              <tr>
+                <th>Prefer Location</th>
+                <td>{{ model.prefferedLocation }}</td>
+              </tr>
+              <tr *ngIf="model.currentCompany">
+                <th>Current Company</th>
+                <td>{{ model.currentCompany }}</td>
+              </tr>
+              <tr *ngIf="model.currentCTC">
+                <th>Current CTC</th>
+                <td>{{ model.currentCTC}}</td>
+              </tr>
+              <tr>
+                <th>Expected CTC</th>
+                <td>{{ model.expectedCTC }}</td>
+              </tr>
+              <tr *ngIf="model.currentJobTitle">
+                <th>Current Job Title</th>
+                <td>{{ model.currentJobTitle }}</td>
+              </tr>
+              <tr *ngIf="model.currentFunctionalArea">
+                <th> Current Functional Area</th>
+                <td>{{ model.currentFunctionalArea }}</td>
+              </tr>
+              <tr *ngIf="model.currentIndustry">
+                <th>Current Industry</th>
+                <td>{{ model.currentIndustry }}</td>
+              </tr>
+              <tr *ngIf="model.monthsInCurrentJob">
+                <th>Experience in Current Job</th>
+                <td>{{ model.monthsInCurrentJob }}months-{{model.yearsInCurrentJob}}</td>
+              </tr>
+              <tr *ngIf="model.experienceMonths">
+                <th>Total Experience</th>
+                <td>{{ model.experienceMonths }}months-{{model.experienceYrs}}</td>
+              </tr>
+              <tr *ngIf="model.noticePeriod">
+                <th>Notice period</th>
+                <td>{{ model.noticePeriod }}</td>
+              </tr>
+              <tr>
+                <th>Skills</th>
+                <td>{{ model.skills }}</td>
+              </tr>
+              <tr>
+                <th>Description</th>
+                <td>
+                  {{model.description}}
+                </td>
+              </tr>
+              <tr *ngFor="let ap of model.properties">
+                <th>{{ap.name}}</th>
+                <td>{{ap.value}}</td>
+              </tr>  
+              <tr *ngFor="let fl of model.files">
+                  <th>Files</th>
+                  <td class="file-download" (click)="downloadFile(fl.id)">{{fl.fileName}}</td>
+                </tr>
+            </tbody>
+          </table>
+        </div>
         <div class="row">
           <div class="col-md-3">
             <div class="form-group">
@@ -437,7 +529,6 @@
             </div>
           </div>
         </div>
-
         <div class="row">
           <div class="col-md-12">
             <div class="form-group">

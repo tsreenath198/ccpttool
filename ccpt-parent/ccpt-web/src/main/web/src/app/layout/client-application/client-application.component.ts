@@ -145,13 +145,13 @@ export class ClientApplicationComponent implements OnInit {
     this.model.caStatus = 'New';
   }
   private enableFormEditable(): void {
-    this.readOnlyForm = 'U';
+    this.readOnlyForm = '';
     this.enableButtonType = 'U';
   }
   public setModel(id: number) {
     // this.isInterviewScheduled = true;
     this.getCAById(id);
-    this.readOnlyForm = 'R';
+    this.readOnlyForm = 'U';
     this.enableButtonType = 'E';
     this.showAction = true;
     this.action = null;

@@ -98,8 +98,12 @@
                 <td>{{ model.name }}</td>
               </tr>
               <tr>
-                <th>Industry/th>
+                <th>Industry</th>
                 <td>{{ model.industry }}</td>
+              </tr>
+              <tr>
+                <th>Website</th>
+                <td>{{ model.website }}</td>
               </tr>
               <tr>
                 <th>Phone</th>
@@ -110,12 +114,53 @@
                 <td>{{ model.email }}</td>
               </tr>
               <tr>
-                <th>Notes</th>
-                <td>{{ model.description }}</td>
+                <th>Guarantee Period</th>
+                <td>{{ model.guaranteePeriod }}</td>
               </tr>
-                <tr *ngFor="let ap of model.properties; let i = index">
-                  <th>{{ap.name}}</th>
-                  <td>{{ap.value}}</td>
+              <tr>
+                <th>Credit Period</th>
+                <td>{{ model.creditPeriod }}</td>
+              </tr>
+              <tr>
+                <th>Service Tax no.</th>
+                <td>{{ model.servicetaxNo }}</td>
+              </tr>
+              <tr>
+                <th>Service Charge</th>
+                <td>{{ model.serviceCharge }}</td>
+              </tr>
+              <tr>
+                <th>GST</th>
+                <td>{{ model.gst }}</td>
+              </tr>
+              <tr>
+                <th>Description</th>
+                <td>
+                  <p [innerHTML]="model.description"></p>
+                </td>
+              </tr>
+              <tr>
+                <th>Address</th>
+                <td>{{ model.address }}</td>
+              </tr>
+              <tr *ngIf="model.address != model.billingAddress">
+                <th>Billing Address</th>
+                <td>{{ model.billingAddress }}</td>
+              </tr>
+              <tr *ngFor="let ap of model.properties">
+                <th>{{ap.name}}</th>
+                <td>{{ap.value}}</td>
+              </tr>
+              <tr *ngFor="let cc of model.clientContacts">
+                <th>Contact</th>
+                <td>{{cc.fullname}}<br>
+                {{cc.email}}<br>
+                {{cc.phone}}</td>
+              </tr>
+              
+              <tr *ngFor="let fl of model.files">
+                  <th>Files</th>
+                  <td class="file-download" (click)="downloadFile(fl.id)">{{fl.fileName}}</td>
                 </tr>
             </tbody>
           </table>
@@ -437,7 +482,7 @@
           </div>
           <div class="row">
               <div class="col-md-12">
-                  <div class="modal-body" *ngIf="model.files !=null">
+                  <div class="modal-body" *ngIf="model.files.length>0">
                       <table class="table">
                         <thead>
                           <th>File Name</th>

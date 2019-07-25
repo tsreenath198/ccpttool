@@ -77,7 +77,7 @@ export class ClientComponent implements OnInit {
             this.spinner(true);
         });
         this.model.properties = [];
-        this.model['files'] = [];
+        this.model.files = [];
         this.model.serviceCharge = '8.33';
         this.model.guaranteePeriod = '3 months';
         this.model.creditPeriod = '1 month';
@@ -213,29 +213,6 @@ export class ClientComponent implements OnInit {
             }
         }
     }
-    public actions(value,trashContent,uploadContent,downloadContent,form){
-        switch(value){
-          case 'Delete':{
-            this.open(this.model.id,trashContent);
-            break;
-          }
-          case 'File Upload':{
-            this.open(this.model.id,uploadContent);
-            break;
-          }
-          case 'File Download':{
-            this.open(this.model.id,downloadContent);
-            break;
-          }
-          case 'Edit':{
-            this.enableFormEditable();
-            break;
-          }
-          case 'Close':{
-            this.cancelForm(form);
-          }
-        }
-      }
     public billngAddressMatch() {
         if (this.address === true) {
             this.model.billingAddress = this.model.address;

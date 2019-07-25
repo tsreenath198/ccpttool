@@ -122,13 +122,13 @@ export class ConsultantComponent implements OnInit {
   }
   public setModel(id: number) {
     this.getConsultantById(id);
-    this.readOnlyForm = 'R';
+    this.readOnlyForm = 'U';
     this.enableButtonType = 'E';
     this.showAction = true;
     this.action = null;
   }
   private enableFormEditable(): void {
-    this.readOnlyForm = 'U';
+    this.readOnlyForm = '';
     this.enableButtonType = 'U';
   }
   private formReset() {
