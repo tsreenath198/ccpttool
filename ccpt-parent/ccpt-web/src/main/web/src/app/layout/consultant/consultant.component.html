@@ -446,7 +446,7 @@
               </textarea>
             </div>
           </div>
-          <div class="row" *ngIf="model.properties.length != null">
+          <div class="row" *ngIf="model.properties.length > 0">
             <div class="col-md-12 ml-3">
               <div class="form-group">
                 <label>Additional Properties</label>
@@ -521,7 +521,7 @@
         </div>
         <div class="row">
           <div class="col-md-12">
-            <div class="modal-body" *ngIf="model.files != null ">
+            <div class="modal-body" *ngIf="model.files.length>0">
               <table class="table">
                 <thead>
                   <th>File Name</th>

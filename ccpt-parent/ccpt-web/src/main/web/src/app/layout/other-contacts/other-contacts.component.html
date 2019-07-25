@@ -1,7 +1,6 @@
 <div [@routerTransition]>
-  <app-page-header [icon1]="'fa-address-book'" [heading1]="'Other Contacts'">
-  </app-page-header>
-  
+  <app-page-header [icon1]="'fa-address-book'" [heading1]="'Other Contacts'"> </app-page-header>
+
   <div class="spinner padding-top justify-content-md-center" *ngIf="!listReturned">
     <div class="bounce1"></div>
     <div class="bounce2"></div>
@@ -10,30 +9,32 @@
   <div class="row" *ngIf="listReturned">
     <div class="col-md-7">
       <div class="row">
-        <div class="col-md-6"><input type="text" class="form-control" placeholder="search..."
-            [(ngModel)]="currSearchTxt" /></div>
-      </div>      
+        <div class="col-md-6"><input type="text" class="form-control" placeholder="search..." [(ngModel)]="currSearchTxt" /></div>
+      </div>
       <div class="table-responsive mt-2 table-wrapper-scroll-y my-custom-scrollbar" [style.height.px]="screenHeight">
         <table class="table table-hover table-striped">
-            <thead>
-                <tr>
-                  <th>
-                    Name
-                  </th>
-                  <th>
-                    Email
-                  </th>
-                  <th >
-                    Phone
-                  </th>
-                  <!-- <th>
+          <thead>
+            <tr>
+              <th>
+                Name
+              </th>
+              <th>
+                Email
+              </th>
+              <th>
+                Phone
+              </th>
+              <!-- <th>
                       <span class="pull-right">Action</span>
                   </th> -->
-                </tr>
-              </thead>
+            </tr>
+          </thead>
           <tbody>
-            <tr *ngFor="let ocl of OCList | filter: currSearchTxt; let i = index"
-              [ngClass]="!ocl.isProfileCompleted ? 'bl-red' : 'bl-trans'" (click)="setModel(ocl.id)">
+            <tr
+              *ngFor="let ocl of OCList | filter: currSearchTxt; let i = index"
+              [ngClass]="!ocl.isProfileCompleted ? 'bl-red' : 'bl-trans'"
+              (click)="setModel(ocl.id)"
+            >
               <td>
                 {{ ocl.name }}
               </td>
@@ -54,144 +55,200 @@
     </div>
     <div class=" col-md-5">
       <form name="form" id="otherContactForm" (ngSubmit)="f.form.valid && create(f)" #f="ngForm" novalidate>
-          <div class="row text-center">
-              <div class="col-md-12 form-group">
-                <button type="submit" *ngIf="enableButtonType == ''" class="btn btn-secondary ml-3"
-                  [disabled]="f.form.pristine || f.form.invalid || isCreate">Add</button>
-                <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2"
-                  (click)="update(f)">Update</button>
-                <!-- <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button"
+        <div class="row text-center">
+          <div class="col-md-12 form-group">
+            <button
+              type="submit"
+              *ngIf="enableButtonType == ''"
+              class="btn btn-secondary ml-3"
+              [disabled]="f.form.pristine || f.form.invalid || isCreate"
+            >
+              Add
+            </button>
+            <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2" (click)="update(f)">Update</button>
+            <!-- <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button"
                   (click)="enableFormEditable()">
                   Edit
                 </button> -->
-                <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3" 
-                *ngIf="enableButtonType == ''">
-                  {{ enableButtonType != '' ? 'Close' : 'Clear' }}
-                </button>
-                
-                <span class="pull-right" *ngIf="showAction">
-                      <div class="dropdown theme-dropdown clearfix" placement="bottom-right" ngbDropdown>
-                          <!-- <button class="btn btn-secondary" >
+            <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3" *ngIf="enableButtonType == ''">
+              {{ enableButtonType != '' ? 'Close' : 'Clear' }}
+            </button>
+
+            <span class="pull-right" *ngIf="showAction">
+              <div class="dropdown theme-dropdown clearfix" placement="bottom-right" ngbDropdown>
+                <!-- <button class="btn btn-secondary" >
                               Dropdown
                           </button> -->
-                          <i class="fa fa-bars" ngbDropdownToggle></i>
-                          <div class="dropdown-menu" aria-labelledby="dropdownMenu1" ngbDropdownMenu>
-                              <a class="dropdown-item drop-list" (click)="enableFormEditable()">Edit</a>
-                              <a class="dropdown-item drop-list" (click)="open(model.id, trashContent)">Delete</a>
-                              <a class="dropdown-item drop-list" (click)="cancelForm(f)">Close</a>
-                          </div>
-                      </div> 
-                </span>          
-              </div>
-            </div>
-        <div class="row">
-          <div class="col-md-6">
-            <div class="form-group">
-              <label>Name<span class="required">*</span></label>
-              <input class="form-control capi" [readonly]="readOnlyForm == 'R'" [(ngModel)]="model.name" name="name"
-                [ngClass]="{ 'is-invalid': f.submitted && name.invalid }" #name="ngModel" #ocName (keyup)="transformTitleCase(ocName)" required />
-              <div class="invalid-feedback">
-                name is mandatory
-              </div>
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="form-group">
-              <label>Phone</label>
-              <input class="form-control" [readonly]="readOnlyForm == 'R'" [(ngModel)]="model.phone" name="phone"
-                [ngClass]="{ 'is-invalid': f.submitted && name.invalid }" #phone="ngModel" />
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="form-group">
-              <label>E-Mail</label>
-              <input class="form-control" [readonly]="readOnlyForm == 'R'" [(ngModel)]="model.email" name="email"
-                #email="ngModel" />
-            </div>
-          </div>
-          <div class="row" *ngIf="model.properties.length>0">
-              <div class="col-md-12 ml-3" *ngIf="model.properties.length > 0">
-                  <div class="form-group">
-                    <label>Additional Properties</label>
-                    <div class="row" *ngFor="let ap of model.properties; let i = index">
-                      <div class="col-md-5">
-                        <input
-                          type="text"
-                          [(ngModel)]="ap.name"
-                          class="form-control"
-                          name="addPropName{{ i }}"
-                          [readonly]="readOnlyForm == 'R'"
-                        />
-                      </div>
-                      <div class="col-md-5">
-                        <input
-                          type="text"
-                          [(ngModel)]="ap.value"
-                          class="form-control"
-                          name="addPropValue{{ i }}"
-                          [readonly]="readOnlyForm == 'R'"
-                        />
-                      </div>
-                      <div class="col-md-2">
-                        <i
-                          class="fa fa-minus"
-                          aria-hidden="true"
-                          id="decrease"
-                          *ngIf="enableButtonType != 'E'"
-                          (click)="propertiesListIncrement($event.target, i)"
-                        ></i>
-                      </div>
-                    </div>
-                  </div>
+                <i class="fa fa-bars" ngbDropdownToggle></i>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenu1" ngbDropdownMenu>
+                  <a class="dropdown-item drop-list" (click)="enableFormEditable()">Edit</a>
+                  <a class="dropdown-item drop-list" (click)="open(model.id, trashContent)">Delete</a>
+                  <a class="dropdown-item drop-list" (click)="cancelForm(f)">Close</a>
                 </div>
-            </div>
-          <div class="col-md-12">
-            <div class="form-group">
-              <label>Notes</label>
-              <textarea class="form-control" cols="5" rows="5" [readonly]="readOnlyForm == 'R'"
-                [(ngModel)]="model.description" name="notes" #notes="ngModel"></textarea>
-            </div>
+              </div>
+            </span>
           </div>
         </div>
-        <div class="row">
-            <div class="col-md-12">
+        <div *ngIf="readOnlyForm == 'U'; else notRead">
+          <table class="table table-borderless">
+            <tbody>
+              <tr>
+                <th>Name</th>
+                <td>{{ model.name }}</td>
+              </tr>
+              <tr>
+                <th>Phone</th>
+                <td>{{ model.phone }}</td>
+              </tr>
+              <tr>
+                <th>Email</th>
+                <td>{{ model.email }}</td>
+              </tr>
+              <tr>
+                <th>Notes</th>
+                <td>{{ model.description }}</td>
+              </tr>
+                <tr *ngFor="let ap of model.properties; let i = index">
+                  <th>{{ap.name}}</th>
+                  <td>{{ap.value}}</td>
+                </tr>
+            </tbody>
+          </table>
+        </div>
+        <ng-template #notRead>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Name<span class="required">*</span></label>
+                <input
+                  class="form-control capi"
+                  [readonly]="readOnlyForm == 'R'"
+                  [(ngModel)]="model.name"
+                  name="name"
+                  [ngClass]="{ 'is-invalid': f.submitted && name.invalid }"
+                  #name="ngModel"
+                  #ocName
+                  (keyup)="transformTitleCase(ocName)"
+                  required
+                />
+                <div class="invalid-feedback">
+                  name is mandatory
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Phone</label>
+                <input
+                  class="form-control"
+                  [readonly]="readOnlyForm == 'R'"
+                  [(ngModel)]="model.phone"
+                  name="phone"
+                  [ngClass]="{ 'is-invalid': f.submitted && name.invalid }"
+                  #phone="ngModel"
+                />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>E-Mail</label>
+                <input class="form-control" [readonly]="readOnlyForm == 'R'" [(ngModel)]="model.email" name="email" #email="ngModel" />
+              </div>
+            </div>
+            <div class="row" *ngIf="model.properties.length > 0">
+              <div class="col-md-12 ml-3" *ngIf="model.properties.length > 0">
                 <div class="form-group">
                   <label>Additional Properties</label>
-                  <div class="row">
+                  <div class="row" *ngFor="let ap of model.properties; let i = index">
                     <div class="col-md-5">
-                      <input type="text" [(ngModel)]="apName" class="form-control" name="apName" [readonly]="readOnlyForm == 'R'" />
+                      <input
+                        type="text"
+                        [(ngModel)]="ap.name"
+                        class="form-control"
+                        name="addPropName{{ i }}"
+                        [readonly]="readOnlyForm == 'R'"
+                      />
                     </div>
                     <div class="col-md-5">
-                      <input type="text" [(ngModel)]="apValue" class="form-control" name="apValue" [readonly]="readOnlyForm == 'R'"/>
+                      <input
+                        type="text"
+                        [(ngModel)]="ap.value"
+                        class="form-control"
+                        name="addPropValue{{ i }}"
+                        [readonly]="readOnlyForm == 'R'"
+                      />
                     </div>
                     <div class="col-md-2">
                       <i
-                        class="fa fa-plus"
+                        class="fa fa-minus"
                         aria-hidden="true"
-                        id="increase"
+                        id="decrease"
                         *ngIf="enableButtonType != 'E'"
-                        (click)="propertiesListIncrement($event.target, 0)"
+                        (click)="propertiesListIncrement($event.target, i)"
                       ></i>
                     </div>
                   </div>
                 </div>
               </div>
+            </div>
+            <div class="col-md-12">
+              <div class="form-group">
+                <label>Notes</label>
+                <textarea
+                  class="form-control"
+                  cols="5"
+                  rows="5"
+                  [readonly]="readOnlyForm == 'R'"
+                  [(ngModel)]="model.description"
+                  name="notes"
+                  #notes="ngModel"
+                ></textarea>
+              </div>
+            </div>
           </div>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label>Additional Properties</label>
+                <div class="row">
+                  <div class="col-md-5">
+                    <input type="text" [(ngModel)]="apName" class="form-control" name="apName" [readonly]="readOnlyForm == 'R'" />
+                  </div>
+                  <div class="col-md-5">
+                    <input type="text" [(ngModel)]="apValue" class="form-control" name="apValue" [readonly]="readOnlyForm == 'R'" />
+                  </div>
+                  <div class="col-md-2">
+                    <i
+                      class="fa fa-plus"
+                      aria-hidden="true"
+                      id="increase"
+                      *ngIf="enableButtonType != 'E'"
+                      (click)="propertiesListIncrement($event.target, 0)"
+                    ></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-template>
         <div class="row text-center">
           <div class="col-md-12">
-            <button type="submit" *ngIf="enableButtonType == ''" class="btn btn-secondary ml-3"
+            <button
+              type="submit"
+              *ngIf="enableButtonType == ''"
+              class="btn btn-secondary ml-3"
               [disabled]="f.form.pristine || f.form.invalid || isCreate"
->Add</button>
-            <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2"
-              (click)="update(f)">Update</button>
+            >
+              Add
+            </button>
+            <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2" (click)="update(f)">Update</button>
             <!-- <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button"
               (click)="enableFormEditable()">
               Edit
             </button> -->
-            <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3" 
-            *ngIf="enableButtonType == ''">
+            <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3" *ngIf="enableButtonType == ''">
               {{ enableButtonType != '' ? 'Close' : 'Clear' }}
-            </button>          
+            </button>
           </div>
         </div>
       </form>

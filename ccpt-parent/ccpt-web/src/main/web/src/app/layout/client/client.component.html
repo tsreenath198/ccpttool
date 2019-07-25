@@ -90,340 +90,373 @@
             </span>
           </div>
         </div>
-        <div class="row">
-          <div class="col-md-6">
-            <div class="form-group">
-              <label>Client Name<span class="required">*</span></label>
-              <input
-                class="form-control"
-                [readonly]="readOnlyForm == 'R'"
-                [(ngModel)]="model.name"
-                name="code"
-                [ngClass]="{ 'is-invalid': f.submitted && code.invalid }"
-                #code="ngModel"
-                #clientName
-                (keyup)="transformTitleCase(clientName)"
-                required
-              />
-              <div class="invalid-feedback">
-                client name is mandatory
-              </div>
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="form-group">
-              <label>Industry</label>
-              <input
-                class="form-control"
-                [readonly]="readOnlyForm == 'R'"
-                [(ngModel)]="model.industry"
-                name="industry"
-                [ngClass]="{ 'is-invalid': f.submitted && industry.invalid }"
-                #industry="ngModel"
-              />
-            </div>
-          </div>
+        <div *ngIf="readOnlyForm == 'U'; else notRead">
+          <table class="table table-borderless">
+            <tbody>
+              <tr>
+                <th>Client Name</th>
+                <td>{{ model.name }}</td>
+              </tr>
+              <tr>
+                <th>Industry/th>
+                <td>{{ model.industry }}</td>
+              </tr>
+              <tr>
+                <th>Phone</th>
+                <td>{{ model.phone }}</td>
+              </tr>
+              <tr>
+                <th>Email</th>
+                <td>{{ model.email }}</td>
+              </tr>
+              <tr>
+                <th>Notes</th>
+                <td>{{ model.description }}</td>
+              </tr>
+                <tr *ngFor="let ap of model.properties; let i = index">
+                  <th>{{ap.name}}</th>
+                  <td>{{ap.value}}</td>
+                </tr>
+            </tbody>
+          </table>
         </div>
-        <div class="row">
-          <div class="col-md-6">
-            <div class="form-group">
-              <label>Phone</label>
-              <input
-                class="form-control"
-                [readonly]="readOnlyForm == 'R'"
-                [(ngModel)]="model.phone"
-                name="phone"
-                [ngClass]="{ 'is-invalid': f.submitted && phone.invalid }"
-                #phone="ngModel"
-              />
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="form-group">
-              <label>Email</label>
-              <input
-                class="form-control"
-                [readonly]="readOnlyForm == 'R'"
-                [(ngModel)]="model.email"
-                name="email"
-                [ngClass]="{ 'is-invalid': f.submitted && email.invalid }"
-                #email="ngModel"
-              />
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-6">
-            <div class="form-group">
-              <label>Guarantee Period</label>
-              <input
-                type="text"
-                class="form-control"
-                [readonly]="readOnlyForm == 'R'"
-                [(ngModel)]="model.guaranteePeriod"
-                name="guaranteePeriod"
-                [ngClass]="{ 'is-invalid': f.submitted && guaranteePeriod.invalid }"
-                #guaranteePeriod="ngModel"
-              />
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="form-group">
-              <label>Credit Period</label>
-              <input
-                class="form-control"
-                type="text"
-                [readonly]="readOnlyForm == 'R'"
-                [(ngModel)]="model.creditPeriod"
-                name="creditPeriod"
-                [ngClass]="{ 'is-invalid': f.submitted && creditPeriod.invalid }"
-                #creditPeriod="ngModel"
-              />
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-6">
-            <div class="form-group">
-              <label>Service Tax no</label>
-              <input
-                class="form-control"
-                [readonly]="readOnlyForm == 'R'"
-                [(ngModel)]="model.servicetaxNo"
-                name="servicetaxNo"
-                [ngClass]="{ 'is-invalid': f.submitted && servicetaxNo.invalid }"
-                #servicetaxNo="ngModel"
-              />
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="form-group">
-              <label>Service Charge</label>
-              <input
-                class="form-control"
-                [readonly]="readOnlyForm == 'R'"
-                [(ngModel)]="model.serviceCharge"
-                name="serviceCharge"
-                [ngClass]="{ 'is-invalid': f.submitted && serviceCharge.invalid }"
-                #serviceCharge="ngModel"
-              />
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-6">
-            <div class="form-group">
-              <label>GST</label>
-              <input
-                class="form-control"
-                [readonly]="readOnlyForm == 'R'"
-                [(ngModel)]="model.gst"
-                name="gst"
-                [ngClass]="{ 'is-invalid': f.submitted && gst.invalid }"
-                #gst="ngModel"
-              />
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="form-group">
-              <label>Website</label>
-              <input
-                class="form-control"
-                [readonly]="readOnlyForm == 'R'"
-                [(ngModel)]="model.website"
-                name="web"
-                [ngClass]="{ 'is-invalid': f.submitted && web.invalid }"
-                #web="ngModel"
-              />
-            </div>
-          </div>
-        </div>
-        <div class="row" *ngIf="model.properties.length > 0">
-          <div class="col-md-12" >
-            <div class="form-group">
-              <label>Additional Properties</label>
-              <div class="row" *ngFor="let ap of model.properties; let i = index">
-                <div class="col-md-5">
-                  <input
-                    type="text"
-                    [(ngModel)]="ap.name"
-                    class="form-control"
-                    name="addPropName{{ i }}"
-                    [readonly]="readOnlyForm == 'R'"
-                  />
-                </div>
-                <div class="col-md-5">
-                  <input
-                    type="text"
-                    [(ngModel)]="ap.value"
-                    class="form-control"
-                    name="addPropValue{{ i }}"
-                    [readonly]="readOnlyForm == 'R'"
-                  />
-                </div>
-                <div class="col-md-2">
-                  <i
-                    class="fa fa-minus"
-                    aria-hidden="true"
-                    id="decrease"
-                    *ngIf="enableButtonType != 'E'"
-                    (click)="propertiesListIncrement($event.target, i)"
-                  ></i>
+        <ng-template #notRead>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Client Name<span class="required">*</span></label>
+                <input
+                  class="form-control"
+                  [readonly]="readOnlyForm == 'R'"
+                  [(ngModel)]="model.name"
+                  name="code"
+                  [ngClass]="{ 'is-invalid': f.submitted && code.invalid }"
+                  #code="ngModel"
+                  #clientName
+                  (keyup)="transformTitleCase(clientName)"
+                  required
+                />
+                <div class="invalid-feedback">
+                  client name is mandatory
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-12">
-            <div class="form-group">
-              <label>Description</label>
-              <angular-editor [(ngModel)]="model.description" name="description" [config]="config"></angular-editor>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Industry</label>
+                <input
+                  class="form-control"
+                  [readonly]="readOnlyForm == 'R'"
+                  [(ngModel)]="model.industry"
+                  name="industry"
+                  [ngClass]="{ 'is-invalid': f.submitted && industry.invalid }"
+                  #industry="ngModel"
+                />
+              </div>
             </div>
           </div>
-        </div>
-        <div class="row">
-          <div class="col-md-12">
-            <div class="form-group">
-              <label>Address</label>
-              <textarea
-                class="form-control"
-                cols="5"
-                rows="5"
-                [readonly]="readOnlyForm == 'R'"
-                [(ngModel)]="model.address"
-                name="add"
-                [ngClass]="{ 'is-invalid': f.submitted && add.invalid }"
-                #add="ngModel"
-              ></textarea>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Phone</label>
+                <input
+                  class="form-control"
+                  [readonly]="readOnlyForm == 'R'"
+                  [(ngModel)]="model.phone"
+                  name="phone"
+                  [ngClass]="{ 'is-invalid': f.submitted && phone.invalid }"
+                  #phone="ngModel"
+                />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Email</label>
+                <input
+                  class="form-control"
+                  [readonly]="readOnlyForm == 'R'"
+                  [(ngModel)]="model.email"
+                  name="email"
+                  [ngClass]="{ 'is-invalid': f.submitted && email.invalid }"
+                  #email="ngModel"
+                />
+              </div>
             </div>
           </div>
-        </div>
-        <div class="row">
-          <div class="col-md-12 pb-2">
-            <input type="checkbox" class="" [(ngModel)]="address" (change)="billngAddressMatch()" name="interviewCheckbox" />&nbsp;<label
-              >Billing address is same as address</label
-            >
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-12">
-            <div class="form-group">
-              <label>Billing Address</label>
-              <textarea
-                class="form-control"
-                cols="5"
-                rows="5"
-                [readonly]="readOnlyForm == 'R'"
-                [(ngModel)]="model.billingAddress"
-                name="billingAddress"
-                [ngClass]="{ 'is-invalid': f.submitted && billingAddress.invalid }"
-                #billingAddress="ngModel"
-              ></textarea>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Guarantee Period</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  [readonly]="readOnlyForm == 'R'"
+                  [(ngModel)]="model.guaranteePeriod"
+                  name="guaranteePeriod"
+                  [ngClass]="{ 'is-invalid': f.submitted && guaranteePeriod.invalid }"
+                  #guaranteePeriod="ngModel"
+                />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Credit Period</label>
+                <input
+                  class="form-control"
+                  type="text"
+                  [readonly]="readOnlyForm == 'R'"
+                  [(ngModel)]="model.creditPeriod"
+                  name="creditPeriod"
+                  [ngClass]="{ 'is-invalid': f.submitted && creditPeriod.invalid }"
+                  #creditPeriod="ngModel"
+                />
+              </div>
             </div>
           </div>
-        </div>
-        <strong>Add Contacts</strong>
-        <div class="row">
-          <div class="table-responsive">
-            <table class="table table-hover table-striped">
-              <tbody>
-                <tr *ngFor="let cc of model.clientContacts; let i = index">
-                  <td>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Service Tax no</label>
+                <input
+                  class="form-control"
+                  [readonly]="readOnlyForm == 'R'"
+                  [(ngModel)]="model.servicetaxNo"
+                  name="servicetaxNo"
+                  [ngClass]="{ 'is-invalid': f.submitted && servicetaxNo.invalid }"
+                  #servicetaxNo="ngModel"
+                />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Service Charge</label>
+                <input
+                  class="form-control"
+                  [readonly]="readOnlyForm == 'R'"
+                  [(ngModel)]="model.serviceCharge"
+                  name="serviceCharge"
+                  [ngClass]="{ 'is-invalid': f.submitted && serviceCharge.invalid }"
+                  #serviceCharge="ngModel"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>GST</label>
+                <input
+                  class="form-control"
+                  [readonly]="readOnlyForm == 'R'"
+                  [(ngModel)]="model.gst"
+                  name="gst"
+                  [ngClass]="{ 'is-invalid': f.submitted && gst.invalid }"
+                  #gst="ngModel"
+                />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Website</label>
+                <input
+                  class="form-control"
+                  [readonly]="readOnlyForm == 'R'"
+                  [(ngModel)]="model.website"
+                  name="web"
+                  [ngClass]="{ 'is-invalid': f.submitted && web.invalid }"
+                  #web="ngModel"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="row" *ngIf="model.properties.length > 0">
+            <div class="col-md-12" >
+              <div class="form-group">
+                <label>Additional Properties</label>
+                <div class="row" *ngFor="let ap of model.properties; let i = index">
+                  <div class="col-md-5">
                     <input
+                      type="text"
+                      [(ngModel)]="ap.name"
                       class="form-control"
+                      name="addPropName{{ i }}"
                       [readonly]="readOnlyForm == 'R'"
-                      [(ngModel)]="cc.fullname"
-                      name="fullname{{ i }}"
-                      [ngClass]="{ 'is-invalid': f.submitted && fullname.invalid }"
-                      placeholder="fullname"
-                      #fullname="ngModel"
                     />
-                  </td>
-                  <td>
+                  </div>
+                  <div class="col-md-5">
                     <input
+                      type="text"
+                      [(ngModel)]="ap.value"
                       class="form-control"
-                      type="email"
+                      name="addPropValue{{ i }}"
                       [readonly]="readOnlyForm == 'R'"
-                      [(ngModel)]="cc.email"
-                      name="email{{ i }}"
-                      [ngClass]="{ 'is-invalid': f.submitted && email.invalid }"
-                      placeholder="email"
-                      #email="ngModel"
                     />
-                  </td>
-                  <td>
-                    <!--pattern="/^-?\d+\.?\d*$/" onKeyPress="if(this.value.length==12) return false;"-->
-                    <input
-                      class="form-control"
-                      type="string"
-                      [readonly]="readOnlyForm == 'R'"
-                      [(ngModel)]="cc.phone"
-                      name="phone{{ i }}"
-                      [ngClass]="{ 'is-invalid': f.submitted && phone.invalid }"
-                      placeholder="phone"
-                      #phone="ngModel"
-                    />
-                  </td>
-                  <td>
-                    <i class="fa fa-minus" aria-hidden="true" id="decrease" (click)="clientContactListIncrement($event.target, i)"></i>
+                  </div>
+                  <div class="col-md-2">
+                    <i
+                      class="fa fa-minus"
+                      aria-hidden="true"
+                      id="decrease"
+                      *ngIf="enableButtonType != 'E'"
+                      (click)="propertiesListIncrement($event.target, i)"
+                    ></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label>Description</label>
+                <angular-editor [(ngModel)]="model.description" name="description" [config]="config"></angular-editor>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label>Address</label>
+                <textarea
+                  class="form-control"
+                  cols="5"
+                  rows="5"
+                  [readonly]="readOnlyForm == 'R'"
+                  [(ngModel)]="model.address"
+                  name="add"
+                  [ngClass]="{ 'is-invalid': f.submitted && add.invalid }"
+                  #add="ngModel"
+                ></textarea>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12 pb-2">
+              <input type="checkbox" class="" [(ngModel)]="address" (change)="billngAddressMatch()" name="interviewCheckbox" />&nbsp;<label
+                >Billing address is same as address</label
+              >
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label>Billing Address</label>
+                <textarea
+                  class="form-control"
+                  cols="5"
+                  rows="5"
+                  [readonly]="readOnlyForm == 'R'"
+                  [(ngModel)]="model.billingAddress"
+                  name="billingAddress"
+                  [ngClass]="{ 'is-invalid': f.submitted && billingAddress.invalid }"
+                  #billingAddress="ngModel"
+                ></textarea>
+              </div>
+            </div>
+          </div>
+          <strong>Add Contacts</strong>
+          <div class="row">
+            <div class="table-responsive">
+              <table class="table table-hover table-striped">
+                <tbody>
+                  <tr *ngFor="let cc of model.clientContacts; let i = index">
+                    <td>
+                      <input
+                        class="form-control"
+                        [readonly]="readOnlyForm == 'R'"
+                        [(ngModel)]="cc.fullname"
+                        name="fullname{{ i }}"
+                        [ngClass]="{ 'is-invalid': f.submitted && fullname.invalid }"
+                        placeholder="fullname"
+                        #fullname="ngModel"
+                      />
+                    </td>
+                    <td>
+                      <input
+                        class="form-control"
+                        type="email"
+                        [readonly]="readOnlyForm == 'R'"
+                        [(ngModel)]="cc.email"
+                        name="email{{ i }}"
+                        [ngClass]="{ 'is-invalid': f.submitted && email.invalid }"
+                        placeholder="email"
+                        #email="ngModel"
+                      />
+                    </td>
+                    <td>
+                      <!--pattern="/^-?\d+\.?\d*$/" onKeyPress="if(this.value.length==12) return false;"-->
+                      <input
+                        class="form-control"
+                        type="string"
+                        [readonly]="readOnlyForm == 'R'"
+                        [(ngModel)]="cc.phone"
+                        name="phone{{ i }}"
+                        [ngClass]="{ 'is-invalid': f.submitted && phone.invalid }"
+                        placeholder="phone"
+                        #phone="ngModel"
+                      />
+                    </td>
+                    <td>
+                      <i class="fa fa-minus" aria-hidden="true" id="decrease" (click)="clientContactListIncrement($event.target, i)"></i>
+                      <i
+                        class="fa fa-plus"
+                        *ngIf="i + 1 == model.clientContacts.length"
+                        aria-hidden="true"
+                        id="increase"
+                        (click)="clientContactListIncrement($event.target, i)"
+                      ></i>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label>Additional Properties</label>
+                <div class="row">
+                  <div class="col-md-5">
+                    <input type="text" [(ngModel)]="apName" class="form-control" name="apName" [readonly]="readOnlyForm == 'R'" />
+                  </div>
+                  <div class="col-md-5">
+                    <input type="text" [(ngModel)]="apValue" class="form-control" name="apValue" [readonly]="readOnlyForm == 'R'" />
+                  </div>
+                  <div class="col-md-2">
                     <i
                       class="fa fa-plus"
-                      *ngIf="i + 1 == model.clientContacts.length"
                       aria-hidden="true"
                       id="increase"
-                      (click)="clientContactListIncrement($event.target, i)"
+                      *ngIf="enableButtonType != 'E'"
+                      (click)="propertiesListIncrement($event.target, 0)"
                     ></i>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-12">
-            <div class="form-group">
-              <label>Additional Properties</label>
-              <div class="row">
-                <div class="col-md-5">
-                  <input type="text" [(ngModel)]="apName" class="form-control" name="apName" [readonly]="readOnlyForm == 'R'" />
-                </div>
-                <div class="col-md-5">
-                  <input type="text" [(ngModel)]="apValue" class="form-control" name="apValue" [readonly]="readOnlyForm == 'R'" />
-                </div>
-                <div class="col-md-2">
-                  <i
-                    class="fa fa-plus"
-                    aria-hidden="true"
-                    id="increase"
-                    *ngIf="enableButtonType != 'E'"
-                    (click)="propertiesListIncrement($event.target, 0)"
-                  ></i>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
-                <div class="modal-body" *ngIf="model.files !=null">
-                    <table class="table">
-                      <thead>
-                        <th>File Name</th>
-                        <th>Description</th>
-                        <th>Action</th>
-                      </thead>
-                      <tbody *ngFor="let fl of model.files">
-                        <td>{{ fl.fileName }}</td>
-                        <td>{{ fl.Description }}</td>
-                        <td>
-                          <button type="button" class="btn btn-secondary btn-sm" (click)="downloadFile(fl.id)">Download</button>
-                        </td>
-                      </tbody>
-                    </table>
-                  </div>
+          <div class="row">
+              <div class="col-md-12">
+                  <div class="modal-body" *ngIf="model.files !=null">
+                      <table class="table">
+                        <thead>
+                          <th>File Name</th>
+                          <th>Description</th>
+                          <th>Action</th>
+                        </thead>
+                        <tbody *ngFor="let fl of model.files">
+                          <td>{{ fl.fileName }}</td>
+                          <td>{{ fl.Description }}</td>
+                          <td>
+                            <button type="button" class="btn btn-secondary btn-sm" (click)="downloadFile(fl.id)">Download</button>
+                          </td>
+                        </tbody>
+                      </table>
+                    </div>
+              </div>
             </div>
-          </div>
+        </ng-template>
+        
         <div class="row text-center" *ngIf="loggedInRole != 'User'">
           <div class="col-md-12 form-group">
             <button

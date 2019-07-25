@@ -14,10 +14,8 @@ const routes: Routes = [
             // tslint:disable-next-line:max-line-length
             { path: 'client-application-status', loadChildren: './client-application-status/client-application-status.module#ClientApplicationStatusModule'},
             { path: 'client-position', loadChildren: './client-position/client-position.module#ClientPositionModule'},
-            // tslint:disable-next-line:max-line-length
             { path: 'client-position-status', loadChildren: './client-position-status/client-position-status.module#ClientPositionStatusModule'},
             { path: 'consultant', loadChildren: './consultant/consultant.module#ConsultantModule'},
-            // tslint:disable-next-line:max-line-length
             { path: 'consultant-call-history', loadChildren: './consultant-call-history/consultant-call-history.module#ConsultantCallHistoryModule' },
             { path: 'consultant-status', loadChildren: './consultant-status/consultant-status.module#ConsultantStatusModule'},
             { path: 'recruiter', loadChildren: './recruiter/recruiter.module#RecruiterModule'},

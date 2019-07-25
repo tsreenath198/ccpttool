@@ -72,24 +72,15 @@ export class OtherContactsComponent implements OnInit {
         const bool = (value == null) ? true : false;
         return bool;
     }
-    public dblSetModel() {
-        this.readOnlyForm = 'U';
-        //this.config.editable = true;
-        this.enableButtonType = 'U';
-        this.showAction = true;
-        this.action = null;
-    }
-    private enableFormEditable(): void {
-
-        this.readOnlyForm = 'U';
+    public enableFormEditable(): void {
+        this.readOnlyForm = '';
         //this.config.editable = true;
         this.enableButtonType = 'U';
     }
-
     public setModel(id) {
         this.spinner(false);
         this.getById(id);
-        this.readOnlyForm = 'R';
+        this.readOnlyForm = 'U';
         // this.config.editable = false;
         this.enableButtonType = 'E';
         this.showAction = true;

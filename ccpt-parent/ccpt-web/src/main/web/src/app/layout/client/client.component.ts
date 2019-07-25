@@ -86,19 +86,13 @@ export class ClientComponent implements OnInit {
     private clientContactDeclare() {
         this.model.clientContacts = [{ 'fullname': '', 'email': '', 'phone': '+91' }];
     }
-    public dblSetModel() {
-        this.readOnlyForm = 'U';
-        this.enableButtonType = 'U';
-        this.showAction = true;
-        this.action=null;
-    }
     private enableFormEditable(): void {
-        this.readOnlyForm = 'U';
+        this.readOnlyForm = '';
         this.enableButtonType = 'U';
     }
     public setModel(id) {
         this.getById(id);
-        this.readOnlyForm = 'R';
+        this.readOnlyForm = 'U';
         this.enableButtonType = 'E';
         this.showAction = true;
         this.action=null;

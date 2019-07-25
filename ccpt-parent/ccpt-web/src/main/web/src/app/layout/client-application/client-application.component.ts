@@ -111,7 +111,7 @@ export class ClientApplicationComponent implements OnInit {
       this.spinner(true);
     });
     this.model.properties = [];
-    this.model['files'] = [];
+    this.model.files = [];
     this.model.caStatus = 'New';
     this.page = 1;
     this.isCRF = false;

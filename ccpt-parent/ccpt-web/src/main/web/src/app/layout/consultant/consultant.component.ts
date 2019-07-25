@@ -97,10 +97,10 @@ export class ConsultantComponent implements OnInit {
       this.pageChange(this.page);
       this.spinner(true);
     });
-    this.model['properties'] = [];
-    this.model['files'] = [];
-    this.model['conStatus'] = 'Active';
-    this.model['phone'] = '+91';
+    this.model.properties = [];
+    this.model.files = [];
+    this.model.conStatus = 'Active';
+    this.model.phone = '+91';
     this.page = 1;
   }
   private validate(value: any): boolean {
@@ -116,15 +116,9 @@ export class ConsultantComponent implements OnInit {
     }
   }
   defaultValues() {
-    this.model['properties'] = [];
-    this.model['conStatus'] = 'Active';
-    this.model['phone'] = '+91';
-  }
-  public dblSetModel() {
-    this.readOnlyForm = 'U';
-    this.enableButtonType = 'U';
-    this.showAction = true;
-    this.action = null;
+    this.model.properties = [];
+    this.model.conStatus = 'Active';
+    this.model.phone = '+91';
   }
   public setModel(id: number) {
     this.getConsultantById(id);
@@ -138,9 +132,11 @@ export class ConsultantComponent implements OnInit {
     this.enableButtonType = 'U';
   }
   private formReset() {
-    this.model = <ConsultantModel>{ properties: [] };
-    this.model['conStatus'] = 'Active';
-    this.model['phone'] = '+91';
+    this.model = <ConsultantModel>{ };
+    this.model.properties=[];
+    this.model.files=[]
+    this.model.conStatus = 'Active';
+    this.model.phone = '+91';
   }
   public create(consultantForm: NgForm): void {
     this.spinner(false);
@@ -200,6 +196,7 @@ export class ConsultantComponent implements OnInit {
   }
   public cancelForm(consultantForm: NgForm) {
     consultantForm.resetForm();
+    this.init();
     this.formReset();
     this.readOnlyForm = '';
     this.enableButtonType = '';
@@ -294,29 +291,6 @@ export class ConsultantComponent implements OnInit {
         }
     }
 }
-  public actions(value, trashContent, uploadContent, downloadContent, form) {
-    switch (value) {
-      case 'Delete': {
-        this.open(this.model.id, trashContent);
-        break;
-      }
-      case 'File Upload': {
-        this.open(this.model.id, uploadContent);
-        break;
-      }
-      case 'File Download': {
-        this.open(this.model.id, downloadContent);
-        break;
-      }
-      case 'Edit': {
-        this.enableFormEditable();
-        break;
-      }
-      case 'Close': {
-        this.cancelForm(form);
-      }
-    }
-  }
   public imposeMinMax(el) {
     if (el.value !== '') {
       if (parseInt(el.value) < parseInt(el.min)) {
