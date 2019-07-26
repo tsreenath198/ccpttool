@@ -10,13 +10,11 @@ import org.springframework.stereotype.Component;
 import com.ccpt.model.AdditionalProperty;
 import com.ccpt.model.ClientApplication;
 import com.ccpt.model.ClientPosition;
-import com.ccpt.model.Consultant;
 import com.ccpt.model.EmailContent;
 import com.ccpt.model.EmailTemplate;
 import com.ccpt.model.SMS;
 import com.ccpt.model.SmsTemplate;
 import com.ccpt.service.ClientPositionService;
-import com.ccpt.service.ConsultantService;
 import com.ccpt.util.StrSubstitutor;
 
 @Component
@@ -24,9 +22,6 @@ public class JobDescriptionSubstitutor implements ContentSubstitutor {
 
 	@Autowired
 	private ClientPositionService clientPositionService;
-
-	@Autowired
-	private ConsultantService consultantService;
 
 	@Override
 	public String getType() {
@@ -36,8 +31,6 @@ public class JobDescriptionSubstitutor implements ContentSubstitutor {
 	@Override
 	public EmailContent generate(EmailTemplate emailTemplate, Map<String, String> params) throws Exception {
 		Integer id = Integer.parseInt(params.get("cpId"));
-		Integer cid = Integer.parseInt(params.get("cId"));
-		Consultant consultant = consultantService.get(cid);
 		ClientPosition clientPosition = clientPositionService.get(id, true);
 		if (clientPosition != null) {
 			Map<String, String> valuesMap = new HashMap<String, String>();
@@ -48,12 +41,6 @@ public class JobDescriptionSubstitutor implements ContentSubstitutor {
 				valuesMap.put("location", clientPosition.getLocation());
 			}
 			valuesMap.put("jobTitle", clientPosition.getRole());
-			if (consultant != null) {
-				valuesMap.put("consultantName", consultant.getFullname());
-			} else {
-				throw new Exception("consultant is null for given id:" + id);
-			}
-
 			String templateSubject = emailTemplate.getSubject();
 			String templateBody = emailTemplate.getDescription();
 			String subject = StrSubstitutor.replace(templateSubject, valuesMap);
