@@ -38,7 +38,7 @@ public class JobDescriptionSubstitutor implements ContentSubstitutor {
 		Integer id = Integer.parseInt(params.get("cpId"));
 		Integer cid = Integer.parseInt(params.get("cId"));
 		Consultant consultant = consultantService.get(cid);
-		ClientPosition clientPosition = clientPositionService.get(id);
+		ClientPosition clientPosition = clientPositionService.get(id, true);
 		if (clientPosition != null) {
 			Map<String, String> valuesMap = new HashMap<String, String>();
 			String jd = appendTemplate(clientPosition);

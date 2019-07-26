@@ -36,23 +36,30 @@ public abstract class BaseService<T extends BaseEntity<ID>, ID> {
 	}
 
 	public T get(ID id) {
+		return get(id, false);
+	}
+
+	public T get(ID id, boolean isAll) {
 		Optional<T> entity = getRepository().findByIdAndActiveFlag(id, true);
 		if (entity.isPresent()) {
 			T result = entity.get();
-			if (result instanceof IDEntity) {
-				IDEntity idEntity = (IDEntity) result;
-				Optional<List<AdditionalProperty>> addnProps = apRepo.findByRefIdAndRefType(idEntity.getId(), ENTITY);
-				if (addnProps.isPresent()) {
-					idEntity.setProperties(addnProps.get());
+			if (isAll) {
+				if (result instanceof IDEntity) {
+					IDEntity idEntity = (IDEntity) result;
+					Optional<List<AdditionalProperty>> addnProps = apRepo.findByRefIdAndRefType(idEntity.getId(),
+							ENTITY);
+					if (addnProps.isPresent()) {
+						idEntity.setProperties(addnProps.get());
+					}
 				}
-			}
-			if (result instanceof FileSupportEntity) {
-				FileSupportEntity fsEntity = (FileSupportEntity) result;
-				List<UploadFile> uploadFiles = ufRepo.findByRefIdAndRefType(fsEntity.getId(), ENTITY);
-				for (UploadFile uploadFile : uploadFiles) {
-					uploadFile.setContent(null);
+				if (result instanceof FileSupportEntity) {
+					FileSupportEntity fsEntity = (FileSupportEntity) result;
+					List<UploadFile> uploadFiles = ufRepo.findByRefIdAndRefType(fsEntity.getId(), ENTITY);
+					for (UploadFile uploadFile : uploadFiles) {
+						uploadFile.setContent(null);
+					}
+					fsEntity.setFiles(uploadFiles);
 				}
-				fsEntity.setFiles(uploadFiles);
 			}
 			return result;
 		} else {
@@ -104,7 +111,7 @@ public abstract class BaseService<T extends BaseEntity<ID>, ID> {
 	}
 
 	public void delete(ID id) {
-		T entity = get(id);
+		T entity = get(id, true);
 		entity.setActiveFlag(false);
 		getRepository().save(entity);
 		postDelete(entity);

@@ -34,7 +34,7 @@ public abstract class BaseController<DTO extends BaseEntityDTO<ID>, MODEL extend
 	@GetMapping(ID_PARAM)
 	@ResponseBody
 	MODEL get(@PathVariable ID id) {
-		return getService().get(id);
+		return getService().get(id, true);
 	}
 
 	@PostMapping
