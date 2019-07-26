@@ -88,7 +88,8 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 				if (uploadedFile != null)
 					files.add(uploadedFile);
 				else
-					files.add(new UploadFile());
+					throw new CAException(
+							"Client application with id :" + clientApplication.getId() + " doesn't have crf file");
 				body.append(template);
 				String name = clientApplication.getClientPosition().getClient().getName();
 				names.add(name);
