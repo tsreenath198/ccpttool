@@ -1,8 +1,12 @@
 package com.ccpt.controller;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Properties;
 
 import javax.mail.Authenticator;
@@ -17,6 +21,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
+import javax.validation.ValidationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -32,6 +37,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import com.ccpt.constants.CCPTConstants;
 import com.ccpt.model.EmailContent;
+import com.ccpt.model.UploadFile;
 import com.ccpt.service.EmailContentService;
 
 @Controller
@@ -63,7 +69,7 @@ public class EmailController {
 	public ResponseEntity<String> sendEmail(@RequestBody EmailContent emailContent) throws Exception {
 		try {
 			sendEmailWithAttachments(emailContent.getToEmails(), emailContent.getSubject(), emailContent.getBody(),
-					null);
+					emailContent.getUploadFiles());
 			emailContentService.save(emailContent);
 		} catch (Exception e) {
 			throw new Exception("Sending Email is Failed");
@@ -133,7 +139,7 @@ public class EmailController {
 
 	}
 
-	public void sendEmailWithAttachments(String toAddress, String subject, String message, String[] attachFiles)
+	public void sendEmailWithAttachments(String toAddress, String subject, String message, List<UploadFile> files)
 			throws AddressException, MessagingException {
 		// sets SMTP server properties
 		Properties properties = new Properties();
@@ -170,16 +176,16 @@ public class EmailController {
 		multipart.addBodyPart(messageBodyPart);
 
 		// adds attachments
-		if (attachFiles != null && attachFiles.length > 0) {
-			for (String filePath : attachFiles) {
+		List<File> tempFiles = null;
+		if (files != null && files.size() > 0) {
+			tempFiles = createTempFiles(files);
+			for (File filePath : tempFiles) {
 				MimeBodyPart attachPart = new MimeBodyPart();
-
 				try {
 					attachPart.attachFile(filePath);
 				} catch (IOException ex) {
 					ex.printStackTrace();
 				}
-
 				multipart.addBodyPart(attachPart);
 			}
 		}
@@ -190,6 +196,34 @@ public class EmailController {
 		// sends the e-mail
 		Transport.send(msg);
 
+		if (tempFiles != null && tempFiles.size() > 0) {
+			for (File file : tempFiles) {
+				file.delete();
+			}
+		}
+
+	}
+
+	private List<File> createTempFiles(List<UploadFile> files) {
+		List<File> tempFiles = new ArrayList<File>();
+		for (UploadFile file : files) {
+			tempFiles.add(createTempFile(file));
+		}
+		return tempFiles;
+	}
+
+	private File createTempFile(UploadFile file) {
+		File f = new File(System.getProperty("java.io.tmpdir") + file.getFileName());
+		try {
+			OutputStream os = new FileOutputStream(f);
+			os.write(file.getContent());
+			System.out.println("Write bytes to file.");
+			os.close();
+			return f;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		throw new ValidationException("Unable to create temp file for : " + file.getFileName());
 	}
 
 }

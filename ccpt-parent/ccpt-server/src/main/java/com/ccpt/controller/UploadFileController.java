@@ -62,15 +62,7 @@ public class UploadFileController {
 
 		String fileName = StringUtils.cleanPath(file.getOriginalFilename());
 		String fileType = file.getContentType();
-		if (refType.equalsIgnoreCase("Client Application")) {
-			if (fileName.endsWith("doc") || fileName.endsWith("docx")) {
-				if (!fileName.contains("_crf")) {
-					throw new ValidationException("file name doesnot contain _crf extension");
-				}
-			} else {
-				throw new ValidationException("please upload only documents");
-			}
-		}
+
 		boolean isDuplicate = uploadFileService.isDuplicate(refId, refType, fileName);
 		if (!isDuplicate) {
 			UploadFile uploadFile = new UploadFile(file.getBytes(), refId, refType, comments, fileName, fileType);
@@ -83,10 +75,34 @@ public class UploadFileController {
 		}
 	}
 
+	@PostMapping("saveCrf")
+	public ResponseEntity<GenericResponse> uploadFile(@RequestParam("file") MultipartFile file,
+			@RequestParam("caId") int caId, @RequestParam("comments") String comments) throws Exception {
+
+		String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+		String fileType = file.getContentType();
+		if (fileName.endsWith("doc") || fileName.endsWith("docx")) {
+			if (!fileName.contains("_crf")) {
+				throw new ValidationException("file name does not contain _crf extension");
+			}
+		} else {
+			throw new ValidationException("please upload only documents");
+		}
+		boolean isDuplicate = uploadFileService.isDuplicate(caId, "CRF", fileName);
+		if (!isDuplicate) {
+			UploadFile uploadFile = new UploadFile(file.getBytes(), caId, "CRF", comments, fileName, fileType);
+			uploadFileService.save(uploadFile);
+
+			return new ResponseEntity<GenericResponse>(new GenericResponse(fileName + "  uploaded successfully"),
+					HttpStatus.OK);
+		} else {
+			throw new ValidationException("File with file name : " + fileName + " already exists !");
+		}
+	}
+
 	@GetMapping("getCRFResume")
-	public ResponseEntity<UploadFile> getFile(@RequestParam("refId") int refId,
-			@RequestParam("refType") String refType) {
-		UploadFile result = uploadFileService.getByRefIdAndRefType(refId, refType);
+	public ResponseEntity<UploadFile> getFile(@RequestParam("caId") int caId) {
+		UploadFile result = uploadFileService.getByRefIdAndRefType(caId, "CRF");
 		return new ResponseEntity<UploadFile>(result, HttpStatus.OK);
 
 	}

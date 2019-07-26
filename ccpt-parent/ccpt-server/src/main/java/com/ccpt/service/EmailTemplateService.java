@@ -84,8 +84,8 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 			StringBuilder sb = new StringBuilder(subject);
 			for (ClientApplication clientApplication : clientApplications) {
 				String template = JobDescriptionSubstitutor.appendCATemplate(clientApplication);
-				files.add(uploadFileService.getByRefIdAndRefType(clientApplication.getConsultant().getId(),
-						"Consultant"));
+				files.add(uploadFileService.getByRefIdAndRefType(clientApplication.getId(),
+						"CRF"));
 				body.append(template);
 				String name = clientApplication.getClientPosition().getClient().getName();
 				names.add(name);
