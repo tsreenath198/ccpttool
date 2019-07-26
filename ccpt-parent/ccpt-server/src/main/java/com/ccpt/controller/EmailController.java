@@ -141,6 +141,7 @@ public class EmailController {
 
 	public void sendEmailWithAttachments(String toAddress, String subject, String message, List<UploadFile> files)
 			throws AddressException, MessagingException {
+
 		// sets SMTP server properties
 		Properties properties = new Properties();
 		properties.put("mail.smtp.host", mailHost);
@@ -162,8 +163,16 @@ public class EmailController {
 		Message msg = new MimeMessage(session);
 
 		msg.setFrom(new InternetAddress(username));
-		InternetAddress[] toAddresses = { new InternetAddress(toAddress) };
-		msg.setRecipients(Message.RecipientType.TO, toAddresses);
+		// InternetAddress[] toAddresses = { new InternetAddress(toAddress) };
+		String recipient = toAddress;
+		String[] recipientList = recipient.split(",");
+		InternetAddress[] recipientAddress = new InternetAddress[recipientList.length];
+		int counter = 0;
+		for (String recp : recipientList) {
+			recipientAddress[counter] = new InternetAddress(recp.trim());
+			counter++;
+		}
+		msg.setRecipients(Message.RecipientType.TO, recipientAddress);
 		msg.setSubject(subject);
 		msg.setSentDate(new Date());
 
