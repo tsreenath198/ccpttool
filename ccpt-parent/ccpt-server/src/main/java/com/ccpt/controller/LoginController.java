@@ -92,9 +92,12 @@ public class LoginController extends BaseController<LoginDTO, Login, Integer> {
 				}
 			}
 			Login log = loginService.login(username, password);
-			if (log != null && check == true)
+			if (log != null && check == true) {
 				log.setCheck(check);
-			return new ResponseEntity<Login>(log, HttpStatus.OK);
+				return new ResponseEntity<Login>(log, HttpStatus.OK);
+			} else {
+				throw new AuthenticationException("No Cookies Found");
+			}
 		}
 		return null;
 
