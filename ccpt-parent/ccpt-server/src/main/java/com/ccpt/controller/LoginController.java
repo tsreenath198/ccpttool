@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -74,7 +75,7 @@ public class LoginController extends BaseController<LoginDTO, Login, Integer> {
 		httpServletResponse.addCookie(ccpt_pwd);
 	}
 
-	@PostMapping("/secretLogin")
+	@GetMapping("/secretLogin")
 	public ResponseEntity<Login> secretLogin(HttpServletRequest httpServletRequest) throws AuthenticationException {
 		String username = null, password = null;
 		boolean check = false;
