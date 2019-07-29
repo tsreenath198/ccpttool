@@ -39,7 +39,7 @@ export class RecruiterComponent implements OnInit {
   public enableButtonType = '';
   public apName = '';
   public apValue = '';
-  private listReturned: boolean;
+  public listReturned: boolean;
 
   constructor(private http: HttpClientService, private router: Router, private toastr: ToastrCustomService, private modalService: NgbModal) {
     this.getScreenSize();
