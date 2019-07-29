@@ -13,6 +13,13 @@
           <input type="password" class="form-control input-underline input-lg" id=""
             placeholder="{{ 'Password' | translate }}" [(ngModel)]="loginDetails.password" (keypress)="login($event)">
         </div>
+        <div class="form-group">
+          <div class="checkbox">
+            <label>
+                <input type="checkbox" [(ngModel)]="loginDetails.check"> Remember me
+            </label>
+        </div>
+        </div>
       </div>
       <button class="btn rounded-btn" (click)="onLoggedin()" [disabled]="loggingIn"><span
           class="fa fa-sign-in"></span>&nbsp;&nbsp;{{ (loggingIn)?'loading...':'Sign In' | translate }}</button>
