@@ -125,35 +125,35 @@
         <div *ngIf="readOnlyForm == 'U'; else notRead">
           <table class="table table-borderless">
             <tbody>
-              <tr>
+              <tr *ngIf="model.fullname">
                 <th>Name</th>
                 <td>{{model.fullname}}</td>
               </tr>
-              <tr>
+              <tr *ngIf="model.dob">
                 <th>Date of Birth</th>
                 <td>{{ model.dob }}</td>
               </tr>
-              <tr>
+              <tr *ngIf="model.phone">
                 <th>Phone</th>
                 <td>{{ model.phone }}</td>
               </tr>
-              <tr>
+              <tr *ngIf="model.email">
                 <th>Email</th>
                 <td>{{ model.email }}</td>
               </tr>
-              <tr>
+              <tr *ngIf="model.highestEducation">
                 <th>Qualification</th>
                 <td>{{ model.highestEducation }}</td>
               </tr>
-              <tr>
+              <tr *ngIf="model.passoutYear">
                 <th>Passout Year</th>
                 <td>{{ model.passoutYear }}</td>
               </tr>
-              <tr>
+              <tr *ngIf="model.currentLocation">
                 <th>Current Location</th>
                 <td>{{ model.currentLocation }}</td>
               </tr>
-              <tr>
+              <tr *ngIf="model.prefferedLocation">
                 <th>Prefer Location</th>
                 <td>{{ model.prefferedLocation }}</td>
               </tr>
@@ -214,7 +214,7 @@
             </tbody>
           </table>
         </div>
-        <div class="row">
+        <ng-template #notRead><div class="row">
           <div class="col-md-3">
             <div class="form-group">
               <label>Salutation<span class="required">*</span></label>
@@ -631,6 +631,7 @@
             </div>
           </div>
         </div>
+        </ng-template>
         <div class="row text-center">
           <div class="col-md-12 form-group">
             <button

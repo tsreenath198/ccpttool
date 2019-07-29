@@ -44,14 +44,14 @@ export class ClientApplicationComponent implements OnInit {
   public closeResult = '';
   private modalRef: NgbModalRef;
   public screenHeight: any;
-  public readOnlyForm = '';
-  public enableButtonType = '';
+  public readOnlyForm:any = '';
+  public enableButtonType: any = '';
   public download = 'download';
   public upload = 'upload';
   public uploader: FileUploader = new FileUploader({});
   public apName = '';
   public apValue = '';
-  public loggedInRole = '';
+  public loggedInRole:any = '';
   public comments = '';
   public isCreate: boolean = false;
   public page: number;
@@ -102,6 +102,11 @@ export class ClientApplicationComponent implements OnInit {
     this.init();
   }
   private init() {
+    this.model.properties = [];
+    this.model.files = [];
+    this.model.caStatus = 'New';
+    this.page = 1;
+    this.isCRF = false;
     this.spinner(false);
     this.http.get(this.urlConstants.CAGetAll).subscribe(resp => {
       this.clientApplicationList = resp as any;
@@ -110,11 +115,6 @@ export class ClientApplicationComponent implements OnInit {
       this.pageChange(this.page);
       this.spinner(true);
     });
-    this.model.properties = [];
-    this.model.files = [];
-    this.model.caStatus = 'New';
-    this.page = 1;
-    this.isCRF = false;
   }
   private getAllDropdowns() {
     forkJoin(
@@ -169,7 +169,7 @@ export class ClientApplicationComponent implements OnInit {
       }
 
       this.spinner(true);
-      const crf = this.http.get(this.urlConstants.getCRF + this.model.id + '&refType=crf');
+      const crf = this.http.get(this.urlConstants.getCRF + this.model.id);
       crf.subscribe(
         resp => {
           this.crfFile = resp as any;
@@ -180,6 +180,7 @@ export class ClientApplicationComponent implements OnInit {
           }
         },
         err => {
+          this.toastr.error(err.error.error,err.message);
           console.log(err);
         }
       );
@@ -446,17 +447,35 @@ export class ClientApplicationComponent implements OnInit {
     const files = this.getFiles();
     const formData = new FormData();
     formData.append('file', files[0].rawFile, files[0].name);
-    const params = 'refId=' + this.selectedRecrd + '&refType=' + this.refType + '&comments=' + this.comments;
-    this.http.upload(this.urlConstants.FileUpload + params, formData).subscribe(
-      resp => {
-        let temp: any = resp;
-        this.toastr.success(temp.message, 'Client');
-        this.close();
-      },
-      err => {
-        this.toastr.success(err.error.message, 'Client');
-      }
-    );
+    if(this.refType='crf'){
+      const params = this.selectedRecrd  + '&comments=' + this.comments;
+      this.http.upload(this.urlConstants.saveCRF + params, formData).subscribe(
+        resp => {
+          let temp: any = resp;
+          this.comments="";
+          this.toastr.success(temp.message, 'Client');
+          this.getCAById(this.model.id);
+          this.refType='Client Application';
+          this.close();
+        },
+        err => {
+          this.toastr.error(err.error.message, 'Client');
+        }
+      );
+    }
+    else{
+      const params = 'refId=' + this.selectedRecrd + '&refType=' + this.refType + '&comments=' + this.comments;
+      this.http.upload(this.urlConstants.FileUpload + params, formData).subscribe(
+        resp => {
+          let temp: any = resp;
+          this.toastr.success(temp.message, 'Client');
+          this.close();
+        },
+        err => {
+          this.toastr.error(err.error.message, 'Client');
+        }
+      );
+    }
     /* let requests = [];
          files.forEach((file) => {
              let formData = new FormData();
@@ -485,5 +504,25 @@ export class ClientApplicationComponent implements OnInit {
   }
   private spinner(isSpinner: boolean) {
     this.listReturned = isSpinner;
+  }
+  public setLocation(id){
+    
+  }
+  public checkInterviewSchedule(){
+    if(this.isInterviewScheduled){
+      this.model.interviewMode="Face to Face"
+      this.clientPositionList.forEach(cl =>{
+        if(cl.id==this.model.cpId){
+          let location=cl.name.split("-")
+          this.model.interviewLocation = location[2];
+        }
+      })
+    }
+    else{
+      this.model.interviewDate="";
+      this.model.interviewLocation="";
+      this.model.interviewTime="";
+      this.model.interviewMode="";
+    }
   }
 }

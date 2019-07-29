@@ -126,6 +126,7 @@ export class URLConstants {
     UserUpdate = 'user';
     UserDelete = 'user/';
     UserGetById = 'user/';
+    SecretLogin = 'user/secretLogin'
 
     /**Payments */
     PaymentCreate = 'payment';
@@ -147,5 +148,6 @@ export class URLConstants {
     FileUpload = 'uploadFile/save?';
     FileDownload = 'uploadFile/download/';
     FileDelete = 'uploadFile/'
-    getCRF = 'uploadFile/getCRFResume?refId=' ;
+    getCRF = 'uploadFile/getCRFResume?caId=' ;
+    saveCRF = 'uploadFile/saveCrf?caId='
 }

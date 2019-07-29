@@ -49,13 +49,13 @@ export class SidebarComponent implements OnInit {
     }
 
     toggleCollapsed(str: string) {
-        // this.titleService.setTitle('CCPT');
-        // if (str) {
-        //     this.collapsed = false;
-        // } else {
-        //     this.collapsed = !this.collapsed;
-        // }
-        // this.collapsedEvent.emit(this.collapsed);
+        this.titleService.setTitle('CCPT');
+        if (str) {
+            this.collapsed = false;
+        } else {
+            this.collapsed = !this.collapsed;
+        }
+        this.collapsedEvent.emit(this.collapsed);
     }
     public sidebarCollapse(){
         this.titleService.setTitle('CCPT');

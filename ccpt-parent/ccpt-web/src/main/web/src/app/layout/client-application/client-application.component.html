@@ -116,9 +116,9 @@
                     <i class="fa fa-bars" ngbDropdownToggle></i>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenu1" ngbDropdownMenu>
                         <a class="dropdown-item drop-list" (click)="enableFormEditable()">Edit</a>
-                        <a class="dropdown-item drop-list" (click)="open(model.id, trashContent)">File Upload</a>
+                        <a class="dropdown-item drop-list" (click)="open(model.id, uploadContent)">File Upload</a>
                         <a class="dropdown-item drop-list" (click)="getBodyMail(bodyMail)">Body Mail</a>
-                        <a class="dropdown-item drop-list" (click)="getInterviewDetails(model.id,sendMailContent)">Send Interview Schedule</a>
+                        <a class="dropdown-item drop-list" *ngIf="model.status.description=='Interview Scheduled'" (click)="getInterviewDetails(model.id,sendMailContent)">Send Interview Schedule</a>
                         <a class="dropdown-item drop-list" (click)="open(model.id, trashContent)">Delete</a>
                         <a class="dropdown-item drop-list" (click)="cancelForm(f)">Close</a>
                     </div>
@@ -171,9 +171,12 @@
                 <th>{{ap.name}}</th>
                 <td>{{ap.value}}</td>
               </tr>
-              <tr *ngIf="isCRF">
+              <tr>
                 <th >CRF</th>
-                <td class="crf" (click)="downloadFile(crfFile.id)">{{crfFile.fileName}}</td>
+                <td ><span *ngIf="isCRF; else noCRF" class="crf" (click)="downloadFile(crfFile.id)">{{ crfFile.fileName }}</span>
+                  <ng-template #noCRF>
+                    <button class="btn btn-secondary ml-2" type="button" (click)="uploadCRF(uploadContent)">Upload CRF</button>
+                  </ng-template></td>
               </tr>
               <tr *ngFor="let fl of model.files">
                   <th>Files</th>
@@ -194,6 +197,7 @@
                       [(ngModel)]="model.cpId"
                       [ngClass]="{ 'is-invalid': f.submitted && cp.invalid }"
                       #cp="ngModel"
+                      (change)="setLocation($event.target.value)"
                       required
                     >
                       <option *ngFor="let cpl of clientPositionList" [ngValue]="cpl.id">{{ cpl.name }} </option>
@@ -292,17 +296,14 @@
                   <span class="glyphicon glyphicon-th"></span>
                 </div>
               </div>
-              <div class="col-md-6 mt-4" *ngIf="readOnlyForm == 'R'">
-                <span *ngIf="isCRF; else noCRF" class="crf" (click)="downloadFile(crfFile.id)">{{ crfFile.fileName }}</span>
-                <ng-template #noCRF>
-                  <button class="btn btn-secondary ml-2" type="button" (click)="uploadCRF(uploadContent)">Upload CRF</button>
-                </ng-template>
+              <div class="col-md-6 mt-4" *ngIf="readOnlyForm == ''">
+                
               </div>
             </div>
             <div class="row">
               <div class="col-md-12">
                 <div class="form-group" data-provide="datepicker">
-                  <input class="mt-2" type="checkbox" [(ngModel)]="isInterviewScheduled" name="interviewCheckbox" />&nbsp;<small
+                  <input class="mt-2" type="checkbox" (change)="checkInterviewSchedule()" [(ngModel)]="isInterviewScheduled" name="interviewCheckbox" />&nbsp;<small
                     >Interview Scheduled</small
                   >
                   <div *ngIf="isInterviewScheduled">
@@ -422,7 +423,7 @@
                 </div>
               </div>
             </div>
-            <div class="row" *ngIf="model.files.length>0">
+            <div class="row" *ngIf="model?.files?.length>0">
               <div class="col-md-12">
                 <div class="modal-body" >
                   <table class="table">

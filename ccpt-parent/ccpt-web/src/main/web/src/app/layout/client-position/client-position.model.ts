@@ -32,6 +32,7 @@ export class SendEmailModel {
     toEmails: Array<string> = [];
     subject: string;
     body: string;
+    target:string;
 }
 export class ActionsList {
     actions = [{key: 'Edit' , value:'Edit'},{key: 'Send JD' , value:'Send JD'},{key: 'Clone' , value:'Clone'},{key: 'Create Application' , value:'Create Application'}, {key: 'Delete' , value:'Delete'}, {key: 'Close' , value:'Close'}];

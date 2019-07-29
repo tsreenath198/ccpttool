@@ -223,10 +223,15 @@ export class ClientPositionComponent implements OnInit {
     this.open(this.model.id, shortListContent);
   }
   public sendJd(sendMailContent){
-    for (let i = 0; i < this.consultantList.length; i++) {
-      const temp = { item_id: this.consultantList[i].id, item_text: this.consultantList[i].fullname, notes: '' };
-      this.mailIdForMails.push(temp);
-    }
+    // for (let i = 0; i < this.consultantList.length; i++) {
+    //   const temp = { item_id: this.consultantList[i].id, item_text: this.consultantList[i].fullname, notes: '' };
+    //   this.mailIdForMails.push(temp);
+    // }
+    let temp = {"cpId":this.model.id}
+    this.http.post(temp, this.urlConstants.EmailTemplateBuildContent + 'Job Description').subscribe(resp => {
+      this.sendEmailModel = resp as any;
+      this.sendEmailModel.target="";
+    });
     this.open(this.model.id, sendMailContent);
   }
   private cloneData(data: any) {
@@ -411,13 +416,6 @@ export class ClientPositionComponent implements OnInit {
         this.spinner(true);
       }
     );
-  }
-  public onItemSelect(event) {
-    let temp = { "cpId": this.model.id, "cId": event.id };
-    this.http.post(temp, this.urlConstants.EmailTemplateBuildContent + 'Job Description').subscribe(resp => {
-      this.sendEmailModel = resp as any;
-      this.sendEmailModel.toEmails = event.email;
-    });
   }
   /**
    * @param

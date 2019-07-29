@@ -538,7 +538,14 @@
     <!-- 
     (onSelectAll)="onSelectAll($event)" -->
     <div class="form-group">
-        <select
+        <input
+        class="form-control"
+        [readonly]="readOnlyForm == 'R'"
+        [(ngModel)]="sendEmailModel.toEmails"
+        name="tomail"
+        #tomail="ngModel"
+      />
+        <!-- <select
           class="form-control"
           [(ngModel)]="sendTo"
           name="sel1"
@@ -548,7 +555,7 @@
           <option *ngFor="let cl of consultantList" [ngValue]="cl">
             {{cl.name}}
           </option>
-        </select>
+        </select> -->
       </div>
     <label>Subject</label>
     <input class="form-control" [(ngModel)]="sendEmailModel.subject" name="sub" />
