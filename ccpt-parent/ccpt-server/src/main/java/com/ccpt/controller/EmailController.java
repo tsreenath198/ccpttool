@@ -25,11 +25,9 @@ import javax.validation.ValidationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -87,58 +85,6 @@ public class EmailController {
 		javaMailSender.send(msg);
 	}
 
-	public void sendHtmlEmail(String toAddress, String subject, String message)
-			throws AddressException, MessagingException {
-
-		// sets SMTP server properties
-		Properties properties = new Properties();
-		properties.put("mail.smtp.host", mailHost);
-		properties.put("mail.smtp.port", port);
-		properties.put("mail.smtp.auth", "true");
-		properties.put("mail.smtp.starttls.enable", "true");
-
-		// creates a new session with an authenticator
-		Authenticator auth = new Authenticator() {
-			public PasswordAuthentication getPasswordAuthentication() {
-				return new PasswordAuthentication(username, password);
-			}
-		};
-
-		Session session = Session.getInstance(properties, auth);
-
-		// creates a new e-mail message
-		Message msg = new MimeMessage(session);
-
-		msg.setFrom(new InternetAddress(username));
-		InternetAddress[] toAddresses = { new InternetAddress(toAddress) };
-		InternetAddress[] bccAddresses = { new InternetAddress(username) };
-		msg.setRecipients(Message.RecipientType.TO, toAddresses);
-		msg.setRecipients(Message.RecipientType.BCC, bccAddresses);
-		msg.setSubject(subject);
-		msg.setSentDate(new Date());
-
-		// set plain text message
-		msg.setContent(message, "text/html");
-
-		// sends the e-mail
-		Transport.send(msg);
-
-	}
-
-	void sendEmailWithAttachment(String to, String subject, String body) throws MessagingException, IOException {
-		MimeMessage msg = javaMailSender.createMimeMessage();
-		MimeMessageHelper helper = new MimeMessageHelper(msg, true);
-		helper.setTo(to);
-		helper.setSubject(subject);
-		helper.setBcc(bcc);
-		helper.setText(body, true);
-		FileSystemResource file = new FileSystemResource(
-				new File("C:\\Users\\lenovo\\Desktop\\GIT Total Commands with examples.txt.docx"));
-		helper.addAttachment("GIT Total Commands with examples.txt.docx", file);
-		javaMailSender.send(msg);
-
-	}
-
 	public void sendEmailWithAttachments(String toAddress, String subject, String message, List<UploadFile> files)
 			throws AddressException, MessagingException {
 
@@ -148,8 +94,6 @@ public class EmailController {
 		properties.put("mail.smtp.port", port);
 		properties.put("mail.smtp.auth", "true");
 		properties.put("mail.smtp.starttls.enable", "true");
-		// properties.put("mail.user", username);
-		// properties.put("mail.password", password);
 
 		// creates a new session with an authenticator
 		Authenticator auth = new Authenticator() {
@@ -201,7 +145,7 @@ public class EmailController {
 
 		// sets the multi-part as e-mail's content
 		msg.setContent(multipart);
-
+		msg.setHeader("X-Priority", "1");
 		// sends the e-mail
 		Transport.send(msg);
 
