@@ -41,5 +41,11 @@ public class EmailContent extends IDEntity {
 	private String target;
 	
 	@Transient
+	private String cc;
+	
+	@Transient
+	private String bcc;
+	
+	@Transient
 	private List<UploadFile> uploadFiles;
 }

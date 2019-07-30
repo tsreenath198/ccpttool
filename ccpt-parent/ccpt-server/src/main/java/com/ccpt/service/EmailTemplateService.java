@@ -17,6 +17,7 @@ import org.springframework.stereotype.Component;
 
 import com.ccpt.exception.CAException;
 import com.ccpt.model.ClientApplication;
+import com.ccpt.model.ClientContact;
 import com.ccpt.model.ClientPosition;
 import com.ccpt.model.EmailContent;
 import com.ccpt.model.EmailTemplate;
@@ -58,6 +59,7 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 
 	public EmailContent getClientApps(List<Integer> ids) throws Exception {
 		EmailContent emailContent = new EmailContent();
+		StringBuilder cc = new StringBuilder();
 		StringBuilder body = new StringBuilder();
 		List<String> names = new ArrayList<String>();
 		List<UploadFile> files = new ArrayList<UploadFile>();
@@ -94,12 +96,25 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 				String name = clientApplication.getClientPosition().getClient().getName();
 				names.add(name);
 				cpNames.add(clientApplication.getClientPosition().getRole());
+
+				List<ClientContact> clientContacts = clientApplication.getClientPosition().getClient()
+						.getClientContacts();
+				if (clientContacts.size() != 1) {
+					for (int i = 1; i < clientContacts.size(); i++) {
+						cc.append(clientContacts.get(i).getEmail());
+						if (i != clientContacts.size() - 1) {
+							cc.append(",");
+						}
+					}
+				}
 			}
 			emailContent.setBody(sb.toString().concat(JobDescriptionSubstitutor.getSign(body)));
 			emailContent.setUploadFiles(files);
 			emailContent.setToEmails(
 					clientApplications.get(0).getClientPosition().getClient().getClientContacts().get(0).getEmail());
 			emailContent.setSubject("Shorlisted candidates for " + cpNames);
+
+			emailContent.setCc(cc.toString());
 			return emailContent;
 		} else {
 			throw new CAException("please select same client application ");
