@@ -129,19 +129,19 @@
         <div *ngIf="readOnlyForm == 'U'; else notRead">
           <table class="table table-borderless">
             <tbody>
-              <tr>
+              <tr *ngIf="model?.clientPosition?.generatedCode">
                 <th>Client Position</th>
                 <td>{{ model.clientPosition.generatedCode }}</td>
               </tr>
-              <tr>
+              <tr *ngIf="model?.consultant?.fullname">
                 <th>Consultant</th>
                 <td>{{ model.consultant.fullname }}</td>
               </tr>
-              <tr>
+              <tr *ngIf="model?.status?.description">
                 <th>Application Status</th>
                 <td>{{ model.status.description }}</td>
               </tr>
-              <tr>
+              <tr *ngIf="model?.sentOn">
                 <th>Sent On</th>
                 <td>{{ model.sentOn }}</td>
               </tr>

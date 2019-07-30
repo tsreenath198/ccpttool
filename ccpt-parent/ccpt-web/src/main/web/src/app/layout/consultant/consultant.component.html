@@ -165,7 +165,7 @@
                 <th>Current CTC</th>
                 <td>{{ model.currentCTC}}</td>
               </tr>
-              <tr>
+              <tr *ngIf="model.expectedCTC">
                 <th>Expected CTC</th>
                 <td>{{ model.expectedCTC }}</td>
               </tr>
@@ -193,11 +193,11 @@
                 <th>Notice period</th>
                 <td>{{ model.noticePeriod }}</td>
               </tr>
-              <tr>
+              <tr *ngIf="model.skills">
                 <th>Skills</th>
                 <td>{{ model.skills }}</td>
               </tr>
-              <tr>
+              <tr *ngIf="model.description">
                 <th>Description</th>
                 <td>
                   {{model.description}}

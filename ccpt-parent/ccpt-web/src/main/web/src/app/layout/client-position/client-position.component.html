@@ -99,55 +99,55 @@
         <div *ngIf="readOnlyForm == 'U'; else notRead">
           <table class="table table-borderless">
             <tbody>
-              <tr>
+              <tr *ngIf="model?.client?.name">
                 <th>Client Name</th>
                 <td>{{ model.client.name }}</td>
               </tr>
-              <tr>
+              <tr *ngIf="model.role">
                 <th>Job Title</th>
                 <td>{{ model.role }}</td>
               </tr>
-              <tr>
+              <tr *ngIf="model.availability">
                 <th>Availability</th>
                 <td>{{ model.availability }}</td>
               </tr>
-              <tr>
+              <tr *ngIf="model.requiredPositions">
                 <th>Required Positions</th>
                 <td>{{ model.requiredPositions }}</td>
               </tr>
-              <tr>
+              <tr *ngIf="model.experience">
                 <th>Required Experience</th>
                 <td>{{ model.experience }}</td>
               </tr>
-              <tr>
+              <tr *ngIf="model.minCtc">
                 <th>Min CTC</th>
                 <td>{{ model.minCtc }}</td>
               </tr>
-              <tr>
+              <tr *ngIf="model.maxCtc">
                 <th>Max CTC</th>
                 <td>{{ model.maxCtc }}</td>
               </tr>
-              <tr>
+              <tr *ngIf="model.location">
                 <th>Location</th>
                 <td>{{ model.location }}</td>
               </tr>
-              <tr>
+              <tr *ngIf="model?.status?.description ">
                 <th>Status</th>
                 <td>{{ model.status.description }}</td>
               </tr>
-              <tr>
+              <tr *ngIf="model?.assignedTo?.fullname">
                 <th>Assign To</th>
                 <td>{{ model.assignedTo.fullname }}</td>
               </tr>
-              <tr>
+              <tr *ngIf="model.qualification">
                 <th>Qualification</th>
                 <td>{{ model.qualification }}</td>
               </tr>
-              <tr>
+              <tr *ngIf="model.requiredSkills">
                 <th>Required Skills</th>
                 <td>{{ model.requiredSkills }}</td>
               </tr>
-              <tr>
+              <tr *ngIf="model.description">
                 <th>Description</th>
                 <td>
                   <p [innerHTML]="model.description"></p>

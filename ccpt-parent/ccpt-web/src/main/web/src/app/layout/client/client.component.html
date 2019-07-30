@@ -93,53 +93,53 @@
         <div *ngIf="readOnlyForm == 'U'; else notRead">
           <table class="table table-borderless">
             <tbody>
-              <tr>
+              <tr *ngIf="model.name">
                 <th>Client Name</th>
                 <td>{{ model.name }}</td>
               </tr>
-              <tr>
+              <tr *ngIf="model.industry">
                 <th>Industry</th>
                 <td>{{ model.industry }}</td>
               </tr>
-              <tr>
+              <tr *ngIf="model.website">
                 <th>Website</th>
                 <td>{{ model.website }}</td>
               </tr>
-              <tr>
+              <tr *ngIf="model.phone">
                 <th>Phone</th>
                 <td>{{ model.phone }}</td>
               </tr>
-              <tr>
+              <tr *ngIf="model.email">
                 <th>Email</th>
                 <td>{{ model.email }}</td>
               </tr>
-              <tr>
+              <tr *ngIf="model.guaranteePeriod">
                 <th>Guarantee Period</th>
                 <td>{{ model.guaranteePeriod }}</td>
               </tr>
-              <tr>
+              <tr *ngIf="model.creditPeriod">
                 <th>Credit Period</th>
                 <td>{{ model.creditPeriod }}</td>
               </tr>
-              <tr>
+              <tr *ngIf="model.servicetaxNo">
                 <th>Service Tax no.</th>
                 <td>{{ model.servicetaxNo }}</td>
               </tr>
-              <tr>
+              <tr *ngIf="model.serviceCharge">
                 <th>Service Charge</th>
                 <td>{{ model.serviceCharge }}</td>
               </tr>
-              <tr>
+              <tr *ngIf="model.gst">
                 <th>GST</th>
                 <td>{{ model.gst }}</td>
               </tr>
-              <tr>
+              <tr *ngIf="model.description">
                 <th>Description</th>
                 <td>
                   <p [innerHTML]="model.description"></p>
                 </td>
               </tr>
-              <tr>
+              <tr *ngIf="model.address">
                 <th>Address</th>
                 <td>{{ model.address }}</td>
               </tr>
