@@ -34,6 +34,12 @@ export class HeaderComponent implements OnInit {
         return dom.classList.contains(this.pushRightClass);
     }
 
+    logout(){
+        this.router.navigateByUrl('/login');
+        document.cookie = "username=" + '';
+        document.cookie = "password=" + '';
+    }
+
     toggleSidebar() {
         const dom: any = document.querySelector('body');
         dom.classList.toggle(this.pushRightClass);

@@ -12,30 +12,18 @@ import { URLConstants } from '../layout/components/constants/url-constants';
   animations: [routerTransition()]
 })
 export class LoginComponent implements OnInit {
-  constructor(public router: Router, public http: HttpClientService, private toastr: ToastrCustomService) {}
+  constructor(public router: Router, public http: HttpClientService, private toastr: ToastrCustomService) { }
   public loginDetails: LoginModel = <LoginModel>{};
   public urlConstants = new URLConstants();
   public loggingIn: boolean = false;
+  public isRememberMe: boolean = false;
   ngOnInit() {
     this.session(null);
-  }
-  @HostListener('document:keypress', ['$event'])
-  handleKeyboardEvent(event: KeyboardEvent) {
-    if (event.key == 'Enter') {
-      this.http.post(null, this.urlConstants.SecretLogin).subscribe(
-        resp => {
-            let temp = {};
-            temp['username']="";
-            temp['token']="";
-            temp['role']="";
-          this.session(temp);
-          this.toastr.success('User Logged In Successfully', 'Login');
-          this.router.navigate(['/layout/dashboard']);
-        },
-        error => {
-          this.toastr.error(error.error.message, 'Login');
-        }
-      );
+    if (document.cookie.split(';')[0].split('=')[1] !== '' && document.cookie.split(';')[1].split('=')[1] !== '') {
+      this.loginDetails.username = document.cookie.split(';')[0].split('=')[1];
+      this.loginDetails.password = document.cookie.split(';')[1].split('=')[1];
+      this.isRememberMe = true;
+      this.onLoggedin();
     }
   }
   public onLoggedin(): void {
@@ -45,6 +33,11 @@ export class LoginComponent implements OnInit {
         this.loggingIn = false;
         this.session(resp);
         this.toastr.success('User Logged In Successfully', 'Login');
+        if (this.isRememberMe) {
+          this.managecookie(this.loginDetails.username, this.loginDetails.password);
+        } else {
+          this.managecookie('', '');
+        }
         this.router.navigate(['/layout']);
       },
       error => {
@@ -53,6 +46,11 @@ export class LoginComponent implements OnInit {
         this.session(null);
       }
     );
+  }
+
+  private managecookie(un: string, pswd: string) {
+    document.cookie = "username=" + un;
+    document.cookie = "password=" + pswd;
   }
   public login(event): void {
     if (event.keyCode === 13) this.onLoggedin();
