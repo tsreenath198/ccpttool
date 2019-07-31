@@ -114,7 +114,7 @@ public class EmailController {
 			recipientAddress[counter] = new InternetAddress(recp.trim());
 			counter++;
 		}
-		if (cc != null) {
+		if (cc != null || !cc.isEmpty()) {
 			String recipientCC = cc;
 			String[] recipientListCC = recipientCC.split(",");
 			InternetAddress[] recipientAddressCC = new InternetAddress[recipientListCC.length];
