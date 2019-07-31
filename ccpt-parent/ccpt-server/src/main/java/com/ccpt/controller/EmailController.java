@@ -11,10 +11,12 @@ import java.util.Properties;
 
 import javax.mail.Authenticator;
 import javax.mail.Message;
+import javax.mail.MessagingException;
 import javax.mail.Multipart;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.Transport;
+import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
@@ -35,7 +37,6 @@ import com.ccpt.constants.CCPTConstants;
 import com.ccpt.model.EmailContent;
 import com.ccpt.model.UploadFile;
 import com.ccpt.service.EmailContentService;
-import com.ccpt.util.InvitationEmail;
 
 @Controller
 @CrossOrigin
@@ -82,7 +83,7 @@ public class EmailController {
 	}
 
 	public void sendEmailWithAttachments(String toAddress, String subject, String message, String cc, String bcc,
-			List<UploadFile> files) throws Exception {
+			List<UploadFile> files) throws AddressException, MessagingException {
 
 		// sets SMTP server properties
 		Properties properties = new Properties();
@@ -144,7 +145,7 @@ public class EmailController {
 
 		// creates multi-part
 		Multipart multipart = new MimeMultipart();
-		multipart.addBodyPart(InvitationEmail.buildCalendarPart());
+		multipart.addBodyPart(messageBodyPart);
 
 		// adds attachments
 		List<File> tempFiles = null;
