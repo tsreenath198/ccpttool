@@ -1,3 +1,4 @@
+
 package com.ccpt.controller;
 
 import java.io.File;
@@ -54,6 +55,9 @@ public class EmailController {
 	@Value("${spring.mail.password}")
 	private String password;
 
+	@Value("${spring.mail.bcc}")
+	private String bcc;
+
 	@Autowired
 	private JavaMailSender javaMailSender;
 
@@ -64,7 +68,7 @@ public class EmailController {
 	public ResponseEntity<String> sendEmail(@RequestBody EmailContent emailContent) throws Exception {
 		try {
 			sendEmailWithAttachments(emailContent.getToEmails(), emailContent.getSubject(), emailContent.getBody(),
-					emailContent.getCc(), emailContent.getBcc(), emailContent.getUploadFiles());
+					emailContent.getCc(), emailContent.getUploadFiles());
 			emailContentService.save(emailContent);
 		} catch (Exception e) {
 			throw new Exception("Sending Email is Failed");
@@ -82,7 +86,7 @@ public class EmailController {
 		javaMailSender.send(msg);
 	}
 
-	public void sendEmailWithAttachments(String toAddress, String subject, String message, String cc, String bcc,
+	public void sendEmailWithAttachments(String toAddress, String subject, String message, String cc,
 			List<UploadFile> files) throws AddressException, MessagingException {
 
 		// sets SMTP server properties
