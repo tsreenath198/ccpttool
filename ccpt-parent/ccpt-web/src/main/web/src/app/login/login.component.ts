@@ -9,6 +9,7 @@ import { URLConstants } from '../layout/components/constants/url-constants';
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
+  host: { "spellcheck": "true" },
   animations: [routerTransition()]
 })
 export class LoginComponent implements OnInit {
@@ -19,7 +20,7 @@ export class LoginComponent implements OnInit {
   public isRememberMe: boolean = false;
   ngOnInit() {
     this.session(null);
-    if (document.cookie.split(';')[0].split('=')[1] !== '' && document.cookie.split(';')[1].split('=')[1] !== '') {
+    if (document.cookie !== "" && document.cookie.split(';')[0].split('=')[1] !== '' && document.cookie.split(';')[1].split('=')[1] !== '') {
       this.loginDetails.username = document.cookie.split(';')[0].split('=')[1];
       this.loginDetails.password = document.cookie.split(';')[1].split('=')[1];
       this.isRememberMe = true;
