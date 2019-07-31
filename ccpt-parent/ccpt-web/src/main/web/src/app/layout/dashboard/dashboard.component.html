@@ -77,7 +77,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let cch of ccptReportCOCH" data-toggle="tooltip"
+              <tr class="link" *ngFor="let cch of ccptReportCOCH" data-toggle="tooltip"
                 (click)="open(contentCoCH, cch.recruiterId, 'ConsultantCallHistory')">
                 <td>{{ cch.fullName }}</td>
                 <td>{{ cch.count }}</td>

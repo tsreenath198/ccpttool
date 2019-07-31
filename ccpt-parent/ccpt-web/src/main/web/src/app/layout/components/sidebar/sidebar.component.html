@@ -6,8 +6,8 @@
       <i class="fa fa-fw fa-home"></i>&nbsp;
       <span>{{ 'Dashboard' | translate }}</span>
     </a>
-    <div class="nested-menu">
-      <a class="list-group-item" (click)="addExpandClass('calls');toggleCollapsed('calls');">
+    <div class="nested-menu" (mouseover)="addExpandClass('calls')" (mouseleave)="addCollapseClass()">
+      <a class="list-group-item" >
         <i class="fa fa-fw fa-phone"></i>&nbsp;
         <span>{{ 'Calls' | translate }}</span>
       </a>
@@ -59,8 +59,8 @@
       <i class="fa fa-fw fa-address-book"></i>&nbsp;
       <span>{{ 'Other Contacts' | translate }}</span>
     </a>
-    <div class="nested-menu" *ngIf="loggedInRole == 'Admin' ">
-      <a class="list-group-item" (click)="addExpandClass('administration');toggleCollapsed('administration');">
+    <div class="nested-menu" (mouseover)="addExpandClass('administration')" (mouseleave)="addCollapseClass()" *ngIf="loggedInRole == 'Admin' ">
+      <a class="list-group-item" >
         <i class="fa fa-fw fa-user"></i>&nbsp;
         <span>{{ 'Administration' | translate }}</span>
       </a>

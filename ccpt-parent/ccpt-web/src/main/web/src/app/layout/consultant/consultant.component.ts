@@ -189,7 +189,7 @@ export class ConsultantComponent implements OnInit {
       this.spinner(true);
     });
   }
-  private getFilesById(id: number) {
+  public getFilesById(id: number) {
     this.http.get('/uploadFile/id?id=' + id).subscribe(resp => {
       this.fileList.push(resp);
     });

@@ -48,9 +48,7 @@
               class="table-data-padding"
               *ngFor="
                 let cal of clientApplicationList | filter: currSearchTxt | paginate: { itemsPerPage: 20, currentPage: page };
-                let i = index
-              "
-            >
+                let i = index">
               <td *ngIf="loggedInRole == 'Admin'">
                   <div class="checkbox">
                       <label>
@@ -105,10 +103,10 @@
             </button>
             <!-- <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button"
                 (click)="enableFormEditable()">Edit</button> -->
-            <button type="button" (click)="cancelForm(f)" *ngIf="enableButtonType == ''" class="btn btn-secondary ml-3">
+            <button type="button" (click)="cancelForm(f)" *ngIf="enableButtonType == ''||enableButtonType == 'U'" class="btn btn-secondary ml-3">
               {{ enableButtonType != '' ? 'Close' : 'Clear' }}
             </button>
-            <span class="pull-right" *ngIf="showAction">
+            <span class="pull-right" *ngIf="showAction && readOnlyForm == 'U'">
                 <div class="dropdown theme-dropdown clearfix" placement="bottom-right" ngbDropdown>
                     <!-- <button class="btn btn-secondary" >
                         Dropdown
@@ -116,21 +114,21 @@
                     <i class="fa fa-bars" ngbDropdownToggle></i>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenu1" ngbDropdownMenu>
                         <a class="dropdown-item drop-list" (click)="enableFormEditable()">Edit</a>
+                        <a class="dropdown-item drop-list" (click)="cancelForm(f)">New</a>
                         <a class="dropdown-item drop-list" (click)="open(model.id, uploadContent)">File Upload</a>
-                        <a class="dropdown-item drop-list" (click)="getBodyMail(bodyMail)">Body Mail</a>
+                        <!-- <a class="dropdown-item drop-list" (click)="getBodyMail(bodyMail)">Body Mail</a> -->
                         <a class="dropdown-item drop-list" *ngIf="model.status.description=='Interview Scheduled'" (click)="getInterviewDetails(model.id,sendMailContent)">Send Interview Schedule</a>
                         <a class="dropdown-item drop-list" (click)="open(model.id, trashContent)">Delete</a>
-                        <a class="dropdown-item drop-list" (click)="cancelForm(f)">Close</a>
                     </div>
                 </div> 
             </span>
           </div>
         </div>
         <div *ngIf="readOnlyForm == 'U'; else notRead">
-          <table class="table table-borderless">
+          <table class="table table-borderless  table-striped">
             <tbody>
               <tr *ngIf="model?.clientPosition?.generatedCode">
-                <th>Client Position</th>
+                <th width="200px">Client Position</th>
                 <td>{{ model.clientPosition.generatedCode }}</td>
               </tr>
               <tr *ngIf="model?.consultant?.fullname">
@@ -161,7 +159,7 @@
                 <th>Interview Mode</th>
                 <td>{{ model.interviewMode }}</td>
               </tr>
-              <tr>
+              <tr *ngIf="model.description">
                 <th>Description</th>
                 <td>
                   <p [innerHTML]="model.description"></p>
@@ -172,8 +170,8 @@
                 <td>{{ap.value}}</td>
               </tr>
               <tr>
-                <th >CRF</th>
-                <td ><span *ngIf="isCRF; else noCRF" class="crf" (click)="downloadFile(crfFile.id)">{{ crfFile.fileName }}</span>
+                <th>CRF</th>
+                <td><span *ngIf="isCRF; else noCRF" class="crf" (click)="downloadFile(crfFile.id)">{{ crfFile.fileName }}</span>
                   <ng-template #noCRF>
                     <button class="btn btn-secondary ml-2" type="button" (click)="uploadCRF(uploadContent)">Upload CRF</button>
                   </ng-template></td>
@@ -291,6 +289,7 @@
                   #senton="ngModel"
                   [readonly]="readOnlyForm == 'R'"
                   [(ngModel)]="model.sentOn"
+                  data-date-format="DD-YYYY-MM"
                 />
                 <div class="input-group-addon">
                   <span class="glyphicon glyphicon-th"></span>
@@ -484,7 +483,7 @@
     <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
   </div>
 </ng-template>
-<ng-template #bodyMail let-c="close" let-d="dismiss">
+<!-- <ng-template #bodyMail let-c="close" let-d="dismiss">
   <div class="modal-header">
     <h4 class="modal-title">Client Application</h4>
     <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
@@ -538,7 +537,7 @@
   <div class="modal-footer">
     <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
   </div>
-</ng-template>
+</ng-template> -->
 <ng-template #downloadContent let-c="close" let-d="dismiss">
   <div class="modal-header">
     <h4 class="modal-title">Consultant {{ urlConstants.DownloadFilesMsg }}</h4>
@@ -614,6 +613,10 @@
           </select>
         </div> -->
         <input type="text" [(ngModel)]="sendEmailModel.toEmails" class="form-control" name="to" />
+        <label>Cc</label>
+        <input type="text" [(ngModel)]="sendEmailModel.cc" class="form-control" name="cc" />
+        <label>Bcc</label>
+        <input type="text" [(ngModel)]="sendEmailModel.bcc" class="form-control" name="cc" />
       <label>Subject</label>
       <input class="form-control" [(ngModel)]="sendEmailModel.subject" name="sub" />
       <label>Message Body</label>

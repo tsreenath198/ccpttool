@@ -144,7 +144,7 @@ export class ClientApplicationComponent implements OnInit {
     this.model.properties = [];
     this.model.caStatus = 'New';
   }
-  private enableFormEditable(): void {
+  public enableFormEditable(): void {
     this.readOnlyForm = '';
     this.enableButtonType = 'U';
   }
@@ -167,17 +167,16 @@ export class ClientApplicationComponent implements OnInit {
       } else {
         this.isInterviewScheduled = false;
       }
-
-      this.spinner(true);
       const crf = this.http.get(this.urlConstants.getCRF + this.model.id);
       crf.subscribe(
-        resp => {
+        resp => {  
           this.crfFile = resp as any;
           if (this.crfFile != null) {
             this.isCRF = true;
           } else {
             this.isCRF = false;
           }
+          this.spinner(true);
         },
         err => {
           this.toastr.error(err.error.error,err.message);
@@ -358,13 +357,13 @@ export class ClientApplicationComponent implements OnInit {
       }
     );
   }
-  public getBodyMail(bodyMail): void {
-    let id = this.selectedRecrd;
-    this.http.get(this.urlConstants.CABodyMail + id).subscribe(resp => {
-      this.bodyMailModel = resp as any;
-      this.open(this.model.id, bodyMail)
-    });
-  }
+  // public getBodyMail(bodyMail): void {
+  //   let id = this.selectedRecrd;
+  //   this.http.get(this.urlConstants.CABodyMail + id).subscribe(resp => {
+  //     this.bodyMailModel = resp as any;
+  //     this.open(this.model.id, bodyMail)
+  //   });
+  // }
   public sendEmailReq(): void {
     this.spinner(false);
     this.sendEmailModel.target="";

@@ -57,7 +57,7 @@
               <td>
                 {{ cl.email }}
               </td>
-              <td>{{ cl.experienceYrs != null ? cl.experienceYrs + ' years - ' + cl.experienceMonths + ' months' : '' }}</td>
+              <td>{{ cl.experienceYrs != null ? cl.experienceYrs + ' years - ' + cl.experienceMonths + ' months' : '' }} / {{ cl.highestEducation }}</td>
               <!--  <input type="file" (change)="fileChange($event)" > <span class="fa fa-upload pull-right"></span> -->
               <!-- <td width="140">
                 <app-action [trashContent]="trashContent" [uploadContent]="uploadContent"
@@ -102,11 +102,11 @@
               (click)="enableFormEditable()">
               Edit
             </button> -->
-            <button type="button" (click)="cancelForm(f)" *ngIf="enableButtonType == ''" class="btn btn-secondary ml-3">
+            <button type="button" (click)="cancelForm(f)" *ngIf="enableButtonType == ''||enableButtonType == 'U'" class="btn btn-secondary ml-3">
               {{ enableButtonType != '' ? 'Close' : 'Clear' }}
             </button>
 
-            <span class="pull-right" *ngIf="showAction">
+            <span class="pull-right" *ngIf="showAction&& readOnlyForm == 'U'">
                 <div class="dropdown theme-dropdown clearfix" placement="bottom-right" ngbDropdown>
                     <!-- <button class="btn btn-secondary" >
                         Dropdown
@@ -114,9 +114,9 @@
                     <i class="fa fa-bars" ngbDropdownToggle></i>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenu1" ngbDropdownMenu>
                         <a class="dropdown-item drop-list" (click)="enableFormEditable()">Edit</a>
+                        <a class="dropdown-item drop-list" (click)="cancelForm(f)">New</a>
                         <a class="dropdown-item drop-list" (click)="open(model.id,uploadContent)">File Upload</a>
                         <a class="dropdown-item drop-list" (click)="open(model.id, trashContent)">Delete</a>
-                        <a class="dropdown-item drop-list" (click)="cancelForm(f)">Close</a>
                     </div>
                 </div>
             </span>
@@ -183,11 +183,11 @@
               </tr>
               <tr *ngIf="model.monthsInCurrentJob">
                 <th>Experience in Current Job</th>
-                <td>{{ model.monthsInCurrentJob }}months-{{model.yearsInCurrentJob}}</td>
+                <td>{{ model.monthsInCurrentJob }} months - {{model.yearsInCurrentJob}} years</td>
               </tr>
               <tr *ngIf="model.experienceMonths">
                 <th>Total Experience</th>
-                <td>{{ model.experienceMonths }}months-{{model.experienceYrs}}</td>
+                <td>{{ model.experienceMonths }} months - {{model.experienceYrs}} years</td>
               </tr>
               <tr *ngIf="model.noticePeriod">
                 <th>Notice period</th>

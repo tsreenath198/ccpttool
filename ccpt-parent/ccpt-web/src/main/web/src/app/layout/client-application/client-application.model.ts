@@ -23,4 +23,6 @@ export class SendEmailModel {
     subject: string;
     body: any;
     target: any;
+    cc:string;
+    bcc:string
 }
