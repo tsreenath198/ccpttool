@@ -13,6 +13,7 @@ import javax.persistence.EntityNotFoundException;
 import javax.validation.ValidationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.ccpt.exception.CAException;
@@ -34,6 +35,9 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 	public EmailTemplateService() {
 		super("Email Template");
 	}
+
+	@Value("${spring.mail.bcc}")
+	private String bcc;
 
 	@Autowired
 	private UploadFileService uploadFileService;
@@ -115,6 +119,7 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 			emailContent.setSubject("Shorlisted candidates for " + cpNames);
 
 			emailContent.setCc(cc.toString());
+			emailContent.setBcc(bcc);
 			return emailContent;
 		} else {
 			throw new CAException("please select same client application ");
@@ -195,7 +200,7 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 		// body.append(subject);
 		emailContent.setBody(sb.toString().concat(JobDescriptionSubstitutor.getSign(body)));
 		emailContent.setToEmails(ca.get().getConsultant().getEmail());
-
+		emailContent.setBcc(bcc);
 		return emailContent;
 	}
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.ccpt.model.AdditionalProperty;
@@ -19,7 +20,8 @@ import com.ccpt.util.StrSubstitutor;
 
 @Component
 public class JobDescriptionSubstitutor implements ContentSubstitutor {
-
+	@Value("${spring.mail.bcc}")
+	private String bcc;
 	@Autowired
 	private ClientPositionService clientPositionService;
 
@@ -48,6 +50,7 @@ public class JobDescriptionSubstitutor implements ContentSubstitutor {
 			EmailContent emailContent = new EmailContent();
 			emailContent.setBody(body);
 			emailContent.setSubject(subject);
+			emailContent.setBcc(bcc);
 			return emailContent;
 		} else {
 			throw new Exception("ClientPosition is null for given id:" + id);
