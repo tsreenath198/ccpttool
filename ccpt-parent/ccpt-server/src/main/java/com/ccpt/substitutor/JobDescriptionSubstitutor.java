@@ -42,6 +42,9 @@ public class JobDescriptionSubstitutor implements ContentSubstitutor {
 			if (clientPosition.getLocation() != null) {
 				valuesMap.put("location", clientPosition.getLocation());
 			}
+			if (clientPosition.getClient().getName() != null) {
+				valuesMap.put("clientName", clientPosition.getClient().getName());
+			}
 			valuesMap.put("jobTitle", clientPosition.getRole());
 			String templateSubject = emailTemplate.getSubject();
 			String templateBody = emailTemplate.getDescription();
