@@ -82,10 +82,4 @@ public class ClientPositionController extends BaseController<ClientPositionDTO, 
 		return new ResponseEntity<List<DropDownStatistics>>(result, HttpStatus.OK);
 
 	}
-	@GetMapping("/getAllClosedCps")
-	public ResponseEntity<List<DropDownStatistics>> getAllClosedCps() {
-		List<DropDownStatistics> result = clientPositionService.getAllClosedCps();
-		return new ResponseEntity<List<DropDownStatistics>>(result, HttpStatus.OK);
-
-	}
 }
