@@ -70,11 +70,11 @@
                   (click)="enableFormEditable()">
                   Edit
                 </button> -->
-            <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3" *ngIf="enableButtonType == ''">
+            <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3" *ngIf="enableButtonType == '' || enableButtonType == 'U'">
               {{ enableButtonType != '' ? 'Close' : 'Clear' }}
             </button>
 
-            <span class="pull-right" *ngIf="showAction">
+            <span class="pull-right" *ngIf="showAction && readOnlyForm == 'U'">
               <div class="dropdown theme-dropdown clearfix" placement="bottom-right" ngbDropdown>
                 <!-- <button class="btn btn-secondary" >
                               Dropdown
@@ -246,7 +246,7 @@
               (click)="enableFormEditable()">
               Edit
             </button> -->
-            <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3" *ngIf="enableButtonType == ''">
+            <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3" *ngIf="enableButtonType == '' || enableButtonType == 'U'">
               {{ enableButtonType != '' ? 'Close' : 'Clear' }}
             </button>
           </div>

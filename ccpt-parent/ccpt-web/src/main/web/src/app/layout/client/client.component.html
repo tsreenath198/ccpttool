@@ -74,7 +74,7 @@
               {{ enableButtonType != '' ? 'Close' : 'Clear' }}
             </button>
 
-            <span class="pull-right" *ngIf="showAction&&readOnlyForm == 'U'">
+            <span class="pull-right" *ngIf="showAction && readOnlyForm == 'U'">
                 <div class="dropdown theme-dropdown clearfix" placement="bottom-right" ngbDropdown>
                     <!-- <button class="btn btn-secondary" >
                         Dropdown
@@ -91,7 +91,7 @@
           </div>
         </div>
         <div *ngIf="readOnlyForm == 'U'; else notRead">
-          <table class="table table-borderless">
+          <table class="table table-borderless table-striped">
             <tbody>
               <tr *ngIf="model.name">
                 <th>Client Name</th>

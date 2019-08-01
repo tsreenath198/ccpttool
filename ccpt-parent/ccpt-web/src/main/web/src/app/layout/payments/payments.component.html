@@ -1,11 +1,11 @@
 <div [@routerTransition]>
   <app-page-header [icon1]="'fa-inr'" [heading1]="'Payments'"></app-page-header>
-  <div class="spinner padding-top justify-content-md-center" *ngIf="listReturned == true">
+  <div class="spinner padding-top justify-content-md-center" *ngIf="!listReturned">
     <div class="bounce1"></div>
     <div class="bounce2"></div>
     <div class="bounce3"></div>
   </div>
-  <div class="row">
+  <div class="row" *ngIf="listReturned">
     <div class="col-md-7">
       <div class="row">
         <div class="col-md-6"><input type="text" class="form-control" placeholder="search..." [(ngModel)]="currSearchTxt" /></div>
@@ -68,11 +68,11 @@
                   Edit
                 </button> -->
                 <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3" 
-                    *ngIf="enableButtonType == ''">
+                    *ngIf="enableButtonType == '' || enableButtonType == 'U'">
                       {{ enableButtonType != '' ? 'Close' : 'Clear' }}
                     </button>
                     
-                    <span class="pull-right" *ngIf="showAction">
+                    <span class="pull-right" *ngIf="showAction && readOnlyForm == 'R'">
                         <div class="dropdown theme-dropdown clearfix" placement="bottom-right" ngbDropdown>
                             <!-- <button class="btn btn-secondary" >
                                 Dropdown
@@ -80,8 +80,8 @@
                             <i class="fa fa-bars" ngbDropdownToggle></i>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenu1" ngbDropdownMenu>
                                 <a class="dropdown-item drop-list" (click)="enableFormEditable()">Edit</a>
+                                <a class="dropdown-item drop-list" (click)="cancelForm(f)">New</a>
                                 <a class="dropdown-item drop-list" (click)="open(model.id, trashContent)">Delete</a>
-                                <a class="dropdown-item drop-list" (click)="cancelForm(f)">Close</a>
                             </div>
                         </div> 
                     </span>
@@ -557,20 +557,10 @@
               Edit
             </button> -->
             <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3" 
-                *ngIf="enableButtonType == ''">
+                *ngIf="enableButtonType == '' || enableButtonType == 'U'">
                   {{ enableButtonType != '' ? 'Close' : 'Clear' }}
                 </button>
                 
-                <span class="pull-right" *ngIf="showAction">
-                    <div class="form-group">
-                        <select class="form-control" [(ngModel)]="action" name="sel1" #sel1="ngModel" (change)="actions(action,trashContent,f)">
-                            <option [ngValue]="null" hidden selected>Choose action</option>  
-                          <option *ngFor="let al of actionsList.actions" [ngValue]="al.value">
-                                {{ al.key }}
-                              </option>
-                        </select>
-                      </div>
-                </span>
           </div>
         </div>
       </form>

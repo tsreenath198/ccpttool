@@ -42,11 +42,11 @@
                 (click)="update(f)">Update</button>
               <!-- <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button"
                 (click)="enableFormEditable()">Edit</button> -->
-                <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3" *ngIf="enableButtonType == ''">
+                <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3" *ngIf="enableButtonType == '' || enableButtonType == 'U'">
                     {{ enableButtonType != '' ? 'Close' : 'Clear' }}
                   </button>
       
-                  <span class="pull-right" *ngIf="showAction">
+                  <span class="pull-right" *ngIf="showAction && readOnlyForm == 'R'">
                       <div class="dropdown theme-dropdown clearfix" placement="bottom-right" ngbDropdown>
                           <!-- <button class="btn btn-secondary" >
                               Dropdown
@@ -54,8 +54,8 @@
                           <i class="fa fa-bars" ngbDropdownToggle></i>
                           <div class="dropdown-menu" aria-labelledby="dropdownMenu1" ngbDropdownMenu>
                               <a class="dropdown-item drop-list" (click)="enableFormEditable()">Edit</a>
+                              <a class="dropdown-item drop-list" (click)="cancelForm(f)">New</a>
                               <a class="dropdown-item drop-list" (click)="open(model.id, trashContent)">Delete</a>
-                              <a class="dropdown-item drop-list" (click)="cancelForm(f)">Close</a>
                           </div>
                       </div> 
                   </span>
@@ -88,13 +88,12 @@
         </div>
         <div class="row text-center">
           <div class="col-md-12">
-            <button type="submit" *ngIf="enableButtonType == ''" class="btn btn-secondary ml-3" [disabled]="f.form.pristine || f.form.invalid || isCreate"
->Add</button>
+            <button type="submit" *ngIf="enableButtonType == ''" class="btn btn-secondary ml-3" [disabled]="f.form.pristine || f.form.invalid || isCreate">Add</button>
             <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2"
               (click)="update(f)">Update</button>
             <!-- <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button"
               (click)="enableFormEditable()">Edit</button> -->
-              <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3" *ngIf="enableButtonType == ''">
+              <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3" *ngIf="enableButtonType == '' || enableButtonType == 'U'">
                   {{ enableButtonType != '' ? 'Close' : 'Clear' }}
               </button>
           </div>
