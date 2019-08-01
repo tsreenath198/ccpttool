@@ -23,4 +23,6 @@ public interface ClientPositionRepository extends BaseRepository<ClientPosition,
 	@Query("SELECT id as id,generatedCode as name FROM ClientPosition WHERE active_flag=1 AND status_code = 'Open' ORDER BY createdDate ASC")
 	List<DropDownStatistics> getAllCps();
 
+	@Query("SELECT id as id,generatedCode as name FROM ClientPosition WHERE active_flag=1 AND status_code = 'Closed' ORDER BY createdDate ASC")
+	List<DropDownStatistics> getAllClosedCps();
 }

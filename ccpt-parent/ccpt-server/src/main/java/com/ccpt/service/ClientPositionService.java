@@ -55,4 +55,8 @@ public class ClientPositionService extends BaseService<ClientPosition, Integer> 
 	public List<DropDownStatistics> getAllCps() {
 		return clientPositionRepository.getAllCps();
 	}
+
+	public List<DropDownStatistics> getAllClosedCps() {
+		return clientPositionRepository.getAllClosedCps();
+	}
 }
