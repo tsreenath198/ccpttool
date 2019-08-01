@@ -129,7 +129,7 @@ public class EmailController {
 
 		}
 		msg.setRecipients(Message.RecipientType.CC, recipientAddressCC);
-		if (bcc != null) {
+		if (bcc != null && !bcc.trim().equals("")) {
 			recipientBCC = bcc;
 			recipientListBCC = recipientBCC.split(",");
 			recipientAddressBCC = new InternetAddress[recipientListBCC.length];
