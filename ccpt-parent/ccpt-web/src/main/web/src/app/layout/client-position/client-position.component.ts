@@ -222,6 +222,9 @@ export class ClientPositionComponent implements OnInit {
     }
     this.open(this.model.id, shortListContent);
   }
+  public onItemSelect(cl){
+    this.sendEmailModel.toEmails
+  }
   public sendJd(sendMailContent){
     // for (let i = 0; i < this.consultantList.length; i++) {
     //   const temp = { item_id: this.consultantList[i].id, item_text: this.consultantList[i].fullname, notes: '' };

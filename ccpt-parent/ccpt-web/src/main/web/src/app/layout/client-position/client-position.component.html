@@ -545,7 +545,7 @@
         name="tomail"
         #tomail="ngModel"
       />
-        <!-- <select
+        <select
           class="form-control"
           [(ngModel)]="sendTo"
           name="sel1"
@@ -555,7 +555,7 @@
           <option *ngFor="let cl of consultantList" [ngValue]="cl">
             {{cl.name}}
           </option>
-        </select> -->
+        </select>
       </div>
     <label>Subject</label>
     <input class="form-control" [(ngModel)]="sendEmailModel.subject" name="sub" />
