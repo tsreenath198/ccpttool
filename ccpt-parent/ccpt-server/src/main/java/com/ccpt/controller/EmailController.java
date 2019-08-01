@@ -68,6 +68,7 @@ public class EmailController {
 					emailContent.getCc(), emailContent.getBcc(), emailContent.getUploadFiles());
 			emailContentService.save(emailContent);
 		} catch (Exception e) {
+			e.printStackTrace();
 			throw new Exception("Sending Email is Failed");
 		}
 		return null;
@@ -85,7 +86,9 @@ public class EmailController {
 
 	public void sendEmailWithAttachments(String toAddress, String subject, String message, String cc, String bcc,
 			List<UploadFile> files) throws AddressException, MessagingException {
-
+		String recipientCC = null, recipientBCC = null;
+		String[] recipientListCC = null, recipientListBCC = null;
+		InternetAddress[] recipientAddressCC = null, recipientAddressBCC = null;
 		// sets SMTP server properties
 		Properties properties = new Properties();
 		properties.put("mail.smtp.host", mailHost);
@@ -114,28 +117,29 @@ public class EmailController {
 			recipientAddress[counter] = new InternetAddress(recp.trim());
 			counter++;
 		}
-		if (cc != null || !cc.isEmpty()) {
-			String recipientCC = cc;
-			String[] recipientListCC = recipientCC.split(",");
-			InternetAddress[] recipientAddressCC = new InternetAddress[recipientListCC.length];
+		if (cc != null && !cc.trim().equals("")) {
+			recipientCC = cc;
+			recipientListCC = recipientCC.split(",");
+			recipientAddressCC = new InternetAddress[recipientListCC.length];
 			int counterCC = 0;
 			for (String recp : recipientListCC) {
 				recipientAddressCC[counterCC] = new InternetAddress(recp.trim());
 				counterCC++;
 			}
-			msg.setRecipients(Message.RecipientType.CC, recipientAddressCC);
+
 		}
+		msg.setRecipients(Message.RecipientType.CC, recipientAddressCC);
 		if (bcc != null) {
-			String recipientBCC = bcc;
-			String[] recipientListBCC = recipientBCC.split(",");
-			InternetAddress[] recipientAddressBCC = new InternetAddress[recipientListBCC.length];
+			recipientBCC = bcc;
+			recipientListBCC = recipientBCC.split(",");
+			recipientAddressBCC = new InternetAddress[recipientListBCC.length];
 			int counterBCC = 0;
 			for (String recp : recipientListBCC) {
 				recipientAddressBCC[counterBCC] = new InternetAddress(recp.trim());
 				counterBCC++;
 			}
-			msg.setRecipients(Message.RecipientType.BCC, recipientAddressBCC);
 		}
+		msg.setRecipients(Message.RecipientType.BCC, recipientAddressBCC);
 		msg.setRecipients(Message.RecipientType.TO, recipientAddress);
 		msg.setSubject(subject);
 		msg.setSentDate(new Date());
