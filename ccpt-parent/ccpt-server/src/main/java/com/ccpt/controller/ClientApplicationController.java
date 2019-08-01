@@ -20,6 +20,7 @@ import com.ccpt.dto.ClientApplicationDTO;
 import com.ccpt.mapper.BaseMapper;
 import com.ccpt.mapper.ClientApplicationMapper;
 import com.ccpt.model.ApplicationBody;
+import com.ccpt.model.CAStatistics;
 import com.ccpt.model.ClientApplication;
 import com.ccpt.model.InterviewSummaryStatistics;
 import com.ccpt.model.PositionSummaryStatistics;
@@ -85,6 +86,13 @@ public class ClientApplicationController extends BaseController<ClientApplicatio
 	public ResponseEntity<ApplicationBody> showBodyMail(@RequestParam Integer caId) {
 		ApplicationBody result = clientApplicationService.showBodyMail(caId);
 		return new ResponseEntity<ApplicationBody>(result, HttpStatus.OK);
+
+	}
+
+	@GetMapping("/getJobConfirmedCAs")
+	public ResponseEntity<List<CAStatistics>> getJobConfirmedCAs() {
+		List<CAStatistics> result = clientApplicationService.getJobConfirmedCAs();
+		return new ResponseEntity<List<CAStatistics>>(result, HttpStatus.OK);
 
 	}
 

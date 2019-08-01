@@ -1,5 +1,6 @@
 package com.ccpt.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ccpt.model.ApplicationBody;
+import com.ccpt.model.CAStatistics;
 import com.ccpt.model.ClientApplication;
 import com.ccpt.model.InterviewSummaryStatistics;
 import com.ccpt.model.PositionSummaryStatistics;
@@ -80,6 +82,19 @@ public class ClientApplicationService extends BaseService<ClientApplication, Int
 					"Could not find ClientPosition and Consultant for  clientApplication id:" + ca.getId());
 		}
 		return body;
+	}
+
+	public List<CAStatistics> getJobConfirmedCAs() {
+		List<CAStatistics> listOfCAStatistics = new ArrayList<CAStatistics>();
+		List<ClientApplication> listOfCAs = clientApplicationRepository.getJobConfirmedCAs();
+		for (ClientApplication clientApplication : listOfCAs) {
+			CAStatistics caStatistics = new CAStatistics();
+			caStatistics.setId(clientApplication.getId());
+			caStatistics.setName(clientApplication.getConsultant().getFullname() + "-"
+					+ clientApplication.getClientPosition().getGeneratedCode());
+			listOfCAStatistics.add(caStatistics);
+		}
+		return listOfCAStatistics;
 	}
 
 }

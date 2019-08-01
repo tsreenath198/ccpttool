@@ -29,4 +29,7 @@ public interface ClientApplicationRepository extends BaseRepository<ClientApplic
 	List<ClientApplication> findByConsultantIdAndActiveFlag(@Param("consultantId") Integer consultantId,
 			@Param("activeFlag") Boolean activeFlag);
 
+	@Query(value = "SELECT * FROM Client_Application WHERE active_flag=1 AND status_code='Job Confirmed' ORDER BY created_date ASC", nativeQuery = true)
+	List<ClientApplication> getJobConfirmedCAs();
+
 }
