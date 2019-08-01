@@ -94,8 +94,7 @@
               type="submit"
               *ngIf="enableButtonType == ''"
               class="btn btn-secondary ml-3"
-              [disabled]="f.form.pristine || f.form.invalid || isCreate"
-            >
+              [disabled]="f.form.pristine || f.form.invalid || isCreate" >
               Add
             </button>
             <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2" (click)="update(f)">
@@ -289,7 +288,8 @@
                   #senton="ngModel"
                   [readonly]="readOnlyForm == 'R'"
                   [(ngModel)]="model.sentOn"
-                  data-date-format="DD-YYYY-MM"
+                  ng-pattern="/^(0[1-9]|[1-2][0-9]|3[0-1])\/(0[1-9]|1[0-2])\/[0-9]{4}$/"
+
                 />
                 <div class="input-group-addon">
                   <span class="glyphicon glyphicon-th"></span>
