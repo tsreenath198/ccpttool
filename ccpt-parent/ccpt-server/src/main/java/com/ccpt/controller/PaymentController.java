@@ -1,12 +1,18 @@
 package com.ccpt.controller;
 
+import java.io.IOException;
+
 import javax.validation.ValidationException;
 
 import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.ccpt.constants.CCPTConstants;
 import com.ccpt.dto.PaymentDTO;
@@ -31,6 +37,13 @@ public class PaymentController extends BaseController<PaymentDTO, Payment, Integ
 	@Override
 	public BaseMapper<PaymentDTO, Payment, Integer> getMapper() {
 		return Mappers.getMapper(PaymentMapper.class);
+	}
+
+	@GetMapping("/downloadExcel")
+	public ResponseEntity<Payment> downloadExcel(@RequestParam Integer paymentId) throws IOException {
+		Payment result = paymentService.downloadExcel(paymentId);
+		return new ResponseEntity<Payment>(result, HttpStatus.OK);
+
 	}
 
 	@Override
