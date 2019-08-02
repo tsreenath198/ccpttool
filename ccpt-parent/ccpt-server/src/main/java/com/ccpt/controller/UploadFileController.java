@@ -81,6 +81,8 @@ public class UploadFileController {
 
 		String fileName = StringUtils.cleanPath(file.getOriginalFilename());
 		String fileType = file.getContentType();
+		System.out.println("file name:" + fileName);
+		System.out.println("fileName.contains(\"_Crf\")" + fileName.contains("_Crf"));
 		if (fileName.endsWith("doc") || fileName.endsWith("docx")) {
 			if (!fileName.contains("_Crf")) {
 				throw new ValidationException("file name does not contain _Crf extension");
