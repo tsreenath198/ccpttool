@@ -530,6 +530,19 @@
     </button>
   </div>
   <div class="modal-body">
+    <div calss="form-group"> 
+      <select
+      class="form-control"
+      [(ngModel)]="sendTo"
+      name="sel1"
+      (change)="onItemSelect(sendTo)"
+    >
+      <option [ngValue]="null" hidden selected>--select consultant--</option>
+      <option *ngFor="let cl of consultantList" [ngValue]="cl">
+        {{cl.name}}
+      </option>
+    </select>
+    </div>
     <label>E-Mail</label>
     <!-- <ng-multiselect-dropdown [placeholder]="'choose numbers..'" [data]="mailIdForMails" [(ngModel)]="sendEmailModel.to"
       [settings]="dropdownSettings" (onSelect)="onItemSelect($event)">
@@ -545,18 +558,12 @@
         name="tomail"
         #tomail="ngModel"
       />
-        <select
-          class="form-control"
-          [(ngModel)]="sendTo"
-          name="sel1"
-          (change)="onItemSelect(sendTo)"
-        >
-          <option [ngValue]="null" hidden selected>Choose action</option>
-          <option *ngFor="let cl of consultantList" [ngValue]="cl">
-            {{cl.name}}
-          </option>
-        </select>
+       
       </div>
+      <label>Cc</label>
+      <input type="text" [(ngModel)]="sendEmailModel.cc" class="form-control" name="cc" />
+      <label>Bcc</label>
+      <input type="text" [(ngModel)]="sendEmailModel.bcc" class="form-control" name="bcc" /> 
     <label>Subject</label>
     <input class="form-control" [(ngModel)]="sendEmailModel.subject" name="sub" />
     <label>Message Body</label>

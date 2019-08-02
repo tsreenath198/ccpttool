@@ -2,7 +2,7 @@ import { Component, OnInit, HostListener } from '@angular/core';
 import { routerTransition } from '../../router.animations';
 import { forkJoin } from 'rxjs';
 import { URLConstants } from '../components/constants/url-constants';
-import { ClientApplicationModel, ActionsList,SendEmailModel } from './client-application.model';
+import { ClientApplicationModel, ActionsList, SendEmailModel } from './client-application.model';
 import { HttpClientService } from 'src/app/shared/services/http.service';
 import { ClientApplicationStatusModel } from '../client-application-status/client-application-status.model';
 import { ToastrCustomService } from 'src/app/shared/services/toastr.service';
@@ -12,6 +12,7 @@ import { AdditionalPropertiesModel } from 'src/app/additional-properties.model';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { FileUploader, FileLikeObject } from 'ng2-file-upload';
 import { Router } from '@angular/router';
+import { PaymentsModel } from '../payments/payments.model';
 
 @Component({
   selector: 'app-client-application',
@@ -21,6 +22,7 @@ import { Router } from '@angular/router';
 })
 export class ClientApplicationComponent implements OnInit {
   public model: ClientApplicationModel = <ClientApplicationModel>{};
+  public paymentModel: PaymentsModel = <PaymentsModel>{};
 
   public bodyMailModel: any = <any>{};
   public clientApplicationList: Array<any> = [];
@@ -44,14 +46,14 @@ export class ClientApplicationComponent implements OnInit {
   public closeResult = '';
   private modalRef: NgbModalRef;
   public screenHeight: any;
-  public readOnlyForm:any = '';
+  public readOnlyForm: any = '';
   public enableButtonType: any = '';
   public download = 'download';
   public upload = 'upload';
   public uploader: FileUploader = new FileUploader({});
   public apName = '';
   public apValue = '';
-  public loggedInRole:any = '';
+  public loggedInRole: any = '';
   public comments = '';
   public isCreate: boolean = false;
   public page: number;
@@ -59,12 +61,15 @@ export class ClientApplicationComponent implements OnInit {
   public pageSize: number = 20;
   public cpGeneratedCode: string = '';
   public fileList: Array<any> = [];
-  public appIds:Array<any> = [];
+  public appIds: Array<any> = [];
   public listReturned: boolean;
   public isCRF: boolean;
   public refType = 'Client Application';
   public crfFile: any;
-  
+  public setPaymentGst:boolean=false;
+  public setPaymentWebsite:boolean=false;
+  public setPaymentBA:boolean=false;
+
   public sendEmailModel: SendEmailModel = <SendEmailModel>{};
   public config: AngularEditorConfig = {
     editable: true,
@@ -169,7 +174,7 @@ export class ClientApplicationComponent implements OnInit {
       }
       const crf = this.http.get(this.urlConstants.getCRF + this.model.id);
       crf.subscribe(
-        resp => {  
+        resp => {
           this.crfFile = resp as any;
           if (this.crfFile != null) {
             this.isCRF = true;
@@ -179,7 +184,7 @@ export class ClientApplicationComponent implements OnInit {
           this.spinner(true);
         },
         err => {
-          this.toastr.error(err.error.error,err.message);
+          this.toastr.error(err.error.error, err.message);
           console.log(err);
         }
       );
@@ -227,47 +232,47 @@ export class ClientApplicationComponent implements OnInit {
       }
     }
   }
-  selectApplications(event , id){
-    if(event.target.checked){
+  selectApplications(event, id) {
+    if (event.target.checked) {
       this.appIds.push(id);
     }
-    else{
-      for(let i=0;i<this.appIds.length;i++){
-        if(id==this.appIds[i]){
+    else {
+      for (let i = 0; i < this.appIds.length; i++) {
+        if (id == this.appIds[i]) {
           this.appIds.splice(i, 1);
         }
       }
     }
   }
-  sendIds(Ids: any , sendMailContent  :any){
+  sendIds(Ids: any, sendMailContent: any) {
     this.spinner(false);
     const temp = this.http.post(Ids, this.urlConstants.EmailGetClientApps);
-    temp.subscribe( resp =>{
-      this.sendEmailModel = resp as any;  
+    temp.subscribe(resp => {
+      this.sendEmailModel = resp as any;
       this.spinner(true);
-      this.appIds=[];
+      this.appIds = [];
       this.open(0, sendMailContent);
-     },
-     err => {
-       this.toastr.error(err.error.message, 'Client Application');
-       this.spinner(true);
-       this.appIds=[];
-     })
+    },
+      err => {
+        this.toastr.error(err.error.message, 'Client Application');
+        this.spinner(true);
+        this.appIds = [];
+      })
   }
-  public getInterviewDetails(id,sendMailContent){
+  public getInterviewDetails(id, sendMailContent) {
     this.spinner(false);
     const temp = this.http.post(id, this.urlConstants.GetInterviewDetailsEmail);
-    temp.subscribe( resp =>{
-      this.sendEmailModel = resp as any;  
+    temp.subscribe(resp => {
+      this.sendEmailModel = resp as any;
       this.spinner(true);
-      this.appIds=[];
+      this.appIds = [];
       this.open(0, sendMailContent);
-     },
-     err => {
-       this.toastr.error(err.error.message, 'Client Application');
-       this.spinner(true);
-       this.appIds=[];
-     })
+    },
+      err => {
+        this.toastr.error(err.error.message, 'Client Application');
+        this.spinner(true);
+        this.appIds = [];
+      })
   }
   public create(clientApplicationForm: NgForm): void {
     this.spinner(false);
@@ -366,7 +371,7 @@ export class ClientApplicationComponent implements OnInit {
   // }
   public sendEmailReq(): void {
     this.spinner(false);
-    this.sendEmailModel.target="";
+    this.sendEmailModel.target = "";
     const temp = this.http.post(this.sendEmailModel, this.urlConstants.EmailTemplateSend);
     temp.subscribe(resp => {
       this.sendEmailModel = <SendEmailModel>{};
@@ -374,10 +379,10 @@ export class ClientApplicationComponent implements OnInit {
       this.close();
       this.spinner(true);
     },
-    err => {
-      this.toastr.error(err.error.message, 'Client Application');
-      this.spinner(true);
-    });
+      err => {
+        this.toastr.error(err.error.message, 'Client Application');
+        this.spinner(true);
+      });
   }
   /**
    * @param
@@ -413,7 +418,7 @@ export class ClientApplicationComponent implements OnInit {
   /**Download file */
   public downloadFile(id: number) {
     this.http.get(this.urlConstants.FileDownload + id).subscribe(
-      resp => {},
+      resp => { },
       err => {
         if (err.status == 200) window.open(err.url);
       }
@@ -446,15 +451,15 @@ export class ClientApplicationComponent implements OnInit {
     const files = this.getFiles();
     const formData = new FormData();
     formData.append('file', files[0].rawFile, files[0].name);
-    if(this.refType='crf'){
-      const params = this.selectedRecrd  + '&comments=' + this.comments;
+    if (this.refType = 'crf') {
+      const params = this.selectedRecrd + '&comments=' + this.comments;
       this.http.upload(this.urlConstants.saveCRF + params, formData).subscribe(
         resp => {
           let temp: any = resp;
-          this.comments="";
+          this.comments = "";
           this.toastr.success(temp.message, 'Client');
           this.getCAById(this.model.id);
-          this.refType='Client Application';
+          this.refType = 'Client Application';
           this.close();
         },
         err => {
@@ -462,7 +467,7 @@ export class ClientApplicationComponent implements OnInit {
         }
       );
     }
-    else{
+    else {
       const params = 'refId=' + this.selectedRecrd + '&refType=' + this.refType + '&comments=' + this.comments;
       this.http.upload(this.urlConstants.FileUpload + params, formData).subscribe(
         resp => {
@@ -504,24 +509,83 @@ export class ClientApplicationComponent implements OnInit {
   private spinner(isSpinner: boolean) {
     this.listReturned = isSpinner;
   }
-  public setLocation(id){
-    
+  public setLocation(id) {
+
   }
-  public checkInterviewSchedule(){
-    if(this.isInterviewScheduled){
-      this.model.interviewMode="Face to Face"
-      this.clientPositionList.forEach(cl =>{
-        if(cl.id==this.model.cpId){
-          let location=cl.name.split("-")
+  public checkInterviewSchedule() {
+    if (this.isInterviewScheduled) {
+      this.model.interviewMode = "Face to Face"
+      this.clientPositionList.forEach(cl => {
+        if (cl.id == this.model.cpId) {
+          let location = cl.name.split("-")
           this.model.interviewLocation = location[2];
         }
       })
     }
-    else{
-      this.model.interviewDate="";
-      this.model.interviewLocation="";
-      this.model.interviewTime="";
-      this.model.interviewMode="";
+    else {
+      this.model.interviewDate = "";
+      this.model.interviewLocation = "";
+      this.model.interviewTime = "";
+      this.model.interviewMode = "";
     }
+  }
+  public setPaymentModel(model, createPayment) {
+    this.paymentModel.invoiceDate = this.setTodaysDate()
+    this.paymentModel.companyName = model.clientPosition.client.name;
+    if(model.clientPosition.client.website!=null){
+      this.paymentModel.companyWebsite = model.clientPosition.client.website;
+      this.setPaymentWebsite=false;
+    }
+    else{
+      this.setPaymentWebsite=true;
+    }
+    if(model.clientPosition.client.gst != null){
+      this.paymentModel.companyGstNum = model.clientPosition.client.gst;
+      this.setPaymentGst=false;
+    }
+    else{
+      this.setPaymentGst=true;
+    }
+    if(model.clientPosition.client.billingAddress != null){
+      this.paymentModel.billingAddress = model.clientPosition.client.billingAddress;
+      this.setPaymentBA=false;
+    }
+    else{
+      this.setPaymentBA=true;
+    }
+    this.paymentModel.companyGstNum = model.clientPosition.client.gst;
+    this.paymentModel.creditPeriod = model.clientPosition.client.creditPeriod;
+    this.paymentModel.gauranteePeriod = model.clientPosition.client.guaranteePeriod;
+    this.paymentModel.contactPerson = model.clientPosition.client.clientContacts[0].fullname;
+    this.paymentModel.contactPersonNum = model.clientPosition.client.clientContacts[0].phone;
+    this.paymentModel.contactPersonEmail = model.clientPosition.client.clientContacts[0].email;
+    this.paymentModel.designation = model.clientPosition.role;
+    this.paymentModel.serviceCharge = model.clientPosition.client.serviceCharge;
+    this.paymentModel.candidateName = model.consultant.fullname;
+    this.paymentModel.phone="+919848071296";
+    this.paymentModel.branchHeadName="Sreenath Thatikonda";
+    this.paymentModel.branchLocation="Nizamabad"
+    this.open(model.id,createPayment);
+  }
+  private setTodaysDate():string {
+    const today = new Date();
+    const dd = String(today.getDate()).padStart(2, '0');
+    const mm = String(today.getMonth() + 1).padStart(2, '0'); // January is 0!
+    const yyyy = today.getFullYear();
+    const temp = dd + '-' + mm + '-' + yyyy;
+    return temp;
+  }
+  public createPaymentForm(form: NgForm){
+    this.spinner(false);
+    const temp = this.http.post(this.paymentModel, this.urlConstants.PaymentCreate);
+    temp.subscribe(resp => {
+        this.toastr.success(this.urlConstants.SuccessMsg, 'Payment');
+        form.resetForm();
+        this.close();
+        this.spinner(true);
+    }, err => {
+        this.toastr.error(err.error.message, 'Payment');
+        this.spinner(true);
+    });
   }
 }

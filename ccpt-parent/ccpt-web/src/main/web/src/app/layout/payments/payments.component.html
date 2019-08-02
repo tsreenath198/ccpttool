@@ -108,21 +108,21 @@
           </div>
           <div class="col-md-6">
               <div class="form-group">
-                <label>Client Position<span class="required">*</span></label>
+                <label>Client Application<span class="required">*</span></label>
                 <select
                   class="form-control"
                   name="cp"
                   [disabled]="readOnlyForm == 'R'"
-                  [(ngModel)]="cpId"
+                  [(ngModel)]="caId"
                   [ngClass]="{ 'is-invalid': f.submitted && cp.invalid }"
                   #cp="ngModel"
-                  (change)="getCPDetails(cpId)"
+                  (change)="getCPDetails(caId)"
                   required
                 >
-                  <option *ngFor="let cpl of clientPositionList" [ngValue]="cpl.id">{{ cpl.name }} </option>
+                  <option *ngFor="let cal of clientApplicationList" [ngValue]="cal.id">{{ cal.name }} </option>
                 </select>
                 <div class="invalid-feedback">
-                  Client Position is mandatory
+                  Client Application is mandatory
                 </div>
               </div>
             </div>
@@ -240,7 +240,7 @@
           </div>
           <div class="col-md-6">
             <div class="form-group">
-              <label>Designation<span class="required">*</span></label>
+              <label>Contact Person Designation<span class="required">*</span></label>
               <input
                 class="form-control"
                 [readonly]="readOnlyForm == 'R'"
@@ -314,20 +314,18 @@
           <div class="col-md-6">
               <div class="form-group">
                 <label>Candidate Name<span class="required">*</span></label>
-                <select
-                  class="form-control"
-                  [disabled]="readOnlyForm == 'R'"
-                  [(ngModel)]="model.candidateName"
-                  name="con"
-                  [ngClass]="{ 'is-invalid': f.submitted && con.invalid }"
-                  #con="ngModel"
-                  (change)="getConsultantDetails()"
-                  required
-                >
-                  <option *ngFor="let cl of consultantList" [ngValue]="cl.name">{{ cl.name }}</option>
-                </select>
+                <input
+                type="text"
+                class="form-control"
+                name="candidateName"
+                [(ngModel)]="model.candidateName"
+                [ngClass]="{ 'is-invalid': f.submitted && candidateName.invalid }"
+                candidateName
+                [readonly]="readOnlyForm == 'R'"
+                required
+              />
                 <div class="invalid-feedback">
-                  Consultant is mandatory
+                  Candidate Name is mandatory
                 </div>
               </div>
             </div>

@@ -69,7 +69,7 @@ export class ClientPositionComponent implements OnInit {
   public cpListLength: number;
   public listReturned: boolean;
   public pageSize: number = 20;
-  public sendTo: any;
+  public sendTo: any = null;
   public getAllCPS = this.http.get(this.urlConstants.CPSGetAll);
   public getAllR = this.http.get(this.urlConstants.RDropdown);
   public getAllC = this.http.get(this.urlConstants.ClientDropdown);
@@ -216,14 +216,20 @@ export class ClientPositionComponent implements OnInit {
     debugger
   }*/
   public createApplication(shortListContent){
+    console.log(this.consultantList)
     for (let i = 0; i < this.consultantList.length; i++) {
-      const temp = { item_id: this.consultantList[i].id, item_text: this.consultantList[i].fullname, notes: '' };
+      const temp = { item_id: this.consultantList[i].id, item_text: this.consultantList[i].name, notes: '' };
       this.consultantNames.push(temp);
     }
+    //console.log(this.consultantNames);
     this.open(this.model.id, shortListContent);
   }
   public onItemSelect(cl){
-    this.sendEmailModel.toEmails
+    if(this.sendEmailModel.toEmails.length>0){
+      this.sendEmailModel.toEmails +=","
+    }
+    this.sendEmailModel.toEmails += cl.email;
+    this.sendTo=null;
   }
   public sendJd(sendMailContent){
     // for (let i = 0; i < this.consultantList.length; i++) {
@@ -234,6 +240,7 @@ export class ClientPositionComponent implements OnInit {
     this.http.post(temp, this.urlConstants.EmailTemplateBuildContent + 'Job Description').subscribe(resp => {
       this.sendEmailModel = resp as any;
       this.sendEmailModel.target="";
+      this.sendEmailModel.toEmails=""
     });
     this.open(this.model.id, sendMailContent);
   }
@@ -455,12 +462,6 @@ export class ClientPositionComponent implements OnInit {
         for (let i = 0; i < this.consultantList.length; i++) {
           const temp = { item_id: this.consultantList[i].phone, item_text: this.consultantList[i].fullname, notes: '' };
           this.numbersForSmsDropdown.push(temp);
-        }
-      }
-      if (content.type === this.shortList) {
-        for (let i = 0; i < this.consultantList.length; i++) {
-          const temp = { item_id: this.consultantList[i].id, item_text: this.consultantList[i].fullname, notes: '' };
-          this.consultantNames.push(temp);
         }
       }
     }

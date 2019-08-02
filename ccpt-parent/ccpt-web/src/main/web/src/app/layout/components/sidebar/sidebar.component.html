@@ -50,10 +50,7 @@
       <i class="fa fa-fw fa-paper-plane"></i>&nbsp;
       <span>{{ 'Client Applications' | translate }}</span>
     </a>
-    <a *ngIf="loggedInRole == 'Admin' " [routerLink]="['/layout/payments']" 
-      [routerLinkActive]="['router-link-active']" class="list-group-item"><i class="fa fa-fw fa-inr"></i>&nbsp;
-      <span>{{ 'Payments' | translate }}</span>
-    </a>
+    
     <a [routerLink]="['/layout/other-contacts']"  [routerLinkActive]="['router-link-active']"
       class="list-group-item">
       <i class="fa fa-fw fa-address-book"></i>&nbsp;
@@ -112,6 +109,12 @@
               [routerLinkActive]="['router-link-active']" class="list-group-item"><i
                 class="fa fa-fw fa-comment"></i>&nbsp;
               <span>{{ 'Messages' | translate }}</span>
+            </a>
+          </li>
+          <li>
+              <a  [routerLink]="['/layout/payments']" 
+              [routerLinkActive]="['router-link-active']" class="list-group-item"><i class="fa fa-fw fa-inr"></i>&nbsp;
+              <span>{{ 'Payments' | translate }}</span>
             </a>
           </li>
         </ul>

@@ -21,13 +21,13 @@ export class PaymentsComponent implements OnInit {
 
     public model: PaymentsModel = <PaymentsModel>{};
     public paymentsList: any = [];
-    public clientPositionList: Array<any> = [];
+    public clientApplicationList: Array<any> = [];
     public consultantList: Array<any> = [];
     private urlConstants = new URLConstants();
     public readOnlyForm = '';
     public enableButtonType = '';
     public currSearchTxt = '';
-    public cpId = 0;
+    public caId = 0;
     public screenHeight: any;
     private selectedRecrdToDel = 0;
     public closeResult = '';
@@ -37,8 +37,7 @@ export class PaymentsComponent implements OnInit {
     public actionsList = new ActionsList();
     public action: string = null;
     private modalRef: NgbModalRef;
-    private getAllCP = this.http.get(this.urlConstants.CPDropdown);
-    private getAllC = this.http.get(this.urlConstants.CDropdown);
+    private getAllCA = this.http.get(this.urlConstants.CAJobConfirmed);
     public listReturned: boolean;
 
     constructor(private http: HttpClientService, private router: Router, private toastr: ToastrCustomService, private modalService: NgbModal) {
@@ -63,17 +62,16 @@ export class PaymentsComponent implements OnInit {
             this.spinner(true);
         });
         this.getTodaysDate();
+        this.setDefaultValues();
         this.model.properties = [];
     }
     getAllDropdowns() {
         this.spinner(false);
         forkJoin(
-            this.getAllC,
-            this.getAllCP,
+            this.getAllCA,
             // forkJoin on works for observables that complete
         ).subscribe(listofrecords => {
-            this.consultantList = listofrecords[0] as any;
-            this.clientPositionList = listofrecords[1] as any;
+            this.clientApplicationList = listofrecords[0] as any;
             this.spinner(true);
         });
     }
@@ -81,7 +79,12 @@ export class PaymentsComponent implements OnInit {
         const bool = (value == null) ? true : false;
         return bool;
     }
-    getTodaysDate() {
+    private setDefaultValues(){
+        this.model.branchHeadName = "Sreenath Thatikonda";
+        this.model.phone = "+919848071296";
+        this.model.branchLocation = "Nizamabad"
+    }
+    private getTodaysDate() {
         const today = new Date();
         const dd = String(today.getDate()).padStart(2, '0');
         const mm = String(today.getMonth() + 1).padStart(2, '0'); // January is 0!
@@ -119,34 +122,23 @@ export class PaymentsComponent implements OnInit {
             }
         });
     }
-    public getCPDetails(cpId) {
+    public getCPDetails(caId) {
         this.spinner(false);
-        this.http.get(this.urlConstants.CPGetById + cpId).subscribe(resp => {
+        this.http.get(this.urlConstants.CAGetById + caId).subscribe(resp => {
             let temp = resp as any;
-            this.model.companyName = temp.client.name;
-            this.model.companyWebsite = temp.client.website;
-            this.model.companyGstNum = temp.client.gst;
-            this.model.creditPeriod = temp.client.creditPeriod;
-            this.model.gauranteePeriod = temp.client.guaranteePeriod;
-            this.model.contactPerson = temp.client.clientContacts[0].fullname;
-            this.model.contactPersonNum = temp.client.clientContacts[0].phone;
-            this.model.contactPersonEmail = temp.client.clientContacts[0].email;
-            this.model.designation = temp.role;
-            this.model.billingAddress = temp.client.billingAddress;
-            this.model.serviceCharge = temp.client.serviceCharge;
+            this.model.companyName = temp.clientPosition.client.name;
+            this.model.companyWebsite = temp.clientPosition.client.website;
+            this.model.companyGstNum = temp.clientPosition.client.gst;
+            this.model.creditPeriod = temp.clientPosition.client.creditPeriod;
+            this.model.gauranteePeriod = temp.clientPosition.client.guaranteePeriod;
+            this.model.contactPerson = temp.clientPosition.client.clientContacts[0].fullname;
+            this.model.contactPersonNum = temp.clientPosition.client.clientContacts[0].phone;
+            this.model.contactPersonEmail = temp.clientPosition.client.clientContacts[0].email;
+            this.model.designation = temp.clientPosition.role;
+            this.model.billingAddress = temp.clientPosition.client.billingAddress;
+            this.model.serviceCharge = temp.clientPosition.client.serviceCharge;
+            this.model.candidateName = temp.consultant.fullname
             this.spinner(true);
-        })
-    }
-    public getConsultantDetails() {
-        let id = 0;
-        for (let i = 0; i < this.consultantList.length; i++) {
-            if (this.model.candidateName == this.consultantList[i].name) {
-                id = this.consultantList[i].id;
-            }
-        }
-        this.http.get(this.urlConstants.CGetById + id).subscribe(resp => {
-            let temp = resp as any;
-            this.model.phone = temp.phone;
         })
     }
     private mapToUpdateModel(response) {

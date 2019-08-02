@@ -44,6 +44,7 @@ export class URLConstants {
     CADelete = 'clientApplication/';
     CAGetById = 'clientApplication/';
     CABodyMail = 'clientApplication/showBodyMail?caId='
+    CAJobConfirmed = "clientApplication/getJobConfirmedCAs"
 
 
     /* Client Call History */
