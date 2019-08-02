@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { NgbCarouselModule, NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbCarouselModule, NgbAlertModule, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { DashboardRoutingModule } from './dashboard-routing.module';
 import { DashboardComponent } from './dashboard.component';
@@ -21,7 +21,8 @@ import { AngularEditorModule } from '@kolkov/angular-editor';
         DashboardRoutingModule,
         StatModule,
         FormsModule,
-        AngularEditorModule
+        AngularEditorModule,
+        NgbModule
     ],
     declarations: [
         DashboardComponent,

@@ -77,7 +77,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr class="link" *ngFor="let cch of ccptReportCOCH" data-toggle="tooltip"
+              <tr class="link" placement="top" ngbTooltip="click for details" *ngFor="let cch of ccptReportCOCH"
                 (click)="open(contentCoCH, cch.recruiterId, 'ConsultantCallHistory')">
                 <td>{{ cch.fullName }}</td>
                 <td>{{ cch.count }}</td>
@@ -108,7 +108,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let cch of ccptReportCLCH" data-toggle="tooltip"
+              <tr *ngFor="let cch of ccptReportCLCH" class="link" placement="top" ngbTooltip="click for details" data-toggle="tooltip"
                 (click)="open(contentClch, cch.recruiterId, 'ClientCallHistory')">
                 <td>{{ cch.fullName }}</td>
                 <td>{{ cch.count }}</td>
@@ -210,7 +210,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let aca of activeCA" data-toggle="tooltip"
+              <tr *ngFor="let aca of activeCA" data-toggle="tooltip" class="link" placement="top" ngbTooltip="click for details"
                 (click)="open(contentACA, aca.cpId, 'activeClientApplication')">
                 <td>{{ aca.generatedCode }}</td>
                 <td>{{ aca.count }}</td>
@@ -365,7 +365,7 @@
                   <input
                     class="form-control"
                     [readonly]="readOnlyForm == 'R'"
-                    [(ngModel)]="top5ById.client.name"
+                    [(ngModel)]="top5ById?.client.name"
                     name="cn"
                     [ngClass]="{ 'is-invalid': f.submitted && cn.invalid }"
                     #cn="ngModel"
@@ -591,7 +591,7 @@
                 </div>
               </div>
             </div>
-            <div class="row" *ngIf="top5ById.properties.length>0">
+            <div class="row" *ngIf="top5ById?.properties?.length>0">
                 <div class="col-md-12 mb-5" *ngIf="top5ById.properties.length > 0">
                     <div class="form-group">
                       <label>Additional Properties</label>
