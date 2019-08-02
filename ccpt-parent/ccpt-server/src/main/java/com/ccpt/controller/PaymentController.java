@@ -2,12 +2,12 @@ package com.ccpt.controller;
 
 import java.io.IOException;
 
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.ValidationException;
 
 import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -40,10 +40,25 @@ public class PaymentController extends BaseController<PaymentDTO, Payment, Integ
 	}
 
 	@GetMapping("/downloadExcel")
-	public ResponseEntity<Payment> downloadExcel(@RequestParam Integer paymentId) throws IOException {
-		Payment result = paymentService.downloadExcel(paymentId);
-		return new ResponseEntity<Payment>(result, HttpStatus.OK);
-
+	public void downloadExcel(@RequestParam Integer paymentId, HttpServletResponse httpServletResponse)
+			throws IOException {
+		byte[] bytes = paymentService.downloadExcel(paymentId, httpServletResponse);
+		try {
+			httpServletResponse.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+			httpServletResponse.setHeader("Expires", "0");
+			httpServletResponse.setHeader("Cache-Control", "must-revalidate, post-check=0, pre-check=0");
+			httpServletResponse.setHeader("Pragma", "public");
+			httpServletResponse.addHeader("Content-Type",
+					"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+			httpServletResponse.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+			httpServletResponse.setHeader("Content-Disposition", "attachment; filename=a.xlsx");
+			ServletOutputStream servletOutputStream = httpServletResponse.getOutputStream();
+			servletOutputStream.write(bytes);
+			servletOutputStream.flush();
+			servletOutputStream.close();
+		} catch (Exception exception) {
+			System.out.println("exceptions");
+		}
 	}
 
 	@Override

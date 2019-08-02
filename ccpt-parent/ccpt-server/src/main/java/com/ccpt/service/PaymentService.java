@@ -2,6 +2,8 @@ package com.ccpt.service;
 
 import java.io.IOException;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,9 +27,9 @@ public class PaymentService extends BaseService<Payment, Integer> {
 		return paymentRepository;
 	}
 
-	public Payment downloadExcel(Integer paymentId) throws IOException {
+	public byte[] downloadExcel(Integer paymentId, HttpServletResponse httpServletResponse) throws IOException {
 		Payment payment = get(paymentId);
-		return ExcelWriter.downloadExcel(payment);
+		return ExcelWriter.downloadExcel(payment, httpServletResponse);
 	}
 
 }

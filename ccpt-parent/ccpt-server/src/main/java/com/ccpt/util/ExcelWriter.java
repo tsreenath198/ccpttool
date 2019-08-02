@@ -1,10 +1,10 @@
 package com.ccpt.util;
 
-import java.io.FileOutputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.CreationHelper;
@@ -20,8 +20,9 @@ import com.ccpt.model.Payment;
 
 public class ExcelWriter {
 
-	public static Payment downloadExcel(Payment payment) throws IOException {
+	public static byte[] downloadExcel(Payment payment, HttpServletResponse httpServletResponse) throws IOException {
 
+		@SuppressWarnings("resource")
 		XSSFWorkbook workbook = new XSSFWorkbook();
 		XSSFSheet sheet = workbook.createSheet("INVOICE");
 		XSSFRow row;
@@ -278,12 +279,10 @@ public class ExcelWriter {
 		cell.setCellStyle(style);
 		sheet.addMergedRegion(new CellRangeAddress(45, 45, 0, 1));
 
-		Calendar calendar = new GregorianCalendar();
-		FileOutputStream fileOut = new FileOutputStream("D:\\" + calendar.get(Calendar.MINUTE) + ".xlsx");
-		workbook.write(fileOut);
-		fileOut.close();
-		workbook.close();
-		return payment;
+		ByteArrayOutputStream os = new ByteArrayOutputStream();
+		workbook.write(os);
+		byte[] bytes = os.toByteArray();
+		return bytes;
 	}
 
 }
