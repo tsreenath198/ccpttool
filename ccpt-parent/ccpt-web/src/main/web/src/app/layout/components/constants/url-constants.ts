@@ -136,6 +136,7 @@ export class URLConstants {
     PaymentDelete = 'payment/';
     PaymentGetById = 'payment/';
     PaymentActivateById = 'payment/';
+    PaymentGetExcel = 'payment/downloadExcel?paymentId='
 
     /** Messages */
     DeleteMsg = 'Deleted Successfully';

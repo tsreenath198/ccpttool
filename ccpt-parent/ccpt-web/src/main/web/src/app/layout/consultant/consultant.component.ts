@@ -145,6 +145,7 @@ export class ConsultantComponent implements OnInit {
     temp.subscribe(
       resp => {
         this.toastr.success(this.urlConstants.SuccessMsg, 'Consultant');
+        console.log(resp);
         consultantForm.resetForm();
         this.init();
         this.formReset();

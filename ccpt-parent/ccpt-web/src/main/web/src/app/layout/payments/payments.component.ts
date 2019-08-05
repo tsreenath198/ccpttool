@@ -287,4 +287,13 @@ export class PaymentsComponent implements OnInit {
     private spinner(isSpinner: boolean) {
         this.listReturned = isSpinner;
     }
+    /**Download file */
+  public downloadBif() {
+    this.http.get(this.urlConstants.PaymentGetExcel + this.model.id).subscribe(
+      resp => { },
+      err => {
+        if (err.status == 200) window.open(err.url);
+      }
+    );
+  }
 }
