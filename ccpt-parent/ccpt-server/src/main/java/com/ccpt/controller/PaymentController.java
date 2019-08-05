@@ -43,6 +43,7 @@ public class PaymentController extends BaseController<PaymentDTO, Payment, Integ
 	public void downloadExcel(@RequestParam Integer paymentId, HttpServletResponse httpServletResponse)
 			throws IOException {
 		byte[] bytes = paymentService.downloadExcel(paymentId, httpServletResponse);
+		String consultantName = paymentService.get(paymentId).getCandidateName();
 		try {
 			httpServletResponse.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
 			httpServletResponse.setHeader("Expires", "0");
@@ -51,7 +52,8 @@ public class PaymentController extends BaseController<PaymentDTO, Payment, Integ
 			httpServletResponse.addHeader("Content-Type",
 					"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
 			httpServletResponse.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-			httpServletResponse.setHeader("Content-Disposition", "attachment; filename=a.xlsx");
+			httpServletResponse.setHeader("Content-Disposition",
+					"attachment; filename=" + consultantName + "_bif.xlsx");
 			ServletOutputStream servletOutputStream = httpServletResponse.getOutputStream();
 			servletOutputStream.write(bytes);
 			servletOutputStream.flush();

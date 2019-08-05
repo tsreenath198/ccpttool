@@ -279,6 +279,7 @@ public class ExcelWriter {
 		cell.setCellStyle(style);
 		sheet.addMergedRegion(new CellRangeAddress(45, 45, 0, 1));
 
+		sheet.setColumnWidth(1, 255 * 256);
 		ByteArrayOutputStream os = new ByteArrayOutputStream();
 		workbook.write(os);
 		byte[] bytes = os.toByteArray();
