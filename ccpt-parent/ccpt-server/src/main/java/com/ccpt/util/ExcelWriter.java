@@ -21,7 +21,6 @@ import com.ccpt.model.Payment;
 public class ExcelWriter {
 
 	public static byte[] downloadExcel(Payment payment, HttpServletResponse httpServletResponse) throws IOException {
-
 		@SuppressWarnings("resource")
 		XSSFWorkbook workbook = new XSSFWorkbook();
 		XSSFSheet sheet = workbook.createSheet("INVOICE");
