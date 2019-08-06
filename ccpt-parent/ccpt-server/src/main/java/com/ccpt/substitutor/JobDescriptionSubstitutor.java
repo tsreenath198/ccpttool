@@ -192,12 +192,12 @@ public class JobDescriptionSubstitutor implements ContentSubstitutor {
 		String totalExp = "";
 		if (yrs != null) {
 			if (!yrs.isEmpty()) {
-				totalExp.concat(yrs + " years ");
+				totalExp = totalExp.concat(yrs + " years ");
 			}
 		}
 		if (ms != null) {
 			if (!ms.isEmpty()) {
-				totalExp.concat(ms + " months");
+				totalExp = totalExp.concat(ms + " months");
 			}
 		}
 		if (!totalExp.isEmpty()) {
