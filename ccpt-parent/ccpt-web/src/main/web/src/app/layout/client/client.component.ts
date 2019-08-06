@@ -10,6 +10,7 @@ import { FileUploader, FileLikeObject } from 'ng2-file-upload';
 import { AdditionalPropertiesModel } from 'src/app/additional-properties.model';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { Router } from '@angular/router';
+import { StorageService } from '../../shared/services/storage.service';
 
 
 
@@ -54,7 +55,11 @@ export class ClientComponent implements OnInit {
         translate: 'no'
     };
 
-    constructor(private http: HttpClientService, private toastr: ToastrCustomService, private modalService: NgbModal, private router: Router) {
+    constructor(private http: HttpClientService, 
+        private toastr: ToastrCustomService, 
+        private modalService: NgbModal, 
+        private router: Router,
+        private storageService:StorageService) {
         this.getScreenSize();
     }
     @HostListener('window:resize', ['$event'])
@@ -67,8 +72,9 @@ export class ClientComponent implements OnInit {
           this.router.navigate(['/login']);
         }
         this.loggedInRole = sessionStorage.getItem('role');
-        this.clientContactDeclare();
+        this.setClientContactModel();
         this.init();
+        this.storageService.clientId= null
     }
     init() {
         this.spinner(false);
@@ -83,10 +89,10 @@ export class ClientComponent implements OnInit {
         this.model.creditPeriod = '1 month';
         this.model.phone = '+91';
     }
-    private clientContactDeclare() {
+    private setClientContactModel() {
         this.model.clientContacts = [{ 'fullname': '', 'email': '', 'phone': '+91' }];
     }
-    private enableFormEditable(): void {
+    private editForm(): void {
         this.readOnlyForm = '';
         this.enableButtonType = 'U';
     }
@@ -126,47 +132,53 @@ export class ClientComponent implements OnInit {
         this.spinner(false);
         const temp = this.http.post(this.model, this.urlConstants.ClientCreate);
         temp.subscribe(resp => {
-            this.toastr.success(this.urlConstants.SuccessMsg, 'Client');
-            this.init();
-            this.formReset();
+            this.successHandle();
             clientForm.resetForm();
-            this.clientContactDeclare();
-            this.spinner(true);
+            this.setClientContactModel();
             this.isCreate= false;
+            this.addCP(resp);
         }, err => {
-            this.toastr.error(err.error.message, 'Client');
+            this.errorHandle(err);
             this.isCreate= false;
-            this.spinner(true);
         });
     }
+    private successHandle(){
+        this.toastr.success(this.urlConstants.SuccessMsg, 'Client');
+            this.init();
+            this.formReset();
+            this.spinner(true);
+    }
+    private addCP(resp : any){
+        let decision = confirm("Do you want to create an application");
+        if(decision== true){
+          /**set consultant id in storage service*/
+          this.storageService.consultantId = resp.id;
+          this.router.navigate(['/layout/client-application'])
+        }
+      }
     public update(clientForm: NgForm) {
         this.spinner(false);
         const temp = this.http.update(this.model, this.urlConstants.ClientUpdate);
         temp.subscribe(resp => {
-            this.formReset();
-            this.toastr.success(this.urlConstants.UpdateMsg, 'Client');
-            this.init();
+            this.successHandle()
+            this.setClientContactModel();
             clientForm.resetForm();
-            this.clientContactDeclare();
-            this.spinner(true);
-
             this.readOnlyForm = '';
             this.enableButtonType = '';
             this.showAction = false;
         }, err => {
-            this.toastr.error(err.error.message, 'Client');
-            this.spinner(true);
+            this.errorHandle(err);
         });
     }
-    public cancelForm(consultantCallHistory: NgForm) {
-        consultantCallHistory.resetForm();
+    public emptyForm(cchForm: NgForm) {
+        cchForm.resetForm();
         this.formReset();
         this.readOnlyForm = '';
         this.enableButtonType = '';
         this.showAction = false;
-        this.clientContactDeclare();
+        this.setClientContactModel();
     }
-    public clientContactListIncrement(event, i: number) {
+    public contactListIncrement(event, i: number) {
         switch (event.id) {
             case 'decrease': {
                 this.model.clientContacts.splice(i, 1);
@@ -191,15 +203,9 @@ export class ClientComponent implements OnInit {
                     this.apValue = '';
                 }
                 else{
-                    let propertyExist :boolean;
-                    for(let i=0; i<this.model.properties.length; i++){
-                        if(this.model.properties[i].name==this.apName&&this.model.properties[i].value==this.apValue){
-                            propertyExist = true;
-                        }
-                        else{
-                            propertyExist = false;
-                        }
-                    }
+                    let propertyExist :any;
+                    /**TODO: replace loop with filter(High) */
+                   propertyExist= this.model.properties.filter(prop => prop.name==this.apName && prop.value==this.apValue)
                     if(propertyExist){
                         this.toastr.error('Property already exists', 'Properties');
                     }
@@ -224,18 +230,18 @@ export class ClientComponent implements OnInit {
         this.spinner(false);
         const temp = this.http.delete(this.urlConstants.ClientDelete + this.selectedRecrdToDel);
         temp.subscribe(resp => {
-            this.toastr.success(this.urlConstants.DeleteMsg, 'Client');
-            this.init();
+            this.successHandle();
             this.close();
-            this.formReset();
-            this.spinner(true);
             this.readOnlyForm = '';
             this.enableButtonType = '';
             this.showAction = false;
         }, err => {
-            this.toastr.error(err.error.message, 'Client');
-            this.spinner(true);
+            this.errorHandle(err);
         });
+    }
+    private errorHandle(err:any){
+        this.toastr.error(err.error.message, 'Client');
+        this.spinner(true);
     }
     public getFilesById(id: number) {
         this.spinner(false);
@@ -254,22 +260,12 @@ export class ClientComponent implements OnInit {
         if (event) {
             this.selectedRecrdToDel = event;
         }
-        // if (event.type === this.download) {
-        //     // this.getFilesById(this.selectedRecrdToDel); TODO:Need to fix for multiple downloads
-        //     this.http.get('file/download?refType=Client&refId=' + this.selectedRecrdToDel).subscribe(resp => {
-        //     }, err => {
-        //         if (err.status == 200)
-        //             window.open(err.url);
-        //     });
-        // } else {
             this.modalRef = this.modalService.open(content);
             this.modalRef.result.then((result) => {
                 this.closeResult = `Closed with: ${result}`;
             }, (reason) => {
                 this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
             });
-        //}
-
     }
     public close() {
         this.modalRef.close();
@@ -310,25 +306,6 @@ export class ClientComponent implements OnInit {
         }, err => {
             this.toastr.success(err.error.message, 'Client');
         });
-        /* let requests = [];
-         files.forEach((file) => {
-             let formData = new FormData();
-             formData.append('file', file.rawFile, file.name);
-             console.log(formData);
-             this.http.upload('', formData[0]).subscribe(resp => {
-                 console.log("resp=====", resp);
-             })
-             // requests.push(this.uploadService.upload(formData));
-         });*/
-
-        /*concat(...requests).subscribe(
-          (res) => {
-            console.log(res);
-          },
-          (err) => {
-            console.log(err);
-          }
-        );*/
     }
     public transformTitleCase(ip: HTMLInputElement) {
         let temp = ip.value.length === 0 ? '' :

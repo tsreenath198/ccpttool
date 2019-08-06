@@ -70,7 +70,7 @@
             <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2" (click)="update(f)">Update</button>
             <!-- <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button"
               (click)="enableFormEditable()">Edit</button> -->
-            <button type="button" (click)="cancelForm(f)" *ngIf="enableButtonType == ''||enableButtonType == 'U'" class="btn btn-secondary ml-3">
+            <button type="button" (click)="emptyForm(f)" *ngIf="enableButtonType == ''||enableButtonType == 'U'" class="btn btn-secondary ml-3">
               {{ enableButtonType != '' ? 'Close' : 'Clear' }}
             </button>
 
@@ -81,10 +81,10 @@
                     </button> -->
                     <i class="fa fa-bars" ngbDropdownToggle></i>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenu1" ngbDropdownMenu>
-                        <a class="dropdown-item drop-list" (click)="enableFormEditable()">Edit</a>
+                        <a class="dropdown-item drop-list" (click)="editForm()">Edit</a>
                         <a class="dropdown-item drop-list" (click)="open(model.id,uploadContent)">File Upload</a>
                         <a class="dropdown-item drop-list" (click)="open(model.id, trashContent)">Delete</a>
-                        <a class="dropdown-item drop-list" (click)="cancelForm(f)">Close</a>
+                        <a class="dropdown-item drop-list" (click)="emptyForm(f)">Close</a>
                     </div>
                 </div> 
             </span>
@@ -442,13 +442,13 @@
                       />
                     </td>
                     <td>
-                      <i class="fa fa-minus" aria-hidden="true" id="decrease" (click)="clientContactListIncrement($event.target, i)"></i>
+                      <i class="fa fa-minus" aria-hidden="true" id="decrease" (click)="contactListIncrement($event.target, i)"></i>
                       <i
                         class="fa fa-plus"
                         *ngIf="i + 1 == model.clientContacts.length"
                         aria-hidden="true"
                         id="increase"
-                        (click)="clientContactListIncrement($event.target, i)"
+                        (click)="contactListIncrement($event.target, i)"
                       ></i>
                     </td>
                   </tr>
@@ -515,7 +515,7 @@
             <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2" (click)="update(f)">Update</button>
             <!-- <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button"
                   (click)="enableFormEditable()">Edit</button> -->
-            <button type="button" (click)="cancelForm(f)" *ngIf="enableButtonType == ''" class="btn btn-secondary ml-3">
+            <button type="button" (click)="emptyForm(f)" *ngIf="enableButtonType == ''" class="btn btn-secondary ml-3">
               {{ enableButtonType != '' ? 'Close' : 'Clear' }}
             </button>
           </div>
@@ -525,7 +525,7 @@
   </div>
 </div>
 <ng-template #trashContent let-c="close" let-d="dismiss">
-  <div class="modal-header">
+  <div class="modal-header modal-popup-header-bg">
     <h4 class="modal-title">Client Application Status</h4>
     <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
       <span aria-hidden="true">&times;</span>
@@ -541,7 +541,7 @@
 </ng-template>
 
 <ng-template #uploadContent let-c="close" let-d="dismiss">
-  <div class="modal-header">
+  <div class="modal-header modal-popup-header-bg">
     <h4 class="modal-title">{{ urlConstants.UploadFilesMsg }}</h4>
     <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
       <span aria-hidden="true">&times;</span>
@@ -558,7 +558,7 @@
 </ng-template>
 
 <ng-template #downloadContent let-c="close" let-d="dismiss">
-  <div class="modal-header">
+  <div class="modal-header modal-popup-header-bg">
     <h4 class="modal-title">Client {{ urlConstants.DownloadFilesMsg }}</h4>
     <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
       <span aria-hidden="true">&times;</span>
