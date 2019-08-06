@@ -175,6 +175,7 @@ public class JobDescriptionSubstitutor implements ContentSubstitutor {
 		return null;
 	}
 
+	@SuppressWarnings("null")
 	public static String appendCATemplate(ClientApplication clientApplication) {
 		Map<String, String> valuesMap = new HashMap<String, String>();
 		valuesMap.put("consultantName", clientApplication.getConsultant().getFullname());
@@ -186,12 +187,22 @@ public class JobDescriptionSubstitutor implements ContentSubstitutor {
 		sb.append(
 				"<table width=\"728\" border=\"1\" style=\"border-collapse : collapse\" cellspacing=\"0\" cellpadding=\"0\">");
 		sb.append("<tbody>");
-		if (clientApplication.getConsultant().getExperienceYrs() != null
-				&& clientApplication.getConsultant().getExperienceMonths() != null) {
+		String yrs = clientApplication.getConsultant().getExperienceYrs();
+		String ms = clientApplication.getConsultant().getExperienceMonths();
+		String totalExp = "";
+		if (yrs != null) {
+			if (!yrs.isEmpty()) {
+				totalExp.concat(yrs + " years ");
+			}
+		}
+		if (ms != null) {
+			if (!ms.isEmpty()) {
+				totalExp.concat(ms + " months");
+			}
+		}
+		if (!totalExp.isEmpty()) {
 			sb.append("<tr>\r\n" + "<td width=\"199\">\r\n" + "<p><strong>Total Exp</strong></p>\r\n" + "</td>\r\n"
-					+ "<td width=\"529\">\r\n" + "<p>" + clientApplication.getConsultant().getExperienceYrs() + "yearrs"
-					+ clientApplication.getConsultant().getExperienceMonths() + "months" + "</p>\r\n" + "</td>\r\n"
-					+ "</tr>");
+					+ "<td width=\"529\">\r\n" + "<p>" + totalExp + "</p>\r\n" + "</td>\r\n" + "</tr>");
 		}
 		if (clientApplication.getConsultant().getCurrentCTC() != null) {
 			sb.append("<tr>\r\n" + "<td width=\"199\">\r\n" + "<p><strong>Current CTC</strong></p>\r\n" + "</td>\r\n"
