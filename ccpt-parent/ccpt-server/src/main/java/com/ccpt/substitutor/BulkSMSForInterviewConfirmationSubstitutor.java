@@ -6,6 +6,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.validation.ValidationException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -26,7 +28,7 @@ public class BulkSMSForInterviewConfirmationSubstitutor implements ContentSubsti
 
 	@Override
 	public String getType() {
-		return "consultant";
+		return "ClientInterviewConfirmation";
 	}
 
 	@Override
@@ -38,8 +40,22 @@ public class BulkSMSForInterviewConfirmationSubstitutor implements ContentSubsti
 		if (clientPosition != null && clientApplication != null) {
 			Map<String, String> valuesMap = new HashMap<String, String>();
 			Date date = clientApplication.getInterviewDate();
-			DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
-			String strDate = dateFormat.format(date);
+			DateFormat dateFormat = null;
+			String strDate = null;
+			if (date != null) {
+				dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+				strDate = dateFormat.format(date);
+			} else {
+				throw new ValidationException("Client Application is not shortlisted");
+			}
+			if (clientApplication.getConsultant().getGender().equalsIgnoreCase("Male")) {
+				valuesMap.put("salutation", "Sir");
+			} else if (clientApplication.getConsultant().getGender().equalsIgnoreCase("Female")) {
+				valuesMap.put("salutation", "Madam");
+			}
+			if (clientApplication.getConsultant().getFullname() != null) {
+				valuesMap.put("consultantName", clientApplication.getConsultant().getFullname());
+			}
 			valuesMap.put("role", clientPosition.getRole());
 			valuesMap.put("interviewDate", strDate);
 			valuesMap.put("time", clientApplication.getInterviewTime());
