@@ -70,6 +70,7 @@ public abstract class BaseService<T extends BaseEntity<ID>, ID> {
 	public T save(T entity) {
 		T result = getRepository().save(entity);
 		saveAddnProps(entity);
+		notify(result, result);
 		return result;
 	}
 
@@ -104,10 +105,16 @@ public abstract class BaseService<T extends BaseEntity<ID>, ID> {
 		if (existing.isPresent()) {
 			T result = getRepository().save(entity);
 			saveAddnProps(entity);
+			notify(existing.get(), result);
 			return result;
 		} else {
 			throw new EntityNotFoundException("Could not find " + ENTITY + " for id : " + entity.getKey());
 		}
+	}
+
+	protected void notify(T existing, T result) {
+		// override in children
+		
 	}
 
 	public void delete(ID id) {
@@ -135,6 +142,10 @@ public abstract class BaseService<T extends BaseEntity<ID>, ID> {
 	}
 
 	protected void postActivate(T entity2) {
+		// Can be overidden in children
+	}
+	
+	protected void sendMail(T entity) {
 		// Can be overidden in children
 	}
 }

@@ -106,7 +106,7 @@ public class EmailController {
 
 		// creates a new e-mail message
 		Message msg = new MimeMessage(session);
-		msg.setHeader("Disposition-Notification-To", "anuraggangone888@gmail.com");
+		msg.setHeader("Disposition-Notification-To", "prasad.uskcorp@gmail.com");
 		msg.setFrom(new InternetAddress(username));
 		// InternetAddress[] toAddresses = { new InternetAddress(toAddress) };
 		String recipient = toAddress;

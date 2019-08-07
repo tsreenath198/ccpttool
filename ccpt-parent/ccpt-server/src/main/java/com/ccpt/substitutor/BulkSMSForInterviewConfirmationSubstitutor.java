@@ -64,6 +64,7 @@ public class BulkSMSForInterviewConfirmationSubstitutor implements ContentSubsti
 			String message = StrSubstitutor.replace(msg, valuesMap);
 			SMS sms = new SMS();
 			sms.setMessage(message);
+			sms.setContactNumbers(clientApplication.getConsultant().getPhone());
 			return sms;
 		} else {
 			throw new Exception("clientAplication is null for given id:" + caId);

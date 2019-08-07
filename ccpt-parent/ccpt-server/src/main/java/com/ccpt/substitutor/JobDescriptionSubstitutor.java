@@ -175,7 +175,6 @@ public class JobDescriptionSubstitutor implements ContentSubstitutor {
 		return null;
 	}
 
-	@SuppressWarnings("null")
 	public static String appendCATemplate(ClientApplication clientApplication) {
 		Map<String, String> valuesMap = new HashMap<String, String>();
 		valuesMap.put("consultantName", clientApplication.getConsultant().getFullname());
