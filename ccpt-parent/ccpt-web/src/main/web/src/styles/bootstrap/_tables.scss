@@ -69,7 +69,7 @@
 
 .table-striped {
   tbody tr:nth-of-type(odd) {
-    background-color: #d6d6c2
+    background-color:$table-accent-bg;
     ;
   }
 }
