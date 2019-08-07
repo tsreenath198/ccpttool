@@ -97,7 +97,7 @@
           </div>
         </div>
         <div *ngIf="readOnlyForm == 'U'; else notRead">
-          <table class="table table-borderless">
+          <table class="table table-borderless table-striped">
             <tbody>
               <tr *ngIf="model?.client?.name">
                 <th>Client Name</th>
@@ -471,7 +471,7 @@
 
 <!-- All Templates Start-->
 <ng-template #shortListContent let-c="close" let-d="dismiss">
-  <div class="modal-header">
+  <div class="modal-header modal-popup-header-bg">
     <h4 class="modal-title">Create Client Application</h4>
     <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
       <span aria-hidden="true">&times;</span>
@@ -523,7 +523,7 @@
 </ng-template>
 
 <ng-template #sendMailContent let-c="close" let-d="dismiss">
-  <div class="modal-header">
+  <div class="modal-header modal-popup-header-bg">
     <h4 class="modal-title">Send Mail</h4>
     <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
       <span aria-hidden="true">&times;</span>
@@ -580,7 +580,7 @@
 </ng-template>
 
 <ng-template #sendSMSContent let-c="close" let-d="dismiss">
-  <div class="modal-header">
+  <div class="modal-header modal-popup-header-bg">
     <h4 class="modal-title">Send SMS</h4>
     <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
       <span aria-hidden="true">&times;</span>
@@ -611,7 +611,7 @@
 </ng-template>
 
 <ng-template #trashContent let-c="close" let-d="dismiss">
-  <div class="modal-header">
+  <div class="modal-header modal-popup-header-bg">
     <h4 class="modal-title">Client Position</h4>
     <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
       <span aria-hidden="true">&times;</span>

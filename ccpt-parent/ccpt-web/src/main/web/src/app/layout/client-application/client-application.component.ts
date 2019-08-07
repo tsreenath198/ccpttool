@@ -13,6 +13,7 @@ import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { FileUploader, FileLikeObject } from 'ng2-file-upload';
 import { Router } from '@angular/router';
 import { PaymentsModel } from '../payments/payments.model';
+import { StorageService } from '../../shared/services/storage.service';
 
 @Component({
   selector: 'app-client-application',
@@ -88,7 +89,8 @@ export class ClientApplicationComponent implements OnInit {
     private http: HttpClientService,
     private toastr: ToastrCustomService,
     private modalService: NgbModal,
-    private router: Router
+    private router: Router,
+    private storage:StorageService
   ) {
     this.getScreenSize();
   }
@@ -105,6 +107,16 @@ export class ClientApplicationComponent implements OnInit {
     this.loggedInRole = sessionStorage.getItem('role');
     this.getAllDropdowns();
     this.init();
+    this.checkStorage();
+  }
+  private checkStorage(){
+    if(this.storage.consultantId !=0){
+      this.model.consultantId = this.storage.consultantId;
+    }
+    else{
+      this.storage.consultantId = 0;
+      this.model.consultantId = 0;
+    }
   }
   private init() {
     this.model.properties = [];
@@ -287,6 +299,7 @@ export class ClientApplicationComponent implements OnInit {
         this.spinner(true);
         this.isCreate = false;
         this.getRecruiterId();
+        this.checkStorage();
       },
       err => {
         this.toastr.error(err.error.message, 'Client Application');

@@ -400,7 +400,7 @@
 </div>
 
 <ng-template #trashContent let-c="close" let-d="dismiss">
-  <div class="modal-header">
+  <div class="modal-header modal-popup-header-bg">
     <h4 class="modal-title">Client Application</h4>
     <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
       <span aria-hidden="true">&times;</span>
@@ -414,63 +414,8 @@
     <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
   </div>
 </ng-template>
-<!-- <ng-template #bodyMail let-c="close" let-d="dismiss">
-  <div class="modal-header">
-    <h4 class="modal-title">Client Application</h4>
-    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-  <div class="modal-body">
-    <div class="table-scroll ht-30">
-      <table class="table table-sm">
-        <tbody>
-          <tr *ngIf="bodyMailModel.fullname">
-            <th>Name</th>
-            <td>{{ bodyMailModel.fullname }}</td>
-          </tr>
-          <tr *ngIf="bodyMailModel.role">
-            <th>Current Role</th>
-            <td>{{ bodyMailModel.role }}</td>
-          </tr>
-          <tr *ngIf="bodyMailModel.experienceYrs">
-            <th>Experience</th>
-            <td>{{ bodyMailModel.experienceYrs }} - {{ bodyMailModel.experienceMonths }}</td>
-          </tr>
-          <tr *ngIf="bodyMailModel.currentCTC">
-            <th>Current CTC</th>
-            <td>{{ bodyMailModel.currentCTC }}</td>
-          </tr>
-          <tr *ngIf="bodyMailModel.expectedCTC">
-            <th>Expected CTC</th>
-            <td>{{ bodyMailModel.expectedCTC }}</td>
-          </tr>
-          <tr *ngIf="bodyMailModel.cpLocation != bodyMailModel.conLocation">
-            <th>Client Location</th>
-            <td>{{ bodyMailModel.cpLocation }}</td>
-          </tr>
-          <tr *ngIf="bodyMailModel.conLocation">
-            <th>Consultant Location</th>
-            <td>{{ bodyMailModel.conLocation }}</td>
-          </tr>
-          <tr *ngIf="bodyMailModel.noticePeriod">
-            <th>Availability</th>
-            <td>{{ bodyMailModel.noticePeriod }}</td>
-          </tr>
-          <tr *ngIf="bodyMailModel.description">
-            <th>Description</th>
-            <td>{{ bodyMailModel.description }}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
-  </div>
-</ng-template> -->
 <ng-template #downloadContent let-c="close" let-d="dismiss">
-  <div class="modal-header">
+  <div class="modal-header modal-popup-header-bg">
     <h4 class="modal-title">Consultant {{ urlConstants.DownloadFilesMsg }}</h4>
     <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
       <span aria-hidden="true">&times;</span>
@@ -500,7 +445,7 @@
   <h3 class="text-center">No Files to download</h3>
 </ng-template>
 <ng-template #uploadContent let-c="close" let-d="dismiss">
-  <div class="modal-header">
+  <div class="modal-header modal-popup-header-bg">
     <h4 class="modal-title">{{ urlConstants.UploadFilesMsg }}</h4>
     <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
       <span aria-hidden="true">&times;</span>
@@ -516,7 +461,7 @@
   </div>
 </ng-template>
 <ng-template #sendMailContent let-c="close" let-d="dismiss">
-  <div class="modal-header">
+  <div class="modal-header modal-popup-header-bg">
     <h4 class="modal-title">Send Mail</h4>
     <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
       <span aria-hidden="true">&times;</span>
@@ -559,7 +504,7 @@
   </div>
 </ng-template>
 <ng-template #createPayment let-c="close" let-d="dismiss">
-  <div class="modal-header">
+  <div class="modal-header modal-popup-header-bg">
     <h4 class="modal-title">Create Payment</h4>
     <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
       <span aria-hidden="true">&times;</span>

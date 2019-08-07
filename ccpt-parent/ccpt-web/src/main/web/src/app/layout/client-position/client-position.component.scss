@@ -44,3 +44,8 @@
   color:blue;
   text-decoration: underline;
  }
+    .table-striped {
+      tbody tr:nth-of-type(odd) {
+        background-color: #c1c1c1;
+      }
+   }

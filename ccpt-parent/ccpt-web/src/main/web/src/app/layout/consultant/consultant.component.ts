@@ -11,6 +11,7 @@ import { ToastrCustomService } from 'src/app/shared/services/toastr.service';
 import { URLConstants } from '../components/constants/url-constants';
 import { AdditionalPropertiesModel } from 'src/app/additional-properties.model';
 import { Router } from '@angular/router';
+import { StorageService } from '../../shared/services/storage.service';
 
 @Component({
   selector: 'app-consultant',
@@ -60,7 +61,8 @@ export class ConsultantComponent implements OnInit {
     private http: HttpClientService,
     private router: Router,
     private toastr: ToastrCustomService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private storage: StorageService
   ) {
     this.getScreenSize();
   }
@@ -78,6 +80,8 @@ export class ConsultantComponent implements OnInit {
       this.consultantStatusList = resp as any;
     });
     this.init();
+    /**Emptying the consultantId in storage */
+    this.storage.consultantId=null;
   }
 
   init(): void {
@@ -144,13 +148,15 @@ export class ConsultantComponent implements OnInit {
     const temp = this.http.post(this.model, this.urlConstants.CCreate);
     temp.subscribe(
       resp => {
+        this.spinner(true);
+        this.isCreate = false;
         this.toastr.success(this.urlConstants.SuccessMsg, 'Consultant');
         console.log(resp);
         consultantForm.resetForm();
         this.init();
         this.formReset();
-        this.spinner(true);
-        this.isCreate = false;
+        /**Creation of client application */
+        this.createCA(resp);
       },
       err => {
         this.toastr.error(err.error.message, 'Consultant');
@@ -158,6 +164,14 @@ export class ConsultantComponent implements OnInit {
         this.spinner(true);
       }
     );
+  }
+  private createCA(resp : any){
+    let decision = confirm("Do you want to create an application");
+    if(decision== true){
+      /**Assigning consultant id to the storage consultant */
+      this.storage.consultantId = resp.id;
+      this.router.navigate(['/layout/client-application'])
+    }
   }
   public update(consultantForm: NgForm) {
     this.spinner(false);

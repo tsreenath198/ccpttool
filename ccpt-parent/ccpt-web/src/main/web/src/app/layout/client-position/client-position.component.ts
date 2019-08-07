@@ -394,6 +394,10 @@ export class ClientPositionComponent implements OnInit {
       this.toastr.success('Email/Emails sent successfully', 'Sent!');
       this.close();
       this.spinner(true);
+    },
+    err => {
+      this.toastr.error(err.error.message, 'Client Position');
+      this.spinner(true);
     });
   }
   public createClientApplication(data: any, clientPositionForm: NgForm) {
