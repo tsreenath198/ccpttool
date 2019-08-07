@@ -90,7 +90,7 @@ export class ClientApplicationComponent implements OnInit {
     private toastr: ToastrCustomService,
     private modalService: NgbModal,
     private router: Router,
-    private storage:StorageService
+    private storageService:StorageService
   ) {
     this.getScreenSize();
   }
@@ -110,12 +110,8 @@ export class ClientApplicationComponent implements OnInit {
     this.checkStorage();
   }
   private checkStorage(){
-    if(this.storage.consultantId !=0){
-      this.model.consultantId = this.storage.consultantId;
-    }
-    else{
-      this.storage.consultantId = 0;
-      this.model.consultantId = 0;
+    if (this.storageService.consultantId !=0){
+      this.model.consultantId = this.storageService.consultantId;
     }
   }
   private init() {
@@ -299,7 +295,7 @@ export class ClientApplicationComponent implements OnInit {
         this.spinner(true);
         this.isCreate = false;
         this.getRecruiterId();
-        this.checkStorage();
+        this.emptyStorage();
       },
       err => {
         this.toastr.error(err.error.message, 'Client Application');
@@ -307,6 +303,10 @@ export class ClientApplicationComponent implements OnInit {
         this.spinner(true);
       }
     );
+  }
+  private emptyStorage() {
+    this.storageService.consultantId = 0;
+    this.model.consultantId = 0;
   }
   public dblSetModel(data) {
     this.isInterviewScheduled = true;

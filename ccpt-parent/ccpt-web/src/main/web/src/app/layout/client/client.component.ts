@@ -152,8 +152,8 @@ export class ClientComponent implements OnInit {
         let decision = confirm("Do you want to create an application");
         if(decision== true){
           /**set consultant id in storage service*/
-          this.storageService.consultantId = resp.id;
-          this.router.navigate(['/layout/client-application'])
+          this.storageService.clientId = resp.id;
+            this.router.navigate(['/layout/client-position'])
         }
       }
     public update(clientForm: NgForm) {

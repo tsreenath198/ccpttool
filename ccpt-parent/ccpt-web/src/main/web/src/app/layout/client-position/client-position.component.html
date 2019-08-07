@@ -611,3 +611,46 @@
   </div>
 </ng-template>
 <!-- All Templates Ends-->
+
+
+
+
+
+
+<ng-template #createConsultant let-c="close" let-d="dismiss">
+  <div class="modal-header modal-popup-header-bg">
+    <h4 class="modal-title">Create Consultants</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div *ngIf="consultantsToCreate">
+      <table class="table table-hover table-striped">
+        <thead>
+          <tr>
+            <th>Email</th>
+            <th>Name</th>
+            <th>Phone</th>
+          </tr>
+        </thead>
+        <tbody class="overflow-ele-scroll">
+          <tr *ngFor="let cnt of consultantsToCreate">
+            <td>
+              {{ cnt }}
+            </td>
+            <td>
+              <input class="form-control" [(ngModel)]="cnt.notes" name="experience" />
+            </td>
+            <td>
+              <button type="button" class="btn btn-secondary" (click)="createClientApplication(cnt, f)">Create</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
+  </div>
+</ng-template>

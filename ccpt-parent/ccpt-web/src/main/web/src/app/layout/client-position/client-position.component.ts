@@ -14,6 +14,8 @@ import { ActionModel } from '../modals/action';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
+import { StorageService } from 'src/app/shared/services/storage.service';
+import { ConsultantModel } from '../consultant/consultant.model';
 
 @Component({
   selector: 'app-client-position',
@@ -70,6 +72,7 @@ export class ClientPositionComponent implements OnInit {
   public listReturned: boolean;
   public pageSize: number = 20;
   public sendTo: any = null;
+  public consultantsToCreate:Array<any> =[]
   public getAllCPS = this.http.get(this.urlConstants.CPSGetAll);
   public getAllR = this.http.get(this.urlConstants.RDropdown);
   public getAllC = this.http.get(this.urlConstants.ClientDropdown);
@@ -87,7 +90,8 @@ export class ClientPositionComponent implements OnInit {
     private elRef: ElementRef,
     private modalService: NgbModal,
     private router: Router,
-    private titleService: Title
+    private titleService: Title,
+    private storageService: StorageService
   ) {
     // tslint:disable-next-line:no-unused-expression
     this.actionModel.sendMail;
@@ -115,6 +119,12 @@ export class ClientPositionComponent implements OnInit {
       allowSearchFilter: true
     };
     this.init();
+    this.checkStorage();
+  }
+  private checkStorage() {
+    if (this.storageService.clientId != 0) {
+      this.model.clientId = this.storageService.clientId;
+    }
   }
   private init() {
     this.spinner(false);
@@ -236,7 +246,7 @@ export class ClientPositionComponent implements OnInit {
     });
     this.open(this.model.id, sendMailContent);
   }
-  private cloneData(data: any) {
+  public cloneData(data: any) {
     data.id = null;
     data.assignedTo = null;
     data.role = null;
@@ -252,7 +262,6 @@ export class ClientPositionComponent implements OnInit {
   }
   public create(clientPositionForm: NgForm): void {
     this.isCreate = true;
-
     this.spinner(false);
     // tslint:disable-next-line:max-line-length
     this.model.generatedCode = this.generateCPCode(this.model.clientId, this.model.role, this.model.location);
@@ -265,6 +274,7 @@ export class ClientPositionComponent implements OnInit {
         this.spinner(true);
         clientPositionForm.resetForm();
         this.isCreate = false;
+        this.emptyStorage();
         if (this.showAction) {
           this.showAction = false;
         }
@@ -275,6 +285,10 @@ export class ClientPositionComponent implements OnInit {
         this.spinner(true);
       }
     );
+  }
+  private emptyStorage(){
+    this.storageService.clientId = 0;
+    this.model.clientId = 0;
   }
   private generateCPCode(cnt, role, loc): string {
     if (loc == null || loc === undefined) {
@@ -399,7 +413,13 @@ export class ClientPositionComponent implements OnInit {
         newConEmails.push(ets);
       }
     });
+    // this.consultantsToCreate = newConEmails
+    // for(let i=0;i<newConEmails.length;i++){
+    //   let temp = { "email": newConEmails[i] }
+    //   this.consultantsToCreate.push(temp)
+    // }
     console.log(newConEmails);
+    //console.log(this.consultantsToCreate);
   }
   public createClientApplication(data: any, clientPositionForm: NgForm) {
     // TODO:Need to check the code
