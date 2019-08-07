@@ -9,4 +9,5 @@ export class StorageService {
   public consultantId:number;
   public clientApplicationId:number;
   public clientPositionId:number;
+  public clientId:number;
 }
