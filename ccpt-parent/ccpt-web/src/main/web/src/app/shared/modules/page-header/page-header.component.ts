@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Properties } from '../../../layout/components/constants/properties'
 
 @Component({
     selector: 'app-page-header',
@@ -12,6 +12,6 @@ export class PageHeaderComponent implements OnInit {
     @Input() heading2: string;
     @Input() icon2: string;
     constructor() { }
-
+    public properties = new Properties();
     ngOnInit() { }
 }

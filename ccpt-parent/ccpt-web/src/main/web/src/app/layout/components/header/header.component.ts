@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
+import { Properties } from '../constants/properties'
 
 @Component({
     selector: 'app-header',
@@ -10,7 +11,7 @@ import { TranslateService } from '@ngx-translate/core';
 export class HeaderComponent implements OnInit {
     public pushRightClass: string;
     public loggedInUserName: string;
-
+    public properties = new Properties();
     constructor(private translate: TranslateService, public router: Router) {
 
         this.router.events.subscribe(val => {
@@ -34,7 +35,7 @@ export class HeaderComponent implements OnInit {
         return dom.classList.contains(this.pushRightClass);
     }
 
-    logout(){
+    logout() {
         this.router.navigateByUrl('/login');
         document.cookie = "username=" + '';
         document.cookie = "password=" + '';

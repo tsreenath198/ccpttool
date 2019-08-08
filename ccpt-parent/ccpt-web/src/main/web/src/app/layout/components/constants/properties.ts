@@ -11,6 +11,7 @@ export class Properties {
     PROPERTY_EXIST = 'Property already exists';
 
     /** Modules */
+    APP_NAME = 'CCPT';
     CON = 'Consultant';
     CA = 'Client Application';
     CLIENT = 'Client';
