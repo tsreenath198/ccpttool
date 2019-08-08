@@ -9,10 +9,11 @@ import { ClientPositionComponent } from './client-position.component';
 import { AngularEditorModule } from '@kolkov/angular-editor';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
     // tslint:disable-next-line:max-line-length
-    imports: [CommonModule, ClientPositionRoutingModule , NgxPaginationModule, FormsModule, PageHeaderModule, SharedPipesModule, ActionListModule, AngularEditorModule, NgbModule,NgMultiSelectDropDownModule.forRoot()],
+    imports: [CommonModule, ClientPositionRoutingModule,TranslateModule , NgxPaginationModule, FormsModule, PageHeaderModule, SharedPipesModule, ActionListModule, AngularEditorModule, NgbModule,NgMultiSelectDropDownModule.forRoot()],
     declarations: [ClientPositionComponent]
 })
 export class ClientPositionModule { }

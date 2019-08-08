@@ -10,4 +10,5 @@ export class StorageService {
   public clientApplicationId:number;
   public clientPositionId:number;
   public clientId:number;
+  public username:string;
 }

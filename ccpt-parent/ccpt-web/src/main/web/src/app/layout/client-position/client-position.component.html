@@ -101,7 +101,8 @@
                     <a class="dropdown-item drop-list" *ngIf="loggedInRole != 'User'" (click)="createApplication(shortListContent)"
                       >Create Application</a
                     >
-                    <a class="dropdown-item drop-list" (click)="sendJd(sendMailContent)">Send JD</a>
+                    <a class="dropdown-item drop-list" (click)="emailJd(sendMailContent)">Email JD</a>
+                    <a class="dropdown-item drop-list" (click)="smsJd(sendSMSContent)">SMS JD</a>
                     <a class="dropdown-item drop-list" *ngIf="loggedInRole != 'User'" (click)="cloneData(model)">Clone</a>
                     <a class="dropdown-item drop-list" *ngIf="loggedInRole != 'User'" (click)="open(model.id, trashContent)">Delete</a>
                   </div>
@@ -538,7 +539,7 @@
   </div>
   <div class="modal-body">
     <div calss="form-group">
-      <select class="form-control" [(ngModel)]="sendTo" name="sel1" (change)="onItemSelect(sendTo)">
+      <select class="form-control" [(ngModel)]="sendTo" name="sel1" (change)="onItemSelect(sendTo,'email')">
         <option [ngValue]="null" hidden selected>--select Consultant--</option>
         <option *ngFor="let cl of consultantList" [ngValue]="cl">
           {{ cl.name }}
@@ -547,7 +548,7 @@
     </div>
     <label>E-Mail</label>
     <div class="form-group">
-      <input class="form-control" [readonly]="readOnlyForm == 'R'" [(ngModel)]="sendEmailModel.toEmails" name="tomail" #tomail="ngModel" />
+      <input class="form-control" [(ngModel)]="sendEmailModel.toEmails" name="tomail" #tomail="ngModel" />
     </div>
     <label>Cc</label>
     <input type="text" [(ngModel)]="sendEmailModel.cc" class="form-control" name="cc" />
@@ -559,7 +560,7 @@
     <angular-editor [(ngModel)]="sendEmailModel.body" name="tt" [config]="config"> </angular-editor>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-secondary" (click)="sendEmailReq()">Send</button>
+    <button type="button" class="btn btn-secondary" (click)="sendEmailReq(createConsultants)">Send</button>
     <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
   </div>
 </ng-template>
@@ -572,25 +573,30 @@
     </button>
   </div>
   <div class="modal-body">
-    <label>Sms Type</label>
-    <select class="form-control" name="cn" (change)="selectSms($event.target)">
-      <option *ngFor="let sms of smsList"> {{ sms.type }}</option>
+    <select class="form-control" [(ngModel)]="sendTo" name="sel2" (change)="onItemSelect(sendTo,'sms')">
+      <option [ngValue]="null" hidden selected>--select Consultant--</option>
+      <option *ngFor="let cl of consultantList" [ngValue]="cl">
+        {{ cl.name }}
+      </option>
     </select>
     <label>Numbers</label>
-    <ng-multiselect-dropdown
+    <div class="form-group">
+      <input class="form-control" [(ngModel)]="sendSmsModel.contactNumbers" name="tonumbers" #tonumbers="ngModel" />
+    </div>
+    <!-- <ng-multiselect-dropdown
       [placeholder]="'choose numbers..'"
       [data]="numbersForSmsDropdown"
       [(ngModel)]="numbersToSend"
       [settings]="dropdownSettings"
     >
-      <!-- (onSelect)="onItemSelect($event)"
-     (onSelectAll)="onSelectAll($event)" -->
-    </ng-multiselect-dropdown>
+      (onSelect)="onItemSelect($event)"
+     (onSelectAll)="onSelectAll($event)" 
+    </ng-multiselect-dropdown>-->
     <label>Message Body</label>
     <textarea class="form-control" cols="5" rows="8" [(ngModel)]="sendSmsModel.message" name="body"></textarea>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-secondary" (click)="sendSmsReq()">Send</button>
+    <button type="button" class="btn btn-secondary" (click)="sendSmsReq()" [disabled]="creating">{{ creating ? 'loading...' : ('Send' | translate) }}</button>
     <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
   </div>
 </ng-template>
@@ -610,14 +616,7 @@
     <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
   </div>
 </ng-template>
-<!-- All Templates Ends-->
-
-
-
-
-
-
-<ng-template #createConsultant let-c="close" let-d="dismiss">
+<ng-template #createConsultants let-c="close" let-d="dismiss">
   <div class="modal-header modal-popup-header-bg">
     <h4 class="modal-title">Create Consultants</h4>
     <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
@@ -625,6 +624,7 @@
     </button>
   </div>
   <div class="modal-body">
+    <form name="form" id="consultantForm" (ngSubmit)="consultantForm.form.valid && createConsultant()"#consultantForm="ngForm" novalidate>
     <div *ngIf="consultantsToCreate">
       <table class="table table-hover table-striped">
         <thead>
@@ -637,20 +637,39 @@
         <tbody class="overflow-ele-scroll">
           <tr *ngFor="let cnt of consultantsToCreate">
             <td>
-              {{ cnt }}
+                <input class="form-control" [(ngModel)]="cnt.email" name="email" #email="ngModel" readonly/>
             </td>
             <td>
-              <input class="form-control" [(ngModel)]="cnt.notes" name="experience" />
+              <input class="form-control" 
+              [(ngModel)]="cnt.fullname" 
+              name="fullname"
+              [ngClass]="{ 'is-invalid': consultantForm.submitted && fullname.invalid }"
+              #fullname="ngModel"
+              required />
+              <div class="invalid-feedback">
+                  Fullname is mandatory
+                </div>
             </td>
             <td>
-              <button type="button" class="btn btn-secondary" (click)="createClientApplication(cnt, f)">Create</button>
+              <input class="form-control" [(ngModel)]="cnt.phone" name="phone" #phone="ngModel" />
             </td>
           </tr>
         </tbody>
       </table>
     </div>
-  </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
+    <hr>
+    <div class="row pull-right">
+      <div class="col-md-12">
+          <button
+          type="submit"
+          class="btn btn-secondary ml-3" 
+          [disabled]="creating">
+          {{ creating ? 'loading...' : ('Create' | translate) }}
+        </button>
+        <button type="button" class="btn btn-secondary ml-3" (click)="c('Close click')" [disabled]="creating">Close</button>
+      </div>
+    </div>
+   </form> 
   </div>
 </ng-template>
+<!-- All Templates Ends-->

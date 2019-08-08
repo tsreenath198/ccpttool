@@ -138,14 +138,6 @@ export class URLConstants {
     PaymentActivateById = 'payment/';
     PaymentGetExcel = 'payment/downloadExcel?paymentId='
 
-    /** Messages */
-    DeleteMsg = 'Deleted Successfully';
-    SuccessMsg = 'Created Successfully ';
-    UpdateMsg = 'Updated Successfully';
-    ActivatedMsg = 'Activated Successfully';
-    UploadFilesMsg = 'Upload Files';
-    DownloadFilesMsg = 'Files';
-
     /**File */
     FileUpload = 'uploadFile/save?';
     FileDownload = 'uploadFile/download/';

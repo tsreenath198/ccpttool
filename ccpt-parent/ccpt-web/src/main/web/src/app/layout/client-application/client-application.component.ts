@@ -1,11 +1,10 @@
 import { Component, OnInit, HostListener } from '@angular/core';
 import { routerTransition } from '../../router.animations';
 import { forkJoin } from 'rxjs';
+import { Properties } from '../components/constants/properties';
 import { URLConstants } from '../components/constants/url-constants';
 import { ClientApplicationModel, ActionsList, SendEmailModel } from './client-application.model';
-import { HttpClientService } from 'src/app/shared/services/http.service';
 import { ClientApplicationStatusModel } from '../client-application-status/client-application-status.model';
-import { ToastrCustomService } from 'src/app/shared/services/toastr.service';
 import { NgForm } from '@angular/forms';
 import { NgbModalRef, ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AdditionalPropertiesModel } from 'src/app/additional-properties.model';
@@ -13,7 +12,7 @@ import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { FileUploader, FileLikeObject } from 'ng2-file-upload';
 import { Router } from '@angular/router';
 import { PaymentsModel } from '../payments/payments.model';
-import { StorageService } from '../../shared/services/storage.service';
+import { StorageService, HttpClientService, ToastrCustomService } from '../../shared/services';
 
 @Component({
   selector: 'app-client-application',
@@ -33,6 +32,7 @@ export class ClientApplicationComponent implements OnInit {
   public clientPositionList: Array<any> = [];
   public recruiterList: Array<any> = [];
   public urlConstants = new URLConstants();
+  public properties = new Properties();
 
   public showAction: boolean = false;
   public actionsList = new ActionsList();
@@ -65,11 +65,11 @@ export class ClientApplicationComponent implements OnInit {
   public appIds: Array<any> = [];
   public listReturned: boolean;
   public isCRF: boolean;
-  public refType = 'Client Application';
+  public refType = this.properties.CA;
   public crfFile: any;
-  public setPaymentGst:boolean=false;
-  public setPaymentWebsite:boolean=false;
-  public setPaymentBA:boolean=false;
+  public setPaymentGst: boolean = false;
+  public setPaymentWebsite: boolean = false;
+  public setPaymentBA: boolean = false;
 
   public sendEmailModel: SendEmailModel = <SendEmailModel>{};
   public config: AngularEditorConfig = {
@@ -90,7 +90,7 @@ export class ClientApplicationComponent implements OnInit {
     private toastr: ToastrCustomService,
     private modalService: NgbModal,
     private router: Router,
-    private storageService:StorageService
+    private storageService: StorageService
   ) {
     this.getScreenSize();
   }
@@ -109,8 +109,8 @@ export class ClientApplicationComponent implements OnInit {
     this.init();
     this.checkStorage();
   }
-  private checkStorage(){
-    if (this.storageService.consultantId !=0){
+  private checkStorage() {
+    if (this.storageService.consultantId) {
       this.model.consultantId = this.storageService.consultantId;
     }
   }
@@ -229,7 +229,7 @@ export class ClientApplicationComponent implements OnInit {
             }
           }
           if (propertyExist) {
-            this.toastr.error('Property already exists', 'Properties');
+            this.toastr.error(this.properties.PROPERTY_EXIST, this.properties.PROPERTIES);
           } else {
             this.model.properties.push(<AdditionalPropertiesModel>{ name: this.apName, value: this.apValue });
             this.apName = '';
@@ -262,7 +262,7 @@ export class ClientApplicationComponent implements OnInit {
       this.open(0, sendMailContent);
     },
       err => {
-        this.toastr.error(err.error.message, 'Client Application');
+        this.toastr.error(err.error.message, this.properties.CA);
         this.spinner(true);
         this.appIds = [];
       })
@@ -277,7 +277,7 @@ export class ClientApplicationComponent implements OnInit {
       this.open(0, sendMailContent);
     },
       err => {
-        this.toastr.error(err.error.message, 'Client Application');
+        this.toastr.error(err.error.message, this.properties.CA);
         this.spinner(true);
         this.appIds = [];
       })
@@ -288,7 +288,7 @@ export class ClientApplicationComponent implements OnInit {
     const temp = this.http.post(this.model, this.urlConstants.CACreate);
     temp.subscribe(
       resp => {
-        this.toastr.success(this.urlConstants.SuccessMsg, 'Client Application');
+        this.toastr.success(this.properties.CREATE, this.properties.CA);
         this.init();
         this.formReset();
         clientApplicationForm.resetForm();
@@ -298,7 +298,7 @@ export class ClientApplicationComponent implements OnInit {
         this.emptyStorage();
       },
       err => {
-        this.toastr.error(err.error.message, 'Client Application');
+        this.toastr.error(err.error.message,  this.properties.CA);
         this.isCreate = false;
         this.spinner(true);
       }
@@ -321,7 +321,7 @@ export class ClientApplicationComponent implements OnInit {
     const temp = this.http.update(this.model, this.urlConstants.CAUpdate);
     temp.subscribe(
       resp => {
-        this.toastr.success(this.urlConstants.UpdateMsg, 'Client Application');
+        this.toastr.success(this.properties.UPDATE, this.properties.CA);
         this.formReset();
         this.init();
         clientApplicationForm.resetForm();
@@ -332,7 +332,7 @@ export class ClientApplicationComponent implements OnInit {
         this.getRecruiterId();
       },
       err => {
-        this.toastr.error(err.error.message, 'Client Application');
+        this.toastr.error(err.error.message, this.properties.CA);
         this.spinner(true);
       }
     );
@@ -353,7 +353,7 @@ export class ClientApplicationComponent implements OnInit {
     const temp = this.http.delete(this.urlConstants.CADelete + this.selectedRecrd);
     temp.subscribe(
       resp => {
-        this.toastr.success(this.urlConstants.DeleteMsg, 'Client Application');
+        this.toastr.success(this.properties.DELETE, this.properties.CA);
         this.init();
         this.close();
         this.formReset();
@@ -368,10 +368,10 @@ export class ClientApplicationComponent implements OnInit {
           this.init();
           this.close();
           this.formReset();
-          return this.toastr.success(this.urlConstants.DeleteMsg, 'Client Application');
+          return this.toastr.success(this.properties.DELETE, this.properties.CA);
         }
         this.spinner(true);
-        this.toastr.error(err.error.message, 'Client Application');
+        this.toastr.error(err.error.message, this.properties.CA);
       }
     );
   }
@@ -388,12 +388,12 @@ export class ClientApplicationComponent implements OnInit {
     const temp = this.http.post(this.sendEmailModel, this.urlConstants.EmailTemplateSend);
     temp.subscribe(resp => {
       this.sendEmailModel = <SendEmailModel>{};
-      this.toastr.success('Email/Emails sent successfully', 'Client Application');
+      this.toastr.success('Email/Emails sent successfully', this.properties.CA);
       this.close();
       this.spinner(true);
     },
       err => {
-        this.toastr.error(err.error.message, 'Client Application');
+        this.toastr.error(err.error.message, this.properties.CA);
         this.spinner(true);
       });
   }
@@ -470,13 +470,13 @@ export class ClientApplicationComponent implements OnInit {
         resp => {
           let temp: any = resp;
           this.comments = "";
-          this.toastr.success(temp.message, 'Client');
+          this.toastr.success(temp.message, this.properties.CLIENT);
           this.getCAById(this.model.id);
-          this.refType = 'Client Application';
+          this.refType = this.properties.CA;
           this.close();
         },
         err => {
-          this.toastr.error(err.error.message, 'Client');
+          this.toastr.error(err.error.message, this.properties.CLIENT);
         }
       );
     }
@@ -485,11 +485,11 @@ export class ClientApplicationComponent implements OnInit {
       this.http.upload(this.urlConstants.FileUpload + params, formData).subscribe(
         resp => {
           let temp: any = resp;
-          this.toastr.success(temp.message, 'Client');
+          this.toastr.success(temp.message, this.properties.CLIENT);
           this.close();
         },
         err => {
-          this.toastr.error(err.error.message, 'Client');
+          this.toastr.error(err.error.message, this.properties.CLIENT);
         }
       );
     }
@@ -527,7 +527,7 @@ export class ClientApplicationComponent implements OnInit {
   }
   public checkInterviewSchedule() {
     if (this.isInterviewScheduled) {
-      this.model.interviewMode = "Face to Face"
+      this.model.interviewMode = this.properties.F2F;
       this.clientPositionList.forEach(cl => {
         if (cl.id == this.model.cpId) {
           let location = cl.name.split("-")
@@ -545,26 +545,26 @@ export class ClientApplicationComponent implements OnInit {
   public setPaymentModel(model, createPayment) {
     this.paymentModel.invoiceDate = this.setTodaysDate()
     this.paymentModel.companyName = model.clientPosition.client.name;
-    if(model.clientPosition.client.website!=null){
+    if (model.clientPosition.client.website != null) {
       this.paymentModel.companyWebsite = model.clientPosition.client.website;
-      this.setPaymentWebsite=false;
+      this.setPaymentWebsite = false;
     }
-    else{
-      this.setPaymentWebsite=true;
+    else {
+      this.setPaymentWebsite = true;
     }
-    if(model.clientPosition.client.gst != null){
+    if (model.clientPosition.client.gst != null) {
       this.paymentModel.companyGstNum = model.clientPosition.client.gst;
-      this.setPaymentGst=false;
+      this.setPaymentGst = false;
     }
-    else{
-      this.setPaymentGst=true;
+    else {
+      this.setPaymentGst = true;
     }
-    if(model.clientPosition.client.billingAddress != null){
+    if (model.clientPosition.client.billingAddress != null) {
       this.paymentModel.billingAddress = model.clientPosition.client.billingAddress;
-      this.setPaymentBA=false;
+      this.setPaymentBA = false;
     }
-    else{
-      this.setPaymentBA=true;
+    else {
+      this.setPaymentBA = true;
     }
     this.paymentModel.companyGstNum = model.clientPosition.client.gst;
     this.paymentModel.creditPeriod = model.clientPosition.client.creditPeriod;
@@ -575,12 +575,12 @@ export class ClientApplicationComponent implements OnInit {
     this.paymentModel.designation = model.clientPosition.role;
     this.paymentModel.serviceCharge = model.clientPosition.client.serviceCharge;
     this.paymentModel.candidateName = model.consultant.fullname;
-    this.paymentModel.phone="+919848071296";
-    this.paymentModel.branchHeadName="Sreenath Thatikonda";
-    this.paymentModel.branchLocation="Nizamabad"
-    this.open(model.id,createPayment);
+    this.paymentModel.phone = this.properties.PHONE;
+    this.paymentModel.branchHeadName = this.properties.HEAD;
+    this.paymentModel.branchLocation = this.properties.LOCATION;
+    this.open(model.id, createPayment);
   }
-  private setTodaysDate():string {
+  private setTodaysDate(): string {
     const today = new Date();
     const dd = String(today.getDate()).padStart(2, '0');
     const mm = String(today.getMonth() + 1).padStart(2, '0'); // January is 0!
@@ -588,17 +588,17 @@ export class ClientApplicationComponent implements OnInit {
     const temp = dd + '-' + mm + '-' + yyyy;
     return temp;
   }
-  public createPaymentForm(form: NgForm){
+  public createPaymentForm(form: NgForm) {
     this.spinner(false);
     const temp = this.http.post(this.paymentModel, this.urlConstants.PaymentCreate);
     temp.subscribe(resp => {
-        this.toastr.success(this.urlConstants.SuccessMsg, 'Payment');
-        form.resetForm();
-        this.close();
-        this.spinner(true);
+      this.toastr.success(this.properties.CREATE, this.properties.PAYMENT);
+      form.resetForm();
+      this.close();
+      this.spinner(true);
     }, err => {
-        this.toastr.error(err.error.message, 'Payment');
-        this.spinner(true);
+      this.toastr.error(err.error.message, this.properties.PAYMENT);
+      this.spinner(true);
     });
   }
 }

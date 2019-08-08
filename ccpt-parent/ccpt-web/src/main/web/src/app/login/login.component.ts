@@ -1,10 +1,10 @@
 import { Component, OnInit, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
 import { routerTransition } from '../router.animations';
-import { HttpClientService } from '../shared/services/http.service';
 import { LoginModel } from './models/login';
-import { ToastrCustomService } from '../shared/services/toastr.service';
 import { URLConstants } from '../layout/components/constants/url-constants';
+import { Properties } from '../layout/components/constants/properties';
+import { StorageService, HttpClientService, ToastrCustomService } from '../../app/shared/services';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -13,11 +13,15 @@ import { URLConstants } from '../layout/components/constants/url-constants';
   animations: [routerTransition()]
 })
 export class LoginComponent implements OnInit {
-  constructor(public router: Router, public http: HttpClientService, private toastr: ToastrCustomService) { }
-  public loginDetails: LoginModel = <LoginModel>{};
-  public urlConstants = new URLConstants();
-  public loggingIn: boolean = false;
-  public isRememberMe: boolean = false;
+  constructor(public router: Router, 
+    public http: HttpClientService, 
+    private toastr: ToastrCustomService,
+    public storageService:StorageService) { }
+    public loginDetails: LoginModel = <LoginModel>{};
+    public urlConstants = new URLConstants();
+    public properties = new Properties();
+    public loggingIn: boolean = false;
+    public isRememberMe: boolean = false;
   ngOnInit() {
     this.session(null);
     if (document.cookie !== "" && document.cookie.split(';')[0].split('=')[1] !== '' && document.cookie.split(';')[1].split('=')[1] !== '') {
@@ -33,7 +37,7 @@ export class LoginComponent implements OnInit {
       resp => {
         this.loggingIn = false;
         this.session(resp);
-        this.toastr.success('User Logged In Successfully', 'Login');
+        this.toastr.success(this.properties.USER_LOGIN, this.properties.LOGIN);
         if (this.isRememberMe) {
           this.managecookie(this.loginDetails.username, this.loginDetails.password);
         } else {
@@ -43,7 +47,7 @@ export class LoginComponent implements OnInit {
       },
       error => {
         this.loggingIn = false;
-        this.toastr.error(error.error.message, 'Login');
+        this.toastr.error(error.error.message, this.properties.LOGIN);
         this.session(null);
       }
     );

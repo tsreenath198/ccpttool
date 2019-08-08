@@ -2,16 +2,14 @@ import { Component, OnInit, HostListener } from '@angular/core';
 import { NgbModal, ModalDismissReasons, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { FileUploader, FileLikeObject } from 'ng2-file-upload';
 import { NgForm } from '@angular/forms';
-
 import { routerTransition } from '../../router.animations';
 import { ConsultantModel, ActionsList } from './consultant.model';
-import { HttpClientService } from 'src/app/shared/services/http.service';
 import { ConsultantStatusModel } from '../consultant-status/consultant-status.model';
-import { ToastrCustomService } from 'src/app/shared/services/toastr.service';
 import { URLConstants } from '../components/constants/url-constants';
 import { AdditionalPropertiesModel } from 'src/app/additional-properties.model';
-import { Router } from '@angular/router';
-import { StorageService } from '../../shared/services/storage.service';
+import { Router } from '@angular/router'; 
+import { StorageService, HttpClientService, ToastrCustomService } from '../../shared/services';
+
 
 @Component({
   selector: 'app-consultant',
@@ -81,7 +79,7 @@ export class ConsultantComponent implements OnInit {
     });
     this.init();
     /**Emptying the consultantId in storage */
-    this.storage.consultantId=null;
+    this.storage.consultantId = null;
   }
 
   init(): void {
@@ -92,10 +90,10 @@ export class ConsultantComponent implements OnInit {
       this.consultantListLength = this.consultantList.length;
       this.consultantList.forEach(cl => {
         if (this.validate(cl.fullname) && this.validate(cl.email) && this.validate(cl.phone)) {
-            cl['isProfileCompleted'] = 'profileComplete';
-        } 
-         else {
-            cl['isProfileCompleted'] = 'profileInComplete';
+          cl['isProfileCompleted'] = 'profileComplete';
+        }
+        else {
+          cl['isProfileCompleted'] = 'profileInComplete';
         }
       });
       this.pageChange(this.page);
@@ -111,11 +109,11 @@ export class ConsultantComponent implements OnInit {
     const bool = value ? true : false;
     return bool;
   }
-  private validateFile(value: any): boolean{
-    if(value == null){
+  private validateFile(value: any): boolean {
+    if (value == null) {
       return false;
     }
-    else{
+    else {
       return true;
     }
   }
@@ -136,9 +134,9 @@ export class ConsultantComponent implements OnInit {
     this.enableButtonType = 'U';
   }
   private formReset() {
-    this.model = <ConsultantModel>{ };
-    this.model.properties=[];
-    this.model.files=[]
+    this.model = <ConsultantModel>{};
+    this.model.properties = [];
+    this.model.files = []
     this.model.conStatus = 'Active';
     this.model.phone = '+91';
   }
@@ -151,7 +149,6 @@ export class ConsultantComponent implements OnInit {
         this.spinner(true);
         this.isCreate = false;
         this.toastr.success(this.urlConstants.SuccessMsg, 'Consultant');
-        console.log(resp);
         consultantForm.resetForm();
         this.init();
         this.formReset();
@@ -165,9 +162,9 @@ export class ConsultantComponent implements OnInit {
       }
     );
   }
-  private createCA(resp : any){
+  private createCA(resp: any) {
     let decision = confirm("Do you want to create an application");
-    if(decision== true){
+    if (decision == true) {
       /**Assigning consultant id to the storage consultant */
       this.storage.consultantId = resp.id;
       this.router.navigate(['/layout/client-application'])
@@ -273,39 +270,39 @@ export class ConsultantComponent implements OnInit {
   }
   public propertiesListIncrement(event, i: number) {
     switch (event.id) {
-        case 'decrease': {
-            this.model.properties.splice(i, 1);
-            break;
+      case 'decrease': {
+        this.model.properties.splice(i, 1);
+        break;
+      }
+      case 'increase': {
+        if (this.model.properties.length == 0) {
+          this.model.properties.push(<AdditionalPropertiesModel>{ 'name': this.apName, 'value': this.apValue });
+          this.apName = '';
+          this.apValue = '';
         }
-        case 'increase': {
-            if(this.model.properties.length==0){
-                this.model.properties.push(<AdditionalPropertiesModel>{ 'name': this.apName, 'value': this.apValue });      
-                this.apName = '';
-                this.apValue = '';
+        else {
+          let propertyExist: boolean;
+          for (let i = 0; i < this.model.properties.length; i++) {
+            if (this.model.properties[i].name == this.apName && this.model.properties[i].value == this.apValue) {
+              propertyExist = true;
             }
-            else{
-                let propertyExist :boolean;
-                for(let i=0; i<this.model.properties.length; i++){
-                    if(this.model.properties[i].name==this.apName&&this.model.properties[i].value==this.apValue){
-                        propertyExist = true;
-                    }
-                    else{
-                        propertyExist = false;
-                    }
-                }
-                if(propertyExist){
-                    this.toastr.error('Property already exists', 'Properties');
-                }
-                else{ 
-                    this.model.properties.push(<AdditionalPropertiesModel>{ 'name': this.apName, 'value': this.apValue });     
-                    this.apName = '';
-                    this.apValue = '';
-                }
+            else {
+              propertyExist = false;
             }
-            break;
+          }
+          if (propertyExist) {
+            this.toastr.error('Property already exists', 'Properties');
+          }
+          else {
+            this.model.properties.push(<AdditionalPropertiesModel>{ 'name': this.apName, 'value': this.apValue });
+            this.apName = '';
+            this.apValue = '';
+          }
         }
+        break;
+      }
     }
-}
+  }
   public imposeMinMax(el) {
     if (el.value !== '') {
       if (parseInt(el.value) < parseInt(el.min)) {

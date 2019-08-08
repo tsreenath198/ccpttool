@@ -416,7 +416,7 @@
 </ng-template>
 <ng-template #downloadContent let-c="close" let-d="dismiss">
   <div class="modal-header modal-popup-header-bg">
-    <h4 class="modal-title">Consultant {{ urlConstants.DownloadFilesMsg }}</h4>
+    <h4 class="modal-title">Consultant {{ this.properties.DOWNLOAD }}</h4>
     <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
       <span aria-hidden="true">&times;</span>
     </button>

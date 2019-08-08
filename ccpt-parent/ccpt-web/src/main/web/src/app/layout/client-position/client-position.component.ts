@@ -3,8 +3,6 @@ import { NgbModal, ModalDismissReasons, NgbModalRef } from '@ng-bootstrap/ng-boo
 import { URLConstants } from '../components/constants/url-constants';
 import { routerTransition } from '../../router.animations';
 import { ClientPositionModel, SendSmsModel, SendEmailModel, ActionsList } from './client-position.model';
-import { HttpClientService } from 'src/app/shared/services/http.service';
-import { ToastrCustomService } from 'src/app/shared/services/toastr.service';
 import { NgForm } from '@angular/forms';
 import { forkJoin } from 'rxjs';
 import { MessageTemplateModel } from '../message-template/message-template.model';
@@ -14,7 +12,7 @@ import { ActionModel } from '../modals/action';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
-import { StorageService } from 'src/app/shared/services/storage.service';
+import { StorageService, HttpClientService, ToastrCustomService } from '../../shared/services';
 import { ConsultantModel } from '../consultant/consultant.model';
 
 @Component({
@@ -72,11 +70,12 @@ export class ClientPositionComponent implements OnInit {
   public listReturned: boolean;
   public pageSize: number = 20;
   public sendTo: any = null;
-  public consultantsToCreate:Array<any> =[]
+  public consultantsToCreate: Array<any> = []
   public getAllCPS = this.http.get(this.urlConstants.CPSGetAll);
   public getAllR = this.http.get(this.urlConstants.RDropdown);
   public getAllC = this.http.get(this.urlConstants.ClientDropdown);
   public getAllCon = this.http.get(this.urlConstants.CDropdown);
+  public creating:boolean = false;
   public config: AngularEditorConfig = {
     editable: true,
     spellcheck: true,
@@ -122,7 +121,7 @@ export class ClientPositionComponent implements OnInit {
     this.checkStorage();
   }
   private checkStorage() {
-    if (this.storageService.clientId != 0) {
+    if (this.storageService.clientId) {
       this.model.clientId = this.storageService.clientId;
     }
   }
@@ -230,14 +229,23 @@ export class ClientPositionComponent implements OnInit {
     }
     this.open(this.model.id, shortListContent);
   }
-  public onItemSelect(cl) {
-    if (this.sendEmailModel.toEmails.length > 0) {
-      this.sendEmailModel.toEmails += ',';
+  public onItemSelect(cl,type) {
+    if(type == "email"){
+      if (this.sendEmailModel.toEmails.length > 0) {
+        this.sendEmailModel.toEmails += ',';
+      }
+      this.sendEmailModel.toEmails += cl.email;
+      this.sendTo = null;
     }
-    this.sendEmailModel.toEmails += cl.email;
-    this.sendTo = null;
+    else if(type=="sms"){
+      if (this.sendSmsModel.contactNumbers.length > 0) {
+        this.sendSmsModel.contactNumbers += ',';
+      }
+      this.sendSmsModel.contactNumbers += cl.phone;
+      this.sendTo = null;
+    }
   }
-  public sendJd(sendMailContent) {
+  public emailJd(sendMailContent) {
     let temp = { cpId: this.model.id };
     this.http.post(temp, this.urlConstants.EmailTemplateBuildContent + 'Job Description').subscribe(resp => {
       this.sendEmailModel = resp as any;
@@ -245,6 +253,15 @@ export class ClientPositionComponent implements OnInit {
       this.sendEmailModel.toEmails = '';
     });
     this.open(this.model.id, sendMailContent);
+  }
+  public smsJd(sendSMSContent) {
+    let temp = { cpId: this.model.id };
+    this.http.post(temp, this.urlConstants.SMSTemplateBuildContent + 'JobDescription').subscribe(resp => {
+      this.sendSmsModel = resp as any;
+      this.sendSmsModel.target = '';
+      this.sendSmsModel.contactNumbers = '';
+    });
+    this.open(this.model.id, sendSMSContent);
   }
   public cloneData(data: any) {
     data.id = null;
@@ -286,7 +303,7 @@ export class ClientPositionComponent implements OnInit {
       }
     );
   }
-  private emptyStorage(){
+  private emptyStorage() {
     this.storageService.clientId = 0;
     this.model.clientId = 0;
   }
@@ -381,28 +398,44 @@ export class ClientPositionComponent implements OnInit {
     });
   }
   public sendSmsReq(): void {
-    for (let i = 0; i <= this.numbersToSend.length; i++) {
-      const temp = this.numbersToSend[i].item_id;
-      this.sendSmsModel.contactNumbers.push(temp);
-    }
-  }
-  public sendEmailReq(): void {
     this.spinner(false);
-     const temp = this.http.post(this.sendEmailModel, this.urlConstants.EmailTemplateSend);
+    this.creating = true;
+    const temp = this.http.post(this.sendSmsModel, this.urlConstants.SMSTemplateSend);
     temp.subscribe(resp => {
-    /**Check if any new consultants exists in emails to which send  */
-     this.quickAddConsultants();
-      this.sendEmailModel = <SendEmailModel>{};
-      this.toastr.success('Email/Emails sent successfully', 'Sent!');
+      /**Check if any new consultants exists in emails to which send  */
       this.close();
+      this.creating = false;
+      this.sendSmsModel = <SendSmsModel>{};
+      this.toastr.success('Sms sent successfully', 'Sent!');
       this.spinner(true);
     },
-    err => {
-      this.toastr.error(err.error.message, 'Client Position');
-      this.spinner(true);
-    });
+      err => {
+        this.creating = false;
+        this.toastr.error(err.error.message, 'Client Position');
+        this.spinner(true);
+      });
   }
-  private quickAddConsultants() {
+  public sendEmailReq(createConsultants: any): void {
+    this.spinner(false);
+    this.creating = true;
+    const temp = this.http.post(this.sendEmailModel, this.urlConstants.EmailTemplateSend);
+    temp.subscribe(resp => {
+      /**Check if any new consultants exists in emails to which send  */
+      this.close();
+      this.creating = false;
+      this.quickAddConsultants(createConsultants);
+      this.sendEmailModel = <SendEmailModel>{};
+      this.toastr.success('Email/Emails sent successfully', 'Sent!');
+      this.spinner(true);
+    },
+      err => {
+        this.creating = false;
+        this.toastr.error(err.error.message, 'Client Position');
+        this.spinner(true);
+      });
+  }
+  private quickAddConsultants(createConsultants: any) {
+    this.consultantsToCreate=[];
     let newConEmails: any = [];
     let selectedEmails = this.sendEmailModel.toEmails.split(',');
     let conEmails = this.consultantList.map(cl => {
@@ -413,13 +446,33 @@ export class ClientPositionComponent implements OnInit {
         newConEmails.push(ets);
       }
     });
-    // this.consultantsToCreate = newConEmails
-    // for(let i=0;i<newConEmails.length;i++){
-    //   let temp = { "email": newConEmails[i] }
-    //   this.consultantsToCreate.push(temp)
-    // }
-    console.log(newConEmails);
-    //console.log(this.consultantsToCreate);
+    newConEmails.forEach(element => {
+      let temp = { "email": element, "gender": "", "fullname": "", "phone": "+91","conStatus":"Active" }
+      this.consultantsToCreate.push(temp)
+    });
+    if(this.consultantsToCreate.length>0){
+      this.open(this.model.id, createConsultants);
+    }
+  }
+  public createConsultant() {
+    this.spinner(false);
+    this.creating = true;
+    this.consultantsToCreate.forEach(consultant => {
+      const temp = this.http.post(consultant, this.urlConstants.CCreate);
+      temp.subscribe(
+        resp => {
+          this.spinner(true);
+          this.creating = false;
+          this.toastr.success(this.urlConstants.SuccessMsg, 'Consultant');
+          this.close();
+        },
+        err => {
+          this.creating = false;
+          this.toastr.error(err.error.message, 'Consultant');
+          this.spinner(true);
+        }
+      );
+    });
   }
   public createClientApplication(data: any, clientPositionForm: NgForm) {
     // TODO:Need to check the code

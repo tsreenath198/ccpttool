@@ -24,8 +24,9 @@ export interface ClientPositionModel {
 }
 
 export class SendSmsModel {
-    contactNumbers: Array<string> = [];
+    contactNumbers: string;
     message: string;
+    target:string;
 }
 
 export class SendEmailModel {
