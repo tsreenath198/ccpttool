@@ -12,6 +12,7 @@ import {
 import { StatModule } from '../../shared';
 import { FormsModule } from '@angular/forms';
 import { AngularEditorModule } from '@kolkov/angular-editor';
+import { ChartsModule as Ng2Charts } from 'ng2-charts';
 
 @NgModule({
     imports: [
@@ -22,7 +23,7 @@ import { AngularEditorModule } from '@kolkov/angular-editor';
         StatModule,
         FormsModule,
         AngularEditorModule,
-        NgbModule
+        NgbModule,Ng2Charts
     ],
     declarations: [
         DashboardComponent,

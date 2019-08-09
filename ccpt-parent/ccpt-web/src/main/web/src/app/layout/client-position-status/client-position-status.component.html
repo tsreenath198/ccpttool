@@ -25,6 +25,9 @@
               <td>
                 {{cpsl.code}}
               </td>
+              <td>
+                {{cpsl.statusType}}
+              </td>
               <!-- <td width="100">
                 <app-action [trashContent]="trashContent" [id]="cpsl.id" [isTrash]="trash" (trash)="open($event)"></app-action>
               </td> -->
@@ -72,6 +75,17 @@
                 [ngClass]="{'is-invalid': f.submitted && code.invalid}" #code="ngModel" required>
               <div class="invalid-feedback">
                 code is mandatory
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="form-group">
+              <label>Status Type<span class="required">*</span></label>
+              <input class="form-control" maxlength="30" [readonly]="readOnlyForm == 'R' || readOnlyForm == 'U'"
+                [(ngModel)]="model.statusType" name="statusType"
+                [ngClass]="{'is-invalid': f.submitted && statusType.invalid}" #code="ngModel" required>
+              <div class="invalid-feedback">
+                Status Type is mandatory
               </div>
             </div>
           </div>

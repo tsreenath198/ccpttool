@@ -56,46 +56,22 @@ export class DashboardComponent implements OnInit {
     public getAllOpenCP = this.http.get(this.urlConstants.ReportingGetAllOpenCP);
     public getAllActiveCA = this.http.get(this.urlConstants.ReportingGetAllActiveCA);
     public getAllInterviewsToday = this.http.get(this.urlConstants.ReportingGetAllInterviewsToday);
+
+    public barChartOptions: any = {
+        scaleShowVerticalLines: false,
+        responsive: true
+    };
+    public barChartLabels: string[] = [
+    ];
+    public barChartType: string = 'horizontalBar';
+    public barChartLegend: boolean = true;
+
+    public barChartData: any[] = [
+        { data: [], label: 'Active Client Applications' }
+    ];
+
     constructor(private http: HttpClientService, private router: Router, private toastr: ToastrCustomService,
         private modalService: NgbModal) {
-        // this.sliders.push(
-        //     {
-        //         imagePath: 'assets/images/slider1.jpg',
-        //         label: 'First slide label',
-        //         text:
-        //             'Nulla vitae elit libero, a pharetra augue mollis interdum.'
-        //     },
-        //     {
-        //         imagePath: 'assets/images/slider2.jpg',
-        //         label: 'Second slide label',
-        //         text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'
-        //     },
-        //     {
-        //         imagePath: 'assets/images/slider3.jpg',
-        //         label: 'Third slide label',
-        //         text:
-        //             'Praesent commodo cursus magna, vel scelerisque nisl consectetur.'
-        //     }
-        // );
-
-        // this.alerts.push(
-        //     {
-        //         id: 1,
-        //         type: 'success',
-        //         message: `Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-        //         Voluptates est animi quibusdam praesentium quam, et perspiciatis,
-        //         consectetur velit culpa molestias dignissimos
-        //         voluptatum veritatis quod aliquam! Rerum placeat necessitatibus, vitae dolorum`
-        //     },
-        //     {
-        //         id: 2,
-        //         type: 'warning',
-        //         message: `Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-        //         Voluptates est animi quibusdam praesentium quam, et perspiciatis,
-        //         consectetur velit culpa molestias dignissimos
-        //         voluptatum veritatis quod aliquam! Rerum placeat necessitatibus, vitae dolorum`
-        //     }
-        // );
     }
 
     ngOnInit() {
@@ -124,6 +100,7 @@ export class DashboardComponent implements OnInit {
             this.activeCA = listofrecords[5] as any;
             this.interviewsToday = listofrecords[6] as any;
             this.spinner(true);
+            this.setActiveCPBarData();
         });
         this.top5ById.properties = []
     }
@@ -224,5 +201,20 @@ export class DashboardComponent implements OnInit {
         } else {
             return `with: ${reason}`;
         }
+    }
+    private setActiveCPBarData() {
+        this.activeCA.forEach(ca => {
+            this.barChartLabels.push(this.splitString(ca.generatedCode));
+            this.barChartData[0].data.push("" + ca.count);
+        })
+    }
+    private splitString(str): string {
+        let gc = str.split(' ');
+        return gc[0]
+    }
+    public chartClicked(event): void {
+        const index = event.active[0]._index;
+        const selectedLabel = this.barChartData[0].data[index];
+        alert(selectedLabel);
     }
 }

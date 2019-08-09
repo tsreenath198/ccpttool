@@ -1,6 +1,7 @@
 export interface ConsultantStatusModel {
     description: string;
     code: string;
+    statusType:string;
     id:string;
 }
 export class ActionsList {

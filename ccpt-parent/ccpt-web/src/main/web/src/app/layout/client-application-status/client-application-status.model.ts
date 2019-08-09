@@ -1,6 +1,7 @@
 export interface ClientApplicationStatusModel {
     description: string;
     code: string;
+    statusType:string;
     id:string;
 }
 export class ActionsList {
