@@ -9,5 +9,6 @@ import lombok.ToString;
 @ToString
 public class ConsultantStatusDTO extends IDEntityDTO {
 	private String code;
+	private String statusType;
 
 }
