@@ -1,6 +1,7 @@
 import { Component, OnInit, HostListener } from '@angular/core';
 import { routerTransition } from '../../router.animations';
 import { URLConstants } from '../components/constants/url-constants';
+import { Properties } from '../components/constants/properties';
 import { ClientApplicationStatusModel, ActionsList } from './client-application-status.model';
 import { HttpClientService } from 'src/app/shared/services/http.service';
 import { ToastrCustomService } from 'src/app/shared/services/toastr.service';
@@ -19,6 +20,7 @@ export class ClientApplicationStatusComponent implements OnInit {
     public model: ClientApplicationStatusModel = <ClientApplicationStatusModel>{};
     public clientApplicationStatusList: Array<ClientApplicationStatusModel> = [];
     private urlConstants = new URLConstants();
+    public properties = new Properties();
     public readOnlyForm = '';
     public enableButtonType = '';
     public currSearchTxt: string;
@@ -99,14 +101,14 @@ export class ClientApplicationStatusComponent implements OnInit {
         this.spinner(false);
         const temp = this.http.post(this.model, this.urlConstants.CASCreate);
         temp.subscribe(resp => {
-            this.toastr.success(this.urlConstants.SuccessMsg, 'Client Application Status');
+            this.toastr.success(this.properties.CREATE, this.properties.APP_STATUS);
             this.init();
             this.formReset();
             CASForm.resetForm();
             this.spinner(true);
             this.isCreate = false;
         }, err => {
-            this.toastr.error(err.error.message, 'Client Application Status');
+            this.toastr.error(err.error.message, this.properties.APP_STATUS);
             this.isCreate = false;
             this.spinner(true);
         });
@@ -118,7 +120,7 @@ export class ClientApplicationStatusComponent implements OnInit {
         this.spinner(false);
         const temp = this.http.post(this.model, this.urlConstants.CASCreate);
         temp.subscribe(resp => {
-            this.toastr.success(this.urlConstants.UpdateMsg, 'Client Application Status');
+            this.toastr.success(this.properties.UPDATE, this.properties.APP_STATUS);
             this.formReset();
             this.init();
             CASForm.resetForm();
@@ -127,7 +129,7 @@ export class ClientApplicationStatusComponent implements OnInit {
             this.enableButtonType = '';
             this.showAction = false;
         }, err => {
-            this.toastr.error(err.error.message, 'Client Application Status');
+            this.toastr.error(err.error.message, this.properties.APP_STATUS);
             this.spinner(true);
         });
     }
@@ -145,7 +147,7 @@ export class ClientApplicationStatusComponent implements OnInit {
         this.spinner(false);
         const temp = this.http.delete(this.urlConstants.CASDelete + this.selectedRecrdToDel);
         temp.subscribe(resp => {
-            this.toastr.success(this.urlConstants.DeleteMsg, 'Client Application Status');
+            this.toastr.success(this.properties.DELETE, this.properties.APP_STATUS);
             this.init();
             this.close();
             this.formReset();
@@ -154,7 +156,7 @@ export class ClientApplicationStatusComponent implements OnInit {
             this.enableButtonType = '';
             this.showAction = false;
         }, err => {
-            this.toastr.error(err.error.message, 'Client Application Status');
+            this.toastr.error(err.error.message, this.properties.APP_STATUS);
             this.spinner(true);
         });
     }

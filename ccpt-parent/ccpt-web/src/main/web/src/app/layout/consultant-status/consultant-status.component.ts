@@ -5,6 +5,7 @@ import { ConsultantStatusModel ,ActionsList} from './consultant-status.model';
 import { HttpClientService } from 'src/app/shared/services/http.service';
 import { ToastrCustomService } from 'src/app/shared/services/toastr.service';
 import { URLConstants } from '../components/constants/url-constants';
+import { Properties } from '../components/constants/properties';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 
@@ -18,6 +19,7 @@ export class ConsultantStatusComponent implements OnInit {
     public model: ConsultantStatusModel = <ConsultantStatusModel>{};
     public consultantStatusList: Array<ConsultantStatusModel> = [];
     private urlConstants = new URLConstants();
+    private properties = new Properties();
     public formButtonsToggler = true;
     public editButtonToggler = true;
     public currSearchTxt = '';
@@ -108,14 +110,14 @@ export class ConsultantStatusComponent implements OnInit {
         this.spinner(false);
         const temp = this.http.post(this.model, this.urlConstants.CSCreate);
         temp.subscribe(resp => {
-            this.toastr.success(this.urlConstants.SuccessMsg, 'Consultant Status');
+            this.toastr.success(this.properties.CREATE, this.properties.CON_STATUS);
             this.init();
             this.formReset();
             this.spinner(true);
             consultantStatusForm.resetForm();
             this.isCreate= false;
         }, err => {
-            this.toastr.error(err.error.message, 'Consultant Status');
+            this.toastr.error(err.error.message, this.properties.CON_STATUS);
             this.isCreate= false;
             this.spinner(true);
         });
@@ -124,7 +126,7 @@ export class ConsultantStatusComponent implements OnInit {
         this.spinner(false);
         const temp = this.http.update(this.model, this.urlConstants.CSUpdate);
         temp.subscribe(resp => {
-            this.toastr.success(this.urlConstants.UpdateMsg, 'Consultant Status');
+            this.toastr.success(this.properties.UPDATE, this.properties.CON_STATUS);
             this.formButtonsToggler = true;
             this.formReset();
             this.init();
@@ -134,7 +136,7 @@ export class ConsultantStatusComponent implements OnInit {
             this.enableButtonType = '';
             this.showAction = false;
         }, err => {
-            this.toastr.error(err.error.message, 'Consultant Status');
+            this.toastr.error(err.error.message, this.properties.CON_STATUS);
             this.spinner(true);
         });
     }
@@ -150,7 +152,7 @@ export class ConsultantStatusComponent implements OnInit {
         this.spinner(false);
         const temp = this.http.delete(this.urlConstants.CSDelete + this.selectedRecrdToDel);
         temp.subscribe(resp => {
-            this.toastr.success(this.urlConstants.DeleteMsg, 'Consultant Status');
+            this.toastr.success(this.properties.DELETE, this.properties.CON_STATUS);
             this.init();
             this.close();
             this.formReset();
@@ -159,7 +161,7 @@ export class ConsultantStatusComponent implements OnInit {
             this.enableButtonType = '';
             this.showAction = false;
         }, err => {
-            this.toastr.error(err.error.message, 'Consultant Status');
+            this.toastr.error(err.error.message, this.properties.CON_STATUS);
             this.spinner(true);
         });
     }

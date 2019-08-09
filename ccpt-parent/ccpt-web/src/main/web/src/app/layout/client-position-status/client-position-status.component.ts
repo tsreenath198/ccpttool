@@ -4,6 +4,7 @@ import { ClientpositionStatusModel,ActionsList } from './client-position-status.
 import { HttpClientService } from 'src/app/shared/services/http.service';
 import { ToastrCustomService } from 'src/app/shared/services/toastr.service';
 import {URLConstants} from '../components/constants/url-constants';
+import {Properties} from '../components/constants/properties';
 import { NgForm } from '@angular/forms';
 import { NgbModal, ModalDismissReasons, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
@@ -19,6 +20,7 @@ export class ClientPositionStatusComponent implements OnInit {
     public model: ClientpositionStatusModel = <ClientpositionStatusModel>{};
     public clientPositionStatusList: Array<ClientpositionStatusModel> = [];
     private urlConstants = new URLConstants();
+    private properties = new Properties();
     public formButtonsToggler = true;
     public editButtonToggler = true;
     private selectedRecrdToDel = 0;
@@ -91,14 +93,14 @@ export class ClientPositionStatusComponent implements OnInit {
         this.isCreate=true;
         this.spinner(false);
         this.http.post(this.model, this.urlConstants.CPSCreate).subscribe(resp => {
-            this.toastr.success(this.urlConstants.SuccessMsg, 'Client Position Status');
+            this.toastr.success(this.properties.CREATE, this.properties.POS_STATUS);
             this.init();
             this.formReset();
             this.spinner(true);
             clientPositionStatusForm.resetForm();
             this.isCreate= false;
         }, err => {
-            this.toastr.error(err.error.message, 'Client Position Status');
+            this.toastr.error(err.error.message, this.properties.POS_STATUS);
             this.isCreate= false;
             this.spinner(true);
         });
@@ -106,7 +108,7 @@ export class ClientPositionStatusComponent implements OnInit {
     public update(clientApplicationStatusForm: NgForm) {
         this.spinner(false);
         this.http.update(this.model, this.urlConstants.CPSUpdate).subscribe(resp => {
-            this.toastr.success(this.urlConstants.UpdateMsg, 'Client Position Status');
+            this.toastr.success(this.properties.UPDATE, this.properties.POS_STATUS);
             this.formReset();
             this.init();
             this.spinner(true);
@@ -115,7 +117,7 @@ export class ClientPositionStatusComponent implements OnInit {
             this.enableButtonType = '';
             this.showAction = false;
         }, err => {
-            this.toastr.error(err.error.message, 'Client Position Status');
+            this.toastr.error(err.error.message, this.properties.POS_STATUS);
             this.spinner(true);
         });
     }
@@ -137,7 +139,7 @@ export class ClientPositionStatusComponent implements OnInit {
     public trash(): void {
         this.spinner(false);
         this.http.delete(this.urlConstants.CPSDelete + this.selectedRecrdToDel).subscribe(resp => {
-            this.toastr.success(this.urlConstants.DeleteMsg, 'Client Position Status');
+            this.toastr.success(this.properties.UPDATE, this.properties.POS_STATUS);
             this.init();
             this.close();
             this.formReset();
@@ -146,7 +148,7 @@ export class ClientPositionStatusComponent implements OnInit {
             this.enableButtonType = '';
             this.showAction = false;
         }, err => {
-            this.toastr.error(err.error.message, 'Client Position Status');
+            this.toastr.error(err.error.message, this.properties.POS_STATUS);
             this.spinner(true);
         });
     }

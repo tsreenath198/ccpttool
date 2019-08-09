@@ -6,6 +6,7 @@ import { routerTransition } from '../../router.animations';
 import { ConsultantModel, ActionsList } from './consultant.model';
 import { ConsultantStatusModel } from '../consultant-status/consultant-status.model';
 import { URLConstants } from '../components/constants/url-constants';
+import { Properties } from '../components/constants/properties';
 import { AdditionalPropertiesModel } from 'src/app/additional-properties.model';
 import { Router } from '@angular/router'; 
 import { StorageService, HttpClientService, ToastrCustomService } from '../../shared/services';
@@ -42,6 +43,7 @@ export class ConsultantComponent implements OnInit {
   private modalRef: NgbModalRef;
   public listReturned: boolean;
   public urlConstants = new URLConstants();
+  public properties = new Properties();
 
   public showAction: boolean = false;
   public actionsList = new ActionsList();
@@ -148,7 +150,7 @@ export class ConsultantComponent implements OnInit {
       resp => {
         this.spinner(true);
         this.isCreate = false;
-        this.toastr.success(this.urlConstants.SuccessMsg, 'Consultant');
+        this.toastr.success(this.properties.CREATE, this.properties.CON);
         consultantForm.resetForm();
         this.init();
         this.formReset();
@@ -156,14 +158,14 @@ export class ConsultantComponent implements OnInit {
         this.createCA(resp);
       },
       err => {
-        this.toastr.error(err.error.message, 'Consultant');
+        this.toastr.error(err.error.message, this.properties.CON);
         this.isCreate = false;
         this.spinner(true);
       }
     );
   }
   private createCA(resp: any) {
-    let decision = confirm("Do you want to create an application");
+    let decision = confirm(this.properties.CONFIRM_CA_NEW);
     if (decision == true) {
       /**Assigning consultant id to the storage consultant */
       this.storage.consultantId = resp.id;
@@ -176,7 +178,7 @@ export class ConsultantComponent implements OnInit {
     temp.subscribe(
       resp => {
         consultantForm.resetForm();
-        this.toastr.success(this.urlConstants.UpdateMsg, 'Consultant');
+        this.toastr.success(this.properties.UPDATE, this.properties.CON);
         this.formReset();
         this.init();
         this.spinner(true);
@@ -185,7 +187,7 @@ export class ConsultantComponent implements OnInit {
         this.showAction = false;
       },
       err => {
-        this.toastr.error(err.statusText, 'Consultant');
+        this.toastr.error(err.statusText, this.properties.CON);
         this.spinner(true);
       }
     );
@@ -220,7 +222,7 @@ export class ConsultantComponent implements OnInit {
     const temp = this.http.delete(this.urlConstants.CDelete + this.selectedRecrdToDel);
     temp.subscribe(
       resp => {
-        this.toastr.success(this.urlConstants.DeleteMsg, 'Consultant');
+        this.toastr.success(this.properties.DELETE, this.properties.CON);
         this.init();
         this.close();
         this.formReset();
@@ -234,9 +236,9 @@ export class ConsultantComponent implements OnInit {
           this.init();
           this.close();
           this.formReset();
-          return this.toastr.success(this.urlConstants.DeleteMsg, 'Consultant');
+          return this.toastr.success(this.properties.DELETE, this.properties.CON);
         }
-        this.toastr.error(err.statusText, 'Consultant');
+        this.toastr.error(err.statusText, this.properties.CON);
         this.spinner(true);
       }
     );
@@ -252,13 +254,13 @@ export class ConsultantComponent implements OnInit {
     });
     temp.subscribe(
       resp => {
-        this.toastr.success(this.urlConstants.DeleteMsg, 'Consultant');
+        this.toastr.success(this.properties.DELETE, this.properties.CON);
       },
       err => {
         if (err.status === 200) {
-          return this.toastr.success(this.urlConstants.DeleteMsg, 'Consultant');
+          return this.toastr.success(this.properties.DELETE, this.properties.CON);
         }
-        this.toastr.error(err.statusText, 'Consultant');
+        this.toastr.error(err.statusText, this.properties.CON);
       }
     );
   }
@@ -291,7 +293,7 @@ export class ConsultantComponent implements OnInit {
             }
           }
           if (propertyExist) {
-            this.toastr.error('Property already exists', 'Properties');
+            this.toastr.error(this.properties.PROPERTY_EXIST, this.properties.PROPERTIES);
           }
           else {
             this.model.properties.push(<AdditionalPropertiesModel>{ 'name': this.apName, 'value': this.apValue });
@@ -317,7 +319,7 @@ export class ConsultantComponent implements OnInit {
     const id = this.idToActivate;
     const temp = this.http.get(this.urlConstants.CActivate + id);
     temp.subscribe(resp => {
-      this.toastr.success(this.urlConstants.ActivatedMsg, 'Consultant');
+      this.toastr.success(this.properties.ACTIVATED, this.properties.CON);
       this.init();
     });
   }

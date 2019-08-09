@@ -7,6 +7,7 @@ import { NgbModal, ModalDismissReasons, NgbModalRef } from '@ng-bootstrap/ng-boo
 import { NgForm } from '@angular/forms';
 import { MessageTemplateModel,ActionsList } from './message-template.model';
 import { Router } from '@angular/router';
+import { Properties } from '../components/constants/properties';
 
 @Component({
     selector: 'app-message-template',
@@ -18,6 +19,7 @@ export class MessageTemplateComponent implements OnInit {
 
     public model: MessageTemplateModel = <MessageTemplateModel>{};
     public messageTemplateList: any = [];
+    private properties = new Properties();
     private urlConstants = new URLConstants();
     public readOnlyForm = '';
     public enableButtonType = '';
@@ -100,7 +102,7 @@ export class MessageTemplateComponent implements OnInit {
         this.isCreate=true
         const temp = this.http.post(this.model, this.urlConstants.SMSTemplateCreate);
         temp.subscribe(resp => {
-            this.toastr.success(this.urlConstants.SuccessMsg, 'Contact');
+            this.toastr.success(this.properties.CREATE, 'Contact');
             this.init();
             this.formReset();
             messageTemplateForm.resetForm();
@@ -113,7 +115,7 @@ export class MessageTemplateComponent implements OnInit {
         const temp = this.http.update(this.model, this.urlConstants.SMSTemplateUpdate);
         temp.subscribe(resp => {
             this.formReset();
-            this.toastr.success(this.urlConstants.UpdateMsg, 'Message Template ');
+            this.toastr.success(this.properties.UPDATE, 'Message Template ');
             this.init();
             messageTemplateForm.resetForm();
             this.readOnlyForm = '';
@@ -134,7 +136,7 @@ export class MessageTemplateComponent implements OnInit {
     public trash(): void {
         const temp = this.http.delete(this.urlConstants.SMSTemplateDelete + this.selectedRecrdToDel);
         temp.subscribe(resp => {
-            this.toastr.success(this.urlConstants.DeleteMsg, 'Client');
+            this.toastr.success(this.properties.DELETE, 'Client');
             this.init();
             this.close();
             this.formReset();
@@ -144,7 +146,7 @@ export class MessageTemplateComponent implements OnInit {
                 this.init();
                 this.close();
                 this.formReset();
-                return this.toastr.success(this.urlConstants.DeleteMsg, 'Client');
+                return this.toastr.success(this.properties.DELETE, 'Client');
             }
             this.toastr.error(err.error.message, 'Client');
         });

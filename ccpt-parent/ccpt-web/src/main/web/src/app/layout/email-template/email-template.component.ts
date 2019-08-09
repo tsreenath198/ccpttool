@@ -7,6 +7,7 @@ import { NgbModal, ModalDismissReasons, NgbModalRef } from '@ng-bootstrap/ng-boo
 import { NgForm } from '@angular/forms';
 import { EmailTemplateModel,ActionsList } from './email-template.model';
 import { Router } from '@angular/router';
+import { Properties } from '../components/constants/properties';
 
 @Component({
     selector: 'app-email-template',
@@ -19,6 +20,7 @@ export class EmailTemplateComponent implements OnInit {
     public model: EmailTemplateModel = <EmailTemplateModel>{};
     public emailTemplateList: any = [];
     private urlConstants = new URLConstants();
+    private properties = new Properties();
     public readOnlyForm = '';
     public enableButtonType = '';
     public currSearchTxt = '';
@@ -91,7 +93,7 @@ export class EmailTemplateComponent implements OnInit {
         this.spinner(false);
         const temp = this.http.post(this.model, this.urlConstants.EmailTemplateCreate);
         temp.subscribe(resp => {
-            this.toastr.success(this.urlConstants.SuccessMsg, 'Contact');
+            this.toastr.success(this.properties.CREATE, 'Contact');
             this.init();
             this.formReset();
             emailTemplateForm.resetForm();
@@ -107,7 +109,7 @@ export class EmailTemplateComponent implements OnInit {
         const temp = this.http.update(this.model, this.urlConstants.EmailTemplateUpdate);
         temp.subscribe(resp => {
             this.formReset();
-            this.toastr.success(this.urlConstants.UpdateMsg, 'Email Template ');
+            this.toastr.success(this.properties.UPDATE, 'Email Template ');
             this.init();
             emailTemplateForm.resetForm();
             this.spinner(true);
@@ -129,7 +131,7 @@ export class EmailTemplateComponent implements OnInit {
         this.spinner(false);
         const temp = this.http.delete(this.urlConstants.EmailTemplateDelete + this.selectedRecrdToDel);
         temp.subscribe(resp => {
-            this.toastr.success(this.urlConstants.DeleteMsg, 'Client');
+            this.toastr.success(this.properties.DELETE, 'Client');
             this.init();
             this.close();
             this.formReset();
@@ -140,7 +142,7 @@ export class EmailTemplateComponent implements OnInit {
                 this.init();
                 this.close();
                 this.formReset();
-                return this.toastr.success(this.urlConstants.DeleteMsg, 'Client');
+                return this.toastr.success(this.properties.DELETE, 'Client');
             }
             this.toastr.error(err.error.message, 'Client');
         });

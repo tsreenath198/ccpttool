@@ -3,13 +3,11 @@ import { routerTransition } from '../../router.animations';
 import { NgbModal, ModalDismissReasons, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ClientCallHistoryModel } from './client-call-history.model';
 import { HttpClientService } from 'src/app/shared/services/http.service';
-import { ClientPositionModel } from '../client-position/client-position.model';
 import { ToastrCustomService } from 'src/app/shared/services/toastr.service';
 import { URLConstants } from '../components/constants/url-constants';
+import { Properties } from '../components/constants/properties';
 import { NgForm } from '@angular/forms';
-import { ClientModel } from '../client/client.model';
 import { AdditionalPropertiesModel } from 'src/app/additional-properties.model';
-import { RecruiterModel } from '../recruiter/recruiter.model';
 import { forkJoin } from 'rxjs';
 import { ActionsList } from '../consultant-call-history/consultant-call-history.model';
 import { Router } from '@angular/router';
@@ -29,6 +27,7 @@ export class ClientCallHistoryComponent implements OnInit {
   public formButtonsToggler = true;
   public editButtonToggler = true;
   public urlConstants = new URLConstants();
+  public properties = new Properties();
   public showAction: boolean = false;
   public actionsList = new ActionsList();
   public action: string;
@@ -162,7 +161,7 @@ export class ClientCallHistoryComponent implements OnInit {
                     }
                 }
                 if(propertyExist){
-                    this.toastr.error('Property already exists', 'Properties');
+                    this.toastr.error(this.properties.PROPERTY_EXIST, this.properties.PROPERTIES);
                 }
                 else{ 
                     this.model.properties.push(<AdditionalPropertiesModel>{ 'name': this.apName, 'value': this.apValue });     
@@ -206,7 +205,7 @@ export class ClientCallHistoryComponent implements OnInit {
     const temp = this.http.post(this.model, this.urlConstants.CCHCreate);
     temp.subscribe(
       resp => {
-        this.toastr.success(this.urlConstants.SuccessMsg, 'Client Call History');
+        this.toastr.success(this.properties.CREATE, this.properties.CLI_C_H);
         this.init();
         this.getRecruiterId();
         this.isCreate = false;
@@ -217,7 +216,7 @@ export class ClientCallHistoryComponent implements OnInit {
         this.isCreate = false;
       },
       err => {
-        this.toastr.error(err.error.message, 'Client Call History');
+        this.toastr.error(err.error.message, this.properties.CLI_C_H);
         this.spinner(true);
       }
     );
@@ -227,7 +226,7 @@ export class ClientCallHistoryComponent implements OnInit {
     const temp = this.http.update(this.model, this.urlConstants.CCHUpdate);
     temp.subscribe(
       resp => {
-        this.toastr.success(this.urlConstants.UpdateMsg, 'Client Call History');
+        this.toastr.success(this.properties.UPDATE, this.properties.CLI_C_H);
         this.formButtonsToggler = true;
         this.formReset();
         this.init();
@@ -240,7 +239,7 @@ export class ClientCallHistoryComponent implements OnInit {
         clientCallHistoryForm.resetForm();
       },
       err => {
-        this.toastr.error(err.error.message, 'Client Call History');
+        this.toastr.error(err.error.message, this.properties.CLI_C_H);
         this.spinner(true);
       }
     );
@@ -259,7 +258,7 @@ export class ClientCallHistoryComponent implements OnInit {
     const temp = this.http.delete(this.urlConstants.CCHDelete + this.selectedRecrdToDel);
     temp.subscribe(
       resp => {
-        this.toastr.success(this.urlConstants.DeleteMsg, 'Client Call History');
+        this.toastr.success(this.properties.DELETE, this.properties.CLI_C_H);
         this.init();
         this.getRecruiterId();
         this.readOnlyForm = '';
@@ -271,7 +270,7 @@ export class ClientCallHistoryComponent implements OnInit {
         this.showAction = false;
       },
       err => {
-        this.toastr.error(err.error.message, 'Client Call History');
+        this.toastr.error(err.error.message, this.properties.CLI_C_H);
         this.spinner(true);
       }
     );

@@ -2,8 +2,9 @@ import { Component, OnInit, HostListener } from '@angular/core';
 import { routerTransition } from '../../router.animations';
 import { NgbModal, ModalDismissReasons, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { URLConstants } from '../components/constants/url-constants';
+import { Properties } from '../components/constants/properties';
 import { NgForm } from '@angular/forms';
-import { ClientModel, ClientContactsModel, ActionsList } from './client.model';
+import { ClientModel, ActionsList } from './client.model';
 import { FileUploader, FileLikeObject } from 'ng2-file-upload';
 import { AdditionalPropertiesModel } from 'src/app/additional-properties.model';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
@@ -23,6 +24,7 @@ export class ClientComponent implements OnInit {
     public clientList: any = [];
     public currSearchTxt = '';
     public urlConstants = new URLConstants();
+    public properties = new Properties();
     public readOnlyForm = '';
     public enableButtonType = '';
     public comments = '';
@@ -141,13 +143,13 @@ export class ClientComponent implements OnInit {
         });
     }
     private successHandle(){
-        this.toastr.success(this.urlConstants.SuccessMsg, 'Client');
+        this.toastr.success(this.properties.CREATE, this.properties.CLIENT);
             this.init();
             this.formReset();
             this.spinner(true);
     }
     private addCP(resp : any){
-        let decision = confirm("Do you want to create an application");
+        let decision = confirm(this.properties.CONFIRM_CP_NEW);
         if(decision== true){
           /**set consultant id in storage service*/
           this.storageService.clientId = resp.id;
@@ -205,7 +207,7 @@ export class ClientComponent implements OnInit {
                     /**TODO: replace loop with filter(High) */
                    propertyExist= this.model.properties.filter(prop => prop.name==this.apName && prop.value==this.apValue)
                     if(propertyExist){
-                        this.toastr.error('Property already exists', 'Properties');
+                        this.toastr.error(this.properties.PROPERTY_EXIST, this.properties.PROPERTIES);
                     }
                     else{ 
                         this.model.properties.push(<AdditionalPropertiesModel>{ 'name': this.apName, 'value': this.apValue });     
@@ -238,7 +240,7 @@ export class ClientComponent implements OnInit {
         });
     }
     private errorHandle(err:any){
-        this.toastr.error(err.error.message, 'Client');
+        this.toastr.error(err.error.message, this.properties.CLIENT);
         this.spinner(true);
     }
     public getFilesById(id: number) {

@@ -8,6 +8,7 @@ import { URLConstants } from '../components/constants/url-constants';
 import { NgForm } from '@angular/forms';
 import { AdditionalPropertiesModel } from 'src/app/additional-properties.model';
 import { Router } from '@angular/router';
+import { Properties } from '../components/constants/properties';
 
 @Component({
   selector: 'app-recruiter',
@@ -23,6 +24,7 @@ export class RecruiterComponent implements OnInit {
   public rolesModel = new Roles();
   public rolesList: any = [];
   public urlConstants = new URLConstants();
+  public properties = new Properties();
 
   public showAction: boolean = false;
   public actionsList = new ActionsList();
@@ -126,7 +128,7 @@ export class RecruiterComponent implements OnInit {
                     }
                 }
                 if(propertyExist){
-                    this.toastr.error('Property already exists', 'Properties');
+                    this.toastr.error(this.properties.PROPERTY_EXIST, this.properties.PROPERTIES);
                 }
                 else{ 
                     this.model.properties.push(<AdditionalPropertiesModel>{ 'name': this.apName, 'value': this.apValue });     
@@ -163,7 +165,7 @@ export class RecruiterComponent implements OnInit {
     const temp = this.http.post(this.model, this.urlConstants.RCreate);
     temp.subscribe(
       resp => {
-        this.toastr.success(this.urlConstants.SuccessMsg, 'Recruiter');
+        this.toastr.success(this.properties.CREATE, this.properties.RECRUITER);
         this.init();
         this.formReset();
         recruiterForm.resetForm();
@@ -171,7 +173,7 @@ export class RecruiterComponent implements OnInit {
         this.spinner(true);
       },
       err => {
-        this.toastr.error(err.error.message + err.status, 'Recruiter');
+        this.toastr.error(err.error.message + err.status, this.properties.RECRUITER);
         this.isCreate = false;
         this.spinner(true);
       }
@@ -182,7 +184,7 @@ export class RecruiterComponent implements OnInit {
     const temp = this.http.update(this.model, this.urlConstants.RUpdate);
     temp.subscribe(
       resp => {
-        this.toastr.success(this.urlConstants.UpdateMsg, 'Recruiter');
+        this.toastr.success(this.properties.UPDATE, this.properties.RECRUITER);
         this.init();
         this.formReset();
         recruiterForm.resetForm();
@@ -192,7 +194,7 @@ export class RecruiterComponent implements OnInit {
         this.showAction = false;
       },
       err => {
-        this.toastr.error(err.error.message, 'Recruiter');
+        this.toastr.error(err.error.message, this.properties.RECRUITER);
         this.spinner(true);
       }
     );
@@ -211,7 +213,7 @@ export class RecruiterComponent implements OnInit {
     temp.subscribe(
       resp => {
         const response: any = resp;
-        this.toastr.success(response.message, 'Recruiter');
+        this.toastr.success(response.message, this.properties.RECRUITER);
         this.close();
         this.init();
         this.formReset();
@@ -221,7 +223,7 @@ export class RecruiterComponent implements OnInit {
         this.spinner(true);
       },
       err => {
-        this.toastr.error(err.error.message, 'Recruiter');
+        this.toastr.error(err.error.message, this.properties.RECRUITER);
         this.spinner(true);
       }
     );

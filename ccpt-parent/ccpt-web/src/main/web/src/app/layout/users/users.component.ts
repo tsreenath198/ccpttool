@@ -8,6 +8,7 @@ import { ToastrCustomService } from 'src/app/shared/services/toastr.service';
 import { NgbModalRef, ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AdditionalPropertiesModel } from 'src/app/additional-properties.model';
 import { Router } from '@angular/router';
+import { Properties } from '../components/constants/properties';
 
 @Component({
     selector: 'app-users',
@@ -19,6 +20,7 @@ export class UsersComponent implements OnInit {
     public model: UsersModel = <UsersModel>{};
     public usersList: Array<UsersModel> = [];
     private urlConstants = new URLConstants();
+    private properties = new Properties();
     public rolesModel = new UserRoles();
     public rolesList: any = [];
     public getAllR: any;
@@ -123,7 +125,7 @@ export class UsersComponent implements OnInit {
                         }
                     }
                     if(propertyExist){
-                        this.toastr.error('Property already exists', 'Properties');
+                        this.toastr.error(this.properties.PROPERTY_EXIST, this.properties.PROPERTIES);
                     }
                     else{ 
                         this.model.properties.push(<AdditionalPropertiesModel>{ 'name': this.apName, 'value': this.apValue });     
@@ -169,13 +171,13 @@ export class UsersComponent implements OnInit {
         this.isCreate = true;
         let temp = this.http.post(this.model, this.urlConstants.UserCreate);
         temp.subscribe(resp => {
-            this.toastr.success(this.urlConstants.SuccessMsg, 'User');
+            this.toastr.success(this.properties.CREATE, this.properties.USER);
             usersForm.resetForm();
             this.init();
             this.isCreate = false;
             this.spinner(true);
         }, err => {
-            this.toastr.error(err.error.message, 'Users');
+            this.toastr.error(err.error.message, this.properties.USER);
             this.isCreate = false;
             this.spinner(true);
         });
@@ -185,7 +187,7 @@ export class UsersComponent implements OnInit {
         let temp = this.http.update(this.model, this.urlConstants.UserUpdate);
         temp.subscribe(resp => {
             this.formReset();
-            this.toastr.success(this.urlConstants.UpdateMsg, 'User');
+            this.toastr.success(this.properties.UPDATE, this.properties.USER);
             this.init();
             usersForm.resetForm();
             this.readOnlyForm = '';
@@ -193,7 +195,7 @@ export class UsersComponent implements OnInit {
             this.showAction = false;
             this.spinner(true);
         }, err => {
-            this.toastr.error(err.error.message, 'User');
+            this.toastr.error(err.error.message, this.properties.USER);
             this.spinner(true);
         });
     }
@@ -201,7 +203,7 @@ export class UsersComponent implements OnInit {
         this.spinner(false);
         let temp = this.http.delete(this.urlConstants.UserDelete + this.selectedRecrdToDel);
         temp.subscribe(resp => {
-            this.toastr.success(this.urlConstants.DeleteMsg, 'User');
+            this.toastr.success(this.properties.DELETE, this.properties.USER);
             this.init();
             this.close();
             this.formReset();
@@ -210,7 +212,7 @@ export class UsersComponent implements OnInit {
             this.showAction = false;
             this.spinner(true);
         }, err => {
-            this.toastr.error(err.error.message, 'User');
+            this.toastr.error(err.error.message, this.properties.USER);
             this.spinner(true);
         });
     }

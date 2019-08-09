@@ -7,9 +7,9 @@ import { ToastrCustomService } from 'src/app/shared/services/toastr.service';
 import { NgbModal, ModalDismissReasons, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { NgForm } from '@angular/forms';
 import { AdditionalPropertiesModel } from 'src/app/additional-properties.model';
-import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { forkJoin } from 'rxjs';
 import { Router } from '@angular/router';
+import { Properties } from '../components/constants/properties';
 
 @Component({
     selector: 'app-payments',
@@ -24,6 +24,7 @@ export class PaymentsComponent implements OnInit {
     public clientApplicationList: Array<any> = [];
     public consultantList: Array<any> = [];
     private urlConstants = new URLConstants();
+    private properties = new Properties();
     public readOnlyForm = '';
     public enableButtonType = '';
     public currSearchTxt = '';
@@ -80,9 +81,9 @@ export class PaymentsComponent implements OnInit {
         return bool;
     }
     private setDefaultValues(){
-        this.model.branchHeadName = "Sreenath Thatikonda";
-        this.model.phone = "+919848071296";
-        this.model.branchLocation = "Nizamabad"
+        this.model.branchHeadName = this.properties.HEAD;
+        this.model.phone = this.properties.PHONE;
+        this.model.branchLocation = this.properties.LOCATION
     }
     private getTodaysDate() {
         const today = new Date();
@@ -169,7 +170,7 @@ export class PaymentsComponent implements OnInit {
                         }
                     }
                     if(propertyExist){
-                        this.toastr.error('Property already exists', 'Properties');
+                        this.toastr.error(this.properties.PROPERTY_EXIST, this.properties.PROPERTIES);
                     }
                     else{ 
                         this.model.properties.push(<AdditionalPropertiesModel>{ 'name': this.apName, 'value': this.apValue });     
@@ -204,13 +205,13 @@ export class PaymentsComponent implements OnInit {
         this.spinner(false);
         const temp = this.http.post(this.model, this.urlConstants.PaymentCreate);
         temp.subscribe(resp => {
-            this.toastr.success(this.urlConstants.SuccessMsg, 'Contact');
+            this.toastr.success(this.properties.CREATE, this.properties.CONTACT);
             this.init();
             this.formReset();
             paymentsForm.resetForm();
             this.spinner(true);
         }, err => {
-            this.toastr.error(err.error.message, 'Contact');
+            this.toastr.error(err.error.message, this.properties.CONTACT);
             this.spinner(true);
         });
     }
@@ -219,7 +220,7 @@ export class PaymentsComponent implements OnInit {
         const temp = this.http.update(this.model, this.urlConstants.PaymentUpdate);
         temp.subscribe(resp => {
             this.formReset();
-            this.toastr.success(this.urlConstants.UpdateMsg, 'Contact ');
+            this.toastr.success(this.properties.UPDATE, this.properties.CONTACT);
             this.init();
             paymentsForm.resetForm();
             this.readOnlyForm = '';
@@ -227,7 +228,7 @@ export class PaymentsComponent implements OnInit {
             this.showAction = false;
             this.spinner(true);
         }, err => {
-            this.toastr.error(err.error.message, 'Contact');
+            this.toastr.error(err.error.message, this.properties.CONTACT);
             this.spinner(true);
         });
     }
@@ -243,7 +244,7 @@ export class PaymentsComponent implements OnInit {
         this.spinner(false);
         const temp = this.http.delete(this.urlConstants.PaymentDelete + this.selectedRecrdToDel);
         temp.subscribe(resp => {
-            this.toastr.success(this.urlConstants.DeleteMsg, 'Contact');
+            this.toastr.success(this.properties.DELETE, this.properties.CONTACT);
             this.init();
             this.close();
             this.formReset();
@@ -252,7 +253,7 @@ export class PaymentsComponent implements OnInit {
             this.showAction = false;
             this.spinner(true);
         }, err => {
-            this.toastr.error(err.error.message, 'Contact');
+            this.toastr.error(err.error.message, this.properties.CONTACT);
             this.spinner(true);
         });
     }

@@ -105,13 +105,13 @@
 </div>
 <ng-template #trashContent let-c="close" let-d="dismiss">
   <div class="modal-header modal-popup-header-bg">
-    <h4 class="modal-title">Client Application Status</h4>
+    <h4 class="modal-title">{{properties.APP_STATUS}}</h4>
     <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
   <div class="modal-body">
-    <p>Are you sure you want to delete ? &hellip;</p>
+    <p>{{properties.CONFIRM_DELETE}} ? &hellip;</p>
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-secondary" (click)="trash()">Ok</button>

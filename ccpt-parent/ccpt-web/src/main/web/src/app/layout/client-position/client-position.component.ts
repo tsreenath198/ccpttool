@@ -1,6 +1,7 @@
 import { Component, OnInit, HostListener, ElementRef, ViewChild } from '@angular/core';
 import { NgbModal, ModalDismissReasons, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { URLConstants } from '../components/constants/url-constants';
+import { Properties } from '../components/constants/properties';
 import { routerTransition } from '../../router.animations';
 import { ClientPositionModel, SendSmsModel, SendEmailModel, ActionsList } from './client-position.model';
 import { NgForm } from '@angular/forms';
@@ -13,7 +14,6 @@ import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { StorageService, HttpClientService, ToastrCustomService } from '../../shared/services';
-import { ConsultantModel } from '../consultant/consultant.model';
 
 @Component({
   selector: 'app-client-position',
@@ -49,6 +49,7 @@ export class ClientPositionComponent implements OnInit {
   public closeResult = '';
   private modalRef: NgbModalRef;
   public urlConstants = new URLConstants();
+  public properties = new Properties();
   public currSearchTxt: string;
   public readOnlyForm = '';
   public enableButtonType = '';
@@ -211,7 +212,7 @@ export class ClientPositionComponent implements OnInit {
             }
           }
           if (propertyExist) {
-            this.toastr.error('Property already exists', 'Properties');
+            this.toastr.error(this.properties.PROPERTY_EXIST, this.properties.PROPERTIES);
           } else {
             this.model.properties.push(<AdditionalPropertiesModel>{ name: this.apName, value: this.apValue });
             this.apName = '';
@@ -285,7 +286,7 @@ export class ClientPositionComponent implements OnInit {
     const temp = this.http.post(this.model, this.urlConstants.CPCreate);
     temp.subscribe(
       resp => {
-        this.toastr.success(this.urlConstants.SuccessMsg, 'Client Position');
+        this.toastr.success(this.properties.CREATE, this.properties.CP);
         this.init();
         this.formReset();
         this.spinner(true);
@@ -297,7 +298,7 @@ export class ClientPositionComponent implements OnInit {
         }
       },
       err => {
-        this.toastr.error(err.error.message, 'Client Position');
+        this.toastr.error(err.error.message, this.properties.CP);
         this.isCreate = false;
         this.spinner(true);
       }
@@ -338,7 +339,7 @@ export class ClientPositionComponent implements OnInit {
     const temp = this.http.update(this.model, this.urlConstants.CPUpdate);
     temp.subscribe(
       resp => {
-        this.toastr.success(this.urlConstants.UpdateMsg, 'Client Position');
+        this.toastr.success(this.properties.UPDATE, this.properties.CP);
         this.formReset();
         this.init();
         this.spinner(true);
@@ -349,7 +350,7 @@ export class ClientPositionComponent implements OnInit {
         this.showAction = false;
       },
       err => {
-        this.toastr.error(err.error.message, 'Client Position');
+        this.toastr.error(err.error.message, this.properties.CP);
         this.spinner(true);
       }
     );
@@ -368,7 +369,7 @@ export class ClientPositionComponent implements OnInit {
     const temp = this.http.delete(this.urlConstants.CPDelete + this.selectedRecrd);
     temp.subscribe(
       resp => {
-        this.toastr.success(this.urlConstants.DeleteMsg, 'Client Position');
+        this.toastr.success(this.properties.DELETE, this.properties.CP);
         this.init();
         this.close();
         this.formReset();
@@ -382,10 +383,10 @@ export class ClientPositionComponent implements OnInit {
           this.init();
           this.close();
           this.formReset();
-          return this.toastr.success(this.urlConstants.DeleteMsg, 'Client Position');
+          return this.toastr.success(this.properties.DELETE, this.properties.CP);
         }
         this.spinner(true);
-        this.toastr.error(err.error.message, 'Client Position');
+        this.toastr.error(err.error.message, this.properties.CP);
       }
     );
   }
@@ -411,7 +412,7 @@ export class ClientPositionComponent implements OnInit {
     },
       err => {
         this.creating = false;
-        this.toastr.error(err.error.message, 'Client Position');
+        this.toastr.error(err.error.message, this.properties.CP);
         this.spinner(true);
       });
   }
@@ -430,7 +431,7 @@ export class ClientPositionComponent implements OnInit {
     },
       err => {
         this.creating = false;
-        this.toastr.error(err.error.message, 'Client Position');
+        this.toastr.error(err.error.message, this.properties.CP);
         this.spinner(true);
       });
   }
@@ -463,12 +464,12 @@ export class ClientPositionComponent implements OnInit {
         resp => {
           this.spinner(true);
           this.creating = false;
-          this.toastr.success(this.urlConstants.SuccessMsg, 'Consultant');
+          this.toastr.success(this.properties.CREATE, this.properties.CON);
           this.close();
         },
         err => {
           this.creating = false;
-          this.toastr.error(err.error.message, 'Consultant');
+          this.toastr.error(err.error.message, this.properties.CON);
           this.spinner(true);
         }
       );
@@ -487,7 +488,7 @@ export class ClientPositionComponent implements OnInit {
     const temp = this.http.post(dataToCreate, this.urlConstants.CACreate);
     temp.subscribe(
       resp => {
-        this.toastr.success(this.urlConstants.SuccessMsg, 'Client Application');
+        this.toastr.success(this.properties.CREATE, this.properties.CA);
         this.init();
         this.formReset();
         clientPositionForm.resetForm();
@@ -499,7 +500,7 @@ export class ClientPositionComponent implements OnInit {
         this.spinner(true);
       },
       err => {
-        this.toastr.error(err.statusText, 'Client Application');
+        this.toastr.error(err.statusText, this.properties.CA);
         this.spinner(true);
       }
     );

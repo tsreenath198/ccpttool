@@ -9,12 +9,16 @@ export class Properties {
     DOWNLOAD = 'Files';
     PROPERTIES = 'Properties';
     PROPERTY_EXIST = 'Property already exists';
+    CONFIRM_DELETE = 'Are you sure you want to delete';
+    CONFIRM_CP_NEW = 'Do you want to create Client Position';
+    CONFIRM_CA_NEW = 'Do you want to create Client Application';
 
     /** Modules */
     APP_NAME = 'CCPT';
     CON = 'Consultant';
     CA = 'Client Application';
     CLIENT = 'Client';
+    CONTACT = 'Contact';
     CP = 'Client Position';
     CLI_C_H = 'Client Call History';
     CON_C_H = 'Consultant Call History';

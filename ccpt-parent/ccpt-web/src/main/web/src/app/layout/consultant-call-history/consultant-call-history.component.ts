@@ -5,6 +5,7 @@ import { ConsultantCallHistoryModel, ActionsList } from './consultant-call-histo
 import { HttpClientService } from 'src/app/shared/services/http.service';
 import { ToastrCustomService } from 'src/app/shared/services/toastr.service';
 import { URLConstants } from '../components/constants/url-constants';
+import { Properties } from '../components/constants/properties';
 import { NgForm } from '@angular/forms';
 import { AdditionalPropertiesModel } from 'src/app/additional-properties.model';
 import { forkJoin } from 'rxjs';
@@ -27,6 +28,7 @@ export class ConsultantCallHistoryComponent implements OnInit {
   public clientPositionList: Array<any> = [];
   public recruiterList: Array<any> = [];
   public urlConstants = new URLConstants();
+  public properties = new Properties();
 
   private selectedRecrdToDel = 0;
   public closeResult = '';
@@ -142,7 +144,7 @@ export class ConsultantCallHistoryComponent implements OnInit {
                     }
                 }
                 if(propertyExist){
-                    this.toastr.error('Property already exists', 'Properties');
+                    this.toastr.error(this.properties.PROPERTY_EXIST, this.properties.PROPERTIES);
                 }
                 else{ 
                     this.model.properties.push(<AdditionalPropertiesModel>{ 'name': this.apName, 'value': this.apValue });     
@@ -189,7 +191,7 @@ export class ConsultantCallHistoryComponent implements OnInit {
     const temp = this.http.post(this.model, this.urlConstants.CoCHCreate);
     temp.subscribe(
       resp => {
-        this.toastr.success(this.urlConstants.SuccessMsg, 'Consultant Call History');
+        this.toastr.success(this.properties.CREATE, this.properties.CON_C_H);
         this.init();
         consultantCallHistory.resetForm();
         this.formReset();
@@ -198,7 +200,7 @@ export class ConsultantCallHistoryComponent implements OnInit {
         this.isCreate= false;
       },
       err => {
-        this.toastr.error(err.error.message, 'Consultant Call History');
+        this.toastr.error(err.error.message, this.properties.CON_C_H);
         this.isCreate= false;
         this.spinner(true);
       }
@@ -211,7 +213,7 @@ export class ConsultantCallHistoryComponent implements OnInit {
       resp => {
         consultantCallHistory.resetForm();
         this.formReset();
-        this.toastr.success(this.urlConstants.UpdateMsg, 'Consultant Call History');
+        this.toastr.success(this.properties.UPDATE, this.properties.CON_C_H);
         this.init();
         this.callAfterFormReset();
         this.spinner(true);
@@ -220,7 +222,7 @@ export class ConsultantCallHistoryComponent implements OnInit {
         this.showAction = false;
       },
       err => {
-        this.toastr.error(err.error.message, 'Consultant Call History');
+        this.toastr.error(err.error.message, this.properties.CON_C_H);
         this.spinner(true);
       }
     );
@@ -239,7 +241,7 @@ export class ConsultantCallHistoryComponent implements OnInit {
     const temp = this.http.delete(this.urlConstants.CoCHDelete + this.selectedRecrdToDel);
     temp.subscribe(
       resp => {
-        this.toastr.success(this.urlConstants.DeleteMsg, 'Consultant Call History');
+        this.toastr.success(this.properties.DELETE, this.properties.CON_C_H);
         this.init();
         this.close();
         this.formReset();
@@ -250,7 +252,7 @@ export class ConsultantCallHistoryComponent implements OnInit {
         this.showAction = false;
       },
       err => {
-        this.toastr.error(err.error.message, 'Consultant Call History');
+        this.toastr.error(err.error.message, this.properties.CON_C_H);
         this.spinner(true);
       }
     );
