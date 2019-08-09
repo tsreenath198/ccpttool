@@ -31,6 +31,10 @@ public class StatusEntity extends BaseEntity<Integer> {
 	@Size(max = 30)
 	protected String code;
 
+	@Column
+	@Size(max = 30)
+	protected String statusType;
+
 	public String getCode() {
 		return StringUtils.isEmpty(code) ? null : code;
 	}

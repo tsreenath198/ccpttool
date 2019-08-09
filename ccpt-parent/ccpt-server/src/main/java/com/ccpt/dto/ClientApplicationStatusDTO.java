@@ -9,4 +9,5 @@ import lombok.ToString;
 @ToString
 public class ClientApplicationStatusDTO extends IDEntityDTO {
 	private String code;
+	private String statusType;
 }
