@@ -12,6 +12,6 @@ public interface RecruiterRepository extends BaseRepository<Recruiter, Integer> 
 	@Query("SELECT r FROM Recruiter r WHERE fullname=:name AND active_flag='Y'")
 	Recruiter getRecruiterFromName(@Param(value = "name") String name);
 
-	@Query("SELECT id as id,aliasName as name, email as email FROM Recruiter WHERE active_flag=1 ORDER BY createdDate ASC")
+	@Query("SELECT id as id,aliasName as name, email as email FROM Recruiter WHERE active_flag=1 ORDER BY createdDate DESC")
 	List<RecruiterDropdownStatistics> getAllCreators();
 }

@@ -20,7 +20,7 @@ public interface ClientPositionRepository extends BaseRepository<ClientPosition,
 	List<ClientPosition> findByClientIdAndActiveFlag(@Param("clientId") Integer clientId,
 			@Param("activeFlag") Boolean activeFlag);
 
-	@Query("SELECT id as id,generatedCode as name FROM ClientPosition WHERE active_flag=1  ORDER BY createdDate ASC")
+	@Query("SELECT id as id,generatedCode as name FROM ClientPosition WHERE active_flag=1  ORDER BY createdDate DESC")
 	List<DropDownStatistics> getAllCps();
 
 }

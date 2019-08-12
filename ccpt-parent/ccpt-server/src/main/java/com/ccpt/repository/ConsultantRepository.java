@@ -11,6 +11,6 @@ public interface ConsultantRepository extends BaseRepository<Consultant, Integer
 
 	List<Consultant> findByPhoneOrFullnameOrEmail(String phone, String fullname, String email);
 
-	@Query(value = "SELECT id as id,fullname as name,email as email,phone as phone FROM Consultant WHERE active_flag=1 AND status_code != 'Inactive' ORDER BY createdDate ASC")
+	@Query(value = "SELECT id as id,fullname as name,email as email,phone as phone FROM Consultant WHERE active_flag=1 AND status_code != 'Inactive' ORDER BY createdDate DESC")
 	List<ConsultantStatistics> getAllConsultants();
 }
