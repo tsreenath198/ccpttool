@@ -36,7 +36,7 @@ public class ClientApplicationService extends BaseService<ClientApplication, Int
 	}
 
 	public List<ClientApplication> getAllActiveCAByCpID(Integer cpId) {
-		return clientApplicationRepository.getAllActiveCAByCpID(cpId, "Rejected By Client");
+		return clientApplicationRepository.getAllActiveCAByCpID(cpId);
 
 	}
 
