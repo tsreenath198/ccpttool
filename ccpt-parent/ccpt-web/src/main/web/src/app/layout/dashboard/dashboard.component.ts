@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
 import { HttpClientService } from 'src/app/shared/services/http.service';
 import { ToastrCustomService } from 'src/app/shared/services/toastr.service';
 import { URLConstants } from '../components/constants/url-constants';
@@ -37,6 +37,10 @@ export class DashboardComponent implements OnInit {
     public cochChoosenDays: any = 7;
     public clchChoosenDays: any = 7;
     public listReturned: boolean = false;
+    /** Template references */
+
+    @ViewChild('contentACA')
+    private contentACA: TemplateRef<any>
 
     private selectedRecrd = 0;
     public closeResult = '';
@@ -67,7 +71,7 @@ export class DashboardComponent implements OnInit {
     public barChartLegend: boolean = true;
 
     public barChartData: any[] = [
-        { data: [], label: 'Active Client Applications' }
+        { data: [], label: 'Active Client Applications', cpIds: [] }
     ];
 
     constructor(private http: HttpClientService, private router: Router, private toastr: ToastrCustomService,
@@ -202,19 +206,32 @@ export class DashboardComponent implements OnInit {
             return `with: ${reason}`;
         }
     }
+    /**
+     * Looping and assigning the count to display on bar UI
+     * Store cpId and pass when clicked on the bar
+     */
     private setActiveCPBarData() {
         this.activeCA.forEach(ca => {
             this.barChartLabels.push(this.splitString(ca.generatedCode));
             this.barChartData[0].data.push("" + ca.count);
+            this.barChartData[0].ids.push("" + ca.cpId);
         })
     }
-    private splitString(str): string {
+
+    /**
+     * @param str contains the complex string
+     * here it split by space and returns the first char
+     */
+    private splitString(str:string): string {
         let gc = str.split(' ');
         return gc[0]
     }
+    /**
+     * @param event eventdata
+     * Click on bar chart and get the id of respective bar
+     */
     public chartClicked(event): void {
         const index = event.active[0]._index;
-        const selectedLabel = this.barChartData[0].data[index];
-        alert(selectedLabel);
+        this.open(this.contentACA, this.barChartData[0].cpIds[index], 'activeClientApplication');
     }
 }
