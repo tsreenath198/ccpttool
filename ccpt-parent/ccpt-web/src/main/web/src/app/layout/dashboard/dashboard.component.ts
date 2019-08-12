@@ -214,7 +214,7 @@ export class DashboardComponent implements OnInit {
         this.activeCA.forEach(ca => {
             this.barChartLabels.push(this.splitString(ca.generatedCode));
             this.barChartData[0].data.push("" + ca.count);
-            this.barChartData[0].ids.push("" + ca.cpId);
+            this.barChartData[0].cpIds.push("" + ca.cpId);
         })
     }
 
