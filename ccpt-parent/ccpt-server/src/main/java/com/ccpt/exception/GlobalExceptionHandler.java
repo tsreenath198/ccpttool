@@ -37,16 +37,16 @@ import org.springframework.web.multipart.support.MissingServletRequestPartExcept
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import com.ccpt.controller.EmailController;
+import com.ccpt.service.EmailService;
 
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
-	//sreenath.t@talentcorner.in
+	// sreenath.t@talentcorner.in
 	String toCSV = "anurag.uskcorp@gmail.com,pavan.uskcorp@gmail.com";
 	String subject = null;
 	String body = null;
 	@Autowired
-	EmailController emailController;
+	EmailService emailService;
 
 	@ExceptionHandler(DataIntegrityViolationException.class)
 	public ResponseEntity<Object> globleExcpetionHandler(DataIntegrityViolationException ex, WebRequest request)
@@ -240,6 +240,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 		StringWriter sw = new StringWriter();
 		ex.printStackTrace(new PrintWriter(sw));
 		body = sw.toString();
-		emailController.sendmail(toCSV, subject, body);
+		emailService.sendmail(toCSV, subject, body);
 	}
 }

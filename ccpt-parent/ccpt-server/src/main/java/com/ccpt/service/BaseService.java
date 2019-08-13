@@ -6,8 +6,10 @@ import java.util.Optional;
 
 import javax.persistence.EntityNotFoundException;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.ObjectUtils;
 
 import com.ccpt.model.AdditionalProperty;
 import com.ccpt.model.BaseEntity;
@@ -17,6 +19,7 @@ import com.ccpt.model.UploadFile;
 import com.ccpt.repository.AdditionalPropertyRepository;
 import com.ccpt.repository.BaseRepository;
 import com.ccpt.repository.UploadFileRepository;
+import com.sun.mail.imap.CopyUID;
 
 public abstract class BaseService<T extends BaseEntity<ID>, ID> {
 	protected final String ENTITY;
@@ -103,9 +106,17 @@ public abstract class BaseService<T extends BaseEntity<ID>, ID> {
 			throw new EntityNotFoundException("No primary key passed for " + ENTITY);
 		}
 		if (existing.isPresent()) {
+			T old = null;
+			T t = existing.get();
+			try {
+				old = (T) t.getClass().newInstance();
+			} catch (InstantiationException | IllegalAccessException e) {
+				e.printStackTrace();
+			}
+			BeanUtils.copyProperties(t, old);
 			T result = getRepository().save(entity);
-			saveAddnProps(entity);
-			notify(existing.get(), result);
+			saveAddnProps(entity);			
+			notify(old, entity);
 			return result;
 		} else {
 			throw new EntityNotFoundException("Could not find " + ENTITY + " for id : " + entity.getKey());

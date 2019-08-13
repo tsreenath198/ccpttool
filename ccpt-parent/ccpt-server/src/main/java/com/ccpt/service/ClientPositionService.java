@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import com.ccpt.controller.EmailController;
 import com.ccpt.model.ClientApplication;
 import com.ccpt.model.ClientPosition;
 import com.ccpt.model.DropDownStatistics;
@@ -30,7 +29,7 @@ public class ClientPositionService extends BaseService<ClientPosition, Integer> 
 	private ClientPositionRepository clientPositionRepository;
 
 	@Autowired
-	private EmailController emailController;
+	private EmailService emailService;
 
 	@Autowired
 	private ClientApplicationRepository clientApplicationRepository;
@@ -73,28 +72,34 @@ public class ClientPositionService extends BaseService<ClientPosition, Integer> 
 			emailContent.setToEmails(result.getAssignedTo().getEmail());
 			emailContent.setSubject("New Position assigned to you  : " + result.getGeneratedCode());
 			emailContent.setToEmails(existing.getAssignedTo().getEmail());
+			emailContent.setTarget(existing.getAssignedTo().getEmail());
 			StringBuilder sb = new StringBuilder();
 			sb.append("Hi").append(existing.getAssignedTo().getFullname()).append(",").append("<p>")
 					.append(existing.getGeneratedCode())
 					.append(" is assigned to you. please review and start working on it.").append("</p>");
 			emailContent.setBody(sb.toString());
 			try {
-				emailController.sendEmail(emailContent);
+				emailService.sendEmailWithAttachments(emailContent.getToEmails(), emailContent.getSubject(),
+						emailContent.getBody(), emailContent.getCc(), emailContent.getBcc(),
+						emailContent.getUploadFiles());
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-		}else {
+		} else {
 			EmailContent emailContent = new EmailContent();
 			emailContent.setToEmails(result.getAssignedTo().getEmail());
 			emailContent.setSubject("Position Information updated for : " + result.getGeneratedCode());
 			emailContent.setToEmails(existing.getAssignedTo().getEmail());
+			emailContent.setTarget(existing.getAssignedTo().getEmail());
 			StringBuilder sb = new StringBuilder();
 			sb.append("Hi").append(existing.getAssignedTo().getFullname()).append(",").append("<p>")
-					.append(existing.getGeneratedCode())
-					.append(" has been updated. please review the changes.").append("</p>");
+					.append(existing.getGeneratedCode()).append(" has been updated. please review the changes.")
+					.append("</p>");
 			emailContent.setBody(sb.toString());
 			try {
-				emailController.sendEmail(emailContent);
+				emailService.sendEmailWithAttachments(emailContent.getToEmails(), emailContent.getSubject(),
+						emailContent.getBody(), emailContent.getCc(), emailContent.getBcc(),
+						emailContent.getUploadFiles());
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
