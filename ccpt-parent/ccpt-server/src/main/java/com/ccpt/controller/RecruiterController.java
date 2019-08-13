@@ -70,11 +70,26 @@ public class RecruiterController extends BaseController<RecruiterDTO, Recruiter,
 			throw new ValidationException("Address cannot be null");
 		}
 	}
-	
+
 	@GetMapping("/getAllCreators")
 	public ResponseEntity<List<RecruiterDropdownStatistics>> getAllCreators() {
 		List<RecruiterDropdownStatistics> result = recruiterService.getAllCreators();
 		return new ResponseEntity<List<RecruiterDropdownStatistics>>(result, HttpStatus.OK);
 
 	}
+
+	@GetMapping("/getAllLeadEmails")
+	public ResponseEntity<List<String>> getAllLeadEmails() {
+		List<String> result = recruiterService.getAllLeadEmails();
+		return new ResponseEntity<List<String>>(result, HttpStatus.OK);
+
+	}
+
+	@GetMapping("/getLeadEmailById/{id}")
+	public ResponseEntity<String> getLeadEmailById(@PathVariable("id") Integer id) {
+		String result = recruiterService.getLeadEmailById(id);
+		return new ResponseEntity<String>(result, HttpStatus.OK);
+
+	}
+
 }

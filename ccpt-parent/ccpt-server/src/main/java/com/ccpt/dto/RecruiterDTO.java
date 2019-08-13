@@ -18,4 +18,5 @@ public class RecruiterDTO extends FileSupportEntityDTO {
 	private String email;
 	private String address;
 	private String aliasName;
+	private String leadEmail;
 }

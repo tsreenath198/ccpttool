@@ -54,4 +54,7 @@ public class Recruiter extends FileSupportEntity {
 	@NotNull
 	private String aliasName;
 
+	@NotNull
+	private String leadEmail;
+
 }

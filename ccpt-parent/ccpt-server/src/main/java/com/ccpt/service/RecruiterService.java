@@ -36,4 +36,12 @@ public class RecruiterService extends BaseService<Recruiter, Integer> {
 	public List<RecruiterDropdownStatistics> getAllCreators() {
 		return recruiterRepository.getAllCreators();
 	}
+
+	public List<String> getAllLeadEmails() {
+		return recruiterRepository.getAllLeadEmails();
+	}
+
+	public String getLeadEmailById(Integer id) {
+		return recruiterRepository.getLeadEmailById(id);
+	}
 }
