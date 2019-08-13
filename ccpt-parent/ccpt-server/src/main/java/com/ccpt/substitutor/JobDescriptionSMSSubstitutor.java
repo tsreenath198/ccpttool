@@ -37,6 +37,7 @@ public class JobDescriptionSMSSubstitutor implements ContentSubstitutor {
 			if (clientPosition.getLocation() != null) {
 				valuesMap.put("joblocation", clientPosition.getLocation());
 				valuesMap.put("jobTitle", clientPosition.getRole());
+				valuesMap.put("companyName", clientPosition.getClient().getName());
 			} else {
 				throw new Exception("ClientPosition Location is null");
 			}
