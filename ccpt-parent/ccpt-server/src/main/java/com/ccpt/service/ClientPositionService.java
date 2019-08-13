@@ -68,51 +68,38 @@ public class ClientPositionService extends BaseService<ClientPosition, Integer> 
 
 	@Override
 	protected void notify(ClientPosition existing, ClientPosition result) {
-		EmailContent emailContent = new EmailContent();
-		StringBuilder sb = null;
-		emailContent.setCc(cc);
-		if (existing.getCreatedDate() != null) {
-			sb = new StringBuilder();
-			emailContent.setSubject(" ClientPosition : " + existing.getGeneratedCode() + " is Saved And Assigned To "
-					+ existing.getAssignedTo().getFullname() + ",");
-			emailContent.setToEmails(existing.getAssignedTo().getEmail());
-			sb.append("Hi," + existing.getAssignedTo().getFullname());
-			sb.append("<p>");
-			sb.append("ClientPosition is: " + existing.getGeneratedCode() + " is no.of positions : "
-					+ existing.getRequiredPositions() + " is Assigned to You,<p>This Position Required Role is "
-					+ existing.getRole() + " And RequiredSkills is " + existing.getRequiredSkills());
-			emailContent.setBody(sb.toString());
-			try {
-				emailController.sendEmail(emailContent);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-
-		} else {
-			sb = new StringBuilder();
-			if (existing.getAssignedTo().getId() == result.getAssignedTo().getId()) {
-				emailContent.setSubject(" ClientPosition : " + existing.getGeneratedCode() + " is Updated "
-						+ result.getAssignedTo().getFullname() + ",");
-			} else {
-				emailContent.setSubject(" ClientPosition : " + existing.getGeneratedCode()
-						+ " is Updated And Assigned To " + result.getAssignedTo().getFullname() + ",");
-			}
+		if (existing == result || existing.getAssignedTo().getId() != result.getAssignedTo().getId()) {
+			EmailContent emailContent = new EmailContent();
 			emailContent.setToEmails(result.getAssignedTo().getEmail());
-			emailContent.setBcc(existing.getAssignedTo().getEmail());
-			sb.append("Hi," + result.getAssignedTo().getFullname());
-			sb.append("<p>");
-			sb.append("This ClientPosition is: " + result.getGeneratedCode() + " With no.of positions : "
-					+ result.getRequiredPositions() + " is newly Assigned to : " + result.getAssignedTo().getFullname()
-					+ ",<p>This Position Required Role is " + existing.getRole() + " And RequiredSkills is "
-					+ existing.getRequiredSkills());
+			emailContent.setSubject("New Position assigned to you  : " + result.getGeneratedCode());
+			emailContent.setToEmails(existing.getAssignedTo().getEmail());
+			StringBuilder sb = new StringBuilder();
+			sb.append("Hi").append(existing.getAssignedTo().getFullname()).append(",").append("<p>")
+					.append(existing.getGeneratedCode())
+					.append(" is assigned to you. please review and start working on it.").append("</p>");
 			emailContent.setBody(sb.toString());
 			try {
 				emailController.sendEmail(emailContent);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-
+		}else {
+			EmailContent emailContent = new EmailContent();
+			emailContent.setToEmails(result.getAssignedTo().getEmail());
+			emailContent.setSubject("Position Information updated for : " + result.getGeneratedCode());
+			emailContent.setToEmails(existing.getAssignedTo().getEmail());
+			StringBuilder sb = new StringBuilder();
+			sb.append("Hi").append(existing.getAssignedTo().getFullname()).append(",").append("<p>")
+					.append(existing.getGeneratedCode())
+					.append(" has been updated. please review the changes.").append("</p>");
+			emailContent.setBody(sb.toString());
+			try {
+				emailController.sendEmail(emailContent);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
+
 	}
 
 }
