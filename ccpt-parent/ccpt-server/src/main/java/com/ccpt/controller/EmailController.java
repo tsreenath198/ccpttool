@@ -20,6 +20,7 @@ public class EmailController {
 	@Autowired
 	private EmailContentService emailContentService;
 
+
 	@Autowired
 	private EmailService emailService;
 
