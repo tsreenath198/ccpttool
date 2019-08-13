@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.ccpt.dto.RecruiterDTO;
 import com.ccpt.mapper.BaseMapper;
 import com.ccpt.mapper.RecruiterMapper;
+import com.ccpt.model.EmailContent;
 import com.ccpt.model.Recruiter;
 import com.ccpt.model.RecruiterDropdownStatistics;
 import com.ccpt.service.BaseService;
@@ -86,9 +87,11 @@ public class RecruiterController extends BaseController<RecruiterDTO, Recruiter,
 	}
 
 	@GetMapping("/getLeadEmailById/{id}")
-	public ResponseEntity<String> getLeadEmailById(@PathVariable("id") Integer id) {
+	public ResponseEntity<EmailContent> getLeadEmailById(@PathVariable("id") Integer id) {
+		EmailContent emailContent = new EmailContent();
 		String result = recruiterService.getLeadEmailById(id);
-		return new ResponseEntity<String>(result, HttpStatus.OK);
+		emailContent.setToEmails(result);
+		return new ResponseEntity<EmailContent>(emailContent, HttpStatus.OK);
 
 	}
 
