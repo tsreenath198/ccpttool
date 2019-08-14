@@ -14,6 +14,7 @@ import com.ccpt.model.EmailContent;
 import com.ccpt.repository.BaseRepository;
 import com.ccpt.repository.ClientApplicationRepository;
 import com.ccpt.repository.ClientPositionRepository;
+import com.ccpt.substitutor.JobDescriptionSubstitutor;
 
 @Service
 public class ClientPositionService extends BaseService<ClientPosition, Integer> {
@@ -71,12 +72,12 @@ public class ClientPositionService extends BaseService<ClientPosition, Integer> 
 			EmailContent emailContent = new EmailContent();
 			emailContent.setToEmails(result.getAssignedTo().getEmail());
 			emailContent.setSubject("New Position assigned to you  : " + result.getGeneratedCode());
-			emailContent.setToEmails(existing.getAssignedTo().getEmail());
-			emailContent.setTarget(existing.getAssignedTo().getEmail());
+			emailContent.setTarget(result.getAssignedTo().getEmail());
 			StringBuilder sb = new StringBuilder();
-			sb.append("Hi").append(existing.getAssignedTo().getFullname()).append(",").append("<p>")
+			sb.append("Hi").append(result.getAssignedTo().getFullname()).append(",").append("<p>")
 					.append(existing.getGeneratedCode())
-					.append(" is assigned to you. please review and start working on it.").append("</p>");
+					.append(" is assigned to you. please review and start working on it.").append("</p>")
+					.append(JobDescriptionSubstitutor.getSign(new StringBuilder()));
 			emailContent.setBody(sb.toString());
 			try {
 				emailService.sendEmailWithAttachments(emailContent.getToEmails(), emailContent.getSubject(),
@@ -89,12 +90,12 @@ public class ClientPositionService extends BaseService<ClientPosition, Integer> 
 			EmailContent emailContent = new EmailContent();
 			emailContent.setToEmails(result.getAssignedTo().getEmail());
 			emailContent.setSubject("Position Information updated for : " + result.getGeneratedCode());
-			emailContent.setToEmails(existing.getAssignedTo().getEmail());
 			emailContent.setTarget(existing.getAssignedTo().getEmail());
 			StringBuilder sb = new StringBuilder();
 			sb.append("Hi").append(existing.getAssignedTo().getFullname()).append(",").append("<p>")
 					.append(existing.getGeneratedCode()).append(" has been updated. please review the changes.")
-					.append("</p>");
+					.append("</p>").append(JobDescriptionSubstitutor.getSign(new StringBuilder()));
+			;
 			emailContent.setBody(sb.toString());
 			try {
 				emailService.sendEmailWithAttachments(emailContent.getToEmails(), emailContent.getSubject(),
