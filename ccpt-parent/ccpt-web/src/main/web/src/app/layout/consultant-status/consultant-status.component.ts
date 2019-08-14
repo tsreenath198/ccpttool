@@ -1,7 +1,7 @@
 import { Component, OnInit, HostListener } from '@angular/core';
 import { NgbModal, ModalDismissReasons, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { routerTransition } from '../../router.animations';
-import { ConsultantStatusModel ,ActionsList} from './consultant-status.model';
+import { ConsultantStatusModel } from './consultant-status.model';
 import { HttpClientService } from 'src/app/shared/services/http.service';
 import { ToastrCustomService } from 'src/app/shared/services/toastr.service';
 import { URLConstants } from '../components/constants/url-constants';
@@ -28,7 +28,6 @@ export class ConsultantStatusComponent implements OnInit {
     private modalRef: NgbModalRef;
     public isCreate: boolean =false;
     public showAction: boolean = false;
-    public actionsList = new ActionsList();
     public action: string = null;
     public screenHeight: any;
     public listReturned:boolean;

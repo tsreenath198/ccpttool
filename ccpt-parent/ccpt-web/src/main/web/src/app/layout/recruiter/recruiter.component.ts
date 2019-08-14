@@ -23,6 +23,7 @@ export class RecruiterComponent implements OnInit {
   public recruiterList: Array<RecruiterModel> = [];
   public rolesModel = new Roles();
   public rolesList: any = [];
+  public leadEmailList: any = [];
   public urlConstants = new URLConstants();
   public properties = new Properties();
 
@@ -64,7 +65,9 @@ export class RecruiterComponent implements OnInit {
       this.recruiterList = resp as any;
       this.spinner(true);
     });
-
+    this.http.get(this.urlConstants.RLeadEmails).subscribe(resp =>{
+      this.leadEmailList = resp as any;
+    })
     this.model.properties = [];
     this.model['phone'] = '+91';
   }

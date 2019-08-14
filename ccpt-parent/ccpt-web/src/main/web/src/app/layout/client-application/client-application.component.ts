@@ -3,7 +3,7 @@ import { routerTransition } from '../../router.animations';
 import { forkJoin } from 'rxjs';
 import { Properties } from '../components/constants/properties';
 import { URLConstants } from '../components/constants/url-constants';
-import { ClientApplicationModel, ActionsList, SendEmailModel } from './client-application.model';
+import { ClientApplicationModel, ActionsList, SendEmailModel, SendSmsModel } from './client-application.model';
 import { ClientApplicationStatusModel } from '../client-application-status/client-application-status.model';
 import { NgForm } from '@angular/forms';
 import { NgbModalRef, ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -13,6 +13,8 @@ import { FileUploader, FileLikeObject } from 'ng2-file-upload';
 import { Router } from '@angular/router';
 import { PaymentsModel } from '../payments/payments.model';
 import { StorageService, HttpClientService, ToastrCustomService } from '../../shared/services';
+import { ConsultantCallHistoryModel } from '../consultant-call-history/consultant-call-history.model';
+import { template } from '@angular/core/src/render3';
 
 @Component({
   selector: 'app-client-application',
@@ -22,6 +24,7 @@ import { StorageService, HttpClientService, ToastrCustomService } from '../../sh
 })
 export class ClientApplicationComponent implements OnInit {
   public model: ClientApplicationModel = <ClientApplicationModel>{};
+  public conchModel: ConsultantCallHistoryModel = <ConsultantCallHistoryModel>{};
   public paymentModel: PaymentsModel = <PaymentsModel>{};
 
   public bodyMailModel: any = <any>{};
@@ -33,6 +36,7 @@ export class ClientApplicationComponent implements OnInit {
   public recruiterList: Array<any> = [];
   public urlConstants = new URLConstants();
   public properties = new Properties();
+  public creating:boolean = false;
 
   public showAction: boolean = false;
   public actionsList = new ActionsList();
@@ -70,8 +74,10 @@ export class ClientApplicationComponent implements OnInit {
   public setPaymentGst: boolean = false;
   public setPaymentWebsite: boolean = false;
   public setPaymentBA: boolean = false;
+  public caForm: NgForm;
 
   public sendEmailModel: SendEmailModel = <SendEmailModel>{};
+  public sendSmsModel: SendSmsModel = <SendSmsModel>{};
   public config: AngularEditorConfig = {
     editable: true,
     spellcheck: true,
@@ -252,6 +258,15 @@ export class ClientApplicationComponent implements OnInit {
       }
     }
   }
+  private checkUser(){
+    if(this.loggedInRole != "Admin"){
+      this.http.get(this.urlConstants.RLeadGetById+this.model.creatorId).subscribe(resp =>{
+        let temp = resp as any;
+        this.sendEmailModel.toEmails = temp.toEmails;
+        this.sendEmailModel.bcc = "";
+      })
+    }
+  }
   sendIds(Ids: any, sendMailContent: any) {
     this.spinner(false);
     const temp = this.http.post(Ids, this.urlConstants.EmailGetClientApps);
@@ -259,6 +274,7 @@ export class ClientApplicationComponent implements OnInit {
       this.sendEmailModel = resp as any;
       this.spinner(true);
       this.appIds = [];
+      this.checkUser();
       this.open(0, sendMailContent);
     },
       err => {
@@ -267,7 +283,7 @@ export class ClientApplicationComponent implements OnInit {
         this.appIds = [];
       })
   }
-  public getInterviewDetails(id, sendMailContent) {
+  public getInterviewDetailsEmail(id, sendMailContent) {
     this.spinner(false);
     const temp = this.http.post(id, this.urlConstants.GetInterviewDetailsEmail);
     temp.subscribe(resp => {
@@ -281,6 +297,65 @@ export class ClientApplicationComponent implements OnInit {
         this.spinner(true);
         this.appIds = [];
       })
+  }
+  public getInterviewDetailsSms(id, sendSmsContent) {
+    this.spinner(false);
+    let reqId = {"caId" : id}
+    const temp = this.http.post(reqId, this.urlConstants.SMSTemplateBuildContent+"ClientInterviewConfirmation");
+    temp.subscribe(resp => {
+      this.sendSmsModel = resp as any;
+      this.spinner(true);
+      this.open(0, sendSmsContent);
+    },
+      err => {
+        this.toastr.error(err.error.message, this.properties.CA);
+        this.spinner(true);
+        this.appIds = [];
+      })
+  }
+  public sendSmsReq(): void {
+    this.spinner(false);
+    this.creating = true;
+    const temp = this.http.post(this.sendSmsModel, this.urlConstants.SMSTemplateSend);
+    temp.subscribe(resp => {
+      /**Check if any new consultants exists in emails to which send  */
+      this.close();
+      this.creating = false;
+      this.sendSmsModel = <SendSmsModel>{};
+      this.toastr.success('Sms sent successfully', 'Sent!');
+      this.spinner(true);
+    },
+      err => {
+        this.creating = false;
+        this.toastr.error(err.error.message, this.properties.CP);
+        this.spinner(true);
+      });
+  }
+  createAll(form,consultantCall){
+    this.open(this.model.id,consultantCall);
+    this.caForm = form
+  }
+  public createConCallHistory(){
+    
+    this.creating = true;
+    this.conchModel.calledBy = this.model.creatorId;
+    this.conchModel.consultantId = this.model.consultantId;
+    this.conchModel.cpId = this.model.cpId;
+    this.conchModel.calledDate = this.setTodaysDate();
+    const temp = this.http.post(this.conchModel, this.urlConstants.CoCHCreate);
+    temp.subscribe(
+      resp => {
+        this.toastr.success(this.properties.CREATE, this.properties.CON_C_H);
+        this.create(this.caForm);
+        this.conchModel=<ConsultantCallHistoryModel>{};
+        this.creating = false;
+        this.close();
+      },
+      err => {
+        this.toastr.error(err.error.message, this.properties.CON_C_H);
+        this.creating = false;
+      }
+    );
   }
   public create(clientApplicationForm: NgForm): void {
     this.spinner(false);
@@ -375,13 +450,6 @@ export class ClientApplicationComponent implements OnInit {
       }
     );
   }
-  // public getBodyMail(bodyMail): void {
-  //   let id = this.selectedRecrd;
-  //   this.http.get(this.urlConstants.CABodyMail + id).subscribe(resp => {
-  //     this.bodyMailModel = resp as any;
-  //     this.open(this.model.id, bodyMail)
-  //   });
-  // }
   public sendEmailReq(): void {
     this.spinner(false);
     this.sendEmailModel.target = "";
@@ -407,15 +475,6 @@ export class ClientApplicationComponent implements OnInit {
     if (event) {
       this.selectedRecrd = event;
     }
-    // if (event.type === this.download) {
-    //     // this.getFilesById(this.selectedRecrd); TODO:Need to fix for multiple downloads
-    //     this.http.get('file/download?refType=ClientApplication&refId=' + this.selectedRecrd).subscribe(resp => {
-
-    //     }, err => {
-    //         if (err.status == 200)
-    //             window.open(err.url);
-    //     });
-    // } else {
     this.modalRef = this.modalService.open(content, { size: 'lg', backdrop: 'static' });
     this.modalRef.result.then(
       result => {
@@ -425,8 +484,6 @@ export class ClientApplicationComponent implements OnInit {
         this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
       }
     );
-
-    //}
   }
   /**Download file */
   public downloadFile(id: number) {
@@ -493,25 +550,6 @@ export class ClientApplicationComponent implements OnInit {
         }
       );
     }
-    /* let requests = [];
-         files.forEach((file) => {
-             let formData = new FormData();
-             formData.append('file', file.rawFile, file.name);
-             console.log(formData);
-             this.http.upload('', formData[0]).subscribe(resp => {
-                 console.log("resp=====", resp);
-             })
-             // requests.push(this.uploadService.upload(formData));
-         });*/
-
-    /*concat(...requests).subscribe(
-          (res) => {
-            console.log(res);
-          },
-          (err) => {
-            console.log(err);
-          }
-        );*/
   }
   public pageChange(event) {
     const from = (event - 1) * this.pageSize;
@@ -585,7 +623,7 @@ export class ClientApplicationComponent implements OnInit {
     const dd = String(today.getDate()).padStart(2, '0');
     const mm = String(today.getMonth() + 1).padStart(2, '0'); // January is 0!
     const yyyy = today.getFullYear();
-    const temp = dd + '-' + mm + '-' + yyyy;
+    const temp = yyyy+'-'+ mm + '-' +dd;
     return temp;
   }
   public createPaymentForm(form: NgForm) {

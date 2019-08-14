@@ -2,7 +2,7 @@ import { AdditionalPropertiesModel } from 'src/app/additional-properties.model';
 
 export interface ClientCallHistoryModel {
     calledBy: number;
-    cpId: string;
+    cpId: number;
     description: string;
     id: number;
     calledDate: string;

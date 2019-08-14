@@ -160,6 +160,19 @@
                   </div>
                 </div>
           </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>Lead Email<span class="required">*</span></label>
+              <select class="form-control" name="leadEmail" [(ngModel)]="model.leadEmail"
+                [disabled]="readOnlyForm == 'R'" [ngClass]="{'is-invalid': f.submitted && leadEmail.invalid}" #leadEmail="ngModel"
+                required>
+                <option *ngFor="let le of leadEmailList" [ngValue]="le">{{le}}</option>
+              </select>
+              <div class="invalid-feedback">
+                role is mandatory
+              </div>
+            </div>
+          </div>
         </div>
         <div class="row">
           <div class="col-md-12">

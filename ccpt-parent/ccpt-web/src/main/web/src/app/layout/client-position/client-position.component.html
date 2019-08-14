@@ -57,7 +57,7 @@
       </div>
     </div>
     <div class="col-md-5">
-      <form name="form" id="clientPositionForm" (ngSubmit)="f.form.valid && create(f)" #f="ngForm" novalidate>
+      <form name="form" id="clientPositionForm" (ngSubmit)="f.form.valid && create(f,clientCall)" #f="ngForm" novalidate>
         <div class="row text-center">
           <div class="col-md-12">
             <div class="form-group">
@@ -331,7 +331,7 @@
           <div class="row">
             <div class="col-md-6">
               <div class="form-group">
-                <label>Assign To</label>
+                <label>Assign To<span class="required">*</span></label>
                 <select
                   class="form-control"
                   name="assign"
@@ -339,9 +339,13 @@
                   [(ngModel)]="model.assignedTo"
                   [ngClass]="{ 'is-invalid': f.submitted && assign.invalid }"
                   #assign="ngModel"
+                  required
                 >
                   <option *ngFor="let rl of recruiterList" [ngValue]="rl.id"> {{ rl.name }}</option>
                 </select>
+                <div class="invalid-feedback">
+                  Assign to is mandatory
+                </div>
               </div>
             </div>
             <div class="col-md-6">
@@ -370,7 +374,7 @@
             <div class="col-md-12">
               <div class="form-group">
                 <label>Required Skills<span class="required">*</span></label>
-                <angular-editor [(ngModel)]="model.requiredSkills" name="requiredSkills" [config]="config"> </angular-editor>
+                <angular-editor [(ngModel)]="model.requiredSkills" [disabled]="readOnlyForm == 'R'" [ngClass]="{ 'is-invalid': f.submitted && requiredSkills.invalid }" name="requiredSkills" [config]="config"> </angular-editor>
                 <div class="invalid-feedback">
                   Required Skills are mandatory
                 </div>
@@ -670,6 +674,24 @@
       </div>
     </div>
    </form> 
+  </div>
+</ng-template>
+
+
+<ng-template #clientCall let-c="close" let-d="dismiss">
+  <div class="modal-header modal-popup-header-bg">
+    <h4 class="modal-title">Consultant Call History<span class="required">*</span></h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <label>Description</label>
+    <textarea class="form-control" cols="5" rows="8" [(ngModel)]="clchModel.description" name="body"></textarea>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="createClientCallHistory()" [disabled]="creating">{{ creating ? 'loading...' : ('Send' | translate) }}</button>
+    <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
   </div>
 </ng-template>
 <!-- All Templates Ends-->

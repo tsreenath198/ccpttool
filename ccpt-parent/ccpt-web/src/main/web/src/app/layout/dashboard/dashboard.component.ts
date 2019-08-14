@@ -9,6 +9,7 @@ import { NgbModal, ModalDismissReasons, NgbModalRef } from '@ng-bootstrap/ng-boo
 import { Keyvalue } from '../modals/action';
 import { Router } from '@angular/router';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
+import { Color } from 'ng2-charts';
 
 @Component({
     selector: 'app-dashboard',
@@ -63,7 +64,19 @@ export class DashboardComponent implements OnInit {
 
     public barChartOptions: any = {
         scaleShowVerticalLines: false,
-        responsive: true
+        responsive: true,
+        scales: {
+            xAxes: [
+              {
+                ticks: {
+                  beginAtZero: true,
+                  steps : 2,
+                  stepValue : 2,
+                  max:20
+                }
+              }
+            ]
+          }
     };
     public barChartLabels: string[] = [
     ];
@@ -73,6 +86,9 @@ export class DashboardComponent implements OnInit {
     public barChartData: any[] = [
         { data: [], label: 'Active Client Applications', cpIds: [] }
     ];
+    public barChartColors: Color[] = [
+        { backgroundColor: '#343a40' },
+      ]
 
     constructor(private http: HttpClientService, private router: Router, private toastr: ToastrCustomService,
         private modalService: NgbModal) {

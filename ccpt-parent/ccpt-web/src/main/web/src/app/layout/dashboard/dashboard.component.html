@@ -197,14 +197,14 @@
         </div>
       </div>
     </div> -->
-    <div class="col-4">
+    <div class="col-8">
       <div class="card mb-3">
         <div class="card-header bg-dark text-clr-white">
           Active Client Applications
         </div>
         <div class="card-body">
           <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
-            [legend]="barChartLegend" [chartType]="barChartType" (chartHover)="chartHovered($event)"
+            [legend]="barChartLegend" [colors]="barChartColors" [chartType]="barChartType" (chartHover)="chartHovered($event)"
             (chartClick)="chartClicked($event)">
           </canvas>
         </div>
@@ -308,7 +308,7 @@
     </button>
   </div>
   <div class="modal-body">
-    <div class=" ht-30">
+    <div class="table-scroll ht-30">
       <table class="table table-sm">
         <thead>
           <tr>

@@ -76,9 +76,15 @@
           <div class="col-md-12">
             <div class="form-group">
               <label>Status Type<span class="required">*</span></label>
-              <input class="form-control" maxlength="30" [readonly]="readOnlyForm == 'R' || readOnlyForm == 'U'"
-                [(ngModel)]="model.statusType" name="statusType"
-                [ngClass]="{'is-invalid': f.submitted && statusType.invalid}" #code="ngModel" required>
+
+
+
+              <select class="form-control" name="statustype" [disabled]="readOnlyForm == 'R'" [(ngModel)]="model.statusType"
+                [ngClass]="{ 'is-invalid': f.submitted && statustype.invalid }" #statustype="ngModel" required>
+                <option *ngFor="let stl of properties.STATUS" [ngValue]="stl">
+                  {{ stl }}
+                </option>
+              </select> 
               <div class="invalid-feedback">
                 Status Type is mandatory
               </div>

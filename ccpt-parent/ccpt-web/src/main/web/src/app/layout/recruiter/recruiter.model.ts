@@ -11,6 +11,7 @@ export interface RecruiterModel {
     email: string;
     address: string;
     description: string;
+    leadEmail: string;
     properties: Array<AdditionalPropertiesModel>;
 }
 export class Roles {

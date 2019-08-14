@@ -14,6 +14,7 @@ import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { StorageService, HttpClientService, ToastrCustomService } from '../../shared/services';
+import { ClientCallHistoryModel } from '../client-call-history/client-call-history.model';
 
 @Component({
   selector: 'app-client-position',
@@ -23,6 +24,7 @@ import { StorageService, HttpClientService, ToastrCustomService } from '../../sh
 })
 export class ClientPositionComponent implements OnInit {
   public model: ClientPositionModel = <ClientPositionModel>{};
+  public clchModel: ClientCallHistoryModel = <ClientCallHistoryModel>{};
   public clientPositionList: Array<ClientPositionModel> = [];
 
   public pagedCPList: Array<ClientPositionModel> = [];
@@ -77,6 +79,7 @@ export class ClientPositionComponent implements OnInit {
   public getAllC = this.http.get(this.urlConstants.ClientDropdown);
   public getAllCon = this.http.get(this.urlConstants.CDropdown);
   public creating:boolean = false;
+  public cpForm:NgForm;
   public config: AngularEditorConfig = {
     editable: true,
     spellcheck: true,
@@ -278,7 +281,51 @@ export class ClientPositionComponent implements OnInit {
     this.model.cpstatus = 'Open';
     this.model.requiredPositions = '1';
   }
-  public create(clientPositionForm: NgForm): void {
+  private getRecruiterId() : any{
+    const temp = sessionStorage.getItem('username');
+    let id;
+    this.recruiterList.forEach(rl => {
+      if (rl.email === temp) {
+        id = rl.id;
+      }
+    });
+    return id;
+  }
+  public createReqClch(clientCall , resp){
+    let decision = confirm(this.properties.CONFIRM_ClCH_NEW);
+        if(decision== true){
+          this.clchModel.cpId = resp.id
+          this.open(this.model.id,clientCall)
+        }
+  }
+  private setTodaysDate(): string {
+    const today = new Date();
+    const dd = String(today.getDate()).padStart(2, '0');
+    const mm = String(today.getMonth() + 1).padStart(2, '0'); // January is 0!
+    const yyyy = today.getFullYear();
+    const temp = yyyy+'-'+ mm + '-' +dd;
+    return temp;
+  }
+  public createClientCallHistory(){
+    this.creating = true;
+    this.clchModel.calledBy = this.getRecruiterId()
+    this.clchModel.calledDate = this.setTodaysDate();
+    const temp = this.http.post(this.clchModel, this.urlConstants.CCHCreate);
+    temp.subscribe(
+      resp => {
+        this.toastr.success(this.properties.CREATE, this.properties.CON_C_H);
+        //this.create(this.cpForm);
+        this.clchModel=<ClientCallHistoryModel>{};
+        this.creating = false;
+        this.close();
+      },
+      err => {
+        this.toastr.error(err.error.message, this.properties.CON_C_H);
+        this.creating = false;
+      }
+    );
+  }
+  public create(clientPositionForm: NgForm ,clientCall:any): void {
     this.isCreate = true;
     this.spinner(false);
     // tslint:disable-next-line:max-line-length
@@ -296,6 +343,7 @@ export class ClientPositionComponent implements OnInit {
         if (this.showAction) {
           this.showAction = false;
         }
+        this.createReqClch(clientCall , resp);
       },
       err => {
         this.toastr.error(err.error.message, this.properties.CP);

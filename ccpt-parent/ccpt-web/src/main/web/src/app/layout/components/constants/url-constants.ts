@@ -73,7 +73,8 @@ export class URLConstants {
     RGetById = 'recruiter/';
     RGetByName = 'recruiter/name/';
     RDropdown = 'recruiter/getAllCreators';
-
+    RLeadEmails = 'recruiter/getAllLeadEmails'
+    RLeadGetById = 'recruiter/getLeadEmailById/'
 
     /*Client*/
     ClientCreate = 'client';

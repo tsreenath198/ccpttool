@@ -12,6 +12,7 @@ export class Properties {
     CONFIRM_DELETE = 'Are you sure you want to delete';
     CONFIRM_CP_NEW = 'Do you want to create Client Position';
     CONFIRM_CA_NEW = 'Do you want to create Client Application';
+    CONFIRM_ClCH_NEW = 'Do you want to create Client Call History';
 
     /** Modules */
     APP_NAME = 'CCPT';
@@ -39,4 +40,6 @@ export class Properties {
     HEAD = "Sreenath Thatikonda";
     PHONE = "+919848071296";
     LOCATION = "Nizamabad";
+
+    STATUS = ['Active', 'Inactive'];
 }
