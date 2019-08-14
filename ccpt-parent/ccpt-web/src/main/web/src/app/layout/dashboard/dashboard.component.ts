@@ -75,7 +75,20 @@ export class DashboardComponent implements OnInit {
                   max:20
                 }
               }
-            ]
+            ],
+            yAxes: [
+                {
+                  ticks: {
+                    callback: function(label, index, labels) {
+                      if (/\-/.test(label)) {
+                        return label.split(/\-/);
+                      }else{
+                        return label;
+                      }              
+                    }
+                  }
+                }
+              ]
           }
     };
     public barChartLabels: string[] = [
@@ -228,19 +241,10 @@ export class DashboardComponent implements OnInit {
      */
     private setActiveCPBarData() {
         this.activeCA.forEach(ca => {
-            this.barChartLabels.push(this.splitString(ca.generatedCode));
+            this.barChartLabels.push(ca.generatedCode);
             this.barChartData[0].data.push("" + ca.count);
             this.barChartData[0].cpIds.push("" + ca.cpId);
         })
-    }
-
-    /**
-     * @param str contains the complex string
-     * here it split by space and returns the first char
-     */
-    private splitString(str:string): string {
-        let gc = str.split(' ');
-        return gc[0]
     }
     /**
      * @param event eventdata
