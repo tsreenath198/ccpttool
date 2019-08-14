@@ -145,7 +145,7 @@
               </tr>
               <tr *ngIf="model.interviewLocation">
                 <th>Interview Date</th>
-                <td>{{ model.interviewDate }}</td>
+                <td>{{ model.interviewDate | date }}</td>
               </tr>
               <tr *ngIf="model.interviewLocation ">
                 <th>Interview Location</th>
