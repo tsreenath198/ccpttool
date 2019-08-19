@@ -55,7 +55,16 @@
                   </label>
                 </div>
               </td>
-              <td (click)="setModel(cal.id)">{{ cal.consultant.fullname }}</td>
+              <td (click)="setModel(cal.id)" class="table-data-padding">
+                <dl>
+                  <dt>
+                      {{ cal.consultant.fullname }}
+                  </dt>
+                  <dd>
+                    {{cal.consultant.phone}}
+                  </dd>
+                </dl>
+              </td>
               <td (click)="setModel(cal.id)">{{ cal.clientPosition.generatedCode }}</td>
 
               <td (click)="setModel(cal.id)">{{ cal.status.code }}</td>

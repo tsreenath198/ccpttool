@@ -14,15 +14,6 @@
                     <i class="fa fa-user"></i> {{loggedInUserName}} <b class="caret"></b>
                 </a>
                 <div class="dropdown-menu-right" ngbDropdownMenu>
-                    <a class="dropdown-item" href="javascript:void(0)">
-                        <i class="fa fa-fw fa-user"></i> {{ 'Profile' | translate }}
-                    </a>
-                    <a class="dropdown-item" href="javascript:void(0)">
-                        <i class="fa fa-fw fa-envelope"></i> {{ 'Inbox' | translate }}
-                    </a>
-                    <a class="dropdown-item" href="javascript:void(0)">
-                        <i class="fa fa-fw fa-gear"></i> {{ 'Settings' | translate }}
-                    </a>
                     <a class="dropdown-item" (click)="logout()">
                         <i class="fa fa-fw fa-sign-out"></i> {{ 'Log Out' | translate }}
                     </a>

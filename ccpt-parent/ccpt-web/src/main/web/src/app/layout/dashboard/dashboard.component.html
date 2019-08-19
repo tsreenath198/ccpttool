@@ -1,19 +1,4 @@
 <div [@routerTransition]>
-  <!-- <div class="row">
-    <div class="col-md-12">
-      <ngb-carousel>
-        <ng-template ngbSlide *ngFor="let slider of sliders">
-          <img class="img-fluid mx-auto d-block" [src]="slider.imagePath" alt="Random first slide" width="100%">
-          <div class="carousel-caption">
-            <h3>{{slider.label}}</h3>
-            <p>{{slider.text}}</p>
-          </div>
-        </ng-template>
-      </ngb-carousel>
-    </div>
-  </div>
-  <hr> -->
-
   <div class="spinner padding-top justify-content-md-center" *ngIf="!listReturned">
     <div class="bounce1"></div>
     <div class="bounce2"></div>
@@ -51,6 +36,66 @@
               </tr>
             </tbody>
           </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row" *ngIf="listReturned">
+    <div class="col-4">
+      <div class="card mb-3">
+        <div class="card-header bg-dark text-clr-white">Open Client Positions</div>
+        <div class="">
+          <table class="table table-sm">
+            <thead>
+              <tr>
+                <th>Client</th>
+                <th>Code</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let ocp of openCP">
+                <td>{{ ocp.client.name }}</td>
+                <td>{{ ocp.generatedCode }}</td>
+                <td>{{ ocp.createdDate | date }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <!-- <div class="col-4">
+      <div class="card mb-3">
+        <div class="card-header bg-dark text-clr-white">Active Client Applications</div>
+        <div class="">
+          <table class="table table-sm">
+            <thead>
+              <tr>
+                <th>Code</th>
+                <th>Count</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let aca of activeCA" data-toggle="tooltip" class="link" placement="top"
+                ngbTooltip="click for details" (click)="open(contentACA, aca.cpId, 'activeClientApplication')">
+                <td>{{ aca.generatedCode }}</td>
+                <td>{{ aca.count }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div> -->
+    <div class="col-8">
+      <div class="card mb-3">
+        <div class="card-header bg-dark text-clr-white">
+          Active Client Applications
+        </div>
+        <div class="card-body">
+          <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
+            [legend]="barChartLegend" [colors]="barChartColors" [chartType]="barChartType" (chartHover)="chartHovered($event)"
+            (chartClick)="chartClicked($event)">
+          </canvas>
         </div>
       </div>
     </div>
@@ -129,8 +174,6 @@
             </select>
           </span>
         </div>
-
-
         <div *ngIf="(ccptReportCC | json) != ({} | json) " class="">
           <table class="table table-sm">
             <thead>
@@ -146,67 +189,6 @@
               </tr>
             </tbody>
           </table>
-        </div>
-      </div>
-    </div>
-
-  </div>
-  <div class="row" *ngIf="listReturned">
-    <div class="col-4">
-      <div class="card mb-3">
-        <div class="card-header bg-dark text-clr-white">Open Client Positions</div>
-        <div class="">
-          <table class="table table-sm">
-            <thead>
-              <tr>
-                <th>Client</th>
-                <th>Code</th>
-                <th>Date</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let ocp of openCP">
-                <td>{{ ocp.client.name }}</td>
-                <td>{{ ocp.generatedCode }}</td>
-                <td>{{ ocp.createdDate | date }}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-    <!-- <div class="col-4">
-      <div class="card mb-3">
-        <div class="card-header bg-dark text-clr-white">Active Client Applications</div>
-        <div class="">
-          <table class="table table-sm">
-            <thead>
-              <tr>
-                <th>Code</th>
-                <th>Count</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let aca of activeCA" data-toggle="tooltip" class="link" placement="top"
-                ngbTooltip="click for details" (click)="open(contentACA, aca.cpId, 'activeClientApplication')">
-                <td>{{ aca.generatedCode }}</td>
-                <td>{{ aca.count }}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div> -->
-    <div class="col-8">
-      <div class="card mb-3">
-        <div class="card-header bg-dark text-clr-white">
-          Active Client Applications
-        </div>
-        <div class="card-body">
-          <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
-            [legend]="barChartLegend" [colors]="barChartColors" [chartType]="barChartType" (chartHover)="chartHovered($event)"
-            (chartClick)="chartClicked($event)">
-          </canvas>
         </div>
       </div>
     </div>

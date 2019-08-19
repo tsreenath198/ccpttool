@@ -72,7 +72,7 @@ export class DashboardComponent implements OnInit {
                   beginAtZero: true,
                   steps : 2,
                   stepValue : 2,
-                  max:20
+                  max:12
                 }
               }
             ],
