@@ -9,7 +9,6 @@ import javax.persistence.EntityNotFoundException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
-import org.springframework.util.ObjectUtils;
 
 import com.ccpt.model.AdditionalProperty;
 import com.ccpt.model.BaseEntity;
@@ -19,7 +18,6 @@ import com.ccpt.model.UploadFile;
 import com.ccpt.repository.AdditionalPropertyRepository;
 import com.ccpt.repository.BaseRepository;
 import com.ccpt.repository.UploadFileRepository;
-import com.sun.mail.imap.CopyUID;
 
 public abstract class BaseService<T extends BaseEntity<ID>, ID> {
 	protected final String ENTITY;
@@ -100,6 +98,7 @@ public abstract class BaseService<T extends BaseEntity<ID>, ID> {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	public T update(T entity) {
 		Optional<T> existing = getRepository().findByIdAndActiveFlag(entity.getKey(), true);
 		if (entity.getKey() == null) {
@@ -115,7 +114,7 @@ public abstract class BaseService<T extends BaseEntity<ID>, ID> {
 			}
 			BeanUtils.copyProperties(t, old);
 			T result = getRepository().save(entity);
-			saveAddnProps(entity);			
+			saveAddnProps(entity);
 			notify(old, entity);
 			return result;
 		} else {
@@ -125,7 +124,7 @@ public abstract class BaseService<T extends BaseEntity<ID>, ID> {
 
 	protected void notify(T existing, T result) {
 		// override in children
-		
+
 	}
 
 	public void delete(ID id) {
@@ -155,7 +154,7 @@ public abstract class BaseService<T extends BaseEntity<ID>, ID> {
 	protected void postActivate(T entity2) {
 		// Can be overidden in children
 	}
-	
+
 	protected void sendMail(T entity) {
 		// Can be overidden in children
 	}
