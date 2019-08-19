@@ -156,7 +156,7 @@ public class JobDescriptionSubstitutor implements ContentSubstitutor {
 		sb.append("<tr><td><b>Sreenath Thatikonda</b></td></tr>");
 		sb.append("<tr><td>Branch&nbsp;Head</td></tr>");
 		sb.append(
-				"<tr><td style=\"font-size: 11.0pt;font-family: 'Calibri',sans-serif;color: #1f497d;\">Talent Corner HR services Pvt. Ltd.</td></tr>");
+				"<tr><td style=\"font-size: 11.0pt;font-family: 'Calibri',sans-serif;color: #1f497d;\">Talent Corner HR Services Pvt. Ltd.</td></tr>");
 		sb.append(
 				"<tr><td style=\"font-size: 11.0pt;font-family: 'Calibri',sans-serif;color: #1f497d;\">(D) 9848071296 &nbsp; (W)&nbsp;<a href=\"http://www.talentcorner.in/\" data-saferedirecturl=\"https://www.google.com/url?q=http://www.talentcorner.in/&amp;source=gmail&amp;ust=1563428769215000&amp;usg=AFQjCNFet2kPL5oLLvDUSpWHxioT4LijGA\">www.talentcorner.in</a>&nbsp;(E)&nbsp;<a href=\"mailto:sreenath.t@talentcorner.in\">sreenath.t@talentcorner.in</a></td></tr>");
 		sb.append("</tbody>\r\n" + "</table>");

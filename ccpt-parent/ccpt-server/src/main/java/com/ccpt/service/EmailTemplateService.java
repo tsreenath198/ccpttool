@@ -139,7 +139,7 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 		Optional<ClientApplication> ca = clientApplicationRepository.findById(id);
 		valuesMap.put("clientName", ca.get().getClientPosition().getClient().getName());
 		valuesMap.put("consultantName", ca.get().getConsultant().getFullname());
-		DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		if (ca.get().getInterviewDate() == null)
 			throw new ValidationException("this clientapplication id " + ca.get().getId() + " not shorlisted");
 		Date date = ca.get().getInterviewDate();
@@ -147,6 +147,7 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 		valuesMap.put("interviewDate", strDate);
 		valuesMap.put("interviewTime", ca.get().getInterviewTime());
 		valuesMap.put("interviewLocation", ca.get().getInterviewLocation());
+		valuesMap.put("address", ca.get().getClientPosition().getClient().getAddress());
 		valuesMap.put("clientContactPerson",
 				ca.get().getClientPosition().getClient().getClientContacts().get(0).getPhone());
 
@@ -157,6 +158,7 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 		sbPara.append("<p><strong>Interview Date :</strong><mark>${interviewDate}</mark></p>");
 		sbPara.append("<p><strong>Interview Time :</strong><mark>${interviewTime}</mark></p>");
 		sbPara.append("<p><strong>Interview Location :</strong><mark>${interviewLocation}</mark></p>");
+		sbPara.append("<p><strong>Address :</strong><mark>${address}</mark></p>");
 		sbPara.append("<p><strong>Name of Client Contact Person :</strong><mark>${clientContactPerson}</mark></p>");
 		sbPara.append("<p>**Feel free to call us any time.</p>");
 		sbPara.append("<p><mark>** Things to Carry:</mark></p>");
@@ -208,4 +210,5 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 		emailContent.setBcc(bcc);
 		return emailContent;
 	}
+
 }

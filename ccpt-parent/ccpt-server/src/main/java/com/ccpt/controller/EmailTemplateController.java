@@ -58,6 +58,7 @@ public class EmailTemplateController extends BaseController<EmailTemplateDTO, Em
 
 	}
 
+
 	@Override
 	public BaseService<EmailTemplate, Integer> getService() {
 		return emailTemplateService;
