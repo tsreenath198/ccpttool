@@ -16,7 +16,7 @@ import com.ccpt.service.SearchService;
 
 @Controller
 @CrossOrigin
-@RequestMapping(CCPTConstants.SEARCH_BANK)
+@RequestMapping(CCPTConstants.SEARCH)
 public class SearchController extends BaseController<SearchDTO, Search, Integer> {
 
 	@Autowired

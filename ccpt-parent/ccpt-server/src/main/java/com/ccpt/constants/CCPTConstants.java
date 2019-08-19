@@ -23,7 +23,7 @@ public interface CCPTConstants {
 	String UPLOAD_FILE = "/uploadFile";
 	String SMS = "/sms";
 	String PAYMENT = "/payment";
-	String SEARCH_BANK = "/serachBank";
+	String SEARCH = "/serach";
 
 	String CLIENT_APPLICATION_STATUS = "/caStatus";
 	String CLIENT_POSITION_STATUS = "/cpStatus";

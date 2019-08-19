@@ -10,7 +10,7 @@ import com.ccpt.repository.SearchRepository;
 @Service
 public class SearchService extends BaseService<Search, Integer> {
 	public SearchService() {
-		super("Search ");
+		super("Search");
 	}
 
 	@Autowired
