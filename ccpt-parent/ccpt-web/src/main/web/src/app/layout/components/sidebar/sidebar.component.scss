@@ -106,11 +106,20 @@ $topnav-background-color: #222;
 }
 
 .nested-menu {
+    transition-property: height;
+    transition-duration: 5s;
+    transition-delay: 2s;
     .list-group-item {
         cursor: pointer;
+        transition-property: height;
+    transition-duration: 5s;
+    transition-delay: 2s;
     }
     .nested {
         list-style-type: none;
+        transition-property: height;
+    transition-duration: 5s;
+    transition-delay: 2s;
     }
     ul.submenu {
         display: none;
