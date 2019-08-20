@@ -55,21 +55,16 @@
                   </label>
                 </div>
               </td>
-              <td (click)="setModel(cal.id)" class="table-data-padding">
-                <dl>
-                  <dt>
+              <td  container="body" [ngbPopover]="popContent" [popoverTitle]="popTitle" class="table-data-padding">
                       {{ cal.consultant.fullname }}
-                  </dt>
-                  <dd>
-                    {{cal.consultant.phone}}
-                  </dd>
-                </dl>
               </td>
               <td (click)="setModel(cal.id)">{{ cal.clientPosition.generatedCode }}</td>
 
               <td (click)="setModel(cal.id)">{{ cal.status.code }}</td>
               <td (click)="setModel(cal.id)">{{ cal.creator.fullname }}</td>
-
+              
+                <ng-template #popContent>{{cal.consultant.phone}}<br>{{cal.consultant.email}}</ng-template>
+                <ng-template #popTitle><b>Consultant Details</b></ng-template>
               <!-- <td width="140">
                   <app-action [trashContent]="trashContent" [uploadContent]="uploadContent"
                   [downloadContent]="downloadContent" [id]="cal.id" [isTrash]="trash" [isUpload]="upload"

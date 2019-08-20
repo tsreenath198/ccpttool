@@ -32,6 +32,7 @@ export class Properties {
     USER = 'User';
     PAYMENT = 'Payment'
     LOGIN = 'Login'
+    SEARCH = 'Search'
 
     /** Interview Types */
     F2F = "Face to Face";

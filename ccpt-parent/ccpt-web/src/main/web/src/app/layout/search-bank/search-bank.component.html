@@ -1,5 +1,5 @@
 <div [@routerTransition]>
-  <app-page-header [icon1]="'fa-address-book'" [heading1]="'Other Contacts'"> </app-page-header>
+  <app-page-header [icon1]="'fa-search'" [heading1]="'Search'"> </app-page-header>
 
   <div class="spinner padding-top justify-content-md-center" *ngIf="!listReturned">
     <div class="bounce1"></div>
@@ -16,37 +16,18 @@
           <thead>
             <tr>
               <th>
-                Name
+                Profile
               </th>
-              <th>
-                Email
-              </th>
-              <th>
-                Phone
-              </th>
-              <!-- <th>
-                      <span class="pull-right">Action</span>
-                  </th> -->
             </tr>
           </thead>
           <tbody>
             <tr
-              *ngFor="let ocl of SBList | filter: currSearchTxt; let i = index"
-              (click)="setModel(ocl.id)"
+              *ngFor="let sbl of sbList | filter: currSearchTxt; let i = index"
+              (click)="setModel(sbl.id)"
             >
               <td>
-                {{ ocl.name }}
+                {{ sbl.profile }}
               </td>
-              <td>
-                {{ ocl.email }}
-              </td>
-              <td>
-                {{ ocl.phone }}
-              </td>
-              <!-- <td width="100">
-                <app-action [trashContent]="trashContent" [id]="ocl.id" [isTrash]="trash" (trash)="open($event)">
-                </app-action>
-              </td> -->
             </tr>
           </tbody>
         </table>
@@ -81,8 +62,8 @@
                 <i class="fa fa-bars" ngbDropdownToggle></i>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenu1" ngbDropdownMenu>
                   <a class="dropdown-item drop-list" (click)="enableFormEditable()">Edit</a>
+                  <a class="dropdown-item drop-list" (click)="cancelForm(f)">New</a>
                   <a class="dropdown-item drop-list" (click)="open(model.id, trashContent)">Delete</a>
-                  <a class="dropdown-item drop-list" (click)="cancelForm(f)">Close</a>
                 </div>
               </div>
             </span>
@@ -91,26 +72,34 @@
         <div *ngIf="readOnlyForm == 'U'; else notRead">
           <table class="table table-borderless">
             <tbody>
-              <tr>
-                <th>Name</th>
-                <td>{{ model.name }}</td>
+              <tr *ngIf="model.profile">
+                <th>Profile</th>
+                <td>{{ model.profile }}</td>
               </tr>
-              <tr>
-                <th>Phone</th>
-                <td>{{ model.phone }}</td>
+              <tr *ngIf="model.logicOr">
+                <th>Any of Keywords</th>
+                <td>{{ model.logicOr }}</td>
               </tr>
-              <tr>
-                <th>Email</th>
-                <td>{{ model.email }}</td>
+              <tr *ngIf="model.logicAnd">
+                <th>All of Keywords</th>
+                <td>{{ model.logicAnd }}</td>
               </tr>
-              <tr>
-                <th>Notes</th>
-                <td>{{ model.description }}</td>
+              <tr *ngIf="model.refine1">
+                <th>Refine 1</th>
+                <td>{{ model.refine1 }}</td>
               </tr>
-                <tr *ngFor="let ap of model.properties; let i = index">
+              <tr *ngIf="model.refine2">
+                <th>Refine 2</th>
+                <td>{{ model.refine2 }}</td>
+              </tr>
+              <tr *ngIf="model.functionalArea">
+                <th>Functional Area</th>
+                <td>{{ model.functionalArea }}</td>
+              </tr>
+                <!-- <tr *ngFor="let ap of model.properties; let i = index">
                   <th>{{ap.name}}</th>
                   <td>{{ap.value}}</td>
-                </tr>
+                </tr> -->
             </tbody>
           </table>
         </div>
@@ -144,6 +133,62 @@
                   [(ngModel)]="model.logicOr"
                   name="logicOr"
                   #logicOr="ngModel"
+                ></textarea>
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="form-group">
+                <label>All of Keywords (Logic And)</label>
+                <textarea
+                  class="form-control"
+                  cols="5"
+                  rows="3"
+                  [readonly]="readOnlyForm == 'R'"
+                  [(ngModel)]="model.logicAnd"
+                  name="logicAnd"
+                  #logicAnd="ngModel"
+                ></textarea>
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="form-group">
+                <label>SWS-Refine1</label>
+                <textarea
+                  class="form-control"
+                  cols="5"
+                  rows="3"
+                  [readonly]="readOnlyForm == 'R'"
+                  [(ngModel)]="model.refine1"
+                  name="refine1"
+                  #refine1="ngModel"
+                ></textarea>
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="form-group">
+                <label>SWS-Refine2</label>
+                <textarea
+                  class="form-control"
+                  cols="5"
+                  rows="3"
+                  [readonly]="readOnlyForm == 'R'"
+                  [(ngModel)]="model.refine2"
+                  name="refine2"
+                  #refine2="ngModel"
+                ></textarea>
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="form-group">
+                <label>Functional Area</label>
+                <textarea
+                  class="form-control"
+                  cols="5"
+                  rows="3"
+                  [readonly]="readOnlyForm == 'R'"
+                  [(ngModel)]="model.functionalArea"
+                  name="functionalArea"
+                  #functionalArea="ngModel"
                 ></textarea>
               </div>
             </div>

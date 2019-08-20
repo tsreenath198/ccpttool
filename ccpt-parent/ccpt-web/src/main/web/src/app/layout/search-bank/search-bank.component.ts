@@ -19,7 +19,7 @@ import { Properties } from '../components/constants/properties';
 export class SearchBankComponent implements OnInit {
 
     public model: SearchBankModel = <SearchBankModel>{};
-    public SBList: any = [];
+    public sbList: any = [];
     private urlConstants = new URLConstants();
     private properties = new Properties();
 
@@ -38,10 +38,10 @@ export class SearchBankComponent implements OnInit {
     public apValue = '';
     private modalRef: NgbModalRef;
 
-    constructor(private http: HttpClientService, private router: Router, private toastr: ToastrCustomService, private modalService: NgbModal) {
+    constructor(private http: HttpClientService, private router: Router , private toastr: ToastrCustomService, private modalService: NgbModal) {
         this.getScreenSize();
     }
-    @HostListener('window:resize', ['$event']) Router
+    @HostListener('window:resize', ['$event'])
     getScreenSize(event?) {
         this.screenHeight = window.innerHeight;
     }
@@ -54,8 +54,8 @@ export class SearchBankComponent implements OnInit {
     }
     private init() {
         this.spinner(false);
-        this.http.get(this.urlConstants.OCGetAll).subscribe(resp => {
-            this.SBList = resp as any;
+        this.http.get(this.urlConstants.SearchGetAll).subscribe(resp => {
+            this.sbList = resp as any;
             this.spinner(true);
         });
         this.model.properties = [];
@@ -75,7 +75,7 @@ export class SearchBankComponent implements OnInit {
         this.action = null;
     }
     private getById(id) {
-        const temp = this.http.get(this.urlConstants.OCGetById + id);
+        const temp = this.http.get(this.urlConstants.SearchGetById + id);
         temp.subscribe(resp => {
             this.model = this.mapToUpdateModel(resp);
             this.spinner(true);
@@ -131,25 +131,25 @@ export class SearchBankComponent implements OnInit {
     public create(searchBankForm: NgForm): void {
         this.spinner(false);
         this.isCreate = true;
-        const temp = this.http.post(this.model, this.urlConstants.OCCreate);
+        const temp = this.http.post(this.model, this.urlConstants.SearchCreate);
         temp.subscribe(resp => {
-            this.toastr.success(this.properties.CREATE, this.properties.CONTACT);
+            this.toastr.success(this.properties.CREATE, this.properties.SEARCH);
             this.init();
             this.formReset();
             searchBankForm.resetForm();
             this.isCreate = false;
             this.spinner(true);
         }, err => {
-            this.toastr.error(err.error.message, this.properties.CONTACT);
+            this.toastr.error(err.error.message, this.properties.SEARCH);
             this.isCreate = false; this.spinner(true);
         });
     }
     public update(searchBankForm: NgForm) {
         this.spinner(false);
-        const temp = this.http.update(this.model, this.urlConstants.OCUpdate);
+        const temp = this.http.update(this.model, this.urlConstants.SearchUpdate);
         temp.subscribe(resp => {
             this.formReset();
-            this.toastr.success(this.properties.UPDATE, this.properties.CONTACT);
+            this.toastr.success(this.properties.UPDATE, this.properties.SEARCH);
             this.init();
             searchBankForm.resetForm();
             this.readOnlyForm = '';
@@ -157,7 +157,7 @@ export class SearchBankComponent implements OnInit {
             this.showAction = false;
             this.spinner(true);
         }, err => {
-            this.toastr.error(err.error.message, this.properties.CONTACT);
+            this.toastr.error(err.error.message, this.properties.SEARCH);
             this.spinner(true);
         });
     }
@@ -171,9 +171,9 @@ export class SearchBankComponent implements OnInit {
     }
     public trash(): void {
         this.spinner(false);
-        const temp = this.http.delete(this.urlConstants.OCDelete + this.selectedRecrdToDel);
+        const temp = this.http.delete(this.urlConstants.SearchDelete + this.selectedRecrdToDel);
         temp.subscribe(resp => {
-            this.toastr.success(this.properties.DELETE, this.properties.CONTACT);
+            this.toastr.success(this.properties.DELETE, this.properties.SEARCH);
             this.init();
             this.close();
             this.formReset();
@@ -182,14 +182,9 @@ export class SearchBankComponent implements OnInit {
             this.showAction = false;
             this.spinner(true);
         }, err => {
-            this.toastr.error(err.error.message, this.properties.CONTACT);
+            this.toastr.error(err.error.message, this.properties.SEARCH);
             this.spinner(true);
         });
-    }
-    transformTitleCase(ip: HTMLInputElement) {
-        let temp = ip.value.length === 0 ? '' :
-            ip.value.replace(/\w\S*/g, (txt => txt[0].toUpperCase() + txt.substr(1).toLowerCase()));
-        ip.value = temp;
     }
     /**
      * @param

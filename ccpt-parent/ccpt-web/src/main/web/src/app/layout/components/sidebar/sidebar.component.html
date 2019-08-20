@@ -112,6 +112,23 @@
         </ul>
       </li>
     </div>
+    <div class="nested-menu" (mouseover)="addExpandClass('guide')" (mouseleave)="addCollapseClass()">
+        <a class="list-group-item">
+          <i class="fa fa-fw fa-book"></i>&nbsp;
+          <span>{{ 'Guides' | translate }}</span>
+        </a>
+        <li class="nested" [class.expand]="showMenu === 'guide'">
+          <ul class="submenu">
+            <li>
+              <a class="list-group-item " [routerLink]="['/layout/search-bank']"
+                [routerLinkActive]="['router-link-active']">
+                <span class="fa fa-fw fa-search"></span>
+                <span>{{ 'Search Bank' | translate }}</span>
+              </a>
+            </li>
+          </ul>
+        </li>
+      </div>
     <!-- <a [routerLink]="['/layout/charts']" [routerLinkActive]="['router-link-active']" class="list-group-item">
       <i class="fa fa-fw fa-bar-chart-o"></i>&nbsp;
       <span>{{ 'Charts' | translate }}</span>

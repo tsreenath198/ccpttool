@@ -91,6 +91,13 @@ export class URLConstants {
     OCDelete = 'contact/';
     OCGetById = 'contact/';
 
+    /*Search */
+    SearchCreate = 'search';
+    SearchGetAll = 'search/';
+    SearchUpdate = 'search';
+    SearchDelete = 'search/';
+    SearchGetById = 'search/';
+
     /** Reporting */
     ReportingGetAllCLCH = 'report/getAllClientCallHistorysByDays?days=';
     ReportingGetAllCOCH = 'report/getAllConsultantCallHistorysByDays?days=';

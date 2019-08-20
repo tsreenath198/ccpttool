@@ -20,6 +20,7 @@ const routes: Routes = [
             { path: 'consultant-status', loadChildren: './consultant-status/consultant-status.module#ConsultantStatusModule'},
             { path: 'recruiter', loadChildren: './recruiter/recruiter.module#RecruiterModule'},
             { path: 'user', loadChildren: './users/users.module#UsersModule'},
+            { path: 'search-bank', loadChildren: './search-bank/search-bank.module#SearchBankModule'},
             { path: 'other-contacts', loadChildren: './other-contacts/other-contacts.module#OtherContactsModule'},
             { path: 'client', loadChildren: './client/client.module#ClientModule'},
             { path: 'email-template', loadChildren: './email-template/email-template.module#EmailTemplateModule'},
