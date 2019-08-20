@@ -148,7 +148,9 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 		valuesMap.put("interviewTime", ca.get().getInterviewTime());
 		valuesMap.put("interviewLocation", ca.get().getInterviewLocation());
 		valuesMap.put("address", ca.get().getClientPosition().getClient().getAddress());
-		valuesMap.put("clientContactPerson",
+		valuesMap.put("clientContactPersonName",
+				ca.get().getClientPosition().getClient().getClientContacts().get(0).getFullname());
+		valuesMap.put("clientContactPersonNumber",
 				ca.get().getClientPosition().getClient().getClientContacts().get(0).getPhone());
 
 		sbPara.append("<p>Hi <strong>${consultantName}</strong>,</p>");
@@ -159,7 +161,8 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 		sbPara.append("<p><strong>Interview Time :</strong><mark>${interviewTime}</mark></p>");
 		sbPara.append("<p><strong>Interview Location :</strong><mark>${interviewLocation}</mark></p>");
 		sbPara.append("<p><strong>Address :</strong><mark>${address}</mark></p>");
-		sbPara.append("<p><strong>Name of Client Contact Person :</strong><mark>${clientContactPerson}</mark></p>");
+		sbPara.append(
+				"<p><strong>Name of Client Contact Person :</strong><mark>${clientContactPersonName} (${clientContactPersonNumber})</mark></p>");
 		sbPara.append("<p>**Feel free to call us any time.</p>");
 		sbPara.append("<p><mark>** Things to Carry:</mark></p>");
 		sbPara.append("<p></p>");
@@ -211,4 +214,79 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 		return emailContent;
 	}
 
+	public EmailContent getShortListedCA(List<Integer> ids) throws Exception {
+		EmailContent emailContent = null;
+		String ccName = null;
+		StringBuilder body = new StringBuilder();
+		List<String> names = new ArrayList<String>();
+		List<ClientApplication> clientApplications = new ArrayList<ClientApplication>();
+		for (Integer id : ids) {
+			Optional<ClientApplication> ca = clientApplicationRepository.findById(id);
+			String name = ca.get().getClientPosition().getClient().getName();
+			names.add(name);
+			clientApplications.add(ca.get());
+		}
+		boolean allEqual = names.isEmpty() || names.stream().allMatch(names.get(0)::equals);
+		if (allEqual) {
+			String data = "";
+			Map<String, String> valuesMap = new HashMap<String, String>();
+			for (ClientApplication ca : clientApplications) {
+				StringBuilder sbPara = new StringBuilder();
+				emailContent = new EmailContent();
+				ClientPosition clientPosition = ca.getClientPosition();
+				ccName = clientPosition.getClient().getClientContacts().get(0).getFullname();
+				valuesMap.put("jobTitle", clientPosition.getRole());
+				valuesMap.put("clientContactName", clientPosition.getClient().getClientContacts().get(0).getFullname());
+				valuesMap.put("consultantName", ca.getConsultant().getFullname());
+				DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+				if (ca.getInterviewDate() == null)
+					throw new ValidationException("this clientapplication id " + ca.getId() + " not shorlisted");
+				Date date = ca.getInterviewDate();
+				String strDate = dateFormat.format(date);
+				valuesMap.put("interviewDate", strDate);
+				valuesMap.put("interviewTime", ca.getInterviewTime());
+				valuesMap.put("interviewLocation", ca.getInterviewLocation());
+				valuesMap.put("address", ca.getClientPosition().getClient().getAddress());
+				sbPara.append(
+						"<table width=\"728\" border=\"1\" style=\"border-collapse : collapse\" cellspacing=\"0\" cellpadding=\"0\">")
+						.append("<tbody>")
+						.append("<tr>\r\n" + "<td colspan=\"2\" width=\"728\" >\r\n"
+								+ "<p><strong>CandidateName</strong></p>\r\n </td>"
+								+ "<td colspan=\"2\" width=\"728\" >\r\n" + "<p><strong>Role</strong></p>\r\n </td>"
+								+ "<td colspan=\"2\" width=\"728\" >\r\n"
+								+ "<p><strong>InterviewDate</strong></p>\r\n </td>"
+								+ "<td colspan=\"2\" width=\"728\" >\r\n"
+								+ "<p><strong>InterviewTime</strong></p>\r\n </td>"
+								+ "<td colspan=\"2\" width=\"728\" >\r\n" + "<p><strong>Address</strong></p>\r\n </td>"
+								+ "<td colspan=\"2\" width=\"728\" >\r\n" + "<p><strong>Location</strong></p>\r\n </td>"
+								+ "\r\n</tr>")
+						.append("<tr>\r\n" + "<td colspan=\"2\" width=\"728\" >\r\n"
+								+ "<p><strong>${consultantName}</strong></p>\r\n </td>"
+								+ "<td colspan=\"2\" width=\"728\" >\r\n"
+								+ "<p><strong>${jobTitle}</strong></p>\r\n </td>"
+								+ "<td colspan=\"2\" width=\"728\" >\r\n"
+								+ "<p><strong>${interviewDate}</strong></p>\r\n </td>"
+								+ "<td colspan=\"2\" width=\"728\" >\r\n"
+								+ "<p><strong>${interviewTime}</strong></p>\r\n </td>"
+								+ "<td colspan=\"2\" width=\"728\" >\r\n"
+								+ "<p><strong>${address}</strong></p>\r\n </td>"
+								+ "<td colspan=\"2\" width=\"728\" >\r\n"
+								+ "<p><strong>${interviewLocation}</strong></p>\r\n </td>" + "\r\n</tr>")
+						.append("</tbody>").append("</table>");
+				emailContent.setToEmails(ca.getClientPosition().getClient().getClientContacts().get(0).getEmail());
+				data = data.concat(StrSubstitutor.replace(sbPara.toString(), valuesMap));
+			}
+			String temp = new StringBuilder().append("<p>Hi <strong>").append(ccName).append("</strong>,</p>")
+					.append("<p>").append("<p>").toString().concat(data);
+			String finalData = temp.concat(new StringBuilder().append("<p>")
+					.append("Please review & Confirm the interview scheduled mentioned above ").append("<p>")
+					.toString());
+			emailContent.setBody(finalData.concat(JobDescriptionSubstitutor.getSign(body)));
+			emailContent.setSubject("Interview Scheduled Details");
+			return emailContent;
+
+		} else {
+			throw new ValidationException("select same client application");
+		}
+	}
 }

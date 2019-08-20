@@ -58,6 +58,12 @@ public class EmailTemplateController extends BaseController<EmailTemplateDTO, Em
 
 	}
 
+	@PostMapping("/getShortListedCA")
+	@ResponseBody
+	public EmailContent getShortListedCA(@RequestBody List<Integer> ids) throws Exception {
+		return emailTemplateService.getShortListedCA(ids);
+
+	}
 
 	@Override
 	public BaseService<EmailTemplate, Integer> getService() {
