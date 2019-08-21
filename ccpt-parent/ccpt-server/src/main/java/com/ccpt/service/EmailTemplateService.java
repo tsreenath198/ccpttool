@@ -260,8 +260,8 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 							.append("<td colspan=\"2\" width=\"728\" >\r\n")
 							.append("<p><strong>InterviewDate</strong></p>\r\n </td>")
 							.append("<td colspan=\"2\" width=\"728\" >\r\n")
-							.append("<p><strong>InterviewTime</strong></p>\r\n </td>");
-					sbPara.append("<td colspan=\"2\" width=\"728\" >\r\n")
+							.append("<p><strong>InterviewTime</strong></p>\r\n </td>")
+							.append("<td colspan=\"2\" width=\"728\" >\r\n")
 							.append("<p><strong>Online Id</strong></p>\r\n </td>").append("\r\n</tr>");
 				}
 				i++;
@@ -272,10 +272,12 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 						.append("<td colspan=\"2\" width=\"728\" >\r\n")
 						.append("<p><strong>${interviewDate}</strong></p>\r\n </td>")
 						.append("<td colspan=\"2\" width=\"728\" >\r\n")
-						.append("<p><strong>${interviewTime}</strong></p>\r\n </td>");
+						.append("<p><strong>${interviewTime}</strong></p>\r\n </td>")
+						.append("<td colspan=\"2\" width=\"728\" >\r\n");
 				if (ca.getOnlineId() != null) {
-					sbPara.append("<td colspan=\"2\" width=\"728\" >\r\n")
-							.append("<p><strong>${onlineId}</strong></p>\r\n </td>").append("</tr>");
+					sbPara.append("<p><strong>${onlineId}</strong></p>\r\n </td>").append("</tr>");
+				} else {
+					sbPara.append("<p><strong>  </strong></p>\r\n </td>").append("</tr>");
 				}
 				sbPara.append("</tbody>").append("</table>");
 				emailContent.setToEmails(ca.getClientPosition().getClient().getClientContacts().get(0).getEmail());
