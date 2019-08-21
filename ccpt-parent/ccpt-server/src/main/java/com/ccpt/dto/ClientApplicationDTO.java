@@ -19,5 +19,5 @@ public class ClientApplicationDTO extends FileSupportEntityDTO {
 	private String interviewMode;
 	private Integer creatorId;
 	private Date sentOn;
-
+	private String onlineId;
 }

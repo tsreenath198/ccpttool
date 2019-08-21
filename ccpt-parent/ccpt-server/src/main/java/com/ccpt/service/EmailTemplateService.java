@@ -248,30 +248,36 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 				valuesMap.put("interviewTime", ca.getInterviewTime());
 				valuesMap.put("interviewLocation", ca.getInterviewLocation());
 				valuesMap.put("address", ca.getClientPosition().getClient().getAddress());
+				valuesMap.put("onlineId", ca.getOnlineId());
 				sbPara.append(
 						"<table width=\"728\" border=\"1\" style=\"border-collapse : collapse\" cellspacing=\"0\" cellpadding=\"0\">")
 						.append("<tbody>");
 				if (i == 0) {
-					sbPara.append("<tr>\r\n" + "<td colspan=\"2\" width=\"728\" >\r\n"
-							+ "<p><strong>CandidateName</strong></p>\r\n </td>"
-							+ "<td colspan=\"2\" width=\"728\" >\r\n" + "<p><strong>Role</strong></p>\r\n </td>"
-							+ "<td colspan=\"2\" width=\"728\" >\r\n"
-							+ "<p><strong>InterviewDate</strong></p>\r\n </td>"
-							+ "<td colspan=\"2\" width=\"728\" >\r\n"
-							+ "<p><strong>InterviewTime</strong></p>\r\n </td>"
-							+ "<td colspan=\"2\" width=\"728\" >\r\n" + "<p><strong>Address</strong></p>\r\n </td>"
-							+ "<td colspan=\"2\" width=\"728\" >\r\n" + "<p><strong>Location</strong></p>\r\n </td>"
-							+ "\r\n</tr>");
+					sbPara.append("<tr>\r\n" + "<td colspan=\"2\" width=\"728\" >\r\n")
+							.append("<p><strong>CandidateName</strong></p>\r\n </td>")
+							.append("<td colspan=\"2\" width=\"728\" >\r\n")
+							.append("<p><strong>Role</strong></p>\r\n </td>")
+							.append("<td colspan=\"2\" width=\"728\" >\r\n")
+							.append("<p><strong>InterviewDate</strong></p>\r\n </td>")
+							.append("<td colspan=\"2\" width=\"728\" >\r\n")
+							.append("<p><strong>InterviewTime</strong></p>\r\n </td>");
+					sbPara.append("<td colspan=\"2\" width=\"728\" >\r\n")
+							.append("<p><strong>Online Id</strong></p>\r\n </td>").append("\r\n</tr>");
 				}
 				i++;
-				sbPara.append("<tr>" + "<td colspan=\"2\" width=\"728\" >\r\n"
-						+ "<p><strong>${consultantName}</strong></p>\r\n </td>"
-						+ "<td colspan=\"2\" width=\"728\" >\r\n" + "<p><strong>${jobTitle}</strong></p>\r\n </td>"
-						+ "<td colspan=\"2\" width=\"728\" >\r\n" + "<p><strong>${interviewDate}</strong></p>\r\n </td>"
-						+ "<td colspan=\"2\" width=\"728\" >\r\n" + "<p><strong>${interviewTime}</strong></p>\r\n </td>"
-						+ "<td colspan=\"2\" width=\"728\" >\r\n" + "<p><strong>${address}</strong></p>\r\n </td>"
-						+ "<td colspan=\"2\" width=\"728\" >\r\n" + "<p><strong>${interviewLocation}</strong></p> </td>"
-						+ "</tr>").append("</tbody>").append("</table>");
+				sbPara.append("<tr>" + "<td colspan=\"2\" width=\"728\" >\r\n")
+						.append("<p><strong>${consultantName}</strong></p>\r\n </td>")
+						.append("<td colspan=\"2\" width=\"728\" >\r\n")
+						.append("<p><strong>${jobTitle}</strong></p>\r\n </td>")
+						.append("<td colspan=\"2\" width=\"728\" >\r\n")
+						.append("<p><strong>${interviewDate}</strong></p>\r\n </td>")
+						.append("<td colspan=\"2\" width=\"728\" >\r\n")
+						.append("<p><strong>${interviewTime}</strong></p>\r\n </td>");
+				if (ca.getOnlineId() != null) {
+					sbPara.append("<td colspan=\"2\" width=\"728\" >\r\n")
+							.append("<p><strong>${onlineId}</strong></p>\r\n </td>").append("</tr>");
+				}
+				sbPara.append("</tbody>").append("</table>");
 				emailContent.setToEmails(ca.getClientPosition().getClient().getClientContacts().get(0).getEmail());
 				data = data.concat(StrSubstitutor.replace(sbPara.toString(), valuesMap));
 			}
@@ -280,7 +286,7 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 					.append("<p>").toString().concat(data);
 			String finalData = temp.concat(new StringBuilder().append("<p>").append("<p>").toString());
 			emailContent.setBody(finalData.concat(JobDescriptionSubstitutor.getSign(body)));
-			emailContent.setSubject("Interview Scheduled Details");
+			emailContent.setSubject("Upcoming Interview Schedule");
 			return emailContent;
 
 		} else {

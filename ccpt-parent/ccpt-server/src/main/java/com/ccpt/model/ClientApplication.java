@@ -64,4 +64,7 @@ public class ClientApplication extends FileSupportEntity {
 	@Column
 	private String interviewMode;
 
+	@Column
+	private String onlineId;
+
 }
