@@ -229,6 +229,7 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 		boolean allEqual = names.isEmpty() || names.stream().allMatch(names.get(0)::equals);
 		if (allEqual) {
 			String data = "";
+			int i = 0;
 			Map<String, String> valuesMap = new HashMap<String, String>();
 			for (ClientApplication ca : clientApplications) {
 				StringBuilder sbPara = new StringBuilder();
@@ -249,30 +250,28 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 				valuesMap.put("address", ca.getClientPosition().getClient().getAddress());
 				sbPara.append(
 						"<table width=\"728\" border=\"1\" style=\"border-collapse : collapse\" cellspacing=\"0\" cellpadding=\"0\">")
-						.append("<tbody>")
-						.append("<tr>\r\n" + "<td colspan=\"2\" width=\"728\" >\r\n"
-								+ "<p><strong>CandidateName</strong></p>\r\n </td>"
-								+ "<td colspan=\"2\" width=\"728\" >\r\n" + "<p><strong>Role</strong></p>\r\n </td>"
-								+ "<td colspan=\"2\" width=\"728\" >\r\n"
-								+ "<p><strong>InterviewDate</strong></p>\r\n </td>"
-								+ "<td colspan=\"2\" width=\"728\" >\r\n"
-								+ "<p><strong>InterviewTime</strong></p>\r\n </td>"
-								+ "<td colspan=\"2\" width=\"728\" >\r\n" + "<p><strong>Address</strong></p>\r\n </td>"
-								+ "<td colspan=\"2\" width=\"728\" >\r\n" + "<p><strong>Location</strong></p>\r\n </td>"
-								+ "\r\n</tr>")
-						.append("<tr>\r\n" + "<td colspan=\"2\" width=\"728\" >\r\n"
-								+ "<p><strong>${consultantName}</strong></p>\r\n </td>"
-								+ "<td colspan=\"2\" width=\"728\" >\r\n"
-								+ "<p><strong>${jobTitle}</strong></p>\r\n </td>"
-								+ "<td colspan=\"2\" width=\"728\" >\r\n"
-								+ "<p><strong>${interviewDate}</strong></p>\r\n </td>"
-								+ "<td colspan=\"2\" width=\"728\" >\r\n"
-								+ "<p><strong>${interviewTime}</strong></p>\r\n </td>"
-								+ "<td colspan=\"2\" width=\"728\" >\r\n"
-								+ "<p><strong>${address}</strong></p>\r\n </td>"
-								+ "<td colspan=\"2\" width=\"728\" >\r\n"
-								+ "<p><strong>${interviewLocation}</strong></p>\r\n </td>" + "\r\n</tr>")
-						.append("</tbody>").append("</table>");
+						.append("<tbody>");
+				if (i == 0) {
+					sbPara.append("<tr>\r\n" + "<td colspan=\"2\" width=\"728\" >\r\n"
+							+ "<p><strong>CandidateName</strong></p>\r\n </td>"
+							+ "<td colspan=\"2\" width=\"728\" >\r\n" + "<p><strong>Role</strong></p>\r\n </td>"
+							+ "<td colspan=\"2\" width=\"728\" >\r\n"
+							+ "<p><strong>InterviewDate</strong></p>\r\n </td>"
+							+ "<td colspan=\"2\" width=\"728\" >\r\n"
+							+ "<p><strong>InterviewTime</strong></p>\r\n </td>"
+							+ "<td colspan=\"2\" width=\"728\" >\r\n" + "<p><strong>Address</strong></p>\r\n </td>"
+							+ "<td colspan=\"2\" width=\"728\" >\r\n" + "<p><strong>Location</strong></p>\r\n </td>"
+							+ "\r\n</tr>");
+				}
+				i++;
+				sbPara.append("<tr>" + "<td colspan=\"2\" width=\"728\" >\r\n"
+						+ "<p><strong>${consultantName}</strong></p>\r\n </td>"
+						+ "<td colspan=\"2\" width=\"728\" >\r\n" + "<p><strong>${jobTitle}</strong></p>\r\n </td>"
+						+ "<td colspan=\"2\" width=\"728\" >\r\n" + "<p><strong>${interviewDate}</strong></p>\r\n </td>"
+						+ "<td colspan=\"2\" width=\"728\" >\r\n" + "<p><strong>${interviewTime}</strong></p>\r\n </td>"
+						+ "<td colspan=\"2\" width=\"728\" >\r\n" + "<p><strong>${address}</strong></p>\r\n </td>"
+						+ "<td colspan=\"2\" width=\"728\" >\r\n" + "<p><strong>${interviewLocation}</strong></p> </td>"
+						+ "</tr>").append("</tbody>").append("</table>");
 				emailContent.setToEmails(ca.getClientPosition().getClient().getClientContacts().get(0).getEmail());
 				data = data.concat(StrSubstitutor.replace(sbPara.toString(), valuesMap));
 			}
