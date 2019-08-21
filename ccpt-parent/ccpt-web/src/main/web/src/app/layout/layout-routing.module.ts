@@ -26,6 +26,7 @@ const routes: Routes = [
             { path: 'email-template', loadChildren: './email-template/email-template.module#EmailTemplateModule'},
             { path: 'message-template', loadChildren: './message-template/message-template.module#MessageTemplateModule'},
             { path: 'payments', loadChildren: './payments/payments.module#PaymentsModule'},
+            { path: 'send-message', loadChildren: './send-message/send-message.module#SendMessageModule'},
             { path: 'charts', loadChildren: './charts/charts.module#ChartsModule' },
             { path: 'tables', loadChildren: './tables/tables.module#TablesModule' },
             { path: 'forms', loadChildren: './form/form.module#FormModule' },
