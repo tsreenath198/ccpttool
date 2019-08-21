@@ -9,7 +9,7 @@
     <div class="col col-xl-12 col-lg-12" *ngIf="interviewsToday.length != 0">
       <div class="card mb-3">
         <div class="card-header bg-dark text-clr-white">Interviews this week</div>
-        <div class="">
+        <div class="card-body">
           <table class="table table-sm">
             <thead>
               <tr>
@@ -44,7 +44,7 @@
     <div class="col-4">
       <div class="card mb-3">
         <div class="card-header bg-dark text-clr-white">Open Client Positions</div>
-        <div class="">
+        <div class="card-body">
           <table class="table table-sm">
             <thead>
               <tr>
@@ -86,15 +86,15 @@
         </div>
       </div>
     </div> -->
-    <div class="col-8">
+    <div class="col-4">
       <div class="card mb-3">
         <div class="card-header bg-dark text-clr-white">
           Active Client Applications
         </div>
         <div class="card-body">
-          <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
-            [legend]="barChartLegend" [colors]="barChartColors" [chartType]="barChartType" (chartHover)="chartHovered($event)"
-            (chartClick)="chartClicked($event)">
+          <canvas baseChart width="100" height="100" [datasets]="barChartData" [labels]="barChartLabels"
+            [options]="barChartOptions" [legend]="barChartLegend" [colors]="barChartColors" [chartType]="barChartType"
+            (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)">
           </canvas>
         </div>
       </div>
@@ -113,7 +113,7 @@
             </select>
           </span>
         </div>
-        <div *ngIf="ccptReportCOCH.length != 0" class="">
+        <div *ngIf="ccptReportCOCH.length != 0" class="card-body">
           <table class="table table-sm ">
             <thead>
               <tr>
@@ -144,7 +144,7 @@
             </select>
           </span>
         </div>
-        <div *ngIf="ccptReportCLCH.length != 0" class="">
+        <div *ngIf="ccptReportCLCH.length != 0" class="card-body">
           <table class="table table-sm">
             <thead>
               <tr>
@@ -174,7 +174,7 @@
             </select>
           </span>
         </div>
-        <div *ngIf="(ccptReportCC | json) != ({} | json) " class="">
+        <div *ngIf="(ccptReportCC | json) != ({} | json) " class="card-body">
           <table class="table table-sm">
             <thead>
               <tr>
