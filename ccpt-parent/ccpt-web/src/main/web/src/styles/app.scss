@@ -25,7 +25,15 @@ td {
     }
   }
 }
-
+table{
+  tbody{
+    tr{
+      td.click-data{
+          cursor: pointer;
+      }
+    }
+  }
+}
 .justify-content-center {
   display: flex !important;
   justify-content: center !important;
