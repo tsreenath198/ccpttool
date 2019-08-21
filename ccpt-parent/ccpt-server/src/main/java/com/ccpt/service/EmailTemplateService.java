@@ -277,10 +277,9 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 				data = data.concat(StrSubstitutor.replace(sbPara.toString(), valuesMap));
 			}
 			String temp = new StringBuilder().append("<p>Hi <strong>").append(ccName).append("</strong>,</p>")
-					.append("<p>").append("<p>").toString().concat(data);
-			String finalData = temp.concat(new StringBuilder().append("<p>")
-					.append("Please review & Confirm the interview scheduled mentioned above ").append("<p>")
-					.toString());
+					.append("Please review & confirm the interview scheduled mentioned below ").append("<p>")
+					.append("<p>").toString().concat(data);
+			String finalData = temp.concat(new StringBuilder().append("<p>").append("<p>").toString());
 			emailContent.setBody(finalData.concat(JobDescriptionSubstitutor.getSign(body)));
 			emailContent.setSubject("Interview Scheduled Details");
 			return emailContent;
