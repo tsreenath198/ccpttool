@@ -160,7 +160,9 @@
               </tr>
               <tr *ngIf="model.requiredSkills">
                 <th>Required Skills</th>
-                <td>{{ model.requiredSkills }}</td>
+                <td>
+                    <p [innerHTML]="model.requiredSkills"></p>
+                  </td>
               </tr>
               <tr *ngIf="model.description">
                 <th>Description</th>
