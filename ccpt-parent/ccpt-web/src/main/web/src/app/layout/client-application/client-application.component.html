@@ -55,7 +55,7 @@
                   </label>
                 </div>
               </td>
-              <td  container="body" [autoClose]="'outside'" [ngbPopover]="popContent" [popoverTitle]="popTitle" >
+              <td  container="body" class="click-data" [autoClose]="'outside'" [ngbPopover]="popContent" [popoverTitle]="popTitle" >
                       {{ cal.consultant.fullname }}
               </td>
               <td (click)="setModel(cal.id)">{{ cal.clientPosition.generatedCode }}</td>
