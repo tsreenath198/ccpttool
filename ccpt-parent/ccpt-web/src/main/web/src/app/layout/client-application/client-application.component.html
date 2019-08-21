@@ -13,13 +13,17 @@
         <div class="col-md-6"><input type="text" class="form-control" placeholder="search..."
             [(ngModel)]="currSearchTxt" /></div>
 
-        <div class="col-md-6" *ngIf="currSearchTxt.length > 0">
-          <b>Filtered list count:{{ (clientApplicationList | filter: currSearchTxt).length }}</b>
-        </div>
-        <div class="col-md-6" *ngIf=" appIds.length > 0">
-          <button type="button" class="btn btn-secondary ml-2" (click)="sendIds(appIds ,sendMailContent)">
-            Send Mail
-          </button>
+        <div class="col-md-6" >
+          <b class="pull-left"  *ngIf="currSearchTxt.length > 0">Filtered list count:{{ (clientApplicationList | filter: currSearchTxt).length }}</b>
+          <span class="pull-right" *ngIf=" appIds.length > 0">
+              <div class="dropdown theme-dropdown clearfix" placement="bottom-right" ngbDropdown>
+                <i class="fa fa-bars" ngbDropdownToggle></i>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenu1" ngbDropdownMenu>
+                  <a class="dropdown-item drop-list" (click)="sendIds(appIds ,sendMailContent,'shortlistedCandidates')">Email Shortlisted Candidates</a>
+                  <a class="dropdown-item drop-list" (click)="sendIds(appIds ,sendMailContent,'interviewSchedule')">Email Interview Schedule</a>
+                </div>
+              </div>
+            </span>
         </div>
       </div>
       <div class="table-responsive mt-2 table-wrapper-scroll-y my-custom-scrollbar" [style.height.px]="screenHeight">
@@ -55,16 +59,18 @@
                   </label>
                 </div>
               </td>
-              <td  container="body" class="click-data" [autoClose]="'outside'" [ngbPopover]="popContent" [popoverTitle]="popTitle" >
+              <td  container="body" class="click-data" [autoClose]="'outside'" [ngbPopover]="popContent1" [popoverTitle]="popTitle1" >
                       {{ cal.consultant.fullname }}
               </td>
-              <td (click)="setModel(cal.id)">{{ cal.clientPosition.generatedCode }}</td>
+              <td container="body" class="click-data" [autoClose]="'outside'" [ngbPopover]="popContent2" [popoverTitle]="popTitle2">{{ cal.clientPosition.generatedCode }}</td>
 
               <td (click)="setModel(cal.id)">{{ cal.status.code }}</td>
               <td (click)="setModel(cal.id)">{{ cal.creator.fullname }}</td>
               
-                <ng-template #popContent>{{cal.consultant.phone}}<br>{{cal.consultant.email}}</ng-template>
-                <ng-template #popTitle><b>Consultant Details</b></ng-template>
+                <ng-template #popContent1>{{cal.consultant.phone}}<br>{{cal.consultant.email}}</ng-template>
+                <ng-template #popTitle1><b>Consultant Details</b></ng-template>
+                <ng-template #popContent2>{{cal.clientPosition.client.phone}}<br>{{cal.clientPosition.client.email}}</ng-template>
+                <ng-template #popTitle2><b>Client Details</b></ng-template>
               <!-- <td width="140">
                   <app-action [trashContent]="trashContent" [uploadContent]="uploadContent"
                   [downloadContent]="downloadContent" [id]="cal.id" [isTrash]="trash" [isUpload]="upload"
@@ -308,6 +314,15 @@
                         <span class="glyphicon glyphicon-th"></span>
                       </div>
                     </div>
+                    
+                    <div class="col-md-6">
+                        <label class="pt-2">Online Id</label>
+                        <input class="form-control" name="onlineId" [readonly]="readOnlyForm == 'R'"
+                          [(ngModel)]="model.onlineId" />
+                        <div class="input-group-addon">
+                          <span class="glyphicon glyphicon-th"></span>
+                        </div>
+                      </div>
                   </div>
                 </div>
               </div>

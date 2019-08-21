@@ -117,6 +117,7 @@ export class URLConstants {
     EmailTemplateBuildContent = 'template/build/';
     EmailTemplateSend = 'sendEmail';
     EmailGetClientApps = 'template/getClientApps';
+    EmailGetShortlistCA = 'template/getShortListedCA'
     GetInterviewDetailsEmail = 'template/getInterviewTemplate'
 
     /**SMS template */

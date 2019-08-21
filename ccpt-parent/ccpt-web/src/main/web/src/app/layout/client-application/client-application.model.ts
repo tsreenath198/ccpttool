@@ -13,6 +13,7 @@ export interface ClientApplicationModel {
     interviewMode: string;
     sentOn: string;
     files: Array<any>;
+    onlineId: string;
     properties: Array<AdditionalPropertiesModel>;
 }
 export class ActionsList {

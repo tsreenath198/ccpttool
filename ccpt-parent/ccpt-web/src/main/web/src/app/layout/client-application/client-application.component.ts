@@ -267,9 +267,15 @@ export class ClientApplicationComponent implements OnInit {
       })
     }
   }
-  sendIds(Ids: any, sendMailContent: any) {
+  sendIds(Ids: any, sendMailContent: any, type: any) {
     this.spinner(false);
-    const temp = this.http.post(Ids, this.urlConstants.EmailGetClientApps);
+    let temp;
+    if(type == 'interviewSchedule'){
+      temp = this.http.post(Ids, this.urlConstants.EmailGetShortlistCA);
+    }
+    else if(type == 'shortlistedCandidates'){
+      temp = this.http.post(Ids, this.urlConstants.EmailGetClientApps);
+    }
     temp.subscribe(resp => {
       this.sendEmailModel = resp as any;
       this.spinner(true);
