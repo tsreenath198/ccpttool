@@ -4,6 +4,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.temporal.TemporalAdjusters;
 import java.util.Calendar;
 import java.util.Date;
@@ -14,26 +15,39 @@ import com.ccpt.model.Day;
 public class DateUtil {
 	public static Day getDays(Integer days) throws ParseException {
 		Day day = new Day();
-		Date date;
 		LocalDate localDate = LocalDate.now();
 		switch (days) {
 		case 1:
-			java.util.Date utilDate = calenderToDate();
-			day.setStartDate(utilDate);
+			day.setStartDate(calenderToDate());
 			break;
 		case 7:
-			date = strToDate(localDate.with(TemporalAdjusters.previous(DayOfWeek.MONDAY)).toString());
-			day.setStartDate(date);
+			day.setStartDate(strToDate(localDate.with(TemporalAdjusters.previous(DayOfWeek.MONDAY)).toString()));
 			break;
 		case 30:
-			date = strToDate(localDate.withDayOfMonth(1).toString());
-			day.setStartDate(date);
+			day.setStartDate(strToDate(localDate.withDayOfMonth(1).toString()));
 			break;
 		case 365:
-			date = strToDate(localDate.withDayOfYear(1).toString());
-			day.setStartDate(date);
+			day.setStartDate(strToDate(localDate.withDayOfYear(1).toString()));
 			break;
 
+		}
+		day.setEndDate(new Date());
+		return day;
+	}
+
+	public static Day getLastDays(Integer days) throws ParseException {
+		Day day = new Day();
+		LocalDate today = LocalDate.now();
+		switch (days) {
+		case 7:
+			day.setStartDate(Date.from(today.plusDays(-7).atStartOfDay(ZoneId.systemDefault()).toInstant()));
+			break;
+		case 30:
+			day.setStartDate(Date.from(today.plusDays(-30).atStartOfDay(ZoneId.systemDefault()).toInstant()));
+			break;
+		case 365:
+			day.setStartDate(Date.from(today.plusDays(-365).atStartOfDay(ZoneId.systemDefault()).toInstant()));
+			break;
 		}
 		day.setEndDate(new Date());
 		return day;
