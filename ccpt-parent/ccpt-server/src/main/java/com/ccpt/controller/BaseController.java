@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ccpt.dto.BaseEntityDTO;
@@ -27,8 +28,9 @@ public abstract class BaseController<DTO extends BaseEntityDTO<ID>, MODEL extend
 
 	@GetMapping(GET_ALL)
 	@ResponseBody
-	List<MODEL> getAll() {
-		return getService().getAll();
+	List<MODEL> getAll(@RequestParam(defaultValue = "0") Integer pageNo,
+			@RequestParam(defaultValue = "100") Integer pageSize, @RequestParam(defaultValue = "id") String sortBy) {
+		return getService().getAll(pageNo, pageSize, sortBy);
 	}
 
 	@GetMapping(ID_PARAM)
