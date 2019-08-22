@@ -12,7 +12,7 @@ public interface ClientPositionRepository extends BaseRepository<ClientPosition,
 
 	List<ClientPosition> findTop5ByActiveFlagAllIgnoreCaseOrderByIdDesc(Boolean activeFlag);
 
-	@Query("SELECT t1 FROM ClientPosition t1 WHERE t1.id NOT IN (SELECT distinct t2.clientPosition.id FROM ClientApplication t2)")
+	@Query("SELECT t1 FROM ClientPosition t1 WHERE t1.id NOT IN (SELECT distinct t2.clientPosition.id FROM ClientApplication t2) AND t1.status='Open'")
 	List<ClientPosition> getAllOpenCP();
 
 	void deleteByClientId(Integer clientId);
