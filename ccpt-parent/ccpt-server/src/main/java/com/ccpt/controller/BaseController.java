@@ -1,9 +1,8 @@
 package com.ccpt.controller;
 
+import static com.ccpt.constants.CCPTConstants.ACTIVATE_ID_PARAM;
 import static com.ccpt.constants.CCPTConstants.GET_ALL;
 import static com.ccpt.constants.CCPTConstants.ID_PARAM;
-import static com.ccpt.constants.CCPTConstants.ACTIVATE_ID_PARAM;
-import java.util.List;
 
 import javax.validation.Valid;
 
@@ -22,13 +21,14 @@ import com.ccpt.dto.BaseEntityDTO;
 import com.ccpt.dto.GenericResponse;
 import com.ccpt.mapper.BaseMapper;
 import com.ccpt.model.BaseEntity;
+import com.ccpt.model.BaseReturn;
 import com.ccpt.service.BaseService;
 
 public abstract class BaseController<DTO extends BaseEntityDTO<ID>, MODEL extends BaseEntity<ID>, ID> {
 
 	@GetMapping(GET_ALL)
 	@ResponseBody
-	List<MODEL> getAll(@RequestParam(defaultValue = "0") Integer pageNo,
+	BaseReturn getAll(@RequestParam(defaultValue = "0") Integer pageNo,
 			@RequestParam(defaultValue = "100") Integer pageSize, @RequestParam(defaultValue = "id") String sortBy) {
 		return getService().getAll(pageNo, pageSize, sortBy);
 	}

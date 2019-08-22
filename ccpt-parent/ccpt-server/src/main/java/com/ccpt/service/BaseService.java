@@ -8,6 +8,7 @@ import javax.persistence.EntityNotFoundException;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -15,6 +16,7 @@ import org.springframework.util.CollectionUtils;
 
 import com.ccpt.model.AdditionalProperty;
 import com.ccpt.model.BaseEntity;
+import com.ccpt.model.BaseReturn;
 import com.ccpt.model.FileSupportEntity;
 import com.ccpt.model.IDEntity;
 import com.ccpt.model.UploadFile;
@@ -35,9 +37,13 @@ public abstract class BaseService<T extends BaseEntity<ID>, ID> {
 		this.ENTITY = entity;
 	}
 
-	public List<T> getAll(Integer pageNo, Integer pageSize, String sortBy) {
+	public BaseReturn getAll(Integer pageNo, Integer pageSize, String sortBy) {
+		BaseReturn returnObj = new BaseReturn();
 		Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
-		return getRepository().findByActiveFlagAllIgnoreCaseOrderByCreatedDateDesc(true, paging);
+		Page<T> p = getRepository().findByActiveFlagAllIgnoreCaseOrderByCreatedDateDesc(true, paging);
+		returnObj.setNoOfRecords(p.getTotalElements());
+		returnObj.setList(p.getContent());
+		return returnObj;
 	}
 
 	public T get(ID id) {
