@@ -1,5 +1,6 @@
 package com.ccpt.service;
 
+import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 
@@ -41,6 +42,10 @@ public class ClientPositionService extends BaseService<ClientPosition, Integer> 
 
 	public List<ClientPosition> getAllOpenCP() {
 		return clientPositionRepository.getAllOpenCP();
+	}
+
+	public List<ClientPosition> getLastWeekDyingCP(Integer days) throws ParseException {
+		return clientPositionRepository.getLastWeekDyingCP(days);
 	}
 
 	@Override

@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -36,6 +37,9 @@ public class ReportController {
 	@Autowired
 	private ClientPositionService clientPositionService;
 
+	@Value("${cp.dying.days}")
+	private Integer days;
+
 	@GetMapping("getAllClientCallHistorysByDays")
 	public ResponseEntity<List<ClientCallHistory>> getAllClientCallHistorysByDays(@RequestParam Integer days)
 			throws ParseException {
@@ -56,8 +60,8 @@ public class ReportController {
 	}
 
 	@GetMapping("getClosedCountOfAllRecruitersFromLastGivenDays")
-	public ResponseEntity<Map<String, Long>> getClosedCountOfAllRecruitersFromLastGivenDays(
-			@RequestParam Integer days) throws ParseException {
+	public ResponseEntity<Map<String, Long>> getClosedCountOfAllRecruitersFromLastGivenDays(@RequestParam Integer days)
+			throws ParseException {
 		Map<String, Long> map = new HashMap<>();
 		List<Object[]> results = consultantCallHistoryService.getClosedCountOfAllRecruitersFromLastGivenDays(days);
 		for (Object[] object : results) {
@@ -76,6 +80,12 @@ public class ReportController {
 	@GetMapping("getAllOpenCP")
 	public ResponseEntity<List<ClientPosition>> getAllOpenCP() {
 		List<ClientPosition> clientPositionList = clientPositionService.getAllOpenCP();
+		return new ResponseEntity<List<ClientPosition>>(clientPositionList, HttpStatus.OK);
+	}
+
+	@GetMapping("getLastWeekDyingCP")
+	public ResponseEntity<List<ClientPosition>> getLastWeekDyingCP() throws ParseException {
+		List<ClientPosition> clientPositionList = clientPositionService.getLastWeekDyingCP(7);
 		return new ResponseEntity<List<ClientPosition>>(clientPositionList, HttpStatus.OK);
 	}
 
