@@ -51,6 +51,7 @@
                 <th>Client</th>
                 <th>Code</th>
                 <th>Date</th>
+                <th>Assigned</th>
               </tr>
             </thead>
             <tbody>
@@ -58,6 +59,7 @@
                 <td>{{ ocp.client.name }}</td>
                 <td>{{ ocp.generatedCode }}</td>
                 <td>{{ ocp.createdDate | date }}</td>
+                <td>{{ ocp.assignedTo.aliasName }}</td>
               </tr>
             </tbody>
           </table>
@@ -91,8 +93,8 @@
         <div class="card-header bg-dark text-clr-white">
           Active Client Applications
         </div>
-        <div class="card-body">
-          <canvas baseChart   [datasets]="barChartData" [labels]="barChartLabels"
+        <div class="card-body" >
+          <canvas baseChart id="activeCAChart" height="315" [datasets]="barChartData" [labels]="barChartLabels"
             [options]="barChartOptions" [legend]="barChartLegend" [colors]="barChartColors" [chartType]="barChartType"
             (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)">
           </canvas>
@@ -175,7 +177,7 @@
           </span>
         </div>
         <div *ngIf="(ccptReportCC | json) != ({} | json) " class="card-body">
-          <table class="table table-sm">
+<!--  -->          <table class="table table-sm">
             <thead>
               <tr>
                 <th>Recruiter</th>

@@ -3,7 +3,6 @@ import { HttpClientService } from 'src/app/shared/services/http.service';
 import { ToastrCustomService } from 'src/app/shared/services/toastr.service';
 import { URLConstants } from '../components/constants/url-constants';
 import { routerTransition } from '../../router.animations';
-import { ClientPositionModel } from '../client-position/client-position.model';
 import { forkJoin } from 'rxjs';
 import { NgbModal, ModalDismissReasons, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { Keyvalue } from '../modals/action';
@@ -38,6 +37,7 @@ export class DashboardComponent implements OnInit {
     public cochChoosenDays: any = 7;
     public clchChoosenDays: any = 7;
     public listReturned: boolean = false;
+    public chartHeight: any;
     /** Template references */
 
     @ViewChild('contentACA')
@@ -72,7 +72,6 @@ export class DashboardComponent implements OnInit {
                   beginAtZero: true,
                   steps : 2,
                   stepValue : 2,
-                  max:10
                 }
               }
             ],
@@ -94,7 +93,7 @@ export class DashboardComponent implements OnInit {
     public barChartLabels: string[] = [
     ];
     public barChartType: string = 'horizontalBar';
-    public barChartLegend: boolean = true;
+    public barChartLegend: boolean = false;
 
     public barChartData: any[] = [
         { data: [], label: 'Active Client Applications', cpIds: [] }
@@ -245,6 +244,7 @@ export class DashboardComponent implements OnInit {
             this.barChartData[0].data.push("" + ca.count);
             this.barChartData[0].cpIds.push("" + ca.cpId);
         })
+        this.chartHeight = 35 * this.activeCA.length;
     }
     /**
      * @param event eventdata

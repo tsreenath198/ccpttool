@@ -645,4 +645,8 @@ export class ClientApplicationComponent implements OnInit {
       this.spinner(true);
     });
   }
+  pageChanged(event){
+    this.page = event
+    console.log(this.page);
+  }
 }
