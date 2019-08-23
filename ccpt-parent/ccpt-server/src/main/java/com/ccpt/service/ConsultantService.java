@@ -58,4 +58,8 @@ public class ConsultantService extends BaseService<Consultant, Integer> {
 		return consultantRepository.getAllConsultants();
 	}
 
+	public List<Consultant> search(String searchKey) {
+		return consultantRepository.search(searchKey);
+	}
+
 }

@@ -97,4 +97,8 @@ public class ClientApplicationService extends BaseService<ClientApplication, Int
 		return listOfCAStatistics;
 	}
 
+	public List<ClientApplication> search(Integer clientId) {
+		return clientApplicationRepository.search(clientId);
+	}
+
 }

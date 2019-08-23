@@ -96,6 +96,13 @@ public class ClientApplicationController extends BaseController<ClientApplicatio
 
 	}
 
+	@GetMapping("/search")
+	public ResponseEntity<List<ClientApplication>> search(@RequestParam Integer clientId) {
+		List<ClientApplication> result = clientApplicationService.search(clientId);
+		return new ResponseEntity<List<ClientApplication>>(result, HttpStatus.OK);
+
+	}
+
 	@Override
 	protected void validateAndClean(ClientApplication model) {
 		if (model.getClientPosition() == null || model.getClientPosition().getId() == null) {

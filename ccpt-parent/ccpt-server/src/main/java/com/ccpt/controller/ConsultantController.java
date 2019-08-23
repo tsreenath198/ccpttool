@@ -14,6 +14,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.ccpt.constants.CCPTConstants;
 import com.ccpt.dto.ConsultantDTO;
@@ -49,6 +50,13 @@ public class ConsultantController extends BaseController<ConsultantDTO, Consulta
 	public ResponseEntity<List<ConsultantStatistics>> getAllConsultants() {
 		List<ConsultantStatistics> result = consultantService.getAllConsultants();
 		return new ResponseEntity<List<ConsultantStatistics>>(result, HttpStatus.OK);
+
+	}
+
+	@GetMapping("/search")
+	public ResponseEntity<List<Consultant>> search(@RequestParam String searchKey) {
+		List<Consultant> result = consultantService.search(searchKey);
+		return new ResponseEntity<List<Consultant>>(result, HttpStatus.OK);
 
 	}
 

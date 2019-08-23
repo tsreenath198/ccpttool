@@ -31,4 +31,7 @@ public interface ClientApplicationRepository extends BaseRepository<ClientApplic
 	@Query(value = "SELECT * FROM Client_Application WHERE active_flag=1 AND status_code='Job Confirmed' ORDER BY created_date ASC", nativeQuery = true)
 	List<ClientApplication> getJobConfirmedCAs();
 
+	@Query("SELECT c FROM ClientApplication c WHERE c.clientPosition.client.id=:clientId ")
+	List<ClientApplication> search(@Param("clientId") Integer clientId);
+
 }
