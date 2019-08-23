@@ -75,7 +75,7 @@ export class ClientApplicationComponent implements OnInit {
   public setPaymentWebsite: boolean = false;
   public setPaymentBA: boolean = false;
   public caForm: NgForm;
-
+  public paginateConfig :any;
   public sendEmailModel: SendEmailModel = <SendEmailModel>{};
   public sendSmsModel: SendSmsModel = <SendSmsModel>{};
   public config: AngularEditorConfig = {
@@ -85,7 +85,6 @@ export class ClientApplicationComponent implements OnInit {
     minHeight: '5rem',
     translate: 'no'
   };
-
   private getAllCAS = this.http.get(this.urlConstants.CASGetAll);
   private getAllC = this.http.get(this.urlConstants.CDropdown);
   private getAllCP = this.http.get(this.urlConstants.CPDropdown);
@@ -135,6 +134,7 @@ export class ClientApplicationComponent implements OnInit {
       this.spinner(true);
     });
   }
+  
   private getAllDropdowns() {
     forkJoin(
       this.getAllCAS,

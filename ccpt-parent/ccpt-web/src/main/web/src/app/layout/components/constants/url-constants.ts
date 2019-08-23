@@ -1,7 +1,7 @@
 export class URLConstants {
     /*Client Application Status*/
     CASCreate = 'caStatus';
-    CASGetAll = 'caStatus/';
+    CASGetAll = 'caStatus/?pageNo=';
     CASUpdate = 'caStatus';
     CASDelete = 'caStatus/';
     CASGetById = 'caStatus/';
@@ -107,6 +107,7 @@ export class URLConstants {
     ReportingGetAllActiveCA = 'clientApplication/getAllActiveCACountByCpID';
     ReportingGetAllActiveCAById = 'clientApplication/getAllActiveCAByCpID?cpId=';
     ReportingGetAllInterviewsToday = 'clientApplication/getAllInterviewsFromToday';
+    ReportingDyingCp = 'report/getLastWeekDyingCP'
 
     /**Email Template */
     EmailTemplateCreate = 'template';

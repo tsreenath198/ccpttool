@@ -58,7 +58,7 @@
               <tr *ngFor="let ocp of openCP">
                 <td>{{ ocp.client.name }}</td>
                 <td>{{ ocp.generatedCode }}</td>
-                <td>{{ ocp.createdDate | date }}</td>
+                <td width=100>{{ ocp.createdDate |date: 'dd-MM-yy'}}</td>
                 <td>{{ ocp.assignedTo.aliasName }}</td>
               </tr>
             </tbody>
