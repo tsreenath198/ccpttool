@@ -6,9 +6,10 @@ import { PageHeaderModule, SharedPipesModule, ActionListModule } from '../../sha
 import { UsersRoutingModule } from './users-routing.module';
 import { UsersComponent } from './users.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @NgModule({
-    imports: [CommonModule, UsersRoutingModule, FormsModule, PageHeaderModule,SharedPipesModule,ActionListModule,NgbModule],
+    imports: [CommonModule,NgxPaginationModule, UsersRoutingModule, FormsModule, PageHeaderModule,SharedPipesModule,ActionListModule,NgbModule],
     declarations: [UsersComponent]
 })
 export class UsersModule {}

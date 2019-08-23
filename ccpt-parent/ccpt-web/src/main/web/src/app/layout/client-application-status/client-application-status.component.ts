@@ -18,7 +18,7 @@ import { Router } from '@angular/router';
 })
 export class ClientApplicationStatusComponent implements OnInit {
     public model: ClientApplicationStatusModel = <ClientApplicationStatusModel>{};
-    public clientApplicationStatusList: Array<ClientApplicationStatusModel> = [];
+    public clientApplicationStatusList: any = [];
     private urlConstants = new URLConstants();
     public properties = new Properties();
     public readOnlyForm = '';
@@ -33,6 +33,11 @@ export class ClientApplicationStatusComponent implements OnInit {
     public action: string = null;
     public screenHeight: any;
     public listReturned: boolean;
+    public paginateConfig :any={
+        itemsPerPage: this.properties.ITEMSPERPAGE,
+        currentPage: 1,
+        totalItems: 0
+    }
     constructor(private http: HttpClientService, private toastr: ToastrCustomService, private modalService: NgbModal, private router: Router) {
         this.getScreenSize();
     }
@@ -46,14 +51,25 @@ export class ClientApplicationStatusComponent implements OnInit {
             this.router.navigate(['/login']);
         }
         this.init();
+        this.initialGetAll(); 
+        this.spinner(true);
     }
     init() {
-        this.spinner(false);
-        this.http.get(this.urlConstants.CASGetAll).subscribe(resp => {
-            this.clientApplicationStatusList = resp as any;
-            this.spinner(true);
-        });
+        // this.spinner(false);
+        // this.http.get(this.urlConstants.CASGetAll).subscribe(resp => {
+        //     this.clientApplicationStatusList = resp as any;
+        //     this.spinner(true);
+        // });
     }
+    public initialGetAll(){
+        let pageNumber = this.paginateConfig.currentPage-1
+        let temp=this.http.get(this.urlConstants.CASGetAll+ pageNumber + "&pageSize=20&sortBy=id");
+        temp.subscribe(resp => {
+          this.clientApplicationStatusList = resp as any;
+          //this.pageChange(this.page);
+          this.paginateConfig.totalItems = this.clientApplicationStatusList.noOfRecords
+        });
+      }
     /**
      * @param data consists the  table current selected row data
      */
@@ -105,6 +121,8 @@ export class ClientApplicationStatusComponent implements OnInit {
             this.init();
             this.formReset();
             CASForm.resetForm();
+            this.paginateConfig.currentPage=1;
+            this.initialGetAll();
             this.spinner(true);
             this.isCreate = false;
         }, err => {
@@ -191,4 +209,8 @@ export class ClientApplicationStatusComponent implements OnInit {
     private spinner(isSpinner: boolean) {
         this.listReturned = isSpinner;
     }
+    pageChanged(event){
+        this.paginateConfig.currentPage = event
+        this.initialGetAll();
+      }
 }

@@ -37,7 +37,11 @@ export class SearchBankComponent implements OnInit {
     public apName = '';
     public apValue = '';
     private modalRef: NgbModalRef;
-
+    public paginateConfig :any={
+        itemsPerPage: this.properties.ITEMSPERPAGE,
+        currentPage: 1,
+        totalItems: 0
+      }
     constructor(private http: HttpClientService, private router: Router , private toastr: ToastrCustomService, private modalService: NgbModal) {
         this.getScreenSize();
     }
@@ -51,15 +55,26 @@ export class SearchBankComponent implements OnInit {
             this.router.navigate(['/login']);
         }
         this.init();
+        this.initialGetAll(); 
+        this.spinner(true);
     }
     private init() {
-        this.spinner(false);
-        this.http.get(this.urlConstants.SearchGetAll).subscribe(resp => {
-            this.sbList = resp as any;
-            this.spinner(true);
-        });
+        // this.spinner(false);
+        // this.http.get(this.urlConstants.SearchGetAll).subscribe(resp => {
+        //     this.sbList = resp as any;
+        //     this.spinner(true);
+        // });
         this.model.properties = [];
     }
+    public initialGetAll(){
+        let pageNumber = this.paginateConfig.currentPage-1
+        let temp=this.http.get(this.urlConstants.SearchGetAll+ pageNumber + "&pageSize=20&sortBy=id");
+        temp.subscribe(resp => {
+          this.sbList = resp as any;
+          //this.pageChange(this.page);
+          this.paginateConfig.totalItems = this.sbList.noOfRecords
+        });
+      }
     public enableFormEditable(): void {
         this.readOnlyForm = '';
         //this.config.editable = true;
@@ -137,6 +152,8 @@ export class SearchBankComponent implements OnInit {
             this.init();
             this.formReset();
             searchBankForm.resetForm();
+            this.paginateConfig.currentPage=1;
+            this.initialGetAll();
             this.isCreate = false;
             this.spinner(true);
         }, err => {
@@ -217,4 +234,8 @@ export class SearchBankComponent implements OnInit {
     private spinner(isSpinner: boolean) {
         this.listReturned = isSpinner;
     }
+    pageChanged(event){
+        this.paginateConfig.currentPage = event
+        this.initialGetAll();
+      }
 }

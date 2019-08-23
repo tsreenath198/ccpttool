@@ -22,7 +22,7 @@
           </thead>
           <tbody>
             <tr
-              *ngFor="let sbl of sbList | filter: currSearchTxt; let i = index"
+              *ngFor="let sbl of sbList.list | paginate: paginateConfig; let i = index"
               (click)="setModel(sbl.id)"
             >
               <td>
@@ -31,6 +31,9 @@
             </tr>
           </tbody>
         </table>
+      </div>
+      <div class="col-12 justify-content-center mb-5" *ngIf="sbList.noOfRecords > properties.ITEMSPERPAGE">
+        <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
       </div>
     </div>
     <div class=" col-md-5">

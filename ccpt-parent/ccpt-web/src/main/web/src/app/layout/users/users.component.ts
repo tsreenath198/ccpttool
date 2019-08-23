@@ -18,12 +18,12 @@ import { Properties } from '../components/constants/properties';
 })
 export class UsersComponent implements OnInit {
     public model: UsersModel = <UsersModel>{};
-    public usersList: Array<UsersModel> = [];
+    public usersList: any = [];
     private urlConstants = new URLConstants();
     private properties = new Properties();
     public rolesModel = new UserRoles();
     public rolesList: any = [];
-    public getAllR: any;
+    public getAllR: any=[];
     public readOnlyForm = '';
     public enableButtonType = '';
     public currSearchTxt = '';
@@ -39,7 +39,11 @@ export class UsersComponent implements OnInit {
     public screenHeight: any;
     public viewPassword: boolean;
     public listReturned: boolean;
-
+    public paginateConfig :any={
+        itemsPerPage: this.properties.ITEMSPERPAGE,
+        currentPage: 1,
+        totalItems: 0
+      }
     constructor(private http: HttpClientService, private router: Router, private toastr: ToastrCustomService, private modalService: NgbModal,
         private el: ElementRef) {
         this.getScreenSize();
@@ -54,21 +58,32 @@ export class UsersComponent implements OnInit {
         if (!this.http.isAuthenticate()) {
             this.router.navigate(['/login']);
         }
-        this.http.get(this.urlConstants.RGetAll).subscribe(resp => {
+        this.http.get(this.urlConstants.RGetAll+ "0&pageSize=20000&sortBy=id").subscribe(resp => {
             this.getAllR = resp as any;
         });
         this.init();
+        this.initialGetAll(); 
+        this.spinner(true);
         this.rolesList = this.rolesModel.roles;
         this.viewPassword = false;
     }
     private init() {
-        this.spinner(false);
-        this.http.get(this.urlConstants.UserGetAll).subscribe(resp => {
-            this.usersList = resp as any;
-            this.spinner(true);
-        });
+        // this.spinner(false);
+        // this.http.get(this.urlConstants.UserGetAll).subscribe(resp => {
+        //     this.usersList = resp as any;
+        //     this.spinner(true);
+        // });
         this.model.properties = [];
     }
+    public initialGetAll(){
+        let pageNumber = this.paginateConfig.currentPage-1
+        let temp=this.http.get(this.urlConstants.UserGetAll+ pageNumber + "&pageSize=20&sortBy=id");
+        temp.subscribe(resp => {
+          this.usersList = resp as any;
+          //this.pageChange(this.page);
+          this.paginateConfig.totalItems = this.usersList.noOfRecords
+        });
+      }
     public dblSetModel() {
         this.readOnlyForm = 'U';
         this.enableButtonType = 'U';
@@ -174,6 +189,8 @@ export class UsersComponent implements OnInit {
             this.toastr.success(this.properties.CREATE, this.properties.USER);
             usersForm.resetForm();
             this.init();
+            this.paginateConfig.currentPage=1;
+            this.initialGetAll();
             this.isCreate = false;
             this.spinner(true);
         }, err => {

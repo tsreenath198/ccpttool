@@ -27,6 +27,7 @@ export class DashboardComponent implements OnInit {
     public top5ById: any = {};
     public ccptReportCPL: Array<any> = [];
     public openCP: Array<any> = [];
+    public dyingCP: Array<any> = [];
     public activeCA: Array<any> = [];
     public activeCAById: Array<any> = [];
     public cochByIdList: Array<any> = [];
@@ -61,7 +62,7 @@ export class DashboardComponent implements OnInit {
     public getAllOpenCP = this.http.get(this.urlConstants.ReportingGetAllOpenCP);
     public getAllActiveCA = this.http.get(this.urlConstants.ReportingGetAllActiveCA);
     public getAllInterviewsToday = this.http.get(this.urlConstants.ReportingGetAllInterviewsToday);
-
+    public getAllDyingCP = this.http.get(this.urlConstants.ReportingDyingCp);
     public barChartOptions: any = {
         scaleShowVerticalLines: false,
         responsive: true,
@@ -122,7 +123,8 @@ export class DashboardComponent implements OnInit {
             this.getAllReportCC,
             this.getAllOpenCP,
             this.getAllActiveCA,
-            this.getAllInterviewsToday
+            this.getAllInterviewsToday,
+            this.getAllDyingCP
         ).subscribe(listofrecords => {
             this.ccptReportCLCH = listofrecords[0] as any;
             this.ccptReportCOCH = listofrecords[1] as any;
@@ -131,6 +133,7 @@ export class DashboardComponent implements OnInit {
             this.openCP = listofrecords[4] as any;
             this.activeCA = listofrecords[5] as any;
             this.interviewsToday = listofrecords[6] as any;
+            this.dyingCP = listofrecords[7] as any;
             this.spinner(true);
             this.setActiveCPBarData();
         });

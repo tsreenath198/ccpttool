@@ -18,7 +18,7 @@ import { Router } from '@angular/router';
 })
 export class ClientPositionStatusComponent implements OnInit {
     public model: ClientpositionStatusModel = <ClientpositionStatusModel>{};
-    public clientPositionStatusList: Array<ClientpositionStatusModel> = [];
+    public clientPositionStatusList: any = [];
     private urlConstants = new URLConstants();
     private properties = new Properties();
     public formButtonsToggler = true;
@@ -35,7 +35,11 @@ export class ClientPositionStatusComponent implements OnInit {
     public actionsList = new ActionsList();
     public action: string = null;
     public listReturned:boolean;
-
+    public paginateConfig :any={
+        itemsPerPage: this.properties.ITEMSPERPAGE,
+        currentPage: 1,
+        totalItems: 0
+    }
     constructor(private http: HttpClientService, private router: Router, private toastr: ToastrCustomService, private modalService: NgbModal) {
         this.getScreenSize();
     }
@@ -49,6 +53,8 @@ export class ClientPositionStatusComponent implements OnInit {
             this.router.navigate(['/login']);
           }
         this.init();
+        this.initialGetAll(); 
+        this.spinner(true);
     }
     init() {
         this.spinner(false);
@@ -57,6 +63,15 @@ export class ClientPositionStatusComponent implements OnInit {
             this.clientPositionStatusList = resp as Array<ClientpositionStatusModel>;
         });
     }
+    public initialGetAll(){
+        let pageNumber = this.paginateConfig.currentPage-1
+        let temp=this.http.get(this.urlConstants.CPSGetAll+ pageNumber + "&pageSize=20&sortBy=id");
+        temp.subscribe(resp => {
+          this.clientPositionStatusList = resp as any;
+          //this.pageChange(this.page);
+          this.paginateConfig.totalItems = this.clientPositionStatusList.noOfRecords
+        });
+      }
     public dblSetModel() {
         this.readOnlyForm = 'U';
         this.enableButtonType = 'U';
@@ -97,6 +112,8 @@ export class ClientPositionStatusComponent implements OnInit {
             this.init();
             this.formReset();
             this.spinner(true);
+            this.paginateConfig.currentPage=1;
+            this.initialGetAll();
             clientPositionStatusForm.resetForm();
             this.isCreate= false;
         }, err => {
@@ -198,6 +215,10 @@ export class ClientPositionStatusComponent implements OnInit {
     } 
     private spinner(isSpinner: boolean){
         this.listReturned = isSpinner;
+      }
+      pageChanged(event){
+        this.paginateConfig.currentPage = event
+        this.initialGetAll();
       }
 }
 

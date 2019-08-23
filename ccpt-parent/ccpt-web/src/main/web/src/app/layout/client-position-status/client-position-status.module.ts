@@ -6,6 +6,7 @@ import { PageHeaderModule, SharedPipesModule, ActionListModule } from '../../sha
 import { ClientPositionStatusRoutingModule } from './client-position-status-routing.module';
 import { ClientPositionStatusComponent } from './client-position-status.component';
 import { NgbModule, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @NgModule({
     imports: [
@@ -15,7 +16,7 @@ import { NgbModule, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
         PageHeaderModule,
         NgbModule,
         SharedPipesModule,
-        ActionListModule
+        ActionListModule,NgxPaginationModule
     ],
     declarations: [ClientPositionStatusComponent],
     providers: [NgbActiveModal]

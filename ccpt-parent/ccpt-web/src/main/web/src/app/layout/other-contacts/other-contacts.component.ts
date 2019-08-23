@@ -39,7 +39,11 @@ export class OtherContactsComponent implements OnInit {
     public apName = '';
     public apValue = '';
     private modalRef: NgbModalRef;
-
+    public paginateConfig :any={
+        itemsPerPage: this.properties.ITEMSPERPAGE,
+        currentPage: 1,
+        totalItems: 0
+      }
     constructor(private http: HttpClientService, private router: Router, private toastr: ToastrCustomService, private modalService: NgbModal) {
         this.getScreenSize();
     }
@@ -53,20 +57,37 @@ export class OtherContactsComponent implements OnInit {
             this.router.navigate(['/login']);
         }
         this.init();
+        this.initialGetAll(); 
+        this.spinner(true);
     }
-    private init() {
-        this.spinner(false);
-        this.http.get(this.urlConstants.OCGetAll).subscribe(resp => {
-            this.OCList = resp as any;
-            this.OCList.forEach(cl => {
-                if (this.validate(cl.name) || this.validate(cl.email) || this.validate(cl.phone)) {
-                    cl['isProfileCompleted'] = false;
-                } else {
-                    cl['isProfileCompleted'] = true;
-                }
-            });
-            this.spinner(true);
+    public initialGetAll(){
+        let pageNumber = this.paginateConfig.currentPage-1
+        let temp=this.http.get(this.urlConstants.OCGetAll+ pageNumber + "&pageSize=20&sortBy=id");
+        temp.subscribe(resp => {
+          this.OCList = resp as any;
+          this.OCList.list.forEach(cl => {
+            if (this.validate(cl.name) || this.validate(cl.email) || this.validate(cl.phone)) {
+                cl['isProfileCompleted'] = false;
+            } else {
+                cl['isProfileCompleted'] = true;
+            }
         });
+          this.paginateConfig.totalItems = this.OCList.noOfRecords
+        });
+      }
+    private init() {
+        // this.spinner(false);
+        // this.http.get(this.urlConstants.OCGetAll).subscribe(resp => {
+        //     this.OCList = resp as any;
+        //     this.OCList.forEach(cl => {
+        //         if (this.validate(cl.name) || this.validate(cl.email) || this.validate(cl.phone)) {
+        //             cl['isProfileCompleted'] = false;
+        //         } else {
+        //             cl['isProfileCompleted'] = true;
+        //         }
+        //     });
+        //     this.spinner(true);
+        // });
         this.model.properties = [];
         this.model['phone'] = '+91';
     }
@@ -152,6 +173,10 @@ export class OtherContactsComponent implements OnInit {
             this.init();
             this.formReset();
             otherContactForm.resetForm();
+            this.paginateConfig.currentPage=1;
+            this.initialGetAll();
+            this.paginateConfig.currentPage=1;
+            this.initialGetAll();
             this.isCreate = false;
             this.spinner(true);
         }, err => {
@@ -237,4 +262,8 @@ export class OtherContactsComponent implements OnInit {
     private spinner(isSpinner: boolean) {
         this.listReturned = isSpinner;
     }
+    pageChanged(event){
+        this.paginateConfig.currentPage = event
+        this.initialGetAll();
+      }
 }

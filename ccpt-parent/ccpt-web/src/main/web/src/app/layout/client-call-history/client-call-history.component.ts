@@ -20,7 +20,7 @@ import { Router } from '@angular/router';
 })
 export class ClientCallHistoryComponent implements OnInit {
   public model: ClientCallHistoryModel = <ClientCallHistoryModel>{};
-  public clientCallHistoryList: Array<any> = [];
+  public clientCallHistoryList: any = [];
   public clientPositionList: Array<any> = [];
   public clientList: Array<any> = [];
   public recruiterList: Array<any> = [];
@@ -49,8 +49,12 @@ export class ClientCallHistoryComponent implements OnInit {
   public getCplPromise = this.http.get(this.urlConstants.CPDropdown);
   public getClPromise = this.http.get(this.urlConstants.ClientGetAll);
   public getRlPromise = this.http.get(this.urlConstants.RDropdown);
-  public cchGetAllPromise = this.http.get(this.urlConstants.CCHGetAll);
-
+  //public cchGetAllPromise = this.http.get(this.urlConstants.CCHGetAll);
+  public paginateConfig :any={
+    itemsPerPage: this.properties.ITEMSPERPAGE,
+    currentPage: 1,
+    totalItems: 0
+  }
   constructor(
     private http: HttpClientService,
     private toastr: ToastrCustomService,
@@ -80,15 +84,25 @@ export class ClientCallHistoryComponent implements OnInit {
       this.recruiterList = listofrecords[2] as any;
       this.getRecruiterId();
       this.getTodaysDate();
+      this.initialGetAll();
+      this.spinner(true);
     });
   }
   private init() {
-    this.spinner(false);
-    this.cchGetAllPromise.subscribe(resp => {
-      this.clientCallHistoryList = resp as Array<ClientCallHistoryModel>;
-      this.spinner(true);
-    });
+    // this.cchGetAllPromise.subscribe(resp => {
+    //   this.clientCallHistoryList = resp as Array<ClientCallHistoryModel>;
+    //   this.spinner(true);
+    // });
     this.model.properties = [];
+  }
+  public initialGetAll(){
+    let pageNumber = this.paginateConfig.currentPage-1
+    let temp=this.http.get(this.urlConstants.CCHGetAll+ pageNumber + "&pageSize=20&sortBy=id");
+    temp.subscribe(resp => {
+      this.clientCallHistoryList = resp as any;
+      //this.pageChange(this.page);
+      this.paginateConfig.totalItems = this.clientCallHistoryList.noOfRecords
+    });
   }
   private getRecruiterId() {
     const temp = sessionStorage.getItem('username');
@@ -209,6 +223,8 @@ export class ClientCallHistoryComponent implements OnInit {
         this.init();
         this.getRecruiterId();
         this.isCreate = false;
+        this.paginateConfig.currentPage=1;
+        this.initialGetAll();
         this.getTodaysDate();
         this.formReset();
         this.spinner(true);
@@ -309,4 +325,8 @@ export class ClientCallHistoryComponent implements OnInit {
   private spinner(isSpinner: boolean){
       this.listReturned = isSpinner;
     }
+    pageChanged(event){
+      this.paginateConfig.currentPage = event
+      this.initialGetAll();
+    } 
 }

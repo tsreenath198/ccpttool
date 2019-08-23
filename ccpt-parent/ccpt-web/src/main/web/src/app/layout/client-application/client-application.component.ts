@@ -28,7 +28,7 @@ export class ClientApplicationComponent implements OnInit {
   public paymentModel: PaymentsModel = <PaymentsModel>{};
 
   public bodyMailModel: any = <any>{};
-  public clientApplicationList: Array<any> = [];
+  public clientApplicationList:  any = [];
   public pagedCAList: Array<any> = [];
   public consultantList: Array<any> = [];
   public clientApplicationStatusList: Array<ClientApplicationStatusModel> = [];
@@ -75,7 +75,6 @@ export class ClientApplicationComponent implements OnInit {
   public setPaymentWebsite: boolean = false;
   public setPaymentBA: boolean = false;
   public caForm: NgForm;
-  public paginateConfig :any;
   public sendEmailModel: SendEmailModel = <SendEmailModel>{};
   public sendSmsModel: SendSmsModel = <SendSmsModel>{};
   public config: AngularEditorConfig = {
@@ -85,7 +84,12 @@ export class ClientApplicationComponent implements OnInit {
     minHeight: '5rem',
     translate: 'no'
   };
-  private getAllCAS = this.http.get(this.urlConstants.CASGetAll);
+  public paginateConfig :any={
+    itemsPerPage: this.properties.ITEMSPERPAGE,
+    currentPage: 1,
+    totalItems: 0
+  }
+  private getAllCAS = this.http.get(this.urlConstants.CASGetAll+"0&pageSize=20&sortBy=id");
   private getAllC = this.http.get(this.urlConstants.CDropdown);
   private getAllCP = this.http.get(this.urlConstants.CPDropdown);
   private getAllR = this.http.get(this.urlConstants.RDropdown);
@@ -113,6 +117,8 @@ export class ClientApplicationComponent implements OnInit {
     this.getAllDropdowns();
     this.init();
     this.checkStorage();
+    this.initialGetAll(); 
+    this.spinner(true);
   }
   private checkStorage() {
     if (this.storageService.consultantId) {
@@ -125,16 +131,23 @@ export class ClientApplicationComponent implements OnInit {
     this.model.caStatus = 'New';
     this.page = 1;
     this.isCRF = false;
-    this.spinner(false);
-    this.http.get(this.urlConstants.CAGetAll).subscribe(resp => {
+    //this.spinner(false);
+    // this.http.get(this.urlConstants.CAGetAll).subscribe(resp => {
+    //   this.clientApplicationList = resp as any;
+    //   this.caListLength = this.clientPositionList.length;
+    //   this.pageChange(this.page);
+    //   this.spinner(true);
+    // });
+  }
+  public initialGetAll(){
+    let pageNumber = this.paginateConfig.currentPage-1
+    let temp=this.http.get(this.urlConstants.CAGetAll+ pageNumber + "&pageSize=20&sortBy=id");
+    temp.subscribe(resp => {
       this.clientApplicationList = resp as any;
-      this.pagedCAList = resp as any;
-      this.caListLength = this.clientPositionList.length;
-      this.pageChange(this.page);
-      this.spinner(true);
+      //this.pageChange(this.page);
+      this.paginateConfig.totalItems = this.clientApplicationList.noOfRecords
     });
   }
-  
   private getAllDropdowns() {
     forkJoin(
       this.getAllCAS,
@@ -375,6 +388,8 @@ export class ClientApplicationComponent implements OnInit {
         clientApplicationForm.resetForm();
         this.spinner(true);
         this.isCreate = false;
+        this.paginateConfig.currentPage=1;
+        this.initialGetAll();
         this.getRecruiterId();
         this.emptyStorage();
       },
@@ -557,12 +572,12 @@ export class ClientApplicationComponent implements OnInit {
       );
     }
   }
-  public pageChange(event) {
-    const from = (event - 1) * this.pageSize;
-    const lst = this.clientApplicationList;
-    const uplst = lst.slice(from, from + this.pageSize);
-    this.pagedCAList = uplst;
-  }
+  // public pageChange(event) {
+  //   const from = (event - 1) * this.pageSize;
+  //   const lst = this.clientApplicationList;
+  //   const uplst = lst.slice(from, from + this.pageSize);
+  //   this.pagedCAList = uplst;
+  // }
   private spinner(isSpinner: boolean) {
     this.listReturned = isSpinner;
   }
@@ -646,7 +661,7 @@ export class ClientApplicationComponent implements OnInit {
     });
   }
   pageChanged(event){
-    this.page = event
-    console.log(this.page);
+    this.paginateConfig.currentPage = event
+    this.initialGetAll();
   }
 }

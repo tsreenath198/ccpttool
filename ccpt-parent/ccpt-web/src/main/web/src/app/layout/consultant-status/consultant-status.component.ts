@@ -17,7 +17,7 @@ import { Router } from '@angular/router';
 })
 export class ConsultantStatusComponent implements OnInit {
     public model: ConsultantStatusModel = <ConsultantStatusModel>{};
-    public consultantStatusList: Array<ConsultantStatusModel> = [];
+    public consultantStatusList: any = [];
     private urlConstants = new URLConstants();
     private properties = new Properties();
     public formButtonsToggler = true;
@@ -31,7 +31,11 @@ export class ConsultantStatusComponent implements OnInit {
     public action: string = null;
     public screenHeight: any;
     public listReturned:boolean;
-
+    public paginateConfig :any={
+        itemsPerPage: this.properties.ITEMSPERPAGE,
+        currentPage: 1,
+        totalItems: 0
+    }
     public readOnlyForm = '';
     public enableButtonType = '';
     constructor(private http: HttpClientService, private router: Router, private toastr: ToastrCustomService, private modalService: NgbModal) {
@@ -47,6 +51,8 @@ export class ConsultantStatusComponent implements OnInit {
             this.router.navigate(['/login']);
         }
         this.init();
+        this.initialGetAll(); 
+        this.spinner(true);
     }
     public init() {
         this.spinner(false);
@@ -55,6 +61,15 @@ export class ConsultantStatusComponent implements OnInit {
             this.spinner(true);
         });
     }
+    public initialGetAll(){
+        let pageNumber = this.paginateConfig.currentPage-1
+        let temp=this.http.get(this.urlConstants.CSGetAll+ pageNumber + "&pageSize=20&sortBy=id");
+        temp.subscribe(resp => {
+          this.consultantStatusList = resp as any;
+          //this.pageChange(this.page);
+          this.paginateConfig.totalItems = this.consultantStatusList.noOfRecords
+        });
+      }
     public dblSetModel() {
         this.readOnlyForm = 'U';
         this.enableButtonType = 'U';
@@ -114,6 +129,8 @@ export class ConsultantStatusComponent implements OnInit {
             this.formReset();
             this.spinner(true);
             consultantStatusForm.resetForm();
+            this.paginateConfig.currentPage=1;
+            this.initialGetAll();
             this.isCreate= false;
         }, err => {
             this.toastr.error(err.error.message, this.properties.CON_STATUS);
@@ -190,4 +207,8 @@ export class ConsultantStatusComponent implements OnInit {
     private spinner(isSpinner: boolean){
         this.listReturned = isSpinner;
       }
+      pageChanged(event){
+        this.paginateConfig.currentPage = event
+        this.initialGetAll();
+      } 
 }

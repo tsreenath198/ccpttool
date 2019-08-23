@@ -7,9 +7,10 @@ import { OtherContactsRoutingModule } from './other-contacts-routing.module';
 import { AngularEditorModule } from '@kolkov/angular-editor';
 import { OtherContactsComponent } from './other-contacts.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @NgModule({
-    imports: [CommonModule, OtherContactsRoutingModule, FormsModule,NgbModule, PageHeaderModule, SharedPipesModule, AngularEditorModule, ActionListModule],
+    imports: [CommonModule,NgxPaginationModule, OtherContactsRoutingModule, FormsModule,NgbModule, PageHeaderModule, SharedPipesModule, AngularEditorModule, ActionListModule],
     declarations: [OtherContactsComponent]
 })
 export class OtherContactsModule { }

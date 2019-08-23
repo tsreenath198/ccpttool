@@ -6,9 +6,10 @@ import { ClientCallHistoryRoutingModule } from './client-call-history-routing.mo
 import { ClientCallHistoryComponent } from './client-call-history.component';
 import { PageHeaderModule, SharedPipesModule, ActionListModule } from '../../shared';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @NgModule({
-    imports: [CommonModule, ClientCallHistoryRoutingModule,NgbModule, FormsModule, PageHeaderModule, SharedPipesModule, ActionListModule],
+    imports: [CommonModule,NgxPaginationModule, ClientCallHistoryRoutingModule,NgbModule, FormsModule, PageHeaderModule, SharedPipesModule, ActionListModule],
     declarations: [ClientCallHistoryComponent]
 })
 export class ClientCallHistoryModule {}

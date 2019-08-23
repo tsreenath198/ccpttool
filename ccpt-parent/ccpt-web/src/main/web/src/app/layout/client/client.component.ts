@@ -54,7 +54,11 @@ export class ClientComponent implements OnInit {
         minHeight: '5rem',
         translate: 'no'
     };
-
+    public paginateConfig :any={
+        itemsPerPage: this.properties.ITEMSPERPAGE,
+        currentPage: 1,
+        totalItems: 0
+      }
     constructor(private http: HttpClientService, 
         private toastr: ToastrCustomService, 
         private modalService: NgbModal, 
@@ -74,14 +78,11 @@ export class ClientComponent implements OnInit {
         this.loggedInRole = sessionStorage.getItem('role');
         this.setClientContactModel();
         this.init();
+        this.initialGetAll();
+        this.spinner(true);
         this.storageService.clientId= null
     }
     init() {
-        this.spinner(false);
-        this.http.get(this.urlConstants.ClientGetAll).subscribe(resp => {
-            this.clientList = resp as any;
-            this.spinner(true);
-        });
         this.model.properties = [];
         this.model.files = [];
         this.model.serviceCharge = '8.33';
@@ -89,6 +90,15 @@ export class ClientComponent implements OnInit {
         this.model.creditPeriod = '1 month';
         this.model.phone = '+91';
     }
+    public initialGetAll(){
+        let pageNumber = this.paginateConfig.currentPage-1
+        let temp=this.http.get(this.urlConstants.ClientGetAll+ pageNumber + "&pageSize=20&sortBy=id");
+        temp.subscribe(resp => {
+          this.clientList = resp as any;
+          //this.pageChange(this.page);
+          this.paginateConfig.totalItems = this.clientList.noOfRecords
+        });
+      }
     private setClientContactModel() {
         this.model.clientContacts = [{ 'fullname': '', 'email': '', 'phone': '+91' }];
     }
@@ -136,6 +146,8 @@ export class ClientComponent implements OnInit {
             clientForm.resetForm();
             this.setClientContactModel();
             this.isCreate= false;
+            this.paginateConfig.currentPage=1;
+            this.initialGetAll();
             this.addCP(resp);
         }, err => {
             this.errorHandle(err);
@@ -315,4 +327,8 @@ export class ClientComponent implements OnInit {
     private spinner(isSpinner: boolean){
         this.listReturned = isSpinner;
       }
+      pageChanged(event){
+        this.paginateConfig.currentPage = event
+        this.initialGetAll();
+      }  
 }

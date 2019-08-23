@@ -7,9 +7,10 @@ import { SearchBankRoutingModule } from './search-bank-routing.module';
 import { AngularEditorModule } from '@kolkov/angular-editor';
 import { SearchBankComponent } from './search-bank.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @NgModule({
-    imports: [CommonModule, SearchBankRoutingModule, FormsModule,NgbModule, PageHeaderModule, SharedPipesModule, AngularEditorModule, ActionListModule],
+    imports: [CommonModule,NgxPaginationModule, SearchBankRoutingModule, FormsModule,NgbModule, PageHeaderModule, SharedPipesModule, AngularEditorModule, ActionListModule],
     declarations: [SearchBankComponent]
 })
 export class SearchBankModule { }

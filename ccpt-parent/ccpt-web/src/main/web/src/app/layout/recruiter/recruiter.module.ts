@@ -6,9 +6,10 @@ import { PageHeaderModule, SharedPipesModule, ActionListModule } from '../../sha
 import { RecruiterRoutingModule } from './recruiter-routing.module';
 import { RecruiterComponent } from './recruiter.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @NgModule({
-    imports: [NgbModule,CommonModule, RecruiterRoutingModule, FormsModule, PageHeaderModule, SharedPipesModule, ActionListModule],
+    imports: [NgbModule,CommonModule,NgxPaginationModule , RecruiterRoutingModule, FormsModule, PageHeaderModule, SharedPipesModule, ActionListModule],
     declarations: [RecruiterComponent]
 })
 export class RecruiterModule { }

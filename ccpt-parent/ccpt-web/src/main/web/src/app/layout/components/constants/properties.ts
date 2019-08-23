@@ -42,5 +42,9 @@ export class Properties {
     PHONE = "+919848071296";
     LOCATION = "Nizamabad";
 
+    /**PAGINATION CONSTANTS */
+    ITEMSPERPAGE = 20;
+
+    /**status constants */
     STATUS = ['Active', 'Inactive'];
 }

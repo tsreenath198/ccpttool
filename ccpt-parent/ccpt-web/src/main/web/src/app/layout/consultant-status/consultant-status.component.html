@@ -15,7 +15,7 @@
       <div class="table-responsive mt-2 table-wrapper-scroll-y my-custom-scrollbar" [style.height.px]="screenHeight">
         <table class="table table-hover table-striped">
           <tbody>
-            <tr *ngFor="let csl of consultantStatusList |  filter : currSearchTxt ; let i = index"
+            <tr *ngFor="let csl of consultantStatusList.list | paginate: paginateConfig ; let i = index"
               (click)="setModel(csl.id)">
               <td>
                 {{csl.description}}</td>
@@ -31,6 +31,9 @@
             </tr>
           </tbody>
         </table>
+      </div>
+      <div class="col-12 justify-content-center mb-5" *ngIf="consultantStatusList.noOfRecords > properties.ITEMSPERPAGE">
+        <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls> 
       </div>
     </div>
     <div class="col-md-5">

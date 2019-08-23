@@ -39,7 +39,7 @@
           </thead>
           <tbody class="overflow-ele-scroll" >
               <!-- | orderBy: key : reverse -->
-            <tr *ngFor="let cchl of consultantCallHistoryList  | filter: currSearchTxt | paginate: { itemsPerPage: 20, currentPage: page }; let i = index"
+            <tr *ngFor="let cchl of consultantCallHistoryList.list  | paginate: paginateConfig; let i = index"
               (click)="setModel(cchl.id)">
               <td>
                 {{ cchl.calledBy.fullname }}
@@ -58,8 +58,8 @@
           </tbody>
         </table>
       </div>
-      <div class="col-12 justify-content-center mb-5">
-          <pagination-controls (pageChange)="page = $event"></pagination-controls>
+      <div class="col-12 justify-content-center mb-5" *ngIf="consultantCallHistoryList.noOfRecords > properties.ITEMSPERPAGE">
+          <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
         <!-- <ngb-pagination [collectionSize]="consultantListLength" [(page)]="page" [ellipses]="false"
           (pageChange)="pageChange($event)" [maxSize]="pageSize" [pageSize]="pageSize" [rotate]="true"
           [boundaryLinks]="true">

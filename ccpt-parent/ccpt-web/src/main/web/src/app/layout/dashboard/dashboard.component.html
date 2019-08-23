@@ -66,28 +66,31 @@
         </div>
       </div>
     </div>
-    <!-- <div class="col-4">
+    <div class="col-6">
       <div class="card mb-3">
-        <div class="card-header bg-dark text-clr-white">Active Client Applications</div>
-        <div class="">
+        <div class="card-header bg-dark text-clr-white">Untouched Client Positions</div>
+        <div class="card-body">
           <table class="table table-sm">
             <thead>
               <tr>
+                <th>Client</th>
                 <th>Code</th>
-                <th>Count</th>
+                <th>Date</th>
+                <th>Assigned</th>
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let aca of activeCA" data-toggle="tooltip" class="link" placement="top"
-                ngbTooltip="click for details" (click)="open(contentACA, aca.cpId, 'activeClientApplication')">
-                <td>{{ aca.generatedCode }}</td>
-                <td>{{ aca.count }}</td>
+              <tr *ngFor="let ocp of dyingCP">
+                <td>{{ ocp.client.name }}</td>
+                <td>{{ ocp.generatedCode }}</td>
+                <td width=100>{{ ocp.createdDate |date: 'dd-MM-yy'}}</td>
+                <td>{{ ocp.assignedTo.aliasName }}</td>
               </tr>
             </tbody>
           </table>
         </div>
       </div>
-    </div> -->
+    </div>
     <div class="col-6">
       <div class="card mb-3">
         <div class="card-header bg-dark text-clr-white">
@@ -134,7 +137,7 @@
         </div>
       </div>
     </div>
-    <div class="col-4">
+    <!-- <div class="col-4">
       <div class="card mb-3">
         <div class="card-header bg-dark text-clr-white">
           Client Call History
@@ -164,7 +167,7 @@
           </table>
         </div>
       </div>
-    </div>
+    </div> -->
     <div class="col-4">
       <div class="card mb-3">
         <div class="card-header bg-dark text-clr-white">

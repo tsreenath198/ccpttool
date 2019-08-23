@@ -35,7 +35,7 @@
               </tr>
             </thead>
             <tbody class="overflow-ele-scroll">
-              <tr *ngFor="let cchl of clientCallHistoryList | filter :currSearchTxt ; let i = index"
+              <tr *ngFor="let cchl of clientCallHistoryList.list | paginate: paginateConfig ; let i = index"
                 (click)="setModel(cchl.id)" >
                 <td>
                   {{cchl.calledBy.fullname}}
@@ -52,6 +52,9 @@
               </tr>
             </tbody>
           </table>
+        </div>
+        <div class="col-12 justify-content-center mb-5" *ngIf="clientCallHistoryList.noOfRecords > properties.ITEMSPERPAGE">
+          <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
         </div>
         <ng-template #tableElse>
           <h3>Client History is empty</h3>

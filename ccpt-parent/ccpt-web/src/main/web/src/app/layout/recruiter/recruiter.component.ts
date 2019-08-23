@@ -20,7 +20,7 @@ export class RecruiterComponent implements OnInit {
   public model: RecruiterModel = <RecruiterModel>{};
   public formButtonsToggler = true;
   public editButtonToggler = true;
-  public recruiterList: Array<RecruiterModel> = [];
+  public recruiterList: any = [];
   public rolesModel = new Roles();
   public rolesList: any = [];
   public leadEmailList: any = [];
@@ -43,7 +43,11 @@ export class RecruiterComponent implements OnInit {
   public apName = '';
   public apValue = '';
   public listReturned: boolean;
-
+  public paginateConfig :any={
+    itemsPerPage: this.properties.ITEMSPERPAGE,
+    currentPage: 1,
+    totalItems: 0
+  }
   constructor(private http: HttpClientService, private router: Router, private toastr: ToastrCustomService, private modalService: NgbModal) {
     this.getScreenSize();
   }
@@ -57,19 +61,30 @@ export class RecruiterComponent implements OnInit {
       this.router.navigate(['/login']);
     }
     this.init();
+    this.initialGetAll(); 
+    this.spinner(true);
     this.rolesList = this.rolesModel.roles;
   }
   init() {
-    this.spinner(false);
-    this.http.get(this.urlConstants.RGetAll).subscribe(resp => {
-      this.recruiterList = resp as any;
-      this.spinner(true);
-    });
+    // this.spinner(false);
+    // this.http.get(this.urlConstants.RGetAll).subscribe(resp => {
+    //   this.recruiterList = resp as any;
+    //   this.spinner(true);
+    // });
     this.http.get(this.urlConstants.RLeadEmails).subscribe(resp =>{
       this.leadEmailList = resp as any;
     })
     this.model.properties = [];
     this.model['phone'] = '+91';
+  }
+  public initialGetAll(){
+    let pageNumber = this.paginateConfig.currentPage-1
+    let temp=this.http.get(this.urlConstants.RGetAll+ pageNumber + "&pageSize=20&sortBy=id");
+    temp.subscribe(resp => {
+      this.recruiterList = resp as any;
+      //this.pageChange(this.page);
+      this.paginateConfig.totalItems = this.recruiterList.noOfRecords
+    });
   }
   public dblSetModel() {
     this.readOnlyForm = 'U';
@@ -172,6 +187,8 @@ export class RecruiterComponent implements OnInit {
         this.init();
         this.formReset();
         recruiterForm.resetForm();
+        this.paginateConfig.currentPage=1;
+        this.initialGetAll();
         this.isCreate = false;
         this.spinner(true);
       },
@@ -269,5 +286,9 @@ export class RecruiterComponent implements OnInit {
   }
   private spinner(isSpinner: boolean) {
     this.listReturned = isSpinner;
+  }
+  pageChanged(event){
+    this.paginateConfig.currentPage = event
+    this.initialGetAll();
   }
 }

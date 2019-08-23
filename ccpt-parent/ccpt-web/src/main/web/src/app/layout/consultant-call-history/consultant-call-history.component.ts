@@ -19,7 +19,7 @@ import { Router } from '@angular/router';
 })
 export class ConsultantCallHistoryComponent implements OnInit {
   public model: ConsultantCallHistoryModel = <any>{};
-  public consultantCallHistoryList: Array<any> = [];
+  public consultantCallHistoryList:any = [];
   public currSearchTxt = '';
   public pagedConsultantList: Array<ConsultantCallHistoryModel> = [];
   public formButtonsToggler = true;
@@ -53,7 +53,11 @@ export class ConsultantCallHistoryComponent implements OnInit {
   public getClPromise = this.http.get(this.urlConstants.CDropdown);
   public getRlPromise = this.http.get(this.urlConstants.RDropdown);
   public cochGetAllPromise = this.http.get(this.urlConstants.CoCHGetAll);
-
+  public paginateConfig :any={
+    itemsPerPage: this.properties.ITEMSPERPAGE,
+    currentPage: 1,
+    totalItems: 0
+  }
   constructor(private http: HttpClientService, private router: Router, private toastr: ToastrCustomService, private modalService: NgbModal) {
     this.getScreenSize();
   }
@@ -69,6 +73,8 @@ export class ConsultantCallHistoryComponent implements OnInit {
     }
     this.joins();
     this.init();
+    this.initialGetAll(); 
+    this.spinner(true);
   }
   joins() {
     forkJoin(this.getCplPromise, this.getClPromise, this.getRlPromise).subscribe(listofrecords => {
@@ -79,16 +85,25 @@ export class ConsultantCallHistoryComponent implements OnInit {
     });
   }
   private init() {
-    this.spinner(false);
-    this.cochGetAllPromise.subscribe(resp => {
-      this.consultantCallHistoryList = resp as Array<ConsultantCallHistoryModel>;
-      this.spinner(true);
-      // this.pagedConsultantList = resp as any;
-      // this.consultantListLength = this.consultantCallHistoryList.length;
-      // this.pageChange(this.page);
-    });
+    // this.spinner(false);
+    // this.cochGetAllPromise.subscribe(resp => {
+    //   this.consultantCallHistoryList = resp as Array<ConsultantCallHistoryModel>;
+    //   this.spinner(true);
+    //   // this.pagedConsultantList = resp as any;
+    //   // this.consultantListLength = this.consultantCallHistoryList.length;
+    //   // this.pageChange(this.page);
+    // });
     this.model.properties = [];
     this.page = 1
+  }
+  public initialGetAll(){
+    let pageNumber = this.paginateConfig.currentPage-1
+    let temp=this.http.get(this.urlConstants.CoCHGetAll+ pageNumber + "&pageSize=20&sortBy=id");
+    temp.subscribe(resp => {
+      this.consultantCallHistoryList = resp as any;
+      //this.pageChange(this.page);
+      this.paginateConfig.totalItems = this.consultantCallHistoryList.noOfRecords
+    });
   }
   public dblSetModel() {
     this.readOnlyForm = 'U'; 
@@ -197,6 +212,8 @@ export class ConsultantCallHistoryComponent implements OnInit {
         this.formReset();
         this.callAfterFormReset();
         this.spinner(true);
+        this.paginateConfig.currentPage=1;
+        this.initialGetAll();
         this.isCreate= false;
       },
       err => {
@@ -314,6 +331,10 @@ export class ConsultantCallHistoryComponent implements OnInit {
   //   const uplst = lst.slice(from, from + this.pageSize);
   //   this.pagedConsultantList = uplst;
   // }
+  pageChanged(event){
+    this.paginateConfig.currentPage = event
+    this.initialGetAll();
+  }
   public  sort(key){
     this.key = key;
     this.reverse = !this.reverse;

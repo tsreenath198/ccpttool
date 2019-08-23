@@ -20,7 +20,7 @@ import { StorageService, HttpClientService, ToastrCustomService } from '../../sh
 })
 export class ConsultantComponent implements OnInit {
   public model: ConsultantModel = <ConsultantModel>{};
-  public consultantList: Array<ConsultantModel> = [];
+  public consultantList: any = [];
   public pagedConsultantList: Array<ConsultantModel> = [];
   public consultantStatusList: Array<ConsultantStatusModel> = [];
   public formButtonsToggler = true;
@@ -57,6 +57,11 @@ export class ConsultantComponent implements OnInit {
   public pageSize: number = 20;
   public cSGetAllPromise = this.http.get(this.urlConstants.CSGetAll);
   public cGetAllPromise = this.http.get(this.urlConstants.CGetAll);
+  public paginateConfig :any={
+    itemsPerPage: this.properties.ITEMSPERPAGE,
+    currentPage: 1,
+    totalItems: 0
+  }
   constructor(
     private http: HttpClientService,
     private router: Router,
@@ -80,17 +85,17 @@ export class ConsultantComponent implements OnInit {
       this.consultantStatusList = resp as any;
     });
     this.init();
+    this.initialGetAll(); 
+    this.spinner(true);
     /**Emptying the consultantId in storage */
     this.storage.consultantId = null;
   }
-
-  init(): void {
-    this.spinner(false);
-    this.cGetAllPromise.subscribe(resp => {
+  public initialGetAll(){
+    let pageNumber = this.paginateConfig.currentPage-1
+    let temp=this.http.get(this.urlConstants.CGetAll+ pageNumber + "&pageSize=20&sortBy=id");
+    temp.subscribe(resp => {
       this.consultantList = resp as any;
-      this.pagedConsultantList = resp as any;
-      this.consultantListLength = this.consultantList.length;
-      this.consultantList.forEach(cl => {
+      this.consultantList.list.forEach(cl => {
         if (this.validate(cl.fullname) && this.validate(cl.email) && this.validate(cl.phone)) {
           cl['isProfileCompleted'] = 'profileComplete';
         }
@@ -98,9 +103,24 @@ export class ConsultantComponent implements OnInit {
           cl['isProfileCompleted'] = 'profileInComplete';
         }
       });
-      this.pageChange(this.page);
-      this.spinner(true);
+      this.paginateConfig.totalItems = this.consultantList.noOfRecords
     });
+  }
+  init(): void {
+    // this.spinner(false);
+    // this.cGetAllPromise.subscribe(resp => {
+    //   this.consultantList = resp as any;
+    //   this.consultantList.forEach(cl => {
+    //     if (this.validate(cl.fullname) && this.validate(cl.email) && this.validate(cl.phone)) {
+    //       cl['isProfileCompleted'] = 'profileComplete';
+    //     }
+    //     else {
+    //       cl['isProfileCompleted'] = 'profileInComplete';
+    //     }
+    //   });
+    //   this.pageChange(this.page);
+    //   this.spinner(true);
+    // });
     this.model.properties = [];
     this.model.files = [];
     this.model.conStatus = 'Active';
@@ -154,6 +174,8 @@ export class ConsultantComponent implements OnInit {
         consultantForm.resetForm();
         this.init();
         this.formReset();
+        this.paginateConfig.currentPage=1;
+        this.initialGetAll();
         /**Creation of client application */
         this.createCA(resp);
       },
@@ -419,11 +441,9 @@ export class ConsultantComponent implements OnInit {
           }
         );*/
   }
-  public pageChange(event) {
-    const from = (event - 1) * this.pageSize;
-    const lst = this.consultantList;
-    const uplst = lst.slice(from, from + this.pageSize);
-    this.pagedConsultantList = uplst;
+  pageChanged(event){
+    this.paginateConfig.currentPage = event
+    this.initialGetAll();
   }
   public emptyExperience() {
     if (this.isFresher) {

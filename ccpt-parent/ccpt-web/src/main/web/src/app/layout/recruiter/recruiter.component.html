@@ -26,7 +26,7 @@
                 </tr>
               </thead>
           <tbody class="overflow-ele-scroll">
-            <tr *ngFor="let rl of recruiterList |  filter : currSearchTxt ; let i = index"
+            <tr *ngFor="let rl of recruiterList.list |  paginate: paginateConfig ; let i = index"
               (click)="setModel(rl.id)">
               <td>
                 <dl>
@@ -40,6 +40,9 @@
             </tr>
           </tbody>
         </table>
+      </div>
+      <div class="col-12 justify-content-center mb-5" *ngIf="recruiterList.noOfRecords > properties.ITEMSPERPAGE">
+        <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
       </div>
     </div>
     <div class="col-md-5">

@@ -6,9 +6,10 @@ import { PageHeaderModule, SharedPipesModule, ActionListModule } from '../../sha
 import { MessageTemplateRoutingModule } from './message-template-routing.module';
 import { MessageTemplateComponent } from './message-template.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @NgModule({
-    imports: [NgbModule,CommonModule, MessageTemplateRoutingModule, FormsModule, PageHeaderModule, SharedPipesModule, ActionListModule],
+    imports: [NgbModule,NgxPaginationModule, CommonModule, MessageTemplateRoutingModule, FormsModule, PageHeaderModule, SharedPipesModule, ActionListModule],
     declarations: [MessageTemplateComponent]
 })
 export class MessageTemplateModule {}

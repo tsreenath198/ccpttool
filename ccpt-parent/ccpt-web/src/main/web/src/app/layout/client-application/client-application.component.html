@@ -50,7 +50,7 @@
           </thead>
           <tbody class="overflow-ele-scroll">
             <tr class="table-data-padding" *ngFor="
-                let cal of clientApplicationList | filter: currSearchTxt | paginate: { itemsPerPage: 20, currentPage: page ,id:'some_id'};
+                let cal of clientApplicationList.list | paginate: paginateConfig;
                 let i = index">
               <td>
                 <div class="checkbox">
@@ -81,9 +81,8 @@
           </tbody>
         </table>
       </div>
-      <div class="col-12 justify-content-center mb-5">
-        <pagination-controls id="some_id" maxSize="19" (pageChange)="pageChanged($event)"></pagination-controls>
-        
+      <div class="col-12 justify-content-center mb-5" *ngIf="clientApplicationList.noOfRecords > properties.ITEMSPERPAGE">
+        <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
       </div>
     </div>
     <div class="col-md-5">
@@ -227,7 +226,7 @@
                 <label>Client Application Status<span class="required">*</span></label>
                 <select class="form-control" name="cas" [disabled]="readOnlyForm == 'R'" [(ngModel)]="model.caStatus"
                   [ngClass]="{ 'is-invalid': f.submitted && cas.invalid }" #cas="ngModel" required>
-                  <option *ngFor="let casl of clientApplicationStatusList" [ngValue]="casl.code">
+                  <option *ngFor="let casl of clientApplicationStatusList.list" [ngValue]="casl.code">
                     {{ casl.description }}
                   </option>
                 </select>

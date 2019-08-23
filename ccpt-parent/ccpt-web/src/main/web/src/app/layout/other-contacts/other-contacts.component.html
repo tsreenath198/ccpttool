@@ -31,7 +31,7 @@
           </thead>
           <tbody>
             <tr
-              *ngFor="let ocl of OCList | filter: currSearchTxt; let i = index"
+              *ngFor="let ocl of OCList.list | paginate: paginateConfig; let i = index"
               [ngClass]="!ocl.isProfileCompleted ? 'bl-red' : 'bl-trans'"
               (click)="setModel(ocl.id)"
             >
@@ -51,6 +51,9 @@
             </tr>
           </tbody>
         </table>
+      </div>
+      <div class="col-12 justify-content-center mb-5" *ngIf="OCList.noOfRecords > properties.ITEMSPERPAGE">
+        <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
       </div>
     </div>
     <div class=" col-md-5">

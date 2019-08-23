@@ -8,28 +8,28 @@ export class URLConstants {
 
     /*Client Postion Status*/
     CPSCreate = 'cpStatus';
-    CPSGetAll = 'cpStatus/';
+    CPSGetAll = 'cpStatus/?pageNo=';
     CPSUpdate = 'cpStatus';
     CPSDelete = 'cpStatus/';
     CPSGetById = 'cpStatus/';
 
     /*Consultant Status*/
     CSCreate = 'conStatus';
-    CSGetAll = 'conStatus/';
+    CSGetAll = 'conStatus/?pageNo=';
     CSUpdate = 'conStatus';
     CSDelete = 'conStatus/';
     CSGetById = 'conStatus/';
 
     /*Client Position */
     CPCreate = 'clientPosition';
-    CPGetAll = 'clientPosition/';
+    CPGetAll = 'clientPosition/?pageNo=';
     CPUpdate = 'clientPosition';
     CPDelete = 'clientPosition/';
     CPGetById = 'clientPosition/';
     CPDropdown = 'clientPosition/getAllCps';
     /*Consultant */
     CCreate = 'consultant';
-    CGetAll = 'consultant/';
+    CGetAll = 'consultant/?pageNo=';
     CUpdate = 'consultant';
     CDelete = 'consultant/';
     CGetById = 'consultant/';
@@ -39,7 +39,7 @@ export class URLConstants {
 
     /* Client Application */
     CACreate = 'clientApplication';
-    CAGetAll = 'clientApplication/';
+    CAGetAll = 'clientApplication/?pageNo=';
     CAUpdate = 'clientApplication';
     CADelete = 'clientApplication/';
     CAGetById = 'clientApplication/';
@@ -49,7 +49,7 @@ export class URLConstants {
 
     /* Client Call History */
     CCHCreate = 'clientCallHistory';
-    CCHGetAll = 'clientCallHistory/';
+    CCHGetAll = 'clientCallHistory/?pageNo=';
     CCHUpdate = 'clientCallHistory';
     CCHDelete = 'clientCallHistory/';
     CCHGetById = 'clientCallHistory/';
@@ -58,7 +58,7 @@ export class URLConstants {
 
     /* consultant Call History */
     CoCHCreate = 'consultantCallHistory';
-    CoCHGetAll = 'consultantCallHistory/';
+    CoCHGetAll = 'consultantCallHistory/?pageNo=';
     CoCHUpdate = 'consultantCallHistory';
     CoCHDelete = 'consultantCallHistory/';
     CoCHGetById = 'consultantCallHistory/';
@@ -67,7 +67,7 @@ export class URLConstants {
 
     /* Recruiter */
     RCreate = 'recruiter';
-    RGetAll = 'recruiter/';
+    RGetAll = 'recruiter/?pageNo=';
     RUpdate = 'recruiter';
     RDelete = 'recruiter/';
     RGetById = 'recruiter/';
@@ -78,7 +78,7 @@ export class URLConstants {
 
     /*Client*/
     ClientCreate = 'client';
-    ClientGetAll = 'client/';
+    ClientGetAll = 'client/?pageNo=';
     ClientUpdate = 'client';
     ClientDelete = 'client/';
     ClientGetById = 'client/';
@@ -86,14 +86,14 @@ export class URLConstants {
 
     /*Other Contacts */
     OCCreate = 'contact';
-    OCGetAll = 'contact/';
+    OCGetAll = 'contact/?pageNo=';
     OCUpdate = 'contact';
     OCDelete = 'contact/';
     OCGetById = 'contact/';
 
     /*Search */
     SearchCreate = 'search';
-    SearchGetAll = 'search/';
+    SearchGetAll = 'search/?pageNo=';
     SearchUpdate = 'search';
     SearchDelete = 'search/';
     SearchGetById = 'search/';
@@ -111,7 +111,7 @@ export class URLConstants {
 
     /**Email Template */
     EmailTemplateCreate = 'template';
-    EmailTemplateGetAll = 'template/';
+    EmailTemplateGetAll = 'template/?pageNo=';
     EmailTemplateDelete = 'template/';
     EmailTemplateGetById = 'template/';
     EmailTemplateUpdate = 'template';
@@ -122,7 +122,7 @@ export class URLConstants {
     GetInterviewDetailsEmail = 'template/getInterviewTemplate'
 
     /**SMS template */
-    SMSTemplateGetAll = 'template/sms/';
+    SMSTemplateGetAll = 'template/sms/?pageNo=';
     SMSTemplateCreate = 'template/sms';
     SMSTemplateDelete = 'template/sms/';
     SMSTemplateGetById = 'template/sms/';
@@ -133,7 +133,7 @@ export class URLConstants {
     /**User setup */
     UserLogin = 'user/login';
     UserCreate = 'user';
-    UserGetAll = 'user/';
+    UserGetAll = 'user/?pageNo=';
     UserUpdate = 'user';
     UserDelete = 'user/';
     UserGetById = 'user/';
@@ -141,7 +141,7 @@ export class URLConstants {
 
     /**Payments */
     PaymentCreate = 'payment';
-    PaymentGetAll = 'payment/';
+    PaymentGetAll = 'payment/?pageNo=';
     PaymentUpdate = 'payment';
     PaymentDelete = 'payment/';
     PaymentGetById = 'payment/';

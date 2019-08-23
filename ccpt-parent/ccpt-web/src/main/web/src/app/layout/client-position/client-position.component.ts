@@ -25,7 +25,7 @@ import { ClientCallHistoryModel } from '../client-call-history/client-call-histo
 export class ClientPositionComponent implements OnInit {
   public model: ClientPositionModel = <ClientPositionModel>{};
   public clchModel: ClientCallHistoryModel = <ClientCallHistoryModel>{};
-  public clientPositionList: Array<ClientPositionModel> = [];
+  public clientPositionList: any = [];
 
   public pagedCPList: Array<ClientPositionModel> = [];
   public consultantCreateList: Array<any> = [];
@@ -87,6 +87,11 @@ export class ClientPositionComponent implements OnInit {
     minHeight: '5rem',
     translate: 'no'
   };
+  public paginateConfig :any={
+    itemsPerPage: this.properties.ITEMSPERPAGE,
+    currentPage: 1,
+    totalItems: 0
+  }
   constructor(
     private http: HttpClientService,
     private toastr: ToastrCustomService,
@@ -122,6 +127,8 @@ export class ClientPositionComponent implements OnInit {
       allowSearchFilter: true
     };
     this.init();
+    this.initialGetAll(); 
+    this.spinner(true);
     this.checkStorage();
   }
   private checkStorage() {
@@ -130,18 +137,26 @@ export class ClientPositionComponent implements OnInit {
     }
   }
   private init() {
-    this.spinner(false);
-    this.http.get(this.urlConstants.CPGetAll).subscribe(resp => {
-      this.clientPositionList = resp as any;
-      this.pagedCPList = resp as any;
-      this.spinner(true);
-      this.cpListLength = this.clientPositionList.length;
-      this.pageChange(this.page);
-    });
+    // this.http.get(this.urlConstants.CPGetAll).subscribe(resp => {
+    //   this.clientPositionList = resp as any;
+    //   this.pagedCPList = resp as any;
+    //   this.spinner(true);
+    //   this.cpListLength = this.clientPositionList.length;
+    //   this.pageChange(this.page);
+    // });
     this.model.properties = [];
     this.model.cpstatus = 'Open';
     this.model.requiredPositions = '1';
     this.page = 1;
+  }
+  public initialGetAll(){
+    let pageNumber = this.paginateConfig.currentPage-1
+    let temp=this.http.get(this.urlConstants.CPGetAll+ pageNumber + "&pageSize=20&sortBy=id");
+    temp.subscribe(resp => {
+      this.clientPositionList = resp as any;
+      //this.pageChange(this.page);
+      this.paginateConfig.totalItems = this.clientPositionList.noOfRecords
+    });
   }
   private getAllDropdowns() {
     forkJoin(
@@ -339,6 +354,8 @@ export class ClientPositionComponent implements OnInit {
         this.spinner(true);
         clientPositionForm.resetForm();
         this.isCreate = false;
+        this.paginateConfig.currentPage=1;
+        this.initialGetAll();
         this.emptyStorage();
         if (this.showAction) {
           this.showAction = false;
@@ -604,11 +621,15 @@ export class ClientPositionComponent implements OnInit {
       return `with: ${reason}`;
     }
   }
-  public pageChange(event) {
-    const from = (event - 1) * this.pageSize;
-    const lst = this.clientPositionList;
-    const uplst = lst.slice(from, from + this.pageSize);
-    this.pagedCPList = uplst;
+  // public pageChange(event) {
+  //   const from = (event - 1) * this.pageSize;
+  //   const lst = this.clientPositionList;
+  //   const uplst = lst.slice(from, from + this.pageSize);
+  //   this.pagedCPList = uplst;
+  // }
+  pageChanged(event){
+    this.paginateConfig.currentPage = event
+    this.initialGetAll();
   }
   private spinner(isSpinner: boolean) {
     this.listReturned = isSpinner;

@@ -7,9 +7,10 @@ import { AngularEditorModule } from '@kolkov/angular-editor';
 import { PaymentsComponent } from './payments.component';
 import { PaymentsRoutingModule } from './payments-routing.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @NgModule({
-    imports: [NgbModule,CommonModule, PaymentsRoutingModule, FormsModule, PageHeaderModule, SharedPipesModule, AngularEditorModule, ActionListModule],
+    imports: [NgbModule,NgxPaginationModule, CommonModule, PaymentsRoutingModule, FormsModule, PageHeaderModule, SharedPipesModule, AngularEditorModule, ActionListModule],
     declarations: [PaymentsComponent]
 })
 export class PaymentsModule { }

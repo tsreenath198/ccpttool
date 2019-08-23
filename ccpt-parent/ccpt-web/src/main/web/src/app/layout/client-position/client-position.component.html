@@ -16,7 +16,7 @@
         <table class="table table-hover table-striped">
           <tbody class="overflow-ele-scroll">
             <tr
-              *ngFor="let cpl of clientPositionList | filter: currSearchTxt | paginate: { itemsPerPage: 20, currentPage: page }; let i = index"
+              *ngFor="let cpl of clientPositionList.list | paginate: paginateConfig; let i = index"
               (click)="setModel(cpl.id)"
               [ngClass]="{ 'bl-closed': cpl.status.code === 'Closed', 'bl-on-hold': cpl.status.code === 'On Hold' }"
             >
@@ -51,8 +51,8 @@
         </table>
       </div>
       
-      <div class="col-12 justify-content-center mb-5">
-        <pagination-controls (pageChange)="page = $event"></pagination-controls>
+      <div class="col-12 justify-content-center mb-5" *ngIf="clientPositionList.noOfRecords > properties.ITEMSPERPAGE">
+        <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
         <!-- <ngb-pagination [collectionSize]="cpListLength" [(page)]="page" [ellipses]="false" (pageChange)="pageChange($event)" [maxSize]="pageSize" [rotate]="true" [boundaryLinks]="true">
           </ngb-pagination> -->
       </div>
@@ -326,7 +326,7 @@
               <div class="form-group">
                 <label>Client Position Status </label>
                 <select class="form-control" name="cps" [disabled]="readOnlyForm == 'R'" [(ngModel)]="model.cpstatus">
-                  <option *ngFor="let cpsl of clientPositionStatusList" [ngValue]="cpsl.code"> {{ cpsl.description }} </option>
+                  <option *ngFor="let cpsl of clientPositionStatusList.list" [ngValue]="cpsl.code"> {{ cpsl.description }} </option>
                 </select>
               </div>
             </div>

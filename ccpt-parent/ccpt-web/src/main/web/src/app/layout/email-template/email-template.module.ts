@@ -6,9 +6,10 @@ import { PageHeaderModule, SharedPipesModule, ActionListModule } from '../../sha
 import { EmailTemplateRoutingModule } from './email-template-routing.module';
 import { EmailTemplateComponent } from './email-template.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @NgModule({
-    imports: [NgbModule,CommonModule, EmailTemplateRoutingModule, FormsModule, PageHeaderModule, SharedPipesModule, ActionListModule],
+    imports: [NgbModule,NgxPaginationModule, CommonModule, EmailTemplateRoutingModule, FormsModule, PageHeaderModule, SharedPipesModule, ActionListModule],
     declarations: [EmailTemplateComponent]
 })
 export class EmailTemplateModule {}

@@ -14,7 +14,7 @@
       <div class="table-responsive mt-2 table-wrapper-scroll-y my-custom-scrollbar" [style.height.px]="screenHeight">
         <table class="table table-hover table-striped">
           <tbody>
-            <tr *ngFor="let ul of usersList |  filter : currSearchTxt ; let i = index"
+            <tr *ngFor="let ul of usersList.list | paginate: paginateConfig ; let i = index"
               (click)="setModel(ul.id)">
               <td>{{ul.username}}</td>
               <!-- <td width="100">
@@ -24,6 +24,9 @@
             </tr>
           </tbody>
         </table>
+      </div>
+      <div class="col-12 justify-content-center mb-5" *ngIf="usersList.noOfRecords > properties.ITEMSPERPAGE">
+        <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
       </div>
     </div>
     <div class="col-md-6">
@@ -61,7 +64,7 @@
               <select class="form-control" name="uname" [(ngModel)]="model.username"
                 [disabled]="readOnlyForm == 'R'" [ngClass]="{'is-invalid': f.submitted && uname.invalid}"
                 #uname="ngModel" required>
-                <option *ngFor="let gar of getAllR" [ngValue]="gar.email">{{gar.fullname}}
+                <option *ngFor="let gar of getAllR.list" [ngValue]="gar.email">{{gar.fullname}}
                 </option>
               </select>
               <div class="invalid-feedback">

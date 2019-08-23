@@ -39,7 +39,7 @@
           </thead>
           <tbody class="overflow-ele-scroll ">
             <tr
-              *ngFor="let cl of consultantList | filter: currSearchTxt | paginate: { itemsPerPage: 20, currentPage: page }; let i = index"
+              *ngFor="let cl of consultantList.list  | paginate: paginateConfig; let i = index"
               (click)="setModel(cl.id)"
               [ngClass]="{'bl-green':cl.isProfileCompleted=='profileComplete','bl-red':cl.isProfileCompleted=='profileInComplete'}"
             >
@@ -69,8 +69,8 @@
           </tbody>
         </table>
       </div>
-      <div class="col-12 justify-content-center mb-5">
-        <pagination-controls (pageChange)="page = $event"></pagination-controls>
+      <div class="col-12 justify-content-center mb-5" *ngIf="consultantList.noOfRecords > properties.ITEMSPERPAGE">
+        <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
         <!-- <ngb-pagination
           [collectionSize]="consultantListLength"
           [(page)]="page"
@@ -372,7 +372,7 @@
                 #constat="ngModel"
                 required
               >
-                <option *ngFor="let cs of consultantStatusList" [ngValue]="cs.code"> {{ cs.description }}</option>
+                <option *ngFor="let cs of consultantStatusList.list" [ngValue]="cs.code"> {{ cs.description }}</option>
               </select>
               <div class="invalid-feedback">
                 consultant status is mandatory

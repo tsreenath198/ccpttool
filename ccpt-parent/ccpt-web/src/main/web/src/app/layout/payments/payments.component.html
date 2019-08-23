@@ -30,7 +30,7 @@
           </thead>
           <tbody>
             <tr
-              *ngFor="let pl of paymentsList | filter: currSearchTxt; let i = index"
+              *ngFor="let pl of paymentsList.list | paginate: paginateConfig; let i = index"
               (click)="setModel(pl.id)"
             >
               <td>
@@ -48,6 +48,9 @@
             </tr>
           </tbody>
         </table>
+        <div class="col-12 justify-content-center mb-5" *ngIf="paymentsList.noOfRecords > properties.ITEMSPERPAGE">
+          <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
+        </div>
       </div>
     </div>
     <div class=" col-md-5">

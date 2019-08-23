@@ -32,6 +32,11 @@ export class MessageTemplateComponent implements OnInit {
     public actionsList = new ActionsList();
     public action: string = null;
     public screenHeight: any;
+    public paginateConfig :any={
+        itemsPerPage: this.properties.ITEMSPERPAGE,
+        currentPage: 1,
+        totalItems: 0
+      }
     constructor(private http: HttpClientService, private router: Router, private toastr: ToastrCustomService, private modalService: NgbModal) {
         this.getScreenSize();
     }
@@ -45,12 +50,23 @@ export class MessageTemplateComponent implements OnInit {
         this.router.navigate(['/login']);
       }
         this.init();
+        this.initialGetAll(); 
+        //this.spinner(true);
     }
     private init() {
-        this.http.get(this.urlConstants.SMSTemplateGetAll).subscribe(resp => {
-            this.messageTemplateList = resp as any;
-        });
+        // this.http.get(this.urlConstants.SMSTemplateGetAll).subscribe(resp => {
+        //     this.messageTemplateList = resp as any;
+        // });
     }
+    public initialGetAll(){
+        let pageNumber = this.paginateConfig.currentPage-1
+        let temp=this.http.get(this.urlConstants.SMSTemplateGetAll+ pageNumber + "&pageSize=20&sortBy=id");
+        temp.subscribe(resp => {
+          this.messageTemplateList = resp as any;
+          //this.pageChange(this.page);
+          this.messageTemplateList.totalItems = this.messageTemplateList.noOfRecords
+        });
+      }
     public dblSetModel(data) {
         this.readOnlyForm = 'U';
         this.enableButtonType = 'U';
@@ -106,6 +122,8 @@ export class MessageTemplateComponent implements OnInit {
             this.init();
             this.formReset();
             messageTemplateForm.resetForm();
+            this.paginateConfig.currentPage=1;
+            this.initialGetAll();
             this.isCreate= false;
         }, err => {
             this.toastr.error(err.statusText, 'Contact');
@@ -179,4 +197,8 @@ export class MessageTemplateComponent implements OnInit {
             return `with: ${reason}`;
         }
     }
+    pageChanged(event){
+        this.paginateConfig.currentPage = event
+        this.initialGetAll();
+      }
 }
