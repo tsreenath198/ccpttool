@@ -20,7 +20,7 @@ export class EmailTemplateComponent implements OnInit {
     public model: EmailTemplateModel = <EmailTemplateModel>{};
     public emailTemplateList: any = [];
     private urlConstants = new URLConstants();
-    private properties = new Properties();
+    public properties = new Properties();
     public readOnlyForm = '';
     public enableButtonType = '';
     public currSearchTxt = '';

@@ -19,7 +19,7 @@ export class ConsultantStatusComponent implements OnInit {
     public model: ConsultantStatusModel = <ConsultantStatusModel>{};
     public consultantStatusList: any = [];
     private urlConstants = new URLConstants();
-    private properties = new Properties();
+    public properties = new Properties();
     public formButtonsToggler = true;
     public editButtonToggler = true;
     public currSearchTxt = '';

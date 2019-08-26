@@ -24,7 +24,7 @@ export class PaymentsComponent implements OnInit {
     public clientApplicationList: Array<any> = [];
     public consultantList: Array<any> = [];
     private urlConstants = new URLConstants();
-    private properties = new Properties();
+    public properties = new Properties();
     public readOnlyForm = '';
     public enableButtonType = '';
     public currSearchTxt = '';

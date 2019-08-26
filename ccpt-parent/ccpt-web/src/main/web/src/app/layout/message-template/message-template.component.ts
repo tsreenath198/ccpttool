@@ -19,7 +19,7 @@ export class MessageTemplateComponent implements OnInit {
 
     public model: MessageTemplateModel = <MessageTemplateModel>{};
     public messageTemplateList: any = [];
-    private properties = new Properties();
+    public properties = new Properties();
     private urlConstants = new URLConstants();
     public readOnlyForm = '';
     public enableButtonType = '';

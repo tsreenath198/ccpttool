@@ -22,7 +22,7 @@ export class OtherContactsComponent implements OnInit {
     public model: OtherContactsModel = <OtherContactsModel>{};
     public OCList: any = [];
     private urlConstants = new URLConstants();
-    private properties = new Properties();
+    public properties = new Properties();
 
     public showAction: boolean = false;
     public actionsList = new ActionsList();

@@ -20,7 +20,7 @@ export class ClientPositionStatusComponent implements OnInit {
     public model: ClientpositionStatusModel = <ClientpositionStatusModel>{};
     public clientPositionStatusList: any = [];
     private urlConstants = new URLConstants();
-    private properties = new Properties();
+    public properties = new Properties();
     public formButtonsToggler = true;
     public editButtonToggler = true;
     private selectedRecrdToDel = 0;

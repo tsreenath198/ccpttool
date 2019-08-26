@@ -21,7 +21,7 @@ export class SearchBankComponent implements OnInit {
     public model: SearchBankModel = <SearchBankModel>{};
     public sbList: any = [];
     private urlConstants = new URLConstants();
-    private properties = new Properties();
+    public properties = new Properties();
 
     public showAction: boolean = false;
     public action: string = null;

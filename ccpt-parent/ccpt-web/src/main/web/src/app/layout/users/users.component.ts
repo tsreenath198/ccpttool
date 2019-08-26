@@ -20,7 +20,7 @@ export class UsersComponent implements OnInit {
     public model: UsersModel = <UsersModel>{};
     public usersList: any = [];
     private urlConstants = new URLConstants();
-    private properties = new Properties();
+    public properties = new Properties();
     public rolesModel = new UserRoles();
     public rolesList: any = [];
     public getAllR: any=[];
