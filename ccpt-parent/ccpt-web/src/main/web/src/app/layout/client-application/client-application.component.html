@@ -10,11 +10,26 @@
   <div class="row " *ngIf="listReturned == true; else spinner">
     <div class="col-md-7">
       <div class="row">
-        <div class="col-md-6"><input type="text" class="form-control" placeholder="search..."
-            [(ngModel)]="currSearchTxt" /></div>
+        <div class="col-md-6">
+          <div class="row">
+            <div class="col-md-9">
+                <select class="form-control form-control-sm" [(ngModel)]="currSearchTxt" name="sel1" (change)="searchSelect()">
+                    <option [ngValue]="null" hidden selected>--search client--</option>
+                    <option *ngFor="let cl of clientList" [ngValue]="cl" >
+                      {{ cl.name }}
+                    </option>
+                  </select> 
+            </div>
+            <div class="col-md-3" *ngIf="currSearchTxt">
+                <button type="button"  class ="btn btn-secondary  btn-sm ml-3" (click)="cancelSearch()">
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
 
         <div class="col-md-6" >
-          <b class="pull-left"  *ngIf="currSearchTxt.length > 0">Filtered list count:{{ (clientApplicationList | filter: currSearchTxt).length }}</b>
+          <b class="pull-left"  *ngIf="currSearchTxt">Filtered list count:{{ (clientApplicationList | filter: currSearchTxt).length }}</b>
           <span class="pull-right" *ngIf=" appIds.length > 0">
               <div class="dropdown theme-dropdown clearfix" placement="bottom-right" ngbDropdown>
                 <i class="fa fa-bars" ngbDropdownToggle></i>

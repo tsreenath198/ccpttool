@@ -463,4 +463,16 @@ export class ConsultantComponent implements OnInit {
   private spinner(isSpinner: boolean) {
     this.listReturned = isSpinner;
   }
+  public search(){
+    this.paginateConfig.currentPage =1
+    if(this.currSearchTxt.length == 0){
+      this.initialGetAll();
+    }
+    else if(this.currSearchTxt.length > 3){
+      let temp = this.http.get(this.urlConstants.CSearch + this.currSearchTxt)
+      temp.subscribe(resp => {
+        this.consultantList.list = resp as any;
+      })
+    }
+  }
 }

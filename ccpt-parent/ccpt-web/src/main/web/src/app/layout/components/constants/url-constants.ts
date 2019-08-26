@@ -36,6 +36,7 @@ export class URLConstants {
     CUpload = 'file/save';
     CActivate = 'consultant/activate/';
     CDropdown = 'consultant/getAllConsultants';
+    CSearch = 'consultant/search?searchKey=';
 
     /* Client Application */
     CACreate = 'clientApplication';
@@ -45,6 +46,7 @@ export class URLConstants {
     CAGetById = 'clientApplication/';
     CABodyMail = 'clientApplication/showBodyMail?caId='
     CAJobConfirmed = "clientApplication/getJobConfirmedCAs"
+    CASearch = "clientApplication/search?clientId="
 
 
     /* Client Call History */

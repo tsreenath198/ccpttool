@@ -31,6 +31,7 @@ export class ClientApplicationComponent implements OnInit {
   public clientApplicationList:  any = [];
   public pagedCAList: Array<any> = [];
   public consultantList: Array<any> = [];
+  public clientList: Array<any> = [];
   public clientApplicationStatusList: Array<ClientApplicationStatusModel> = [];
   public clientPositionList: Array<any> = [];
   public recruiterList: Array<any> = [];
@@ -42,7 +43,7 @@ export class ClientApplicationComponent implements OnInit {
   public actionsList = new ActionsList();
   public action: string;
 
-  public currSearchTxt = '';
+  public currSearchTxt = null;
   public formButtonsToggler = true;
   public editButtonToggler = true;
   public isInterviewScheduled = false;
@@ -93,6 +94,7 @@ export class ClientApplicationComponent implements OnInit {
   private getAllC = this.http.get(this.urlConstants.CDropdown);
   private getAllCP = this.http.get(this.urlConstants.CPDropdown);
   private getAllR = this.http.get(this.urlConstants.RDropdown);
+  private getAllCl = this.http.get(this.urlConstants.ClientDropdown)
 
   constructor(
     private http: HttpClientService,
@@ -153,13 +155,15 @@ export class ClientApplicationComponent implements OnInit {
       this.getAllCAS,
       this.getAllC,
       this.getAllCP,
-      this.getAllR
+      this.getAllR,
+      this.getAllCl
       // forkJoin on works for observables that complete
     ).subscribe(listofrecords => {
       this.clientApplicationStatusList = listofrecords[0] as any;
       this.consultantList = listofrecords[1] as any;
       this.clientPositionList = listofrecords[2] as any;
       this.recruiterList = listofrecords[3] as any;
+      this.clientList = listofrecords[4] as any;
       this.getRecruiterId();
     });
   }
@@ -660,8 +664,19 @@ export class ClientApplicationComponent implements OnInit {
       this.spinner(true);
     });
   }
-  pageChanged(event){
+  public pageChanged(event){
     this.paginateConfig.currentPage = event
+    this.initialGetAll();
+  }
+  public searchSelect(){
+    this.paginateConfig.currentPage =1
+    let temp = this.http.get(this.urlConstants.CASearch + this.currSearchTxt.id)
+    temp.subscribe(resp =>{
+      this.clientApplicationList.list = resp as any;
+    })
+  }
+  public cancelSearch(){
+    this.currSearchTxt = null;
     this.initialGetAll();
   }
 }
