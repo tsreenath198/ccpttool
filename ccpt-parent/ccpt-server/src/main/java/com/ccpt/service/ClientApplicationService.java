@@ -10,8 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ccpt.model.ApplicationBody;
-import com.ccpt.model.CAByRecruiter;
-import com.ccpt.model.CAByRecruiterHelper;
+import com.ccpt.model.CAByStatus;
+import com.ccpt.model.CAByStatusHelper;
 import com.ccpt.model.CAStatistics;
 import com.ccpt.model.ClientApplication;
 import com.ccpt.model.InterviewSummaryStatistics;
@@ -103,21 +103,21 @@ public class ClientApplicationService extends BaseService<ClientApplication, Int
 		return clientApplicationRepository.search(clientId);
 	}
 
-	public List<CAByRecruiterHelper> getAllCAbyRecruiter() {
+	public List<CAByStatusHelper> getAllCAbyStatus() {
 		List<String> statusCodes = clientApplicationRepository.getAllDistinctStatusCode();
 		List<Integer> clintPositionIds = clientApplicationRepository.getAllDistinctClientPositionId();
 
-		List<CAByRecruiter> clientPositioncountByStatusCode = null;
-		List<CAByRecruiterHelper> list = new ArrayList<CAByRecruiterHelper>();
+		List<CAByStatus> clientPositioncountByStatusCode = null;
+		List<CAByStatusHelper> list = new ArrayList<CAByStatusHelper>();
 		for (int i = 0; i < statusCodes.size(); i++) {
-			clientPositioncountByStatusCode = new ArrayList<CAByRecruiter>();
+			clientPositioncountByStatusCode = new ArrayList<CAByStatus>();
 			String statuscode = statusCodes.get(i);
 			for (int j = 0; j < clintPositionIds.size(); j++) {
 				Integer clientPositionId = clintPositionIds.get(j);
 				clientPositioncountByStatusCode = clientApplicationRepository
 						.getclientPositioncountByStatusCode(statuscode, clientPositionId);
-				for (CAByRecruiter caByRecruiterObj : clientPositioncountByStatusCode) {
-					CAByRecruiterHelper caByRecruitersHelperObj = new CAByRecruiterHelper();
+				for (CAByStatus caByRecruiterObj : clientPositioncountByStatusCode) {
+					CAByStatusHelper caByRecruitersHelperObj = new CAByStatusHelper();
 					caByRecruitersHelperObj.setId(i + 1);
 					caByRecruitersHelperObj.setClientName(caByRecruiterObj.getClientName());
 					caByRecruitersHelperObj.setStatusCode(statuscode);

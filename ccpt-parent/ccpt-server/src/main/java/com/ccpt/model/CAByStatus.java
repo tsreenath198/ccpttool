@@ -1,6 +1,6 @@
 package com.ccpt.model;
 
-public interface CAByRecruiter {
+public interface CAByStatus {
 
 	public String getStatusCode();
 
