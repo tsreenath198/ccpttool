@@ -1,6 +1,6 @@
 package com.ccpt.model;
 
-public class CAbyRecruitersHelper {
+public class CAByRecruitersHelper {
 
 	public Integer id;
 

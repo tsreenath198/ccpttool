@@ -21,7 +21,7 @@ import com.ccpt.mapper.BaseMapper;
 import com.ccpt.mapper.ClientApplicationMapper;
 import com.ccpt.model.ApplicationBody;
 import com.ccpt.model.CAStatistics;
-import com.ccpt.model.CAbyRecruitersHelper;
+import com.ccpt.model.CAByRecruitersHelper;
 import com.ccpt.model.ClientApplication;
 import com.ccpt.model.InterviewSummaryStatistics;
 import com.ccpt.model.PositionSummaryStatistics;
@@ -105,9 +105,9 @@ public class ClientApplicationController extends BaseController<ClientApplicatio
 	}
 
 	@GetMapping("/getAllCAbyRecruiter")
-	public ResponseEntity<List<CAbyRecruitersHelper>> getAllCAbyRecruiter() {
-		List<CAbyRecruitersHelper> result = clientApplicationService.getAllCAbyRecruiter();
-		return new ResponseEntity<List<CAbyRecruitersHelper>>(result, HttpStatus.OK);
+	public ResponseEntity<List<CAByRecruitersHelper>> getAllCAbyRecruiter() {
+		List<CAByRecruitersHelper> result = clientApplicationService.getAllCAbyRecruiter();
+		return new ResponseEntity<List<CAByRecruitersHelper>>(result, HttpStatus.OK);
 
 	}
 

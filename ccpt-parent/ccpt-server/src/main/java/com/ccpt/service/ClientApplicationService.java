@@ -10,9 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ccpt.model.ApplicationBody;
+import com.ccpt.model.CAByRecruiter;
+import com.ccpt.model.CAByRecruitersHelper;
 import com.ccpt.model.CAStatistics;
-import com.ccpt.model.CAbyRecruiters;
-import com.ccpt.model.CAbyRecruitersHelper;
 import com.ccpt.model.ClientApplication;
 import com.ccpt.model.InterviewSummaryStatistics;
 import com.ccpt.model.PositionSummaryStatistics;
@@ -103,26 +103,26 @@ public class ClientApplicationService extends BaseService<ClientApplication, Int
 		return clientApplicationRepository.search(clientId);
 	}
 
-	public List<CAbyRecruitersHelper> getAllCAbyRecruiter() {
+	public List<CAByRecruitersHelper> getAllCAbyRecruiter() {
 		List<String> statusCodes = clientApplicationRepository.getAllDistinctStatusCode();
 		List<Integer> clintPositionIds = clientApplicationRepository.getAllDistinctClientPositionId();
 
-		List<CAbyRecruiters> clientPositioncountByStatusCode = null;
-		List<CAbyRecruitersHelper> list = new ArrayList<CAbyRecruitersHelper>();
+		List<CAByRecruiter> clientPositioncountByStatusCode = null;
+		List<CAByRecruitersHelper> list = new ArrayList<CAByRecruitersHelper>();
 		for (int i = 0; i < statusCodes.size(); i++) {
-			clientPositioncountByStatusCode = new ArrayList<CAbyRecruiters>();
+			clientPositioncountByStatusCode = new ArrayList<CAByRecruiter>();
 			String statuscode = statusCodes.get(i);
 			for (int j = 0; j < clintPositionIds.size(); j++) {
 				Integer clientPositionId = clintPositionIds.get(j);
 				clientPositioncountByStatusCode = clientApplicationRepository
 						.getclientPositioncountByStatusCode(statuscode, clientPositionId);
-				for (CAbyRecruiters cas : clientPositioncountByStatusCode) {
-					CAbyRecruitersHelper c = new CAbyRecruitersHelper();
-					c.setId(i + 1);
-					c.setClientName(cas.getClientName());
-					c.setStatusCode(statuscode);
-					c.setCount(cas.getCount());
-					list.add(c);
+				for (CAByRecruiter caByRecruiterObj : clientPositioncountByStatusCode) {
+					CAByRecruitersHelper caByRecruitersHelperObj = new CAByRecruitersHelper();
+					caByRecruitersHelperObj.setId(i + 1);
+					caByRecruitersHelperObj.setClientName(caByRecruiterObj.getClientName());
+					caByRecruitersHelperObj.setStatusCode(statuscode);
+					caByRecruitersHelperObj.setCount(caByRecruiterObj.getCount());
+					list.add(caByRecruitersHelperObj);
 				}
 			}
 		}
