@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 
 import com.ccpt.model.ApplicationBody;
 import com.ccpt.model.CAStatistics;
+import com.ccpt.model.CAbyRecruiters;
+import com.ccpt.model.CAbyRecruitersHelper;
 import com.ccpt.model.ClientApplication;
 import com.ccpt.model.InterviewSummaryStatistics;
 import com.ccpt.model.PositionSummaryStatistics;
@@ -99,6 +101,32 @@ public class ClientApplicationService extends BaseService<ClientApplication, Int
 
 	public List<ClientApplication> search(Integer clientId) {
 		return clientApplicationRepository.search(clientId);
+	}
+
+	public List<CAbyRecruitersHelper> getAllCAbyRecruiter() {
+		List<String> statusCodes = clientApplicationRepository.getAllDistinctStatusCode();
+		List<Integer> clintPositionIds = clientApplicationRepository.getAllDistinctClientPositionId();
+
+		List<CAbyRecruiters> clientPositioncountByStatusCode = null;
+		List<CAbyRecruitersHelper> list = new ArrayList<CAbyRecruitersHelper>();
+		for (int i = 0; i < statusCodes.size(); i++) {
+			clientPositioncountByStatusCode = new ArrayList<CAbyRecruiters>();
+			String statuscode = statusCodes.get(i);
+			for (int j = 0; j < clintPositionIds.size(); j++) {
+				Integer clientPositionId = clintPositionIds.get(j);
+				clientPositioncountByStatusCode = clientApplicationRepository
+						.getclientPositioncountByStatusCode(statuscode, clientPositionId);
+				for (CAbyRecruiters cas : clientPositioncountByStatusCode) {
+					CAbyRecruitersHelper c = new CAbyRecruitersHelper();
+					c.setId(i + 1);
+					c.setClientName(cas.getClientName());
+					c.setStatusCode(statuscode);
+					c.setCount(cas.getCount());
+					list.add(c);
+				}
+			}
+		}
+		return list;
 	}
 
 }

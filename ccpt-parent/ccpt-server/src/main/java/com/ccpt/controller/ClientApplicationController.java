@@ -21,6 +21,7 @@ import com.ccpt.mapper.BaseMapper;
 import com.ccpt.mapper.ClientApplicationMapper;
 import com.ccpt.model.ApplicationBody;
 import com.ccpt.model.CAStatistics;
+import com.ccpt.model.CAbyRecruitersHelper;
 import com.ccpt.model.ClientApplication;
 import com.ccpt.model.InterviewSummaryStatistics;
 import com.ccpt.model.PositionSummaryStatistics;
@@ -100,6 +101,13 @@ public class ClientApplicationController extends BaseController<ClientApplicatio
 	public ResponseEntity<List<ClientApplication>> search(@RequestParam Integer clientId) {
 		List<ClientApplication> result = clientApplicationService.search(clientId);
 		return new ResponseEntity<List<ClientApplication>>(result, HttpStatus.OK);
+
+	}
+
+	@GetMapping("/getAllCAbyRecruiter")
+	public ResponseEntity<List<CAbyRecruitersHelper>> getAllCAbyRecruiter() {
+		List<CAbyRecruitersHelper> result = clientApplicationService.getAllCAbyRecruiter();
+		return new ResponseEntity<List<CAbyRecruitersHelper>>(result, HttpStatus.OK);
 
 	}
 

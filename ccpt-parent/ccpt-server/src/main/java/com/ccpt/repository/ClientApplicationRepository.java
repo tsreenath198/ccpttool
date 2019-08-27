@@ -7,6 +7,7 @@ import javax.transaction.Transactional;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import com.ccpt.model.CAbyRecruiters;
 import com.ccpt.model.ClientApplication;
 import com.ccpt.model.InterviewSummaryStatistics;
 
@@ -33,5 +34,18 @@ public interface ClientApplicationRepository extends BaseRepository<ClientApplic
 
 	@Query("SELECT c FROM ClientApplication c WHERE c.clientPosition.client.id=:clientId ")
 	List<ClientApplication> search(@Param("clientId") Integer clientId);
+
+	@Query("SELECT c FROM ClientApplication c WHERE c.clientPosition.client.id=:clientId ")
+	List<ClientApplication> getAllCAbyRecruiter(@Param("clientId") Integer clientId);
+
+	@Query(value = "SELECT distinct status_code FROM client_application", nativeQuery = true)
+	List<String> getAllDistinctStatusCode();
+
+	@Query(value = "SELECT distinct client_position_id FROM client_application", nativeQuery = true)
+	List<Integer> getAllDistinctClientPositionId();
+
+	@Query(value = "SELECT status_code as statusCode ,(SELECT generated_code  from client_position WHERE id=:clientPositionId ) as clientName,count(client_position_id) as count FROM client_application WHERE status_code=:statuscode AND client_position_id=:clientPositionId", nativeQuery = true)
+	List<CAbyRecruiters> getclientPositioncountByStatusCode(@Param("statuscode") String statuscode,
+			@Param("clientPositionId") Integer clientPositionId);
 
 }
