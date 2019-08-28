@@ -38,7 +38,7 @@ public interface ClientApplicationRepository extends BaseRepository<ClientApplic
 	@Query("SELECT c FROM ClientApplication c WHERE c.clientPosition.client.id=:clientId ")
 	List<ClientApplication> getAllCAbyRecruiter(@Param("clientId") Integer clientId);
 
-	@Query(value = "SELECT distinct status_code FROM client_application", nativeQuery = true)
+	@Query(value = "SELECT CODE FROM client_application_status", nativeQuery = true)
 	List<String> getAllDistinctStatusCode();
 
 	@Query(value = "SELECT distinct client_position_id FROM client_application", nativeQuery = true)
