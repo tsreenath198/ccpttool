@@ -14,6 +14,8 @@ import com.ccpt.model.InterviewSummaryStatistics;
 @Transactional
 public interface ClientApplicationRepository extends BaseRepository<ClientApplication, Integer> {
 
+	List<ClientApplication> findByActiveFlagAllIgnoreCaseOrderByCreatedDateDesc(Boolean activeFlag);
+
 	@Query("SELECT c FROM ClientApplication c where client_position_id=:id AND status_code in (select code from ClientApplicationStatus where statusType = 'Active') AND active_flag=1")
 	List<ClientApplication> getAllActiveCAByCpID(@Param(value = "id") Integer id);
 

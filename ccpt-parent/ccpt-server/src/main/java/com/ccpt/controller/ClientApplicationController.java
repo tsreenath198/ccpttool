@@ -97,6 +97,13 @@ public class ClientApplicationController extends BaseController<ClientApplicatio
 
 	}
 
+	@GetMapping("/getCAStatistics")
+	public ResponseEntity<List<CAStatistics>> getCAStatistics() {
+		List<CAStatistics> result = clientApplicationService.getCAStatistics();
+		return new ResponseEntity<List<CAStatistics>>(result, HttpStatus.OK);
+
+	}
+
 	@GetMapping("/search")
 	public ResponseEntity<List<ClientApplication>> search(@RequestParam Integer clientId) {
 		List<ClientApplication> result = clientApplicationService.search(clientId);

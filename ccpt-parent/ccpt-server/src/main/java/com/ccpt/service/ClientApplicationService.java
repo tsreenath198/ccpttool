@@ -129,4 +129,18 @@ public class ClientApplicationService extends BaseService<ClientApplication, Int
 		return list;
 	}
 
+	public List<CAStatistics> getCAStatistics() {
+		List<CAStatistics> listOfCAStatistics = new ArrayList<CAStatistics>();
+		List<ClientApplication> listOfCAs = clientApplicationRepository
+				.findByActiveFlagAllIgnoreCaseOrderByCreatedDateDesc(true);
+		for (ClientApplication clientApplication : listOfCAs) {
+			CAStatistics caStatistics = new CAStatistics();
+			caStatistics.setId(clientApplication.getId());
+			caStatistics.setName(clientApplication.getConsultant().getFullname() + "-"
+					+ clientApplication.getClientPosition().getGeneratedCode());
+			listOfCAStatistics.add(caStatistics);
+		}
+		return listOfCAStatistics;
+	}
+
 }
