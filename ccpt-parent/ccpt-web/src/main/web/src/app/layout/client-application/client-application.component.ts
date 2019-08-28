@@ -86,8 +86,8 @@ export class ClientApplicationComponent implements OnInit {
     translate: 'no'
   };
   public paginateConfig :any={
-    itemsPerPage: this.properties.ITEMSPERPAGE,
-    currentPage: 1,
+    itemsPerPage: 0,
+    currentPage: 0,
     totalItems: 0
   }
   private getAllCAS = this.http.get(this.urlConstants.CASGetAll+"0&pageSize=20&sortBy=id");
@@ -117,10 +117,16 @@ export class ClientApplicationComponent implements OnInit {
     }
     this.loggedInRole = sessionStorage.getItem('role');
     this.getAllDropdowns();
+    this.paginateConfigDeclare(this.properties.ITEMSPERPAGE,1,0);
     this.init();
     this.checkStorage();
     this.initialGetAll(); 
     this.spinner(true);
+  }
+  private paginateConfigDeclare(itemsPerPage,currentPage,totalItems){
+    this.paginateConfig.itemsPerPage = itemsPerPage,
+    this.paginateConfig.currentPage = currentPage,
+    this.paginateConfig.totalItems = totalItems
   }
   private checkStorage() {
     if (this.storageService.consultantId) {
@@ -552,6 +558,7 @@ export class ClientApplicationComponent implements OnInit {
         resp => {
           let temp: any = resp;
           this.comments = "";
+          this.uploader=new FileUploader({});
           this.toastr.success(temp.message, this.properties.CLIENT);
           this.getCAById(this.model.id);
           this.refType = this.properties.CA;
@@ -673,10 +680,12 @@ export class ClientApplicationComponent implements OnInit {
     let temp = this.http.get(this.urlConstants.CASearch + this.currSearchTxt.id)
     temp.subscribe(resp =>{
       this.clientApplicationList.list = resp as any;
+      this.paginateConfigDeclare(this.clientApplicationList.list.length,1,this.clientApplicationList.list.length)
     })
   }
   public cancelSearch(){
     this.currSearchTxt = null;
     this.initialGetAll();
+    this.paginateConfigDeclare(this.properties.ITEMSPERPAGE,1,0);
   }
 }

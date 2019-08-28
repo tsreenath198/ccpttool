@@ -313,6 +313,7 @@ export class ClientComponent implements OnInit {
         const params = 'refId=' + this.selectedRecrdToDel + '&refType=Client&comments=' + this.comments;
         this.http.upload(this.urlConstants.FileUpload + params, formData).subscribe(resp => {
             let temp: any = resp;
+            this.uploader=new FileUploader({});
             this.toastr.success(temp.message, 'Client');
             this.close();
         }, err => {

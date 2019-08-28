@@ -58,10 +58,23 @@ export class ConsultantComponent implements OnInit {
   public cSGetAllPromise = this.http.get(this.urlConstants.CSGetAll);
   public cGetAllPromise = this.http.get(this.urlConstants.CGetAll);
   public paginateConfig :any={
-    itemsPerPage: this.properties.ITEMSPERPAGE,
-    currentPage: 1,
+    itemsPerPage: 0,
+    currentPage: 0,
     totalItems: 0
   }
+
+  public dummyJson:any =[
+    {
+      "position": "Infosys-1",
+      "active": 10,
+      "inactive": 20
+    },
+    {
+      "position": "Infosys-2",
+      "active": 12,
+      "inactive": 0
+    }
+  ];
   constructor(
     private http: HttpClientService,
     private router: Router,
@@ -84,11 +97,27 @@ export class ConsultantComponent implements OnInit {
     this.cSGetAllPromise.subscribe(resp => {
       this.consultantStatusList = resp as any;
     });
+    this.paginateConfigDeclare(this.properties.ITEMSPERPAGE,1,0);
     this.init();
     this.initialGetAll(); 
     this.spinner(true);
     /**Emptying the consultantId in storage */
     this.storage.consultantId = null;
+    /**Delete after testing */
+    this.dummyLog();
+  }
+  private paginateConfigDeclare(itemsPerPage,currentPage,totalItems){
+    this.paginateConfig.itemsPerPage = itemsPerPage,
+    this.paginateConfig.currentPage = currentPage,
+    this.paginateConfig.totalItems = totalItems
+  }
+  /**Delete after testing */
+  public dummyLog(){
+    for(let i=0;i<this.dummyJson.length;i++){
+      for (const [key, value] of  Object.entries( this.dummyJson[i])) {
+        console.log(Object.keys(this.dummyJson[i]));
+      }
+    }
   }
   public initialGetAll(){
     let pageNumber = this.paginateConfig.currentPage-1
@@ -414,6 +443,7 @@ export class ConsultantComponent implements OnInit {
     this.http.upload(this.urlConstants.FileUpload + params, formData).subscribe(
       resp => {
         let temp: any = resp;
+        this.uploader=new FileUploader({});
         this.toastr.success(temp.message, 'Client');
         this.close();
       },
@@ -466,12 +496,14 @@ export class ConsultantComponent implements OnInit {
   public search(){
     this.paginateConfig.currentPage =1
     if(this.currSearchTxt.length == 0){
+      this.paginateConfigDeclare(this.properties.ITEMSPERPAGE,1,0);
       this.initialGetAll();
     }
     else if(this.currSearchTxt.length > 3){
       let temp = this.http.get(this.urlConstants.CSearch + this.currSearchTxt)
       temp.subscribe(resp => {
         this.consultantList.list = resp as any;
+        this.paginateConfigDeclare(this.consultantList.list.length,1,this.consultantList.list.length)
       })
     }
   }

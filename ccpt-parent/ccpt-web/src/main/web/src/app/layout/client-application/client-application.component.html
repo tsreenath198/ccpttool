@@ -29,7 +29,7 @@
         </div>
 
         <div class="col-md-6" >
-          <b class="pull-left"  *ngIf="currSearchTxt">Filtered list count:{{ (clientApplicationList | filter: currSearchTxt).length }}</b>
+          <b class="pull-left"  *ngIf="currSearchTxt">Filtered list count:{{ clientApplicationList.list.length }}</b>
           <span class="pull-right" *ngIf=" appIds.length > 0">
               <div class="dropdown theme-dropdown clearfix" placement="bottom-right" ngbDropdown>
                 <i class="fa fa-bars" ngbDropdownToggle></i>

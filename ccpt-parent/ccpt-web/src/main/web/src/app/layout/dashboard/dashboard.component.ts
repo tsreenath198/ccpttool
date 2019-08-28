@@ -28,6 +28,7 @@ export class DashboardComponent implements OnInit {
     public ccptReportCPL: Array<any> = [];
     public openCP: Array<any> = [];
     public dyingCP: Array<any> = [];
+    public caByStatusList: Array<any> = [];
     public activeCA: Array<any> = [];
     public activeCAById: Array<any> = [];
     public cochByIdList: Array<any> = [];
@@ -63,45 +64,49 @@ export class DashboardComponent implements OnInit {
     public getAllActiveCA = this.http.get(this.urlConstants.ReportingGetAllActiveCA);
     public getAllInterviewsToday = this.http.get(this.urlConstants.ReportingGetAllInterviewsToday);
     public getAllDyingCP = this.http.get(this.urlConstants.ReportingDyingCp);
+    public getAllCAByStatus = this.http.get(this.urlConstants.ReportingGetAllCAByStatus);
     public barChartOptions: any = {
         scaleShowVerticalLines: false,
         responsive: true,
         scales: {
             xAxes: [
-              {
-                ticks: {
-                  beginAtZero: true,
-                  steps : 2,
-                  stepValue : 2,
+                {
+                    ticks: {
+                        beginAtZero: true,
+                        steps: 2,
+                        stepValue: 2,
+                    }
                 }
-              }
             ],
             yAxes: [
                 {
-                  ticks: {
-                    callback: function(label, index, labels) {
-                      if (/\-/.test(label)) {
-                        return label.split(/\-/);
-                      }else{
-                        return label;
-                      }              
+                    ticks: {
+                        callback: function (label, index, labels) {
+                            if (/\-/.test(label)) {
+                                return label.split(/\-/);
+                            } else {
+                                return label;
+                            }
+                        }
                     }
-                  }
                 }
-              ]
-          }
+            ]
+        }
     };
     public barChartLabels: string[] = [
+    ];
+    public barChartCAByStautsLabels: string[] = [
     ];
     public barChartType: string = 'horizontalBar';
     public barChartLegend: boolean = false;
 
-    public barChartData: any[] = [
+    public barChartActiveCAData: any[] = [
         { data: [], label: 'Active Client Applications', cpIds: [] }
     ];
     public barChartColors: Color[] = [
         { backgroundColor: '#343a40' },
-      ]
+    ]
+    public barChartCAByStatusData: any[] = [];
 
     constructor(private http: HttpClientService, private router: Router, private toastr: ToastrCustomService,
         private modalService: NgbModal) {
@@ -124,7 +129,8 @@ export class DashboardComponent implements OnInit {
             this.getAllOpenCP,
             this.getAllActiveCA,
             this.getAllInterviewsToday,
-            this.getAllDyingCP
+            this.getAllDyingCP,
+            this.getAllCAByStatus
         ).subscribe(listofrecords => {
             this.ccptReportCLCH = listofrecords[0] as any;
             this.ccptReportCOCH = listofrecords[1] as any;
@@ -134,8 +140,10 @@ export class DashboardComponent implements OnInit {
             this.activeCA = listofrecords[5] as any;
             this.interviewsToday = listofrecords[6] as any;
             this.dyingCP = listofrecords[7] as any;
+            this.caByStatusList = listofrecords[8] as any;
             this.spinner(true);
             this.setActiveCPBarData();
+            this.setCAByStatusBarData(this.caByStatusList);
         });
         this.top5ById.properties = []
     }
@@ -244,10 +252,38 @@ export class DashboardComponent implements OnInit {
     private setActiveCPBarData() {
         this.activeCA.forEach(ca => {
             this.barChartLabels.push(ca.generatedCode);
-            this.barChartData[0].data.push("" + ca.count);
-            this.barChartData[0].cpIds.push("" + ca.cpId);
+            this.barChartActiveCAData[0].data.push("" + ca.count);
+            this.barChartActiveCAData[0].cpIds.push("" + ca.cpId);
         })
         this.chartHeight = 35 * this.activeCA.length;
+    }
+
+    /**
+     * data list of client applications by status
+     */
+    private setCAByStatusBarData(data: any[]) {
+        let uniqueClientName = data.map(item => item.clientName)
+            .filter((value, index, self) => self.indexOf(value) === index);
+        let uniqueStatus = data.map(item => item.statusCode)
+            .filter((value, index, self) => self.indexOf(value) === index);
+        /**
+                { data: [65, 59, 80, 81, 56, 55, 40, 65, 59, 80], label: 'Series A', stack: 'a' },
+                { data: [28, 48, 40, 19, 86, 27, 90, 65, 59, 80], label: 'Series B', stack: 'a' },
+                { data: [28, 48, 40, 19, 86, 27, 90, 65, 59, 80], label: 'Series Bd', stack: 'a' }
+             */
+        uniqueClientName.forEach(ucn => {
+            let temp = { data: [], label: '', stack: 'a' };
+            uniqueStatus.forEach(us => {
+                let unique: any = data.filter(dt => dt.clientName == ucn && dt.statusCode == us);
+                temp.data.push(unique[0].count);
+            })
+            this.barChartCAByStautsLabels.push(ucn);
+            this.barChartCAByStatusData.push(temp);
+        })
+
+        for(let i=0;i<this.barChartCAByStatusData.length;i++){
+            this.barChartCAByStatusData[i].label = uniqueStatus[i];
+        }
     }
     /**
      * @param event eventdata
@@ -255,6 +291,6 @@ export class DashboardComponent implements OnInit {
      */
     public chartClicked(event): void {
         const index = event.active[0]._index;
-        this.open(this.contentACA, this.barChartData[0].cpIds[index], 'activeClientApplication');
+        this.open(this.contentACA, this.barChartActiveCAData[0].cpIds[index], 'activeClientApplication');
     }
 }
