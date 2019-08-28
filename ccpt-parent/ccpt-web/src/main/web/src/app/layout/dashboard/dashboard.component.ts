@@ -271,13 +271,13 @@ export class DashboardComponent implements OnInit {
                 { data: [28, 48, 40, 19, 86, 27, 90, 65, 59, 80], label: 'Series B', stack: 'a' },
                 { data: [28, 48, 40, 19, 86, 27, 90, 65, 59, 80], label: 'Series Bd', stack: 'a' }
              */
-        uniqueClientName.forEach(ucn => {
+         uniqueStatus.forEach(us => {
             let temp = { data: [], label: '', stack: 'a' };
-            uniqueStatus.forEach(us => {
+            uniqueClientName.forEach(ucn => {
                 let unique: any = data.filter(dt => dt.clientName == ucn && dt.statusCode == us);
                 temp.data.push(unique[0].count);
             })
-            this.barChartCAByStautsLabels.push(ucn);
+            this.barChartCAByStautsLabels=uniqueClientName;
             this.barChartCAByStatusData.push(temp);
         })
 

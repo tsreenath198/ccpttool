@@ -110,7 +110,7 @@ export class URLConstants {
     ReportingGetAllActiveCAById = 'clientApplication/getAllActiveCAByCpID?cpId=';
     ReportingGetAllInterviewsToday = 'clientApplication/getAllInterviewsFromToday';
     ReportingDyingCp = 'report/getLastWeekDyingCP'
-    ReportingGetAllCAByStatus = 'clientApplication/getAllCAbyRecruiter'
+    ReportingGetAllCAByStatus = 'clientApplication/getAllCAbyStatus'
 
     /**Email Template */
     EmailTemplateCreate = 'template';
