@@ -80,10 +80,11 @@ export class DashboardComponent implements OnInit {
             ],
             yAxes: [
                 {
+                    barPercentage: 1,
                     ticks: {
                         callback: function (label, index, labels) {
                             if (/\-/.test(label)) {
-                                return label.split(/\-/);
+                                return label.split(/\-/,2);
                             } else {
                                 return label;
                             }

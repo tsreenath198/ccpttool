@@ -97,7 +97,7 @@
           Active Client Applications
         </div>
         <div class="card-body" >
-          <canvas baseChart id="activeCAChart" height="315" [datasets]="barChartActiveCAData" [labels]="barChartLabels"
+          <canvas baseChart id="activeCAChart"  [datasets]="barChartActiveCAData" [labels]="barChartLabels"
             [options]="barChartOptions" [legend]="barChartLegend" [colors]="barChartColors" [chartType]="barChartType"
             (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)">
           </canvas>
@@ -112,7 +112,7 @@
         <div class="card-body" >
           <canvas baseChart id="activeCAChart" height="315" [datasets]="barChartCAByStatusData" [labels]="barChartCAByStautsLabels"
             [options]="barChartOptions" [legend]="barChartLegend"  [chartType]="barChartType"
-            (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)">
+             >
           </canvas>
         </div>
       </div>
