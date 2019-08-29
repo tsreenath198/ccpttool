@@ -24,6 +24,7 @@ public interface CCPTConstants {
 	String SMS = "/sms";
 	String PAYMENT = "/payment";
 	String SEARCH = "/search";
+	String QUESTION = "/question";
 
 	String CLIENT_APPLICATION_STATUS = "/caStatus";
 	String CLIENT_POSITION_STATUS = "/cpStatus";
