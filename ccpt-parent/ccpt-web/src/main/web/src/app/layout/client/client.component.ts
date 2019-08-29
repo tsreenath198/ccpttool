@@ -25,8 +25,8 @@ export class ClientComponent implements OnInit {
     public currSearchTxt = '';
     public urlConstants = new URLConstants();
     public properties = new Properties();
-    public readOnlyForm = '';
-    public enableButtonType = '';
+    public readOnlyForm:any = '';
+    public enableButtonType:any = '';
     public comments = '';
     public uploader: FileUploader = new FileUploader({});
     public fileList: Array<any> = [];
@@ -44,7 +44,7 @@ export class ClientComponent implements OnInit {
     public upload = 'upload';
     public apName = '';
     public apValue = '';
-    public loggedInRole = '';
+    public loggedInRole : any= '';
     public isCreate: boolean = false;
     public listReturned: boolean;
     public config: AngularEditorConfig = {

@@ -40,6 +40,7 @@ export class DashboardComponent implements OnInit {
     public clchChoosenDays: any = 7;
     public listReturned: boolean = false;
     public chartHeight: any;
+    public stackChartHeight: any;
     /** Template references */
 
     @ViewChild('contentACA')
@@ -68,6 +69,7 @@ export class DashboardComponent implements OnInit {
     public barChartOptions: any = {
         scaleShowVerticalLines: false,
         responsive: true,
+        maintainAspectRatio: false,
         scales: {
             xAxes: [
                 {
@@ -82,6 +84,7 @@ export class DashboardComponent implements OnInit {
                 {
                     barPercentage: 1,
                     ticks: {
+                        fontSize: 10,
                         callback: function (label, index, labels) {
                             if (/\-/.test(label)) {
                                 return label.split(/\-/,2);
@@ -100,6 +103,7 @@ export class DashboardComponent implements OnInit {
     ];
     public barChartType: string = 'horizontalBar';
     public barChartLegend: boolean = false;
+    public stackBarChartLegend: boolean = true;
 
     public barChartActiveCAData: any[] = [
         { data: [], label: 'Active Client Applications', cpIds: [] }
@@ -256,7 +260,7 @@ export class DashboardComponent implements OnInit {
             this.barChartActiveCAData[0].data.push("" + ca.count);
             this.barChartActiveCAData[0].cpIds.push("" + ca.cpId);
         })
-        this.chartHeight = 35 * this.activeCA.length;
+        this.chartHeight = 40 * this.activeCA.length;
     }
 
     /**
@@ -278,6 +282,7 @@ export class DashboardComponent implements OnInit {
                 let unique: any = data.filter(dt => dt.clientName == ucn && dt.statusCode == us);
                 temp.data.push(unique[0].count);
             })
+            this.stackChartHeight = uniqueClientName.length * 50;
             this.barChartCAByStautsLabels=uniqueClientName;
             this.barChartCAByStatusData.push(temp);
         })

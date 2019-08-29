@@ -96,7 +96,7 @@
         <div class="card-header bg-dark text-clr-white">
           Active Client Applications
         </div>
-        <div class="card-body" >
+        <div class="card-body" style="position: relative" [style.height.px]="chartHeight">
           <canvas baseChart id="activeCAChart"  [datasets]="barChartActiveCAData" [labels]="barChartLabels"
             [options]="barChartOptions" [legend]="barChartLegend" [colors]="barChartColors" [chartType]="barChartType"
             (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)">
@@ -109,9 +109,9 @@
         <div class="card-header bg-dark text-clr-white">
           Client Applications By Status
         </div>
-        <div class="card-body" >
-          <canvas baseChart id="activeCAChart" height="315" [datasets]="barChartCAByStatusData" [labels]="barChartCAByStautsLabels"
-            [options]="barChartOptions" [legend]="barChartLegend"  [chartType]="barChartType"
+        <div class="card-body" style="position: relative" [style.height.px]="stackChartHeight">
+          <canvas baseChart id="activeCAChart"  [datasets]="barChartCAByStatusData" [labels]="barChartCAByStautsLabels"
+            [options]="barChartOptions" [legend]="stackBarChartLegend"  [chartType]="barChartType"
              >
           </canvas>
         </div>

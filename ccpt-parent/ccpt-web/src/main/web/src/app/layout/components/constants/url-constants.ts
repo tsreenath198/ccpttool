@@ -47,6 +47,7 @@ export class URLConstants {
     CABodyMail = 'clientApplication/showBodyMail?caId='
     CAJobConfirmed = "clientApplication/getJobConfirmedCAs"
     CASearch = "clientApplication/search?clientId="
+    CADropdown = 'clientApplication/getCAStatistics'
 
 
     /* Client Call History */
@@ -150,6 +151,17 @@ export class URLConstants {
     PaymentGetById = 'payment/';
     PaymentActivateById = 'payment/';
     PaymentGetExcel = 'payment/downloadExcel?paymentId='
+
+    /**Question */
+    FAQCreate = 'question';
+    FAQGetAll = 'question/?pageNo=';
+    FAQUpdate = 'question';
+    FAQDelete = 'question/';
+    FAQGetByID = 'question/';
+    FAQActivateById = 'question/';
+    FAQSaveInCA = 'question/save';
+    FAQSearchByCAId = 'question/searchByCAID';
+    FAQSearchBySkills = 'question/searchBySkills';
 
     /**File */
     FileUpload = 'uploadFile/save?';
