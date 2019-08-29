@@ -1,6 +1,6 @@
 import { Component, OnInit, HostListener, ElementRef } from '@angular/core';
 import { routerTransition } from '../../router.animations';
-import { UsersModel, UserRoles, ActionsList } from './frequent-questions.model';
+import { FAQModel } from './frequent-questions.model';
 import { HttpClientService } from 'src/app/shared/services/http.service';
 import { URLConstants } from '../components/constants/url-constants';
 import { NgForm } from '@angular/forms';
@@ -17,31 +17,31 @@ import { Properties } from '../components/constants/properties';
     animations: [routerTransition()]
 })
 export class FrequentQuestionsComponent implements OnInit {
-    public model: UsersModel = <UsersModel>{};
-    public usersList: any = [];
+    public model: FAQModel = <FAQModel>{};
+    public faqList: any = [];
     private urlConstants = new URLConstants();
     public properties = new Properties();
-    public rolesModel = new UserRoles();
     public rolesList: any = [];
     public getAllR: any=[];
-    public readOnlyForm = '';
-    public enableButtonType = '';
+    public getAllCA: any=[];
+    public readOnlyForm : any= '';
+    public enableButtonType :any = '';
     public currSearchTxt = '';
+    public currDropSearch: any = null;
     private selectedRecrdToDel = 0;
     public closeResult = '';
     public apName = '';
     public apValue = '';
     public isCreate: boolean = false;
     public showAction: boolean = false;
-    public actionsList = new ActionsList();
     public action: string = null;
     private modalRef: NgbModalRef;
     public screenHeight: any;
     public viewPassword: boolean;
     public listReturned: boolean;
     public paginateConfig :any={
-        itemsPerPage: this.properties.ITEMSPERPAGE,
-        currentPage: 1,
+        temsPerPage: 0,
+        currentPage: 0,
         totalItems: 0
       }
     constructor(private http: HttpClientService, private router: Router, private toastr: ToastrCustomService, private modalService: NgbModal,
@@ -60,28 +60,47 @@ export class FrequentQuestionsComponent implements OnInit {
         }
         this.http.get(this.urlConstants.RGetAll+ "0&pageSize=20000&sortBy=id").subscribe(resp => {
             this.getAllR = resp as any;
+            this.getRecruiterId();
         });
+        this.http.get(this.urlConstants.CADropdown).subscribe(resp => {
+            this.getAllCA = resp as any;
+        });
+        this.paginateConfigDeclare(this.properties.ITEMSPERPAGE,1,0);
         this.init();
         this.initialGetAll(); 
         this.spinner(true);
-        this.rolesList = this.rolesModel.roles;
-        this.viewPassword = false;
     }
+    
+  private paginateConfigDeclare(itemsPerPage,currentPage,totalItems){
+    this.paginateConfig.itemsPerPage = itemsPerPage,
+    this.paginateConfig.currentPage = currentPage,
+    this.paginateConfig.totalItems = totalItems
+  }
     private init() {
         // this.spinner(false);
         // this.http.get(this.urlConstants.UserGetAll).subscribe(resp => {
-        //     this.usersList = resp as any;
+        //     this.faqList = resp as any;
         //     this.spinner(true);
         // });
-        this.model.properties = [];
     }
+    private getRecruiterId() {
+        const temp = sessionStorage.getItem('username');
+        this.getAllR.list.forEach(rl => {
+          if (rl.email === temp) {
+            this.model.creatorId = rl.id;
+          }
+          if (this.model.properties == null) {
+            this.model.properties = [];
+          }
+        });
+      }
     public initialGetAll(){
         let pageNumber = this.paginateConfig.currentPage-1
-        let temp=this.http.get(this.urlConstants.UserGetAll+ pageNumber + "&pageSize=20&sortBy=id");
+        let temp=this.http.get(this.urlConstants.FAQGetAll+ pageNumber + "&pageSize=20&sortBy=id");
         temp.subscribe(resp => {
-          this.usersList = resp as any;
+          this.faqList = resp as any;
           //this.pageChange(this.page);
-          this.paginateConfig.totalItems = this.usersList.noOfRecords
+          this.paginateConfig.totalItems = this.faqList.noOfRecords
         });
       }
     public dblSetModel() {
@@ -103,7 +122,7 @@ export class FrequentQuestionsComponent implements OnInit {
         this.action = null;
     }
     private getUserById(id: number) {
-        let temp = this.http.get(this.urlConstants.UserGetById + id);
+        let temp = this.http.get(this.urlConstants.FAQGetByID + id);
         temp.subscribe(resp => {
             this.model = this.mapToUpdateModel(resp);
             if (this.model.properties == null) {
@@ -112,9 +131,11 @@ export class FrequentQuestionsComponent implements OnInit {
             this.spinner(true);
         });
     }
-    private mapToUpdateModel(response): UsersModel {
+    private mapToUpdateModel(response): FAQModel {
         const temp = response;
         this.model = temp;
+        this.model.caId = response.ca.id;
+        this.model.creatorId = response.creator.id;
         return this.model;
     }
     public propertiesListIncrement(event, i: number) {
@@ -152,45 +173,22 @@ export class FrequentQuestionsComponent implements OnInit {
             }
         }
     }
-    public actions(value, trashContent, form) {
-        console.log(value);
-        switch (value) {
-            case 'Delete': {
-                this.open(this.model.id, trashContent);
-                break;
-            }
-            case 'Edit': {
-                this.enableFormEditable();
-                break;
-            }
-            case 'Close': {
-                this.cancelForm(form);
-            }
-        }
-    }
-    public toogle(html: HTMLInputElement) {
-        if (html.type === 'password') {
-            html.type = 'text';
-            this.viewPassword = true;
-        } else {
-            html.type = 'password';
-            this.viewPassword = false;
-        }
-
-    }
     private formReset() {
-        this.model = <UsersModel>{ properties: [] };
+        this.model = <FAQModel>{ properties: [] };
+        this.getRecruiterId();
     }
     public create(usersForm: NgForm): void {
         this.spinner(false);
         this.isCreate = true;
-        let temp = this.http.post(this.model, this.urlConstants.UserCreate);
+        let temp = this.http.post(this.model, this.urlConstants.FAQCreate);
         temp.subscribe(resp => {
             this.toastr.success(this.properties.CREATE, this.properties.USER);
             usersForm.resetForm();
+            this.formReset();
             this.init();
             this.paginateConfig.currentPage=1;
             this.initialGetAll();
+            this.getRecruiterId();
             this.isCreate = false;
             this.spinner(true);
         }, err => {
@@ -201,11 +199,12 @@ export class FrequentQuestionsComponent implements OnInit {
     }
     public update(usersForm: NgForm): void {
         this.spinner(false);
-        let temp = this.http.update(this.model, this.urlConstants.UserUpdate);
+        let temp = this.http.update(this.model, this.urlConstants.FAQUpdate);
         temp.subscribe(resp => {
             this.formReset();
             this.toastr.success(this.properties.UPDATE, this.properties.USER);
             this.init();
+            this.getRecruiterId();
             usersForm.resetForm();
             this.readOnlyForm = '';
             this.enableButtonType = '';
@@ -218,12 +217,15 @@ export class FrequentQuestionsComponent implements OnInit {
     }
     public trash(): void {
         this.spinner(false);
-        let temp = this.http.delete(this.urlConstants.UserDelete + this.selectedRecrdToDel);
+        let temp = this.http.delete(this.urlConstants.FAQDelete + this.selectedRecrdToDel);
         temp.subscribe(resp => {
             this.toastr.success(this.properties.DELETE, this.properties.USER);
             this.init();
+            this.paginateConfig.currentPage=1;
+            this.initialGetAll();
             this.close();
             this.formReset();
+            this.getRecruiterId();
             this.readOnlyForm = '';
             this.enableButtonType = '';
             this.showAction = false;
@@ -271,4 +273,35 @@ export class FrequentQuestionsComponent implements OnInit {
     private spinner(isSpinner: boolean) {
         this.listReturned = isSpinner;
     }
+    public pageChanged(event){
+        this.paginateConfig.currentPage = event
+        this.initialGetAll();
+      }
+    public search(){
+        this.paginateConfig.currentPage =1
+        if(this.currSearchTxt.length == 0){
+          this.paginateConfigDeclare(this.properties.ITEMSPERPAGE,1,0);
+          this.initialGetAll();
+        }
+        else if(this.currSearchTxt.length > 3){
+          let temp = this.http.get(this.urlConstants.FAQSearchBySkills + this.currSearchTxt)
+          temp.subscribe(resp => {
+            this.faqList.list = resp as any;
+            this.paginateConfigDeclare(this.faqList.list.length,1,this.faqList.list.length)
+          })
+        }
+    }
+    public searchSelect(){
+        this.paginateConfig.currentPage =1
+        let temp = this.http.get(this.urlConstants.FAQSearchByCAId + this.currDropSearch.id)
+        temp.subscribe(resp =>{
+          this.faqList.list = resp as any;
+          this.paginateConfigDeclare(this.faqList.list.length,1,this.faqList.list.length)
+        })
+      }
+      public cancelSearch(){
+        this.currDropSearch = null;
+        this.initialGetAll();
+        this.paginateConfigDeclare(this.properties.ITEMSPERPAGE,1,0);
+      } 
 }

@@ -1,16 +1,12 @@
 import { AdditionalPropertiesModel } from 'src/app/additional-properties.model';
 
-export interface UsersModel {
-    username: string;
-    password: string;
+export interface FAQModel {
+    creatorId: number;
+    caId: number;
+    skills: string;
+    question: Array<any>;
     description: string;
-    role: string;
+    response: string;
     properties: Array<AdditionalPropertiesModel>;
     id: number;
-}
-export class UserRoles {
-    roles = ['User', 'Admin', 'Manager'];
-}
-export class ActionsList {
-    actions = [{key: 'Edit' , value:'Edit'}, {key: 'Delete' , value:'Delete'}, {key: 'Close' , value:'Close'}];
 }
