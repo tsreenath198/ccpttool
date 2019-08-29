@@ -47,4 +47,8 @@ export class Properties {
 
     /**status constants */
     STATUS = ['Active', 'Inactive'];
+
+    /**Dashboard Stack Bar Chart status order */
+
+    SBCStatusOrder = ['Rejected By Client','New','Shortlisted','Interview Scheduled','Interview Missed','Accepted By Client','Job Confirmed']
 }

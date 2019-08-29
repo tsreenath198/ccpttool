@@ -160,8 +160,8 @@ export class URLConstants {
     FAQGetByID = 'question/';
     FAQActivateById = 'question/';
     FAQSaveInCA = 'question/save';
-    FAQSearchByCAId = 'question/searchByCAID';
-    FAQSearchBySkills = 'question/searchBySkills';
+    FAQSearchByCAId = 'question/searchByCAID?caId=';
+    FAQSearchBySkills = 'question/searchBySkills?skills=';
 
     /**File */
     FileUpload = 'uploadFile/save?';
