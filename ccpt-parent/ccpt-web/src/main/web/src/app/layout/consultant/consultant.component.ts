@@ -62,19 +62,6 @@ export class ConsultantComponent implements OnInit {
     currentPage: 0,
     totalItems: 0
   }
-
-  public dummyJson:any =[
-    {
-      "position": "Infosys-1",
-      "active": 10,
-      "inactive": 20
-    },
-    {
-      "position": "Infosys-2",
-      "active": 12,
-      "inactive": 0
-    }
-  ];
   constructor(
     private http: HttpClientService,
     private router: Router,
@@ -103,21 +90,11 @@ export class ConsultantComponent implements OnInit {
     this.spinner(true);
     /**Emptying the consultantId in storage */
     this.storage.consultantId = null;
-    /**Delete after testing */
-    this.dummyLog();
   }
   private paginateConfigDeclare(itemsPerPage,currentPage,totalItems){
     this.paginateConfig.itemsPerPage = itemsPerPage,
     this.paginateConfig.currentPage = currentPage,
     this.paginateConfig.totalItems = totalItems
-  }
-  /**Delete after testing */
-  public dummyLog(){
-    for(let i=0;i<this.dummyJson.length;i++){
-      for (const [key, value] of  Object.entries( this.dummyJson[i])) {
-        console.log(Object.keys(this.dummyJson[i]));
-      }
-    }
   }
   public initialGetAll(){
     let pageNumber = this.paginateConfig.currentPage-1
