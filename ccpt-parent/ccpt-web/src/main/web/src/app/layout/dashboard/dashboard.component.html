@@ -111,7 +111,7 @@
         </div>
         <div class="card-body" style="position: relative" [style.height.px]="stackChartHeight">
           <canvas baseChart id="activeCAChart"  [datasets]="barChartCAByStatusData" [labels]="barChartCAByStautsLabels"
-            [options]="barChartOptions" [legend]="stackBarChartLegend"  [chartType]="barChartType"
+            [options]="barChartOptions" [colors]="stackbarChartColors" [legend]="stackBarChartLegend"  [chartType]="barChartType"
              >
           </canvas>
         </div>

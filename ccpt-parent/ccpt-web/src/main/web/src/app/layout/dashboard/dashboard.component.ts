@@ -9,6 +9,7 @@ import { Keyvalue } from '../modals/action';
 import { Router } from '@angular/router';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { Color } from 'ng2-charts';
+import { Properties } from '../components/constants/properties';
 
 @Component({
     selector: 'app-dashboard',
@@ -35,6 +36,7 @@ export class DashboardComponent implements OnInit {
     public clchByIdList: Array<any> = [];
     public interviewsToday: Array<any> = [];
     private urlConstants = new URLConstants();
+    private constantProperties = new Properties();
     public rpChoosenDays: any = 7;
     public cochChoosenDays: any = 7;
     public clchChoosenDays: any = 7;
@@ -110,6 +112,15 @@ export class DashboardComponent implements OnInit {
     ];
     public barChartColors: Color[] = [
         { backgroundColor: '#343a40' },
+    ]
+    public stackbarChartColors: Color[] = [
+        { backgroundColor: '#FF0000' },
+        { backgroundColor: '#FFFF00' },
+        { backgroundColor: '#00FF00' },
+        { backgroundColor: '#FFA500' },
+        { backgroundColor: '#ff4d4d' },
+        { backgroundColor: '#00cc00' },
+        { backgroundColor: '#009900' }
     ]
     public barChartCAByStatusData: any[] = [];
 
@@ -269,8 +280,16 @@ export class DashboardComponent implements OnInit {
     private setCAByStatusBarData(data: any[]) {
         let uniqueClientName = data.map(item => item.clientName)
             .filter((value, index, self) => self.indexOf(value) === index);
-        let uniqueStatus = data.map(item => item.statusCode)
+        let uniqueStatus :any=[];    
+        let tempUniqueStatus = data.map(item => item.statusCode)
             .filter((value, index, self) => self.indexOf(value) === index);
+        this.constantProperties.SBCStatusOrder.forEach(cp => {
+            tempUniqueStatus.forEach(tus =>{
+                if(cp === tus){
+                    uniqueStatus.push(tus);
+                }
+            })
+        })
         /**
                 { data: [65, 59, 80, 81, 56, 55, 40, 65, 59, 80], label: 'Series A', stack: 'a' },
                 { data: [28, 48, 40, 19, 86, 27, 90, 65, 59, 80], label: 'Series B', stack: 'a' },
