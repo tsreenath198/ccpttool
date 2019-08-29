@@ -87,7 +87,7 @@ export class DashboardComponent implements OnInit {
                         fontSize: 10,
                         callback: function (label, index, labels) {
                             if (/\-/.test(label)) {
-                                return label.split(/\-/,2);
+                                return label.split(/\-/);
                             } else {
                                 return label;
                             }
@@ -260,7 +260,7 @@ export class DashboardComponent implements OnInit {
             this.barChartActiveCAData[0].data.push("" + ca.count);
             this.barChartActiveCAData[0].cpIds.push("" + ca.cpId);
         })
-        this.chartHeight = 40 * this.activeCA.length;
+        this.chartHeight = 55 * this.activeCA.length;
     }
 
     /**
@@ -282,7 +282,7 @@ export class DashboardComponent implements OnInit {
                 let unique: any = data.filter(dt => dt.clientName == ucn && dt.statusCode == us);
                 temp.data.push(unique[0].count);
             })
-            this.stackChartHeight = uniqueClientName.length * 50;
+            this.stackChartHeight = uniqueClientName.length * 60;
             this.barChartCAByStautsLabels=uniqueClientName;
             this.barChartCAByStatusData.push(temp);
         })
