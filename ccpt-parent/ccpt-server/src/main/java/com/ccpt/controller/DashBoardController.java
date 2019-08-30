@@ -46,14 +46,12 @@ public class DashBoardController {
 	public ResponseEntity<List<InterviewSummaryStatistics>> getAllInterviewsFromToday() {
 		List<InterviewSummaryStatistics> result = clientApplicationService.getAllInterviewsFromToday();
 		return new ResponseEntity<List<InterviewSummaryStatistics>>(result, HttpStatus.OK);
-
 	}
 
 	@GetMapping("/getAllCAbyStatus")
 	public ResponseEntity<List<CAByStatusHelper>> getAllCAbyStatus() {
 		List<CAByStatusHelper> result = clientApplicationService.getAllCAbyStatus();
 		return new ResponseEntity<List<CAByStatusHelper>>(result, HttpStatus.OK);
-
 	}
 
 	@GetMapping("/getLastWeekDyingCP")
@@ -66,7 +64,6 @@ public class DashBoardController {
 	public ResponseEntity<List<PositionSummaryStatistics>> getAllActiveCACount() {
 		List<PositionSummaryStatistics> result = clientApplicationService.getAllActiveCACount();
 		return new ResponseEntity<List<PositionSummaryStatistics>>(result, HttpStatus.OK);
-
 	}
 
 	@GetMapping("/getAllOpenCP")
@@ -81,7 +78,6 @@ public class DashBoardController {
 		Map<String, Long> map = new HashMap<>();
 		List<Object[]> results = consultantCallHistoryService.getClosedCountOfAllRecruitersFromLastGivenDays(days);
 		for (Object[] object : results) {
-
 			map.put(((String) object[0]), (Long) object[1]);
 		}
 		return new ResponseEntity<>(map, HttpStatus.OK);
@@ -92,7 +88,6 @@ public class DashBoardController {
 			throws ParseException {
 		List<CallHistorySummaryStatistics> result = consultantCallHistoryService.getAllconCHCountByRecruiters(days);
 		return new ResponseEntity<List<CallHistorySummaryStatistics>>(result, HttpStatus.OK);
-
 	}
 
 	@GetMapping("/getTop5CP")
@@ -106,7 +101,6 @@ public class DashBoardController {
 			throws ParseException {
 		List<CallHistorySummaryStatistics> result = clientCallHistoryService.getAllCchCountByRecruiters(days);
 		return new ResponseEntity<List<CallHistorySummaryStatistics>>(result, HttpStatus.OK);
-
 	}
 
 	@GetMapping("/getAllDashboardContent")
