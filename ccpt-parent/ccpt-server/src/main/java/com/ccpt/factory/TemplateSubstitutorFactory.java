@@ -22,5 +22,4 @@ public class TemplateSubstitutorFactory {
 		}
 		throw new NoSuchBeanDefinitionException("No Substitutor Bean found for type : " + type);
 	}
-
 }
