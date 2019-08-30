@@ -3,7 +3,7 @@ import { routerTransition } from '../../router.animations';
 import { forkJoin } from 'rxjs';
 import { Properties } from '../components/constants/properties';
 import { URLConstants } from '../components/constants/url-constants';
-import { ClientApplicationModel, ActionsList, SendEmailModel, SendSmsModel } from './client-application.model';
+import { ClientApplicationModel, ActionsList, SendEmailModel, SendSmsModel, FAQModel } from './client-application.model';
 import { ClientApplicationStatusModel } from '../client-application-status/client-application-status.model';
 import { NgForm } from '@angular/forms';
 import { NgbModalRef, ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -24,6 +24,7 @@ import { template } from '@angular/core/src/render3';
 })
 export class ClientApplicationComponent implements OnInit {
   public model: ClientApplicationModel = <ClientApplicationModel>{};
+  public faqModel:FAQModel =<FAQModel>{}; 
   public conchModel: ConsultantCallHistoryModel = <ConsultantCallHistoryModel>{};
   public paymentModel: PaymentsModel = <PaymentsModel>{};
 
@@ -135,6 +136,7 @@ export class ClientApplicationComponent implements OnInit {
   }
   private init() {
     this.model.properties = [];
+    this.faqModel.questions=[""];
     this.model.files = [];
     this.model.caStatus = 'New';
     this.page = 1;
@@ -237,6 +239,18 @@ export class ClientApplicationComponent implements OnInit {
     this.model['creatorId'] = temp.creator.id;
     return this.model;
   }
+  public faqListIncrement(event, i: number) {
+    switch (event.id) {
+        case 'decrease': {
+            this.faqModel.questions.splice(i, 1);
+            break;
+        }
+        case 'increase': {
+            this.faqModel.questions.push("");
+            break;
+        }
+    }
+}
   public propertiesListIncrement(event, i: number) {
     switch (event.id) {
       case 'decrease': {
@@ -341,6 +355,20 @@ export class ClientApplicationComponent implements OnInit {
         this.spinner(true);
         this.appIds = [];
       })
+  }
+  public createFAQ(){
+    this.creating=true
+    const temp = this.http.post(this.faqModel,this.urlConstants.FAQSaveInCA +this.model.id + "&userId="+this.model.creatorId);
+    temp.subscribe(resp=>{
+      this.toastr.success(this.properties.CREATE, this.properties.FAQ);
+        this.faqModel=<FAQModel>{};
+        this.creating = false;
+        this.close();
+    },
+    err => {
+      this.creating = false;
+      this.toastr.error(err.error.message, this.properties.FAQ);
+    })
   }
   public sendSmsReq(): void {
     this.spinner(false);

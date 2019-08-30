@@ -32,3 +32,6 @@ export class SendSmsModel {
     message: string;
     target:string;
 }
+export class FAQModel{
+    questions:Array<string>;
+}

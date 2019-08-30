@@ -133,6 +133,8 @@
                       (click)="getInterviewDetailsSms(model.id,sendSMSContent)">Sms Interview Schedule</a>
                   <a class="dropdown-item drop-list" *ngIf="model.status.description=='Job Confirmed'"
                     (click)="setPaymentModel(model,createPayment)">Create Payment</a>
+                  <a class="dropdown-item drop-list"
+                    (click)="open(model.id,createFAQs)">FAQ's</a>  
                   <a class="dropdown-item drop-list" (click)="open(model.id, trashContent)">Delete</a>
                 </div>
               </div>
@@ -698,6 +700,52 @@
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-secondary" (click)="createConCallHistory()" [disabled]="creating">{{ creating ? 'loading...' : ('Send' | translate) }}</button>
+    <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
+  </div>
+</ng-template>
+
+
+
+<ng-template #createFAQs let-c="close" let-d="dismiss">
+  <div class="modal-header modal-popup-header-bg">
+    <h4 class="modal-title">Frequently Asked Questions<span class="required">*</span></h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="table-responsive">
+        <table class="table table-hover ">
+          <tbody>
+            <tr *ngFor="let cc of faqModel.questions; let i = index">
+              <td>
+                <input
+                  class="form-control"
+                  [(ngModel)]="faqModel.questions[i]"
+                  name="fq{{ i }}"
+                  placeholder="question"
+                />
+              </td>
+              <td>
+                <i class="fa fa-minus" aria-hidden="true" id="decrease" (click)="faqListIncrement($event.target, i)"></i>
+                <br>
+                <i
+                  class="fa fa-plus"
+                  *ngIf="i + 1 == faqModel.questions.length"
+                  aria-hidden="true"
+                  id="increase"
+                  (click)="faqListIncrement($event.target, i)"
+                ></i>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="createFAQ()" [disabled]="creating">{{ creating ? 'loading...' : ('Create' | translate) }}</button>
     <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
   </div>
 </ng-template>
