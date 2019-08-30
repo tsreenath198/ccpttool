@@ -112,10 +112,10 @@ public class DashboardController {
 	@GetMapping("/getAllDashboardContent")
 	public ResponseEntity<DashboardModel> getAll() throws Exception {
 		DashboardModel dashboardModel = new DashboardModel();
-		dashboardModel.setListOfInterviewSummaryStatistics(clientApplicationService.getAllInterviewsFromToday());
-		dashboardModel.setListOfOpenClientPositions(dashboardService.getOpenClientPositions());
-		dashboardModel.setListOfDyingClientPositions(dashboardService.getDyingClientPositions());
-		dashboardModel.setListOfCAByStatus(clientApplicationService.getAllCAbyStatus());
+		dashboardModel.setInterviewSummaryStatistics(clientApplicationService.getAllInterviewsFromToday());
+		dashboardModel.setOpenClientPositions(dashboardService.getOpenClientPositions());
+		dashboardModel.setDyingClientPositions(dashboardService.getDyingClientPositions());
+		dashboardModel.setCaByStatusList(clientApplicationService.getAllCAbyStatus());
 		return new ResponseEntity<DashboardModel>(dashboardModel, HttpStatus.OK);
 	}
 }

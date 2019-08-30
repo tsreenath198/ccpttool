@@ -11,9 +11,9 @@ import lombok.ToString;
 @ToString
 public class DashboardModel {
 
-	private List<InterviewSummaryStatistics> listOfInterviewSummaryStatistics;
-	private List<OpenClientPosition> listOfOpenClientPositions;
-	private List<OpenClientPosition> listOfDyingClientPositions;
-	private List<CAByStatusHelper> listOfCAByStatus;
+	private List<InterviewSummaryStatistics> interviewSummaryStatistics;
+	private List<OpenClientPosition> openClientPositions;
+	private List<OpenClientPosition> dyingClientPositions;
+	private List<CAByStatusHelper> caByStatusList;
 
 }
