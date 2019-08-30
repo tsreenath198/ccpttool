@@ -110,6 +110,8 @@ public class DashBoardController {
 		dashboardModel.setOpenClientPositions(dashboardService.getOpenClientPositions());
 		dashboardModel.setDyingClientPositions(dashboardService.getDyingClientPositions());
 		dashboardModel.setCaByStatusList(clientApplicationService.getAllCAbyStatus());
+		dashboardModel.setClientCallHistoryList(clientCallHistoryService.getAllCchCountByRecruiters(7));
+		dashboardModel.setConsultantCallHistoryList(consultantCallHistoryService.getAllconCHCountByRecruiters(7));
 		return new ResponseEntity<DashboardModel>(dashboardModel, HttpStatus.OK);
 	}
 }
