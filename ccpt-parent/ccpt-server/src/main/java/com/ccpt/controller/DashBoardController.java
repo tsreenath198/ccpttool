@@ -30,7 +30,7 @@ import com.ccpt.service.DashboardService;
 @Controller
 @CrossOrigin
 @RequestMapping(CCPTConstants.DASHBOARD)
-public class DashboardController {
+public class DashBoardController {
 	@Autowired
 	private ClientApplicationService clientApplicationService;
 	@Autowired
