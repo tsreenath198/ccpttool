@@ -1,9 +1,7 @@
 package com.ccpt.controller;
 
 import java.text.ParseException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,10 +15,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.ccpt.constants.CCPTConstants;
 import com.ccpt.model.ClientCallHistory;
-import com.ccpt.model.ClientPosition;
 import com.ccpt.model.ConsultantCallHistory;
 import com.ccpt.service.ClientCallHistoryService;
-import com.ccpt.service.ClientPositionService;
 import com.ccpt.service.ConsultantCallHistoryService;
 
 @Controller
@@ -33,9 +29,6 @@ public class ReportController {
 
 	@Autowired
 	private ClientCallHistoryService clientCallHistoryService;
-
-	@Autowired
-	private ClientPositionService clientPositionService;
 
 	@Value("${cp.dying.days}")
 	private Integer days;
@@ -57,36 +50,6 @@ public class ReportController {
 				.getAllConsultantCallHistorysFromLastGivenDays(days);
 
 		return new ResponseEntity<List<ConsultantCallHistory>>(consultantCallHistoryList, HttpStatus.OK);
-	}
-
-	@GetMapping("getClosedCountOfAllRecruitersFromLastGivenDays")
-	public ResponseEntity<Map<String, Long>> getClosedCountOfAllRecruitersFromLastGivenDays(@RequestParam Integer days)
-			throws ParseException {
-		Map<String, Long> map = new HashMap<>();
-		List<Object[]> results = consultantCallHistoryService.getClosedCountOfAllRecruitersFromLastGivenDays(days);
-		for (Object[] object : results) {
-
-			map.put(((String) object[0]), (Long) object[1]);
-		}
-		return new ResponseEntity<>(map, HttpStatus.OK);
-	}
-
-	@GetMapping("getTop5CP")
-	public ResponseEntity<List<ClientPosition>> getAllClientPositions() {
-		List<ClientPosition> clientPositionList = clientPositionService.getTop5ClientPositions();
-		return new ResponseEntity<List<ClientPosition>>(clientPositionList, HttpStatus.OK);
-	}
-
-	@GetMapping("getAllOpenCP")
-	public ResponseEntity<List<ClientPosition>> getAllOpenCP() {
-		List<ClientPosition> clientPositionList = clientPositionService.getAllOpenCP();
-		return new ResponseEntity<List<ClientPosition>>(clientPositionList, HttpStatus.OK);
-	}
-
-	@GetMapping("getLastWeekDyingCP")
-	public ResponseEntity<List<ClientPosition>> getLastWeekDyingCP() throws ParseException {
-		List<ClientPosition> clientPositionList = clientPositionService.getLastWeekDyingCP(7);
-		return new ResponseEntity<List<ClientPosition>>(clientPositionList, HttpStatus.OK);
 	}
 
 }

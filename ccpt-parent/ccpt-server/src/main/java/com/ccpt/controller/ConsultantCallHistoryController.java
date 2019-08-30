@@ -19,7 +19,6 @@ import com.ccpt.constants.CCPTConstants;
 import com.ccpt.dto.ConsultantCallHistoryDTO;
 import com.ccpt.mapper.BaseMapper;
 import com.ccpt.mapper.ConsultantCallHistoryMapper;
-import com.ccpt.model.CallHistorySummaryStatistics;
 import com.ccpt.model.ConsultantCallHistory;
 import com.ccpt.service.BaseService;
 import com.ccpt.service.ClientPositionService;
@@ -53,13 +52,6 @@ public class ConsultantCallHistoryController
 	@Override
 	public BaseMapper<ConsultantCallHistoryDTO, ConsultantCallHistory, Integer> getMapper() {
 		return Mappers.getMapper(ConsultantCallHistoryMapper.class);
-	}
-
-	@GetMapping("/getAllconCHCountByRecruiters")
-	public ResponseEntity<List<CallHistorySummaryStatistics>> getAllconCHCountByRecruiters(@RequestParam Integer days) throws ParseException {
-		List<CallHistorySummaryStatistics> result = consultantCallHistoryService.getAllconCHCountByRecruiters(days);
-		return new ResponseEntity<List<CallHistorySummaryStatistics>>(result, HttpStatus.OK);
-
 	}
 
 	@GetMapping("/getAllconCHByRecruiterId")

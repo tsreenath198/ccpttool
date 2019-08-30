@@ -19,7 +19,6 @@ import com.ccpt.constants.CCPTConstants;
 import com.ccpt.dto.ClientCallHistoryDTO;
 import com.ccpt.mapper.BaseMapper;
 import com.ccpt.mapper.ClientCallHistoryMapper;
-import com.ccpt.model.CallHistorySummaryStatistics;
 import com.ccpt.model.ClientCallHistory;
 import com.ccpt.service.BaseService;
 import com.ccpt.service.ClientCallHistoryService;
@@ -50,13 +49,6 @@ public class ClientCallHistoryController extends BaseController<ClientCallHistor
 		return Mappers.getMapper(ClientCallHistoryMapper.class);
 	}
 
-	@GetMapping("/getAllCchCountByRecruiters")
-	public ResponseEntity<List<CallHistorySummaryStatistics>> getAllCchCountByRecruiters(@RequestParam Integer days)
-			throws ParseException {
-		List<CallHistorySummaryStatistics> result = clientCallHistoryService.getAllCchCountByRecruiters(days);
-		return new ResponseEntity<List<CallHistorySummaryStatistics>>(result, HttpStatus.OK);
-
-	}
 
 	@GetMapping("/getAllCchByRecruiterId")
 	public ResponseEntity<List<ClientCallHistory>> getAllCchByRecruiterId(@RequestParam Integer rId,

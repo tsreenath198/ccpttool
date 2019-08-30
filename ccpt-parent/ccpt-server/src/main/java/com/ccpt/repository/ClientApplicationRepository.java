@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -25,7 +26,11 @@ public interface ClientApplicationRepository extends BaseRepository<ClientApplic
 	List<ClientApplication> findByClientPositionIdAndActiveFlag(@Param("clientPositionId") Integer clientPositionId,
 			@Param("activeFlag") Boolean activeFlag);
 
-	@Query(value = "SELECT  client.name as clientName,client.phone as clientPhone,consultant.fullname as consultantName,consultant.phone as consultantPhone,client_application.interview_mode as interviewMode,client_application.interview_date as interviewDate,client_application.interview_location as interviewLocation,client_application.interview_time  as interviewTime FROM client_application,client_position,client,consultant WHERE client_application.client_position_id=client_position.id AND client_position.client_id =client.id AND client_application.consultant_id=consultant.id AND client_application.interview_date >=curDate() ORDER BY client_application.interview_date ", nativeQuery = true)
+	@Query(value = "SELECT  client.name as clientName,client.phone as clientPhone,consultant.fullname as consultantName,consultant.phone as consultantPhone,"
+			+ "client_application.interview_mode as interviewMode,client_application.interview_date as interviewDate,client_application.interview_location as interviewLocation,"
+			+ "client_application.interview_time  as interviewTime FROM client_application,client_position,client,consultant WHERE "
+			+ "client_application.client_position_id=client_position.id AND client_position.client_id =client.id AND client_application.consultant_id=consultant.id"
+			+ " AND client_application.interview_date >=curDate() ORDER BY client_application.interview_date ", nativeQuery = true)
 	List<InterviewSummaryStatistics> getAllInterviewsFromToday();
 
 	List<ClientApplication> findByConsultantIdAndActiveFlag(@Param("consultantId") Integer consultantId,
@@ -50,5 +55,9 @@ public interface ClientApplicationRepository extends BaseRepository<ClientApplic
 			+ "cps.status_type='Active'", nativeQuery = true)
 	List<CAByStatus> getclientPositioncountByStatusCode(@Param("statuscode") String statuscode,
 			@Param("clientPositionId") Integer clientPositionId);
+
+	@Modifying(clearAutomatically = true)
+	@Query(value = "UPDATE Client_Application  set STATUS_CODE =:status where id =:id", nativeQuery = true)
+	void updateStatus(@Param("id") Integer id, @Param("status") String status);
 
 }

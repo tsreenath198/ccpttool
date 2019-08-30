@@ -54,6 +54,10 @@ public class ClientApplicationService extends BaseService<ClientApplication, Int
 		return clientApplicationRepository.getAllInterviewsFromToday();
 	}
 
+	public void updateStatus(Integer id, String status) {
+		clientApplicationRepository.updateStatus(id, status);
+	}
+
 	public List<ClientApplication> findByConsultantIdAndActiveFlag(Integer consultantId) {
 		return clientApplicationRepository.findByConsultantIdAndActiveFlag(consultantId, true);
 	}

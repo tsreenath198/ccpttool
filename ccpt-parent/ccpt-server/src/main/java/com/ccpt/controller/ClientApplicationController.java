@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -21,10 +22,7 @@ import com.ccpt.mapper.BaseMapper;
 import com.ccpt.mapper.ClientApplicationMapper;
 import com.ccpt.model.ApplicationBody;
 import com.ccpt.model.CAStatistics;
-import com.ccpt.model.CAByStatusHelper;
 import com.ccpt.model.ClientApplication;
-import com.ccpt.model.InterviewSummaryStatistics;
-import com.ccpt.model.PositionSummaryStatistics;
 import com.ccpt.service.BaseService;
 import com.ccpt.service.ClientApplicationService;
 import com.ccpt.service.ClientApplicationStatusService;
@@ -69,20 +67,6 @@ public class ClientApplicationController extends BaseController<ClientApplicatio
 
 	}
 
-	@GetMapping("/getAllActiveCACountByCpID")
-	public ResponseEntity<List<PositionSummaryStatistics>> getAllActiveCACount() {
-		List<PositionSummaryStatistics> result = clientApplicationService.getAllActiveCACount();
-		return new ResponseEntity<List<PositionSummaryStatistics>>(result, HttpStatus.OK);
-
-	}
-
-	@GetMapping("/getAllInterviewsFromToday")
-	public ResponseEntity<List<InterviewSummaryStatistics>> getAllInterviewsFromToday() {
-		List<InterviewSummaryStatistics> result = clientApplicationService.getAllInterviewsFromToday();
-		return new ResponseEntity<List<InterviewSummaryStatistics>>(result, HttpStatus.OK);
-
-	}
-
 	@GetMapping("/showBodyMail")
 	public ResponseEntity<ApplicationBody> showBodyMail(@RequestParam Integer caId) {
 		ApplicationBody result = clientApplicationService.showBodyMail(caId);
@@ -111,11 +95,10 @@ public class ClientApplicationController extends BaseController<ClientApplicatio
 
 	}
 
-	@GetMapping("/getAllCAbyStatus")
-	public ResponseEntity<List<CAByStatusHelper>> getAllCAbyStatus() {
-		List<CAByStatusHelper> result = clientApplicationService.getAllCAbyStatus();
-		return new ResponseEntity<List<CAByStatusHelper>>(result, HttpStatus.OK);
-
+	@PutMapping("/updateStatus")
+	public ResponseEntity<Void> updateStatus(@RequestParam Integer id, @RequestParam String status) {
+		clientApplicationService.updateStatus(id, status);
+		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 
 	@Override
