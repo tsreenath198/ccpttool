@@ -16,7 +16,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class Payment extends IDEntity {
+public class Payment extends FileSupportEntity {
 	/**
 	 * 
 	 */
