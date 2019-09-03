@@ -5,6 +5,8 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
 import lombok.Getter;
@@ -24,6 +26,7 @@ public class Payment extends FileSupportEntity {
 	private static final long serialVersionUID = 1L;
 
 	@Column
+	@Temporal(TemporalType.DATE)
 	@NotNull
 	private Date invoiceDate;
 
@@ -49,6 +52,7 @@ public class Payment extends FileSupportEntity {
 
 	@Column
 	@NotNull
+	@Temporal(TemporalType.DATE)
 	private Date joiningDate;
 
 	@Column
