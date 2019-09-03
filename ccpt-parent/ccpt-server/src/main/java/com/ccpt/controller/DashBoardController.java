@@ -104,7 +104,7 @@ public class DashBoardController {
 	}
 
 	@GetMapping("/getAllDashboardContent")
-	public ResponseEntity<DashboardModel> getAll() throws Exception {
+	public ResponseEntity<DashboardModel> getAllDashboardContent() throws Exception {
 		DashboardModel dashboardModel = new DashboardModel();
 		dashboardModel.setInterviewSummaryStatistics(clientApplicationService.getAllInterviewsFromToday());
 		dashboardModel.setOpenClientPositions(dashboardService.getOpenClientPositions());

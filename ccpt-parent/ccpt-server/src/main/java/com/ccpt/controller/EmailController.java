@@ -1,7 +1,10 @@
 
 package com.ccpt.controller;
 
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -26,14 +29,16 @@ public class EmailController {
 	@PostMapping(CCPTConstants.SEND_EMAIL)
 	public ResponseEntity<String> sendEmail(@RequestBody EmailContent emailContent) throws Exception {
 		try {
-			emailService.sendEmailWithAttachments(emailContent.getToEmails(), emailContent.getSubject(),
-					emailContent.getBody(), emailContent.getCc(), emailContent.getBcc(), emailContent.getUploadFiles());
+			String uuid = UUID.randomUUID().toString();
+			String body = "Email ref:#".concat(uuid).concat("\r\n").concat(emailContent.getBody());
+			emailService.sendEmailWithAttachments(emailContent.getToEmails(), emailContent.getSubject(), body,
+					emailContent.getCc(), emailContent.getBcc(), emailContent.getUploadFiles());
 			emailContentService.save(emailContent);
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new Exception("Sending Email is Failed");
 		}
-		return null;
+		return new ResponseEntity<String>(HttpStatus.OK);
 	}
 
 }

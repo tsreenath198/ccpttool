@@ -22,12 +22,6 @@ public class ClientCallHistoryService extends BaseService<ClientCallHistory, Int
 	@Autowired
 	private ClientCallHistoryRepository clientCallHistoryRepository;
 
-	public List<ClientCallHistory> getAllClientCallHistorysFromLastGivenDays(Integer days) throws ParseException {
-		Day day = DateUtil.getDays(days);
-		return clientCallHistoryRepository.getAllClientCallHistorysFromLastGivenDays(day.getStartDate(),
-				day.getEndDate(), true);
-	}
-
 	@Override
 	public BaseRepository<ClientCallHistory, Integer> getRepository() {
 		return clientCallHistoryRepository;

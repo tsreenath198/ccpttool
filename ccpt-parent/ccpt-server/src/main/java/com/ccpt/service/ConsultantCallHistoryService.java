@@ -24,13 +24,6 @@ public class ConsultantCallHistoryService extends BaseService<ConsultantCallHist
 	@Autowired
 	private ConsultantCallHistoryRepository consultantCallHistoryRepository;
 
-	public List<ConsultantCallHistory> getAllConsultantCallHistorysFromLastGivenDays(Integer days)
-			throws ParseException {
-		Day day = DateUtil.getDays(days);
-		return consultantCallHistoryRepository.getAllConsultantCallHistorysFromLastGivenDays(day.getStartDate(),
-				day.getEndDate(), true);
-	}
-
 	public List<Object[]> getClosedCountOfAllRecruitersFromLastGivenDays(Integer days) throws ParseException {
 		Day day = DateUtil.getDays(days);
 		return consultantCallHistoryRepository.getClosedCountOfAllRecruitersFromLastGivenDays(day.getStartDate(),
