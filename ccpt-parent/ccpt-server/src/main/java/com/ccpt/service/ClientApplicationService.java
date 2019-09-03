@@ -149,4 +149,5 @@ public class ClientApplicationService extends BaseService<ClientApplication, Int
 		}
 		return listOfCAStatistics;
 	}
+
 }
