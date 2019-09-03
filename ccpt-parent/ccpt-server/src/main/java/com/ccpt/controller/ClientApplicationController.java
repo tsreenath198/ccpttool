@@ -23,6 +23,7 @@ import com.ccpt.mapper.ClientApplicationMapper;
 import com.ccpt.model.ApplicationBody;
 import com.ccpt.model.CAStatistics;
 import com.ccpt.model.ClientApplication;
+import com.ccpt.model.DashboardCAStatistics;
 import com.ccpt.service.BaseService;
 import com.ccpt.service.ClientApplicationService;
 import com.ccpt.service.ClientApplicationStatusService;
@@ -92,6 +93,13 @@ public class ClientApplicationController extends BaseController<ClientApplicatio
 	public ResponseEntity<List<ClientApplication>> search(@RequestParam Integer clientId) {
 		List<ClientApplication> result = clientApplicationService.search(clientId);
 		return new ResponseEntity<List<ClientApplication>>(result, HttpStatus.OK);
+
+	}
+
+	@GetMapping("/dashboardCAStatistics")
+	public ResponseEntity<List<DashboardCAStatistics>> getDashboardCAStatistics() {
+		List<DashboardCAStatistics> result = clientApplicationService.getDashboardCAStatistics();
+		return new ResponseEntity<List<DashboardCAStatistics>>(result, HttpStatus.OK);
 
 	}
 

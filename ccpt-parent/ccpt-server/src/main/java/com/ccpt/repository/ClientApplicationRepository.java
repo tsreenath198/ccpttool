@@ -10,12 +10,15 @@ import org.springframework.data.repository.query.Param;
 
 import com.ccpt.model.CAByStatus;
 import com.ccpt.model.ClientApplication;
+import com.ccpt.model.DashboardCA;
+import com.ccpt.model.DashboardCAStatistics;
 import com.ccpt.model.InterviewSummaryStatistics;
 
 @Transactional
 public interface ClientApplicationRepository extends BaseRepository<ClientApplication, Integer> {
 
-	List<ClientApplication> findByActiveFlagAllIgnoreCaseOrderByCreatedDateDesc(Boolean activeFlag);
+	@Query("SELECT c.id as id,c.consultant.fullname as consultantName,c.clientPosition.generatedCode as generatedCode  FROM ClientApplication c where c.activeFlag=:activeFlag ")
+	List<DashboardCA> getDashboardCA(@Param("activeFlag") Boolean activeFlag);
 
 	@Query("SELECT c FROM ClientApplication c where client_position_id=:id AND status_code in (select code from ClientApplicationStatus where statusType = 'Active') AND active_flag=1")
 	List<ClientApplication> getAllActiveCAByCpID(@Param(value = "id") Integer id);
@@ -36,11 +39,14 @@ public interface ClientApplicationRepository extends BaseRepository<ClientApplic
 	List<ClientApplication> findByConsultantIdAndActiveFlag(@Param("consultantId") Integer consultantId,
 			@Param("activeFlag") Boolean activeFlag);
 
-	@Query(value = "SELECT * FROM Client_Application WHERE active_flag=1 AND status_code='Job Confirmed' ORDER BY created_date ASC", nativeQuery = true)
-	List<ClientApplication> getJobConfirmedCAs();
+	@Query("SELECT c.id as id,c.consultant.fullname as consultantName,c.clientPosition.generatedCode as generatedCode  FROM ClientApplication c where c.activeFlag=:activeFlag AND c.status.code='Job Confirmed' ORDER BY c.createdDate")
+	List<DashboardCA> getJobConfirmedCAs(@Param("activeFlag") Boolean activeFlag);
 
 	@Query("SELECT c FROM ClientApplication c WHERE c.clientPosition.client.id=:clientId ")
 	List<ClientApplication> search(@Param("clientId") Integer clientId);
+
+	@Query("SELECT c.id as id,c.consultant.fullname as consultantName,c.clientPosition.client.name as clientName,c.status.code as status  FROM ClientApplication c ")
+	List<DashboardCAStatistics> getDashboardCaStatus();
 
 	@Query(value = "SELECT code FROM client_application_status", nativeQuery = true)
 	List<String> getAllDistinctStatusCode();

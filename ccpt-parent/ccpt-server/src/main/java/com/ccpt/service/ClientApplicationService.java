@@ -14,6 +14,8 @@ import com.ccpt.model.CAByStatus;
 import com.ccpt.model.CAByStatusHelper;
 import com.ccpt.model.CAStatistics;
 import com.ccpt.model.ClientApplication;
+import com.ccpt.model.DashboardCA;
+import com.ccpt.model.DashboardCAStatistics;
 import com.ccpt.model.InterviewSummaryStatistics;
 import com.ccpt.model.PositionSummaryStatistics;
 import com.ccpt.repository.BaseRepository;
@@ -92,12 +94,11 @@ public class ClientApplicationService extends BaseService<ClientApplication, Int
 
 	public List<CAStatistics> getJobConfirmedCAs() {
 		List<CAStatistics> listOfCAStatistics = new ArrayList<CAStatistics>();
-		List<ClientApplication> listOfCAs = clientApplicationRepository.getJobConfirmedCAs();
-		for (ClientApplication clientApplication : listOfCAs) {
+		List<DashboardCA> listOfCAs = clientApplicationRepository.getJobConfirmedCAs(true);
+		for (DashboardCA ca : listOfCAs) {
 			CAStatistics caStatistics = new CAStatistics();
-			caStatistics.setId(clientApplication.getId());
-			caStatistics.setName(clientApplication.getConsultant().getFullname() + "-"
-					+ clientApplication.getClientPosition().getGeneratedCode());
+			caStatistics.setId(ca.getId());
+			caStatistics.setName(ca.getConsultantName() + "-" + ca.getGeneratedCode());
 			listOfCAStatistics.add(caStatistics);
 		}
 		return listOfCAStatistics;
@@ -105,6 +106,10 @@ public class ClientApplicationService extends BaseService<ClientApplication, Int
 
 	public List<ClientApplication> search(Integer clientId) {
 		return clientApplicationRepository.search(clientId);
+	}
+
+	public List<DashboardCAStatistics> getDashboardCAStatistics() {
+		return clientApplicationRepository.getDashboardCaStatus();
 	}
 
 	public List<CAByStatusHelper> getAllCAbyStatus() {
@@ -135,13 +140,11 @@ public class ClientApplicationService extends BaseService<ClientApplication, Int
 
 	public List<CAStatistics> getCAStatistics() {
 		List<CAStatistics> listOfCAStatistics = new ArrayList<CAStatistics>();
-		List<ClientApplication> listOfCAs = clientApplicationRepository
-				.findByActiveFlagAllIgnoreCaseOrderByCreatedDateDesc(true);
-		for (ClientApplication clientApplication : listOfCAs) {
+		List<DashboardCA> listOfCAs = clientApplicationRepository.getDashboardCA(true);
+		for (DashboardCA ca : listOfCAs) {
 			CAStatistics caStatistics = new CAStatistics();
-			caStatistics.setId(clientApplication.getId());
-			caStatistics.setName(clientApplication.getConsultant().getFullname() + "-"
-					+ clientApplication.getClientPosition().getGeneratedCode());
+			caStatistics.setId(ca.getId());
+			caStatistics.setName(ca.getConsultantName() + "-" + ca.getGeneratedCode());
 			listOfCAStatistics.add(caStatistics);
 		}
 		return listOfCAStatistics;

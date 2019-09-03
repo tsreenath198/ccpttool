@@ -225,7 +225,7 @@ public class JobDescriptionSubstitutor implements ContentSubstitutor {
 		}
 		if (clientApplication.getConsultant().getSkills() != null) {
 			sb.append("<tr>\r\n" + "<td width=\"199\">\r\n" + "<p><strong>Note</strong></p>\r\n" + "</td>\r\n"
-					+ "<td width=\"529\">\r\n" + "<p>" + clientApplication.getConsultant().getSkills() + "</p>\r\n"
+					+ "<td width=\"529\">\r\n" + "<p>" + clientApplication.getConsultant().getDescription() + "</p>\r\n"
 					+ "</td>\r\n" + "</tr>");
 		}
 		if (clientApplication.getConsultant().getCurrentCompany() != null) {
