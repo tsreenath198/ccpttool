@@ -18,6 +18,7 @@ import com.ccpt.constants.CCPTConstants;
 import com.ccpt.model.CAByStatusHelper;
 import com.ccpt.model.CallHistorySummaryStatistics;
 import com.ccpt.model.ClientPosition;
+import com.ccpt.model.DashboardCAStatistics;
 import com.ccpt.model.DashboardModel;
 import com.ccpt.model.InterviewSummaryStatistics;
 import com.ccpt.model.PositionSummaryStatistics;
@@ -113,5 +114,12 @@ public class DashBoardController {
 		dashboardModel.setClientCallHistoryList(clientCallHistoryService.getAllCchCountByRecruiters(7));
 		dashboardModel.setConsultantCallHistoryList(consultantCallHistoryService.getAllconCHCountByRecruiters(7));
 		return new ResponseEntity<DashboardModel>(dashboardModel, HttpStatus.OK);
+	}
+	
+	@GetMapping("/dashboardCAStatistics")
+	public ResponseEntity<List<DashboardCAStatistics>> getDashboardCAStatistics() {
+		List<DashboardCAStatistics> result = clientApplicationService.getDashboardCAStatistics();
+		return new ResponseEntity<List<DashboardCAStatistics>>(result, HttpStatus.OK);
+
 	}
 }
