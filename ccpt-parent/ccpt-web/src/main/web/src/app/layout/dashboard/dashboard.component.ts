@@ -121,6 +121,13 @@ export class DashboardComponent implements OnInit {
         { backgroundColor: '#ff4d4d' },
         { backgroundColor: '#00cc00' },
         { backgroundColor: '#009900' }
+        // { backgroundColor: '#000000' },
+        // { backgroundColor: '#212529' },
+        // { backgroundColor: '#444d55' },
+        // { backgroundColor: '#66737f' },
+        // { backgroundColor: '#808c99' },
+        // { backgroundColor: '#b8bfc6' },
+        // { backgroundColor: '#d5d9dd' }
     ]
     public barChartCAByStatusData: any[] = [];
 

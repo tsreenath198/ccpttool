@@ -56,7 +56,7 @@ export class URLConstants {
     CCHUpdate = 'clientCallHistory';
     CCHDelete = 'clientCallHistory/';
     CCHGetById = 'clientCallHistory/';
-    CCHGetCountByRecruiter = 'clientCallHistory/getAllCchCountByRecruiters?days=';
+    CCHGetCountByRecruiter = 'dashboard/getAllCchCountByRecruiters?days=';
     CCHGetByRecruiterId = 'clientCallHistory/getAllCchByRecruiterId?rId=';
 
     /* consultant Call History */
@@ -65,7 +65,7 @@ export class URLConstants {
     CoCHUpdate = 'consultantCallHistory';
     CoCHDelete = 'consultantCallHistory/';
     CoCHGetById = 'consultantCallHistory/';
-    CoCHGetCountByRecruiter = 'consultantCallHistory/getAllconCHCountByRecruiters?days=';
+    CoCHGetCountByRecruiter = 'dashboard/getAllconCHCountByRecruiters?days=';
     CoCHGetByRecruiterId = 'consultantCallHistory/getAllconCHByRecruiterId?rId=';
 
     /* Recruiter */
@@ -104,14 +104,14 @@ export class URLConstants {
     /** Reporting */
     ReportingGetAllCLCH = 'report/getAllClientCallHistorysByDays?days=';
     ReportingGetAllCOCH = 'report/getAllConsultantCallHistorysByDays?days=';
-    ReportingGetAllTop5CP = 'report/getTop5CP';
-    ReportingGetClosures = 'report/getClosedCountOfAllRecruitersFromLastGivenDays?days=';
-    ReportingGetAllOpenCP = 'report/getAllOpenCP';
-    ReportingGetAllActiveCA = 'clientApplication/getAllActiveCACountByCpID';
+    ReportingGetAllTop5CP = 'dashboard/getTop5CP';
+    ReportingGetClosures = 'dashboard/getClosedCountOfAllRecruitersFromLastGivenDays?days=';
+    ReportingGetAllOpenCP = 'dashboard/getAllOpenCP';
+    ReportingGetAllActiveCA = 'dashboard/getAllActiveCACountByCpID';
     ReportingGetAllActiveCAById = 'clientApplication/getAllActiveCAByCpID?cpId=';
-    ReportingGetAllInterviewsToday = 'clientApplication/getAllInterviewsFromToday';
-    ReportingDyingCp = 'report/getLastWeekDyingCP'
-    ReportingGetAllCAByStatus = 'clientApplication/getAllCAbyStatus'
+    ReportingGetAllInterviewsToday = 'dashboard/getAllInterviewsFromToday';
+    ReportingDyingCp = 'dashboard/getLastWeekDyingCP'
+    ReportingGetAllCAByStatus = 'dashboard/getAllCAbyStatus'
 
     /**Email Template */
     EmailTemplateCreate = 'template';
@@ -159,7 +159,7 @@ export class URLConstants {
     FAQDelete = 'question/';
     FAQGetByID = 'question/';
     FAQActivateById = 'question/';
-    FAQSaveInCA = 'question/save';
+    FAQSaveInCA = 'question/save?caId=';
     FAQSearchByCAId = 'question/searchByCAID?caId=';
     FAQSearchBySkills = 'question/searchBySkills?skills=';
 
