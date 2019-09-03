@@ -30,7 +30,8 @@ public class EmailController {
 	public ResponseEntity<String> sendEmail(@RequestBody EmailContent emailContent) throws Exception {
 		try {
 			String uuid = UUID.randomUUID().toString();
-			String body = "<mark>Email ref :#".concat(uuid).concat("</mark>") + "<br>".concat(emailContent.getBody());
+			String body = "<mark>Email ref :#".concat(uuid).concat("</mark>").concat("<br>")
+					.concat(emailContent.getBody());
 			emailService.sendEmailWithAttachments(emailContent.getToEmails(), emailContent.getSubject(), body,
 					emailContent.getCc(), emailContent.getBcc(), emailContent.getUploadFiles());
 			emailContentService.save(emailContent);
