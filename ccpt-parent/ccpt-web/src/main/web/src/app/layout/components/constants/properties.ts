@@ -23,6 +23,7 @@ export class Properties {
     CP = 'Client Position';
     CLI_C_H = 'Client Call History';
     CON_C_H = 'Consultant Call History';
+    FAQ = "FAQ's"
     DASHBOARD = 'Dashboard';
     OTHR_CON = 'Other Contacts';
     RECRUITER = 'Recruiter';
