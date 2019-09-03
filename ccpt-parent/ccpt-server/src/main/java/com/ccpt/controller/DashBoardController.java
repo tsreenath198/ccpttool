@@ -113,13 +113,8 @@ public class DashBoardController {
 		dashboardModel.setCaByStatusList(clientApplicationService.getAllCAbyStatus());
 		dashboardModel.setClientCallHistoryList(clientCallHistoryService.getAllCchCountByRecruiters(7));
 		dashboardModel.setConsultantCallHistoryList(consultantCallHistoryService.getAllconCHCountByRecruiters(7));
+		dashboardModel.setDashboardCAStatistics(clientApplicationService.getDashboardCAStatistics());
 		return new ResponseEntity<DashboardModel>(dashboardModel, HttpStatus.OK);
 	}
 	
-	@GetMapping("/dashboardCAStatistics")
-	public ResponseEntity<List<DashboardCAStatistics>> getDashboardCAStatistics() {
-		List<DashboardCAStatistics> result = clientApplicationService.getDashboardCAStatistics();
-		return new ResponseEntity<List<DashboardCAStatistics>>(result, HttpStatus.OK);
-
-	}
 }

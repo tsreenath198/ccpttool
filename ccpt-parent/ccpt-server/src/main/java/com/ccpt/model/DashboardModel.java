@@ -17,4 +17,5 @@ public class DashboardModel {
 	private List<CAByStatusHelper> caByStatusList;
 	private List<CallHistorySummaryStatistics> consultantCallHistoryList;
 	private List<CallHistorySummaryStatistics> clientCallHistoryList;
+	private List<DashboardCAStatistics> dashboardCAStatistics;
 }
