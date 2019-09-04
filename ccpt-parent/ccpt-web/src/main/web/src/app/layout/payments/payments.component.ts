@@ -111,6 +111,10 @@ export class PaymentsComponent implements OnInit {
         const yyyy = today.getFullYear();
         const temp = yyyy + '-' + mm + '-' + dd;
         this.model.invoiceDate = temp;
+        this.model.joiningDate = temp;
+    }
+    public setJoiningDate(){
+        this.model.joiningDate = this.model.invoiceDate;
     }
     public dblSetModel() {
         this.readOnlyForm = 'U';

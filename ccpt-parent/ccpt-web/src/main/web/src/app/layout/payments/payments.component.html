@@ -104,6 +104,7 @@
                 [ngClass]="{ 'is-invalid': f.submitted && invoiceDate.invalid }"
                 #invoiceDate="ngModel"
                 [readonly]="readOnlyForm == 'R'"
+                (change)="setJoiningDate()"
                 required
               />
               <div class="invalid-feedback">

@@ -8,10 +8,9 @@
   <div class="row" *ngIf="listReturned">
     <div class="col col-xl-12 col-lg-12" *ngIf="interviewsToday.length != 0">
       <div class="card mb-3">
-        <div class="card-header bg-dark text-clr-white" (click)="isCollapsed = !isCollapsed"
-        [attr.aria-expanded]="!isCollapsed" aria-controls="collapseExample">Interviews this week</div>
-        <div [ngbCollapse]="isCollapsed" id="collapseExample">
-          <div class="card-body" >
+        <div class="card-header bg-dark text-clr-white">Interviews this week</div>
+        <div>
+          <div class="card-body">
             <table class="table table-sm">
               <thead>
                 <tr>
@@ -44,164 +43,182 @@
     </div>
   </div>
   <div class="row" *ngIf="listReturned">
-    <div class="col-6">
-      <div class="card mb-3">
-        <div class="card-header bg-dark text-clr-white">Open Client Positions</div>
-        <div class="card-body">
-          <table class="table table-sm">
-            <thead>
-              <tr>
-                <th>Client</th>
-                <th>Code</th>
-                <th>Date</th>
-                <th>Assigned</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let ocp of openCP">
-                <td>{{ ocp.clientName }}</td>
-                <td>{{ ocp.generatedCode }}</td>
-                <td width="100">{{ ocp.createdDate | date: 'dd-MM-yy' }}</td>
-                <td>{{ ocp.recruiterName }}</td>
-              </tr>
-            </tbody>
-          </table>
+    <div class="col-md-6">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card mb-3">
+            <div class="card-header bg-dark text-clr-white">Client Application Status</div>
+            <div class="card-body">
+              <table class="table table-sm">
+                <thead>
+                  <tr>
+                    <th>Client</th>
+                    <th>Consultant</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let ca of caStat">
+                    <td>{{ ca.clientName }}</td>
+                    <td>{{ ca.consultantName }}</td>
+                    <td>
+                      <select class="form-control form-control-sm" name="cas" [(ngModel)]="ca.status" (change)="updateCAStatus(ca)">
+                        <option *ngFor="let casl of caStatusList.list" [ngValue]="casl.code">
+                          {{ casl.description }}
+                        </option>
+                      </select>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <div class="card mb-3">
+            <div class="card-header bg-dark text-clr-white">Open Client Positions</div>
+            <div>
+              <div class="card-body">
+                <table class="table table-sm">
+                  <thead>
+                    <tr>
+                      <th>Client</th>
+                      <th>Code</th>
+                      <th>Date</th>
+                      <th>Assigned</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let ocp of openCP">
+                      <td>{{ ocp.clientName }}</td>
+                      <td>{{ ocp.generatedCode }}</td>
+                      <td width="100">{{ ocp.createdDate | date: 'dd-MM-yy' }}</td>
+                      <td>{{ ocp.recruiterName }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-    <div class="col-6">
-      <div class="card mb-3">
-        <div class="card-header bg-dark text-clr-white">Dying Client Positions</div>
-        <div class="card-body">
-          <table class="table table-sm">
-            <thead>
-              <tr>
-                <th>Client</th>
-                <th>Code</th>
-                <th>Date</th>
-                <th>Assigned</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let ocp of dyingCP">
-                <td>{{ ocp.clientName }}</td>
-                <td>{{ ocp.generatedCode }}</td>
-                <td width="100">{{ ocp.createdDate | date: 'dd-MM-yy' }}</td>
-                <td>{{ ocp.recruiterName }}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-    <div class="col-6">
-      <div class="card mb-3">
-        <div class="card-header bg-dark text-clr-white">Client Application Status</div>
-        <div class="card-body">
-          <table class="table table-sm">
-            <thead>
-              <tr>
-                <th>Client</th>
-                <th>Code</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let ca of caStat">
-                <td>{{ ca.clientName }}</td>
-                <td>{{ ca.consultantName }}</td>
-                <td>{{ ca.status }} 
-                  <select class="form-control" name="cas" [(ngModel)]="ca.status" (change)="updateCAStatus(ca)">
-                  <option *ngFor="let casl of caStatusList.list" [ngValue]="casl.code">
-                    {{ casl.description }}
-                  </option>
-                </select>
-              </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-    <!-- <div class="col-6">
-      <div class="card mb-3">
-        <div class="card-header bg-dark text-clr-white">
-          Active Client Applications
-        </div>
-        <div class="card-body" style="position: relative" [style.height.px]="chartHeight">
-          <canvas
-            baseChart
-            id="activeCAChart"
-            [datasets]="barChartActiveCAData"
-            [labels]="barChartLabels"
-            [options]="barChartOptions"
-            [legend]="barChartLegend"
-            [colors]="barChartColors"
-            [chartType]="barChartType"
-            (chartHover)="chartHovered($event)"
-            (chartClick)="chartClicked($event)"
-          >
-          </canvas>
-        </div>
-      </div>
-    </div> -->
-    <div class="col-6">
-      <div class="card mb-3">
-        <div class="card-header bg-dark text-clr-white">
-          Client Applications By Status
-        </div>
-        <div class="card-body" style="position: relative" [style.height.px]="stackChartHeight">
-          <canvas
-            baseChart
-            id="activeCAChart"
-            [datasets]="barChartCAByStatusData"
-            [labels]="barChartCAByStautsLabels"
-            [options]="barChartOptions"
-            [colors]="stackbarChartColors"
-            [legend]="stackBarChartLegend"
-            [chartType]="barChartType"
-          >
-          </canvas>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="row" *ngIf="listReturned">
-    <div class="col-4">
-      <div class="card mb-3 ">
-        <div class="card-header bg-dark text-clr-white">
-          Consultant Call History
-          <span class="pull-right">
-            <select class="form-control form-control-sm" name="cochChoosenDays" [(ngModel)]="cochChoosenDays" (change)="cochGetAllByDays()">
-              <option *ngFor="let nod of noOfDays" [ngValue]="nod.value">{{ nod.key }} </option>
-            </select>
-          </span>
-        </div>
-        <div *ngIf="ccptReportCOCH.length != 0" class="card-body">
-          <table class="table table-sm ">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Count</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr
-                class="link"
-                placement="top"
-                ngbTooltip="click for details"
-                *ngFor="let cch of ccptReportCOCH"
-                (click)="open(contentCoCH, cch.recruiterId, 'ConsultantCallHistory')"
+    <div class="col-md-6" *ngIf="listReturned">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card mb-3">
+            <div class="card-header bg-dark text-clr-white">
+              Client Applications By Status
+            </div>
+            <div class="card-body" style="position: relative" [style.height.px]="stackChartHeight">
+              <canvas
+                baseChart
+                id="activeCAChart"
+                [datasets]="barChartCAByStatusData"
+                [labels]="barChartCAByStautsLabels"
+                [options]="barChartOptions"
+                [colors]="stackbarChartColors"
+                [legend]="stackBarChartLegend"
+                [chartType]="barChartType"
               >
-                <td>{{ cch.fullName }}</td>
-                <td>{{ cch.count }}</td>
-              </tr>
-            </tbody>
-          </table>
+              </canvas>
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
-    <!-- <div class="col-4">
+        <div class="col-md-12">
+          <div class="card mb-3">
+            <div class="card-header bg-dark text-clr-white">Dying Client Positions</div>
+            <div class="card-body">
+              <table class="table table-sm">
+                <thead>
+                  <tr>
+                    <th>Client</th>
+                    <th>Code</th>
+                    <th>Date</th>
+                    <th>Assigned</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let ocp of dyingCP">
+                    <td>{{ ocp.clientName }}</td>
+                    <td>{{ ocp.generatedCode }}</td>
+                    <td width="100">{{ ocp.createdDate | date: 'dd-MM-yy' }}</td>
+                    <td>{{ ocp.recruiterName }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <div class="card mb-3">
+            <div class="card-header bg-dark text-clr-white">
+              Recruiter Performance
+              <span class="pull-right">
+                <select class="form-control form-control-sm" name="rpChoosenDays" [(ngModel)]="rpChoosenDays" (change)="rpGetAllByDays()">
+                  <option *ngFor="let nod of noOfDays" [ngValue]="nod.value">{{ nod.key }} </option>
+                </select>
+              </span>
+            </div>
+            <div *ngIf="(ccptReportCC | json) != ({} | json)" class="card-body">
+              <!--  -->
+              <table class="table table-sm">
+                <thead>
+                  <tr>
+                    <th>Recruiter</th>
+                    <th>No.of closures</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let val of ccptReportCC | keyvalue">
+                    <td>{{ val.key }}</td>
+                    <td>{{ val.value }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <div class="card mb-3 ">
+            <div class="card-header bg-dark text-clr-white">
+              Consultant Call History
+              <span class="pull-right">
+                <select
+                  class="form-control form-control-sm"
+                  name="cochChoosenDays"
+                  [(ngModel)]="cochChoosenDays"
+                  (change)="cochGetAllByDays()"
+                >
+                  <option *ngFor="let nod of noOfDays" [ngValue]="nod.value">{{ nod.key }} </option>
+                </select>
+              </span>
+            </div>
+            <div *ngIf="ccptReportCOCH.length != 0" class="card-body">
+              <table class="table table-sm ">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Count</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    class="link"
+                    placement="top"
+                    ngbTooltip="click for details"
+                    *ngFor="let cch of ccptReportCOCH"
+                    (click)="open(contentCoCH, cch.recruiterId, 'ConsultantCallHistory')"
+                  >
+                    <td>{{ cch.fullName }}</td>
+                    <td>{{ cch.count }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <!-- <div class="col-md-12">
       <div class="card mb-3">
         <div class="card-header bg-dark text-clr-white">
           Client Call History
@@ -232,36 +249,34 @@
         </div>
       </div>
     </div> -->
-    <div class="col-4">
-      <div class="card mb-3">
-        <div class="card-header bg-dark text-clr-white">
-          Recruiter Performance
-          <span class="pull-right">
-            <select class="form-control form-control-sm" name="rpChoosenDays" [(ngModel)]="rpChoosenDays" (change)="rpGetAllByDays()">
-              <option *ngFor="let nod of noOfDays" [ngValue]="nod.value">{{ nod.key }} </option>
-            </select>
-          </span>
-        </div>
-        <div *ngIf="(ccptReportCC | json) != ({} | json)" class="card-body">
-          <!--  -->
-          <table class="table table-sm">
-            <thead>
-              <tr>
-                <th>Recruiter</th>
-                <th>No.of closures</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let val of ccptReportCC | keyvalue">
-                <td>{{ val.key }}</td>
-                <td>{{ val.value }}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
       </div>
     </div>
   </div>
+  <div class="row" *ngIf="listReturned">
+    <!-- <div class="col-6">
+      <div class="card mb-3">
+        <div class="card-header bg-dark text-clr-white">
+          Active Client Applications
+        </div>
+        <div class="card-body" style="position: relative" [style.height.px]="chartHeight">
+          <canvas
+            baseChart
+            id="activeCAChart"
+            [datasets]="barChartActiveCAData"
+            [labels]="barChartLabels"
+            [options]="barChartOptions"
+            [legend]="barChartLegend"
+            [colors]="barChartColors"
+            [chartType]="barChartType"
+            (chartHover)="chartHovered($event)"
+            (chartClick)="chartClicked($event)"
+          >
+          </canvas>
+        </div>
+      </div>
+    </div> -->
+  </div>
+  <div class="row" *ngIf="listReturned"></div>
 </div>
 <ng-template #contentClch let-c="close" let-d="dismiss">
   <div class="modal-header modal-popup-header-bg">
