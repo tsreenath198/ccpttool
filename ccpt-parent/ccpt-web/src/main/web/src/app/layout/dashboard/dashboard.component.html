@@ -8,34 +8,37 @@
   <div class="row" *ngIf="listReturned">
     <div class="col col-xl-12 col-lg-12" *ngIf="interviewsToday.length != 0">
       <div class="card mb-3">
-        <div class="card-header bg-dark text-clr-white">Interviews this week</div>
-        <div class="card-body">
-          <table class="table table-sm">
-            <thead>
-              <tr>
-                <th>Client</th>
-                <th>Client No.</th>
-                <th>Consultant</th>
-                <th>Consultant No.</th>
-                <th>Mode</th>
-                <th>Date</th>
-                <th>Location</th>
-                <th>Time</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let val of interviewsToday">
-                <td>{{ val.clientName }}</td>
-                <td>{{ val.clientPhone }}</td>
-                <td>{{ val.consultantName }}</td>
-                <td>{{ val.consultantPhone }}</td>
-                <td>{{ val.interviewMode }}</td>
-                <td>{{ val.interviewDate | date }}</td>
-                <td>{{ val.interviewLocation }}</td>
-                <td>{{ val.interviewTime }}</td>
-              </tr>
-            </tbody>
-          </table>
+        <div class="card-header bg-dark text-clr-white" (click)="isCollapsed = !isCollapsed"
+        [attr.aria-expanded]="!isCollapsed" aria-controls="collapseExample">Interviews this week</div>
+        <div [ngbCollapse]="isCollapsed" id="collapseExample">
+          <div class="card-body" >
+            <table class="table table-sm">
+              <thead>
+                <tr>
+                  <th>Client</th>
+                  <th>Client No.</th>
+                  <th>Consultant</th>
+                  <th>Consultant No.</th>
+                  <th>Mode</th>
+                  <th>Date</th>
+                  <th>Location</th>
+                  <th>Time</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let val of interviewsToday">
+                  <td>{{ val.clientName }}</td>
+                  <td>{{ val.clientPhone }}</td>
+                  <td>{{ val.consultantName }}</td>
+                  <td>{{ val.consultantPhone }}</td>
+                  <td>{{ val.interviewMode }}</td>
+                  <td>{{ val.interviewDate | date }}</td>
+                  <td>{{ val.interviewLocation }}</td>
+                  <td>{{ val.interviewTime }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
@@ -56,10 +59,10 @@
             </thead>
             <tbody>
               <tr *ngFor="let ocp of openCP">
-                <td>{{ ocp.client.name }}</td>
+                <td>{{ ocp.clientName }}</td>
                 <td>{{ ocp.generatedCode }}</td>
                 <td width="100">{{ ocp.createdDate | date: 'dd-MM-yy' }}</td>
-                <td>{{ ocp.assignedTo.aliasName }}</td>
+                <td>{{ ocp.recruiterName }}</td>
               </tr>
             </tbody>
           </table>
@@ -68,7 +71,7 @@
     </div>
     <div class="col-6">
       <div class="card mb-3">
-        <div class="card-header bg-dark text-clr-white">Untouched Client Positions</div>
+        <div class="card-header bg-dark text-clr-white">Dying Client Positions</div>
         <div class="card-body">
           <table class="table table-sm">
             <thead>
@@ -81,10 +84,10 @@
             </thead>
             <tbody>
               <tr *ngFor="let ocp of dyingCP">
-                <td>{{ ocp.client.name }}</td>
+                <td>{{ ocp.clientName }}</td>
                 <td>{{ ocp.generatedCode }}</td>
                 <td width="100">{{ ocp.createdDate | date: 'dd-MM-yy' }}</td>
-                <td>{{ ocp.assignedTo.aliasName }}</td>
+                <td>{{ ocp.recruiterName }}</td>
               </tr>
             </tbody>
           </table>
@@ -92,6 +95,35 @@
       </div>
     </div>
     <div class="col-6">
+      <div class="card mb-3">
+        <div class="card-header bg-dark text-clr-white">Client Application Status</div>
+        <div class="card-body">
+          <table class="table table-sm">
+            <thead>
+              <tr>
+                <th>Client</th>
+                <th>Code</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let ca of caStat">
+                <td>{{ ca.clientName }}</td>
+                <td>{{ ca.consultantName }}</td>
+                <td>{{ ca.status }} 
+                  <select class="form-control" name="cas" [(ngModel)]="ca.status" (change)="updateCAStatus(ca)">
+                  <option *ngFor="let casl of caStatusList.list" [ngValue]="casl.code">
+                    {{ casl.description }}
+                  </option>
+                </select>
+              </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <!-- <div class="col-6">
       <div class="card mb-3">
         <div class="card-header bg-dark text-clr-white">
           Active Client Applications
@@ -112,7 +144,7 @@
           </canvas>
         </div>
       </div>
-    </div>
+    </div> -->
     <div class="col-6">
       <div class="card mb-3">
         <div class="card-header bg-dark text-clr-white">

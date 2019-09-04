@@ -84,6 +84,7 @@
                             <div class="dropdown-menu" aria-labelledby="dropdownMenu1" ngbDropdownMenu>
                                 <a class="dropdown-item drop-list" (click)="enableFormEditable()">Edit</a>
                                 <a class="dropdown-item drop-list" (click)="cancelForm(f)">New</a>
+                                <a class="dropdown-item drop-list" (click)="open(model.id,uploadContent)">File Upload</a>
                                 <a class="dropdown-item drop-list" (click)="downloadBif()">Download BIF</a>
                                 <a class="dropdown-item drop-list" (click)="open(model.id, trashContent)">Delete</a>
                             </div>
@@ -543,6 +544,22 @@
                 </div>
               </div>
         </div>
+        <div class="row" *ngIf="model?.files?.length > 0">
+          <div class="col-md-12 ml-3">
+              <div class="form-group">
+                <label>Files</label>
+                <div class="row" *ngFor="let ap of model.files; let i = index">
+                  <div class="col-md-5">
+                    <span class="file-download" 
+                    (click)="downloadFile(ap.id)">
+                      {{ap.fileName}}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+      </div>
+        
         <div class="row text-center">
           <div class="col-md-12">
             <button
@@ -582,6 +599,22 @@
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-secondary" (click)="trash()">Ok</button>
+    <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
+  </div>
+</ng-template>
+<ng-template #uploadContent let-c="close" let-d="dismiss">
+  <div class="modal-header modal-popup-header-bg">
+    <h4 class="modal-title">{{ properties.UPOAD }}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <input class="form-control" type="file" ng2FileSelect [uploader]="uploader" />
+    <textarea class="form-control mt-3" placeholder="comments" cols="5" rows="5" [(ngModel)]="comments"></textarea>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="uploadFiles()">Upload</button>
     <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
   </div>
 </ng-template>

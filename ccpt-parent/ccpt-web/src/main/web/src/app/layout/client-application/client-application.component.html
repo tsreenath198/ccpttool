@@ -315,8 +315,14 @@
                     </div>
                     <div class="col-md-6">
                       <label class="pt-2">Interview Mode</label>
-                      <input class="form-control" name="mode" [readonly]="readOnlyForm == 'R'"
-                        [(ngModel)]="model.interviewMode" />
+                      <select
+                        class="form-control"
+                        name="mode"
+                        [disabled]="readOnlyForm == 'R'"
+                        [(ngModel)]="model.interviewMode"
+                      >
+                        <option *ngFor="let im of interviewMode" [ngValue]="im.value">{{ im.key }}</option>
+                      </select>  
                       <div class="input-group-addon">
                         <span class="glyphicon glyphicon-th"></span>
                       </div>

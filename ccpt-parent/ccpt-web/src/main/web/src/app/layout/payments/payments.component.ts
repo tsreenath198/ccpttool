@@ -1,6 +1,7 @@
 import { Component, OnInit, HostListener } from '@angular/core';
 import { routerTransition } from '../../router.animations';
 import { PaymentsModel, ActionsList } from './payments.model';
+import { FileUploader, FileLikeObject } from 'ng2-file-upload';
 import { HttpClientService } from 'src/app/shared/services/http.service';
 import { URLConstants } from '../components/constants/url-constants';
 import { ToastrCustomService } from 'src/app/shared/services/toastr.service';
@@ -34,8 +35,10 @@ export class PaymentsComponent implements OnInit {
     public closeResult = '';
     public apName = '';
     public apValue = '';
+    public comments = '';
     public showAction: boolean = false;
     public actionsList = new ActionsList();
+    public uploader: FileUploader = new FileUploader({});
     public action: string = null;
     private modalRef: NgbModalRef;
     private getAllCA = this.http.get(this.urlConstants.CAJobConfirmed);
@@ -71,6 +74,7 @@ export class PaymentsComponent implements OnInit {
         this.getTodaysDate();
         this.setDefaultValues();
         this.model.properties = [];
+        this.model.files=[];
     }
     public initialGetAll(){
         let pageNumber = this.paginateConfig.currentPage-1
@@ -274,6 +278,39 @@ export class PaymentsComponent implements OnInit {
             this.spinner(true);
         });
     }
+    /** Get Uploaded files */
+  private getFiles(): FileLikeObject[] {
+    return this.uploader.queue.map(fileItem => {
+      return fileItem.file;
+    });
+  }
+  /**Download file */
+  public downloadFile(id: number) {
+    this.http.get(this.urlConstants.FileDownload + id).subscribe(
+      resp => { },
+      err => {
+        if (err.status == 200) window.open(err.url);
+      }
+    );
+  }
+  /** Upload documents of respective consultant */
+  public uploadFiles() {
+    const files = this.getFiles();
+    const formData = new FormData();
+    formData.append('file', files[0].rawFile, files[0].name);
+    const params = 'refId=' + this.selectedRecrdToDel + '&refType=Payment&comments=' + this.comments;
+    this.http.upload(this.urlConstants.FileUpload + params, formData).subscribe(
+      resp => {
+        let temp: any = resp;
+        this.uploader=new FileUploader({});
+        this.toastr.success(temp.message, 'Client');
+        this.close();
+      },
+      err => {
+        this.toastr.success(err.error.message, 'Client');
+      }
+    );
+  }
     /**
      * @param
      * 1) content consists the modal instance

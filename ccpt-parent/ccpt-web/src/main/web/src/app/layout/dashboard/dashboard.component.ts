@@ -26,7 +26,6 @@ export class DashboardComponent implements OnInit {
     public ccptReportCOCH: Array<any> = [];
     public ccptReportCC: any = {};
     public top5ById: any = {};
-    public ccptReportCPL: Array<any> = [];
     public openCP: Array<any> = [];
     public dyingCP: Array<any> = [];
     public caByStatusList: Array<any> = [];
@@ -43,6 +42,9 @@ export class DashboardComponent implements OnInit {
     public listReturned: boolean = false;
     public chartHeight: any;
     public stackChartHeight: any;
+    public caStat:any;
+    public caStatusList:any;
+    public isCollapsed = false;
     /** Template references */
 
     @ViewChild('contentACA')
@@ -61,13 +63,14 @@ export class DashboardComponent implements OnInit {
 
     public getAllReportCLCH = this.http.get(this.urlConstants.CCHGetCountByRecruiter + this.clchChoosenDays);
     public getAllReportCOCH = this.http.get(this.urlConstants.CoCHGetCountByRecruiter + this.cochChoosenDays);
-    public getAllReportCPL = this.http.get(this.urlConstants.ReportingGetAllTop5CP);
     public getAllReportCC = this.http.get(this.urlConstants.ReportingGetClosures + this.rpChoosenDays);
-    public getAllOpenCP = this.http.get(this.urlConstants.ReportingGetAllOpenCP);
-    public getAllActiveCA = this.http.get(this.urlConstants.ReportingGetAllActiveCA);
-    public getAllInterviewsToday = this.http.get(this.urlConstants.ReportingGetAllInterviewsToday);
-    public getAllDyingCP = this.http.get(this.urlConstants.ReportingDyingCp);
-    public getAllCAByStatus = this.http.get(this.urlConstants.ReportingGetAllCAByStatus);
+    public getAllCAStatus = this.http.get(this.urlConstants.CASGetAll+"0&pageSize=20&sortBy=id");
+    // public getAllOpenCP = this.http.get(this.urlConstants.ReportingGetAllOpenCP);
+    // public getAllActiveCA = this.http.get(this.urlConstants.ReportingGetAllActiveCA);
+    // public getAllInterviewsToday = this.http.get(this.urlConstants.ReportingGetAllInterviewsToday);
+    // public getAllDyingCP = this.http.get(this.urlConstants.ReportingDyingCp);
+    // public getAllCAByStatus = this.http.get(this.urlConstants.ReportingGetAllCAByStatus);
+    public getAllDBContent = this.http.get(this.urlConstants.GetAllDashboard);
     public barChartOptions: any = {
         scaleShowVerticalLines: false,
         responsive: true,
@@ -114,20 +117,20 @@ export class DashboardComponent implements OnInit {
         { backgroundColor: '#343a40' },
     ]
     public stackbarChartColors: Color[] = [
-        { backgroundColor: '#FF0000' },
-        { backgroundColor: '#FFFF00' },
-        { backgroundColor: '#00FF00' },
-        { backgroundColor: '#FFA500' },
-        { backgroundColor: '#ff4d4d' },
-        { backgroundColor: '#00cc00' },
-        { backgroundColor: '#009900' }
-        // { backgroundColor: '#000000' },
-        // { backgroundColor: '#212529' },
-        // { backgroundColor: '#444d55' },
-        // { backgroundColor: '#66737f' },
-        // { backgroundColor: '#808c99' },
-        // { backgroundColor: '#b8bfc6' },
-        // { backgroundColor: '#d5d9dd' }
+        // { backgroundColor: '#FF0000' },
+        // { backgroundColor: '#FFFF00' },
+        // { backgroundColor: '#00FF00' },
+        // { backgroundColor: '#FFA500' },
+        // { backgroundColor: '#ff4d4d' },
+        // { backgroundColor: '#00cc00' },
+        // { backgroundColor: '#009900' }
+        { backgroundColor: '#d5d9dd' },
+        { backgroundColor: '#b8bfc6' },
+        { backgroundColor: '#808c99' },
+        { backgroundColor: '#66737f' },
+        { backgroundColor: '#444d55' },
+        { backgroundColor: '#212529' },
+        { backgroundColor: '#000000' }
     ]
     public barChartCAByStatusData: any[] = [];
 
@@ -144,26 +147,25 @@ export class DashboardComponent implements OnInit {
     }
     public init() {
         this.spinner(false);
+        this.getAllDBContent.subscribe(resp =>{
+            let temp = resp as any;
+            this.interviewsToday = temp.interviewSummaryStatistics;
+            this.openCP = temp.openClientPositions;
+            this.dyingCP = temp.dyingClientPositions;
+            this.caByStatusList = temp.caByStatusList;
+            this.ccptReportCLCH = temp.clientCallHistoryList;
+            this.ccptReportCOCH = temp.consultantCallHistoryList;
+            this.caStat = temp.dashboardCAStatistics;
+            this.setCAByStatusBarData(this.caByStatusList);
+            this.spinner(true);
+
+        })
         forkJoin(
-            this.getAllReportCLCH,
-            this.getAllReportCOCH,
-            this.getAllReportCPL,
             this.getAllReportCC,
-            this.getAllOpenCP,
-            this.getAllActiveCA,
-            this.getAllInterviewsToday,
-            this.getAllDyingCP,
-            this.getAllCAByStatus
+            this.getAllCAStatus
         ).subscribe(listofrecords => {
-            this.ccptReportCLCH = listofrecords[0] as any;
-            this.ccptReportCOCH = listofrecords[1] as any;
-            this.ccptReportCPL = listofrecords[2] as any;
-            this.ccptReportCC = listofrecords[3] as any;
-            this.openCP = listofrecords[4] as any;
-            this.activeCA = listofrecords[5] as any;
-            this.interviewsToday = listofrecords[6] as any;
-            this.dyingCP = listofrecords[7] as any;
-            this.caByStatusList = listofrecords[8] as any;
+            this.ccptReportCC = listofrecords[0] as any;
+            this.caStatusList = listofrecords[1] as any;
             this.spinner(true);
             this.setActiveCPBarData();
             this.setCAByStatusBarData(this.caByStatusList);
@@ -324,5 +326,11 @@ export class DashboardComponent implements OnInit {
     public chartClicked(event): void {
         const index = event.active[0]._index;
         this.open(this.contentACA, this.barChartActiveCAData[0].cpIds[index], 'activeClientApplication');
+    }
+    public updateCAStatus(ca){
+        let dum = {}
+        let temp =this.http.update(dum,this.urlConstants.CAStatusUpdate + ca.id + "&status=" + ca.status).subscribe(resp=>{
+            
+        })
     }
 }

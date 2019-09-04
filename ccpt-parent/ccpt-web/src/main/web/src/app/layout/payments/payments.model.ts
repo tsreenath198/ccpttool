@@ -23,6 +23,7 @@ export interface PaymentsModel {
     phone: string;
     serviceCharge: string;
     properties: Array<AdditionalPropertiesModel>;
+    files:any;
 }
 export class ActionsList {
     actions = [{key: 'Edit' , value:'Edit'}, {key: 'Delete' , value:'Delete'}, {key: 'Close' , value:'Close'}];

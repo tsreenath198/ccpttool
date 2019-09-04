@@ -39,7 +39,7 @@ export class ClientApplicationComponent implements OnInit {
   public urlConstants = new URLConstants();
   public properties = new Properties();
   public creating:boolean = false;
-
+  public interviewMode = [{ key: 'Face to Face', value: 'F2F' }, { key: 'Telephone', value: 'TEL' },{key: 'Video Call', value: 'VID'}];
   public showAction: boolean = false;
   public actionsList = new ActionsList();
   public action: string;

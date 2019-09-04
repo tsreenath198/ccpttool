@@ -44,10 +44,11 @@ export class URLConstants {
     CAUpdate = 'clientApplication';
     CADelete = 'clientApplication/';
     CAGetById = 'clientApplication/';
-    CABodyMail = 'clientApplication/showBodyMail?caId='
-    CAJobConfirmed = "clientApplication/getJobConfirmedCAs"
-    CASearch = "clientApplication/search?clientId="
-    CADropdown = 'clientApplication/getCAStatistics'
+    CABodyMail = 'clientApplication/showBodyMail?caId=';
+    CAJobConfirmed = "clientApplication/getJobConfirmedCAs";
+    CASearch = "clientApplication/search?clientId=";
+    CADropdown = 'clientApplication/getCAStatistics';
+    CAStatusUpdate = 'clientApplication/updateStatus?id=';
 
 
     /* Client Call History */
@@ -102,8 +103,7 @@ export class URLConstants {
     SearchGetById = 'search/';
 
     /** Reporting */
-    ReportingGetAllCLCH = 'report/getAllClientCallHistorysByDays?days=';
-    ReportingGetAllCOCH = 'report/getAllConsultantCallHistorysByDays?days=';
+    GetAllDashboard = 'dashboard/getAllDashboardContent'
     ReportingGetAllTop5CP = 'dashboard/getTop5CP';
     ReportingGetClosures = 'dashboard/getClosedCountOfAllRecruitersFromLastGivenDays?days=';
     ReportingGetAllOpenCP = 'dashboard/getAllOpenCP';
@@ -112,6 +112,7 @@ export class URLConstants {
     ReportingGetAllInterviewsToday = 'dashboard/getAllInterviewsFromToday';
     ReportingDyingCp = 'dashboard/getLastWeekDyingCP'
     ReportingGetAllCAByStatus = 'dashboard/getAllCAbyStatus'
+    DashboardCAStat = 'dashboard/dashboardCAStatistics'
 
     /**Email Template */
     EmailTemplateCreate = 'template';
