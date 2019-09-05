@@ -5,9 +5,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 import javax.persistence.EntityNotFoundException;
 import javax.validation.ValidationException;
@@ -68,7 +70,7 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 		List<String> names = new ArrayList<String>();
 		List<UploadFile> files = new ArrayList<UploadFile>();
 		List<ClientApplication> clientApplications = new ArrayList<ClientApplication>();
-		List<String> cpNames = new ArrayList<String>();
+		Set<String> cpNames = new HashSet<String>();
 		for (Integer id : ids) {
 			Optional<ClientApplication> ca = clientApplicationRepository.findById(id);
 			String name = ca.get().getClientPosition().getClient().getName();
@@ -121,7 +123,7 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 			emailContent.setUploadFiles(files);
 			emailContent.setToEmails(
 					clientApplications.get(0).getClientPosition().getClient().getClientContacts().get(0).getEmail());
-			emailContent.setSubject("CV for " + cpNames);
+			emailContent.setSubject("CV for " + String.join(",", cpNames));
 
 			emailContent.setCc(cc.toString());
 			emailContent.setBcc(bcc);
