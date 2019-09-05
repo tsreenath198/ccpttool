@@ -45,7 +45,7 @@ public interface ClientApplicationRepository extends BaseRepository<ClientApplic
 	@Query("SELECT c FROM ClientApplication c WHERE c.clientPosition.client.id=:clientId ")
 	List<ClientApplication> search(@Param("clientId") Integer clientId);
 
-	@Query("SELECT c.id as id,c.consultant.fullname as consultantName,c.clientPosition.client.name as clientName,c.status.code as status  FROM ClientApplication c ")
+	@Query("SELECT c.id as id,c.consultant.fullname as consultantName,c.clientPosition.client.name as clientName,c.status.code as status  FROM ClientApplication c, ClientApplicationStatus cas WHERE c.status=cas.code AND cas.statusType='Active'")
 	List<DashboardCAStatistics> getDashboardCaStatus();
 
 	@Query(value = "SELECT code FROM client_application_status", nativeQuery = true)
