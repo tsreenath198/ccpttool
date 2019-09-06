@@ -31,4 +31,7 @@ public class ClientContact extends IDEntity {
 	@Column
 	private String email;
 
+	@Column
+	private String salutation;
+
 }
