@@ -53,6 +53,13 @@ public class ConsultantController extends BaseController<ConsultantDTO, Consulta
 
 	}
 
+	@GetMapping("/getInactiveConsultants")
+	public ResponseEntity<List<Consultant>> getInactiveConsultants() {
+		List<Consultant> result = consultantService.getInactiveConsultants();
+		return new ResponseEntity<List<Consultant>>(result, HttpStatus.OK);
+
+	}
+
 	@GetMapping("/search")
 	public ResponseEntity<List<Consultant>> search(@RequestParam String searchKey) {
 		List<Consultant> result = consultantService.search(searchKey);

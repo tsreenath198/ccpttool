@@ -62,4 +62,8 @@ public class ConsultantService extends BaseService<Consultant, Integer> {
 		return consultantRepository.search(searchKey);
 	}
 
+	public List<Consultant> getInactiveConsultants() {
+		return consultantRepository.getInactiveConsultants();
+	}
+
 }
