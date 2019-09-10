@@ -51,7 +51,7 @@ public interface ClientApplicationRepository extends BaseRepository<ClientApplic
 	@Query(value = "SELECT code FROM client_application_status", nativeQuery = true)
 	List<String> getAllDistinctStatusCode();
 
-	@Query(value = "SELECT distinct ca.client_position_id FROM client_application ca,client_position cp,client_position_status cps where ca.client_position_id=cp.id AND cp.status_code=cps.code AND cps.status_type='Active'", nativeQuery = true)
+	@Query(value = "SELECT distinct ca.client_position_id FROM client_application ca,client_position cp,client_position_status cps where ca.client_position_id=cp.id AND cp.status_code=cps.code AND cps.status_type='Active' order by cp.generated_code", nativeQuery = true)
 	List<Integer> getAllDistinctClientPositionId();
 
 	@Query(value = "SELECT ca.status_code as statusCode ,(SELECT generated_code  from client_position WHERE id=:clientPositionId ) "
