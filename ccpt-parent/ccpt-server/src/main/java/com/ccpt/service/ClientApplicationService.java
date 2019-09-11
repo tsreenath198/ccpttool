@@ -104,8 +104,8 @@ public class ClientApplicationService extends BaseService<ClientApplication, Int
 		return listOfCAStatistics;
 	}
 
-	public List<ClientApplication> search(Integer clientId) {
-		return clientApplicationRepository.search(clientId);
+	public List<ClientApplication> search(Integer clientId, Integer clientPosId, Integer status, String searchKey) {
+		return clientApplicationRepository.search(clientId, clientPosId, status, searchKey);
 	}
 
 	public List<DashboardCAStatistics> getDashboardCAStatistics() {

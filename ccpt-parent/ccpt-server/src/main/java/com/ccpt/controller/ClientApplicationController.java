@@ -89,8 +89,9 @@ public class ClientApplicationController extends BaseController<ClientApplicatio
 	}
 
 	@GetMapping("/search")
-	public ResponseEntity<List<ClientApplication>> search(@RequestParam Integer clientId) {
-		List<ClientApplication> result = clientApplicationService.search(clientId);
+	public ResponseEntity<List<ClientApplication>> search(@RequestParam Integer clientId,
+			@RequestParam Integer clientPosId, @RequestParam Integer status, @RequestParam String searchKey) {
+		List<ClientApplication> result = clientApplicationService.search(clientId, clientPosId, status, searchKey);
 		return new ResponseEntity<List<ClientApplication>>(result, HttpStatus.OK);
 
 	}
