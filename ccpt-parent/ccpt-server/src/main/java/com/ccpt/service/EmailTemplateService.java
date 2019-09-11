@@ -85,14 +85,16 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 			ClientPosition clientPosition = clientApplications.get(0).getClientPosition();
 			valuesMap.put("jobTitle", clientPosition.getRole());
 			valuesMap.put("clientContactName", clientPosition.getClient().getClientContacts().get(0).getFullname());
-			sbPara.append("<p>Hi <strong>${clientContactName}</strong>,</p>");
+			sbPara.append("<p>Hi ${clientContactName}</p>");
 			if (ids.size() == 1)
 				sbPara.append("<p> Below is the profile with ${jobTitle}  experience (CV Attached)</p>");
 			else
 				sbPara.append("<p> Below are the profiles with ${jobTitle}  experience (CVs Attached)</p>");
 			sbPara.append("<p>");
 			sbPara.append("please go out the CV's and provide your feed back ASAP");
+			sbPara.append("<br></br>");
 			sbPara.append("<p>");
+			
 			String subject = StrSubstitutor.replace(sbPara.toString(), valuesMap);
 			StringBuilder sb = new StringBuilder(subject);
 			for (ClientApplication clientApplication : clientApplications) {
@@ -285,7 +287,7 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 				emailContent.setToEmails(ca.getClientPosition().getClient().getClientContacts().get(0).getEmail());
 				data = data.concat(StrSubstitutor.replace(sbPara.toString(), valuesMap));
 			}
-			String temp = new StringBuilder().append("<p>Hi <strong>").append(ccName).append("</strong>,</p>")
+			String temp = new StringBuilder().append("<p>Hi ").append(ccName).append("</p>")
 					.append("Please review & confirm the interview scheduled mentioned below ").append("<p>")
 					.append("<p>").toString().concat(data);
 			String finalData = temp.concat(new StringBuilder().append("<p>").append("<p>").toString());
