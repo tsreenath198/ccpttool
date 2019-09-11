@@ -179,8 +179,7 @@ public class JobDescriptionSubstitutor implements ContentSubstitutor {
 		Map<String, String> valuesMap = new HashMap<String, String>();
 		valuesMap.put("consultantName", clientApplication.getConsultant().getFullname());
 		StringBuilder sbPara = new StringBuilder();
-		sbPara.append("<p></p><p></p><p><strong>${consultantName}</strong></p>");
-		sbPara.append("<p>");
+		sbPara.append("<br>").append("<p><strong>${consultantName}</strong></p>").append("<br>");
 		String subject = StrSubstitutor.replace(sbPara.toString(), valuesMap);
 		StringBuilder sb = new StringBuilder(subject);
 		sb.append(

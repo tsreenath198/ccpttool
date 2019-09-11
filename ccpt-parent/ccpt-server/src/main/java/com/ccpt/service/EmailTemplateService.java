@@ -65,7 +65,7 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 
 	public EmailContent getClientApps(List<Integer> ids) throws Exception {
 		EmailContent emailContent = new EmailContent();
-		StringBuilder cc = new StringBuilder();
+		StringBuilder cc = null;
 		StringBuilder body = new StringBuilder();
 		List<String> names = new ArrayList<String>();
 		List<UploadFile> files = new ArrayList<UploadFile>();
@@ -94,10 +94,11 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 			sbPara.append("please go out the CV's and provide your feed back ASAP");
 			sbPara.append("<br></br>");
 			sbPara.append("<p>");
-			
+
 			String subject = StrSubstitutor.replace(sbPara.toString(), valuesMap);
 			StringBuilder sb = new StringBuilder(subject);
 			for (ClientApplication clientApplication : clientApplications) {
+				cc = new StringBuilder();
 				String template = JobDescriptionSubstitutor.appendCATemplate(clientApplication);
 				UploadFile uploadedFile = uploadFileService.getByRefIdAndRefType(clientApplication.getId(), "CRF");
 				if (uploadedFile != null)
