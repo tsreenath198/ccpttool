@@ -37,7 +37,7 @@ public class JobDescriptionSubstitutor implements ContentSubstitutor {
 		if (clientPosition != null) {
 			Map<String, String> valuesMap = new HashMap<String, String>();
 			String jd = appendTemplate(clientPosition);
-			jd=jd.concat(getSign(new StringBuilder(jd)));
+
 			valuesMap.put("jd", jd);
 			valuesMap.put("clientName", clientPosition.getClient().getName());
 			if (clientPosition.getLocation() != null) {
@@ -143,7 +143,7 @@ public class JobDescriptionSubstitutor implements ContentSubstitutor {
 		}
 		sb.append("</tbody>");
 		sb.append("</table>");
-		// getSign(sb);
+		getSign(sb);
 		String jd = sb.toString();
 		return jd;
 	}
