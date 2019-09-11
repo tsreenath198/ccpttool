@@ -10,4 +10,5 @@ import lombok.ToString;
 public class ClientPositionStatusDTO extends IDEntityDTO  {
 	private String code;
 	private String statusType;
+	private Integer ordr;
 }

@@ -35,6 +35,9 @@ public class StatusEntity extends BaseEntity<Integer> {
 	@Size(max = 30)
 	protected String statusType;
 
+	@Column(unique = true, nullable = false)
+	protected Integer ordr;
+
 	public String getCode() {
 		return StringUtils.isEmpty(code) ? null : code;
 	}
