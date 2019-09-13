@@ -29,5 +29,5 @@ public interface ClientPositionRepository extends BaseRepository<ClientPosition,
 	List<ClientPosition> getLastWeekDyingCP(@Param(value = "days") Integer days);
 
 	@Query(value = "SELECT DISTINCT cp.* from client_position cp,client_position_status cps WHERE cp.status_code=cps.code and cps.status_type=:status and cp.active_flag=1", nativeQuery = true)
-	Page<ClientPosition> getAllByStatus(@Param(value = "status") String status, Pageable paging);
+	Page<ClientPosition> getAllByStatus(@Param(value = "status") String status, Pageable paging); 
 }

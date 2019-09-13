@@ -1,6 +1,6 @@
 package com.ccpt.repository;
 
-import java.awt.print.Pageable;
+import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 import org.springframework.data.domain.Page;

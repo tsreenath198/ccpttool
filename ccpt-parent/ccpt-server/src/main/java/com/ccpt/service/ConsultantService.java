@@ -45,7 +45,7 @@ public class ConsultantService extends BaseService<Consultant, Integer> {
 		}
 
 	}
-
+ 
 	public List<Consultant> find(String fullname, String email, String phone) {
 		return consultantRepository.findByPhoneOrFullnameOrEmail(phone, fullname, email);
 	}

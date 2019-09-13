@@ -44,7 +44,7 @@ public class ClientPositionService extends BaseService<ClientPosition, Integer> 
 	public List<ClientPosition> getTop5ClientPositions() {
 		return clientPositionRepository.findTop5ByActiveFlagAllIgnoreCaseOrderByIdDesc(true);
 	}
-
+ 
 	public List<ClientPosition> getAllOpenCP() {
 		return clientPositionRepository.getAllOpenCP();
 	}
