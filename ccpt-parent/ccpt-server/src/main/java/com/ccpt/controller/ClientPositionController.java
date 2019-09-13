@@ -12,11 +12,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.ccpt.constants.CCPTConstants;
 import com.ccpt.dto.ClientPositionDTO;
 import com.ccpt.mapper.BaseMapper;
 import com.ccpt.mapper.ClientPositionMapper;
+import com.ccpt.model.BaseReturn;
 import com.ccpt.model.ClientPosition;
 import com.ccpt.model.DropDownStatistics;
 import com.ccpt.service.BaseService;
@@ -80,6 +82,15 @@ public class ClientPositionController extends BaseController<ClientPositionDTO, 
 	public ResponseEntity<List<DropDownStatistics>> getAllCps() {
 		List<DropDownStatistics> result = clientPositionService.getAllCps();
 		return new ResponseEntity<List<DropDownStatistics>>(result, HttpStatus.OK);
+
+	}
+	
+	@GetMapping(CCPTConstants.GET_ALL_BY_STATUS)
+	public ResponseEntity<BaseReturn> getAllByStatus(@RequestParam(defaultValue = "0") Integer pageNo,
+			@RequestParam(defaultValue = "100") Integer pageSize, @RequestParam(defaultValue = "id") String sortBy,
+			@RequestParam(defaultValue = "Active") String status) {
+		BaseReturn br = clientPositionService.getAllByStatus(pageNo, pageSize, sortBy, status);
+		return new ResponseEntity<BaseReturn>(br, HttpStatus.OK);
 
 	}
 }

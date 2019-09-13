@@ -4,6 +4,7 @@ public interface CCPTConstants {
 	String GET_ALL = "/";
 	String ID_PARAM = "/{id}";
 	String ACTIVATE_ID_PARAM = "activate/{id}";
+	String GET_ALL_BY_STATUS = "/getAllByStatus";
 	String SEND = "/send";
 	String CLIENT_APPLICATION = "/clientApplication";
 	String CLIENT_CALL_HISTORY = "/clientCallHistory";

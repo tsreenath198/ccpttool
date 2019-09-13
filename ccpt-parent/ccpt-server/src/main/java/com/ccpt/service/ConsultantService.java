@@ -5,8 +5,13 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import com.ccpt.model.BaseReturn;
 import com.ccpt.model.ClientApplication;
 import com.ccpt.model.Consultant;
 import com.ccpt.model.ConsultantStatistics;
@@ -64,6 +69,15 @@ public class ConsultantService extends BaseService<Consultant, Integer> {
 
 	public List<Consultant> getInactiveConsultants() {
 		return consultantRepository.getInactiveConsultants();
+	}
+
+	public BaseReturn getAllByStatus(Integer pageNo, Integer pageSize, String sortBy, String status) {
+		BaseReturn returnObj = new BaseReturn();
+		Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
+		Page<Consultant> p = consultantRepository.getAllByStatus(status, paging);
+		returnObj.setNoOfRecords(p.getTotalElements());
+		returnObj.setList(p.getContent());
+		return returnObj;
 	}
 
 }

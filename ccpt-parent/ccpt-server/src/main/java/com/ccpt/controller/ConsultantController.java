@@ -20,6 +20,7 @@ import com.ccpt.constants.CCPTConstants;
 import com.ccpt.dto.ConsultantDTO;
 import com.ccpt.mapper.BaseMapper;
 import com.ccpt.mapper.ConsultantMapper;
+import com.ccpt.model.BaseReturn;
 import com.ccpt.model.Consultant;
 import com.ccpt.model.ConsultantStatistics;
 import com.ccpt.service.BaseService;
@@ -64,6 +65,15 @@ public class ConsultantController extends BaseController<ConsultantDTO, Consulta
 	public ResponseEntity<List<Consultant>> search(@RequestParam String searchKey) {
 		List<Consultant> result = consultantService.search(searchKey);
 		return new ResponseEntity<List<Consultant>>(result, HttpStatus.OK);
+
+	}
+	
+	@GetMapping(CCPTConstants.GET_ALL_BY_STATUS)
+	public ResponseEntity<BaseReturn> getAllByStatus(@RequestParam(defaultValue = "0") Integer pageNo,
+			@RequestParam(defaultValue = "100") Integer pageSize, @RequestParam(defaultValue = "id") String sortBy,
+			@RequestParam(defaultValue = "Active") String status) {
+		BaseReturn br = consultantService.getAllByStatus(pageNo, pageSize, sortBy, status);
+		return new ResponseEntity<BaseReturn>(br, HttpStatus.OK);
 
 	}
 

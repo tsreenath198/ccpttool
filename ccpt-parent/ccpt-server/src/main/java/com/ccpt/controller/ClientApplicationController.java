@@ -21,6 +21,7 @@ import com.ccpt.dto.ClientApplicationDTO;
 import com.ccpt.mapper.BaseMapper;
 import com.ccpt.mapper.ClientApplicationMapper;
 import com.ccpt.model.ApplicationBody;
+import com.ccpt.model.BaseReturn;
 import com.ccpt.model.CAStatistics;
 import com.ccpt.model.ClientApplication;
 import com.ccpt.service.BaseService;
@@ -93,6 +94,15 @@ public class ClientApplicationController extends BaseController<ClientApplicatio
 			@RequestParam Integer clientPosId, @RequestParam Integer status, @RequestParam String searchKey) {
 		List<ClientApplication> result = clientApplicationService.search(clientId, clientPosId, status, searchKey);
 		return new ResponseEntity<List<ClientApplication>>(result, HttpStatus.OK);
+
+	}
+
+	@GetMapping(CCPTConstants.GET_ALL_BY_STATUS)
+	public ResponseEntity<BaseReturn> getAllByStatus(@RequestParam(defaultValue = "0") Integer pageNo,
+			@RequestParam(defaultValue = "100") Integer pageSize, @RequestParam(defaultValue = "id") String sortBy,
+			@RequestParam(defaultValue = "Active") String status) {
+		BaseReturn br = clientApplicationService.getAllByStatus(pageNo, pageSize, sortBy, status);
+		return new ResponseEntity<BaseReturn>(br, HttpStatus.OK);
 
 	}
 

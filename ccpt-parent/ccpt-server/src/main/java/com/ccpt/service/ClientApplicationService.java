@@ -7,9 +7,14 @@ import java.util.Optional;
 import javax.persistence.EntityNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.ccpt.model.ApplicationBody;
+import com.ccpt.model.BaseReturn;
 import com.ccpt.model.CAByStatus;
 import com.ccpt.model.CAByStatusHelper;
 import com.ccpt.model.CAStatistics;
@@ -148,6 +153,15 @@ public class ClientApplicationService extends BaseService<ClientApplication, Int
 			listOfCAStatistics.add(caStatistics);
 		}
 		return listOfCAStatistics;
+	}
+
+	public BaseReturn getAllByStatus(Integer pageNo, Integer pageSize, String sortBy, String status) {
+		BaseReturn returnObj = new BaseReturn();
+		Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
+		Page<ClientApplication> p = clientApplicationRepository.getAllByStatus(status,paging);
+		returnObj.setNoOfRecords(p.getTotalElements());
+		returnObj.setList(p.getContent());
+		return returnObj;
 	}
 
 }
