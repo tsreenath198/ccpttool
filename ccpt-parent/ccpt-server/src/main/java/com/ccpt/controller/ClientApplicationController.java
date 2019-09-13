@@ -54,7 +54,7 @@ public class ClientApplicationController extends BaseController<ClientApplicatio
 	@Override
 	public BaseService<ClientApplication, Integer> getService() {
 		return clientApplicationService;
-	}
+	} 
 
 	@Override
 	public BaseMapper<ClientApplicationDTO, ClientApplication, Integer> getMapper() {

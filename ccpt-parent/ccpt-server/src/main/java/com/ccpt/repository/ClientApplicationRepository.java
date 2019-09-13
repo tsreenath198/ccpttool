@@ -72,5 +72,5 @@ public interface ClientApplicationRepository extends BaseRepository<ClientApplic
 	void updateStatus(@Param("id") Integer id, @Param("status") String status);
 
 	@Query(value = "SELECT DISTINCT ca.* from client_application ca,client_application_status cas WHERE ca.status_code=cas.code and cas.status_type=:status and ca.active_flag=1", nativeQuery = true)
-	Page<ClientApplication> getAllByStatus(@Param("status") String status, Pageable paging);
+	Page<ClientApplication> getAllByStatus(@Param("status") String status, Pageable paging); 
 }

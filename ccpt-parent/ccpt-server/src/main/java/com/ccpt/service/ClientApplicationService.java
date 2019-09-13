@@ -161,7 +161,7 @@ public class ClientApplicationService extends BaseService<ClientApplication, Int
 		Page<ClientApplication> p = clientApplicationRepository.getAllByStatus(status,paging);
 		returnObj.setNoOfRecords(p.getTotalElements());
 		returnObj.setList(p.getContent());
-		return returnObj;
+		return returnObj; 
 	}
 
 }
