@@ -23,6 +23,6 @@ public interface ConsultantRepository extends BaseRepository<Consultant, Integer
 	@Query("SELECT DISTINCT c FROM  Consultant c,ConsultantStatus cs WHERE (c.phone IS NULL OR c.phone ='' OR c.email IS NULL OR c.email ='' OR c.skills IS NULL OR c.skills ='' OR c.highestEducation IS NULL OR c.highestEducation ='' AND c.status = cs.code AND cs.statusType='Active') AND c.activeFlag=1 ")
 	List<Consultant> getInactiveConsultants();
 
-	@Query(value = "SELECT DISTINCT * from consultant c,consultant_status cs WHERE c.status_code=cs.code and cs.status_type=:status and c.	active_flag=1", nativeQuery = true)
+	@Query(value = "SELECT DISTINCT consultant.* from consultant,consultant_status WHERE consultant.status_code=consultant_status.code and (consultant_status.status_type=:status or :status is null or :status = '' ) and consultant.active_flag=1", nativeQuery = true)
 	Page<Consultant> getAllByStatus(@Param(value = "status") String status, Pageable paging);
 }
