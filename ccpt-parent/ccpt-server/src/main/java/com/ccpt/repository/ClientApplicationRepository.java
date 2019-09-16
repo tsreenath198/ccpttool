@@ -44,8 +44,10 @@ public interface ClientApplicationRepository extends BaseRepository<ClientApplic
 	@Query("SELECT c.id as id,c.consultant.fullname as consultantName,c.clientPosition.generatedCode as generatedCode  FROM ClientApplication c where c.activeFlag=:activeFlag AND c.status.code='Job Confirmed' ORDER BY c.createdDate")
 	List<DashboardCA> getJobConfirmedCAs(@Param("activeFlag") Boolean activeFlag);
 
-	@Query("SELECT DISTINCT c FROM ClientApplication c ,Client cl WHERE (:clientId is null OR c.clientPosition.client.id = :clientId) AND "
-			+ "(:clientPosId is null OR c.clientPosition.id = :clientPosId) AND c.status.code=(select code from ClientApplicationStatus where (:status is null OR id=:status))"
+	@Query("SELECT DISTINCT c FROM ClientApplication c ,Client cl WHERE "
+			+ "((c.clientPosition.client.id = :clientId AND c.clientPosition.client.id IS NOT NULL) OR c.clientPosition.client.id IS NULL) AND "
+			+ "((c.clientPosition.id = :clientPosId AND c.clientPosition.id IS NOT NULL) OR c.clientPosition.id IS NULL) AND "
+			+ "c.status.code=(select code from ClientApplicationStatus where ((id=:status AND id IS NOT NULL) OR id IS NULL))"
 			+ " AND (:searchKey is null OR  CONCAT(cl.name, '',cl.email, '',cl.phone) LIKE %:searchKey%)")
 	List<ClientApplication> search(@Param("clientId") Integer clientId, @Param("clientPosId") Integer clientPosId,
 			@Param("status") Integer status, @Param("searchKey") String searchKey);
@@ -72,5 +74,5 @@ public interface ClientApplicationRepository extends BaseRepository<ClientApplic
 	void updateStatus(@Param("id") Integer id, @Param("status") String status);
 
 	@Query(value = "SELECT DISTINCT ca.* from client_application ca,client_application_status cas WHERE ca.status_code=cas.code and cas.status_type=:status and ca.active_flag=1", nativeQuery = true)
-	Page<ClientApplication> getAllByStatus(@Param("status") String status, Pageable paging); 
+	Page<ClientApplication> getAllByStatus(@Param("status") String status, Pageable paging);
 }
