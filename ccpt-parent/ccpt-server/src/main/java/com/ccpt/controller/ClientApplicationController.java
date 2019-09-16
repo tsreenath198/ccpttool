@@ -54,7 +54,7 @@ public class ClientApplicationController extends BaseController<ClientApplicatio
 	@Override
 	public BaseService<ClientApplication, Integer> getService() {
 		return clientApplicationService;
-	} 
+	}
 
 	@Override
 	public BaseMapper<ClientApplicationDTO, ClientApplication, Integer> getMapper() {
@@ -91,7 +91,8 @@ public class ClientApplicationController extends BaseController<ClientApplicatio
 
 	@GetMapping("/search")
 	public ResponseEntity<List<ClientApplication>> search(@RequestParam Integer clientId,
-			@RequestParam Integer clientPosId, @RequestParam Integer status, @RequestParam String searchKey) {
+			@RequestParam(required = false) Integer clientPosId, @RequestParam(required = false) Integer status,
+			@RequestParam(required = false) String searchKey) {
 		List<ClientApplication> result = clientApplicationService.search(clientId, clientPosId, status, searchKey);
 		return new ResponseEntity<List<ClientApplication>>(result, HttpStatus.OK);
 
@@ -100,7 +101,7 @@ public class ClientApplicationController extends BaseController<ClientApplicatio
 	@GetMapping(CCPTConstants.GET_ALL_BY_STATUS)
 	public ResponseEntity<BaseReturn> getAllByStatus(@RequestParam(defaultValue = "0") Integer pageNo,
 			@RequestParam(defaultValue = "100") Integer pageSize, @RequestParam(defaultValue = "id") String sortBy,
-			@RequestParam(defaultValue = "Active") String status) {
+			@RequestParam(required = false) String status) {
 		BaseReturn br = clientApplicationService.getAllByStatus(pageNo, pageSize, sortBy, status);
 		return new ResponseEntity<BaseReturn>(br, HttpStatus.OK);
 
