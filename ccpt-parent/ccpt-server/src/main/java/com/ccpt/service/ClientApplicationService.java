@@ -110,7 +110,13 @@ public class ClientApplicationService extends BaseService<ClientApplication, Int
 	}
 
 	public List<ClientApplication> search(Integer clientId, Integer clientPosId, Integer status, String searchKey) {
-		return clientApplicationRepository.search(clientId, clientPosId, status, searchKey);
+		List<String> statuses = clientApplicationRepository.caStatus(status);
+		List<ClientApplication> cas = null;
+		for (String eachStatus : statuses) {
+			cas = new ArrayList<ClientApplication>();
+			cas.addAll(clientApplicationRepository.search(clientId, clientPosId, eachStatus, searchKey));
+		}
+		return cas;
 	}
 
 	public List<DashboardCAStatistics> getDashboardCAStatistics() {
@@ -158,10 +164,10 @@ public class ClientApplicationService extends BaseService<ClientApplication, Int
 	public BaseReturn getAllByStatus(Integer pageNo, Integer pageSize, String sortBy, String status) {
 		BaseReturn returnObj = new BaseReturn();
 		Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
-		Page<ClientApplication> p = clientApplicationRepository.getAllByStatus(status,paging);
+		Page<ClientApplication> p = clientApplicationRepository.getAllByStatus(status, paging);
 		returnObj.setNoOfRecords(p.getTotalElements());
 		returnObj.setList(p.getContent());
-		return returnObj; 
+		return returnObj;
 	}
 
 }
