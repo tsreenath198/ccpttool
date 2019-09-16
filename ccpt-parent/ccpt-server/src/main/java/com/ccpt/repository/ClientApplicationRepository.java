@@ -49,7 +49,8 @@ public interface ClientApplicationRepository extends BaseRepository<ClientApplic
 
 	@Query("SELECT DISTINCT c FROM ClientApplication c ,Client cl WHERE (c.clientPosition.client.id = :clientId or :clientId is null) AND "
 			+ "(c.clientPosition.id = :clientPosId or :clientPosId is null) AND c.status.code IN (select code from ClientApplicationStatus where (id=:status or :status is null))"
-			+ " AND (cl.name LIKE CONCAT('%',:searchKey,'%') or cl.phone LIKE CONCAT('%',:searchKey,'%') or cl.email LIKE CONCAT('%',:searchKey,'%') or :searchKey is null) ")
+			+ " AND (lower(cl.name) LIKE lower(CONCAT('%',:searchKey,'%')) or lower(cl.phone) LIKE lower(CONCAT('%',:searchKey,'%')) or "
+			+ "lower(cl.email) LIKE lower(CONCAT('%',:searchKey,'%')) or :searchKey is null) ")
 	List<ClientApplication> search(@Param("clientId") Integer clientId, @Param("clientPosId") Integer clientPosId,
 			@Param("status") Integer status, @Param("searchKey") String searchKey);
 
