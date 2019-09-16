@@ -47,12 +47,12 @@ public interface ClientApplicationRepository extends BaseRepository<ClientApplic
 	@Query("SELECT DISTINCT c FROM ClientApplication c ,Client cl WHERE "
 			+ "(:clientId is null OR c.clientPosition.client.id = :clientId) AND "
 			+ "(:clientPosId is null OR c.clientPosition.id = :clientPosId) AND" + " c.status.code=:status"
-			+ " AND (:searchKey is null OR  CONCAT(cl.name, '',cl.email, '',cl.phone) LIKE %:searchKey%)")
+			+ " AND (cl.name LIKE %:searchKey% OR cl.email LIKE %:searchKey% OR cl.phone LIKE %:searchKey% OR :searchKey is null)")
 	List<ClientApplication> search(@Param("clientId") Integer clientId, @Param("clientPosId") Integer clientPosId,
 			@Param("status") String status, @Param("searchKey") String searchKey);
 
-	@Query("select code from ClientApplicationStatus where (:status is null OR id=:status)")
-	List<String> caStatus(@Param("status") Integer status);
+	@Query("select code from ClientApplicationStatus where (:statusId is null OR id=:statusId)")
+	List<String> caStatus(@Param("statusId") Integer statusId);
 
 	@Query("SELECT c.id as id,c.consultant.fullname as consultantName,c.clientPosition.client.name as clientName,c.status.code as status  FROM ClientApplication c, ClientApplicationStatus cas WHERE c.status=cas.code AND cas.statusType='Active'")
 	List<DashboardCAStatistics> getDashboardCaStatus();

@@ -109,12 +109,12 @@ public class ClientApplicationService extends BaseService<ClientApplication, Int
 		return listOfCAStatistics;
 	}
 
-	public List<ClientApplication> search(Integer clientId, Integer clientPosId, Integer status, String searchKey) {
-		List<String> statuses = clientApplicationRepository.caStatus(status);
+	public List<ClientApplication> search(Integer clientId, Integer clientPosId, Integer statusId, String searchKey) {
+		List<String> statuses = clientApplicationRepository.caStatus(statusId);
 		List<ClientApplication> cas = null;
-		for (String eachStatus : statuses) {
+		for (String status : statuses) {
 			cas = new ArrayList<ClientApplication>();
-			cas.addAll(clientApplicationRepository.search(clientId, clientPosId, eachStatus, searchKey));
+			cas.addAll(clientApplicationRepository.search(clientId, clientPosId, status, searchKey));
 		}
 		return cas;
 	}
