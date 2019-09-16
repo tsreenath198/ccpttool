@@ -44,15 +44,13 @@ public interface ClientApplicationRepository extends BaseRepository<ClientApplic
 	@Query("SELECT c.id as id,c.consultant.fullname as consultantName,c.clientPosition.generatedCode as generatedCode  FROM ClientApplication c where c.activeFlag=:activeFlag AND c.status.code='Job Confirmed' ORDER BY c.createdDate")
 	List<DashboardCA> getJobConfirmedCAs(@Param("activeFlag") Boolean activeFlag);
 
-	@Query("SELECT DISTINCT c FROM ClientApplication c ,Client cl WHERE "
-			+ "(:clientId is null OR c.clientPosition.client.id = :clientId) AND "
-			+ "(:clientPosId is null OR c.clientPosition.id = :clientPosId) AND" + " c.status.code=:status"
-			+ " AND (cl.name LIKE %:searchKey% OR cl.email LIKE %:searchKey% OR cl.phone LIKE %:searchKey% OR :searchKey is null)")
+	@Query(nativeQuery = true, value = "SELECT ca.* FROM client_application ca LEFT OUTER JOIN consultant c ON ca.consultant_id = c.id "
+			+ "LEFT OUTER JOIN client_position cp on cp.id = ca.client_position_id WHERE "
+			+ "(:clientId IS NULL OR cp.client_id = :clientId)" + " AND (:clientPosId IS NULL OR cp.id=:clientPosId)"
+			+ " AND ca.status_code in (SELECT cas.code from client_application_status cas where cas.status_type = :statusType) "
+			+ "AND (:searchKey is null OR c.fullname LIKE %:searchKey% OR c.email LIKE %:searchKey% OR c.phone LIKE %:searchKey% )")
 	List<ClientApplication> search(@Param("clientId") Integer clientId, @Param("clientPosId") Integer clientPosId,
-			@Param("status") String status, @Param("searchKey") String searchKey);
-
-	@Query("select code from ClientApplicationStatus where (:statusId is null OR id=:statusId)")
-	List<String> caStatus(@Param("statusId") Integer statusId);
+			@Param("statusType") String statusType, @Param("searchKey") String searchKey);
 
 	@Query("SELECT c.id as id,c.consultant.fullname as consultantName,c.clientPosition.client.name as clientName,c.status.code as status  FROM ClientApplication c, ClientApplicationStatus cas WHERE c.status=cas.code AND cas.statusType='Active'")
 	List<DashboardCAStatistics> getDashboardCaStatus();
