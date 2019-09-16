@@ -19,10 +19,12 @@ import com.ccpt.model.InterviewSummaryStatistics;
 @Transactional
 public interface ClientApplicationRepository extends BaseRepository<ClientApplication, Integer> {
 
-	@Query("SELECT c.id as id,c.consultant.fullname as consultantName,c.clientPosition.generatedCode as generatedCode  FROM ClientApplication c where c.activeFlag=:activeFlag ")
+	@Query("SELECT c.id as id,c.consultant.fullname as consultantName,c.clientPosition.generatedCode as generatedCode  FROM ClientApplication c where "
+			+ "c.activeFlag=:activeFlag ")
 	List<DashboardCA> getDashboardCA(@Param("activeFlag") Boolean activeFlag);
 
-	@Query("SELECT c FROM ClientApplication c where client_position_id=:id AND status_code in (select code from ClientApplicationStatus where statusType = 'Active') AND active_flag=1")
+	@Query("SELECT c FROM ClientApplication c where client_position_id=:id AND status_code in (select code from ClientApplicationStatus where "
+			+ "statusType = 'Active') AND active_flag=1")
 	List<ClientApplication> getAllActiveCAByCpID(@Param(value = "id") Integer id);
 
 	@Query("SELECT count(*) FROM ClientApplication c where client_position_id=:cpId AND consultant_id=:cid AND active_flag=1")
@@ -41,27 +43,31 @@ public interface ClientApplicationRepository extends BaseRepository<ClientApplic
 	List<ClientApplication> findByConsultantIdAndActiveFlag(@Param("consultantId") Integer consultantId,
 			@Param("activeFlag") Boolean activeFlag);
 
-	@Query("SELECT c.id as id,c.consultant.fullname as consultantName,c.clientPosition.generatedCode as generatedCode  FROM ClientApplication c where c.activeFlag=:activeFlag AND c.status.code='Job Confirmed' ORDER BY c.createdDate")
+	@Query("SELECT c.id as id,c.consultant.fullname as consultantName,c.clientPosition.generatedCode as generatedCode  FROM ClientApplication c "
+			+ "where c.activeFlag=:activeFlag AND c.status.code='Job Confirmed' ORDER BY c.createdDate")
 	List<DashboardCA> getJobConfirmedCAs(@Param("activeFlag") Boolean activeFlag);
 
 	@Query("SELECT DISTINCT c FROM ClientApplication c ,Client cl WHERE (c.clientPosition.client.id = :clientId or :clientId is null) AND "
 			+ "(c.clientPosition.id = :clientPosId or :clientPosId is null) AND c.status.code IN (select code from ClientApplicationStatus where (id=:status or :status is null))"
-			+ " AND (CONCAT(cl.name, '',cl.email, '',cl.phone) LIKE %:searchKey% or :searchKey is null)")
+			+ " AND (cl.name LIKE CONCAT('%',:searchKey,'%') or cl.phone LIKE CONCAT('%',:searchKey,'%') or cl.email LIKE CONCAT('%',:searchKey,'%') or :searchKey is null) ")
 	List<ClientApplication> search(@Param("clientId") Integer clientId, @Param("clientPosId") Integer clientPosId,
 			@Param("status") Integer status, @Param("searchKey") String searchKey);
 
-	@Query("SELECT c.id as id,c.consultant.fullname as consultantName,c.clientPosition.client.name as clientName,c.status.code as status  FROM ClientApplication c, ClientApplicationStatus cas WHERE c.status=cas.code AND cas.statusType='Active'")
+	@Query("SELECT c.id as id,c.consultant.fullname as consultantName,c.clientPosition.client.name as clientName,c.status.code as status  "
+			+ "FROM ClientApplication c, ClientApplicationStatus cas WHERE c.status=cas.code AND cas.statusType='Active'")
 	List<DashboardCAStatistics> getDashboardCaStatus();
 
 	@Query(value = "SELECT code FROM client_application_status", nativeQuery = true)
 	List<String> getAllDistinctStatusCode();
 
-	@Query(value = "SELECT distinct ca.client_position_id FROM client_application ca,client_position cp,client_position_status cps where ca.client_position_id=cp.id AND cp.status_code=cps.code AND cps.status_type='Active' order by cp.generated_code", nativeQuery = true)
+	@Query(value = "SELECT distinct ca.client_position_id FROM client_application ca,client_position cp,client_position_status cps where "
+			+ "ca.client_position_id=cp.id AND cp.status_code=cps.code AND cps.status_type='Active' order by cp.generated_code", nativeQuery = true)
 	List<Integer> getAllDistinctClientPositionId();
 
 	@Query(value = "SELECT ca.status_code as statusCode ,(SELECT generated_code  from client_position WHERE id=:clientPositionId ) "
 			+ "as clientName,count(client_position_id) as count FROM"
-			+ " client_application ca,client_position cp,client_position_status cps  WHERE ca.status_code=:statuscode AND ca.client_position_id=:clientPositionId "
+			+ " client_application ca,client_position cp,client_position_status cps  WHERE ca.status_code=:statuscode "
+			+ "AND ca.client_position_id=:clientPositionId "
 			+ "AND ca.client_position_id=cp.id AND cp.status_code=cps.code AND "
 			+ "cps.status_type='Active'", nativeQuery = true)
 	List<CAByStatus> getclientPositioncountByStatusCode(@Param("statuscode") String statuscode,
@@ -71,7 +77,8 @@ public interface ClientApplicationRepository extends BaseRepository<ClientApplic
 	@Query(value = "UPDATE Client_Application  set STATUS_CODE =:status where id =:id", nativeQuery = true)
 	void updateStatus(@Param("id") Integer id, @Param("status") String status);
 
-	@Query(value = "SELECT DISTINCT ca.* from client_application ca,client_application_status cas WHERE ca.status_code=cas.code and (cas.status_type=:status or :status is null or :status = '' ) and ca.active_flag=1", nativeQuery = true)
+	@Query(value = "SELECT DISTINCT ca.* from client_application ca,client_application_status cas WHERE ca.status_code=cas.code "
+			+ "and (cas.status_type=:status or :status is null or :status = '' ) and ca.active_flag=1", nativeQuery = true)
 	Page<ClientApplication> getAllByStatus(@Param("status") String status, Pageable paging);
 
 }
