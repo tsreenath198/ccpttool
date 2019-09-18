@@ -87,7 +87,7 @@ public class ClientPositionController extends BaseController<ClientPositionDTO, 
 	
 	@GetMapping(CCPTConstants.GET_ALL_BY_STATUS)
 	public ResponseEntity<BaseReturn> getAllByStatus(@RequestParam(defaultValue = "0") Integer pageNo,
-			@RequestParam(defaultValue = "100") Integer pageSize, @RequestParam(defaultValue = "id") String sortBy,
+			@RequestParam(defaultValue = "50") Integer pageSize, @RequestParam(defaultValue = "id") String sortBy,
 			@RequestParam(required = false) String status) {
 		BaseReturn br = clientPositionService.getAllByStatus(pageNo, pageSize, sortBy, status);
 		return new ResponseEntity<BaseReturn>(br, HttpStatus.OK);
