@@ -44,7 +44,7 @@ export class Properties {
     LOCATION = "Nizamabad";
 
     /**PAGINATION CONSTANTS */
-    ITEMSPERPAGE = 20;
+    ITEMSPERPAGE = 50;
 
     /**status constants */
     STATUS = ['Active', 'Inactive'];
@@ -52,4 +52,10 @@ export class Properties {
     /**Dashboard Stack Bar Chart status order */
 
     SBCStatusOrder = ['Rejected By Client','New','Shortlisted','Interview Scheduled','Interview Missed','Accepted By Client','Job Confirmed']
+
+    /**Consultant source */
+    consultantSource = ['Naukri','Shine','Others'];
+
+    /**Client Contact Salutation */
+    clientSalutation = ['Mr.','Mrs.']
 }

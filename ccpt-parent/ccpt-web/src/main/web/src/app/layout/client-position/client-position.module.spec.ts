@@ -1,13 +1,13 @@
-import { ClientApplicationModule } from './client-application.module';
+import { ClientPositionModule } from './client-position.module';
 
 describe('ChartsModule', () => {
-    let clientApplicationModule: ClientApplicationModule;
+    let clientPositionModule: ClientPositionModule;
 
     beforeEach(() => {
-        clientApplicationModule = new ClientApplicationModule();
+        clientPositionModule = new ClientPositionModule();
     });
 
     it('should create an instance', () => {
-        expect(clientApplicationModule).toBeTruthy();
+        expect(clientPositionModule).toBeTruthy();
     });
 });

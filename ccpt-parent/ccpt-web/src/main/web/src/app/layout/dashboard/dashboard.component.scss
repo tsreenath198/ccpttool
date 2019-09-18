@@ -1,17 +1,4 @@
-// .table-fixed {
-//     tbody {
-//       height: 10.5em;
-//       overflow-y: auto;
-//       overflow-x: hidden;
-//     }
-//     thead,
-//     tbody,
-//     tr,
-//     td,
-//     th {
-//       display: block;
-//     }
-//   }
+
 .table-scroll{
     height: 10em; 
     overflow-y: scroll
@@ -29,4 +16,10 @@
     cursor: pointer;
     color:blue;
     text-decoration: underline;
-   }   
+}
+
+
+
+.table-fixed thead, .table-fixed tbody, .table-fixed tr, .table-fixed td, .table-fixed th {
+    display: block;
+  }

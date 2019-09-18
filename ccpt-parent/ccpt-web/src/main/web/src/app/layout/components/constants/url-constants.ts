@@ -27,6 +27,8 @@ export class URLConstants {
     CPDelete = 'clientPosition/';
     CPGetById = 'clientPosition/';
     CPDropdown = 'clientPosition/getAllCps';
+    CPGetAllByStatus = 'clientPosition/getAllByStatus?pageNo='
+
     /*Consultant */
     CCreate = 'consultant';
     CGetAll = 'consultant/?pageNo=';
@@ -37,6 +39,8 @@ export class URLConstants {
     CActivate = 'consultant/activate/';
     CDropdown = 'consultant/getAllConsultants';
     CSearch = 'consultant/search?searchKey=';
+    CGetInactive = 'consultant/getInactiveConsultants';
+    CGetAllByStatus = 'consultant/getAllByStatus?pageNo='
 
     /* Client Application */
     CACreate = 'clientApplication';
@@ -46,10 +50,10 @@ export class URLConstants {
     CAGetById = 'clientApplication/';
     CABodyMail = 'clientApplication/showBodyMail?caId=';
     CAJobConfirmed = "clientApplication/getJobConfirmedCAs";
-    CASearch = "clientApplication/search?clientId=";
+    CASearch = "clientApplication/search?";
     CADropdown = 'clientApplication/getCAStatistics';
     CAStatusUpdate = 'clientApplication/updateStatus?id=';
-
+    CAGetAllByStatus = 'clientApplication/getAllByStatus?pageNo='
 
     /* Client Call History */
     CCHCreate = 'clientCallHistory';
@@ -110,9 +114,9 @@ export class URLConstants {
     ReportingGetAllActiveCA = 'dashboard/getAllActiveCACountByCpID';
     ReportingGetAllActiveCAById = 'clientApplication/getAllActiveCAByCpID?cpId=';
     ReportingGetAllInterviewsToday = 'dashboard/getAllInterviewsFromToday';
-    ReportingDyingCp = 'dashboard/getLastWeekDyingCP'
-    ReportingGetAllCAByStatus = 'dashboard/getAllCAbyStatus'
-    DashboardCAStat = 'dashboard/dashboardCAStatistics'
+    ReportingDyingCp = 'dashboard/getLastWeekDyingCP';
+    ReportingGetAllCAByStatus = 'dashboard/getAllCAbyStatus';
+    DashboardCAStat = 'dashboard/dashboardCAStatistics';
 
     /**Email Template */
     EmailTemplateCreate = 'template';

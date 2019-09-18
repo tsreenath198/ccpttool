@@ -68,18 +68,19 @@ export class ClientPositionComponent implements OnInit {
   public actionsList = new ActionsList();
   public action: string;
   public isCreate: boolean = false;
+  public tabCheck: string;
   public page: number;
   public cpListLength: number;
   public listReturned: boolean;
   public pageSize: number = 20;
   public sendTo: any = null;
-  public consultantsToCreate: Array<any> = []
+  public consultantsToCreate: Array<any> = [];
   public getAllCPS = this.http.get(this.urlConstants.CPSGetAll);
   public getAllR = this.http.get(this.urlConstants.RDropdown);
   public getAllC = this.http.get(this.urlConstants.ClientDropdown);
   public getAllCon = this.http.get(this.urlConstants.CDropdown);
-  public creating:boolean = false;
-  public cpForm:NgForm;
+  public creating: boolean = false;
+  public cpForm: NgForm;
   public config: AngularEditorConfig = {
     editable: true,
     spellcheck: true,
@@ -87,11 +88,11 @@ export class ClientPositionComponent implements OnInit {
     minHeight: '5rem',
     translate: 'no'
   };
-  public paginateConfig :any={
-    itemsPerPage: this.properties.ITEMSPERPAGE,
-    currentPage: 1,
+  public paginateConfig: any = {
+    itemsPerPage: 0,
+    currentPage: 0,
     totalItems: 0
-  }
+  };
   constructor(
     private http: HttpClientService,
     private toastr: ToastrCustomService,
@@ -127,7 +128,7 @@ export class ClientPositionComponent implements OnInit {
       allowSearchFilter: true
     };
     this.init();
-    this.initialGetAll(); 
+    this.initialGetAll();
     this.spinner(true);
     this.checkStorage();
   }
@@ -135,6 +136,11 @@ export class ClientPositionComponent implements OnInit {
     if (this.storageService.clientId) {
       this.model.clientId = this.storageService.clientId;
     }
+  }
+  private paginateConfigDeclare(itemsPerPage, currentPage, totalItems) {
+    (this.paginateConfig.itemsPerPage = itemsPerPage),
+      (this.paginateConfig.currentPage = currentPage),
+      (this.paginateConfig.totalItems = totalItems);
   }
   private init() {
     // this.http.get(this.urlConstants.CPGetAll).subscribe(resp => {
@@ -144,18 +150,20 @@ export class ClientPositionComponent implements OnInit {
     //   this.cpListLength = this.clientPositionList.length;
     //   this.pageChange(this.page);
     // });
+    this.paginateConfigDeclare(this.properties.ITEMSPERPAGE, 1, 0);
     this.model.properties = [];
     this.model.cpstatus = 'Open';
     this.model.requiredPositions = '1';
     this.page = 1;
   }
-  public initialGetAll(){
-    let pageNumber = this.paginateConfig.currentPage-1
-    let temp=this.http.get(this.urlConstants.CPGetAll+ pageNumber + "&pageSize=20&sortBy=id");
+  public initialGetAll() {
+    let pageNumber = this.paginateConfig.currentPage - 1;
+    let temp = this.http.get(this.urlConstants.CPGetAllByStatus + pageNumber + '&pageSize=50&sortBy=id&status=Active');
     temp.subscribe(resp => {
       this.clientPositionList = resp as any;
       //this.pageChange(this.page);
-      this.paginateConfig.totalItems = this.clientPositionList.noOfRecords
+      this.paginateConfig.totalItems = this.clientPositionList.noOfRecords;
+      this.tabCheck = 'Active Positions';
     });
   }
   private getAllDropdowns() {
@@ -248,15 +256,14 @@ export class ClientPositionComponent implements OnInit {
     }
     this.open(this.model.id, shortListContent);
   }
-  public onItemSelect(cl,type) {
-    if(type == "email"){
+  public onItemSelect(cl, type) {
+    if (type == 'email') {
       if (this.sendEmailModel.toEmails.length > 0) {
         this.sendEmailModel.toEmails += ',';
       }
       this.sendEmailModel.toEmails += cl.email;
       this.sendTo = null;
-    }
-    else if(type=="sms"){
+    } else if (type == 'sms') {
       if (this.sendSmsModel.contactNumbers.length > 0) {
         this.sendSmsModel.contactNumbers += ',';
       }
@@ -296,7 +303,7 @@ export class ClientPositionComponent implements OnInit {
     this.model.cpstatus = 'Open';
     this.model.requiredPositions = '1';
   }
-  private getRecruiterId() : any{
+  private getRecruiterId(): any {
     const temp = sessionStorage.getItem('username');
     let id;
     this.recruiterList.forEach(rl => {
@@ -306,31 +313,31 @@ export class ClientPositionComponent implements OnInit {
     });
     return id;
   }
-  public createReqClch(clientCall , resp){
+  public createReqClch(clientCall, resp) {
     let decision = confirm(this.properties.CONFIRM_ClCH_NEW);
-        if(decision== true){
-          this.clchModel.cpId = resp.id
-          this.open(this.model.id,clientCall)
-        }
+    if (decision == true) {
+      this.clchModel.cpId = resp.id;
+      this.open(this.model.id, clientCall);
+    }
   }
   private setTodaysDate(): string {
     const today = new Date();
     const dd = String(today.getDate()).padStart(2, '0');
     const mm = String(today.getMonth() + 1).padStart(2, '0'); // January is 0!
     const yyyy = today.getFullYear();
-    const temp = yyyy+'-'+ mm + '-' +dd;
+    const temp = yyyy + '-' + mm + '-' + dd;
     return temp;
   }
-  public createClientCallHistory(){
+  public createClientCallHistory() {
     this.creating = true;
-    this.clchModel.calledBy = this.getRecruiterId()
+    this.clchModel.calledBy = this.getRecruiterId();
     this.clchModel.calledDate = this.setTodaysDate();
     const temp = this.http.post(this.clchModel, this.urlConstants.CCHCreate);
     temp.subscribe(
       resp => {
         this.toastr.success(this.properties.CREATE, this.properties.CON_C_H);
         //this.create(this.cpForm);
-        this.clchModel=<ClientCallHistoryModel>{};
+        this.clchModel = <ClientCallHistoryModel>{};
         this.creating = false;
         this.close();
       },
@@ -340,7 +347,7 @@ export class ClientPositionComponent implements OnInit {
       }
     );
   }
-  public create(clientPositionForm: NgForm ,clientCall:any): void {
+  public create(clientPositionForm: NgForm, clientCall: any): void {
     this.isCreate = true;
     this.spinner(false);
     // tslint:disable-next-line:max-line-length
@@ -354,13 +361,13 @@ export class ClientPositionComponent implements OnInit {
         this.spinner(true);
         clientPositionForm.resetForm();
         this.isCreate = false;
-        this.paginateConfig.currentPage=1;
+        this.paginateConfig.currentPage = 1;
         this.initialGetAll();
         this.emptyStorage();
         if (this.showAction) {
           this.showAction = false;
         }
-        this.createReqClch(clientCall , resp);
+        this.createReqClch(clientCall, resp);
       },
       err => {
         this.toastr.error(err.error.message, this.properties.CP);
@@ -409,6 +416,7 @@ export class ClientPositionComponent implements OnInit {
         this.init();
         this.spinner(true);
         clientPositionForm.resetForm();
+        this.initialGetAll();
         this.readOnlyForm = '';
         this.enableButtonType = '';
         this.closedByEnable = false;
@@ -467,41 +475,45 @@ export class ClientPositionComponent implements OnInit {
     this.spinner(false);
     this.creating = true;
     const temp = this.http.post(this.sendSmsModel, this.urlConstants.SMSTemplateSend);
-    temp.subscribe(resp => {
-      /**Check if any new consultants exists in emails to which send  */
-      this.close();
-      this.creating = false;
-      this.sendSmsModel = <SendSmsModel>{};
-      this.toastr.success('Sms sent successfully', 'Sent!');
-      this.spinner(true);
-    },
+    temp.subscribe(
+      resp => {
+        /**Check if any new consultants exists in emails to which send  */
+        this.close();
+        this.creating = false;
+        this.sendSmsModel = <SendSmsModel>{};
+        this.toastr.success('Sms sent successfully', 'Sent!');
+        this.spinner(true);
+      },
       err => {
         this.creating = false;
         this.toastr.error(err.error.message, this.properties.CP);
         this.spinner(true);
-      });
+      }
+    );
   }
   public sendEmailReq(createConsultants: any): void {
     this.spinner(false);
     this.creating = true;
     const temp = this.http.post(this.sendEmailModel, this.urlConstants.EmailTemplateSend);
-    temp.subscribe(resp => {
-      /**Check if any new consultants exists in emails to which send  */
-      this.close();
-      this.creating = false;
-      this.quickAddConsultants(createConsultants);
-      this.sendEmailModel = <SendEmailModel>{};
-      this.toastr.success('Email/Emails sent successfully', 'Sent!');
-      this.spinner(true);
-    },
+    temp.subscribe(
+      resp => {
+        /**Check if any new consultants exists in emails to which send  */
+        this.close();
+        this.creating = false;
+        this.quickAddConsultants(createConsultants);
+        this.sendEmailModel = <SendEmailModel>{};
+        this.toastr.success('Email/Emails sent successfully', 'Sent!');
+        this.spinner(true);
+      },
       err => {
         this.creating = false;
         this.toastr.error(err.error.message, this.properties.CP);
         this.spinner(true);
-      });
+      }
+    );
   }
   private quickAddConsultants(createConsultants: any) {
-    this.consultantsToCreate=[];
+    this.consultantsToCreate = [];
     let newConEmails: any = [];
     let selectedEmails = this.sendEmailModel.toEmails.split(',');
     let conEmails = this.consultantList.map(cl => {
@@ -513,10 +525,10 @@ export class ClientPositionComponent implements OnInit {
       }
     });
     newConEmails.forEach(element => {
-      let temp = { "email": element, "gender": "", "fullname": "", "phone": "+91","conStatus":"Active" }
-      this.consultantsToCreate.push(temp)
+      let temp = { email: element, gender: '', fullname: '', phone: '+91', conStatus: 'Active' };
+      this.consultantsToCreate.push(temp);
     });
-    if(this.consultantsToCreate.length>0){
+    if (this.consultantsToCreate.length > 0) {
       this.open(this.model.id, createConsultants);
     }
   }
@@ -621,17 +633,56 @@ export class ClientPositionComponent implements OnInit {
       return `with: ${reason}`;
     }
   }
-  // public pageChange(event) {
-  //   const from = (event - 1) * this.pageSize;
-  //   const lst = this.clientPositionList;
-  //   const uplst = lst.slice(from, from + this.pageSize);
-  //   this.pagedCPList = uplst;
-  // }
-  pageChanged(event){
-    this.paginateConfig.currentPage = event
-    this.initialGetAll();
+  pageChanged(event) {
+    this.paginateConfig.currentPage = event;
+    switch (this.tabCheck) {
+      case 'Active Positions':
+        this.showActive();
+        break;
+      case 'Inactive Positions':
+        this.showInactive();
+        break;
+      case 'All Positions':
+        this.showAll();
+        break;
+      default:
+        break;
+    }
   }
   private spinner(isSpinner: boolean) {
     this.listReturned = isSpinner;
+  }
+
+  public showActive() {
+    if (this.tabCheck != 'Active Positions') {
+      this.paginateConfigDeclare(this.properties.ITEMSPERPAGE, 1, 0);
+    }
+    this.initialGetAll();
+  }
+
+  public showInactive() {
+    if (this.tabCheck != 'Inactive Positions') {
+      this.paginateConfigDeclare(this.properties.ITEMSPERPAGE, 1, 0);
+    }
+    let pageNumber = this.paginateConfig.currentPage - 1;
+    let temp = this.http.get(this.urlConstants.CPGetAllByStatus + pageNumber + '&pageSize=50&sortBy=id&status=Inactive');
+    temp.subscribe(resp => {
+      this.clientPositionList = resp as any;
+      this.paginateConfig.totalItems = this.clientPositionList.noOfRecords;
+      this.tabCheck = 'Inactive Positions';
+    });
+  }
+
+  public showAll() {
+    if (this.tabCheck != 'All Positions') {
+      this.paginateConfigDeclare(this.properties.ITEMSPERPAGE, 1, 0);
+    }
+    let pageNumber = this.paginateConfig.currentPage - 1;
+    let temp = this.http.get(this.urlConstants.CPGetAll + pageNumber + '&pageSize=50&sortBy=id');
+    temp.subscribe(resp => {
+      this.clientPositionList = resp as any;
+      this.paginateConfig.totalItems = this.clientPositionList.noOfRecords;
+      this.tabCheck = 'All Positions';
+    });
   }
 }

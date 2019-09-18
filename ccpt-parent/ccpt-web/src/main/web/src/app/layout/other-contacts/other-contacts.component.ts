@@ -62,7 +62,7 @@ export class OtherContactsComponent implements OnInit {
     }
     public initialGetAll(){
         let pageNumber = this.paginateConfig.currentPage-1
-        let temp=this.http.get(this.urlConstants.OCGetAll+ pageNumber + "&pageSize=20&sortBy=id");
+        let temp=this.http.get(this.urlConstants.OCGetAll+ pageNumber + "&pageSize=50&sortBy=id");
         temp.subscribe(resp => {
           this.OCList = resp as any;
           this.OCList.list.forEach(cl => {

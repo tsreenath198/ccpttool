@@ -14,7 +14,7 @@
         <div class="col-md-6"> <input type="text" class="form-control" placeholder="search..."
             [(ngModel)]="currSearchTxt" /></div>
       </div>
-      <div class="table-responsive mt-2 table-wrapper-scroll-y my-custom-scrollbar" [style.height.px]="screenHeight">
+      <div class="table-responsive mt-2 tableFixHead" [style.height.px]="screenHeight">
         <table class="table table-hover table-striped">
           <tbody>
             <tr *ngFor="let etl of emailTemplateList.list | paginate: paginateConfig  ; let i = index"

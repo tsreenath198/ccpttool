@@ -98,7 +98,7 @@ export class ConsultantCallHistoryComponent implements OnInit {
   }
   public initialGetAll(){
     let pageNumber = this.paginateConfig.currentPage-1
-    let temp=this.http.get(this.urlConstants.CoCHGetAll+ pageNumber + "&pageSize=20&sortBy=id");
+    let temp=this.http.get(this.urlConstants.CoCHGetAll+ pageNumber + "&pageSize=50&sortBy=id");
     temp.subscribe(resp => {
       this.consultantCallHistoryList = resp as any;
       //this.pageChange(this.page);

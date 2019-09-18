@@ -1,13 +1,13 @@
-import { ClientApplicationStatusModule } from './client-application-status.module';
+import { ClientPositionStatusModule } from './client-position-status.module';
 
 describe('ChartsModule', () => {
-    let clientApplicationStatusModule: ClientApplicationStatusModule;
+    let clientPositionStatusModule: ClientPositionStatusModule;
 
     beforeEach(() => {
-        clientApplicationStatusModule = new ClientApplicationStatusModule();
+        clientPositionStatusModule = new ClientPositionStatusModule();
     });
 
     it('should create an instance', () => {
-        expect(clientApplicationStatusModule).toBeTruthy();
+        expect(clientPositionStatusModule).toBeTruthy();
     });
 });

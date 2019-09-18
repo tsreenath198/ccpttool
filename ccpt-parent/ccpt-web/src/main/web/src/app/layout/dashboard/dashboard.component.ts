@@ -64,7 +64,7 @@ export class DashboardComponent implements OnInit {
     public getAllReportCLCH = this.http.get(this.urlConstants.CCHGetCountByRecruiter + this.clchChoosenDays);
     public getAllReportCOCH = this.http.get(this.urlConstants.CoCHGetCountByRecruiter + this.cochChoosenDays);
     public getAllReportCC = this.http.get(this.urlConstants.ReportingGetClosures + this.rpChoosenDays);
-    public getAllCAStatus = this.http.get(this.urlConstants.CASGetAll+"0&pageSize=20&sortBy=id");
+    public getAllCAStatus = this.http.get(this.urlConstants.CASGetAll+"0&pageSize=100&sortBy=id");
     // public getAllOpenCP = this.http.get(this.urlConstants.ReportingGetAllOpenCP);
     // public getAllActiveCA = this.http.get(this.urlConstants.ReportingGetAllActiveCA);
     // public getAllInterviewsToday = this.http.get(this.urlConstants.ReportingGetAllInterviewsToday);
@@ -282,13 +282,24 @@ export class DashboardComponent implements OnInit {
      * data list of client applications by status
      */
     private setCAByStatusBarData(data: any[]) {
+        let CAStatusOder:any =[];
+        this.caStatusList.list.filter(csl =>{
+            for(let i=1; i<= this.caStatusList.list.length;i++){
+                if(csl.ordr == i){
+                    CAStatusOder[i-1]=csl.description
+                }
+            }
+        })
+
+
+
         let uniqueClientName = data.map(item => item.clientName)
             .filter((value, index, self) => self.indexOf(value) === index);
         this.stackChartHeight = uniqueClientName.length * 60;    
         let uniqueStatus :any=[];    
         let tempUniqueStatus = data.map(item => item.statusCode)
             .filter((value, index, self) => self.indexOf(value) === index);
-        this.constantProperties.SBCStatusOrder.forEach(cp => {
+        CAStatusOder.forEach(cp => {
             tempUniqueStatus.forEach(tus =>{
                 if(cp === tus){
                     uniqueStatus.push(tus);

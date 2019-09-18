@@ -10,91 +10,132 @@
   <div class="row " *ngIf="listReturned == true; else spinner">
     <div class="col-md-7">
       <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-12">
           <div class="row">
-            <div class="col-md-9">
-                <select class="form-control form-control-sm" [(ngModel)]="currSearchTxt" name="sel1" (change)="searchSelect()">
-                    <option [ngValue]="null" hidden selected>--search client--</option>
-                    <option *ngFor="let cl of clientList" [ngValue]="cl" >
+            <div class="col-md-3">
+                <select class="form-control form-control-sm" [(ngModel)]="currSearch.client" name="sel1" (change)="filterSearchCp()">
+                    <option [ngValue]="0" hidden selected> Client</option>
+                    <option *ngFor="let cl of clientList" [ngValue]="cl.id" >
                       {{ cl.name }}
                     </option>
                   </select> 
             </div>
-            <div class="col-md-3" *ngIf="currSearchTxt">
-                <button type="button"  class ="btn btn-secondary  btn-sm ml-3" (click)="cancelSearch()">
-                Cancel
-              </button>
+            <div class="col-md-4" *ngIf="currSearch.client != 0">
+                <select class="form-control form-control-sm" [(ngModel)]="currSearch.clientPos" name="sel2" (change)="searchSelect()">
+                    <option [ngValue]="0" hidden selected> Client Position</option>
+                    <option *ngFor="let cl of searchCp" [ngValue]="cl.id" >
+                      {{ cl.name }}
+                    </option>
+                  </select> 
+            </div>
+            <div class="col-md-2">
+                <select class="form-control form-control-sm" [(ngModel)]="currSearch.status" name="sel3" (change)="searchSelect()">
+                    <option [ngValue]="null" hidden selected>Status</option>
+                    <option *ngFor="let st of searchStatusType" [ngValue]="st">
+                      {{ st }}
+                    </option>
+                  </select> 
+            </div>
+            <div class="col-md-3">
+              <input class="form-control form-control-sm" placeholder="Keys" [(ngModel)]="currSearch.key" name="sel4">
             </div>
           </div>
-        </div>
-
-        <div class="col-md-6" >
-          <b class="pull-left"  *ngIf="currSearchTxt">Filtered list count:{{ clientApplicationList.list.length }}</b>
-          <span class="pull-right" *ngIf=" appIds.length > 0">
-              <div class="dropdown theme-dropdown clearfix" placement="bottom-right" ngbDropdown>
-                <i class="fa fa-bars" ngbDropdownToggle></i>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenu1" ngbDropdownMenu>
-                  <a class="dropdown-item drop-list" (click)="sendIds(appIds ,sendMailContent,'shortlistedCandidates')">Email Shortlisted Candidates</a>
-                  <a class="dropdown-item drop-list" (click)="sendIds(appIds ,sendMailContent,'interviewSchedule')">Email Interview Schedule</a>
-                </div>
+          <div class="row mt-2">
+              <div class="col-md-2" >
+                  <button *ngIf="isSerach" type="button"  class ="btn btn-secondary  btn-sm ml-3" (click)="generateSearchParams()">
+                  Search
+                </button>
               </div>
-            </span>
+              <div class="col-md-2">
+                  <button *ngIf="isSerach" type="button"  class ="btn btn-secondary  btn-sm ml-3" (click)="cancelSearch()">
+                  Cancel
+                </button>
+              </div>
+              <div class="col-md-8">
+                <b class="pull-left"  *ngIf="isSerach">Filtered list count:{{ clientApplicationList.list.length }}</b>
+                <span class="pull-right mr-3" *ngIf=" appIds.length > 0">
+                    <div class="dropdown theme-dropdown clearfix" placement="bottom-right" ngbDropdown>
+                      <i class="fa fa-bars" ngbDropdownToggle></i>
+                      <div class="dropdown-menu" aria-labelledby="dropdownMenu1" ngbDropdownMenu>
+                        <a class="dropdown-item drop-list" (click)="sendIds(appIds ,sendMailContent,'shortlistedCandidates')">Email Shortlisted Candidates</a>
+                        <a class="dropdown-item drop-list" (click)="sendIds(appIds ,sendMailContent,'interviewSchedule')">Email Interview Schedule</a>
+                      </div>
+                    </div>
+                  </span>
+              </div>
+          </div>
         </div>
       </div>
-      <div class="table-responsive mt-2 table-wrapper-scroll-y my-custom-scrollbar" [style.height.px]="screenHeight">
-        <table class="table table-hover table-striped">
-          <thead>
-            <tr>
-              <th></th>
-              <th>
-                Consultant
-              </th>
-              <th>
-                Client Pos
-              </th>
-              <th>
-                Status
-              </th>
-              <th>
-                Creator
-              </th>
-              <!-- <th>
-                      <span class="pull-right">Action</span>
-                  </th> -->
-            </tr>
-          </thead>
-          <tbody class="overflow-ele-scroll">
-            <tr class="table-data-padding" *ngFor="
-                let cal of clientApplicationList.list | paginate: paginateConfig;
-                let i = index">
-              <td>
-                <div class="checkbox">
-                  <label>
-                    <input class="check" type="checkbox" value="" (change)="selectApplications($event,cal.id)">
-                  </label>
-                </div>
-              </td>
-              <td  container="body" class="click-data" [autoClose]="'outside'" [ngbPopover]="popContent1" [popoverTitle]="popTitle1" >
-                      {{ cal.consultant.fullname }}
-              </td>
-              <td container="body" class="click-data" [autoClose]="'outside'" [ngbPopover]="popContent2" [popoverTitle]="popTitle2">{{ cal.clientPosition.generatedCode }}</td>
-
-              <td (click)="setModel(cal.id)">{{ cal.status.code }}</td>
-              <td (click)="setModel(cal.id)">{{ cal.creator.fullname }}</td>
-              
-                <ng-template #popContent1>{{cal.consultant.phone}}<br>{{cal.consultant.email}}</ng-template>
-                <ng-template #popTitle1><b>Consultant Details</b></ng-template>
-                <ng-template #popContent2>{{cal.clientPosition.client.phone}}<br>{{cal.clientPosition.client.email}}</ng-template>
-                <ng-template #popTitle2><b>Client Details</b></ng-template>
-              <!-- <td width="140">
-                  <app-action [trashContent]="trashContent" [uploadContent]="uploadContent"
-                  [downloadContent]="downloadContent" [id]="cal.id" [isTrash]="trash" [isUpload]="upload"
-                  [isDownload]="download" (upload)="open($event)" (download)="open($event)" (trash)="open($event)">
-                </app-action>
-              </td> -->
-            </tr>
-          </tbody>
-        </table>
+      <div class="pt-2">
+          <nav>
+            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+              <a class="nav-item nav-link" [ngClass]="{'active': tabCheck=='Active CA'}" id="nav-active" (click)="showActive()" data-toggle="tab"  role="tab" aria-controls="viewTable" >Active</a>
+              <a class="nav-item nav-link" id="nav-inactive" [ngClass]="{'active': tabCheck=='Inactive CA'}" (click)="showInactive()" data-toggle="tab"  role="tab" aria-controls="viewTable" >Inactive</a>
+              <a class="nav-item nav-link" id="nav-all" [ngClass]="{'active': tabCheck=='All CA'}" (click)="showAll()" data-toggle="tab"  role="tab" aria-controls="viewTable" >All</a>
+            </div>
+          </nav>
+          <div class="tab-content" id="nav-tabContent">
+            <div class="table-responsive mt-2 tableFixHead" [style.height.px]="screenHeight">
+              <table class="table table-hover table-striped">
+                <thead>
+                  <tr>
+                    <th></th>
+                    <th>
+                      Consultant
+                    </th>
+                    <th>
+                      Client Position
+                    </th>
+                    <th>
+                      Status
+                    </th>
+                    <th>
+                      Creator
+                    </th>
+                    <th>
+                      Sent On
+                    </th>
+                    <!-- <th>
+                            <span class="pull-right">Action</span>
+                        </th> -->
+                  </tr>
+                </thead>
+                <tbody class="overflow-ele-scroll">
+                  <tr class="table-data-padding" *ngFor="
+                      let cal of clientApplicationList.list | paginate: paginateConfig;
+                      let i = index">
+                    <td>
+                      <div class="checkbox">
+                        <label>
+                          <input class="check" type="checkbox" value="" (change)="selectApplications($event,cal.id)">
+                        </label>
+                      </div>
+                    </td>
+                    <td  container="body" class="click-data" [autoClose]="'outside'" [ngbPopover]="popContent1" [popoverTitle]="popTitle1" >
+                            {{ cal.consultant.fullname }}
+                    </td>
+                    <td container="body" class="click-data" [autoClose]="'outside'" [ngbPopover]="popContent2" [popoverTitle]="popTitle2">{{ cal.clientPosition.generatedCode }}</td>
+      
+                    <td (click)="setModel(cal.id)">{{ cal.status.code }}</td>
+                    <td (click)="setModel(cal.id)">{{ cal.creator.fullname }}</td>
+                    
+                    <td width="110" (click)="setModel(cal.id)">{{ cal.sentOn }}</td>
+                    
+                      <ng-template #popContent1>{{cal.consultant.phone}}<br>{{cal.consultant.email}}</ng-template>
+                      <ng-template #popTitle1><b>Consultant Details</b></ng-template>
+                      <ng-template #popContent2>{{cal.clientPosition.client.phone}}<br>{{cal.clientPosition.client.email}}</ng-template>
+                      <ng-template #popTitle2><b>Client Details</b></ng-template>
+                    <!-- <td width="140">
+                        <app-action [trashContent]="trashContent" [uploadContent]="uploadContent"
+                        [downloadContent]="downloadContent" [id]="cal.id" [isTrash]="trash" [isUpload]="upload"
+                        [isDownload]="download" (upload)="open($event)" (download)="open($event)" (trash)="open($event)">
+                      </app-action>
+                    </td> -->
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
       </div>
       <div class="col-12 justify-content-center mb-5" *ngIf="clientApplicationList.noOfRecords > properties.ITEMSPERPAGE">
         <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
@@ -188,10 +229,16 @@
               </tr>
               <tr>
                 <th>CRF</th>
-                <td><span *ngIf="isCRF; else noCRF" class="crf"
-                    (click)="downloadFile(crfFile.id)">{{ crfFile.fileName }}</span>
+                <td><span *ngIf="isCRF; else noCRF">
+                    <span class="crf"
+                    (click)="downloadFile(crfFile.id)">{{ crfFile.fileName }}
+                  </span>
+                    <span class="pull-right">
+                        <i class="fa fa-trash" (click)="deleteCRF(crfFile.id)" aria-hidden="true"></i>
+                    </span>
+                  </span>
                   <ng-template #noCRF>
-                    <button class="btn btn-secondary ml-2" type="button" (click)="uploadCRF(uploadContent)">Upload
+                    <button class="btn btn-secondary btn-sm ml-2" type="button" (click)="uploadCRF(uploadContent)">Upload
                       CRF</button>
                   </ng-template>
                 </td>
@@ -283,9 +330,9 @@
           <div class="row">
             <div class="col-md-12">
               <div class="form-group" data-provide="datepicker">
-                <input class="mt-2" type="checkbox" (change)="checkInterviewSchedule()"
-                  [(ngModel)]="isInterviewScheduled" name="interviewCheckbox" />&nbsp;<small>Interview Scheduled</small>
-                <div *ngIf="isInterviewScheduled">
+                <!-- <input class="mt-2" type="checkbox" (change)="checkInterviewSchedule()"
+                  [(ngModel)]="isInterviewScheduled" name="interviewCheckbox" />&nbsp;<small>Interview Scheduled</small> -->
+                <div *ngIf="model.caStatus == 'Interview Scheduled'">
                   <div class="row">
                     <div class="col-md-6">
                       <label class="pt-2">Interview Date</label>
@@ -339,8 +386,8 @@
                   </div>
                 </div>
               </div>
-            </div>.
-            <div class="row" *ngIf="model.properties!=null">
+            </div>
+            <div class="row" *ngIf="model?.properties?.length>0">
               <div class="col-md-12 ml-3">
                 <div class="form-group">
                   <label>Additional Properties</label>

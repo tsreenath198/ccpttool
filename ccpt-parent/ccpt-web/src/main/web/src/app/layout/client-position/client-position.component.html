@@ -12,43 +12,54 @@
       <div class="row">
         <div class="col-md-6"><input type="text" class="form-control" placeholder="search" [(ngModel)]="currSearchTxt" /></div>
       </div>
-      <div class="table-responsive mt-2 table-wrapper-scroll-y my-custom-scrollbar" [style.height.px]="screenHeight">
-        <table class="table table-hover table-striped">
-          <tbody class="overflow-ele-scroll">
-            <tr
-              *ngFor="let cpl of clientPositionList.list | paginate: paginateConfig; let i = index"
-              (click)="setModel(cpl.id)"
-              [ngClass]="{ 'bl-closed': cpl.status.code === 'Closed', 'bl-on-hold': cpl.status.code === 'On Hold' }"
-            >
-              <td class="table-data-padding">
-                <dl>
-                  <dt>{{ cpl.generatedCode }} ({{ cpl.assignedTo.fullname }})</dt>
-                  <dd>
-                    Need {{ cpl.requiredPositions }} candidate(s) ({{ cpl.minCtc }} - {{ cpl.maxCtc }} ) with
-                    {{ cpl.experience }} experience.
-                  </dd>
-                </dl>
-              </td>
-              <!-- <td width="140">
-                <app-action
-                  [trashContent]="trashContent"
-                  [shortListContent]="shortListContent"
-                  [sendMailContent]="sendMailContent"
-                  [sendSMSContent]="sendSMSContent"
-                  [id]="cpl.id"
-                  [isTrash]="trash"
-                  [isSendSMS]="sms"
-                  [isSendMail]="email"
-                  [isShortList]="shortList"
-                  (shortList)="open($event)"
-                  (sendSMS)="open($event)"
-                  (trash)="open($event)"
-                  (sendMail)="open($event)"
-                ></app-action>
-              </td> -->
-            </tr>
-          </tbody>
-        </table>
+      <div class="pt-2">
+        <nav>
+          <div class="nav nav-tabs" id="nav-tab" role="tablist">
+            <a class="nav-item nav-link" [ngClass]="{'active': tabCheck=='Active Positions'}" id="nav-active" (click)="showActive()" data-toggle="tab"  role="tab" aria-controls="viewTable" >Active</a>
+            <a class="nav-item nav-link" id="nav-inactive" [ngClass]="{'active': tabCheck=='Inactive Positions'}" (click)="showInactive()" data-toggle="tab"  role="tab" aria-controls="viewTable" >Inactive</a>
+            <a class="nav-item nav-link" id="nav-all" [ngClass]="{'active': tabCheck=='All Positions'}" (click)="showAll()" data-toggle="tab"  role="tab" aria-controls="viewTable" >All</a>
+          </div>
+        </nav>
+        <div class="tab-content" id="nav-tabContent">
+          <div class="table-responsive mt-2 tableFixHead" [style.height.px]="screenHeight">
+            <table class="table table-hover table-striped">
+              <tbody class="overflow-ele-scroll">
+                <tr
+                  *ngFor="let cpl of clientPositionList.list | paginate: paginateConfig; let i = index"
+                  (click)="setModel(cpl.id)"
+                  [ngClass]="{ 'bl-closed': cpl.status.code === 'Closed', 'bl-on-hold': cpl.status.code === 'On Hold' }"
+                >
+                  <td class="table-data-padding">
+                    <dl>
+                      <dt>{{ cpl.generatedCode }} ({{ cpl.assignedTo.fullname }})</dt>
+                      <dd>
+                        Need {{ cpl.requiredPositions }} candidate(s) ({{ cpl.minCtc }} - {{ cpl.maxCtc }}) with
+                        {{ cpl.experience }} experience.
+                      </dd>
+                    </dl>
+                  </td>
+                  <!-- <td width="140">
+                    <app-action
+                      [trashContent]="trashContent"
+                      [shortListContent]="shortListContent"
+                      [sendMailContent]="sendMailContent"
+                      [sendSMSContent]="sendSMSContent"
+                      [id]="cpl.id"
+                      [isTrash]="trash"
+                      [isSendSMS]="sms"
+                      [isSendMail]="email"
+                      [isShortList]="shortList"
+                      (shortList)="open($event)"
+                      (sendSMS)="open($event)"
+                      (trash)="open($event)"
+                      (sendMail)="open($event)"
+                    ></app-action>
+                  </td> -->
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
       
       <div class="col-12 justify-content-center mb-5" *ngIf="clientPositionList.noOfRecords > properties.ITEMSPERPAGE">

@@ -12,7 +12,7 @@
       <div class="row">
         <div class="col-md-6"><input type="text" class="form-control" placeholder="search..." [(ngModel)]="currSearchTxt" /></div>
       </div>
-      <div class="table-responsive mt-2 table-wrapper-scroll-y my-custom-scrollbar" [style.height.px]="screenHeight">
+      <div class="table-responsive mt-2 tableFixHead" [style.height.px]="screenHeight">
         <table class="table table-hover table-striped">
           <thead>
             <tr>
@@ -181,7 +181,7 @@
                   [ngClass]="{ 'is-invalid': f.submitted && code.invalid }"
                   #code="ngModel"
                   #clientName
-                  (keyup)="transformTitleCase(clientName)"
+                  (blur)="transformTitleCase(clientName)"
                   required
                 />
                 <div class="invalid-feedback">
@@ -409,8 +409,17 @@
                 <tbody>
                   <tr *ngFor="let cc of model.clientContacts; let i = index">
                     <td>
+                              <select class="form-control form-control-sm" name="sal{{i}}" [disabled]="readOnlyForm == 'R'" [(ngModel)]="cc.salutation"
+                                 #sal="ngModel">
+                                 <option [ngValue]='null' hidden selected>salutation</option>
+                                <option *ngFor="let cs of properties.clientSalutation" [ngValue]="cs">
+                                  {{ cs }}
+                                </option>
+                              </select>
+                    </td>
+                    <td>
                       <input
-                        class="form-control"
+                        class="form-control form-control-sm"
                         [readonly]="readOnlyForm == 'R'"
                         [(ngModel)]="cc.fullname"
                         name="fullname{{ i }}"
@@ -421,7 +430,7 @@
                     </td>
                     <td>
                       <input
-                        class="form-control"
+                        class="form-control form-control-sm"
                         type="email"
                         [readonly]="readOnlyForm == 'R'"
                         [(ngModel)]="cc.email"
@@ -434,7 +443,7 @@
                     <td>
                       <!--pattern="/^-?\d+\.?\d*$/" onKeyPress="if(this.value.length==12) return false;"-->
                       <input
-                        class="form-control"
+                        class="form-control form-control-sm"
                         type="string"
                         [readonly]="readOnlyForm == 'R'"
                         [(ngModel)]="cc.phone"
@@ -444,10 +453,11 @@
                         #phone="ngModel"
                       />
                     </td>
-                    <td>
-                      <i class="fa fa-minus" aria-hidden="true" id="decrease" (click)="contactListIncrement($event.target, i)"></i>
+                    <td width="20">
+                      <i class="fa fa-minus" *ngIf="model.clientContacts.length > 1" style="font-size:15px" aria-hidden="true" id="decrease" (click)="contactListIncrement($event.target, i)"></i>
                       <i
                         class="fa fa-plus"
+                        style="font-size:15px"
                         *ngIf="i + 1 == model.clientContacts.length"
                         aria-hidden="true"
                         id="increase"

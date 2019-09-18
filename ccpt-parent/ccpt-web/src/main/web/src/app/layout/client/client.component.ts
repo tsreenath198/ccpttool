@@ -88,11 +88,11 @@ export class ClientComponent implements OnInit {
         this.model.serviceCharge = '8.33';
         this.model.guaranteePeriod = '3 months';
         this.model.creditPeriod = '1 month';
-        this.model.phone = '+91';
+        this.model.phone = '+91 ';
     }
     public initialGetAll(){
         let pageNumber = this.paginateConfig.currentPage-1
-        let temp=this.http.get(this.urlConstants.ClientGetAll+ pageNumber + "&pageSize=20&sortBy=id");
+        let temp=this.http.get(this.urlConstants.ClientGetAll+ pageNumber + "&pageSize=50&sortBy=id");
         temp.subscribe(resp => {
           this.clientList = resp as any;
           //this.pageChange(this.page);
@@ -100,7 +100,7 @@ export class ClientComponent implements OnInit {
         });
       }
     private setClientContactModel() {
-        this.model.clientContacts = [{ 'fullname': '', 'email': '', 'phone': '+91' }];
+        this.model.clientContacts = [{ 'salutation':'','fullname': '', 'email': '', 'phone': '+91 ' }];
     }
     private editForm(): void {
         this.readOnlyForm = '';
@@ -135,7 +135,7 @@ export class ClientComponent implements OnInit {
         this.model.serviceCharge = '8.33';
         this.model.guaranteePeriod = '3 months';
         this.model.creditPeriod = '1 month';
-        this.model.phone = '+91';
+        this.model.phone = '+91 ';
     }
     public create(clientForm: NgForm): void {
         this.isCreate = true;
@@ -197,7 +197,7 @@ export class ClientComponent implements OnInit {
                 break;
             }
             case 'increase': {
-                this.model.clientContacts.push({ 'fullname': '', 'email': '', 'phone': '+91' });
+                this.model.clientContacts.push({'salutation':'', 'fullname': '', 'email': '', 'phone': '+91 ' });
                 break;
             }
         }

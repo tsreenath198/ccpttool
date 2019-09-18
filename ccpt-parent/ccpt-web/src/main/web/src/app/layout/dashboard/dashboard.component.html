@@ -48,8 +48,8 @@
         <div class="col-md-12">
           <div class="card mb-3">
             <div class="card-header bg-dark text-clr-white">Client Application Status</div>
-            <div class="card-body">
-              <table class="table table-sm">
+            <div class="card-body  table-responsive"  [style.height.px]="stackChartHeight">
+              <table class="table tableFixHead table-sm ">
                 <thead>
                   <tr>
                     <th>Client</th>
@@ -57,7 +57,7 @@
                     <th>Status</th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody >
                   <tr *ngFor="let ca of caStat">
                     <td>{{ ca.clientName }}</td>
                     <td>{{ ca.consultantName }}</td>
@@ -74,7 +74,7 @@
             </div>
           </div>
         </div>
-        <div class="col-md-12">
+        <div class="col-md-12" *ngIf="openCP.length>0">
           <div class="card mb-3">
             <div class="card-header bg-dark text-clr-white">Open Client Positions</div>
             <div>
@@ -125,7 +125,7 @@
             </div>
           </div>
         </div>
-        <div class="col-md-12">
+        <div class="col-md-12" *ngIf="dyingCP.length>0">
           <div class="card mb-3">
             <div class="card-header bg-dark text-clr-white">Dying Client Positions</div>
             <div class="card-body">

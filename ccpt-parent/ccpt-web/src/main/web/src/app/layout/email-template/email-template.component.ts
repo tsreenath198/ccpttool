@@ -64,7 +64,7 @@ export class EmailTemplateComponent implements OnInit {
     }
     public initialGetAll(){
         let pageNumber = this.paginateConfig.currentPage-1
-        let temp=this.http.get(this.urlConstants.EmailTemplateGetAll+ pageNumber + "&pageSize=20&sortBy=id");
+        let temp=this.http.get(this.urlConstants.EmailTemplateGetAll+ pageNumber + "&pageSize=50&sortBy=id");
         temp.subscribe(resp => {
           this.emailTemplateList = resp as any;
           //this.pageChange(this.page);

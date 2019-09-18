@@ -48,7 +48,7 @@ export class ConsultantComponent implements OnInit {
   public showAction: boolean = false;
   public actionsList = new ActionsList();
   public action: string;
-
+  public tabCheck:string;
   public isCreate: boolean = false;
   public currSearchTxt: string;
   public idToActivate: number;
@@ -98,7 +98,7 @@ export class ConsultantComponent implements OnInit {
   }
   public initialGetAll(){
     let pageNumber = this.paginateConfig.currentPage-1
-    let temp=this.http.get(this.urlConstants.CGetAll+ pageNumber + "&pageSize=20&sortBy=id");
+    let temp=this.http.get(this.urlConstants.CGetAllByStatus+ pageNumber + "&pageSize=50&sortBy=id&status=Active");
     temp.subscribe(resp => {
       this.consultantList = resp as any;
       this.consultantList.list.forEach(cl => {
@@ -110,6 +110,7 @@ export class ConsultantComponent implements OnInit {
         }
       });
       this.paginateConfig.totalItems = this.consultantList.noOfRecords
+      this.tabCheck="Active Consultants";
     });
   }
   init(): void {
@@ -130,7 +131,8 @@ export class ConsultantComponent implements OnInit {
     this.model.properties = [];
     this.model.files = [];
     this.model.conStatus = 'Active';
-    this.model.phone = '+91';
+    this.model.phone = '+91 ';
+    this.model.sourcedFrom = this.properties.consultantSource[0];
     this.page = 1;
   }
   private validate(value: any): boolean {
@@ -448,10 +450,6 @@ export class ConsultantComponent implements OnInit {
           }
         );*/
   }
-  pageChanged(event){
-    this.paginateConfig.currentPage = event
-    this.initialGetAll();
-  }
   public emptyExperience() {
     if (this.isFresher) {
       this.model.currentCompany = '';
@@ -477,11 +475,74 @@ export class ConsultantComponent implements OnInit {
       this.initialGetAll();
     }
     else if(this.currSearchTxt.length > 3){
-      let temp = this.http.get(this.urlConstants.CSearch + this.currSearchTxt)
+      let temp = this.http.get("/consultant/search?searchKey=+917003429424")
       temp.subscribe(resp => {
         this.consultantList.list = resp as any;
         this.paginateConfigDeclare(this.consultantList.list.length,1,this.consultantList.list.length)
       })
     }
+  }
+  
+  pageChanged(event){
+    this.paginateConfig.currentPage = event
+    switch(this.tabCheck){
+      case "Active Consultants":
+        this.showActive();
+        break;
+      case "Inactive Consultants":
+        this.showInactive();
+        break;
+      case "All Consultants":
+        this.showAll();
+        break;
+      default:
+        break;      
+    }
+  }
+  public getIncompleteCon(){
+    let temp=this.http.get(this.urlConstants.CGetInactive);
+    temp.subscribe(resp=>{
+      this.consultantList.list = resp as any;
+      this.paginateConfigDeclare(this.properties.ITEMSPERPAGE,1,this.consultantList.list.length);
+      this.tabCheck = "Incomplete Consultants";
+    })
+  }
+  // public getAllCon(){
+  //   this.paginateConfigDeclare(this.properties.ITEMSPERPAGE,1,0);
+  //   this.initialGetAll();
+  //   this.tabCheck = "All Consultants";
+  // }
+
+  public showActive(){
+    if(this.tabCheck != "Active Consultants"){
+      this.paginateConfigDeclare(this.properties.ITEMSPERPAGE,1,0);
+    }
+    this.initialGetAll();
+  }
+
+  public showInactive(){
+    if(this.tabCheck != 'Inactive Consultants'){
+      this.paginateConfigDeclare(this.properties.ITEMSPERPAGE,1,0)
+    }
+    let pageNumber = this.paginateConfig.currentPage-1
+    let temp= this.http.get(this.urlConstants.CGetAllByStatus + pageNumber + "&pageSize=50&sortBy=id&status=Inactive")
+    temp.subscribe(resp =>{
+      this.consultantList = resp as any;
+      this.paginateConfig.totalItems = this.consultantList.noOfRecords
+      this.tabCheck = "Inactive Consultants";
+    })
+  }
+
+  public showAll(){
+    if(this.tabCheck != 'All Consultants'){
+      this.paginateConfigDeclare(this.properties.ITEMSPERPAGE,1,0)
+    }
+    let pageNumber = this.paginateConfig.currentPage-1
+    let temp= this.http.get(this.urlConstants.CGetAll + pageNumber + "&pageSize=50&sortBy=id")
+    temp.subscribe(resp =>{
+      this.consultantList = resp as any;
+      this.paginateConfig.totalItems = this.consultantList.noOfRecords
+      this.tabCheck = "All Consultants";
+    }) 
   }
 }

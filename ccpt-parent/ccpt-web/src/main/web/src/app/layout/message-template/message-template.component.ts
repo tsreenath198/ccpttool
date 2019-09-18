@@ -60,7 +60,7 @@ export class MessageTemplateComponent implements OnInit {
     }
     public initialGetAll(){
         let pageNumber = this.paginateConfig.currentPage-1
-        let temp=this.http.get(this.urlConstants.SMSTemplateGetAll+ pageNumber + "&pageSize=20&sortBy=id");
+        let temp=this.http.get(this.urlConstants.SMSTemplateGetAll+ pageNumber + "&pageSize=50&sortBy=id");
         temp.subscribe(resp => {
           this.messageTemplateList = resp as any;
           //this.pageChange(this.page);

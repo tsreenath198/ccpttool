@@ -1,13 +1,13 @@
-import { ClientCallHistoryModule } from './client-call-history.module';
+import { ConsultantCallHistoryModule } from './consultant-call-history.module';
 
 describe('ChartsModule', () => {
-    let clientCallHistoryModule: ClientCallHistoryModule;
+    let consultantCallHistoryModule: ConsultantCallHistoryModule;
 
     beforeEach(() => {
-        clientCallHistoryModule = new ClientCallHistoryModule();
+        consultantCallHistoryModule = new ConsultantCallHistoryModule();
     });
 
     it('should create an instance', () => {
-        expect(clientCallHistoryModule).toBeTruthy();
+        expect(consultantCallHistoryModule).toBeTruthy();
     });
 });
