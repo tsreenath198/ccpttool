@@ -31,11 +31,19 @@ public interface ClientApplicationRepository extends BaseRepository<ClientApplic
 	List<ClientApplication> findByClientPositionIdAndActiveFlag(@Param("clientPositionId") Integer clientPositionId,
 			@Param("activeFlag") Boolean activeFlag);
 
-	@Query(value = "SELECT  client.name as clientName,client.phone as clientPhone,consultant.fullname as consultantName,consultant.phone as consultantPhone,"
-			+ "client_application.interview_mode as interviewMode,client_application.interview_date as interviewDate,client_application.interview_location as interviewLocation,"
-			+ "client_application.interview_time  as interviewTime FROM client_application,client_position,client,consultant WHERE "
-			+ "client_application.client_position_id=client_position.id AND client_position.client_id =client.id AND client_application.consultant_id=consultant.id"
-			+ " AND client_application.interview_date >=curDate() ORDER BY client_application.interview_date ", nativeQuery = true)
+	@Query(value = "SELECT\r\n" + "   client.name as clientName,\r\n" + "   client.phone as clientPhone,\r\n"
+			+ "   consultant.fullname as consultantName,\r\n" + "   consultant.phone as consultantPhone,\r\n"
+			+ "   client_application.interview_mode as interviewMode,\r\n"
+			+ "   client_application.interview_date as interviewDate,\r\n"
+			+ "   client_application.interview_location as interviewLocation,\r\n"
+			+ "   client_application.interview_time as interviewTime \r\n" + "FROM\r\n" + "   client_application,\r\n"
+			+ "   client_position,\r\n" + "   client,\r\n" + "   consultant \r\n" + "WHERE\r\n"
+			+ "   client_application.client_position_id = client_position.id \r\n"
+			+ "   AND client_position.client_id = client.id \r\n"
+			+ "   AND client_application.consultant_id = consultant.id \r\n"
+			+ "   AND client_application.interview_date >= curDate() \r\n"
+			+ "   AND client_application.active_flag=1\r\n" + "ORDER BY\r\n"
+			+ "   client_application.interview_date", nativeQuery = true)
 	List<InterviewSummaryStatistics> getAllInterviewsFromToday();
 
 	List<ClientApplication> findByConsultantIdAndActiveFlag(@Param("consultantId") Integer consultantId,
@@ -48,11 +56,11 @@ public interface ClientApplicationRepository extends BaseRepository<ClientApplic
 			+ "LEFT OUTER JOIN client_position cp on cp.id = ca.client_position_id WHERE "
 			+ "(:clientId IS NULL OR cp.client_id = :clientId)" + " AND (:clientPosId IS NULL OR cp.id=:clientPosId)"
 			+ " AND ca.status_code in (SELECT cas.code from client_application_status cas where cas.status_type = :statusType) "
-			+ "AND (:searchKey is null OR c.fullname LIKE %:searchKey% OR c.email LIKE %:searchKey% OR c.phone LIKE %:searchKey% )")
+			+ "AND (:searchKey is null OR c.fullname LIKE %:searchKey% OR c.email LIKE %:searchKey% OR c.phone LIKE %:searchKey%) AND ca.active_flag=1)")
 	List<ClientApplication> search(@Param("clientId") Integer clientId, @Param("clientPosId") Integer clientPosId,
 			@Param("statusType") String statusType, @Param("searchKey") String searchKey);
 
-	@Query("SELECT c.id as id,c.consultant.fullname as consultantName,c.clientPosition.client.name as clientName,c.status.code as status  FROM ClientApplication c, ClientApplicationStatus cas WHERE c.status=cas.code AND cas.statusType='Active'")
+	@Query("SELECT c.id as id,c.consultant.fullname as consultantName,c.clientPosition.client.name as clientName,c.status.code as status  FROM ClientApplication c, ClientApplicationStatus cas WHERE c.status=cas.code AND cas.statusType='Active' ")
 	List<DashboardCAStatistics> getDashboardCaStatus();
 
 	@Query(value = "SELECT code FROM client_application_status", nativeQuery = true)
