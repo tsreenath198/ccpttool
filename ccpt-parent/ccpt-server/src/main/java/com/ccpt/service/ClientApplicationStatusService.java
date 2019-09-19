@@ -25,7 +25,7 @@ public class ClientApplicationStatusService extends BaseService<ClientApplicatio
 	}
 
 	public ClientApplicationStatus findByCode(String code) {
-		return clientApplicationStatusRepository.findByCodeAndActiveFlag(code, true);
+		return clientApplicationStatusRepository.findByCodeAndActiveFlagOrderByCreatedDateDesc(code, true);
 	}
 
 	public List<DropDownStatistics> getAllCAStatus() {

@@ -28,7 +28,7 @@ public class ClientCallHistoryService extends BaseService<ClientCallHistory, Int
 	}
 
 	List<ClientCallHistory> findByClientPositionId(Integer clientPositionId) {
-		return clientCallHistoryRepository.findByClientPositionIdAndActiveFlag(clientPositionId, true);
+		return clientCallHistoryRepository.findByClientPositionIdAndActiveFlagOrderByCreatedDateDesc(clientPositionId, true);
 	}
 
 	public List<CallHistorySummaryStatistics> getAllCchCountByRecruiters(Integer days) throws ParseException {

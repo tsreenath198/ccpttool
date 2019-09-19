@@ -10,7 +10,7 @@ import com.ccpt.model.DropDownStatistics;
 
 public interface ClientApplicationStatusRepository extends BaseRepository<ClientApplicationStatus, Integer> {
 
-	ClientApplicationStatus findByCodeAndActiveFlag(@Param("code") String code,
+	ClientApplicationStatus findByCodeAndActiveFlagOrderByCreatedDateDesc(@Param("code") String code,
 			@Param("activeFlag") Boolean activeFlag);
 
 	@Query("SELECT id as id,description as name FROM ClientApplicationStatus WHERE active_flag=1 ORDER BY createdDate desc")
