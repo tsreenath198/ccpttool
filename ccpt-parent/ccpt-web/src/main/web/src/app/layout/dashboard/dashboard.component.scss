@@ -17,7 +17,11 @@
     color:blue;
     text-decoration: underline;
 }
-
+.table-striped {
+    tbody tr:nth-of-type(odd) {
+      background-color: #c1c1c1;
+    }
+  }
 
 
 .table-fixed thead, .table-fixed tbody, .table-fixed tr, .table-fixed td, .table-fixed th {
