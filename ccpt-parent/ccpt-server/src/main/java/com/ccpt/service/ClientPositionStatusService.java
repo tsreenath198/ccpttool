@@ -22,6 +22,6 @@ public class ClientPositionStatusService extends BaseService<ClientPositionStatu
 	}
 
 	public ClientPositionStatus findByCode(String code) {
-		return clientPositionStatusRepository.findByCodeAndActiveFlag(code, true);
+		return clientPositionStatusRepository.findByCodeAndActiveFlagOrderByCreatedDateDesc(code, true);
 	}
 }

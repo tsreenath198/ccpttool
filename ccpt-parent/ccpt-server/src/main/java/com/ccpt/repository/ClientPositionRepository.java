@@ -14,12 +14,12 @@ public interface ClientPositionRepository extends BaseRepository<ClientPosition,
 
 	List<ClientPosition> findTop5ByActiveFlagAllIgnoreCaseOrderByIdDesc(Boolean activeFlag);
 
-	@Query("SELECT t1 FROM ClientPosition t1 WHERE t1.id NOT IN (SELECT distinct t2.clientPosition.id FROM ClientApplication t2) AND t1.status='Open'")
+	@Query("SELECT t1 FROM ClientPosition t1 WHERE t1.id NOT IN (SELECT distinct t2.clientPosition.id FROM ClientApplication t2) AND t1.status='Open' AND t1.activeFlag=1 Order By createdDate Desc")
 	List<ClientPosition> getAllOpenCP();
 
 	void deleteByClientId(Integer clientId);
 
-	List<ClientPosition> findByClientIdAndActiveFlag(@Param("clientId") Integer clientId,
+	List<ClientPosition> findByClientIdAndActiveFlagOrderByCreatedDateDesc(@Param("clientId") Integer clientId,
 			@Param("activeFlag") Boolean activeFlag);
 
 	@Query("SELECT id as id,generatedCode as name FROM ClientPosition WHERE active_flag=1  ORDER BY createdDate DESC")

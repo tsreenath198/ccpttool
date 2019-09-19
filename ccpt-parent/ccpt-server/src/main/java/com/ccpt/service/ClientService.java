@@ -44,7 +44,8 @@ public class ClientService extends BaseService<Client, Integer> {
 	@Override
 	protected void postDelete(Client client) {
 
-		List<ClientPosition> cpList = clientPositionRepository.findByClientIdAndActiveFlag(client.getId(), true);
+		List<ClientPosition> cpList = clientPositionRepository
+				.findByClientIdAndActiveFlagOrderByCreatedDateDesc(client.getId(), true);
 		List<ClientContact> listOfContacts = client.getClientContacts();
 		for (ClientContact cc : listOfContacts) {
 			cc.setActiveFlag(false);
