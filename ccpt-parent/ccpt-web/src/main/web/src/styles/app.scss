@@ -34,6 +34,12 @@ table{
     }
   }
 }
+.tableFixHead          { overflow: auto; height:  31.5em; }
+.tableFixHead thead th { position: sticky; top: 0; background:white; }
+
+/* Just common table stuff. Really. */
+table  { border-collapse: collapse; width: 100%; }
+
 .justify-content-center {
   display: flex !important;
   justify-content: center !important;
@@ -41,4 +47,7 @@ table{
 .modal-popup-header-bg{
  background-color : #343a40 !important;
  color:white;
+}
+* { 
+  font-size: 0.85rem;
 }
