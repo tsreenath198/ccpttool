@@ -77,14 +77,14 @@ public class ClientPositionController extends BaseController<ClientPositionDTO, 
 			model.setStatus(ClientPositionStatusService.findByCode(model.getStatus().getCode()));
 		}
 	}
-	
+
 	@GetMapping("/getAllCps")
 	public ResponseEntity<List<DropDownStatistics>> getAllCps() {
 		List<DropDownStatistics> result = clientPositionService.getAllCps();
 		return new ResponseEntity<List<DropDownStatistics>>(result, HttpStatus.OK);
 
 	}
-	
+
 	@GetMapping(CCPTConstants.GET_ALL_BY_STATUS)
 	public ResponseEntity<BaseReturn> getAllByStatus(@RequestParam(defaultValue = "0") Integer pageNo,
 			@RequestParam(defaultValue = "50") Integer pageSize, @RequestParam(defaultValue = "id") String sortBy,
