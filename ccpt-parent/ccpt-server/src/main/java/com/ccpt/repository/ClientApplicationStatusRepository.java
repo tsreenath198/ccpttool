@@ -13,6 +13,6 @@ public interface ClientApplicationStatusRepository extends BaseRepository<Client
 	ClientApplicationStatus findByCodeAndActiveFlagOrderByCreatedDateDesc(@Param("code") String code,
 			@Param("activeFlag") Boolean activeFlag);
 
-	@Query("SELECT id as id,description as name FROM ClientApplicationStatus WHERE active_flag=1 ORDER BY createdDate desc")
+	@Query("SELECT id as id,description as name FROM ClientApplicationStatus WHERE activeFlag=1 ORDER BY createdDate desc")
 	List<DropDownStatistics> getAllCAStatus();
 }
