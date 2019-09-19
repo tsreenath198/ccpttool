@@ -47,8 +47,8 @@
       <div class="row">
         <div class="col-md-12">
           <div class="card mb-3">
-            <div class="card-header bg-dark text-clr-white">Client Application Status</div>
-            <div class="card-body  table-responsive"  [style.height.px]="stackChartHeight">
+            <div class="card-header bg-dark text-clr-white">Quick Status Update</div>
+            <div class="card-body  table-responsive heightFixed">
               <table class="table tableFixHead table-sm table-striped">
                 <thead>
                   <tr>
@@ -76,7 +76,7 @@
         </div>
         <div class="col-md-12" *ngIf="openCP.length>0">
           <div class="card mb-3">
-            <div class="card-header bg-dark text-clr-white">Open Client Positions</div>
+            <div class="card-header bg-dark text-clr-white">Open Client Positions<i class="fa fa-question-circle-o ml-2" placement="top" ngbTooltip="All those positions which dont have any applications." aria-hidden="true"></i></div>
             <div>
               <div class="card-body">
                 <table class="table table-sm table-striped">
@@ -178,23 +178,25 @@
             <div class="card-header bg-dark text-clr-white">
               Client Applications By Status
             </div>
-            <div class="card-body" style="position: relative" [style.height.px]="stackChartHeight">
-              <canvas
-                baseChart
-                id="activeCAChart"
-                [datasets]="barChartCAByStatusData"
-                [labels]="barChartCAByStautsLabels"
-                [options]="barChartOptions"
-                [legend]="stackBarChartLegend"
-                [chartType]="barChartType"
-              >
-              </canvas>
+            <div class="card-body heightFixed">
+              <div [style.height.px]="stackChartHeight">
+                  <canvas
+                    baseChart
+                    id="activeCAChart"
+                    [datasets]="barChartCAByStatusData"
+                    [labels]="barChartCAByStautsLabels"
+                    [options]="barChartOptions"
+                    [legend]="stackBarChartLegend"
+                    [chartType]="barChartType"
+                  >
+                  </canvas>
+              </div>
             </div>
           </div>
         </div>
         <div class="col-md-12" *ngIf="dyingCP.length>0">
           <div class="card mb-3">
-            <div class="card-header bg-dark text-clr-white">Dying Client Positions</div>
+            <div class="card-header bg-dark text-clr-white">Dying Client Positions<i class="fa fa-question-circle-o ml-2" placement="top" ngbTooltip="All those positions which dont have apllications since one week." aria-hidden="true"></i></div>
             <div class="card-body">
               <table class="table table-sm table-striped">
                 <thead>

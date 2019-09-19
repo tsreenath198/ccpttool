@@ -22,7 +22,11 @@
       background-color: #c1c1c1;
     }
   }
-
+  .heightFixed{
+    position: relative;
+    height: 403px;
+    overflow-y: scroll;
+  }
 
 .table-fixed thead, .table-fixed tbody, .table-fixed tr, .table-fixed td, .table-fixed th {
     display: block;
