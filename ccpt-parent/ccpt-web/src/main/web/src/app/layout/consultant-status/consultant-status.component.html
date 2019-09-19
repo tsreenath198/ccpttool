@@ -96,7 +96,7 @@
           <div class="col-md-12">
               <div class="form-group">
                 <label>Order<span class="required">*</span></label>
-                <input type="number" class="form-control" [readonly]="readOnlyForm == 'R' || readOnlyForm == 'U'"
+                <input type="number" class="form-control" [readonly]="readOnlyForm == 'R' "
                   [(ngModel)]="model.ordr" name="order"
                   [ngClass]="{'is-invalid': f.submitted && order.invalid}" #order="ngModel" required>
                 <div class="invalid-feedback">

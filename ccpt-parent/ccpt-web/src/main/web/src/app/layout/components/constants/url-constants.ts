@@ -105,6 +105,7 @@ export class URLConstants {
     SearchUpdate = 'search';
     SearchDelete = 'search/';
     SearchGetById = 'search/';
+    SearchAllSearch = 'search/search?searchKey='
 
     /** Reporting */
     GetAllDashboard = 'dashboard/getAllDashboardContent'

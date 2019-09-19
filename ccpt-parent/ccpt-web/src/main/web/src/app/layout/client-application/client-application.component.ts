@@ -162,6 +162,7 @@ export class ClientApplicationComponent implements OnInit {
       this.clientApplicationList = resp as any;
       //this.pageChange(this.page);
       this.paginateConfig.totalItems = this.clientApplicationList.noOfRecords;
+      this.tabCheck = "Active CA";
     });
   }
 

@@ -1,7 +1,7 @@
-<div [@routerTransition] class="shrinkBody">
+<div [@routerTransition]>
   <app-page-header [icon1]="'fa-address-book'" [heading1]="'Other Contacts'"> </app-page-header>
 
-  <div class="spinner padding-top justify-content-md-center" *ngIf="!listReturned">
+  <div class="spinner padding-top justify-content-md-center " *ngIf="!listReturned">
     <div class="bounce1"></div>
     <div class="bounce2"></div>
     <div class="bounce3"></div>
@@ -124,7 +124,7 @@
               <div class="form-group">
                 <label>Name<span class="required">*</span></label>
                 <input
-                  class="form-control capi"
+                  class="form-control capi form-control-sm"
                   [readonly]="readOnlyForm == 'R'"
                   [(ngModel)]="model.name"
                   name="name"
@@ -153,7 +153,7 @@
               </div>
             </div>
             <div class="col-md-6">
-              <div class="form-group">
+              <div class="form-group ">
                 <label>E-Mail</label>
                 <input class="form-control" [readonly]="readOnlyForm == 'R'" [(ngModel)]="model.email" name="email" #email="ngModel" />
               </div>

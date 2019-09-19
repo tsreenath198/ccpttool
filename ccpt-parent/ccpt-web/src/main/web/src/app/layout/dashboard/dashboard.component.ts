@@ -116,22 +116,22 @@ export class DashboardComponent implements OnInit {
     public barChartColors: Color[] = [
         { backgroundColor: '#343a40' },
     ]
-    public stackbarChartColors: Color[] = [
-        // { backgroundColor: '#FF0000' },
-        // { backgroundColor: '#FFFF00' },
-        // { backgroundColor: '#00FF00' },
-        // { backgroundColor: '#FFA500' },
-        // { backgroundColor: '#ff4d4d' },
-        // { backgroundColor: '#00cc00' },
-        // { backgroundColor: '#009900' }
-        { backgroundColor: '#d5d9dd' },
-        { backgroundColor: '#b8bfc6' },
-        { backgroundColor: '#808c99' },
-        { backgroundColor: '#66737f' },
-        { backgroundColor: '#444d55' },
-        { backgroundColor: '#212529' },
-        { backgroundColor: '#000000' }
-    ]
+    // public stackbarChartColors: Color[] = [
+    //     // { backgroundColor: '#FF0000' },
+    //     // { backgroundColor: '#FFFF00' },
+    //     // { backgroundColor: '#00FF00' },
+    //     // { backgroundColor: '#FFA500' },
+    //     // { backgroundColor: '#ff4d4d' },
+    //     // { backgroundColor: '#00cc00' },
+    //     // { backgroundColor: '#009900' }
+    //     { backgroundColor: '#d5d9dd' },
+    //     { backgroundColor: '#b8bfc6' },
+    //     { backgroundColor: '#808c99' },
+    //     { backgroundColor: '#66737f' },
+    //     { backgroundColor: '#444d55' },
+    //     { backgroundColor: '#212529' },
+    //     { backgroundColor: '#000000' }
+    // ]
     public barChartCAByStatusData: any[] = [];
 
     constructor(private http: HttpClientService, private router: Router, private toastr: ToastrCustomService,
@@ -337,6 +337,7 @@ export class DashboardComponent implements OnInit {
         let dum = {}
         this.http.update(dum,this.urlConstants.CAStatusUpdate + ca.id + "&status=" + ca.status).subscribe(resp=>{
             this.updateBarChart();
+            this.toastr.success("Client Application","Status updated successfully")
         })
     }
     public updateBarChart(){

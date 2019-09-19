@@ -25,7 +25,7 @@
             <table class="table table-hover table-striped">
               <tbody class="overflow-ele-scroll">
                 <tr
-                  *ngFor="let cpl of clientPositionList.list | paginate: paginateConfig; let i = index"
+                  *ngFor="let cpl of clientPositionList.list | filter: currSearchTxt |paginate: paginateConfig; let i = index"
                   (click)="setModel(cpl.id)"
                   [ngClass]="{ 'bl-closed': cpl.status.code === 'Closed', 'bl-on-hold': cpl.status.code === 'On Hold' }"
                 >

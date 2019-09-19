@@ -101,55 +101,6 @@
             </div>
           </div>
         </div>
-      </div>
-    </div>
-    <div class="col-md-6" *ngIf="listReturned">
-      <div class="row">
-        <div class="col-md-12">
-          <div class="card mb-3">
-            <div class="card-header bg-dark text-clr-white">
-              Client Applications By Status
-            </div>
-            <div class="card-body" style="position: relative" [style.height.px]="stackChartHeight">
-              <canvas
-                baseChart
-                id="activeCAChart"
-                [datasets]="barChartCAByStatusData"
-                [labels]="barChartCAByStautsLabels"
-                [options]="barChartOptions"
-                [colors]="stackbarChartColors"
-                [legend]="stackBarChartLegend"
-                [chartType]="barChartType"
-              >
-              </canvas>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-12" *ngIf="dyingCP.length>0">
-          <div class="card mb-3">
-            <div class="card-header bg-dark text-clr-white">Dying Client Positions</div>
-            <div class="card-body">
-              <table class="table table-sm">
-                <thead>
-                  <tr>
-                    <th>Client</th>
-                    <th>Code</th>
-                    <th>Date</th>
-                    <th>Assigned</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let ocp of dyingCP">
-                    <td>{{ ocp.clientName }}</td>
-                    <td>{{ ocp.generatedCode }}</td>
-                    <td width="100">{{ ocp.createdDate | date: 'dd-MM-yy' }}</td>
-                    <td>{{ ocp.recruiterName }}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
         <div class="col-md-12">
           <div class="card mb-3">
             <div class="card-header bg-dark text-clr-white">
@@ -212,6 +163,54 @@
                   >
                     <td>{{ cch.fullName }}</td>
                     <td>{{ cch.count }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6" *ngIf="listReturned">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card mb-3">
+            <div class="card-header bg-dark text-clr-white">
+              Client Applications By Status
+            </div>
+            <div class="card-body" style="position: relative" [style.height.px]="stackChartHeight">
+              <canvas
+                baseChart
+                id="activeCAChart"
+                [datasets]="barChartCAByStatusData"
+                [labels]="barChartCAByStautsLabels"
+                [options]="barChartOptions"
+                [legend]="stackBarChartLegend"
+                [chartType]="barChartType"
+              >
+              </canvas>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12" *ngIf="dyingCP.length>0">
+          <div class="card mb-3">
+            <div class="card-header bg-dark text-clr-white">Dying Client Positions</div>
+            <div class="card-body">
+              <table class="table table-sm">
+                <thead>
+                  <tr>
+                    <th>Client</th>
+                    <th>Code</th>
+                    <th>Date</th>
+                    <th>Assigned</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let ocp of dyingCP">
+                    <td>{{ ocp.clientName }}</td>
+                    <td>{{ ocp.generatedCode }}</td>
+                    <td width="100">{{ ocp.createdDate | date: 'dd-MM-yy' }}</td>
+                    <td>{{ ocp.recruiterName }}</td>
                   </tr>
                 </tbody>
               </table>

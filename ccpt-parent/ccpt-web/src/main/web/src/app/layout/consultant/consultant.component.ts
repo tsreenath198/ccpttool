@@ -475,7 +475,7 @@ export class ConsultantComponent implements OnInit {
       this.initialGetAll();
     }
     else if(this.currSearchTxt.length > 3){
-      let temp = this.http.get("/consultant/search?searchKey=+917003429424")
+      let temp = this.http.get(this.urlConstants.CSearch+this.currSearchTxt)
       temp.subscribe(resp => {
         this.consultantList.list = resp as any;
         this.paginateConfigDeclare(this.consultantList.list.length,1,this.consultantList.list.length)

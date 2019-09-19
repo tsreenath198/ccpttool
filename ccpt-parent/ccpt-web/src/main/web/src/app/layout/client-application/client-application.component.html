@@ -13,7 +13,7 @@
         <div class="col-md-12">
           <div class="row">
             <div class="col-md-3">
-                <select class="form-control form-control-sm" [(ngModel)]="currSearch.client" name="sel1" (change)="filterSearchCp()">
+                <select class="form-control  form-control-sm" [(ngModel)]="currSearch.client" name="sel1" (change)="filterSearchCp()">
                     <option [ngValue]="0" hidden selected> Client</option>
                     <option *ngFor="let cl of clientList" [ngValue]="cl.id" >
                       {{ cl.name }}
@@ -21,7 +21,7 @@
                   </select> 
             </div>
             <div class="col-md-4" *ngIf="currSearch.client != 0">
-                <select class="form-control form-control-sm" [(ngModel)]="currSearch.clientPos" name="sel2" (change)="searchSelect()">
+                <select class="form-control  form-control-sm" [(ngModel)]="currSearch.clientPos" name="sel2" (change)="searchSelect()">
                     <option [ngValue]="0" hidden selected> Client Position</option>
                     <option *ngFor="let cl of searchCp" [ngValue]="cl.id" >
                       {{ cl.name }}
@@ -29,7 +29,7 @@
                   </select> 
             </div>
             <div class="col-md-2">
-                <select class="form-control form-control-sm" [(ngModel)]="currSearch.status" name="sel3" (change)="searchSelect()">
+                <select class="form-control  form-control-sm" [(ngModel)]="currSearch.status" name="sel3" (change)="searchSelect()">
                     <option [ngValue]="null" hidden selected>Status</option>
                     <option *ngFor="let st of searchStatusType" [ngValue]="st">
                       {{ st }}
@@ -37,7 +37,7 @@
                   </select> 
             </div>
             <div class="col-md-3">
-              <input class="form-control form-control-sm" placeholder="Keys" [(ngModel)]="currSearch.key" name="sel4">
+              <input class="form-control  form-control-sm" placeholder="Keys" [(ngModel)]="currSearch.key" name="sel4">
             </div>
           </div>
           <div class="row mt-2">
@@ -75,8 +75,8 @@
             </div>
           </nav>
           <div class="tab-content" id="nav-tabContent">
-            <div class="table-responsive mt-2 tableFixHead" [style.height.px]="screenHeight">
-              <table class="table table-hover table-striped">
+            <div class="table-responsive  mt-2 tableFixHead" [style.height.px]="screenHeight">
+              <table class="table table-sm table-hover table-striped">
                 <thead>
                   <tr>
                     <th></th>
@@ -256,7 +256,7 @@
               <div class="form-group">
                 <label>Client Position<span class="required">*</span></label>
                 <span *ngIf="readOnlyForm == 'U' || readOnlyForm == ''">
-                  <select class="form-control" name="cp" [(ngModel)]="model.cpId"
+                  <select class="form-control " name="cp" [(ngModel)]="model.cpId"
                     [ngClass]="{ 'is-invalid': f.submitted && cp.invalid }" #cp="ngModel"
                     (change)="setLocation($event.target.value)" required>
                     <option *ngFor="let cpl of clientPositionList" [ngValue]="cpl.id">{{ cpl.name }} </option>
@@ -266,7 +266,7 @@
                   </div>
                 </span>
                 <span *ngIf="readOnlyForm == 'R'">
-                  <input type="text" class="form-control" name="generatedcode" #generatedcode="ngModel" readonly
+                  <input type="text" class="form-control " name="generatedcode" #generatedcode="ngModel" readonly
                     [(ngModel)]="cpGeneratedCode" />
                 </span>
               </div>
@@ -274,7 +274,7 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label>Consultant<span class="required">*</span></label>
-                <select class="form-control" [disabled]="readOnlyForm == 'R'" [(ngModel)]="model.consultantId"
+                <select class="form-control " [disabled]="readOnlyForm == 'R'" [(ngModel)]="model.consultantId"
                   name="con" [ngClass]="{ 'is-invalid': f.submitted && con.invalid }" #con="ngModel" required>
                   <option *ngFor="let cl of consultantList" [ngValue]="cl.id">{{ cl.name }}</option>
                 </select>
@@ -288,7 +288,7 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label>Client Application Status<span class="required">*</span></label>
-                <select class="form-control" name="cas" [disabled]="readOnlyForm == 'R'" [(ngModel)]="model.caStatus"
+                <select class="form-control " name="cas" [disabled]="readOnlyForm == 'R'" [(ngModel)]="model.caStatus"
                   [ngClass]="{ 'is-invalid': f.submitted && cas.invalid }" #cas="ngModel" required>
                   <option *ngFor="let casl of clientApplicationStatusList.list" [ngValue]="casl.code">
                     {{ casl.description }}
@@ -302,7 +302,7 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label>Creator<span class="required">*</span></label>
-                <select class="form-control" name="creator" [disabled]="readOnlyForm == 'R'"
+                <select class="form-control " name="creator" [disabled]="readOnlyForm == 'R'"
                   [(ngModel)]="model.creatorId" [ngClass]="{ 'is-invalid': f.submitted && cas.invalid }" required>
                   <option *ngFor="let rl of recruiterList" [ngValue]="rl.id">
                     {{ rl.name }}
@@ -317,7 +317,7 @@
           <div class="row">
             <div class="col-md-6">
               <label>Sent On</label>
-              <input type="date" class="form-control" name="senton" #senton="ngModel" [readonly]="readOnlyForm == 'R'"
+              <input type="date" class="form-control " name="senton" #senton="ngModel" [readonly]="readOnlyForm == 'R'"
                 [(ngModel)]="model.sentOn" />
               <div class="input-group-addon">
                 <span class="glyphicon glyphicon-th"></span>
@@ -336,7 +336,7 @@
                   <div class="row">
                     <div class="col-md-6">
                       <label class="pt-2">Interview Date</label>
-                      <input type="date" class="form-control" name="intDate" #intDate="ngModel"
+                      <input type="date" class="form-control " name="intDate" #intDate="ngModel"
                         [readonly]="readOnlyForm == 'R'" [(ngModel)]="model.interviewDate" />
                       <div class="input-group-addon">
                         <span class="glyphicon glyphicon-th"></span>
@@ -344,7 +344,7 @@
                     </div>
                     <div class="col-md-6">
                       <label class="pt-2">Interview Time</label>
-                      <input type="time" class="form-control" name="intTime" #intTime="ngModel"
+                      <input type="time" class="form-control " name="intTime" #intTime="ngModel"
                         [readonly]="readOnlyForm == 'R'" [(ngModel)]="model.interviewTime" />
                       <div class="input-group-addon">
                         <span class="glyphicon glyphicon-th"></span>
@@ -354,7 +354,7 @@
                   <div class="row">
                     <div class="col-md-6">
                       <label class="pt-2">Interview Location</label>
-                      <input class="form-control" name="loc" [readonly]="readOnlyForm == 'R'"
+                      <input class="form-control " name="loc" [readonly]="readOnlyForm == 'R'"
                         [(ngModel)]="model.interviewLocation" />
                       <div class="input-group-addon">
                         <span class="glyphicon glyphicon-th"></span>
@@ -363,7 +363,7 @@
                     <div class="col-md-6">
                       <label class="pt-2">Interview Mode</label>
                       <select
-                        class="form-control"
+                        class="form-control "
                         name="mode"
                         [disabled]="readOnlyForm == 'R'"
                         [(ngModel)]="model.interviewMode"
@@ -377,7 +377,7 @@
                     
                     <div class="col-md-6">
                         <label class="pt-2">Online Id</label>
-                        <input class="form-control" name="onlineId" [readonly]="readOnlyForm == 'R'"
+                        <input class="form-control " name="onlineId" [readonly]="readOnlyForm == 'R'"
                           [(ngModel)]="model.onlineId" />
                         <div class="input-group-addon">
                           <span class="glyphicon glyphicon-th"></span>
@@ -393,11 +393,11 @@
                   <label>Additional Properties</label>
                   <div class="row" *ngFor="let ap of model.properties; let i = index">
                     <div class="col-md-5">
-                      <input type="text" [(ngModel)]="ap.name" class="form-control" name="addPropName{{ i }}"
+                      <input type="text" [(ngModel)]="ap.name" class="form-control " name="addPropName{{ i }}"
                         [readonly]="readOnlyForm == 'R'" />
                     </div>
                     <div class="col-md-5">
-                      <input type="text" [(ngModel)]="ap.value" class="form-control" name="addPropValue{{ i }}"
+                      <input type="text" [(ngModel)]="ap.value" class="form-control " name="addPropValue{{ i }}"
                         [readonly]="readOnlyForm == 'R'" />
                     </div>
                     <div class="col-md-2">
@@ -421,11 +421,11 @@
                 <label>Additional Properties</label>
                 <div class="row">
                   <div class="col-md-5">
-                    <input type="text" [(ngModel)]="apName" class="form-control" name="apName"
+                    <input type="text" [(ngModel)]="apName" class="form-control " name="apName"
                       [readonly]="readOnlyForm == 'R'" />
                   </div>
                   <div class="col-md-5">
-                    <input type="text" [(ngModel)]="apValue" class="form-control" name="apValue"
+                    <input type="text" [(ngModel)]="apValue" class="form-control " name="apValue"
                       [readonly]="readOnlyForm == 'R'" />
                   </div>
                   <div class="col-md-2">
@@ -532,8 +532,8 @@
     </button>
   </div>
   <div class="modal-body">
-    <input class="form-control" type="file" ng2FileSelect [uploader]="uploader" />
-    <textarea class="form-control mt-3" placeholder="comments" cols="5" rows="5" [(ngModel)]="comments"></textarea>
+    <input class="form-control " type="file" ng2FileSelect [uploader]="uploader" />
+    <textarea class="form-control  mt-3" placeholder="comments" cols="5" rows="5" [(ngModel)]="comments"></textarea>
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-secondary" (click)="uploadFiles()">Upload</button>
@@ -557,7 +557,7 @@
       (onSelectAll)="onSelectAll($event)" -->
     <!-- <div class="form-group">
           <select
-            class="form-control"
+            class="form-control "
             [(ngModel)]="sendTo"
             name="sel1"
             (change)="onItemSelect(sendTo)"
@@ -568,15 +568,15 @@
             </option>
           </select>
         </div> -->
-    <input type="text" [(ngModel)]="sendEmailModel.toEmails" [readonly]="loggedInRole != 'Admin'" class="form-control" name="to" />
+    <input type="text" [(ngModel)]="sendEmailModel.toEmails" [readonly]="loggedInRole != 'Admin'" class="form-control " name="to" />
     <div *ngIf="loggedInRole == 'Admin'">
       <label>Cc</label>
-      <input type="text" [(ngModel)]="sendEmailModel.cc" class="form-control" name="cc" />
+      <input type="text" [(ngModel)]="sendEmailModel.cc" class="form-control " name="cc" />
     </div >
     <label>Bcc</label>
-    <input type="text" [(ngModel)]="sendEmailModel.bcc" class="form-control" name="bcc" />
+    <input type="text" [(ngModel)]="sendEmailModel.bcc" class="form-control " name="bcc" />
     <label>Subject</label>
-    <input class="form-control" [(ngModel)]="sendEmailModel.subject" name="sub" />
+    <input class="form-control " [(ngModel)]="sendEmailModel.subject" name="sub" />
     <label>Message Body</label>
     <angular-editor [(ngModel)]="sendEmailModel.body" name="tt" [config]="config"> </angular-editor>
   </div>
@@ -599,7 +599,7 @@
         <div class="col-md-6">
           <div class="form-group ">
             <label>Joining Date<span class="required">*</span></label>
-            <input type="date" class="form-control" name="joiningDate" [(ngModel)]="paymentModel.joiningDate"
+            <input type="date" class="form-control " name="joiningDate" [(ngModel)]="paymentModel.joiningDate"
               [ngClass]="{ 'is-invalid': paymentform.submitted && joiningDate.invalid }" #joiningDate="ngModel" required />
             <div class="invalid-feedback">
               Joining date is mandatory
@@ -611,7 +611,7 @@
               <label>Annual Package<span class="required">*</span></label>
               <input
                 type="text"
-                class="form-control"
+                class="form-control "
                 name="annualPackage"
                 [(ngModel)]="paymentModel.annualPackage"
                 [ngClass]="{ 'is-invalid': paymentform.submitted && annualPackage.invalid }"
@@ -627,7 +627,7 @@
             <div class="form-group">
               <label>Contact Person Designation<span class="required">*</span></label>
               <input
-                class="form-control"
+                class="form-control "
                 [(ngModel)]="paymentModel.contactPersonDesignation"
                 name="contactPersonDesignation"
                 [ngClass]="{ 'is-invalid': paymentform.submitted && contactPersonDesignation.invalid }"
@@ -643,7 +643,7 @@
             <div class="form-group">
               <label>Company Gst<span class="required">*</span></label>
               <input
-                class="form-control"
+                class="form-control "
                 [(ngModel)]="paymentModel.gst"
                 name="gst"
                 [ngClass]="{ 'is-invalid': paymentform.submitted && gst.invalid }"
@@ -659,7 +659,7 @@
             <div class="form-group">
               <label>Company Website<span class="required">*</span></label>
               <input
-                class="form-control"
+                class="form-control "
                 [(ngModel)]="paymentModel.gst"
                 name="website"
                 [ngClass]="{ 'is-invalid': paymentform.submitted && website.invalid }"
@@ -675,7 +675,7 @@
               <div class="form-group">
                 <label>Billing Address<span class="required">*</span></label>
                 <textarea
-                  class="form-control"
+                  class="form-control "
                   rows="5"
                   [(ngModel)]="paymentModel.billingAddress"
                   [ngClass]="{ 'is-invalid': paymentform.submitted && billingAddress.invalid }"
@@ -692,7 +692,7 @@
               <div class="form-group">
                 <label>Description<span class="required">*</span></label>
                 <textarea
-                  class="form-control"
+                  class="form-control "
                   rows="5"
                   [(ngModel)]="paymentModel.description"
                   [ngClass]="{ 'is-invalid': paymentform.submitted && description.invalid }"
@@ -730,10 +730,10 @@
   <div class="modal-body">
     <label>Number</label>
     <div class="form-group">
-      <input class="form-control" [(ngModel)]="sendSmsModel.contactNumbers" name="tonumbers" #tonumbers="ngModel" />
+      <input class="form-control " [(ngModel)]="sendSmsModel.contactNumbers" name="tonumbers" #tonumbers="ngModel" />
     </div>
     <label>Message Body</label>
-    <textarea class="form-control" cols="5" rows="8" [(ngModel)]="sendSmsModel.message" name="body"></textarea>
+    <textarea class="form-control " cols="5" rows="8" [(ngModel)]="sendSmsModel.message" name="body"></textarea>
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-secondary" (click)="sendSmsReq()" [disabled]="creating">{{ creating ? 'loading...' : ('Send' | translate) }}</button>
@@ -749,7 +749,7 @@
   </div>
   <div class="modal-body">
     <label>Description</label>
-    <textarea class="form-control" cols="5" rows="8" [(ngModel)]="conchModel.description" name="body"></textarea>
+    <textarea class="form-control " cols="5" rows="8" [(ngModel)]="conchModel.description" name="body"></textarea>
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-secondary" (click)="createConCallHistory()" [disabled]="creating">{{ creating ? 'loading...' : ('Send' | translate) }}</button>
@@ -774,7 +774,7 @@
             <tr *ngFor="let cc of faqModel.questions; let i = index">
               <td>
                 <input
-                  class="form-control"
+                  class="form-control "
                   [(ngModel)]="faqModel.questions[i]"
                   name="fq{{ i }}"
                   placeholder="question"

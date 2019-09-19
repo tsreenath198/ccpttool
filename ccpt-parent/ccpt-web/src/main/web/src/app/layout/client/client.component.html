@@ -32,7 +32,7 @@
           </thead>
           <tbody>
             <tr
-              *ngFor="let cl of clientList.list | paginate: paginateConfig; let i = index"
+              *ngFor="let cl of clientList.list| filter:currSearchTxt | paginate: paginateConfig; let i = index"
               (click)="setModel(cl.id)"
             >
               <td>
