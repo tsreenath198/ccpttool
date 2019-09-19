@@ -73,7 +73,7 @@ public interface ClientApplicationRepository extends BaseRepository<ClientApplic
 			+ "as clientName,count(client_position_id) as count FROM"
 			+ " client_application ca,client_position cp,client_position_status cps  WHERE ca.status_code=:statuscode AND ca.client_position_id=:clientPositionId "
 			+ "AND ca.client_position_id=cp.id AND cp.status_code=cps.code AND "
-			+ "cps.status_type='Active' AND ca.activeFlag=1 ORDER BY ca.created_date DESC  ", nativeQuery = true)
+			+ "cps.status_type='Active' AND ca.active_flag=1 ORDER BY ca.created_date DESC  ", nativeQuery = true)
 	List<CAByStatus> getclientPositioncountByStatusCode(@Param("statuscode") String statuscode,
 			@Param("clientPositionId") Integer clientPositionId);
 
@@ -81,6 +81,6 @@ public interface ClientApplicationRepository extends BaseRepository<ClientApplic
 	@Query(value = "UPDATE Client_Application  set STATUS_CODE =:status where id =:id", nativeQuery = true)
 	void updateStatus(@Param("id") Integer id, @Param("status") String status);
 
-	@Query(value = "SELECT DISTINCT client_application.* from client_application,client_application_status WHERE client_application.status_code=client_application_status.code and (client_application_status.status_type=:status or :status is null ) and client_application.active_flag=1 ORDER BY client_application.created_date DESC", nativeQuery = true)
+	@Query(value = "SELECT DISTINCT client_application.* from client_application,client_application_status WHERE client_application.status_code=client_application_status.code and (client_application_status.status_type=:status or :status is null ) and client_application.active_flag=1 ORDER BY client_application.created_date Desc", nativeQuery = true)
 	Page<ClientApplication> getAllByStatus(@Param("status") String status, Pageable paging);
 }
