@@ -42,9 +42,10 @@ export class DashboardComponent implements OnInit {
     public listReturned: boolean = false;
     public chartHeight: any;
     public stackChartHeight: any;
-    public caStat:any;
-    public caStatusList:any;
+    public caStat: any;
+    public caStatusList: any;
     public isCollapsed = true;
+    public updateIndex: number;
     /** Template references */
 
     @ViewChild('contentACA')
@@ -64,7 +65,7 @@ export class DashboardComponent implements OnInit {
     public getAllReportCLCH = this.http.get(this.urlConstants.CCHGetCountByRecruiter + this.clchChoosenDays);
     public getAllReportCOCH = this.http.get(this.urlConstants.CoCHGetCountByRecruiter + this.cochChoosenDays);
     public getAllReportCC = this.http.get(this.urlConstants.ReportingGetClosures + this.rpChoosenDays);
-    public getAllCAStatus = this.http.get(this.urlConstants.CASGetAll+"0&pageSize=100&sortBy=id");
+    public getAllCAStatus = this.http.get(this.urlConstants.CASGetAll + "0&pageSize=100&sortBy=id");
     // public getAllOpenCP = this.http.get(this.urlConstants.ReportingGetAllOpenCP);
     // public getAllActiveCA = this.http.get(this.urlConstants.ReportingGetAllActiveCA);
     // public getAllInterviewsToday = this.http.get(this.urlConstants.ReportingGetAllInterviewsToday);
@@ -147,7 +148,7 @@ export class DashboardComponent implements OnInit {
     }
     public init() {
         this.spinner(false);
-        this.getAllDBContent.subscribe(resp =>{
+        this.getAllDBContent.subscribe(resp => {
             let temp = resp as any;
             this.interviewsToday = temp.interviewSummaryStatistics;
             this.openCP = temp.openClientPositions;
@@ -282,11 +283,11 @@ export class DashboardComponent implements OnInit {
      * data list of client applications by status
      */
     private setCAByStatusBarData(data: any[]) {
-        let CAStatusOder:any =[];
-        this.caStatusList.list.filter(csl =>{
-            for(let i=1; i<= this.caStatusList.list.length;i++){
-                if(csl.ordr == i){
-                    CAStatusOder[i-1]=csl.description
+        let CAStatusOder: any = [];
+        this.caStatusList.list.filter(csl => {
+            for (let i = 1; i <= this.caStatusList.list.length; i++) {
+                if (csl.ordr == i) {
+                    CAStatusOder[i - 1] = csl.description
                 }
             }
         })
@@ -295,13 +296,13 @@ export class DashboardComponent implements OnInit {
 
         let uniqueClientName = data.map(item => item.clientName)
             .filter((value, index, self) => self.indexOf(value) === index);
-        this.stackChartHeight = uniqueClientName.length * 60;    
-        let uniqueStatus :any=[];    
+        this.stackChartHeight = uniqueClientName.length * 60;
+        let uniqueStatus: any = [];
         let tempUniqueStatus = data.map(item => item.statusCode)
             .filter((value, index, self) => self.indexOf(value) === index);
         CAStatusOder.forEach(cp => {
-            tempUniqueStatus.forEach(tus =>{
-                if(cp === tus){
+            tempUniqueStatus.forEach(tus => {
+                if (cp === tus) {
                     uniqueStatus.push(tus);
                 }
             })
@@ -311,17 +312,17 @@ export class DashboardComponent implements OnInit {
                 { data: [28, 48, 40, 19, 86, 27, 90, 65, 59, 80], label: 'Series B', stack: 'a' },
                 { data: [28, 48, 40, 19, 86, 27, 90, 65, 59, 80], label: 'Series Bd', stack: 'a' }
              */
-         uniqueStatus.forEach(us => {
+        uniqueStatus.forEach(us => {
             let temp = { data: [], label: '', stack: 'a' };
             uniqueClientName.forEach(ucn => {
                 let unique: any = data.filter(dt => dt.clientName == ucn && dt.statusCode == us);
                 temp.data.push(unique[0].count);
             })
-            this.barChartCAByStautsLabels=uniqueClientName;
+            this.barChartCAByStautsLabels = uniqueClientName;
             this.barChartCAByStatusData.push(temp);
         })
 
-        for(let i=0;i<this.barChartCAByStatusData.length;i++){
+        for (let i = 0; i < this.barChartCAByStatusData.length; i++) {
             this.barChartCAByStatusData[i].label = uniqueStatus[i];
         }
     }
@@ -333,15 +334,16 @@ export class DashboardComponent implements OnInit {
         const index = event.active[0]._index;
         this.open(this.contentACA, this.barChartActiveCAData[0].cpIds[index], 'activeClientApplication');
     }
-    public updateCAStatus(ca){
+    public updateCAStatus(ca) {
         let dum = {}
-        this.http.update(dum,this.urlConstants.CAStatusUpdate + ca.id + "&status=" + ca.status).subscribe(resp=>{
+        this.http.update(dum, this.urlConstants.CAStatusUpdate + ca.id + "&status=" + ca.status).subscribe(resp => {
             this.updateBarChart();
-            this.toastr.success("Client Application","Status updated successfully")
+            this.updateIndex = ca.id;
+            setTimeout(function () { this.updateIndex = 0 }, 3000);
         })
     }
-    public updateBarChart(){
-        let temp1 = this.http.get(this.urlConstants.ReportingGetAllCAByStatus).subscribe(resp=>{
+    public updateBarChart() {
+        let temp1 = this.http.get(this.urlConstants.ReportingGetAllCAByStatus).subscribe(resp => {
             this.caByStatusList = resp as any;
             this.barChartCAByStatusData = []
             this.setCAByStatusBarData(this.caByStatusList);
