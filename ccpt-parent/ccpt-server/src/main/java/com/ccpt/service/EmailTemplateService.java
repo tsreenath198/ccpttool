@@ -85,16 +85,16 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 			ClientPosition clientPosition = clientApplications.get(0).getClientPosition();
 			valuesMap.put("jobTitle", clientPosition.getRole());
 			valuesMap.put("clientContactName", clientPosition.getClient().getClientContacts().get(0).getFullname());
-			valuesMap.put("salutation", clientPosition.getClient().getClientContacts().get(0).getSalutation());
-			sbPara.append("<p>Hi ${salutation}${clientContactName}</p>");
+			if (clientPosition.getClient().getClientContacts().get(0).getSalutation().equalsIgnoreCase("Mr."))
+				sbPara.append("<p>Hi ${clientContactName} sir</p>");
+			else
+				sbPara.append("<p>Hi ${clientContactName} madam</p>");
 			if (ids.size() == 1)
 				sbPara.append("<p> Below is the profile with ${jobTitle}  experience (CV Attached)</p>");
 			else
 				sbPara.append("<p> Below are the profiles with ${jobTitle}  experience (CVs Attached)</p>");
 			sbPara.append("<p>");
 			sbPara.append("please go over the CVs and provide your feedback ASAP");
-			sbPara.append("<br></br>");
-			sbPara.append("<p>");
 
 			String subject = StrSubstitutor.replace(sbPara.toString(), valuesMap);
 			StringBuilder sb = new StringBuilder(subject);
