@@ -206,6 +206,7 @@ export class FrequentQuestionsComponent implements OnInit {
             this.init();
             this.getRecruiterId();
             usersForm.resetForm();
+            this.initialGetAll();
             this.readOnlyForm = '';
             this.enableButtonType = '';
             this.showAction = false;

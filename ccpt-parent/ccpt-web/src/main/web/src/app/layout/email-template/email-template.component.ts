@@ -112,9 +112,9 @@ export class EmailTemplateComponent implements OnInit {
             this.init();
             this.formReset();
             emailTemplateForm.resetForm();
+            this.initialGetAll();
             this.spinner(true);
             this.paginateConfig.currentPage=1;
-            this.initialGetAll();
             this.isCreate= false;
         }, err => {
             this.toastr.error(err.statusText, 'Contact');
@@ -129,6 +129,7 @@ export class EmailTemplateComponent implements OnInit {
             this.toastr.success(this.properties.UPDATE, 'Email Template ');
             this.init();
             emailTemplateForm.resetForm();
+            this.initialGetAll();
             this.spinner(true);
             this.readOnlyForm = '';
             this.enableButtonType = '';
@@ -152,6 +153,7 @@ export class EmailTemplateComponent implements OnInit {
             this.init();
             this.close();
             this.formReset();
+            this.initialGetAll();
             this.spinner(true);
             this.showAction = false;
         }, err => {

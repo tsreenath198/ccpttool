@@ -211,6 +211,7 @@ export class ConsultantComponent implements OnInit {
         this.toastr.success(this.properties.UPDATE, this.properties.CON);
         this.formReset();
         this.init();
+        this.initialGetAll();
         this.spinner(true);
         this.readOnlyForm = '';
         this.enableButtonType = '';
@@ -256,6 +257,7 @@ export class ConsultantComponent implements OnInit {
         this.init();
         this.close();
         this.formReset();
+        this.initialGetAll();
         this.spinner(true);
         this.readOnlyForm = '';
         this.enableButtonType = '';

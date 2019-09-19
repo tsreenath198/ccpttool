@@ -233,6 +233,7 @@ export class ConsultantCallHistoryComponent implements OnInit {
         this.toastr.success(this.properties.UPDATE, this.properties.CON_C_H);
         this.init();
         this.callAfterFormReset();
+        this.initialGetAll();
         this.spinner(true);
         this.readOnlyForm = '';
         this.enableButtonType = '';
@@ -263,6 +264,7 @@ export class ConsultantCallHistoryComponent implements OnInit {
         this.close();
         this.formReset();
         this.callAfterFormReset();
+        this.initialGetAll();
         this.spinner(true);
         this.readOnlyForm = '';
         this.enableButtonType = '';

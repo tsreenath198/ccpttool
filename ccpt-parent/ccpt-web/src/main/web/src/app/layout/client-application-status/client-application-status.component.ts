@@ -142,6 +142,7 @@ export class ClientApplicationStatusComponent implements OnInit {
             this.formReset();
             this.init();
             CASForm.resetForm();
+            this.initialGetAll();
             this.spinner(true);
             this.readOnlyForm = '';
             this.enableButtonType = '';
@@ -169,6 +170,7 @@ export class ClientApplicationStatusComponent implements OnInit {
             this.init();
             this.close();
             this.formReset();
+            this.initialGetAll();
             this.spinner(true);
             this.readOnlyForm = '';
             this.enableButtonType = '';

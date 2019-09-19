@@ -248,6 +248,7 @@ export class PaymentsComponent implements OnInit {
             this.toastr.success(this.properties.UPDATE, this.properties.CONTACT);
             this.init();
             paymentsForm.resetForm();
+            this.initialGetAll();
             this.readOnlyForm = '';
             this.enableButtonType = '';
             this.showAction = false;
@@ -273,6 +274,7 @@ export class PaymentsComponent implements OnInit {
             this.init();
             this.close();
             this.formReset();
+            this.initialGetAll();
             this.readOnlyForm = '';
             this.enableButtonType = '';
             this.showAction = false;

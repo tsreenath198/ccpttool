@@ -207,6 +207,7 @@ export class UsersComponent implements OnInit {
             this.toastr.success(this.properties.UPDATE, this.properties.USER);
             this.init();
             usersForm.resetForm();
+            this.initialGetAll();
             this.readOnlyForm = '';
             this.enableButtonType = '';
             this.showAction = false;
@@ -224,6 +225,7 @@ export class UsersComponent implements OnInit {
             this.init();
             this.close();
             this.formReset();
+            this.initialGetAll();
             this.readOnlyForm = '';
             this.enableButtonType = '';
             this.showAction = false;

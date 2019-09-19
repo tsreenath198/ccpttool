@@ -127,10 +127,10 @@ export class ConsultantStatusComponent implements OnInit {
             this.toastr.success(this.properties.CREATE, this.properties.CON_STATUS);
             this.init();
             this.formReset();
+            this.initialGetAll();
             this.spinner(true);
             consultantStatusForm.resetForm();
             this.paginateConfig.currentPage=1;
-            this.initialGetAll();
             this.isCreate= false;
         }, err => {
             this.toastr.error(err.error.message, this.properties.CON_STATUS);
@@ -147,6 +147,7 @@ export class ConsultantStatusComponent implements OnInit {
             this.formReset();
             this.init();
             consultantStatusForm.resetForm();
+            this.initialGetAll();
             this.spinner(true);
             this.readOnlyForm = '';
             this.enableButtonType = '';
@@ -172,6 +173,7 @@ export class ConsultantStatusComponent implements OnInit {
             this.init();
             this.close();
             this.formReset();
+            this.initialGetAll();
             this.spinner(true);
             this.readOnlyForm = '';
             this.enableButtonType = '';

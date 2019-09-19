@@ -136,6 +136,7 @@ export class MessageTemplateComponent implements OnInit {
             this.toastr.success(this.properties.UPDATE, 'Message Template ');
             this.init();
             messageTemplateForm.resetForm();
+            this.initialGetAll();
             this.readOnlyForm = '';
             this.enableButtonType = '';
             this.showAction = false;
@@ -157,6 +158,7 @@ export class MessageTemplateComponent implements OnInit {
             this.toastr.success(this.properties.DELETE, 'Client');
             this.init();
             this.close();
+            this.initialGetAll();
             this.formReset();
             this.showAction = false;
         }, err => {

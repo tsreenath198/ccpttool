@@ -181,11 +181,11 @@ export class SearchBankComponent implements OnInit {
         this.toastr.success(this.properties.UPDATE, this.properties.SEARCH);
         this.init();
         searchBankForm.resetForm();
+        this.initialGetAll();
         this.readOnlyForm = '';
         this.enableButtonType = '';
         this.showAction = false;
         this.spinner(true);
-        this.initialGetAll();
       },
       err => {
         this.toastr.error(err.error.message, this.properties.SEARCH);
@@ -210,11 +210,11 @@ export class SearchBankComponent implements OnInit {
         this.init();
         this.close();
         this.formReset();
+        this.initialGetAll();
         this.readOnlyForm = '';
         this.enableButtonType = '';
         this.showAction = false;
         this.spinner(true);
-        this.initialGetAll();
       },
       err => {
         this.toastr.error(err.error.message, this.properties.SEARCH);

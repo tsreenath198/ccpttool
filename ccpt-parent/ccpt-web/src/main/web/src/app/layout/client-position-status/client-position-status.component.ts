@@ -128,6 +128,7 @@ export class ClientPositionStatusComponent implements OnInit {
             this.toastr.success(this.properties.UPDATE, this.properties.POS_STATUS);
             this.formReset();
             this.init();
+            this.initialGetAll();
             this.spinner(true);
             clientApplicationStatusForm.resetForm();
             this.readOnlyForm = '';
@@ -160,6 +161,7 @@ export class ClientPositionStatusComponent implements OnInit {
             this.init();
             this.close();
             this.formReset();
+            this.initialGetAll();
             this.spinner(true);
             this.readOnlyForm = '';
             this.enableButtonType = '';

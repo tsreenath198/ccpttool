@@ -511,6 +511,7 @@ export class ClientApplicationComponent implements OnInit {
         this.init();
         this.close();
         this.formReset();
+        this.initialGetAll();
         this.spinner(true);
         this.readOnlyForm = '';
         this.enableButtonType = '';
@@ -746,6 +747,7 @@ export class ClientApplicationComponent implements OnInit {
   public filterSearchCp() {
     this.isSerach = true;
     this.searchCp = [];
+    this.currSearch.clientPos = 0;
     let temp1: any = this.clientList.filter(cl => cl.id == this.currSearch.client);
     this.clientPositionList.filter(cpl => {
       let temp = cpl.name.split(/\-/, 1);

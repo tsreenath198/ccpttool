@@ -175,8 +175,6 @@ export class OtherContactsComponent implements OnInit {
             otherContactForm.resetForm();
             this.paginateConfig.currentPage=1;
             this.initialGetAll();
-            this.paginateConfig.currentPage=1;
-            this.initialGetAll();
             this.isCreate = false;
             this.spinner(true);
         }, err => {
@@ -192,6 +190,7 @@ export class OtherContactsComponent implements OnInit {
             this.toastr.success(this.properties.UPDATE, this.properties.CONTACT);
             this.init();
             otherContactForm.resetForm();
+            this.initialGetAll();
             this.readOnlyForm = '';
             this.enableButtonType = '';
             this.showAction = false;
@@ -217,6 +216,7 @@ export class OtherContactsComponent implements OnInit {
             this.init();
             this.close();
             this.formReset();
+            this.initialGetAll();
             this.readOnlyForm = '';
             this.enableButtonType = '';
             this.showAction = false;

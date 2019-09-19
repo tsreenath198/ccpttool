@@ -41,6 +41,9 @@
             </div>
           </div>
           <div class="row mt-2">
+            <div class="col-md-4">
+                <b class="pull-left">Filtered list count:{{ clientApplicationList?.list?.length }}</b>
+            </div>
               <div class="col-md-2" >
                   <button *ngIf="isSerach" type="button"  class ="btn btn-secondary  btn-sm ml-3" (click)="generateSearchParams()">
                   Search
@@ -51,8 +54,7 @@
                   Cancel
                 </button>
               </div>
-              <div class="col-md-8">
-                <b class="pull-left"  *ngIf="isSerach">Filtered list count:{{ clientApplicationList.list.length }}</b>
+              <div class="col-md-4">
                 <span class="pull-right mr-3" *ngIf=" appIds.length > 0">
                     <div class="dropdown theme-dropdown clearfix" placement="bottom-right" ngbDropdown>
                       <i class="fa fa-bars" ngbDropdownToggle></i>
@@ -67,7 +69,7 @@
         </div>
       </div>
       <div class="pt-2">
-          <nav>
+          <nav *ngIf="!isSerach">
             <div class="nav nav-tabs" id="nav-tab" role="tablist">
               <a class="nav-item nav-link" [ngClass]="{'active': tabCheck=='Active CA'}" id="nav-active" (click)="showActive()" data-toggle="tab"  role="tab" aria-controls="viewTable" >Active</a>
               <a class="nav-item nav-link" id="nav-inactive" [ngClass]="{'active': tabCheck=='Inactive CA'}" (click)="showInactive()" data-toggle="tab"  role="tab" aria-controls="viewTable" >Inactive</a>

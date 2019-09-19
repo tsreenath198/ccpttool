@@ -447,6 +447,7 @@ export class ClientPositionComponent implements OnInit {
         this.close();
         this.formReset();
         this.spinner(true);
+        this.initialGetAll();
         this.readOnlyForm = '';
         this.enableButtonType = '';
         this.showAction = false;

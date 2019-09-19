@@ -175,6 +175,7 @@ export class ClientComponent implements OnInit {
             this.successHandle()
             this.setClientContactModel();
             clientForm.resetForm();
+            this.initialGetAll();
             this.readOnlyForm = '';
             this.enableButtonType = '';
             this.showAction = false;
@@ -247,6 +248,7 @@ export class ClientComponent implements OnInit {
             this.readOnlyForm = '';
             this.enableButtonType = '';
             this.showAction = false;
+            this.initialGetAll();
         }, err => {
             this.errorHandle(err);
         });

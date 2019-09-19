@@ -208,6 +208,7 @@ export class RecruiterComponent implements OnInit {
         this.init();
         this.formReset();
         recruiterForm.resetForm();
+        this.initialGetAll();
         this.spinner(true);
         this.readOnlyForm = '';
         this.enableButtonType = '';
@@ -237,6 +238,7 @@ export class RecruiterComponent implements OnInit {
         this.close();
         this.init();
         this.formReset();
+        this.initialGetAll();
         this.readOnlyForm = '';
         this.enableButtonType = '';
         this.showAction = false;

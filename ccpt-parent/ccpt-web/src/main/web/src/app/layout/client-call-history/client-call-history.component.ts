@@ -249,6 +249,7 @@ export class ClientCallHistoryComponent implements OnInit {
         this.getRecruiterId();
         this.getTodaysDate();
         this.spinner(true);
+        this.initialGetAll();
         this.readOnlyForm = '';
         this.enableButtonType = '';
         this.showAction = false;
@@ -281,6 +282,7 @@ export class ClientCallHistoryComponent implements OnInit {
         this.enableButtonType = '';
         this.getTodaysDate();
         this.close();
+        this.initialGetAll();
         this.formReset();
         this.spinner(true);
         this.showAction = false;
