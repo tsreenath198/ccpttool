@@ -66,7 +66,7 @@ public class ClientApplicationService extends BaseService<ClientApplication, Int
 	}
 
 	public List<ClientApplication> findByConsultantIdAndActiveFlag(Integer consultantId) {
-		return clientApplicationRepository.findByConsultantIdAndActiveFlag(consultantId, true);
+		return clientApplicationRepository.findByConsultantIdAndActiveFlagOrderByCreatedDateDesc(consultantId, true);
 	}
 
 	public ApplicationBody showBodyMail(Integer caId) {
@@ -114,7 +114,7 @@ public class ClientApplicationService extends BaseService<ClientApplication, Int
 	}
 
 	public List<DashboardCAStatistics> getDashboardCAStatistics() {
-		return clientApplicationRepository.getDashboardCaStatus();
+		return clientApplicationRepository.getDashboardCaStatus(true);
 	}
 
 	public List<CAByStatusHelper> getAllCAbyStatus() {

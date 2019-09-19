@@ -44,7 +44,7 @@ public class ClientPositionService extends BaseService<ClientPosition, Integer> 
 	public List<ClientPosition> getTop5ClientPositions() {
 		return clientPositionRepository.findTop5ByActiveFlagAllIgnoreCaseOrderByIdDesc(true);
 	}
- 
+
 	public List<ClientPosition> getAllOpenCP() {
 		return clientPositionRepository.getAllOpenCP();
 	}
@@ -65,7 +65,7 @@ public class ClientPositionService extends BaseService<ClientPosition, Integer> 
 	@Override
 	protected void postDelete(ClientPosition clientPosition) {
 		List<ClientApplication> listOfCA = clientApplicationRepository
-				.findByClientPositionIdAndActiveFlag(clientPosition.getId(), true);
+				.findByClientPositionIdAndActiveFlagOrderByCreatedDateDesc(clientPosition.getId(), true);
 		for (ClientApplication clientApplication : listOfCA) {
 			clientApplication.setActiveFlag(false);
 			clientApplication.setUpdatedDate(new Date());

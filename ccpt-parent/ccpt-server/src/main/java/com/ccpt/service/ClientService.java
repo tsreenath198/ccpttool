@@ -52,7 +52,7 @@ public class ClientService extends BaseService<Client, Integer> {
 		}
 		for (ClientPosition cp : cpList) {
 			List<ClientApplication> listOfCA = clientApplicationRepository
-					.findByClientPositionIdAndActiveFlag(cp.getId(), true);
+					.findByClientPositionIdAndActiveFlagOrderByCreatedDateDesc(cp.getId(), true);
 			for (ClientApplication clientApplication : listOfCA) {
 				clientApplication.setActiveFlag(false);
 				clientApplication.setUpdatedDate(new Date());
