@@ -1,33 +1,42 @@
-
-.table-scroll{
-    height: 10em; 
-    overflow-y: scroll
+.table-scroll {
+  height: 10em;
+  overflow-y: scroll;
 }
-.ht-30{
-    height: 30em !important; 
+.ht-30 {
+  height: 30em !important;
 }
-.text-clr-white{
-    color: white
+.text-clr-white {
+  color: white;
 }
-.padding-top{
- padding-top: 60px;
+.padding-top {
+  padding-top: 60px;
 }
-.link:hover{
-    cursor: pointer;
-    color:blue;
-    text-decoration: underline;
+.link:hover {
+  cursor: pointer;
+  color: blue;
+  text-decoration: underline;
 }
 .table-striped {
-    tbody tr:nth-of-type(odd) {
-      background-color: #c1c1c1;
-    }
+  tbody tr:nth-of-type(odd) {
+    background-color: #c1c1c1;
   }
-  .heightFixed{
-    position: relative;
-    height: 403px;
-    overflow-y: scroll;
-  }
+}
+.table-overflow {
+  position: relative;
+  height: 403px;
+  overflow-y: scroll;
+}
 
-.table-fixed thead, .table-fixed tbody, .table-fixed tr, .table-fixed td, .table-fixed th {
-    display: block;
-  }
+.table-fixed thead,
+.table-fixed tbody,
+.table-fixed tr,
+.table-fixed td,
+.table-fixed th {
+  display: block;
+}
+.fa-position {
+    position: absolute;
+    margin-left: 158px;
+    margin-top: -18px;
+    color: #2af72a;
+}

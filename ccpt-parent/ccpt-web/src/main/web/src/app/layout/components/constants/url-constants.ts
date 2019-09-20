@@ -117,7 +117,7 @@ export class URLConstants {
     ReportingGetAllInterviewsToday = 'dashboard/getAllInterviewsFromToday';
     ReportingDyingCp = 'dashboard/getLastWeekDyingCP';
     ReportingGetAllCAByStatus = 'dashboard/getAllCAbyStatus';
-    DashboardCAStat = 'dashboard/dashboardCAStatistics';
+    DashboardCAStat = 'dashboard/getDashboardCAStatistics';
 
     /**Email Template */
     EmailTemplateCreate = 'template';

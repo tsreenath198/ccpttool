@@ -48,7 +48,7 @@
         <div class="col-md-12">
           <div class="card mb-3">
             <div class="card-header bg-dark text-clr-white">Quick Status Update</div>
-            <div class="card-body  table-responsive heightFixed">
+            <div class="card-body  table-responsive table-overflow">
               <table class="table tableFixHead table-sm table-striped">
                 <thead>
                   <tr>
@@ -61,16 +61,15 @@
                   <tr *ngFor="let ca of caStat">
                     <td>{{ ca.clientName }}</td>
                     <td>{{ ca.consultantName }}</td>
-                    <td>
-                      <div class="row">
-                        <div class="col-10"><select class="form-control form-control-sm" name="cas"
-                            [(ngModel)]="ca.status" (change)="updateCAStatus(ca)">
-                            <option *ngFor="let casl of caStatusList.list" [ngValue]="casl.code">
-                              {{ casl.description }}
-                            </option>
-                          </select></div>
-                        <div class="col-1 text-success" *ngIf="updateIndex == ca.id"><i class="fa fa-check"></i></div>
-                      </div>
+                    <td colspan="2">
+                      <select class="form-control form-control-sm" name="cas" [(ngModel)]="ca.status" (change)="updateCAStatus(ca)">
+                        <option *ngFor="let casl of caStatusList.list" [ngValue]="casl.code">
+                          {{ casl.description }}
+                        </option> </select
+                      ><i
+                        *ngIf="updateIndex == ca.id"
+                        class="fa fa-check fa-lg fa-position"
+                      ></i>
                     </td>
                   </tr>
                 </tbody>
@@ -78,11 +77,16 @@
             </div>
           </div>
         </div>
-        <div class="col-md-12" *ngIf="openCP.length>0">
+        <div class="col-md-12" *ngIf="openCP.length > 0">
           <div class="card mb-3">
-            <div class="card-header bg-dark text-clr-white">Open Client Positions<i class="fa fa-question-circle-o ml-2"
-                placement="top" ngbTooltip="All those positions which dont have any applications."
-                aria-hidden="true"></i></div>
+            <div class="card-header bg-dark text-clr-white">
+              Open Client Positions<i
+                class="fa fa-question-circle-o ml-2"
+                placement="top"
+                ngbTooltip="All those positions which dont have any applications."
+                aria-hidden="true"
+              ></i>
+            </div>
             <div>
               <div class="card-body">
                 <table class="table table-sm table-striped">
@@ -112,8 +116,7 @@
             <div class="card-header bg-dark text-clr-white">
               Recruiter Performance
               <span class="pull-right">
-                <select class="form-control form-control-sm" name="rpChoosenDays" [(ngModel)]="rpChoosenDays"
-                  (change)="rpGetAllByDays()">
+                <select class="form-control form-control-sm" name="rpChoosenDays" [(ngModel)]="rpChoosenDays" (change)="rpGetAllByDays()">
                   <option *ngFor="let nod of noOfDays" [ngValue]="nod.value">{{ nod.key }} </option>
                 </select>
               </span>
@@ -142,8 +145,12 @@
             <div class="card-header bg-dark text-clr-white">
               Consultant Call History
               <span class="pull-right">
-                <select class="form-control form-control-sm" name="cochChoosenDays" [(ngModel)]="cochChoosenDays"
-                  (change)="cochGetAllByDays()">
+                <select
+                  class="form-control form-control-sm"
+                  name="cochChoosenDays"
+                  [(ngModel)]="cochChoosenDays"
+                  (change)="cochGetAllByDays()"
+                >
                   <option *ngFor="let nod of noOfDays" [ngValue]="nod.value">{{ nod.key }} </option>
                 </select>
               </span>
@@ -157,8 +164,13 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr class="link" placement="top" ngbTooltip="click for details" *ngFor="let cch of ccptReportCOCH"
-                    (click)="open(contentCoCH, cch.recruiterId, 'ConsultantCallHistory')">
+                  <tr
+                    class="link"
+                    placement="top"
+                    ngbTooltip="click for details"
+                    *ngFor="let cch of ccptReportCOCH"
+                    (click)="open(contentCoCH, cch.recruiterId, 'ConsultantCallHistory')"
+                  >
                     <td>{{ cch.fullName }}</td>
                     <td>{{ cch.count }}</td>
                   </tr>
@@ -176,21 +188,32 @@
             <div class="card-header bg-dark text-clr-white">
               Client Applications By Status
             </div>
-            <div class="card-body heightFixed">
+            <div class="card-body table-overflow">
               <div [style.height.px]="stackChartHeight">
-                <canvas baseChart id="activeCAChart" [datasets]="barChartCAByStatusData"
-                  [labels]="barChartCAByStautsLabels" [options]="barChartOptions" [legend]="stackBarChartLegend"
-                  [chartType]="barChartType">
+                <canvas
+                  baseChart
+                  id="activeCAChart"
+                  [datasets]="barChartCAByStatusData"
+                  [labels]="barChartCAByStautsLabels"
+                  [colors]="stackbarChartColors"
+                  [options]="barChartOptions"
+                  [legend]="stackBarChartLegend"
+                  [chartType]="barChartType"
+                >
                 </canvas>
               </div>
             </div>
           </div>
         </div>
-        <div class="col-md-12" *ngIf="dyingCP.length>0">
+        <div class="col-md-12" *ngIf="dyingCP.length > 0">
           <div class="card mb-3">
-            <div class="card-header bg-dark text-clr-white">Dying Client Positions<i
-                class="fa fa-question-circle-o ml-2" placement="top"
-                ngbTooltip="All those positions which dont have apllications since one week." aria-hidden="true"></i>
+            <div class="card-header bg-dark text-clr-white">
+              Dying Client Positions<i
+                class="fa fa-question-circle-o ml-2"
+                placement="top"
+                ngbTooltip="All those positions which dont have apllications since one week."
+                aria-hidden="true"
+              ></i>
             </div>
             <div class="card-body">
               <table class="table table-sm table-striped">
@@ -411,8 +434,15 @@
         <div class="col-md-6">
           <div class="form-group">
             <label>Client Name </label>
-            <input class="form-control" [readonly]="readOnlyForm == 'R'" [(ngModel)]="top5ById?.client.name" name="cn"
-              [ngClass]="{ 'is-invalid': f.submitted && cn.invalid }" #cn="ngModel" required />
+            <input
+              class="form-control"
+              [readonly]="readOnlyForm == 'R'"
+              [(ngModel)]="top5ById?.client.name"
+              name="cn"
+              [ngClass]="{ 'is-invalid': f.submitted && cn.invalid }"
+              #cn="ngModel"
+              required
+            />
             <!-- <select
                     class="form-control"
                     name="cn"
@@ -432,8 +462,15 @@
         <div class="col-md-6">
           <div class="form-group">
             <label>Job Title </label>
-            <input class="form-control" [readonly]="readOnlyForm == 'R'" [(ngModel)]="top5ById.role" name="technology"
-              [ngClass]="{ 'is-invalid': f.submitted && technology.invalid }" #technology="ngModel" required />
+            <input
+              class="form-control"
+              [readonly]="readOnlyForm == 'R'"
+              [(ngModel)]="top5ById.role"
+              name="technology"
+              [ngClass]="{ 'is-invalid': f.submitted && technology.invalid }"
+              #technology="ngModel"
+              required
+            />
             <div class="invalid-feedback">
               Role is mandatory
             </div>
@@ -444,16 +481,27 @@
         <div class="col-md-6">
           <div class="form-group">
             <label>Job Type</label>
-            <input class="form-control" [readonly]="readOnlyForm == 'R'" [(ngModel)]="top5ById.jobType" name="jobType"
-              [ngClass]="{ 'is-invalid': f.submitted && jobType.invalid }" #jobType="ngModel" />
+            <input
+              class="form-control"
+              [readonly]="readOnlyForm == 'R'"
+              [(ngModel)]="top5ById.jobType"
+              name="jobType"
+              [ngClass]="{ 'is-invalid': f.submitted && jobType.invalid }"
+              #jobType="ngModel"
+            />
           </div>
         </div>
         <div class="col-md-6">
           <div class="form-group">
             <label>Availability</label>
-            <input class="form-control" [readonly]="readOnlyForm == 'R'" [(ngModel)]="top5ById.availability"
-              name="availability" [ngClass]="{ 'is-invalid': f.submitted && availability.invalid }"
-              #availability="ngModel" />
+            <input
+              class="form-control"
+              [readonly]="readOnlyForm == 'R'"
+              [(ngModel)]="top5ById.availability"
+              name="availability"
+              [ngClass]="{ 'is-invalid': f.submitted && availability.invalid }"
+              #availability="ngModel"
+            />
           </div>
         </div>
       </div>
@@ -461,15 +509,28 @@
         <div class="col-md-6">
           <div class="form-group">
             <label>Required Positions</label>
-            <input class="form-control" type="number" min="0" [readonly]="readOnlyForm == 'R'"
-              [(ngModel)]="top5ById.requiredPositions" name="nofpos" #nofpos="ngModel" />
+            <input
+              class="form-control"
+              type="number"
+              min="0"
+              [readonly]="readOnlyForm == 'R'"
+              [(ngModel)]="top5ById.requiredPositions"
+              name="nofpos"
+              #nofpos="ngModel"
+            />
           </div>
         </div>
         <div class="col-md-6">
           <div class="form-group">
             <label>Required Experience</label>
-            <input class="form-control" [readonly]="readOnlyForm == 'R'" [(ngModel)]="top5ById.experience"
-              name="experience" [ngClass]="{ 'is-invalid': f.submitted && experience.invalid }" #experience="ngModel" />
+            <input
+              class="form-control"
+              [readonly]="readOnlyForm == 'R'"
+              [(ngModel)]="top5ById.experience"
+              name="experience"
+              [ngClass]="{ 'is-invalid': f.submitted && experience.invalid }"
+              #experience="ngModel"
+            />
           </div>
         </div>
       </div>
@@ -477,15 +538,29 @@
         <div class="col-md-6">
           <div class="form-group">
             <label>Min CTC</label>
-            <input class="form-control" [readonly]="readOnlyForm == 'R'" type="text" [(ngModel)]="top5ById.minCtc"
-              name="minctc" [ngClass]="{ 'is-invalid': f.submitted && minctc.invalid }" #minctc="ngModel" />
+            <input
+              class="form-control"
+              [readonly]="readOnlyForm == 'R'"
+              type="text"
+              [(ngModel)]="top5ById.minCtc"
+              name="minctc"
+              [ngClass]="{ 'is-invalid': f.submitted && minctc.invalid }"
+              #minctc="ngModel"
+            />
           </div>
         </div>
         <div class="col-md-6">
           <div class="form-group">
             <label>Max CTC</label>
-            <input class="form-control" [readonly]="readOnlyForm == 'R'" type="text" [(ngModel)]="top5ById.maxCtc"
-              name="maxctc" [ngClass]="{ 'is-invalid': f.submitted && maxctc.invalid }" #maxctc="ngModel" />
+            <input
+              class="form-control"
+              [readonly]="readOnlyForm == 'R'"
+              type="text"
+              [(ngModel)]="top5ById.maxCtc"
+              name="maxctc"
+              [ngClass]="{ 'is-invalid': f.submitted && maxctc.invalid }"
+              #maxctc="ngModel"
+            />
           </div>
         </div>
       </div>
@@ -493,15 +568,27 @@
         <div class="col-md-6">
           <div class="form-group">
             <label>Location</label>
-            <input class="form-control" [readonly]="readOnlyForm == 'R'" [(ngModel)]="top5ById.location" name="loc"
-              [ngClass]="{ 'is-invalid': f.submitted && loc.invalid }" #loc="ngModel" />
+            <input
+              class="form-control"
+              [readonly]="readOnlyForm == 'R'"
+              [(ngModel)]="top5ById.location"
+              name="loc"
+              [ngClass]="{ 'is-invalid': f.submitted && loc.invalid }"
+              #loc="ngModel"
+            />
           </div>
         </div>
         <div class="col-md-6">
           <div class="form-group">
             <label>Client Position Status </label>
-            <input class="form-control" [readonly]="readOnlyForm == 'R'" [(ngModel)]="top5ById.status.description"
-              name="cps" [ngClass]="{ 'is-invalid': f.submitted && cps.invalid }" #cps="ngModel" />
+            <input
+              class="form-control"
+              [readonly]="readOnlyForm == 'R'"
+              [(ngModel)]="top5ById.status.description"
+              name="cps"
+              [ngClass]="{ 'is-invalid': f.submitted && cps.invalid }"
+              #cps="ngModel"
+            />
             <!-- <select class="form-control" name="cps" [disabled]="readOnlyForm == 'R'" [(ngModel)]="top5ById.cpstatus">
                      <option *ngFor="let cpsl of clientPositionStatusList" [ngValue]="cpsl.code"> {{ cpsl.description }} </option>
                   </select> -->
@@ -512,8 +599,14 @@
         <div class="col-md-6">
           <div class="form-group">
             <label>Assign To</label>
-            <input class="form-control" [readonly]="readOnlyForm == 'R'" [(ngModel)]="top5ById.assignedTo.fullname"
-              name="assign" [ngClass]="{ 'is-invalid': f.submitted && assign.invalid }" #assign="ngModel" />
+            <input
+              class="form-control"
+              [readonly]="readOnlyForm == 'R'"
+              [(ngModel)]="top5ById.assignedTo.fullname"
+              name="assign"
+              [ngClass]="{ 'is-invalid': f.submitted && assign.invalid }"
+              #assign="ngModel"
+            />
             <!-- <select
                       class="form-control"
                       name="assign"
@@ -529,15 +622,20 @@
         <div class="col-md-6">
           <div class="form-group">
             <label>Qualification</label>
-            <input class="form-control" [readonly]="readOnlyForm == 'R'" [(ngModel)]="top5ById.qualification"
-              name="qual" [ngClass]="{ 'is-invalid': f.submitted && qual.invalid }" #qual="ngModel" />
+            <input
+              class="form-control"
+              [readonly]="readOnlyForm == 'R'"
+              [(ngModel)]="top5ById.qualification"
+              name="qual"
+              [ngClass]="{ 'is-invalid': f.submitted && qual.invalid }"
+              #qual="ngModel"
+            />
           </div>
         </div>
         <div class="col-md-6" *ngIf="top5ById.cpstatus == 'Closed'">
           <div class="form-group">
             <label>Closed By</label>
-            <select class="form-control" name="closedBy" [disabled]="readOnlyForm == 'R'"
-              [(ngModel)]="top5ById.closedBy">
+            <select class="form-control" name="closedBy" [disabled]="readOnlyForm == 'R'" [(ngModel)]="top5ById.closedBy">
               <!-- <option *ngFor="let rl of recruiterList" [ngValue]="rl.id"> {{ rl.name }}</option> -->
             </select>
           </div>
@@ -547,9 +645,17 @@
         <div class="col-md-12">
           <div class="form-group">
             <label>Required Skills </label>
-            <textarea class="form-control" cols="10" rows="10" [(ngModel)]="top5ById.requiredSkills"
-              name="requiredskills" [ngClass]="{ 'is-invalid': f.submitted && requiredskills.invalid }"
-              #requiredskills="ngModel" required [readonly]="readOnlyForm == 'R'"></textarea>
+            <textarea
+              class="form-control"
+              cols="10"
+              rows="10"
+              [(ngModel)]="top5ById.requiredSkills"
+              name="requiredskills"
+              [ngClass]="{ 'is-invalid': f.submitted && requiredskills.invalid }"
+              #requiredskills="ngModel"
+              required
+              [readonly]="readOnlyForm == 'R'"
+            ></textarea>
             <div class="invalid-feedback">
               Required Skills are mandatory
             </div>
@@ -562,12 +668,16 @@
             <label>Additional Properties</label>
             <div class="row" *ngFor="let ap of top5ById.properties; let i = index">
               <div class="col-md-5 pt-3">
-                <input type="text" [(ngModel)]="ap.name" class="form-control" name="addPropName{{ i }}"
-                  [readonly]="readOnlyForm == 'R'" />
+                <input type="text" [(ngModel)]="ap.name" class="form-control" name="addPropName{{ i }}" [readonly]="readOnlyForm == 'R'" />
               </div>
               <div class="col-md-5 pt-3">
-                <input type="text" [(ngModel)]="ap.value" class="form-control" name="addPropValue{{ i }}"
-                  [readonly]="readOnlyForm == 'R'" />
+                <input
+                  type="text"
+                  [(ngModel)]="ap.value"
+                  class="form-control"
+                  name="addPropValue{{ i }}"
+                  [readonly]="readOnlyForm == 'R'"
+                />
               </div>
               <!-- <div class="col-md-2 pt-3">
                           <i
