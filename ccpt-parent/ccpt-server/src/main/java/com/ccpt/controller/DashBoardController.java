@@ -105,8 +105,9 @@ public class DashBoardController {
 	}
 
 	@GetMapping("/getDashboardCAStatistics")
-	public List<DashboardCAStatistics> getDashboardCAStatistics() {
-		return clientApplicationService.getDashboardCAStatistics();
+	public ResponseEntity<List<DashboardCAStatistics>> getDashboardCAStatistics() {
+		List<DashboardCAStatistics> result = clientApplicationService.getDashboardCAStatistics();
+		return new ResponseEntity<List<DashboardCAStatistics>>(result, HttpStatus.OK);
 	}
 
 	@GetMapping("/getAllDashboardContent")
