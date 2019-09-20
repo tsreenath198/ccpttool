@@ -52,11 +52,13 @@ public interface ClientApplicationRepository extends BaseRepository<ClientApplic
 	@Query("SELECT c.id as id,c.consultant.fullname as consultantName,c.clientPosition.generatedCode as generatedCode  FROM ClientApplication c where c.activeFlag=:activeFlag AND c.status.code='Job Confirmed' ORDER BY c.createdDate DESC")
 	List<DashboardCA> getJobConfirmedCAs(@Param("activeFlag") Boolean activeFlag);
 
-	@Query(nativeQuery = true, value = "SELECT ca.* FROM client_application ca LEFT OUTER JOIN consultant c ON ca.consultant_id = c.id LEFT OUTER JOIN client_position cp on cp.id = ca.client_position_id \r\n"
-			+ "WHERE (:clientId IS NULL OR cp.client_id = :clientId)  \r\n"
-			+ "AND (:clientPosId IS NULL OR cp.id=:clientPosId) \r\n"
-			+ "AND ca.status_code in (SELECT cas.code from client_application_status cas where cas.status_type = :statusType) \r\n"
-			+ "AND (:searchKey is null OR c.fullname LIKE %:searchKey% OR c.email LIKE %:searchKey% OR c.phone LIKE %:searchKey%) AND ca.active_flag=1 ORDER BY ca.created_date DESC")
+	@Query(nativeQuery = true, value = "SELECT ca.* FROM client_application ca LEFT OUTER JOIN consultant c ON ca.consultant_id = c.id "
+			+ "LEFT OUTER JOIN client_position cp on cp.id = ca.client_position_id "
+			+ "WHERE (:clientId IS NULL OR cp.client_id = :clientId)  "
+			+ "AND (:clientPosId IS NULL OR cp.id=:clientPosId) "
+			+ "AND (:statusType IS NULL OR ca.status_code in (SELECT cas.code from client_application_status cas where cas.status_type = :statusType)) "
+			+ "AND (:searchKey is null OR UPPER(c.fullname) LIKE :searchKey OR UPPER(c.email) LIKE :searchKey OR c.phone LIKE :searchKey)"
+			+ " AND ca.active_flag=1 ORDER BY ca.created_date DESC")
 	List<ClientApplication> search(@Param("clientId") Integer clientId, @Param("clientPosId") Integer clientPosId,
 			@Param("statusType") String statusType, @Param("searchKey") String searchKey);
 

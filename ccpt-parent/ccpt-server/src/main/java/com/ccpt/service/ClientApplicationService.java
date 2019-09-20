@@ -110,6 +110,9 @@ public class ClientApplicationService extends BaseService<ClientApplication, Int
 	}
 
 	public List<ClientApplication> search(Integer clientId, Integer clientPosId, String statusType, String searchKey) {
+		if (searchKey != null) {
+			searchKey = "%" + searchKey.replaceAll("%", "").toUpperCase() + "%";
+		}
 		return clientApplicationRepository.search(clientId, clientPosId, statusType, searchKey);
 	}
 
