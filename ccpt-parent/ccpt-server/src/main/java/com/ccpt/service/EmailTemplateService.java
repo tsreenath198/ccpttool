@@ -173,11 +173,11 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 			for (ClientApplication clientApplication : clientApplications) {
 				cc = new StringBuilder();
 
-				UploadFile uploadedFile = uploadFileService.getByRefIdAndRefType(clientApplication.getId(), "CRF");
+				/*UploadFile uploadedFile = uploadFileService.getByRefIdAndRefType(clientApplication.getId(), "CRF");
 				if (uploadedFile != null)
 					files.add(uploadedFile);
 				else
-					throw new CAException(clientApplication.getConsultant().getFullname() + " doesn't have crf file");
+					throw new CAException(clientApplication.getConsultant().getFullname() + " doesn't have crf file");*/
 
 				String name = clientApplication.getClientPosition().getClient().getName();
 				names.add(name);
