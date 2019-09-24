@@ -27,6 +27,7 @@ public interface CCPTConstants {
 	String SEARCH = "/search";
 	String QUESTION = "/question";
 	String DASHBOARD = "/dashboard";
+	String HISTORY = "/history";
 
 	String CLIENT_APPLICATION_STATUS = "/caStatus";
 	String CLIENT_POSITION_STATUS = "/cpStatus";

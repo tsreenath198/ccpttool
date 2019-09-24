@@ -136,6 +136,133 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 		}
 	}
 
+	public EmailContent getCAs(List<Integer> ids) throws Exception {
+		EmailContent emailContent = new EmailContent();
+		StringBuilder cc = null;
+		StringBuilder body = new StringBuilder();
+		List<String> names = new ArrayList<String>();
+		List<UploadFile> files = new ArrayList<UploadFile>();
+		List<ClientApplication> clientApplications = new ArrayList<ClientApplication>();
+		Set<String> cpNames = new HashSet<String>();
+		for (Integer id : ids) {
+			Optional<ClientApplication> ca = clientApplicationRepository.findById(id);
+			String name = ca.get().getClientPosition().getClient().getName();
+			names.add(name);
+			clientApplications.add(ca.get());
+
+		}
+		boolean allEqual = names.isEmpty() || names.stream().allMatch(names.get(0)::equals);
+		if (allEqual) {
+			StringBuilder sbPara = new StringBuilder();
+			Map<String, String> valuesMap = new HashMap<String, String>();
+			ClientPosition clientPosition = clientApplications.get(0).getClientPosition();
+			valuesMap.put("jobTitle", clientPosition.getRole());
+			valuesMap.put("clientContactName", clientPosition.getClient().getClientContacts().get(0).getFullname());
+			if (clientPosition.getClient().getClientContacts().get(0).getSalutation().equalsIgnoreCase("Mr."))
+				sbPara.append("<p>Hi ${clientContactName} sir</p>");
+			else
+				sbPara.append("<p>Hi ${clientContactName} madam</p>");
+			if (ids.size() == 1)
+				sbPara.append("<p> Below is the profile with ${jobTitle}  experience (CV Attached)</p>");
+			else
+				sbPara.append("<p> Below are the profiles with ${jobTitle}  experience (CVs Attached)</p>");
+			sbPara.append("<p>");
+
+			String subject = StrSubstitutor.replace(sbPara.toString(), valuesMap);
+			StringBuilder sb = new StringBuilder(subject);
+			for (ClientApplication clientApplication : clientApplications) {
+				cc = new StringBuilder();
+
+				UploadFile uploadedFile = uploadFileService.getByRefIdAndRefType(clientApplication.getId(), "CRF");
+				if (uploadedFile != null)
+					files.add(uploadedFile);
+				else
+					throw new CAException(clientApplication.getConsultant().getFullname() + " doesn't have crf file");
+
+				String name = clientApplication.getClientPosition().getClient().getName();
+				names.add(name);
+				cpNames.add(clientApplication.getClientPosition().getRole());
+
+				List<ClientContact> clientContacts = clientApplication.getClientPosition().getClient()
+						.getClientContacts();
+				if (clientContacts.size() != 1) {
+					for (int i = 1; i < clientContacts.size(); i++) {
+						cc.append(clientContacts.get(i).getEmail());
+						if (i != clientContacts.size() - 1) {
+							cc.append(",");
+						}
+					}
+				}
+			}
+			String template = appendTemplate(clientApplications);
+			body.append(template);
+			emailContent.setBody(sb.toString().concat(JobDescriptionSubstitutor.getSign(body)));
+			emailContent.setUploadFiles(files);
+			emailContent.setToEmails(
+					clientApplications.get(0).getClientPosition().getClient().getClientContacts().get(0).getEmail());
+			emailContent.setSubject("CV for " + String.join(",", cpNames));
+
+			emailContent.setCc(cc.toString());
+			emailContent.setBcc(bcc);
+			return emailContent;
+		} else {
+			throw new CAException("please select same client application ");
+		}
+	}
+
+	public static String appendTemplate(List<ClientApplication> clientApplications) {
+		StringBuilder sb = new StringBuilder();
+		sb.append("<p>");
+		sb.append(
+				"<table width=\"728\" border=\"1\" style=\"border-collapse : collapse\" cellspacing=\"0\" cellpadding=\"0\">");
+		sb.append("<tbody>");
+		sb.append("<tr>\r\n" + "<th width=\"199\">\r\n" + "<p><strong>1</strong></p>\r\n" + "</th>"
+				+ "<th width=\"199\">\r\n" + "<p><strong>2</strong></p>\r\n" + "</th>" + "<th width=\"199\">\r\n"
+				+ "<p><strong>3</strong></p>\r\n" + "</th>");
+		for (ClientApplication clientApplication : clientApplications) {
+
+			if (clientApplication.getClientPosition().getClient().getName() != null) {
+				sb.append("<tr>\r\n" + "<td width=\"529\">\r\n" + "<p>"
+						+ clientApplication.getConsultant().getFullname() + "</p>\r\n" + "</td>\r\n");
+			}
+			if (clientApplication.getClientPosition().getGeneratedCode() != null) {
+				sb.append("</td>\r\n" + "<td width=\"529\">\r\n" + "<p>"
+						+ clientApplication.getClientPosition().getGeneratedCode() + "</p>\r\n" + "</td>\r\n");
+			}
+			if (clientApplication.getSentOn() != null) {
+				sb.append("<td width=\"529\">\r\n" + "<p>" + clientApplication.getSentOn() + "</p>\r\n" + "</td>\r\n"
+						+ "</tr>");
+			}
+		}
+		sb.append("</tbody>");
+		sb.append("</table>");
+		getSign(sb);
+		String jd = sb.toString();
+		return jd;
+	}
+
+	public static String getSign(StringBuilder sb) {
+		sb.append("<p>");
+		sb.append("<table>");
+		sb.append("<tbody>");
+		sb.append("<tr><td><b>Thanks &amp; Regards</b></td></tr>");
+		sb.append("<tr><td><b>Sreenath Thatikonda</b></td></tr>");
+		sb.append("<tr><td>Branch&nbsp;Head</td></tr>");
+		sb.append(
+				"<tr><td style=\"font-size: 11.0pt;font-family: 'Calibri',sans-serif;color: #1f497d;\">Talent Corner HR Services Pvt. Ltd.</td></tr>");
+		sb.append(
+				"<tr><td style=\"font-size: 11.0pt;font-family: 'Calibri',sans-serif;color: #1f497d;\">(D) 9848071296 &nbsp; (W)&nbsp;<a href=\"http://www.talentcorner.in/\" data-saferedirecturl=\"https://www.google.com/url?q=http://www.talentcorner.in/&amp;source=gmail&amp;ust=1563428769215000&amp;usg=AFQjCNFet2kPL5oLLvDUSpWHxioT4LijGA\">www.talentcorner.in</a>&nbsp;(E)&nbsp;<a href=\"mailto:sreenath.t@talentcorner.in\">sreenath.t@talentcorner.in</a></td></tr>");
+		sb.append("</tbody>\r\n" + "</table>");
+		sb.append("<div style=\"font-size: 11.0pt;font-family: 'Calibri',sans-serif;color: #1f497d;\">\r\n"
+				+ "	You can also follow us on Facebook &amp; Twitter. Just search for Talent Corner.\r\n" + "</div>");
+		sb.append("<div style=\"font-size: 10.0pt;font-family: 'Calibri',sans-serif;color: #7030a0;\">\r\n"
+				+ "<strong>Offices : |Mumbai||Gurgaon||Gujarat||Kota||Pune| |Banglore||Chennai| |Hyderabad||Ahmedabad||Kolkata|</strong></div>");
+		sb.append(
+				"<div style=\"font-size: 10.0pt;font-family: 'Calibri',sans-serif;color: #7030a0;\"><strong>Vision 2025</strong>: On&nbsp;<strong>1<sup>st</sup>&nbsp;January 2025</strong>, Talent Corner will be an Organization, having operations in&nbsp;<strong>10</strong>&nbsp;Countries, with&nbsp;<strong>100</strong>&nbsp;Offices &amp; a Team of&nbsp;<strong>1000</strong>&nbsp;People ,Successfully Executing<strong>10000</strong>&nbsp;Recruitment Assignments every Year. We would have recruited&nbsp;<strong>1,00,000</strong>&nbsp;People by then. For every Successful Recruitment we will invest Rs<strong>. 100</strong>&nbsp;towards Girl Child Education, thus by&nbsp;<strong>2025</strong>&nbsp;we would have educated&nbsp;<strong>1000</strong>&nbsp;Girls&rdquo;</div>");
+		sb.append("</p>");
+		return sb.toString();
+	}
+
 	public EmailContent getInterviewTemplate(Integer id) {
 		EmailContent emailContent = new EmailContent();
 		StringBuilder body = new StringBuilder();

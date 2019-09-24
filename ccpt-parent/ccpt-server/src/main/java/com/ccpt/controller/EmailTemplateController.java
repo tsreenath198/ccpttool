@@ -48,6 +48,12 @@ public class EmailTemplateController extends BaseController<EmailTemplateDTO, Em
 	@ResponseBody
 	public EmailContent getClientApps(@RequestBody List<Integer> ids) throws Exception {
 		return emailTemplateService.getClientApps(ids);
+	}
+
+	@PostMapping("/getCAs")
+	@ResponseBody
+	public EmailContent getCAs(@RequestBody List<Integer> ids) throws Exception {
+		return emailTemplateService.getCAs(ids);
 
 	}
 
