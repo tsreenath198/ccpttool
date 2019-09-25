@@ -203,8 +203,8 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 			emailContent.setUploadFiles(files);
 			emailContent.setToEmails(
 					clientApplications.get(0).getClientPosition().getClient().getClientContacts().get(0).getEmail());
-			emailContent.setSubject("CV for " + String.join(",", cpNames));
-
+//			emailContent.setSubject("CV for " + String.join(",", cpNames));
+			emailContent.setSubject("Reqd update on CVs");
 			emailContent.setCc(cc.toString());
 			emailContent.setBcc(bcc);
 			return emailContent;
