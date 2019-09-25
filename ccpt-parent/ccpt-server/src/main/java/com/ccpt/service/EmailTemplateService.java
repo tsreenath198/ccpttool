@@ -288,7 +288,7 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 				"<p><strong>Name of Client Contact Person :</strong><mark>${clientContactPersonName} (${clientContactPersonNumber})</mark></p>");
 		sbPara.append("<p>**Feel free to call us any time.</p><p></p>");
 
-		if (!ca.get().getInterviewMode().equalsIgnoreCase("f2f")) {
+		if (ca.get().getInterviewMode().equalsIgnoreCase("f2f")) {
 			sbPara.append("<p><mark>** Things to Carry:</mark></p>");
 			sbPara.append("<p></p>");
 			sbPara.append("<p>1.      A physical copy of this interview confirmation email</p>");
