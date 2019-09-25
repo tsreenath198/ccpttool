@@ -286,7 +286,7 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 		sbPara.append("<p><strong>Address :</strong><mark>${address}</mark></p>");
 		sbPara.append(
 				"<p><strong>Name of Client Contact Person :</strong><mark>${clientContactPersonName} (${clientContactPersonNumber})</mark></p>");
-		sbPara.append("<p>**Feel free to call us any time.</p>");
+		sbPara.append("<p>**Feel free to call us any time.</p><p></p>");
 
 		if (!ca.get().getInterviewMode().equalsIgnoreCase("f2f")) {
 			sbPara.append("<p><mark>** Things to Carry:</mark></p>");
@@ -319,6 +319,23 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 			sbPara.append("<p></p>");
 			sbPara.append(
 					"<p>6.      After the interview is completed, please take permission from client before leaving the interview location.</p>");
+			sbPara.append("<p></p>");
+		} else {
+			sbPara.append("<p><mark>** Remember:</mark></p>");
+			sbPara.append("<p></p>");
+			sbPara.append("<p>1.Find a good location</p>");
+			sbPara.append("<p></p>");
+			sbPara.append("<p>2.Focus And Cut Out All Distractions</p>");
+			sbPara.append("<p></p>");
+			sbPara.append("<p>3.Smile like you're in Disneyland</p>");
+			sbPara.append("<p></p>");
+			sbPara.append("<p>4.Speak clearly</p>");
+			sbPara.append("<p></p>");
+			sbPara.append("<p>5.Listen carefully</p>");
+			sbPara.append("<p></p>");
+			sbPara.append("<p>6.Focus on your language and voice/p>");
+			sbPara.append("<p></p>");
+			sbPara.append("<p>7.Send your thank you, immediately.</p>");
 			sbPara.append("<p></p>");
 		}
 		sbPara.append("<p>After the interview is completed, inform us on how the interview went.</p>");
