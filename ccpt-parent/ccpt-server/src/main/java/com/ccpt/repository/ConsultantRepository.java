@@ -14,7 +14,7 @@ public interface ConsultantRepository extends BaseRepository<Consultant, Integer
 
 	List<Consultant> findByPhoneOrFullnameOrEmail(String phone, String fullname, String email);
 
-	@Query(value = "SELECT id as id,fullname as name,email as email,phone as phone FROM Consultant WHERE active_flag=1 AND status_code != 'Inactive' ORDER BY createdDate DESC")
+	@Query(value = "SELECT id as id,fullname as name,email as email,phone as phone FROM consultant WHERE active_flag=1 AND status_code != 'Inactive' ORDER BY created_date DESC LIMIT 100", nativeQuery = true)
 	List<ConsultantStatistics> getAllConsultants();
 
 	@Query(value = "SELECT * FROM consultant WHERE active_flag=1 AND CONCAT(fullname, '',phone, '',email, '',skills) LIKE %:searchKey%  and consultant.active_flag=1 ORDER BY consultant.created_date DESC", nativeQuery = true)

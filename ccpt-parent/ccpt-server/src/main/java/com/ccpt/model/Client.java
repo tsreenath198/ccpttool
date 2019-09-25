@@ -65,4 +65,11 @@ public class Client extends FileSupportEntity {
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "clientId")
 	private List<ClientContact> clientContacts;
+
+	@Column
+	private String contactPersonName;
+
+	@Column
+	private String contactPersonDesignation;
+
 }

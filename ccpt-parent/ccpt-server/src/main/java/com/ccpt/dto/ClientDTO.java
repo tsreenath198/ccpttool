@@ -22,5 +22,7 @@ public class ClientDTO extends FileSupportEntityDTO {
 	private String guaranteePeriod;
 	private String creditPeriod;
 	private String website;
+	private String contactPersonName;
+	private String contactPersonDesignation;
 	private List<ClientContactDTO> clientContacts;
 }

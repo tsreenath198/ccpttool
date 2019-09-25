@@ -173,11 +173,14 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 			for (ClientApplication clientApplication : clientApplications) {
 				cc = new StringBuilder();
 
-				/*UploadFile uploadedFile = uploadFileService.getByRefIdAndRefType(clientApplication.getId(), "CRF");
-				if (uploadedFile != null)
-					files.add(uploadedFile);
-				else
-					throw new CAException(clientApplication.getConsultant().getFullname() + " doesn't have crf file");*/
+				/*
+				 * UploadFile uploadedFile =
+				 * uploadFileService.getByRefIdAndRefType(clientApplication.
+				 * getId(), "CRF"); if (uploadedFile != null)
+				 * files.add(uploadedFile); else throw new
+				 * CAException(clientApplication.getConsultant().getFullname() +
+				 * " doesn't have crf file");
+				 */
 
 				String name = clientApplication.getClientPosition().getClient().getName();
 				names.add(name);
@@ -213,12 +216,11 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 	public static String appendTemplate(List<ClientApplication> clientApplications) {
 		StringBuilder sb = new StringBuilder();
 		sb.append("<p>");
-		sb.append(
-				"<table width=\"728\" border=\"1\" style=\"border-collapse : collapse\" cellspacing=\"0\" cellpadding=\"0\">");
+		sb.append("<table width=\"728\" border=\"1\"  cellspacing=\"0\" cellpadding=\"0\">");
 		sb.append("<tbody>");
-		sb.append("<tr>\r\n" + "<th width=\"199\">\r\n" + "<p><strong>1</strong></p>\r\n" + "</th>"
-				+ "<th width=\"199\">\r\n" + "<p><strong>2</strong></p>\r\n" + "</th>" + "<th width=\"199\">\r\n"
-				+ "<p><strong>3</strong></p>\r\n" + "</th>");
+		sb.append("<tr>\r\n" + "<th width=\"199\">\r\n" + "<p><strong>Client</strong></p>\r\n" + "</th>"
+				+ "<th width=\"199\">\r\n" + "<p><strong>Position</strong></p>\r\n" + "</th>" + "<th width=\"199\">\r\n"
+				+ "<p><strong>Sent On</strong></p>\r\n" + "</th>");
 		for (ClientApplication clientApplication : clientApplications) {
 
 			if (clientApplication.getClientPosition().getClient().getName() != null) {

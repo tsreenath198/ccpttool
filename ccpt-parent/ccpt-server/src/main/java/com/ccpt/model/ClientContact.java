@@ -34,10 +34,4 @@ public class ClientContact extends IDEntity {
 	@Column
 	private String salutation;
 
-	@Column
-	private String contactPersonName;
-
-	@Column
-	private String contactPersonDesignation;
-
 }
