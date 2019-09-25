@@ -172,16 +172,6 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 			StringBuilder sb = new StringBuilder(subject);
 			for (ClientApplication clientApplication : clientApplications) {
 				cc = new StringBuilder();
-
-				/*
-				 * UploadFile uploadedFile =
-				 * uploadFileService.getByRefIdAndRefType(clientApplication.
-				 * getId(), "CRF"); if (uploadedFile != null)
-				 * files.add(uploadedFile); else throw new
-				 * CAException(clientApplication.getConsultant().getFullname() +
-				 * " doesn't have crf file");
-				 */
-
 				String name = clientApplication.getClientPosition().getClient().getName();
 				names.add(name);
 				cpNames.add(clientApplication.getClientPosition().getRole());
@@ -297,37 +287,40 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 		sbPara.append(
 				"<p><strong>Name of Client Contact Person :</strong><mark>${clientContactPersonName} (${clientContactPersonNumber})</mark></p>");
 		sbPara.append("<p>**Feel free to call us any time.</p>");
-		sbPara.append("<p><mark>** Things to Carry:</mark></p>");
-		sbPara.append("<p></p>");
-		sbPara.append("<p>1.      A physical copy of this interview confirmation email</p>");
-		sbPara.append("<p></p>");
-		sbPara.append("<p>2.      Your complete CV</p>");
-		sbPara.append("<p></p>");
-		sbPara.append("<p>3.      Education related certificates</p>");
-		sbPara.append("<p></p>");
-		sbPara.append("<p>4.      Work Experience letters (if any)</p>");
-		sbPara.append("<p></p>");
-		sbPara.append("<p>5.      A Pen and Notebook to make some notes (if needed)</p>");
-		sbPara.append("<p></p>");
-		sbPara.append("<p><mark>**Interview Guidelines</mark></p>");
-		sbPara.append("<p></p>");
-		sbPara.append(
-				"<p>1.      Please make sure you wear clean and formal clothes for the interview. Your appearance matters a lot.</p>");
-		sbPara.append("<p></p>");
-		sbPara.append(
-				"<p>2.      Plan your travel well in advance. Please reach the interview location 30 minutes before to avoid last minute delays.</p>");
-		sbPara.append("<p></p>");
-		sbPara.append(
-				"<p>3.      Do call us once you reach the interview location so that we can inform the client.</p>");
-		sbPara.append("<p></p>");
-		sbPara.append("<p>4.      Avoid roaming around the office premises unnecessarily.</p>");
-		sbPara.append("<p></p>");
-		sbPara.append(
-				"<p>5.      Keep your phone in silent mode. If possible, switch off the mobile when entering the interview room.</p>");
-		sbPara.append("<p></p>");
-		sbPara.append(
-				"<p>6.      After the interview is completed, please take permission from client before leaving the interview location.</p>");
-		sbPara.append("<p></p>");
+
+		if (!ca.get().getInterviewMode().equalsIgnoreCase("f2f")) {
+			sbPara.append("<p><mark>** Things to Carry:</mark></p>");
+			sbPara.append("<p></p>");
+			sbPara.append("<p>1.      A physical copy of this interview confirmation email</p>");
+			sbPara.append("<p></p>");
+			sbPara.append("<p>2.      Your complete CV</p>");
+			sbPara.append("<p></p>");
+			sbPara.append("<p>3.      Education related certificates</p>");
+			sbPara.append("<p></p>");
+			sbPara.append("<p>4.      Work Experience letters (if any)</p>");
+			sbPara.append("<p></p>");
+			sbPara.append("<p>5.      A Pen and Notebook to make some notes (if needed)</p>");
+			sbPara.append("<p></p>");
+			sbPara.append("<p><mark>**Interview Guidelines</mark></p>");
+			sbPara.append("<p></p>");
+			sbPara.append(
+					"<p>1.      Please make sure you wear clean and formal clothes for the interview. Your appearance matters a lot.</p>");
+			sbPara.append("<p></p>");
+			sbPara.append(
+					"<p>2.      Plan your travel well in advance. Please reach the interview location 30 minutes before to avoid last minute delays.</p>");
+			sbPara.append("<p></p>");
+			sbPara.append(
+					"<p>3.      Do call us once you reach the interview location so that we can inform the client.</p>");
+			sbPara.append("<p></p>");
+			sbPara.append("<p>4.      Avoid roaming around the office premises unnecessarily.</p>");
+			sbPara.append("<p></p>");
+			sbPara.append(
+					"<p>5.      Keep your phone in silent mode. If possible, switch off the mobile when entering the interview room.</p>");
+			sbPara.append("<p></p>");
+			sbPara.append(
+					"<p>6.      After the interview is completed, please take permission from client before leaving the interview location.</p>");
+			sbPara.append("<p></p>");
+		}
 		sbPara.append("<p>After the interview is completed, inform us on how the interview went.</p>");
 		sbPara.append("<p></p>");
 		sbPara.append("<p></p>");
