@@ -233,6 +233,7 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 	}
 
 	public static String getSign(StringBuilder sb) {
+		sb.append("<br>");
 		sb.append("<p>");
 		sb.append("<table>");
 		sb.append("<tbody>");
@@ -323,19 +324,15 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 		} else {
 			sbPara.append("<p><mark>** Remember:</mark></p>");
 			sbPara.append("<p></p>");
-			sbPara.append("<p>1.Find a good location</p>");
+			sbPara.append("<p>1.Find a quite location</p>");
 			sbPara.append("<p></p>");
-			sbPara.append("<p>2.Focus And Cut Out All Distractions</p>");
+			sbPara.append("<p>2.Make sure your mobile is fully charged</p>");
 			sbPara.append("<p></p>");
-			sbPara.append("<p>3.Smile like you're in Disneyland</p>");
+			sbPara.append("<p>3.Speak clearly</p>");
 			sbPara.append("<p></p>");
-			sbPara.append("<p>4.Speak clearly</p>");
+			sbPara.append("<p>4.Listen carefully</p>");
 			sbPara.append("<p></p>");
-			sbPara.append("<p>5.Listen carefully</p>");
-			sbPara.append("<p></p>");
-			sbPara.append("<p>6.Focus on your language and voice/p>");
-			sbPara.append("<p></p>");
-			sbPara.append("<p>7.Send your thank you, immediately.</p>");
+			sbPara.append("<p>5.Focus on your language and voice</p>");
 			sbPara.append("<p></p>");
 		}
 		sbPara.append("<p>After the interview is completed, inform us on how the interview went.</p>");
@@ -397,15 +394,17 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 						.append("<tbody>");
 				if (i == 0) {
 					sbPara.append("<tr>\r\n" + "<td colspan=\"2\" width=\"728\" >\r\n")
-							.append("<p><strong>CandidateName</strong></p>\r\n </td>")
+							.append("<p><strong>Candidate Name</strong></p>\r\n </td>")
 							.append("<td colspan=\"2\" width=\"728\" >\r\n")
 							.append("<p><strong>Role</strong></p>\r\n </td>")
 							.append("<td colspan=\"2\" width=\"728\" >\r\n")
-							.append("<p><strong>InterviewDate</strong></p>\r\n </td>")
+							.append("<p><strong>Interview Date</strong></p>\r\n </td>")
 							.append("<td colspan=\"2\" width=\"728\" >\r\n")
-							.append("<p><strong>InterviewTime</strong></p>\r\n </td>")
-							.append("<td colspan=\"2\" width=\"728\" >\r\n")
-							.append("<p><strong>Online Id</strong></p>\r\n </td>").append("\r\n</tr>");
+							.append("<p><strong>Interview Time</strong></p>\r\n </td>");
+					if (!ca.getInterviewMode().equalsIgnoreCase("F2F")) {
+						sbPara.append("<td colspan=\"2\" width=\"728\" >\r\n")
+								.append("<p><strong>Online Id</strong></p>\r\n </td>").append("\r\n</tr>");
+					}
 				}
 				i++;
 				sbPara.append("<tr>" + "<td colspan=\"2\" width=\"728\" >\r\n")
@@ -417,7 +416,7 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 						.append("<td colspan=\"2\" width=\"728\" >\r\n")
 						.append("<p><strong>${interviewTime}</strong></p>\r\n </td>")
 						.append("<td colspan=\"2\" width=\"728\" >\r\n");
-				if (ca.getOnlineId() != null) {
+				if (ca.getOnlineId() != null && !ca.getInterviewMode().equalsIgnoreCase("F2F")) {
 					sbPara.append("<p><strong>${onlineId}</strong></p>\r\n </td>").append("</tr>");
 				} else {
 					sbPara.append("<p><strong>  </strong></p>\r\n </td>").append("</tr>");
