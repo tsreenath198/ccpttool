@@ -34,8 +34,30 @@ table{
     }
   }
 }
+table {
+  display: flex;
+  flex-flow: column;
+  width: 100%;
+}
+
+thead {
+  flex: 0 0 auto;
+}
+
+tbody {
+  flex: 1 1 auto;
+  display: block;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+tr {
+  width: 100%;
+  display: table;
+  table-layout: fixed;
+}
 .tableFixHead          { overflow: auto; height:  31.5em; }
-.tableFixHead thead th { position: sticky; top: 0; background:white; }
+.tableFixHead thead { position: sticky; top: 0; background:white; }
 
 /* Just common table stuff. Really. */
 table  { border-collapse: collapse; width: 100%; }
