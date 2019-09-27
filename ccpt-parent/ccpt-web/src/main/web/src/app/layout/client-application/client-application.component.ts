@@ -21,7 +21,6 @@ import { ConsultantCallHistoryModel } from '../consultant-call-history/consultan
   styleUrls: ['./client-application.component.scss'],
   animations: [routerTransition()]
 })
-
 export class ClientApplicationComponent implements OnInit {
   public model: ClientApplicationModel = <ClientApplicationModel>{};
   public faqModel: FAQModel = <FAQModel>{};
@@ -32,19 +31,21 @@ export class ClientApplicationComponent implements OnInit {
   public pagedCAList: Array<any> = [];
   public consultantList: Array<any> = [];
   public clientList: Array<any> = [];
-  public clientApplicationStatusList: Array<ClientApplicationStatusModel> = [];
+  public clientApplicationStatusList: Array<any> = [];
   public clientPositionList: Array<any> = [];
   public recruiterList: Array<any> = [];
   public urlConstants = new URLConstants();
   public properties = new Properties();
   public creating: boolean = false;
   public interviewMode = [{ key: 'Face to Face', value: 'F2F' }, { key: 'Telephone', value: 'TEL' }, { key: 'Video Call', value: 'VID' }];
-  public searchStatusType = ["Active" , "Inactive"];
+  public searchStatusType = ['Active', 'Inactive'];
   public showAction: boolean = false;
   public actionsList = new ActionsList();
   public action: string;
   public tabCheck: string;
   public currSearch = { client: 0, clientPos: 0, status: null, key: null };
+  public searchCon = '';
+  public searchConsultantList: any = [];
   public isSerach: boolean = false;
   public searchCp: any;
   public formButtonsToggler = true;
@@ -146,23 +147,16 @@ export class ClientApplicationComponent implements OnInit {
     this.model.caStatus = 'New';
     this.page = 1;
     this.isCRF = false;
-    //this.spinner(false);
-    // this.http.get(this.urlConstants.CAGetAll).subscribe(resp => {
-    //   this.clientApplicationList = resp as any;
-    //   this.caListLength = this.clientPositionList.length;
-    //   this.pageChange(this.page);
-    //   this.spinner(true);
-    // });
   }
 
   public initialGetAll() {
     let pageNumber = this.paginateConfig.currentPage - 1;
-    let temp = this.http.get(this.urlConstants.CAGetAllByStatus + pageNumber + "&pageSize=50&sortBy=id&status=Active")
+    let temp = this.http.get(this.urlConstants.CAGetAllByStatus + pageNumber + '&pageSize=50&sortBy=id&status=Active');
     temp.subscribe(resp => {
       this.clientApplicationList = resp as any;
       //this.pageChange(this.page);
       this.paginateConfig.totalItems = this.clientApplicationList.noOfRecords;
-      this.tabCheck = "Active CA";
+      this.tabCheck = 'Active CA';
     });
   }
 
@@ -239,6 +233,8 @@ export class ClientApplicationComponent implements OnInit {
 
   private mapToUpdateModel(response): ClientApplicationModel {
     const temp = response;
+    let consultant = { name: temp.fullname, id: temp.id, phone: temp.phone, email: temp.email };
+    this.consultantList.push(consultant);
     this.model = temp;
     this.cpGeneratedCode = temp.clientPosition.generatedCode;
     this.model['cpId'] = temp.clientPosition.id;
@@ -323,6 +319,8 @@ export class ClientApplicationComponent implements OnInit {
       temp = this.http.post(Ids, this.urlConstants.EmailGetShortlistCA);
     } else if (type == 'shortlistedCandidates') {
       temp = this.http.post(Ids, this.urlConstants.EmailGetClientApps);
+    }else if(type == 'statusVerification'){
+      temp = this.http.post(Ids,this.urlConstants.EmailGetReqUpdate);
     }
     temp.subscribe(
       resp => {
@@ -482,7 +480,9 @@ export class ClientApplicationComponent implements OnInit {
         this.readOnlyForm = '';
         this.enableButtonType = '';
         this.showAction = false;
-        this.initialGetAll();
+        if(!this.isSerach){
+          this.initialGetAll();
+        }
         this.getRecruiterId();
       },
       err => {
@@ -749,34 +749,35 @@ export class ClientApplicationComponent implements OnInit {
     this.searchCp = [];
     this.currSearch.clientPos = 0;
     let temp1: any = this.clientList.filter(cl => cl.id == this.currSearch.client);
-    this.clientPositionList.filter(cpl => {
-      let temp = cpl.name.split(/\-/, 1);
-      if (temp1[0].name == temp) {
-        this.searchCp.push(cpl);
-      }
-    });
+    if (this.currSearch.client != -1) {
+      this.clientPositionList.filter(cpl => {
+        let temp = cpl.name.split(/\-/, 1);
+        if (temp1[0].name == temp) {
+          this.searchCp.push(cpl);
+        }
+      });
+    }
   }
 
-/**?clientId=1&clientPosId=2&status=1&searchKey=ff */
+  /**?clientId=1&clientPosId=2&status=1&searchKey=ff */
 
-  
-  public generateSearchParams(){
-    let url =this.urlConstants.CASearch;
-    if(this.currSearch.client !=0){
-      let temp = "clientId=" + this.currSearch.client
-      url=url+temp;
+  public generateSearchParams() {
+    let url = this.urlConstants.CASearch;
+    if (this.currSearch.client != 0 && this.currSearch.client != -1) {
+      let temp = 'clientId=' + this.currSearch.client;
+      url = url + temp;
     }
-    if(this.currSearch.clientPos != 0){
-      let temp = '&clientPosId='+this.currSearch.clientPos
-      url=url+temp;
+    if (this.currSearch.clientPos != 0 && this.currSearch.clientPos != -1) {
+      let temp = '&clientPosId=' + this.currSearch.clientPos;
+      url = url + temp;
     }
-    if(this.currSearch.status !=null){
-      let temp = '&statusType=' +this.currSearch.status;
-      url=url+temp;
+    if (this.currSearch.status != null && this.currSearch.status != '-1') {
+      let temp = '&statusType=' + this.currSearch.status;
+      url = url + temp;
     }
-    if(this.currSearch.key != null){
+    if (this.currSearch.key != null) {
       let temp = '&searchKey=' + this.currSearch.key;
-      url=url+temp;
+      url = url + temp;
     }
     this.search(url);
   }
@@ -796,40 +797,61 @@ export class ClientApplicationComponent implements OnInit {
     this.paginateConfigDeclare(this.properties.ITEMSPERPAGE, 1, 0);
   }
 
-
-  public showActive(){
-    if(this.tabCheck != "Active CA"){
-      this.paginateConfigDeclare(this.properties.ITEMSPERPAGE,1,0);
+  public showActive() {
+    if (this.tabCheck != 'Active CA') {
+      this.paginateConfigDeclare(this.properties.ITEMSPERPAGE, 1, 0);
     }
     this.initialGetAll();
   }
 
-  public showInactive(){
-    if(this.tabCheck != 'Inactive CA'){
-      this.paginateConfigDeclare(this.properties.ITEMSPERPAGE,1,0)
+  public showInactive() {
+    if (this.tabCheck != 'Inactive CA') {
+      this.paginateConfigDeclare(this.properties.ITEMSPERPAGE, 1, 0);
     }
-    let pageNumber = this.paginateConfig.currentPage-1
-    let temp= this.http.get(this.urlConstants.CAGetAllByStatus + pageNumber + "&pageSize=50&sortBy=id&status=Inactive")
-    temp.subscribe(resp =>{
+    let pageNumber = this.paginateConfig.currentPage - 1;
+    let temp = this.http.get(this.urlConstants.CAGetAllByStatus + pageNumber + '&pageSize=50&sortBy=id&status=Inactive');
+    temp.subscribe(resp => {
       this.clientApplicationList = resp as any;
-      this.paginateConfig.totalItems = this.clientApplicationList.noOfRecords
-      this.tabCheck = "Inactive CA";
-    })
+      this.paginateConfig.totalItems = this.clientApplicationList.noOfRecords;
+      this.tabCheck = 'Inactive CA';
+    });
   }
 
-  public showAll(){
-    if(this.tabCheck != 'All CA'){
-      this.paginateConfigDeclare(this.properties.ITEMSPERPAGE,1,0)
+  public showAll() {
+    if (this.tabCheck != 'All CA') {
+      this.paginateConfigDeclare(this.properties.ITEMSPERPAGE, 1, 0);
     }
-    let pageNumber = this.paginateConfig.currentPage-1
-    let temp= this.http.get(this.urlConstants.CAGetAll + pageNumber + "&pageSize=50&sortBy=id")
-    temp.subscribe(resp =>{
+    let pageNumber = this.paginateConfig.currentPage - 1;
+    let temp = this.http.get(this.urlConstants.CAGetAll + pageNumber + '&pageSize=50&sortBy=id');
+    temp.subscribe(resp => {
       this.clientApplicationList = resp as any;
-      this.paginateConfig.totalItems = this.clientApplicationList.noOfRecords
-      this.tabCheck = "All CA";
-    }) 
+      this.paginateConfig.totalItems = this.clientApplicationList.noOfRecords;
+      this.tabCheck = 'All CA';
+    });
   }
-
-
-
+  public popupSearchConsultant() {
+    if (this.searchCon.length > 2) {
+      let request = this.http.get(this.urlConstants.CSearch + this.searchCon);
+      request.subscribe(resp => {
+        this.searchConsultantList = resp as any;
+      });
+    }else if(this.searchCon.length == 0){
+      this.searchConsultantList = [];
+    }
+  }
+  public openSearchCon(value: any, content: any) {
+    if (value == 'more') {
+      this.searchConsultantList = [];
+      this.open(this.model.id, content);
+    }
+  }
+  public setSearch(data) {
+    let temp = { name: data.fullname, id: data.id, phone: data.phone, email: data.email };
+    this.consultantList.push(temp);
+    this.model.consultantId = data.id;
+    this.close();
+  }
+  public dateChange(){
+    this.model.interviewMode=" ";
+  }
 }

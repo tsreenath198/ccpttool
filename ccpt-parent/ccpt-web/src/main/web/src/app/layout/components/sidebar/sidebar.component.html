@@ -143,6 +143,30 @@
           </ul>
         </li>
       </div>
+      <div class="nested-menu" (mouseover)="addExpandClass('history')" (mouseleave)="addCollapseClass()">
+        <a class="list-group-item">
+          <i class="fa fa-fw fa-history"></i>&nbsp;
+          <span>{{ 'History' | translate }}</span>
+        </a>
+        <li class="nested" [class.expand]="showMenu === 'history'">
+          <ul class="submenu">
+            <li>
+              <a class="list-group-item " [routerLink]="['/layout/email-history']"
+                [routerLinkActive]="['router-link-active']">
+                <span class="fa fa-fw fa-envelope"></span>
+                <span>{{ 'Emails' | translate }}</span>
+              </a>
+            </li>
+            <li>
+              <a class="list-group-item " [routerLink]="['/layout/message-history']"
+                [routerLinkActive]="['router-link-active']">
+                <span class="fa fa-fw fa-comments"></span>
+                <span>{{ "Messages" | translate }}</span>
+              </a>
+            </li>
+          </ul>
+        </li>
+      </div>
     <!-- <a [routerLink]="['/layout/charts']" [routerLinkActive]="['router-link-active']" class="list-group-item">
       <i class="fa fa-fw fa-bar-chart-o"></i>&nbsp;
       <span>{{ 'Charts' | translate }}</span>

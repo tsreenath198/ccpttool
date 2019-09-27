@@ -40,7 +40,7 @@ export class DashboardComponent implements OnInit {
   public clchByIdList: Array<any> = [];
   public interviewsToday: Array<any> = [];
   private urlConstants = new URLConstants();
-  private constantProperties = new Properties();
+  public constantProperties = new Properties();
   public rpChoosenDays: any = 7;
   public cochChoosenDays: any = 7;
   public clchChoosenDays: any = 7;
@@ -118,15 +118,15 @@ export class DashboardComponent implements OnInit {
   public barChartActiveCAData: any[] = [{ data: [], label: 'Active Client Applications', cpIds: [] }];
   public barChartColors: Color[] = [{ backgroundColor: '#343a40' }];
   public stackbarChartColors: Color[] = [
-    { backgroundColor: '#ff2600' },
-    { backgroundColor: '#ff2600' },
-    { backgroundColor: '#ff2600' },
-    { backgroundColor: '#ff2600' },
-    { backgroundColor: '#ffff47' },
-    { backgroundColor: '#ffff47' },
-    { backgroundColor: '#ffff47' },
-    { backgroundColor: '#ffff47' },
-    { backgroundColor: '#47ff47' }
+    { backgroundColor: '#f88e90' },
+    { backgroundColor: '#f88e90' },
+    { backgroundColor: '#f88e90' },
+    { backgroundColor: '#f88e90' },
+    { backgroundColor: '#ffe29a' },
+    { backgroundColor: '#ffe29a' },
+    { backgroundColor: '#ffe29a' },
+    { backgroundColor: '#ffe29a' },
+    { backgroundColor: '#46bfbd' }
   ];
   public barChartCAByStatusData: any[] = [];
 

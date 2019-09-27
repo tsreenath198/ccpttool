@@ -17,13 +17,8 @@
   color:blue;
   text-decoration: underline;
  }
- .checkbox .cr .cr-icon,
-.radio .cr .cr-icon {
-    position: absolute;
-    font-size: .8em;
-    line-height: 0;
-    top: 50%;
-    left: 20%;
+ .checkbox  {
+   padding-top: 15px;
 }
 .dropdown-toggle::after{
   display:none;

@@ -17,22 +17,12 @@
             <button class="btn btn-secondary btn-sm ml-2" (click)="activateId()" type="button">Activate</button>
           </div>
         </div>
-        <!-- <div class="col-md-2 ml-n1">
+        <div class="col-md-2 ml-n1">
             <button *ngIf="inCon" class="btn btn-secondary btn-sm ml-2" (click)="getIncompleteCon()">Incomplete Consultants</button>
             <button *ngIf="!inCon" class="btn btn-secondary btn-sm ml-2" (click)="getAllCon()">All Consultants</button>
-          </div> -->
-      </div>
-      <div class="pt-2">
-        <nav>
-          <div class="nav nav-tabs" id="nav-tab" role="tablist">
-            <a class="nav-item nav-link" [ngClass]="{'active': tabCheck=='Active Consultants'}" id="nav-active" (click)="showActive()" data-toggle="tab"  role="tab" aria-controls="viewTable" >Active</a>
-            <a class="nav-item nav-link" id="nav-inactive" [ngClass]="{'active': tabCheck=='Inactive Consultants'}" (click)="showInactive()" data-toggle="tab"  role="tab" aria-controls="viewTable" >Inactive</a>
-            <a class="nav-item nav-link" id="nav-incomplete" [ngClass]="{'active': tabCheck=='Incomplete Consultants'}" (click)="getIncompleteCon()" data-toggle="tab"  role="tab" aria-controls="viewTable" >Incomplete</a>
-            <a class="nav-item nav-link" id="nav-all" [ngClass]="{'active': tabCheck=='All Consultants'}" (click)="showAll()" data-toggle="tab"  role="tab" aria-controls="viewTable" >All</a>
           </div>
-        </nav>
-        <div class="tab-content" id="nav-tabContent">
-          <div class="table-responsive tableFixHead  mt-2" id="viewTable" [style.height.px]="screenHeight">
+      </div>
+          <div class="table-responsive  tableFixHead mt-2" id="viewTable" [style.height.px]="screenHeight">
             <table class="table table-sm table-hover table-striped">
               <thead>
                 <tr>
@@ -83,8 +73,6 @@
               </tbody>
             </table>
           </div>
-        </div>
-      </div>
       <div class="col-12 justify-content-center mb-5" *ngIf="consultantList.noOfRecords > properties.ITEMSPERPAGE">
         <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
         <!-- <ngb-pagination

@@ -48,7 +48,7 @@ export class ConsultantComponent implements OnInit {
   public showAction: boolean = false;
   public actionsList = new ActionsList();
   public action: string;
-  public tabCheck:string;
+  public inCon:boolean=true;
   public isCreate: boolean = false;
   public currSearchTxt: string;
   public idToActivate: number;
@@ -110,7 +110,6 @@ export class ConsultantComponent implements OnInit {
         }
       });
       this.paginateConfig.totalItems = this.consultantList.noOfRecords
-      this.tabCheck="Active Consultants";
     });
   }
   init(): void {
@@ -487,18 +486,8 @@ export class ConsultantComponent implements OnInit {
   
   pageChanged(event){
     this.paginateConfig.currentPage = event
-    switch(this.tabCheck){
-      case "Active Consultants":
-        this.showActive();
-        break;
-      case "Inactive Consultants":
-        this.showInactive();
-        break;
-      case "All Consultants":
-        this.showAll();
-        break;
-      default:
-        break;      
+    if(this.inCon){
+      this.initialGetAll();
     }
   }
   public getIncompleteCon(){
@@ -506,45 +495,12 @@ export class ConsultantComponent implements OnInit {
     temp.subscribe(resp=>{
       this.consultantList.list = resp as any;
       this.paginateConfigDeclare(this.properties.ITEMSPERPAGE,1,this.consultantList.list.length);
-      this.tabCheck = "Incomplete Consultants";
+      this.inCon=false;
     })
   }
-  // public getAllCon(){
-  //   this.paginateConfigDeclare(this.properties.ITEMSPERPAGE,1,0);
-  //   this.initialGetAll();
-  //   this.tabCheck = "All Consultants";
-  // }
-
-  public showActive(){
-    if(this.tabCheck != "Active Consultants"){
-      this.paginateConfigDeclare(this.properties.ITEMSPERPAGE,1,0);
-    }
+  public getAllCon(){
+    this.paginateConfigDeclare(this.properties.ITEMSPERPAGE,1,0);
     this.initialGetAll();
-  }
-
-  public showInactive(){
-    if(this.tabCheck != 'Inactive Consultants'){
-      this.paginateConfigDeclare(this.properties.ITEMSPERPAGE,1,0)
-    }
-    let pageNumber = this.paginateConfig.currentPage-1
-    let temp= this.http.get(this.urlConstants.CGetAllByStatus + pageNumber + "&pageSize=50&sortBy=id&status=Inactive")
-    temp.subscribe(resp =>{
-      this.consultantList = resp as any;
-      this.paginateConfig.totalItems = this.consultantList.noOfRecords
-      this.tabCheck = "Inactive Consultants";
-    })
-  }
-
-  public showAll(){
-    if(this.tabCheck != 'All Consultants'){
-      this.paginateConfigDeclare(this.properties.ITEMSPERPAGE,1,0)
-    }
-    let pageNumber = this.paginateConfig.currentPage-1
-    let temp= this.http.get(this.urlConstants.CGetAll + pageNumber + "&pageSize=50&sortBy=id")
-    temp.subscribe(resp =>{
-      this.consultantList = resp as any;
-      this.paginateConfig.totalItems = this.consultantList.noOfRecords
-      this.tabCheck = "All Consultants";
-    }) 
+    this.inCon = true;
   }
 }

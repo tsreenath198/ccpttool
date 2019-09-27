@@ -19,8 +19,10 @@ import { Router } from '@angular/router';
 })
 export class ConsultantCallHistoryComponent implements OnInit {
   public model: ConsultantCallHistoryModel = <any>{};
-  public consultantCallHistoryList:any = [];
+  public consultantCallHistoryList: any = [];
   public currSearchTxt = '';
+  public searchCon = '';
+  public searchConsultantList: any = [];
   public pagedConsultantList: Array<ConsultantCallHistoryModel> = [];
   public formButtonsToggler = true;
   public editButtonToggler = true;
@@ -42,38 +44,43 @@ export class ConsultantCallHistoryComponent implements OnInit {
   public isCreate: boolean = false;
   public apName = '';
   public apValue = '';
-  public key: string = 'name'; 
+  public key: string = 'name';
   public reverse: boolean = false;
   public page: number = 1;
   public consultantListLength: number;
   public pageSize: number = 20;
-  public incr:number = 0;
-  public listReturned:boolean;
+  public incr: number = 0;
+  public listReturned: boolean;
   public getCplPromise = this.http.get(this.urlConstants.CPDropdown);
   public getClPromise = this.http.get(this.urlConstants.CDropdown);
   public getRlPromise = this.http.get(this.urlConstants.RDropdown);
   public cochGetAllPromise = this.http.get(this.urlConstants.CoCHGetAll);
-  public paginateConfig :any={
+  public paginateConfig: any = {
     itemsPerPage: this.properties.ITEMSPERPAGE,
     currentPage: 1,
     totalItems: 0
-  }
-  constructor(private http: HttpClientService, private router: Router, private toastr: ToastrCustomService, private modalService: NgbModal) {
+  };
+  constructor(
+    private http: HttpClientService,
+    private router: Router,
+    private toastr: ToastrCustomService,
+    private modalService: NgbModal
+  ) {
     this.getScreenSize();
   }
 
   @HostListener('window:resize', ['$event'])
   getScreenSize(event?) {
-    this.screenHeight = (window.innerHeight - 237);
+    this.screenHeight = window.innerHeight - 237;
   }
   ngOnInit() {
     /*Autheticate user with the token */
-    if (!this.http.isAuthenticate()){
+    if (!this.http.isAuthenticate()) {
       this.router.navigate(['/login']);
     }
     this.joins();
     this.init();
-    this.initialGetAll(); 
+    this.initialGetAll();
     this.spinner(true);
   }
   joins() {
@@ -94,19 +101,19 @@ export class ConsultantCallHistoryComponent implements OnInit {
     //   // this.pageChange(this.page);
     // });
     this.model.properties = [];
-    this.page = 1
+    this.page = 1;
   }
-  public initialGetAll(){
-    let pageNumber = this.paginateConfig.currentPage-1
-    let temp=this.http.get(this.urlConstants.CoCHGetAll+ pageNumber + "&pageSize=50&sortBy=id");
+  public initialGetAll() {
+    let pageNumber = this.paginateConfig.currentPage - 1;
+    let temp = this.http.get(this.urlConstants.CoCHGetAll + pageNumber + '&pageSize=50&sortBy=id');
     temp.subscribe(resp => {
       this.consultantCallHistoryList = resp as any;
       //this.pageChange(this.page);
-      this.paginateConfig.totalItems = this.consultantCallHistoryList.noOfRecords
+      this.paginateConfig.totalItems = this.consultantCallHistoryList.noOfRecords;
     });
   }
   public dblSetModel() {
-    this.readOnlyForm = 'U'; 
+    this.readOnlyForm = 'U';
     this.enableButtonType = 'U';
     this.showAction = true;
     this.action = null;
@@ -128,49 +135,47 @@ export class ConsultantCallHistoryComponent implements OnInit {
   }
   private mapToUpdateModel(response): ConsultantCallHistoryModel {
     const temp = response;
+    let consultant = { name: temp.fullname, id: temp.id, phone: temp.phone, email: temp.email };
+    this.consultantList.push(consultant);
     this.model = temp;
     this.model['consultantId'] = temp.consultant.id;
     this.model['calledBy'] = temp.calledBy.id;
     this.model['cpId'] = temp.clientPosition ? temp.clientPosition.id : 0;
-    this.model.properties =
-      this.model.properties == null ? [] : this.model.properties;
+    this.model.properties = this.model.properties == null ? [] : this.model.properties;
     return this.model;
   }
   public propertiesListIncrement(event, i: number) {
     switch (event.id) {
-        case 'decrease': {
-            this.model.properties.splice(i, 1);
-            break;
-        }
-        case 'increase': {
-            if(this.model.properties.length==0){
-                this.model.properties.push(<AdditionalPropertiesModel>{ 'name': this.apName, 'value': this.apValue });      
-                this.apName = '';
-                this.apValue = '';
+      case 'decrease': {
+        this.model.properties.splice(i, 1);
+        break;
+      }
+      case 'increase': {
+        if (this.model.properties.length == 0) {
+          this.model.properties.push(<AdditionalPropertiesModel>{ name: this.apName, value: this.apValue });
+          this.apName = '';
+          this.apValue = '';
+        } else {
+          let propertyExist: boolean;
+          for (let i = 0; i < this.model.properties.length; i++) {
+            if (this.model.properties[i].name == this.apName && this.model.properties[i].value == this.apValue) {
+              propertyExist = true;
+            } else {
+              propertyExist = false;
             }
-            else{
-                let propertyExist :boolean;
-                for(let i=0; i<this.model.properties.length; i++){
-                    if(this.model.properties[i].name==this.apName&&this.model.properties[i].value==this.apValue){
-                        propertyExist = true;
-                    }
-                    else{
-                        propertyExist = false;
-                    }
-                }
-                if(propertyExist){
-                    this.toastr.error(this.properties.PROPERTY_EXIST, this.properties.PROPERTIES);
-                }
-                else{ 
-                    this.model.properties.push(<AdditionalPropertiesModel>{ 'name': this.apName, 'value': this.apValue });     
-                    this.apName = '';
-                    this.apValue = '';
-                }
-            }
-            break;
+          }
+          if (propertyExist) {
+            this.toastr.error(this.properties.PROPERTY_EXIST, this.properties.PROPERTIES);
+          } else {
+            this.model.properties.push(<AdditionalPropertiesModel>{ name: this.apName, value: this.apValue });
+            this.apName = '';
+            this.apValue = '';
+          }
         }
+        break;
+      }
     }
-}
+  }
   public actions(value, trashContent, form) {
     console.log(value);
     switch (value) {
@@ -212,13 +217,13 @@ export class ConsultantCallHistoryComponent implements OnInit {
         this.formReset();
         this.callAfterFormReset();
         this.spinner(true);
-        this.paginateConfig.currentPage=1;
+        this.paginateConfig.currentPage = 1;
         this.initialGetAll();
-        this.isCreate= false;
+        this.isCreate = false;
       },
       err => {
         this.toastr.error(err.error.message, this.properties.CON_C_H);
-        this.isCreate= false;
+        this.isCreate = false;
         this.spinner(true);
       }
     );
@@ -245,7 +250,7 @@ export class ConsultantCallHistoryComponent implements OnInit {
       }
     );
   }
- public cancelForm(consultantCallHistory: NgForm) {
+  public cancelForm(consultantCallHistory: NgForm) {
     consultantCallHistory.resetForm();
     this.formReset();
     this.init();
@@ -292,7 +297,7 @@ export class ConsultantCallHistoryComponent implements OnInit {
     const temp = yyyy + '-' + mm + '-' + dd;
     this.model.calledDate = temp;
   }
- private callAfterFormReset(): void {
+  private callAfterFormReset(): void {
     this.getRecruiterId();
     this.getTodaysDate();
   }
@@ -326,22 +331,44 @@ export class ConsultantCallHistoryComponent implements OnInit {
     } else {
       return `with: ${reason}`;
     }
- }
+  }
   // public pageChange(event) {
   //   const from = ((event - 1) * this.pageSize);
   //   const lst = this.consultantCallHistoryList;
   //   const uplst = lst.slice(from, from + this.pageSize);
   //   this.pagedConsultantList = uplst;
   // }
-  pageChanged(event){
-    this.paginateConfig.currentPage = event
+  pageChanged(event) {
+    this.paginateConfig.currentPage = event;
     this.initialGetAll();
   }
-  public  sort(key){
+  public sort(key) {
     this.key = key;
     this.reverse = !this.reverse;
-  } 
-  private spinner(isSpinner: boolean){
-      this.listReturned = isSpinner;
+  }
+  private spinner(isSpinner: boolean) {
+    this.listReturned = isSpinner;
+  }
+  public popupSearchConsultant() {
+    if (this.searchCon.length > 2) {
+      let request = this.http.get(this.urlConstants.CSearch + this.searchCon);
+      request.subscribe(resp => {
+        this.searchConsultantList = resp as any;
+      });
+    }else if(this.searchCon.length == 0){
+      this.searchConsultantList = [];
     }
+  }
+  public openSearchCon(value: any, content: any) {
+    if (value == 'more') {
+      this.searchConsultantList = [];
+      this.open(this.model.id, content);
+    }
+  }
+  public setSearch(data) {
+    let temp = { name: data.fullname, id: data.id, phone: data.phone, email: data.email };
+    this.consultantList.push(temp);
+    this.model.consultantId = data.id;
+    this.close();
+  }
 }

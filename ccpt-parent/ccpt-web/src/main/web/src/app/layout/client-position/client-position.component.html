@@ -11,34 +11,26 @@
     <div class="col-md-7">
       <div class="row">
         <div class="col-md-6"><input type="text" class="form-control" placeholder="search" [(ngModel)]="currSearchTxt" /></div>
+        <div class="col-md-6 mt-2"><input class="check" type="checkbox" [(ngModel)]="showInactiveContent" (change)="checkTableType()" value=""/> <span class="">  Include Inactive Positions</span></div>
       </div>
-      <div class="pt-2">
-        <nav>
-          <div class="nav nav-tabs" id="nav-tab" role="tablist">
-            <a class="nav-item nav-link" [ngClass]="{'active': tabCheck=='Active Positions'}" id="nav-active" (click)="showActive()" data-toggle="tab"  role="tab" aria-controls="viewTable" >Active</a>
-            <a class="nav-item nav-link" id="nav-inactive" [ngClass]="{'active': tabCheck=='Inactive Positions'}" (click)="showInactive()" data-toggle="tab"  role="tab" aria-controls="viewTable" >Inactive</a>
-            <a class="nav-item nav-link" id="nav-all" [ngClass]="{'active': tabCheck=='All Positions'}" (click)="showAll()" data-toggle="tab"  role="tab" aria-controls="viewTable" >All</a>
-          </div>
-        </nav>
-        <div class="tab-content" id="nav-tabContent">
-          <div class="table-responsive mt-2 tableFixHead" [style.height.px]="screenHeight">
-            <table class="table table-hover table-striped">
-              <tbody class="overflow-ele-scroll">
-                <tr
-                  *ngFor="let cpl of clientPositionList.list | filter: currSearchTxt |paginate: paginateConfig; let i = index"
-                  (click)="setModel(cpl.id)"
-                  [ngClass]="{ 'bl-closed': cpl.status.code === 'Closed', 'bl-on-hold': cpl.status.code === 'On Hold' }"
-                >
-                  <td class="table-data-padding">
-                    <dl>
-                      <dt>{{ cpl.generatedCode }} ({{ cpl.assignedTo.fullname }})</dt>
-                      <dd>
-                        Need {{ cpl.requiredPositions }} candidate(s) ({{ cpl.minCtc }} - {{ cpl.maxCtc }}) with
-                        {{ cpl.experience }} experience.
-                      </dd>
-                    </dl>
-                  </td>
-                  <!-- <td width="140">
+      <div class="table-responsive mt-2 tableFixHead" [style.height.px]="screenHeight">
+        <table class="table table-hover table-striped">
+          <tbody class="overflow-ele-scroll">
+            <tr
+              *ngFor="let cpl of clientPositionList.list | filter: currSearchTxt | paginate: paginateConfig; let i = index"
+              (click)="setModel(cpl.id)"
+              [ngClass]="{ 'bl-closed': cpl.status.code === 'Closed', 'bl-on-hold': cpl.status.code === 'On Hold' }"
+            >
+              <td class="table-data-padding">
+                <dl>
+                  <dt>{{ cpl.generatedCode }} ({{ cpl.assignedTo.fullname }})</dt>
+                  <dd>
+                    Need {{ cpl.requiredPositions }} candidate(s) ({{ cpl.minCtc }} - {{ cpl.maxCtc }}) with
+                    {{ cpl.experience }} experience.
+                  </dd>
+                </dl>
+              </td>
+              <!-- <td width="140">
                     <app-action
                       [trashContent]="trashContent"
                       [shortListContent]="shortListContent"
@@ -55,13 +47,11 @@
                       (sendMail)="open($event)"
                     ></app-action>
                   </td> -->
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
+            </tr>
+          </tbody>
+        </table>
       </div>
-      
+
       <div class="col-12 justify-content-center mb-5" *ngIf="clientPositionList.noOfRecords > properties.ITEMSPERPAGE">
         <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
         <!-- <ngb-pagination [collectionSize]="cpListLength" [(page)]="page" [ellipses]="false" (pageChange)="pageChange($event)" [maxSize]="pageSize" [rotate]="true" [boundaryLinks]="true">
@@ -69,7 +59,7 @@
       </div>
     </div>
     <div class="col-md-5">
-      <form name="form" id="clientPositionForm" (ngSubmit)="f.form.valid && create(f,clientCall)" #f="ngForm" novalidate>
+      <form name="form" id="clientPositionForm" (ngSubmit)="f.form.valid && create(f, clientCall)" #f="ngForm" novalidate>
         <div class="row text-center">
           <div class="col-md-12">
             <div class="form-group">
@@ -173,8 +163,8 @@
               <tr *ngIf="model.requiredSkills">
                 <th>Required Skills</th>
                 <td>
-                    <p [innerHTML]="model.requiredSkills"></p>
-                  </td>
+                  <p [innerHTML]="model.requiredSkills"></p>
+                </td>
               </tr>
               <tr *ngIf="model.description">
                 <th>Description</th>
@@ -388,7 +378,14 @@
             <div class="col-md-12">
               <div class="form-group">
                 <label>Required Skills<span class="required">*</span></label>
-                <angular-editor [(ngModel)]="model.requiredSkills" [disabled]="readOnlyForm == 'R'" [ngClass]="{ 'is-invalid': f.submitted && requiredSkills.invalid }" name="requiredSkills" [config]="config"> </angular-editor>
+                <angular-editor
+                  [(ngModel)]="model.requiredSkills"
+                  [disabled]="readOnlyForm == 'R'"
+                  [ngClass]="{ 'is-invalid': f.submitted && requiredSkills.invalid }"
+                  name="requiredSkills"
+                  [config]="config"
+                >
+                </angular-editor>
                 <div class="invalid-feedback">
                   Required Skills are mandatory
                 </div>
@@ -557,7 +554,7 @@
   </div>
   <div class="modal-body">
     <div calss="form-group">
-      <select class="form-control" [(ngModel)]="sendTo" name="sel1" (change)="onItemSelect(sendTo,'email')">
+      <select class="form-control" [(ngModel)]="sendTo" name="sel1" (change)="onItemSelect(sendTo, 'email')">
         <option [ngValue]="null" hidden selected>--select Consultant--</option>
         <option *ngFor="let cl of consultantList" [ngValue]="cl">
           {{ cl.name }}
@@ -575,7 +572,7 @@
     <label>Subject</label>
     <input class="form-control" [(ngModel)]="sendEmailModel.subject" name="sub" />
     <label>Message Body</label>
-    <angular-editor [(ngModel)]="sendEmailModel.body" name="tt" [config]="config"> </angular-editor>
+    <angular-editor [(ngModel)]="sendEmailModel.body" name="body" [config]="emailEditorconfig"> </angular-editor>
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-secondary" (click)="sendEmailReq(createConsultants)">Send</button>
@@ -591,7 +588,7 @@
     </button>
   </div>
   <div class="modal-body">
-    <select class="form-control" [(ngModel)]="sendTo" name="sel2" (change)="onItemSelect(sendTo,'sms')">
+    <select class="form-control" [(ngModel)]="sendTo" name="sel2" (change)="onItemSelect(sendTo, 'sms')">
       <option [ngValue]="null" hidden selected>--select Consultant--</option>
       <option *ngFor="let cl of consultantList" [ngValue]="cl">
         {{ cl.name }}
@@ -611,10 +608,12 @@
      (onSelectAll)="onSelectAll($event)" 
     </ng-multiselect-dropdown>-->
     <label>Message Body</label>
-    <textarea class="form-control" cols="5" rows="8" [(ngModel)]="sendSmsModel.message" name="body"></textarea>
+    <textarea class="form-control" cols="5" rows="8" [(ngModel)]="sendSmsModel.message" name="mbody"></textarea>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-secondary" (click)="sendSmsReq()" [disabled]="creating">{{ creating ? 'loading...' : ('Send' | translate) }}</button>
+    <button type="button" class="btn btn-secondary" (click)="sendSmsReq()" [disabled]="creating">
+      {{ creating ? 'loading...' : ('Send' | translate) }}
+    </button>
     <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
   </div>
 </ng-template>
@@ -642,55 +641,53 @@
     </button>
   </div>
   <div class="modal-body">
-    <form name="form" id="consultantForm" (ngSubmit)="consultantForm.form.valid && createConsultant()"#consultantForm="ngForm" novalidate>
-    <div *ngIf="consultantsToCreate">
-      <table class="table table-hover table-striped">
-        <thead>
-          <tr>
-            <th>Email</th>
-            <th>Name</th>
-            <th>Phone</th>
-          </tr>
-        </thead>
-        <tbody class="overflow-ele-scroll">
-          <tr *ngFor="let cnt of consultantsToCreate">
-            <td>
-                <input class="form-control" [(ngModel)]="cnt.email" name="email" #email="ngModel" readonly/>
-            </td>
-            <td>
-              <input class="form-control" 
-              [(ngModel)]="cnt.fullname" 
-              name="fullname"
-              [ngClass]="{ 'is-invalid': consultantForm.submitted && fullname.invalid }"
-              #fullname="ngModel"
-              required />
-              <div class="invalid-feedback">
+    <form name="form" id="consultantForm" (ngSubmit)="consultantForm.form.valid && createConsultant()" #consultantForm="ngForm" novalidate>
+      <div *ngIf="consultantsToCreate">
+        <table class="table table-hover table-striped">
+          <thead>
+            <tr>
+              <th>Email</th>
+              <th>Name</th>
+              <th>Phone</th>
+            </tr>
+          </thead>
+          <tbody class="overflow-ele-scroll">
+            <tr *ngFor="let cnt of consultantsToCreate">
+              <td>
+                <input class="form-control" [(ngModel)]="cnt.email" name="email" #email="ngModel" readonly />
+              </td>
+              <td>
+                <input
+                  class="form-control"
+                  [(ngModel)]="cnt.fullname"
+                  name="fullname"
+                  [ngClass]="{ 'is-invalid': consultantForm.submitted && fullname.invalid }"
+                  #fullname="ngModel"
+                  required
+                />
+                <div class="invalid-feedback">
                   Fullname is mandatory
                 </div>
-            </td>
-            <td>
-              <input class="form-control" [(ngModel)]="cnt.phone" name="phone" #phone="ngModel" />
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <hr>
-    <div class="row pull-right">
-      <div class="col-md-12">
-          <button
-          type="submit"
-          class="btn btn-secondary ml-3" 
-          [disabled]="creating">
-          {{ creating ? 'loading...' : ('Create' | translate) }}
-        </button>
-        <button type="button" class="btn btn-secondary ml-3" (click)="c('Close click')" [disabled]="creating">Close</button>
+              </td>
+              <td>
+                <input class="form-control" [(ngModel)]="cnt.phone" name="phone" #phone="ngModel" />
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
-    </div>
-   </form> 
+      <hr />
+      <div class="row pull-right">
+        <div class="col-md-12">
+          <button type="submit" class="btn btn-secondary ml-3" [disabled]="creating">
+            {{ creating ? 'loading...' : ('Create' | translate) }}
+          </button>
+          <button type="button" class="btn btn-secondary ml-3" (click)="c('Close click')" [disabled]="creating">Close</button>
+        </div>
+      </div>
+    </form>
   </div>
 </ng-template>
-
 
 <ng-template #clientCall let-c="close" let-d="dismiss">
   <div class="modal-header modal-popup-header-bg">
@@ -701,10 +698,12 @@
   </div>
   <div class="modal-body">
     <label>Description</label>
-    <textarea class="form-control" cols="5" rows="8" [(ngModel)]="clchModel.description" name="body"></textarea>
+    <textarea class="form-control" cols="5" rows="8" [(ngModel)]="clchModel.description" name="desc"></textarea>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-secondary" (click)="createClientCallHistory()" [disabled]="creating">{{ creating ? 'loading...' : ('Send' | translate) }}</button>
+    <button type="button" class="btn btn-secondary" (click)="createClientCallHistory()" [disabled]="creating">
+      {{ creating ? 'loading...' : ('Send' | translate) }}
+    </button>
     <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
   </div>
 </ng-template>

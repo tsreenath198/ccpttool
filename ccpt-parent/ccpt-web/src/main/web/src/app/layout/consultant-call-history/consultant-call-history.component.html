@@ -152,10 +152,11 @@
             <div class="form-group">
               <label>Consultant<span class="required">*</span></label>
               <select class="form-control" name="consultant" [disabled]="readOnlyForm == 'R'"
-                [(ngModel)]="model.consultantId"
+                [(ngModel)]="model.consultantId" (change)="openSearchCon($event.target.value,searchConsultant)"
                 [ngClass]="{ 'is-invalid': f.submitted && consultant.invalid }" #consultant="ngModel" required>
-                <option *ngFor="let consultant of consultantList" [ngValue]="consultant.id">{{ consultant.name }}
+                <option *ngFor="let consultant of consultantList" [ngValue]="consultant.id" >{{ consultant.name }}
                 </option>
+                <option value="more">More</option>
               </select>
               <div class="invalid-feedback">
                 Consultant is mandatory
@@ -251,4 +252,56 @@
     <button type="button" class="btn btn-secondary" (click)="trash()">Ok</button>
     <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
   </div>
+</ng-template>
+<ng-template #searchConsultant let-c="close" let-d="dismiss">
+    <div class="modal-header modal-popup-header-bg">
+        <h4 class="modal-title">Search Consultant</h4>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <div class="row">
+              <div class="col-md-12"><input type="text" class="form-control" placeholder="search..." (keyup)="popupSearchConsultant()"
+                  [(ngModel)]="searchCon" />
+                </div>
+            </div>
+            <div *ngIf="searchConsultantList.length > 0 ; else noDataFound" class="table-responsive tableFixHead  mt-2" id="viewTable" [style.height.px]="screenHeight">
+                <table class="table table-sm table-hover table-striped">
+                  <thead>
+                    <tr>
+                      <th>
+                        Name
+                      </th>
+                      <th>
+                        Phone
+                      </th>
+                      <th>Email</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr
+                      *ngFor="let cl of searchConsultantList ; let i = index"
+                      (click)=setSearch(cl);
+                    >
+                      <td class="table-data-padding ">
+                        {{ cl.fullname }}
+                      </td>
+                      <td>
+                        {{ cl.phone }}
+                      </td>
+                      <td>
+                        {{ cl.email }}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <ng-template #noDataFound>
+                <span *ngIf="searchCon.length > 2" class="text-center"><h3>No Data Found</h3></span>
+              </ng-template>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
+      </div>
 </ng-template>

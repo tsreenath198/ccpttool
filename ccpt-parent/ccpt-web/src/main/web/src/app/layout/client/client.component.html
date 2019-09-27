@@ -99,6 +99,14 @@
               <tr *ngIf="model.name">
                 <th>Client Name</th>
                 <td>{{ model.name }}</td>
+              </tr>>
+              <tr *ngIf="model.contactPersonName">
+                <th>Contact Person Name</th>
+                <td>{{ model.contactPersonName }}</td>
+              </tr>>
+              <tr *ngIf="model.contactPersonDesignation">
+                <th>Contact Person Designation</th>
+                <td>{{ model.contactPersonDesignation }}</td>
               </tr>
               <tr *ngIf="model.industry">
                 <th>Industry</th>
@@ -160,7 +168,6 @@
                 {{cc.email}}<br>
                 {{cc.phone}}</td>
               </tr>
-              
               <tr *ngFor="let fl of model.files">
                   <th>Files</th>
                   <td class="file-download" (click)="downloadFile(fl.id)">{{fl.fileName}}</td>
@@ -203,6 +210,34 @@
               </div>
             </div>
           </div>
+          <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Contact Person Name</label>
+                  <input
+                    class="form-control"
+                    [readonly]="readOnlyForm == 'R'"
+                    [(ngModel)]="model.contactPersonName"
+                    name="cpn"
+                    [ngClass]="{ 'is-invalid': f.submitted && cpn.invalid }"
+                    #cpn="ngModel"
+                  />
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Contact Person Designation</label>
+                  <input
+                    class="form-control"
+                    [readonly]="readOnlyForm == 'R'"
+                    [(ngModel)]="model.contactPersonDesignation"
+                    name="cpd"
+                    [ngClass]="{ 'is-invalid': f.submitted && cpd.invalid }"
+                    #cpd="ngModel"
+                  />
+                </div>
+              </div>
+            </div>
           <div class="row">
             <div class="col-md-6">
               <div class="form-group">

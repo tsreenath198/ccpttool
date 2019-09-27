@@ -28,6 +28,9 @@ const routes: Routes = [
             { path: 'payments', loadChildren: './payments/payments.module#PaymentsModule'},
             { path: 'send-message', loadChildren: './send-message/send-message.module#SendMessageModule'},
             { path: 'faq', loadChildren: './frequent-questions/frequent-questions.module#FrequentQuestionsModule'},
+            { path: 'email-history', loadChildren:'./email-history/email-history.module#EmailHistoryModule'},
+            { path: 'message-history', loadChildren:'./message-history/message-history.module#MessageHistoryModule'},
+            
             { path: 'charts', loadChildren: './charts/charts.module#ChartsModule' },
             { path: 'tables', loadChildren: './tables/tables.module#TablesModule' },
             { path: 'forms', loadChildren: './form/form.module#FormModule' },

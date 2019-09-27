@@ -107,6 +107,21 @@ export class URLConstants {
     SearchGetById = 'search/';
     SearchAllSearch = 'search/search?searchKey='
 
+    /**Email History */
+    EHCreate = 'emailHistory';
+    EHGetAll = 'emailHistory/?pageNo=';
+    EHUpdate = 'emailHistory';
+    EHDelete = 'emailHistory/';
+    EHGetById = 'emailHistory/'; 
+
+    /**Messages History */
+    SMSHCreate = 'smsHistory';
+    SMSHGetAll = 'smsHistory/?pageNo=';
+    SMSHUpdate = 'smsHistory';
+    SMSHDelete = 'smsHistory/';
+    SMSHGetById = 'smsHistory/';
+
+
     /** Reporting */
     GetAllDashboard = 'dashboard/getAllDashboardContent'
     ReportingGetAllTop5CP = 'dashboard/getTop5CP';
@@ -129,6 +144,7 @@ export class URLConstants {
     EmailTemplateSend = 'sendEmail';
     EmailGetClientApps = 'template/getClientApps';
     EmailGetShortlistCA = 'template/getShortListedCA'
+    EmailGetReqUpdate = 'template/getCAs'
     GetInterviewDetailsEmail = 'template/getInterviewTemplate'
 
     /**SMS template */
