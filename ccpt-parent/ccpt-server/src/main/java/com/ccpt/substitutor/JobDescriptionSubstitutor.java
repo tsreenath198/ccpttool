@@ -150,6 +150,7 @@ public class JobDescriptionSubstitutor implements ContentSubstitutor {
 
 	public static String getSign(StringBuilder sb) {
 		sb.append("<p>");
+		sb.append("<br>");
 		sb.append("<table>");
 		sb.append("<tbody>");
 		sb.append("<tr><td><b>Thanks &amp; Regards</b></td></tr>");
@@ -228,7 +229,7 @@ public class JobDescriptionSubstitutor implements ContentSubstitutor {
 					+ "</td>\r\n" + "</tr>");
 		}
 		if (clientApplication.getConsultant().getCurrentCompany() != null) {
-			sb.append("<tr>\r\n" + "<td width=\"199\">\r\n" + "<p><strong>Previous Company</strong></p>\r\n"
+			sb.append("<tr>\r\n" + "<td width=\"199\">\r\n" + "<p><strong>Current Company</strong></p>\r\n"
 					+ "</td>\r\n" + "<td width=\"529\">\r\n" + "<p>"
 					+ clientApplication.getConsultant().getCurrentCompany() + "</p>\r\n" + "</td>\r\n" + "</tr>");
 		}

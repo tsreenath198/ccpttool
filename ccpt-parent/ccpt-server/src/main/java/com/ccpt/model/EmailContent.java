@@ -39,6 +39,9 @@ public class EmailContent extends IDEntity {
 	@Column
 	private String target;
 
+	@Column
+	private String uuid;
+
 	@Transient
 	private String cc;
 

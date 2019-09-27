@@ -233,7 +233,7 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 	}
 
 	public static String getSign(StringBuilder sb) {
-		sb.append("<br>");
+		sb.append("<br></br>");
 		sb.append("<p>");
 		sb.append("<table>");
 		sb.append("<tbody>");
@@ -375,7 +375,11 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 				StringBuilder sbPara = new StringBuilder();
 				emailContent = new EmailContent();
 				ClientPosition clientPosition = ca.getClientPosition();
-				ccName = clientPosition.getClient().getClientContacts().get(0).getFullname();
+				if (clientPosition.getClient().getClientContacts().get(0).getSalutation().equalsIgnoreCase("Mr."))
+					ccName = clientPosition.getClient().getClientContacts().get(0).getFullname().concat(" sir");
+				else
+					ccName = clientPosition.getClient().getClientContacts().get(0).getFullname().concat(" madam");
+
 				valuesMap.put("jobTitle", clientPosition.getRole());
 				valuesMap.put("clientContactName", clientPosition.getClient().getClientContacts().get(0).getFullname());
 				valuesMap.put("consultantName", ca.getConsultant().getFullname());
@@ -388,7 +392,7 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 				valuesMap.put("interviewTime", ca.getInterviewTime());
 				valuesMap.put("interviewLocation", ca.getInterviewLocation());
 				valuesMap.put("address", ca.getClientPosition().getClient().getAddress());
-				valuesMap.put("onlineId", ca.getOnlineId());
+				valuesMap.put("interviewMode", ca.getInterviewMode());
 				sbPara.append(
 						"<table width=\"728\" border=\"1\" style=\"border-collapse : collapse\" cellspacing=\"0\" cellpadding=\"0\">")
 						.append("<tbody>");
@@ -400,34 +404,40 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 							.append("<td colspan=\"2\" width=\"728\" >\r\n")
 							.append("<p><strong>Interview Date</strong></p>\r\n </td>")
 							.append("<td colspan=\"2\" width=\"728\" >\r\n")
-							.append("<p><strong>Interview Time</strong></p>\r\n </td>");
-					if (!ca.getInterviewMode().equalsIgnoreCase("F2F")) {
-						sbPara.append("<td colspan=\"2\" width=\"728\" >\r\n")
-								.append("<p><strong>Online Id</strong></p>\r\n </td>").append("\r\n</tr>");
-					}
+							.append("<p><strong>Interview Time</strong></p>\r\n </td>")
+							.append("<td colspan=\"2\" width=\"728\" >\r\n")
+							.append("<p><strong>Interview Mode</strong></p>\r\n </td>")
+							.append("<td colspan=\"2\" width=\"728\" >\r\n")
+							.append("<p><strong>Contact Info</strong></p>\r\n </td>").append("\r\n</tr>");
 				}
 				i++;
 				sbPara.append("<tr>" + "<td colspan=\"2\" width=\"728\" >\r\n")
-						.append("<p><strong>${consultantName}</strong></p>\r\n </td>")
-						.append("<td colspan=\"2\" width=\"728\" >\r\n")
-						.append("<p><strong>${jobTitle}</strong></p>\r\n </td>")
-						.append("<td colspan=\"2\" width=\"728\" >\r\n")
-						.append("<p><strong>${interviewDate}</strong></p>\r\n </td>")
-						.append("<td colspan=\"2\" width=\"728\" >\r\n")
-						.append("<p><strong>${interviewTime}</strong></p>\r\n </td>")
-						.append("<td colspan=\"2\" width=\"728\" >\r\n");
-				if (ca.getOnlineId() != null && !ca.getInterviewMode().equalsIgnoreCase("F2F")) {
-					sbPara.append("<p><strong>${onlineId}</strong></p>\r\n </td>").append("</tr>");
+						.append("<p>${consultantName}</p>\r\n </td>").append("<td colspan=\"2\" width=\"728\" >\r\n")
+						.append("<p>${jobTitle}</p>\r\n </td>").append("<td colspan=\"2\" width=\"728\" >\r\n")
+						.append("<p>${interviewDate}</p>\r\n </td>").append("<td colspan=\"2\" width=\"728\" >\r\n")
+						.append("<p>${interviewTime}</p>\r\n </td>").append("<td colspan=\"2\" width=\"728\" >\r\n")
+						.append("<p>${interviewMode}</p>\r\n </td>");
+				if (!ca.getInterviewMode().equalsIgnoreCase("VID")) {
+					if (ca.getConsultant().getPhone() != null) {
+						sbPara.append("<td colspan=\"2\" width=\"728\" >\r\n")
+								.append("<p>" + ca.getConsultant().getPhone() + "</p>\r\n </td>").append("</tr>");
+					}
 				} else {
-					sbPara.append("<p><strong>  </strong></p>\r\n </td>").append("</tr>");
+					if (ca.getOnlineId() != null) {
+						sbPara.append("<td colspan=\"2\" width=\"728\" >\r\n")
+								.append("<p>" + ca.getOnlineId() + "</p>\r\n </td>").append("</tr>");
+					}
 				}
 				sbPara.append("</tbody>").append("</table>");
 				emailContent.setToEmails(ca.getClientPosition().getClient().getClientContacts().get(0).getEmail());
 				data = data.concat(StrSubstitutor.replace(sbPara.toString(), valuesMap));
 			}
-			String temp = new StringBuilder().append("<p>Hi ").append(ccName).append("</p>")
-					.append("Please review & confirm the interview scheduled mentioned below ").append("<p>")
-					.append("<p>").toString().concat(data);
+			StringBuilder sb = new StringBuilder();
+			sb.append("<p>Hi ");
+			sb.append(ccName);
+			sb.append("</p>").append("Please review & confirm the interview scheduled mentioned below ").append("<p>")
+					.append("<p>");
+			String temp = sb.toString().concat(data);
 			String finalData = temp.concat(new StringBuilder().append("<p>").append("<p>").toString());
 			emailContent.setBody(finalData.concat(JobDescriptionSubstitutor.getSign(body)));
 			emailContent.setSubject("Upcoming Interview Schedule");
