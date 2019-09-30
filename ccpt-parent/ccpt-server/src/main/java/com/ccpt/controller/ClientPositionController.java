@@ -76,6 +76,11 @@ public class ClientPositionController extends BaseController<ClientPositionDTO, 
 		} else {
 			model.setStatus(ClientPositionStatusService.findByCode(model.getStatus().getCode()));
 		}
+		if (model.getRequiredSkills() == null) {
+			throw new ValidationException("Required skills cannot be null");
+		} else {
+			model.setRequiredSkills(model.getRequiredSkills());
+		}
 	}
 
 	@GetMapping("/getAllCps")
