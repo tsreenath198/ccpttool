@@ -24,6 +24,7 @@ public class DashboardService {
 			openClientPositions.setGeneratedCode(clientPosition.getGeneratedCode());
 			openClientPositions.setRecruiterName(clientPosition.getAssignedTo().getFullname());
 			openClientPositions.setCreatedDate(clientPosition.getCreatedDate());
+			openClientPositions.setClientId(clientPosition.getClient().getId());
 			listOfPositions.add(openClientPositions);
 		}
 
@@ -39,6 +40,7 @@ public class DashboardService {
 			openClientPositions.setGeneratedCode(clientPosition.getGeneratedCode());
 			openClientPositions.setRecruiterName(clientPosition.getAssignedTo().getFullname());
 			openClientPositions.setCreatedDate(clientPosition.getCreatedDate());
+			openClientPositions.setClientId(clientPosition.getClient().getId());
 			listOfPositions.add(openClientPositions);
 		}
 

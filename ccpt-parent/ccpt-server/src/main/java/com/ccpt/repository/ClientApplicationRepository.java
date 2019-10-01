@@ -31,19 +31,7 @@ public interface ClientApplicationRepository extends BaseRepository<ClientApplic
 	List<ClientApplication> findByClientPositionIdAndActiveFlagOrderByCreatedDateDesc(
 			@Param("clientPositionId") Integer clientPositionId, @Param("activeFlag") Boolean activeFlag);
 
-	@Query(value = "SELECT\r\n" + "   client.name as clientName,\r\n" + "   client.phone as clientPhone,\r\n"
-			+ "   consultant.fullname as consultantName,\r\n" + "   consultant.phone as consultantPhone,\r\n"
-			+ "   client_application.interview_mode as interviewMode,\r\n"
-			+ "   client_application.interview_date as interviewDate,\r\n"
-			+ "   client_application.interview_location as interviewLocation,\r\n"
-			+ "   client_application.interview_time as interviewTime \r\n" + "FROM\r\n" + "   client_application,\r\n"
-			+ "   client_position,\r\n" + "   client,\r\n" + "   consultant \r\n" + "WHERE\r\n"
-			+ "   client_application.client_position_id = client_position.id \r\n"
-			+ "   AND client_position.client_id = client.id \r\n"
-			+ "   AND client_application.consultant_id = consultant.id \r\n"
-			+ "   AND client_application.interview_date >= curDate() \r\n"
-			+ "   AND client_application.active_flag=1\r\n" + "ORDER BY\r\n"
-			+ "   client_application.interview_date", nativeQuery = true)
+	@Query(value = "SELECT  client.name as clientName,client.id as clientId,client.phone as clientPhone, consultant.fullname as consultantName,consultant.id as consultantId,consultant.phone as consultantPhone,client_application.interview_mode as interviewMode, client_application.interview_date as interviewDate,client_application.interview_location as interviewLocation,client_application.interview_time as interviewTime  FROM   client_application,client_position, client, consultant WHERE client_application.client_position_id = client_position.id AND client_position.client_id = client.id  AND client_application.consultant_id = consultant.id AND client_application.interview_date >= curDate()  AND client_application.active_flag=1 ORDER BY client_application.interview_date", nativeQuery = true)
 	List<InterviewSummaryStatistics> getAllInterviewsFromToday();
 
 	List<ClientApplication> findByConsultantIdAndActiveFlagOrderByCreatedDateDesc(
@@ -62,7 +50,7 @@ public interface ClientApplicationRepository extends BaseRepository<ClientApplic
 	List<ClientApplication> search(@Param("clientId") Integer clientId, @Param("clientPosId") Integer clientPosId,
 			@Param("statusType") String statusType, @Param("searchKey") String searchKey);
 
-	@Query("SELECT c.id as id,c.consultant.fullname as consultantName,c.clientPosition.client.name as clientName,c.status.code as status  FROM ClientApplication c, ClientApplicationStatus cas WHERE c.status=cas.code AND cas.statusType='Active' AND c.activeFlag=:activeFlag ORDER BY c.createdDate DESC")
+	@Query("SELECT c.id as id,c.consultant.id as consultantId,c.consultant.fullname as consultantName,c.clientPosition.client.name as clientName,c.clientPosition.client.id as clientId,c.status.code as status  FROM ClientApplication c, ClientApplicationStatus cas WHERE c.status=cas.code AND cas.statusType='Active' AND c.activeFlag=:activeFlag ORDER BY c.createdDate DESC")
 	List<DashboardCAStatistics> getDashboardCaStatus(@Param("activeFlag") Boolean activeFlag);
 
 	@Query(value = "SELECT code FROM client_application_status", nativeQuery = true)

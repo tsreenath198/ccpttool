@@ -19,4 +19,9 @@ public interface InterviewSummaryStatistics {
 	public String getInterviewLocation();
 
 	public String getInterviewTime();
+
+	public Integer getConsultantId();
+
+	public Integer getClientId();
+
 }

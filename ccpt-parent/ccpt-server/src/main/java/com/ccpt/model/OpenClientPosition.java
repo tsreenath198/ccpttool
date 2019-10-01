@@ -11,6 +11,7 @@ import lombok.ToString;
 @ToString
 public class OpenClientPosition {
 
+	private Integer clientId;
 	private String clientName;
 	private String generatedCode;
 	private String recruiterName;
