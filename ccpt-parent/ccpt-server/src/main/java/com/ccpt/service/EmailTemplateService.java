@@ -280,8 +280,8 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 		sbPara.append("<p>Hi <strong>${consultantName}</strong>,</p>");
 		sbPara.append(
 				"<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;We are excited to inform you that your interview has been confirmed with <strong><mark>${clientName}</mark></strong>.</p>");
-		sbPara.append("<br></br><p><mark>Please confirm your availability</mark></p>");
-		sbPara.append("<br></br><p>Please find the interview details below:</p>");
+		sbPara.append("<br/><p><mark>Please confirm your availability</mark></p>");
+		sbPara.append("<br/><p>Please find the interview details below:</p>");
 		sbPara.append("<p><strong>Interview Date :</strong><mark>${interviewDate}</mark></p>");
 		sbPara.append("<p><strong>Interview Time :</strong><mark>${interviewTime}</mark></p>");
 		sbPara.append("<p><strong>Interview Location :</strong><mark>${interviewLocation}</mark></p>");
