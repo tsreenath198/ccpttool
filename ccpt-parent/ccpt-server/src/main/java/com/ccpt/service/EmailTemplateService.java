@@ -280,13 +280,15 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 		sbPara.append("<p>Hi <strong>${consultantName}</strong>,</p>");
 		sbPara.append(
 				"<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;We are excited to inform you that your interview has been confirmed with <strong><mark>${clientName}</mark></strong>.</p>");
-		sbPara.append("<p>Please find the interview details below:</p>");
+		sbPara.append("<br></br><p><mark>Please confirm your availability</mark></p>");
+		sbPara.append("<br></br><p>Please find the interview details below:</p>");
 		sbPara.append("<p><strong>Interview Date :</strong><mark>${interviewDate}</mark></p>");
 		sbPara.append("<p><strong>Interview Time :</strong><mark>${interviewTime}</mark></p>");
 		sbPara.append("<p><strong>Interview Location :</strong><mark>${interviewLocation}</mark></p>");
 		sbPara.append("<p><strong>Address :</strong><mark>${address}</mark></p>");
 		sbPara.append(
 				"<p><strong>Name of Client Contact Person :</strong><mark>${clientContactPersonName} (${clientContactPersonNumber})</mark></p>");
+		sbPara.append("<p><mark>").append(ca.get().getConsultant().getDescription()).append("</mark></p>");
 		sbPara.append("<p>**Feel free to call us any time.</p><p></p>");
 
 		if (ca.get().getInterviewMode().equalsIgnoreCase("f2f")) {
