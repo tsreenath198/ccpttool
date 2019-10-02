@@ -93,8 +93,7 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 				sbPara.append("<p> Below is the profile with ${jobTitle}  experience (CV Attached)</p>");
 			else
 				sbPara.append("<p> Below are the profiles with ${jobTitle}  experience (CVs Attached)</p>");
-			sbPara.append("<p>");
-			sbPara.append("please go over the CVs and provide your feedback ASAP");
+			sbPara.append("<p>").append("please go over the CVs and provide your feedback ASAP");
 
 			String subject = StrSubstitutor.replace(sbPara.toString(), valuesMap);
 			StringBuilder sb = new StringBuilder(subject);
@@ -204,12 +203,11 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 
 	public static String appendTemplate(List<ClientApplication> clientApplications) {
 		StringBuilder sb = new StringBuilder();
-		sb.append("<p>");
-		sb.append("<table width=\"728\" border=\"1\"  cellspacing=\"0\" cellpadding=\"0\">");
-		sb.append("<tbody>");
-		sb.append("<tr>\r\n" + "<th width=\"199\">\r\n" + "<p><strong>Client</strong></p>\r\n" + "</th>"
-				+ "<th width=\"199\">\r\n" + "<p><strong>Position</strong></p>\r\n" + "</th>" + "<th width=\"199\">\r\n"
-				+ "<p><strong>Sent On</strong></p>\r\n" + "</th>");
+		sb.append("<p>").append("<table width=\"728\" border=\"1\"  cellspacing=\"0\" cellpadding=\"0\">")
+				.append("<tbody>")
+				.append("<tr>\r\n" + "<th width=\"199\">\r\n" + "<p><strong>Client</strong></p>\r\n" + "</th>"
+						+ "<th width=\"199\">\r\n" + "<p><strong>Position</strong></p>\r\n" + "</th>"
+						+ "<th width=\"199\">\r\n" + "<p><strong>Sent On</strong></p>\r\n" + "</th>");
 		for (ClientApplication clientApplication : clientApplications) {
 
 			if (clientApplication.getClientPosition().getClient().getName() != null) {
@@ -225,33 +223,25 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 						+ "</tr>");
 			}
 		}
-		sb.append("</tbody>");
-		sb.append("</table>");
+		sb.append("</tbody>").append("</table>");
 		getSign(sb);
 		String jd = sb.toString();
 		return jd;
 	}
 
 	public static String getSign(StringBuilder sb) {
-		sb.append("<br></br>");
-		sb.append("<p>");
-		sb.append("<table>");
-		sb.append("<tbody>");
-		sb.append("<tr><td><b>Thanks &amp; Regards</b></td></tr>");
-		sb.append("<tr><td><b>Sreenath Thatikonda</b></td></tr>");
-		sb.append("<tr><td>Branch&nbsp;Head</td></tr>");
-		sb.append(
-				"<tr><td style=\"font-size: 11.0pt;font-family: 'Calibri',sans-serif;color: #1f497d;\">Talent Corner HR Services Pvt. Ltd.</td></tr>");
-		sb.append(
-				"<tr><td style=\"font-size: 11.0pt;font-family: 'Calibri',sans-serif;color: #1f497d;\">(D) 9848071296 &nbsp; (W)&nbsp;<a href=\"http://www.talentcorner.in/\" data-saferedirecturl=\"https://www.google.com/url?q=http://www.talentcorner.in/&amp;source=gmail&amp;ust=1563428769215000&amp;usg=AFQjCNFet2kPL5oLLvDUSpWHxioT4LijGA\">www.talentcorner.in</a>&nbsp;(E)&nbsp;<a href=\"mailto:sreenath.t@talentcorner.in\">sreenath.t@talentcorner.in</a></td></tr>");
-		sb.append("</tbody>\r\n" + "</table>");
+		sb.append("<br></br>").append("<p>").append("<table>").append("<tbody>")
+				.append("<tr><td><b>Thanks &amp; Regards</b></td></tr>")
+				.append("<tr><td><b>Sreenath Thatikonda</b></td></tr>").append("<tr><td>Branch&nbsp;Head</td></tr>")
+				.append("<tr><td style=\"font-size: 11.0pt;font-family: 'Calibri',sans-serif;color: #1f497d;\">Talent Corner HR Services Pvt. Ltd.</td></tr>")
+				.append("<tr><td style=\"font-size: 11.0pt;font-family: 'Calibri',sans-serif;color: #1f497d;\">(D) 9848071296 &nbsp; (W)&nbsp;<a href=\"http://www.talentcorner.in/\" data-saferedirecturl=\"https://www.google.com/url?q=http://www.talentcorner.in/&amp;source=gmail&amp;ust=1563428769215000&amp;usg=AFQjCNFet2kPL5oLLvDUSpWHxioT4LijGA\">www.talentcorner.in</a>&nbsp;(E)&nbsp;<a href=\"mailto:sreenath.t@talentcorner.in\">sreenath.t@talentcorner.in</a></td></tr>")
+				.append("</tbody>\r\n" + "</table>");
 		sb.append("<div style=\"font-size: 11.0pt;font-family: 'Calibri',sans-serif;color: #1f497d;\">\r\n"
-				+ "	You can also follow us on Facebook &amp; Twitter. Just search for Talent Corner.\r\n" + "</div>");
-		sb.append("<div style=\"font-size: 10.0pt;font-family: 'Calibri',sans-serif;color: #7030a0;\">\r\n"
-				+ "<strong>Offices : |Mumbai||Gurgaon||Gujarat||Kota||Pune| |Banglore||Chennai| |Hyderabad||Ahmedabad||Kolkata|</strong></div>");
-		sb.append(
-				"<div style=\"font-size: 10.0pt;font-family: 'Calibri',sans-serif;color: #7030a0;\"><strong>Vision 2025</strong>: On&nbsp;<strong>1<sup>st</sup>&nbsp;January 2025</strong>, Talent Corner will be an Organization, having operations in&nbsp;<strong>10</strong>&nbsp;Countries, with&nbsp;<strong>100</strong>&nbsp;Offices &amp; a Team of&nbsp;<strong>1000</strong>&nbsp;People ,Successfully Executing<strong>10000</strong>&nbsp;Recruitment Assignments every Year. We would have recruited&nbsp;<strong>1,00,000</strong>&nbsp;People by then. For every Successful Recruitment we will invest Rs<strong>. 100</strong>&nbsp;towards Girl Child Education, thus by&nbsp;<strong>2025</strong>&nbsp;we would have educated&nbsp;<strong>1000</strong>&nbsp;Girls&rdquo;</div>");
-		sb.append("</p>");
+				+ "	You can also follow us on Facebook &amp; Twitter. Just search for Talent Corner.\r\n" + "</div>")
+				.append("<div style=\"font-size: 10.0pt;font-family: 'Calibri',sans-serif;color: #7030a0;\">\r\n"
+						+ "<strong>Offices : |Mumbai||Gurgaon||Gujarat||Kota||Pune| |Banglore||Chennai| |Hyderabad||Ahmedabad||Kolkata|</strong></div>")
+				.append("<div style=\"font-size: 10.0pt;font-family: 'Calibri',sans-serif;color: #7030a0;\"><strong>Vision 2025</strong>: On&nbsp;<strong>1<sup>st</sup>&nbsp;January 2025</strong>, Talent Corner will be an Organization, having operations in&nbsp;<strong>10</strong>&nbsp;Countries, with&nbsp;<strong>100</strong>&nbsp;Offices &amp; a Team of&nbsp;<strong>1000</strong>&nbsp;People ,Successfully Executing<strong>10000</strong>&nbsp;Recruitment Assignments every Year. We would have recruited&nbsp;<strong>1,00,000</strong>&nbsp;People by then. For every Successful Recruitment we will invest Rs<strong>. 100</strong>&nbsp;towards Girl Child Education, thus by&nbsp;<strong>2025</strong>&nbsp;we would have educated&nbsp;<strong>1000</strong>&nbsp;Girls&rdquo;</div>")
+				.append("</p>");
 		return sb.toString();
 	}
 
@@ -277,73 +267,47 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 		valuesMap.put("clientContactPersonNumber",
 				ca.get().getClientPosition().getClient().getClientContacts().get(0).getPhone());
 
-		sbPara.append("<p>Hi <strong>${consultantName}</strong>,</p>");
-		sbPara.append(
-				"<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;We are excited to inform you that your interview has been confirmed with <strong><mark>${clientName}</mark></strong>.</p>");
-		sbPara.append("<br/><p><span style=\"background-color:yellow\">Please confirm your availability.</span></p>");
-		sbPara.append("<br/><p>Please find the interview details below:</p>");
-		sbPara.append("<p><strong>Interview Date :</strong><span style=\"background-color:yellow\">${interviewDate}</span></p>");
-		sbPara.append("<p><strong>Interview Time :</strong><span style=\"background-color:yellow\">${interviewTime}</span></p>");
-		sbPara.append("<p><strong>Interview Location :</strong><span style=\"background-color:yellow\">${interviewLocation}</span></p>");
-		sbPara.append("<p><strong>Address :</strong><span style=\"background-color:yellow\">${address}</span></p>");
-		sbPara.append(
-				"<p><strong>Name of Client Contact Person :</strong><span style=\"background-color:yellow\">${clientContactPersonName} (${clientContactPersonNumber})</span></p>");
-		sbPara.append("<p><span style=\"background-color:yellow\">").append(ca.get().getDescription()).append("</span></p>");
-		sbPara.append("<p>**Feel free to call us any time.</p><p></p>");
-		
+		sbPara.append("<p>Hi <strong>${consultantName}</strong>,</p>")
+				.append("<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;We are excited to inform you that your interview has been confirmed with <strong><span style=\"background-color:yellow\">${clientName}</span></strong>.</p>")
+				.append("<p><span style=\"background-color:yellow\">Please confirm your availability.</span></p>")
+				.append("<p>Please find the interview details below:</p>")
+				.append("<p><strong>Interview Date :</strong><span style=\"background-color:yellow\">${interviewDate}</span></p>")
+				.append("<p><strong>Interview Time :</strong><span style=\"background-color:yellow\">${interviewTime}</span></p>")
+				.append("<p><strong>Interview Location :</strong><span style=\"background-color:yellow\">${interviewLocation}</span></p>")
+				.append("<p><strong>Address :</strong><span style=\"background-color:yellow\">${address}</span></p>")
+				.append("<p><strong>Name of Client Contact Person :</strong><span style=\"background-color:yellow\">${clientContactPersonName} (${clientContactPersonNumber})</span></p>")
+				.append("<p><span style=\"background-color:yellow\">").append(ca.get().getDescription())
+				.append("</span></p>").append("<p>**Feel free to call us any time.</p><p></p>");
+
 		if (ca.get().getInterviewMode().equalsIgnoreCase("f2f")) {
-			sbPara.append("<p><mark>** Things to Carry:</mark></p>");
-			sbPara.append("<p></p>");
-			sbPara.append("<p>1.      A physical copy of this interview confirmation email</p>");
-			sbPara.append("<p></p>");
-			sbPara.append("<p>2.      Your complete CV</p>");
-			sbPara.append("<p></p>");
-			sbPara.append("<p>3.      Education related certificates</p>");
-			sbPara.append("<p></p>");
-			sbPara.append("<p>4.      Work Experience letters (if any)</p>");
-			sbPara.append("<p></p>");
-			sbPara.append("<p>5.      A Pen and Notebook to make some notes (if needed)</p>");
-			sbPara.append("<p></p>");
-			sbPara.append("<p><mark>**Interview Guidelines</mark></p>");
-			sbPara.append("<p></p>");
-			sbPara.append(
-					"<p>1.      Please make sure you wear clean and formal clothes for the interview. Your appearance matters a lot.</p>");
-			sbPara.append("<p></p>");
-			sbPara.append(
-					"<p>2.      Plan your travel well in advance. Please reach the interview location 30 minutes before to avoid last minute delays.</p>");
-			sbPara.append("<p></p>");
-			sbPara.append(
-					"<p>3.      Do call us once you reach the interview location so that we can inform the client.</p>");
-			sbPara.append("<p></p>");
-			sbPara.append("<p>4.      Avoid roaming around the office premises unnecessarily.</p>");
-			sbPara.append("<p></p>");
-			sbPara.append(
-					"<p>5.      Keep your phone in silent mode. If possible, switch off the mobile when entering the interview room.</p>");
-			sbPara.append("<p></p>");
-			sbPara.append(
-					"<p>6.      After the interview is completed, please take permission from client before leaving the interview location.</p>");
-			sbPara.append("<p></p>");
+			sbPara.append("<p><span style=\"background-color:yellow\">** Things to Carry:</span></p>").append("<p></p>")
+					.append("<p>1.      A physical copy of this interview confirmation email</p>").append("<p></p>")
+					.append("<p>2.      Your complete CV</p>").append("<p></p>")
+					.append("<p>3.      Education related certificates</p>").append("<p></p>")
+					.append("<p>4.      Work Experience letters (if any)</p>").append("<p></p>")
+					.append("<p>5.      A Pen and Notebook to make some notes (if needed)</p>").append("<p></p>")
+					.append("<p><span style=\"background-color:yellow\">**Interview Guidelines</span></p>")
+					.append("<p></p>")
+					.append("<p>1.      Please make sure you wear clean and formal clothes for the interview. Your appearance matters a lot.</p>")
+					.append("<p></p>")
+					.append("<p>2.      Plan your travel well in advance. Please reach the interview location 30 minutes before to avoid last minute delays.</p>")
+					.append("<p></p>")
+					.append("<p>3.      Do call us once you reach the interview location so that we can inform the client.</p>")
+					.append("<p></p>").append("<p>4.      Avoid roaming around the office premises unnecessarily.</p>")
+					.append("<p></p>")
+					.append("<p>5.      Keep your phone in silent mode. If possible, switch off the mobile when entering the interview room.</p>")
+					.append("<p></p>")
+					.append("<p>6.      After the interview is completed, please take permission from client before leaving the interview location.</p>")
+					.append("<p></p>");
 		} else {
-			sbPara.append("<p><mark>** Remember:</mark></p>");
-			sbPara.append("<p></p>");
-			sbPara.append("<p>1.Find a quite location</p>");
-			sbPara.append("<p></p>");
-			sbPara.append("<p>2.Make sure your mobile is fully charged</p>");
-			sbPara.append("<p></p>");
-			sbPara.append("<p>3.Speak clearly</p>");
-			sbPara.append("<p></p>");
-			sbPara.append("<p>4.Listen carefully</p>");
-			sbPara.append("<p></p>");
-			sbPara.append("<p>5.Focus on your language and voice</p>");
-			sbPara.append("<p></p>");
+			sbPara.append("<p><span style=\"background-color:yellow\">** Remember:</span></p>").append("<p></p>")
+					.append("<p>1.Find a quite location</p>").append("<p></p>")
+					.append("<p>2.Make sure your mobile is fully charged</p>").append("<p></p>")
+					.append("<p>3.Speak clearly</p>").append("<p></p>").append("<p>4.Listen carefully</p>")
+					.append("<p></p>").append("<p>5.Focus on your language and voice</p>").append("<p></p>");
 		}
-		sbPara.append("<p>After the interview is completed, inform us on how the interview went.</p>");
-		sbPara.append("<p></p>");
-		sbPara.append("<p></p>");
-		sbPara.append("<p></p>");
-		sbPara.append("<p></p>");
-		sbPara.append("<p></p>");
-		sbPara.append("<p>");
+		sbPara.append("<p>After the interview is completed, inform us on how the interview went.</p>").append("<p></p>")
+				.append("<p></p>").append("<p></p>").append("<p></p>").append("<p></p>").append("<p>");
 		emailContent.setSubject(
 				StrSubstitutor.replace("Congratulations! Your Interview is confirmed with ${clientName}", valuesMap));
 		String subject = StrSubstitutor.replace(sbPara.toString(), valuesMap);
@@ -435,9 +399,8 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 				data = data.concat(StrSubstitutor.replace(sbPara.toString(), valuesMap));
 			}
 			StringBuilder sb = new StringBuilder();
-			sb.append("<p>Hi ");
-			sb.append(ccName);
-			sb.append("</p>").append("Please review & confirm the interview scheduled mentioned below ").append("<p>")
+			sb.append("<p>Hi ").append(ccName).append("</p>")
+					.append("Please review & confirm the interview scheduled mentioned below ").append("<p>")
 					.append("<p>");
 			String temp = sb.toString().concat(data);
 			String finalData = temp.concat(new StringBuilder().append("<p>").append("<p>").toString());
