@@ -272,17 +272,20 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 				.append("<p><span style=\"background-color:yellow\">Please confirm your availability.</span></p>")
 				.append("<p>Please find the interview details below:</p>")
 				.append("<p><strong>Interview Date :</strong><span style=\"background-color:yellow\">${interviewDate}</span></p>")
-				.append("<p><strong>Interview Time :</strong><span style=\"background-color:yellow\">${interviewTime}</span></p>")
-				.append("<p><strong>Interview Location :</strong><span style=\"background-color:yellow\">${interviewLocation}</span></p>")
-				.append("<p><strong>Address :</strong><span style=\"background-color:yellow\">${address}</span></p>")
-				.append("<p><strong>Name of Client Contact Person :</strong><span style=\"background-color:yellow\">${clientContactPersonName} (${clientContactPersonNumber})</span></p>")
-				.append("<p><span style=\"background-color:yellow\">").append(ca.get().getDescription())
-				.append("</span></p>").append("<p>**Feel free to call us any time.</p><p></p>");
+				.append("<p><strong>Interview Time :</strong><span style=\"background-color:yellow\">${interviewTime}</span></p>");
 
 		if (ca.get().getInterviewMode().equalsIgnoreCase("f2f")) {
-			sbPara.append("<p><span style=\"background-color:yellow\">** Things to Carry:</span></p>").append("<p></p>")
-					.append("<p>1.      A physical copy of this interview confirmation email</p>").append("<p></p>")
-					.append("<p>2.      Your complete CV</p>").append("<p></p>")
+			sbPara.append(
+					"<p><strong>Interview Location :</strong><span style=\"background-color:yellow\">${interviewLocation}</span></p>")
+					.append("<p><strong>Address :</strong><span style=\"background-color:yellow\">${address}</span></p>")
+					.append("<p><strong>Name of Client Contact Person :</strong><span style=\"background-color:yellow\">${clientContactPersonName} (${clientContactPersonNumber})</span></p>");
+			if (ca.get().getDescription() != null) {
+				sbPara.append("<p><span style=\"background-color:yellow\">").append(ca.get().getDescription());
+			}
+			sbPara.append("</span></p>").append("<p>**Feel free to call us any time.</p><p></p>")
+					.append("<p><span style=\"background-color:yellow\">** Things to Carry:</span></p>")
+					.append("<p></p>").append("<p>1.      A physical copy of this interview confirmation email</p>")
+					.append("<p></p>").append("<p>2.      Your complete CV</p>").append("<p></p>")
 					.append("<p>3.      Education related certificates</p>").append("<p></p>")
 					.append("<p>4.      Work Experience letters (if any)</p>").append("<p></p>")
 					.append("<p>5.      A Pen and Notebook to make some notes (if needed)</p>").append("<p></p>")
@@ -300,7 +303,11 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 					.append("<p>6.      After the interview is completed, please take permission from client before leaving the interview location.</p>")
 					.append("<p></p>");
 		} else {
-			sbPara.append("<p><span style=\"background-color:yellow\">** Remember:</span></p>").append("<p></p>")
+			if (ca.get().getDescription() != null) {
+				sbPara.append("<p><span style=\"background-color:yellow\">").append(ca.get().getDescription());
+			}
+			sbPara.append("</span></p>").append("<p>**Feel free to call us any time.</p><p></p>")
+					.append("<p><span style=\"background-color:yellow\">** Remember:</span></p>").append("<p></p>")
 					.append("<p>1.Find a quite location</p>").append("<p></p>")
 					.append("<p>2.Make sure your mobile is fully charged</p>").append("<p></p>")
 					.append("<p>3.Speak clearly</p>").append("<p></p>").append("<p>4.Listen carefully</p>")
