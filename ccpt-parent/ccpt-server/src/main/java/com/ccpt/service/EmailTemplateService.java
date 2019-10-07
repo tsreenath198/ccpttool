@@ -88,7 +88,7 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 			if (clientPosition.getClient().getClientContacts().get(0).getSalutation().equalsIgnoreCase("Mr."))
 				sbPara.append("<p>Hi ${clientContactName} sir</p>");
 			else
-				sbPara.append("<p>Hi ${clientContactName} madam</p>");
+				sbPara.append("<p>Hi ${clientContactName} mam</p>");
 			if (ids.size() == 1)
 				sbPara.append("<p> Below is the profile with ${jobTitle}  experience (CV Attached)</p>");
 			else
@@ -160,7 +160,7 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 			if (clientPosition.getClient().getClientContacts().get(0).getSalutation().equalsIgnoreCase("Mr."))
 				sbPara.append("<p>Hi ${clientContactName} sir</p>");
 			else
-				sbPara.append("<p>Hi ${clientContactName} madam</p>");
+				sbPara.append("<p>Hi ${clientContactName} mam</p>");
 			if (ids.size() == 1)
 				sbPara.append("<p> Below is the profile with ${jobTitle}  experience (CV Attached)</p>");
 			else
@@ -352,7 +352,7 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 				if (clientPosition.getClient().getClientContacts().get(0).getSalutation().equalsIgnoreCase("Mr."))
 					ccName = clientPosition.getClient().getClientContacts().get(0).getFullname().concat(" sir");
 				else
-					ccName = clientPosition.getClient().getClientContacts().get(0).getFullname().concat(" madam");
+					ccName = clientPosition.getClient().getClientContacts().get(0).getFullname().concat(" mam");
 
 				valuesMap.put("jobTitle", clientPosition.getRole());
 				valuesMap.put("clientContactName", clientPosition.getClient().getClientContacts().get(0).getFullname());
