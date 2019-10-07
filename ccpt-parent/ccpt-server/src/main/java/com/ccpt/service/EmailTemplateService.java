@@ -203,8 +203,7 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 
 	public static String appendTemplate(List<ClientApplication> clientApplications) {
 		StringBuilder sb = new StringBuilder();
-		sb.append("<p>").append("<table width=\"728\" border=\"1\"  cellspacing=\"0\" cellpadding=\"0\">")
-				.append("<tbody>")
+		sb.append("<p>").append("<table  border=\"1\"  cellspacing=\"0\" cellpadding=\"0\">").append("<tbody>")
 				.append("<tr>\r\n" + "<th width=\"199\">\r\n" + "<p><strong>Client</strong></p>\r\n" + "</th>"
 						+ "<th width=\"199\">\r\n" + "<p><strong>Position</strong></p>\r\n" + "</th>"
 						+ "<th width=\"199\">\r\n" + "<p><strong>Sent On</strong></p>\r\n" + "</th>");
@@ -267,8 +266,8 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 		valuesMap.put("clientContactPersonNumber",
 				ca.get().getClientPosition().getClient().getClientContacts().get(0).getPhone());
 
-		sbPara.append("<p>Hi <strong>${consultantName}</strong>,</p>")
-				.append("<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;We are excited to inform you that your interview has been confirmed with <strong><span style=\"background-color:yellow\">${clientName}</span></strong>.</p>")
+		sbPara.append("<p>Hi <strong>${consultantName}</strong>,</p>").append(
+				"<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;We are excited to inform you that your interview has been confirmed with <strong><span style=\"background-color:yellow\">${clientName}</span></strong>.</p>")
 				.append("<p><span style=\"background-color:yellow\">Please confirm your availability.</span></p>")
 				.append("<p>Please find the interview details below:</p>")
 				.append("<p><strong>Interview Date :</strong><span style=\"background-color:yellow\">${interviewDate}</span></p>")
@@ -338,18 +337,13 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 		boolean allEqual = names.isEmpty() || names.stream().allMatch(names.get(0)::equals);
 		if (allEqual) {
 			Map<String, String> valuesMap = new HashMap<String, String>();
-			String data = "<table width=\"728\" border=\"1\" style=\"border-collapse : collapse\" cellspacing=\"0\" cellpadding=\"0\">"
-					.concat("<tbody>").concat("<tr>\r\n" + "<td colspan=\"2\" width=\"728\" >\r\n")
-					.concat("<p><strong>Candidate Name</strong></p>\r\n </td>")
-					.concat("<td colspan=\"2\" width=\"728\" >\r\n").concat("<p><strong>Role</strong></p>\r\n </td>")
-					.concat("<td colspan=\"2\" width=\"728\" >\r\n")
-					.concat("<p><strong>Interview Date</strong></p>\r\n </td>")
-					.concat("<td colspan=\"2\" width=\"728\" >\r\n")
-					.concat("<p><strong>Interview Time</strong></p>\r\n </td>")
-					.concat("<td colspan=\"2\" width=\"728\" >\r\n")
-					.concat("<p><strong>Interview Mode</strong></p>\r\n </td>")
-					.concat("<td colspan=\"2\" width=\"728\" >\r\n")
-					.concat("<p><strong>Contact Info</strong></p>\r\n </td>").concat("\r\n</tr>");
+			String data = "<table  border=\"1\" style=\"border-collapse : collapse\" cellspacing=\"0\" cellpadding=\"0\">"
+					+ "<tbody><tr>\r\n" + "<td  >\r\n<p><strong>Candidate Name</strong></p>\r\n </td>"
+					+ "<td  >\r\n<p><strong>Role</strong></p>\r\n </td>"
+					+ "<td  >\r\n<p><strong>Interview Date</strong></p>\r\n </td>"
+					+ "<td  >\r\n<p><strong>Interview Time</strong></p>\r\n </td>"
+					+ "<td  >\r\n<p><strong>Interview Mode</strong></p>\r\n </td>"
+					+ "<td  >\r\n<p><strong>Contact Info</strong></p>\r\n </td>\r\n</tr>";
 			StringBuilder sbPara = null;
 			for (ClientApplication ca : clientApplications) {
 				sbPara = new StringBuilder();
@@ -374,34 +368,32 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 				valuesMap.put("address", ca.getClientPosition().getClient().getAddress());
 				valuesMap.put("interviewMode", ca.getInterviewMode());
 
-				sbPara.append("<tr>" + "<td colspan=\"2\" width=\"728\" >\r\n")
-						.append("<p>${consultantName}</p>\r\n </td>").append("<td colspan=\"2\" width=\"728\" >\r\n")
-						.append("<p>${jobTitle}</p>\r\n </td>").append("<td colspan=\"2\" width=\"728\" >\r\n")
-						.append("<p>${interviewDate}</p>\r\n </td>").append("<td colspan=\"2\" width=\"728\" >\r\n")
-						.append("<p>${interviewTime}</p>\r\n </td>").append("<td colspan=\"2\" width=\"728\" >\r\n")
-						.append("<p>${interviewMode}</p>\r\n </td>");
+				sbPara.append("<tr>" + "<td  >\r\n<p>${consultantName}</p>\r\n </td>"
+						+ "<td  >\r\n<p>${jobTitle}</p>\r\n </td>" + "<td  >\r\n<p>${interviewDate}</p>\r\n </td>"
+						+ "<td  >\r\n<p>${interviewTime}</p>\r\n </td>"
+						+ "<td  >\r\n<p>${interviewMode}</p>\r\n </td>");
 				if (!ca.getInterviewMode().equalsIgnoreCase("VID")) {
 					if (ca.getConsultant().getPhone() != null) {
-						sbPara.append("<td colspan=\"2\" width=\"728\" >\r\n")
-								.append("<p>" + ca.getConsultant().getPhone() + "</p>\r\n </td>").append("</tr>");
+						sbPara.append("<td  >\r\n").append("<p>" + ca.getConsultant().getPhone() + "</p>\r\n </td>")
+								.append("</tr>");
 					}
 				} else {
 					if (ca.getOnlineId() != null) {
-						sbPara.append("<td colspan=\"2\" width=\"728\" >\r\n")
-								.append("<p>" + ca.getOnlineId() + "</p>\r\n </td>").append("</tr>");
+						sbPara.append("<td  >\r\n").append("<p>" + ca.getOnlineId() + "</p>\r\n </td>").append("</tr>");
 					}
 				}
 
 				emailContent.setToEmails(ca.getClientPosition().getClient().getClientContacts().get(0).getEmail());
 				data = data.concat(StrSubstitutor.replace(sbPara.toString(), valuesMap));
 			}
-			sbPara.append("</tbody>").append("</table>");
+			data = data.concat("</tbody>").concat("</table>");
+
 			StringBuilder sb = new StringBuilder();
 			sb.append("<p>Hi ").append(ccName).append("</p>")
 					.append("Please review & confirm the interview scheduled mentioned below ").append("<p>")
 					.append("<p>");
-			String temp = sb.toString().concat(data);
-			String finalData = temp.concat(new StringBuilder().append("<p>").append("<p>").toString());
+			String finalData = sb.toString().concat(data)
+					.concat(new StringBuilder().append("<p>").append("<p>").toString());
 			emailContent.setBody(finalData.concat(JobDescriptionSubstitutor.getSign(body)));
 			emailContent.setSubject("Upcoming Interview Schedule");
 			return emailContent;
