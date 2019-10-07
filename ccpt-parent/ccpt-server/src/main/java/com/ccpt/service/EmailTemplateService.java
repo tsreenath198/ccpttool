@@ -336,7 +336,6 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 		}
 		boolean allEqual = names.isEmpty() || names.stream().allMatch(names.get(0)::equals);
 		if (allEqual) {
-			int i = 0;
 			Map<String, String> valuesMap = new HashMap<String, String>();
 			emailContent = new EmailContent();
 			String data = "<table width=\"728\" border=\"1\" style=\"border-collapse : collapse\" cellspacing=\"0\" cellpadding=\"0\"><tbody>"
@@ -369,7 +368,6 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 				valuesMap.put("address", ca.getClientPosition().getClient().getAddress());
 				valuesMap.put("interviewMode", ca.getInterviewMode());
 
-				i++;
 				data.concat(
 						"<tr>" + "<td colspan=\"2\" width=\"728\" >\r\n<p>${consultantName}</p>\r\n </td><td colspan=\"2\" width=\"728\" >\r\n"
 								+ "<p>${jobTitle}</p>\r\n </td><td colspan=\"2\" width=\"728\" >\r\n"
