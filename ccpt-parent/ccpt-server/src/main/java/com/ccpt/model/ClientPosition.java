@@ -73,5 +73,14 @@ public class ClientPosition extends FileSupportEntity {
 	
 	@Column
 	private String jobType;
+	
+	@Column
+	private String almaConnectURL;
+	
+	@Column
+	private String shineURL;
+	
+	@Column
+	private String naukriURL;
 
 }

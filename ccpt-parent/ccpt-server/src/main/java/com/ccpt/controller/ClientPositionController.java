@@ -11,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -19,6 +21,7 @@ import com.ccpt.dto.ClientPositionDTO;
 import com.ccpt.mapper.BaseMapper;
 import com.ccpt.mapper.ClientPositionMapper;
 import com.ccpt.model.BaseReturn;
+import com.ccpt.model.CP;
 import com.ccpt.model.ClientPosition;
 import com.ccpt.model.DropDownStatistics;
 import com.ccpt.service.BaseService;
@@ -88,6 +91,15 @@ public class ClientPositionController extends BaseController<ClientPositionDTO, 
 		List<DropDownStatistics> result = clientPositionService.getAllCps();
 		return new ResponseEntity<List<DropDownStatistics>>(result, HttpStatus.OK);
 
+	}
+
+	@PutMapping("/updatePosting")
+	public ResponseEntity<Void> updateStatus(@RequestBody CP model) {
+		if (model.getShineURL() == null && model.getAlmaConnectURL() == null && model.getNaukriURL() == null) {
+			throw new ValidationException("ShineURL and AlmaConnectURL and NaukriURL cannot be null");
+		}
+		clientPositionService.updatePosting(model);
+		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 
 	@GetMapping(CCPTConstants.GET_ALL_BY_STATUS)

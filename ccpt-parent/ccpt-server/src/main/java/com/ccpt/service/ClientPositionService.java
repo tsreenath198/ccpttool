@@ -13,6 +13,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.ccpt.model.BaseReturn;
+import com.ccpt.model.CP;
 import com.ccpt.model.ClientApplication;
 import com.ccpt.model.ClientPosition;
 import com.ccpt.model.DropDownStatistics;
@@ -125,6 +126,14 @@ public class ClientPositionService extends BaseService<ClientPosition, Integer> 
 		returnObj.setNoOfRecords(p.getTotalElements());
 		returnObj.setList(p.getContent());
 		return returnObj;
+	}
+
+	public void updatePosting(CP model) {
+		ClientPosition cp = get(model.getId());
+		cp.setAlmaConnectURL(model.getAlmaConnectURL());
+		cp.setNaukriURL(model.getNaukriURL());
+		cp.setShineURL(model.getShineURL());
+		save(cp);
 	}
 
 }
