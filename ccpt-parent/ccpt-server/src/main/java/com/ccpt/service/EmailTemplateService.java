@@ -279,9 +279,7 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 					"<p><strong>Interview Location :</strong><span style=\"background-color:yellow\">${interviewLocation}</span></p>")
 					.append("<p><strong>Address :</strong><span style=\"background-color:yellow\">${address}</span></p>")
 					.append("<p><strong>Name of Client Contact Person :</strong><span style=\"background-color:yellow\">${clientContactPersonName} (${clientContactPersonNumber})</span></p>");
-			if (ca.get().getDescription() != null) {
-				sbPara.append("<p><span style=\"background-color:yellow\">").append(ca.get().getDescription());
-			}
+
 			sbPara.append("</span></p>").append("<p>**Feel free to call us any time.</p><p></p>")
 					.append("<p><span style=\"background-color:yellow\">** Things to Carry:</span></p>")
 					.append("<p></p>").append("<p>1.      A physical copy of this interview confirmation email</p>")
@@ -303,9 +301,7 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 					.append("<p>6.      After the interview is completed, please take permission from client before leaving the interview location.</p>")
 					.append("<p></p>");
 		} else {
-			if (ca.get().getDescription() != null) {
-				sbPara.append("<p><span style=\"background-color:yellow\">").append(ca.get().getDescription());
-			}
+
 			sbPara.append("</span></p>").append("<p>**Feel free to call us any time.</p><p></p>")
 					.append("<p><span style=\"background-color:yellow\">** Remember:</span></p>").append("<p></p>")
 					.append("<p>1.Find a quite location</p>").append("<p></p>")
