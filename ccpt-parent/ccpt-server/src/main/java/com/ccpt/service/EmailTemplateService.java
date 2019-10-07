@@ -337,26 +337,26 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 		boolean allEqual = names.isEmpty() || names.stream().allMatch(names.get(0)::equals);
 		if (allEqual) {
 			String data = "";
+
+			StringBuilder sbPara = new StringBuilder();
 			int i = 0;
 			Map<String, String> valuesMap = new HashMap<String, String>();
 			emailContent = new EmailContent();
-			data.concat(
+			sbPara.append(
 					"<table width=\"728\" border=\"1\" style=\"border-collapse : collapse\" cellspacing=\"0\" cellpadding=\"0\">")
-					.concat("<tbody>").concat("<tr>\r\n" + "<td colspan=\"2\" width=\"728\" >\r\n")
-						.concat("<p><strong>Candidate Name</strong></p>\r\n </td>")
-						.concat("<td colspan=\"2\" width=\"728\" >\r\n")
-						.concat("<p><strong>Role</strong></p>\r\n </td>")
-						.concat("<td colspan=\"2\" width=\"728\" >\r\n")
-						.concat("<p><strong>Interview Date</strong></p>\r\n </td>")
-						.concat("<td colspan=\"2\" width=\"728\" >\r\n")
-						.concat("<p><strong>Interview Time</strong></p>\r\n </td>")
-						.concat("<td colspan=\"2\" width=\"728\" >\r\n")
-						.concat("<p><strong>Interview Mode</strong></p>\r\n </td>")
-						.concat("<td colspan=\"2\" width=\"728\" >\r\n")
-						.concat("<p><strong>Contact Info</strong></p>\r\n </td>").concat("\r\n</tr>");
+					.append("<tbody>").append("<tr>\r\n" + "<td colspan=\"2\" width=\"728\" >\r\n")
+					.append("<p><strong>Candidate Name</strong></p>\r\n </td>")
+					.append("<td colspan=\"2\" width=\"728\" >\r\n").append("<p><strong>Role</strong></p>\r\n </td>")
+					.append("<td colspan=\"2\" width=\"728\" >\r\n")
+					.append("<p><strong>Interview Date</strong></p>\r\n </td>")
+					.append("<td colspan=\"2\" width=\"728\" >\r\n")
+					.append("<p><strong>Interview Time</strong></p>\r\n </td>")
+					.append("<td colspan=\"2\" width=\"728\" >\r\n")
+					.append("<p><strong>Interview Mode</strong></p>\r\n </td>")
+					.append("<td colspan=\"2\" width=\"728\" >\r\n")
+					.append("<p><strong>Contact Info</strong></p>\r\n </td>").append("\r\n</tr>");
 			for (ClientApplication ca : clientApplications) {
-				StringBuilder sbPara = new StringBuilder();
-				
+
 				ClientPosition clientPosition = ca.getClientPosition();
 				if (clientPosition.getClient().getClientContacts().get(0).getSalutation().equalsIgnoreCase("Mr."))
 					ccName = clientPosition.getClient().getClientContacts().get(0).getFullname().concat(" sir");
@@ -376,7 +376,7 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 				valuesMap.put("interviewLocation", ca.getInterviewLocation());
 				valuesMap.put("address", ca.getClientPosition().getClient().getAddress());
 				valuesMap.put("interviewMode", ca.getInterviewMode());
-				
+
 				i++;
 				sbPara.append("<tr>" + "<td colspan=\"2\" width=\"728\" >\r\n")
 						.append("<p>${consultantName}</p>\r\n </td>").append("<td colspan=\"2\" width=\"728\" >\r\n")
