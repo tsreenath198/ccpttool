@@ -347,7 +347,7 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 					+ "<td colspan=\"2\" width=\"728\" >\r\n<p><strong>Interview Mode</strong></p>\r\n </td>"
 					+ "<td colspan=\"2\" width=\"728\" >\r\n<p><strong>Contact Info</strong></p>\r\n </td>\r\n</tr>";
 			for (ClientApplication ca : clientApplications) {
-
+				StringBuilder sbParam = new StringBuilder();
 				ClientPosition clientPosition = ca.getClientPosition();
 				if (clientPosition.getClient().getClientContacts().get(0).getSalutation().equalsIgnoreCase("Mr."))
 					ccName = clientPosition.getClient().getClientContacts().get(0).getFullname().concat(" sir");
@@ -367,24 +367,24 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 				valuesMap.put("interviewLocation", ca.getInterviewLocation());
 				valuesMap.put("address", ca.getClientPosition().getClient().getAddress());
 				valuesMap.put("interviewMode", ca.getInterviewMode());
-
-				data.concat(
+				sbParam.append(
 						"<tr>" + "<td colspan=\"2\" width=\"728\" >\r\n<p>${consultantName}</p>\r\n </td><td colspan=\"2\" width=\"728\" >\r\n"
 								+ "<p>${jobTitle}</p>\r\n </td><td colspan=\"2\" width=\"728\" >\r\n"
 								+ "<p>${interviewDate}</p>\r\n </td><td colspan=\"2\" width=\"728\" >\r\n<p>${interviewTime}</p>\r\n </td>"
 								+ "<td colspan=\"2\" width=\"728\" >\r\n" + "<p>${interviewMode}</p>\r\n </td>");
 				if (!ca.getInterviewMode().equalsIgnoreCase("VID")) {
 					if (ca.getConsultant().getPhone() != null) {
-						data.concat("<td colspan=\"2\" width=\"728\" >\r\n")
-								.concat("<p>" + ca.getConsultant().getPhone() + "</p>\r\n </td>").concat("</tr>");
+						sbParam.append("<td colspan=\"2\" width=\"728\" >\r\n")
+								.append("<p>" + ca.getConsultant().getPhone() + "</p>\r\n </td>").append("</tr>");
 					}
 				} else {
 					if (ca.getOnlineId() != null) {
-						data.concat("<td colspan=\"2\" width=\"728\" >\r\n")
-								.concat("<p>" + ca.getOnlineId() + "</p>\r\n </td>").concat("</tr>");
+						sbParam.append("<td colspan=\"2\" width=\"728\" >\r\n")
+								.append("<p>" + ca.getOnlineId() + "</p>\r\n </td>").append("</tr>");
 					}
 				}
 				emailContent.setToEmails(ca.getClientPosition().getClient().getClientContacts().get(0).getEmail());
+				data.concat(sbParam.toString());
 			}
 			data.concat("</tbody>").concat("</table>");
 			data = data.concat(StrSubstitutor.replace(data.toString(), valuesMap));
