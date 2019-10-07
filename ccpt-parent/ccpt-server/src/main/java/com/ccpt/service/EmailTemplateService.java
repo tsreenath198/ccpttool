@@ -290,6 +290,7 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 							+ "<p>1.A physical copy of this interview confirmation email</p>" + "<p></p>"
 							+ "<p>2.Your complete CV</p>" + "<p></p>" + "<p>3.Education related certificates</p>"
 							+ "<p>4.Work Experience letters (if any)</p>"
+							+ "<p>4.Pen and Notebook to make some notes(if needed)</p>"
 							+ "<p></p><p><span style=\"background-color:yellow\">**Interview Guidelines</span></p>"
 							+ "<p></p>"
 							+ "<p>1.Please make sure you wear clean and formal clothes for the interview. Your appearance matters a lot.</p>"
