@@ -44,7 +44,7 @@ public class InterviewConfirmationSubstitutor implements ContentSubstitutor {
 			if (clientApplication.getConsultant().getGender() == "Male") {
 				valuesMap.put("salutation", "Sir");
 			} else if (clientApplication.getConsultant().getGender() == "Female") {
-				valuesMap.put("salutation", "Madam");
+				valuesMap.put("salutation", "mam");
 			}
 			if (clientApplication.getInterviewDate() != null) {
 				valuesMap.put("interviewDate", clientApplication.getInterviewDate().toString());

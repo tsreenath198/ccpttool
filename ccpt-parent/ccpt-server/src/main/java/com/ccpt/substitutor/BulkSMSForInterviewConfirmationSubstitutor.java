@@ -51,7 +51,7 @@ public class BulkSMSForInterviewConfirmationSubstitutor implements ContentSubsti
 			if (clientApplication.getConsultant().getGender().equalsIgnoreCase("Male")) {
 				valuesMap.put("salutation", "Sir");
 			} else if (clientApplication.getConsultant().getGender().equalsIgnoreCase("Female")) {
-				valuesMap.put("salutation", "Madam");
+				valuesMap.put("salutation", "mam");
 			}
 			if (clientApplication.getConsultant().getFullname() != null) {
 				valuesMap.put("consultantName", clientApplication.getConsultant().getFullname());

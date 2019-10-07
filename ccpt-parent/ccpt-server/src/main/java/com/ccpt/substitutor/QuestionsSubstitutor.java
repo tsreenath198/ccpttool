@@ -48,7 +48,7 @@ public class QuestionsSubstitutor implements ContentSubstitutor {
 		if (consultant.getGender() == "Male") {
 			valuesMap.put("salutation", "Sir");
 		} else if (consultant.getGender() == "Female") {
-			valuesMap.put("salutation", "Madam");
+			valuesMap.put("salutation", "mam");
 		}
 		// TODO this Questions task
 		valuesMap.put("questions", "questions");

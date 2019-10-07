@@ -53,7 +53,7 @@ public class NotReachableSubstitutor implements ContentSubstitutor {
 				if (consultant.getGender() == "Male") {
 					valuesMap.put("salutation", "Sir");
 				} else if (consultant.getGender() == "Female") {
-					valuesMap.put("salutation", "Madam");
+					valuesMap.put("salutation", "mam");
 				} else {
 					throw new Exception("consultant is not there for given id:" + cid);
 				}
