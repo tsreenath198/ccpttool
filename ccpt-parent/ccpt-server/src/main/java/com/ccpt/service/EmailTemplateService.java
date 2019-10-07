@@ -348,7 +348,6 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 					+ "<td colspan=\"2\" width=\"728\" >\r\n<p><strong>Interview Mode</strong></p>\r\n </td>"
 					+ "<td colspan=\"2\" width=\"728\" >\r\n<p><strong>Contact Info</strong></p>\r\n </td>\r\n</tr>";
 			for (ClientApplication ca : clientApplications) {
-				StringBuilder sbPara = new StringBuilder();
 
 				ClientPosition clientPosition = ca.getClientPosition();
 				if (clientPosition.getClient().getClientContacts().get(0).getSalutation().equalsIgnoreCase("Mr."))
@@ -371,27 +370,26 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 				valuesMap.put("interviewMode", ca.getInterviewMode());
 
 				i++;
-				sbPara.append("<tr>" + "<td colspan=\"2\" width=\"728\" >\r\n")
-						.append("<p>${consultantName}</p>\r\n </td>").append("<td colspan=\"2\" width=\"728\" >\r\n")
-						.append("<p>${jobTitle}</p>\r\n </td>").append("<td colspan=\"2\" width=\"728\" >\r\n")
-						.append("<p>${interviewDate}</p>\r\n </td>").append("<td colspan=\"2\" width=\"728\" >\r\n")
-						.append("<p>${interviewTime}</p>\r\n </td>").append("<td colspan=\"2\" width=\"728\" >\r\n")
-						.append("<p>${interviewMode}</p>\r\n </td>");
+				data.concat(
+						"<tr>" + "<td colspan=\"2\" width=\"728\" >\r\n<p>${consultantName}</p>\r\n </td><td colspan=\"2\" width=\"728\" >\r\n"
+								+ "<p>${jobTitle}</p>\r\n </td><td colspan=\"2\" width=\"728\" >\r\n"
+								+ "<p>${interviewDate}</p>\r\n </td><td colspan=\"2\" width=\"728\" >\r\n<p>${interviewTime}</p>\r\n </td>"
+								+ "<td colspan=\"2\" width=\"728\" >\r\n" + "<p>${interviewMode}</p>\r\n </td>");
 				if (!ca.getInterviewMode().equalsIgnoreCase("VID")) {
 					if (ca.getConsultant().getPhone() != null) {
-						sbPara.append("<td colspan=\"2\" width=\"728\" >\r\n")
-								.append("<p>" + ca.getConsultant().getPhone() + "</p>\r\n </td>").append("</tr>");
+						data.concat("<td colspan=\"2\" width=\"728\" >\r\n")
+								.concat("<p>" + ca.getConsultant().getPhone() + "</p>\r\n </td>").concat("</tr>");
 					}
 				} else {
 					if (ca.getOnlineId() != null) {
-						sbPara.append("<td colspan=\"2\" width=\"728\" >\r\n")
-								.append("<p>" + ca.getOnlineId() + "</p>\r\n </td>").append("</tr>");
+						data.concat("<td colspan=\"2\" width=\"728\" >\r\n")
+								.concat("<p>" + ca.getOnlineId() + "</p>\r\n </td>").concat("</tr>");
 					}
 				}
-				sbPara.append("</tbody>").append("</table>");
 				emailContent.setToEmails(ca.getClientPosition().getClient().getClientContacts().get(0).getEmail());
-				data = data.concat(StrSubstitutor.replace(sbPara.toString(), valuesMap));
 			}
+			data.concat("</tbody>").concat("</table>");
+			data = data.concat(StrSubstitutor.replace(data.toString(), valuesMap));
 			StringBuilder sb = new StringBuilder();
 			sb.append("<p>Hi ").append(ccName).append("</p>")
 					.append("Please review & confirm the interview scheduled mentioned below ").append("<p>")
