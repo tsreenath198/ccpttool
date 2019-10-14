@@ -18,4 +18,5 @@ public class DashboardModel {
 	private List<CallHistorySummaryStatistics> consultantCallHistoryList;
 	private List<CallHistorySummaryStatistics> clientCallHistoryList;
 	private List<DashboardCAStatistics> dashboardCAStatistics;
+	private List<PaymentStatistics> paymentStatistics;
 }

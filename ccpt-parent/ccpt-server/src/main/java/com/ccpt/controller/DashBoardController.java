@@ -27,6 +27,7 @@ import com.ccpt.service.ClientCallHistoryService;
 import com.ccpt.service.ClientPositionService;
 import com.ccpt.service.ConsultantCallHistoryService;
 import com.ccpt.service.DashboardService;
+import com.ccpt.service.PaymentService;
 
 @Controller
 @CrossOrigin
@@ -42,6 +43,8 @@ public class DashBoardController {
 	private ClientCallHistoryService clientCallHistoryService;
 	@Autowired
 	private DashboardService dashboardService;
+	@Autowired
+	private PaymentService paymentService;
 
 	@GetMapping("/getAllInterviewsFromToday")
 	public ResponseEntity<List<InterviewSummaryStatistics>> getAllInterviewsFromToday() {
@@ -120,6 +123,7 @@ public class DashBoardController {
 		dashboardModel.setClientCallHistoryList(clientCallHistoryService.getAllCchCountByRecruiters(7));
 		dashboardModel.setConsultantCallHistoryList(consultantCallHistoryService.getAllconCHCountByRecruiters(7));
 		dashboardModel.setDashboardCAStatistics(clientApplicationService.getDashboardCAStatistics());
+		dashboardModel.setPaymentStatistics(paymentService.get());
 		return new ResponseEntity<DashboardModel>(dashboardModel, HttpStatus.OK);
 	}
 
