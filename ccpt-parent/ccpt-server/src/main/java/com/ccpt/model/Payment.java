@@ -25,7 +25,6 @@ public class Payment extends FileSupportEntity {
 
 	private static final long serialVersionUID = 1L;
 
-	
 	@Column
 	@Temporal(TemporalType.DATE)
 	@NotNull
@@ -103,5 +102,12 @@ public class Payment extends FileSupportEntity {
 	@Column
 	@NotNull
 	private String gauranteePeriod;
+
+	@Column
+	private Date paidOn;
+
+	@Column
+	@NotNull
+	private String paidStatus;
 
 }
