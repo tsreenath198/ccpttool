@@ -52,7 +52,6 @@ public class Payment extends FileSupportEntity {
 
 	@Column
 	@NotNull
-	@Temporal(TemporalType.DATE)
 	private Date joiningDate;
 
 	@Column
