@@ -38,7 +38,7 @@ public interface ClientApplicationRepository extends BaseRepository<ClientApplic
 			@Param("consultantId") Integer consultantId, @Param("activeFlag") Boolean activeFlag);
 
 	@Query("SELECT c.id as id,c.consultant.fullname as consultantName,c.clientPosition.generatedCode as generatedCode  FROM ClientApplication c"
-			+ " where c.activeFlag=:activeFlag AND c.status.code='Job Confirmed' AND c.consultant.id NOT IN (select id from Consultant) ORDER BY c.createdDate DESC ")
+			+ " where c.activeFlag=:activeFlag AND c.status.code='Job Confirmed' AND consultant.fullname NOT IN (select companyName from Payment) ORDER BY c.createdDate DESC ")
 	List<DashboardCA> getJobConfirmedCAs(@Param("activeFlag") Boolean activeFlag);
 
 	@Query(nativeQuery = true, value = "SELECT ca.* FROM client_application ca LEFT OUTER JOIN consultant c ON ca.consultant_id = c.id "
