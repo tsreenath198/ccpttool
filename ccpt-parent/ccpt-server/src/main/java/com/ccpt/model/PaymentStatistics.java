@@ -6,7 +6,7 @@ public interface PaymentStatistics {
 
 	public Integer getId();
 
-	public String getComapnyName();
+	public String getCompanyName();
 
 	public String getCandidateName();
 
