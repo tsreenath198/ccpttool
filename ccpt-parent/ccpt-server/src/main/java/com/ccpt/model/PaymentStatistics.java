@@ -10,6 +10,6 @@ public interface PaymentStatistics {
 
 	public String getCandidateName();
 
-	public Date joiningDate();
+	public Date getJoiningDate();
 
 }

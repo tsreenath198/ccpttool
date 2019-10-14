@@ -9,7 +9,7 @@ import com.ccpt.model.PaymentStatistics;
 
 public interface PaymentRepository extends BaseRepository<Payment, Integer> {
 
-	@Query(value = "SELECT id as id ,companyName as companyName,candidateName as candidateName,joiningDate as joiningDate FROM Payment where paidStatus=Unpaid")
+	@Query(value = "SELECT id as id ,companyName as companyName,candidateName as candidateName,joiningDate as joiningDate FROM Payment where paidStatus='Unpaid'")
 	List<PaymentStatistics> get();
 
 }
