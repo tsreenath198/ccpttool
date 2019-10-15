@@ -2,6 +2,7 @@ import { Component, Output, EventEmitter, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Title } from '@angular/platform-browser';
+import { HttpClientService } from '../../../shared/services/http.service';
 
 @Component({
     selector: 'app-sidebar',
@@ -16,9 +17,9 @@ export class SidebarComponent implements OnInit {
     public loggedInUserRole: string;
     public loggedInRole = '';
 
-    @Output() collapsedEvent = new EventEmitter<boolean>();
+   // @Output() collapsedEvent = new EventEmitter<boolean>();
 
-    constructor(private translate: TranslateService, public router: Router,private titleService:Title) {
+    constructor(private translate: TranslateService, public router: Router,private titleService:Title,private http:HttpClientService) {
         this.router.events.subscribe(val => {
             if (
                 val instanceof NavigationEnd &&
@@ -54,17 +55,17 @@ export class SidebarComponent implements OnInit {
         } else {
             this.collapsed = !this.collapsed;
         }
-        this.collapsedEvent.emit(this.collapsed);
+        this.http.sendSubject(this.collapsed);
     }
     public sidebarCollapse(){
         this.titleService.setTitle('CCPT');
         this.collapsed = false;
-        this.collapsedEvent.emit(this.collapsed);
+        this.http.sendSubject(this.collapsed);
     }
     public sidebarExpand(){
         this.titleService.setTitle('CCPT');
         this.collapsed = true;
-        this.collapsedEvent.emit(this.collapsed);
+        this.http.sendSubject(this.collapsed);
     }
     isToggled(): boolean {
         const dom: Element = document.querySelector('body');
