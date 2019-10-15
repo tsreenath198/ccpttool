@@ -1,16 +1,18 @@
 <div [@routerTransition]>
   <app-page-header [icon1]="'fa-users'" [heading1]="'Consultants'"></app-page-header>
   <ng-template #spinner>
-      <div class="spinner padding-top justify-content-md-center">
-        <div class="bounce1"></div>
-        <div class="bounce2"></div>
-        <div class="bounce3"></div>
+    <div class="spinner padding-top justify-content-md-center">
+      <div class="bounce1"></div>
+      <div class="bounce2"></div>
+      <div class="bounce3"></div>
     </div>
-    </ng-template>
+  </ng-template>
   <div class="row" *ngIf="listReturned == true; else spinner">
     <div class="col-md-7">
       <div class="row">
-        <div class="col-md-4"><input type="text" class="form-control form-control-sm" placeholder="search..." (keyup)="search()" [(ngModel)]="currSearchTxt" /></div>
+        <div class="col-md-4">
+          <input type="text" class="form-control form-control-sm" placeholder="search..." (keyup)="search()" [(ngModel)]="currSearchTxt" />
+        </div>
         <div class=" col-md-6 ">
           <div class="row">
             <input type="text" [(ngModel)]="idToActivate" class="form-control form-control-sm col-md-6" placeholder="Consultant ID" />
@@ -18,61 +20,65 @@
           </div>
         </div>
         <div class="col-md-2 ml-n1">
-            <button *ngIf="inCon" class="btn btn-secondary btn-sm ml-2" (click)="getIncompleteCon()">Incomplete Consultants</button>
-            <button *ngIf="!inCon" class="btn btn-secondary btn-sm ml-2" (click)="getAllCon()">All Consultants</button>
-          </div>
+          <button *ngIf="inCon" class="btn btn-secondary btn-sm ml-2" (click)="getIncompleteCon()">Incomplete Consultants</button>
+          <button *ngIf="!inCon" class="btn btn-secondary btn-sm ml-2" (click)="getAllCon()">All Consultants</button>
+        </div>
       </div>
-          <div class="table-responsive  tableFixHead mt-2" id="viewTable" [style.height.px]="screenHeight">
-            <table class="table table-sm table-hover table-striped">
-              <thead>
-                <tr>
-                  <th>
-                    Name
-                  </th>
-                  <th>
-                    Phone
-                  </th>
-                  <th>Email</th>
-                  <th>
-                    Experience/Qualification
-                  </th>
-                  <!-- <th width="140">
+      <div class="table-responsive  tableFixHead mt-2" id="viewTable" [style.height.px]="screenHeight">
+        <table class="table table-sm table-hover table-striped">
+          <thead>
+            <tr>
+              <th>
+                Name
+              </th>
+              <th>
+                Phone
+              </th>
+              <th>Email</th>
+              <th>
+                Experience/Qualification
+              </th>
+              <!-- <th width="140">
                     <span class="pull-right">Action</span>
                   </th> -->
-                </tr>
-              </thead>
-              <tbody>
-                <tr
-                  *ngFor="let cl of consultantList.list  | paginate: paginateConfig; let i = index"
-                  (click)="setModel(cl.id)"
-                  [ngClass]="{'bl-green':cl.isProfileCompleted=='profileComplete','bl-red':cl.isProfileCompleted=='profileInComplete'}"
-                >
-                  <td class="table-data-padding ">
-                    <dl>
-                      <dt>{{ cl.fullname }}</dt>
-                      <dd data-toggle="tooltip" title="{{ cl.skills }}">
-                        {{ cl.skills != null ? (cl.skills.length > 30 ? (cl.skills | slice: 0:30) + ' ... ' : cl.skills) : '' }}
-                      </dd>
-                    </dl>
-                  </td>
-                  <td>
-                    {{ cl.phone }}
-                  </td>
-                  <td>
-                    {{ cl.email }}
-                  </td>
-                  <td>{{ (cl.experienceYrs != null && cl.experienceYrs != "") ? cl.experienceYrs + 'y' : '' }}{{(cl.experienceMonths != null && cl.experienceMonths != "") ? '-' + cl.experienceMonths + 'm /' : ''}} {{ cl.highestEducation }}</td>
-                  <!--  <input type="file" (change)="fileChange($event)" > <span class="fa fa-upload pull-right"></span> -->
-                  <!-- <td width="140">
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              *ngFor="let cl of consultantList.list | paginate: paginateConfig; let i = index"
+              (click)="setModel(cl.id)"
+              [ngClass]="{ 'bl-green': cl.isProfileCompleted == 'profileComplete', 'bl-red': cl.isProfileCompleted == 'profileInComplete' }"
+            >
+              <td class="table-data-padding ">
+                <dl>
+                  <dt>{{ cl.fullname }}</dt>
+                  <dd data-toggle="tooltip" title="{{ cl.skills }}">
+                    {{ cl.skills != null ? (cl.skills.length > 30 ? (cl.skills | slice: 0:30) + ' ... ' : cl.skills) : '' }}
+                  </dd>
+                </dl>
+              </td>
+              <td>
+                {{ cl.phone }}
+              </td>
+              <td>
+                {{ cl.email }}
+              </td>
+              <td>
+                {{ cl.experienceYrs != null && cl.experienceYrs != '' ? cl.experienceYrs + 'y' : ''
+                }}{{ cl.experienceMonths != null && cl.experienceMonths != '' ? '-' + cl.experienceMonths + 'm /' : '' }}
+                {{ cl.highestEducation }}
+              </td>
+              <!--  <input type="file" (change)="fileChange($event)" > <span class="fa fa-upload pull-right"></span> -->
+              <!-- <td width="140">
                     <app-action [trashContent]="trashContent" [uploadContent]="uploadContent"
                       [downloadContent]="downloadContent" [id]="cl.id" [isTrash]="trash" [isUpload]="upload"
                       [isDownload]="download" (upload)="open($event)" (download)="open($event)" (trash)="open($event)">
                     </app-action>
                   </td> -->
-                </tr>
-              </tbody>
-            </table>
-          </div>
+            </tr>
+          </tbody>
+        </table>
+      </div>
       <div class="col-12 justify-content-center mb-5" *ngIf="consultantList.noOfRecords > properties.ITEMSPERPAGE">
         <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
         <!-- <ngb-pagination
@@ -106,23 +112,28 @@
               (click)="enableFormEditable()">
               Edit
             </button> -->
-            <button type="button" (click)="cancelForm(f)" *ngIf="enableButtonType == ''||enableButtonType == 'U'" class="btn btn-secondary ml-3">
+            <button
+              type="button"
+              (click)="cancelForm(f)"
+              *ngIf="enableButtonType == '' || enableButtonType == 'U'"
+              class="btn btn-secondary ml-3"
+            >
               {{ enableButtonType != '' ? 'Close' : 'Clear' }}
             </button>
 
             <span class="pull-right" *ngIf="showAction && readOnlyForm == 'U'">
-                <div class="dropdown theme-dropdown clearfix" placement="bottom-right" ngbDropdown>
-                    <!-- <button class="btn btn-secondary" >
+              <div class="dropdown theme-dropdown clearfix" placement="bottom-right" ngbDropdown>
+                <!-- <button class="btn btn-secondary" >
                         Dropdown
                     </button> -->
-                    <i class="fa fa-bars" ngbDropdownToggle></i>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenu1" ngbDropdownMenu>
-                        <a class="dropdown-item drop-list" (click)="enableFormEditable()">Edit</a>
-                        <a class="dropdown-item drop-list" (click)="cancelForm(f)">New</a>
-                        <a class="dropdown-item drop-list" (click)="open(model.id,uploadContent)">File Upload</a>
-                        <a class="dropdown-item drop-list" (click)="open(model.id, trashContent)">Delete</a>
-                    </div>
+                <i class="fa fa-bars" ngbDropdownToggle></i>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenu1" ngbDropdownMenu>
+                  <a class="dropdown-item drop-list" (click)="enableFormEditable()">Edit</a>
+                  <a class="dropdown-item drop-list" (click)="cancelForm(f)">New</a>
+                  <a class="dropdown-item drop-list" (click)="open(model.id, uploadContent)">File Upload</a>
+                  <a class="dropdown-item drop-list" (click)="open(model.id, trashContent)">Delete</a>
                 </div>
+              </div>
             </span>
           </div>
         </div>
@@ -131,7 +142,7 @@
             <tbody>
               <tr *ngIf="model.fullname">
                 <th>Name</th>
-                <td>{{model.fullname}}</td>
+                <td>{{ model.fullname }}</td>
               </tr>
               <tr *ngIf="model.dob">
                 <th>Date of Birth</th>
@@ -167,7 +178,7 @@
               </tr>
               <tr *ngIf="model.currentCTC">
                 <th>Current CTC</th>
-                <td>{{ model.currentCTC}}</td>
+                <td>{{ model.currentCTC }}</td>
               </tr>
               <tr *ngIf="model.expectedCTC">
                 <th>Expected CTC</th>
@@ -178,7 +189,7 @@
                 <td>{{ model.currentJobTitle }}</td>
               </tr>
               <tr *ngIf="model.currentFunctionalArea">
-                <th> Current Functional Area</th>
+                <th>Current Functional Area</th>
                 <td>{{ model.currentFunctionalArea }}</td>
               </tr>
               <tr *ngIf="model.currentIndustry">
@@ -187,11 +198,11 @@
               </tr>
               <tr *ngIf="model.monthsInCurrentJob">
                 <th>Experience in Current Job</th>
-                <td>{{ model.monthsInCurrentJob }} months - {{model.yearsInCurrentJob}} years</td>
+                <td>{{ model.monthsInCurrentJob }} months - {{ model.yearsInCurrentJob }} years</td>
               </tr>
               <tr *ngIf="model.experienceMonths">
                 <th>Total Experience</th>
-                <td>{{ model.experienceMonths }} months - {{model.experienceYrs}} years</td>
+                <td>{{ model.experienceMonths }} months - {{ model.experienceYrs }} years</td>
               </tr>
               <tr *ngIf="model.noticePeriod">
                 <th>Notice period</th>
@@ -204,215 +215,109 @@
               <tr *ngIf="model.description">
                 <th>Description</th>
                 <td>
-                  {{model.description}}
+                  {{ model.description }}
                 </td>
               </tr>
               <tr *ngFor="let ap of model.properties">
-                <th>{{ap.name}}</th>
-                <td>{{ap.value}}</td>
-              </tr>  
+                <th>{{ ap.name }}</th>
+                <td>{{ ap.value }}</td>
+              </tr>
               <tr *ngFor="let fl of model.files">
-                  <th>Files</th>
-                  <td class="file-download" (click)="downloadFile(fl.id)">{{fl.fileName}}</td>
-                </tr>
+                <th>Files</th>
+                <td class="file-download" (click)="downloadFile(fl.id)">{{ fl.fileName }}</td>
+              </tr>
             </tbody>
           </table>
         </div>
-        <ng-template #notRead><div class="row">
-          <div class="col-md-3">
-            <div class="form-group">
-              <label>Salutation<span class="required">*</span></label>
-              <select
-                class="form-control"
-                name="gender"
-                [disabled]="readOnlyForm == 'R'"
-                [(ngModel)]="model.gender"
-                [ngClass]="{ 'is-invalid': f.submitted && gender.invalid }"
-                #gender="ngModel"
-                required
-              >
-                <option *ngFor="let gl of genderList" [ngValue]="gl.value">{{ gl.key }}</option>
-              </select>
-              <div class="invalid-feedback">
-                gender is mandatory
+        <ng-template #notRead>
+          <div class="row">
+            <div class="col-md-3">
+              <div class="form-group">
+                <label>Salutation<span class="required">*</span></label>
+                <select
+                  class="form-control"
+                  name="gender"
+                  [disabled]="readOnlyForm == 'R'"
+                  [(ngModel)]="model.gender"
+                  [ngClass]="{ 'is-invalid': f.submitted && gender.invalid }"
+                  #gender="ngModel"
+                  required
+                >
+                  <option *ngFor="let gl of GENDER" [ngValue]="gl.value">{{ gl.key }}</option>
+                </select>
+                <div class="invalid-feedback">
+                  gender is mandatory
+                </div>
               </div>
             </div>
-          </div>
-          <div class="col-md-5" style="margin-left:-20px;">
-            <div class="form-group">
-              <label>Full Name<span class="required">*</span></label>
-              <input
-                class="form-control"
-                name="fullname"
-                [readonly]="readOnlyForm == 'R'"
-                [(ngModel)]="model.fullname"
-                [ngClass]="{ 'is-invalid': f.submitted && fullname.invalid }"
-                #fullname="ngModel"
-                #consultantName
-                (blur)="transformTitleCase(consultantName)"
-                required
-              />
-              <div class="invalid-feedback">
-                fullname is mandatory
+            <div class="col-md-5" style="margin-left:-20px;">
+              <div class="form-group">
+                <label>Full Name<span class="required">*</span></label>
+                <input
+                  class="form-control"
+                  name="fullname"
+                  [readonly]="readOnlyForm == 'R'"
+                  [(ngModel)]="model.fullname"
+                  [ngClass]="{ 'is-invalid': f.submitted && fullname.invalid }"
+                  #fullname="ngModel"
+                  #consultantName
+                  (blur)="transformTitleCase(consultantName)"
+                  required
+                />
+                <div class="invalid-feedback">
+                  fullname is mandatory
+                </div>
               </div>
             </div>
-          </div>
 
-          <div class="col-md-4">
-            <div class="form-group" data-provide="datepicker">
-              <label>Date of Birth</label>
-              <input
-                style="width: 175px; margin-left: -15px"
-                type="date"
-                class="form-control"
-                name="dob"
-                [(ngModel)]="model.dob"
-                [ngClass]="{ 'is-invalid': f.submitted && dob.invalid }"
-                #dob="ngModel"
-                [readonly]="readOnlyForm == 'R'"
-              />
-              <div class="input-group-addon">
-                <span class="glyphicon glyphicon-th"></span>
+            <div class="col-md-4">
+              <div class="form-group" data-provide="datepicker">
+                <label>Date of Birth</label>
+                <input
+                  style="width: 175px; margin-left: -15px"
+                  type="date"
+                  class="form-control"
+                  name="dob"
+                  [(ngModel)]="model.dob"
+                  [ngClass]="{ 'is-invalid': f.submitted && dob.invalid }"
+                  #dob="ngModel"
+                  [readonly]="readOnlyForm == 'R'"
+                />
+                <div class="input-group-addon">
+                  <span class="glyphicon glyphicon-th"></span>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        <div class="row">
-          <div class="col-md-6">
-            <div class="form-group">
-              <!--pattern="/^-?\d+\.?\d*$/"
-                onKeyPress="if(this.value.length==12) return false;" -->
-              <label>Phone</label
-              ><input
-                class="form-control"
-                name="phone"
-                [readonly]="readOnlyForm == 'R'"
-                [(ngModel)]="model.phone"
-                maxlength="14"
-                onKeyPress="if(this.value.length==14) return false;"
-                #phone="ngModel"
-                type="tel"
-              />
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="form-group">
-              <label>E-Mail</label>
-              <!-- ng-pattern="/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/" -->
-              <input
-                class="form-control"
-                name="email"
-                [readonly]="readOnlyForm == 'R'"
-                [(ngModel)]="model.email"
-                #email="ngModel"
-                type="email"
-              />
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-6">
-            <div class="form-group">
-              <label>Qualification</label>
-              <input
-                class="form-control"
-                name="highesteducation"
-                [readonly]="readOnlyForm == 'R'"
-                [(ngModel)]="model.highestEducation"
-                #highesteducation="ngModel"
-              />
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="form-group">
-              <label>Passout Year</label>
-              <input
-                class="form-control"
-                name="passoutyear"
-                [readonly]="readOnlyForm == 'R'"
-                type="number"
-                [(ngModel)]="model.passoutYear"
-              />
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-6">
-            <div class="form-group">
-              <label>Current Location</label>
-              <input
-                type="text"
-                name="currentLocation"
-                [readonly]="readOnlyForm == 'R'"
-                class="form-control"
-                [(ngModel)]="model.currentLocation"
-              />
-            </div>
-          </div>
-
-          <div class="col-md-6">
-            <div class="form-group">
-              <label>Prefer Location</label>
-              <input class="form-control" name="prefferedLocation" [readonly]="readOnlyForm == 'R'" [(ngModel)]="model.prefferedLocation" />
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div *ngIf="isFresher" class="col-md-6">
-            <div class="form-group">
-              <label>Expected CTC</label>
-              <input type="text" name="expectedCTC" [readonly]="readOnlyForm == 'R'" class="form-control" [(ngModel)]="model.expectedCTC" />
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="form-group">
-              <label>Consultant Status<span class="required">*</span></label>
-              <select
-                class="form-control"
-                name="constat"
-                [disabled]="readOnlyForm == 'R'"
-                [(ngModel)]="model.conStatus"
-                [ngClass]="{ 'is-invalid': f.submitted && constat.invalid }"
-                #constat="ngModel"
-                required
-              >
-                <option *ngFor="let cs of consultantStatusList.list" [ngValue]="cs.code"> {{ cs.description }}</option>
-              </select>
-              <div class="invalid-feedback">
-                consultant status is mandatory
-              </div>
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="form-group">
-              <label>Sourced From</label>
-              <select class="form-control" name="sourced" [disabled]="readOnlyForm == 'R'" [(ngModel)]="model.sourcedFrom"
-                 #sourced="ngModel">
-                <option *ngFor="let cs of properties.consultantSource" [ngValue]="cs">
-                  {{ cs }}
-                </option>
-              </select>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-12 pb-2">
-            <input type="checkbox" class="" [(ngModel)]="isFresher" (change)="emptyExperience()" name="interviewCheckbox" />&nbsp;<label
-              >Fresher</label
-            >
-          </div>
-        </div>
-        <div *ngIf="!isFresher">
           <div class="row">
             <div class="col-md-6">
               <div class="form-group">
-                <label>Current Company</label>
-                <input
-                  type="text"
-                  name="currentCompany"
+                <!--pattern="/^-?\d+\.?\d*$/"
+                onKeyPress="if(this.value.length==12) return false;" -->
+                <label>Phone</label
+                ><input
                   class="form-control"
+                  name="phone"
                   [readonly]="readOnlyForm == 'R'"
-                  [(ngModel)]="model.currentCompany"
+                  [(ngModel)]="model.phone"
+                  maxlength="14"
+                  onKeyPress="if(this.value.length==14) return false;"
+                  #phone="ngModel"
+                  type="tel"
+                />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>E-Mail</label>
+                <!-- ng-pattern="/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/" -->
+                <input
+                  class="form-control"
+                  name="email"
+                  [readonly]="readOnlyForm == 'R'"
+                  [(ngModel)]="model.email"
+                  #email="ngModel"
+                  type="email"
                 />
               </div>
             </div>
@@ -420,11 +325,57 @@
           <div class="row">
             <div class="col-md-6">
               <div class="form-group">
-                <label>Current CTC</label>
-                <input type="text" name="currentCTC" [readonly]="readOnlyForm == 'R'" class="form-control" [(ngModel)]="model.currentCTC" />
+                <label>Qualification</label>
+                <input
+                  class="form-control"
+                  name="highesteducation"
+                  [readonly]="readOnlyForm == 'R'"
+                  [(ngModel)]="model.highestEducation"
+                  #highesteducation="ngModel"
+                />
               </div>
             </div>
             <div class="col-md-6">
+              <div class="form-group">
+                <label>Passout Year</label>
+                <input
+                  class="form-control"
+                  name="passoutyear"
+                  [readonly]="readOnlyForm == 'R'"
+                  type="number"
+                  [(ngModel)]="model.passoutYear"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Current Location</label>
+                <input
+                  type="text"
+                  name="currentLocation"
+                  [readonly]="readOnlyForm == 'R'"
+                  class="form-control"
+                  [(ngModel)]="model.currentLocation"
+                />
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Prefer Location</label>
+                <input
+                  class="form-control"
+                  name="prefferedLocation"
+                  [readonly]="readOnlyForm == 'R'"
+                  [(ngModel)]="model.prefferedLocation"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div *ngIf="isFresher" class="col-md-6">
               <div class="form-group">
                 <label>Expected CTC</label>
                 <input
@@ -436,216 +387,306 @@
                 />
               </div>
             </div>
-          </div>
-          <div class="row">
             <div class="col-md-6">
               <div class="form-group">
-                <label>Current Job Title</label>
-                <input
-                  type="text"
-                  name="currentJobTitle"
-                  [readonly]="readOnlyForm == 'R'"
+                <label>Consultant Status<span class="required">*</span></label>
+                <select
                   class="form-control"
-                  [(ngModel)]="model.currentJobTitle"
-                />
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="form-group">
-                <label>Current Functional Area</label>
-                <input
-                  type="text"
-                  name="currentFunctionalArea"
-                  [readonly]="readOnlyForm == 'R'"
-                  class="form-control"
-                  [(ngModel)]="model.currentFunctionalArea"
-                />
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-6">
-              <div class="form-group">
-                <label>Current Industry</label>
-                <input
-                  type="text"
-                  name="currentIndustry"
-                  [readonly]="readOnlyForm == 'R'"
-                  class="form-control"
-                  [(ngModel)]="model.currentIndustry"
-                />
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="form-group">
-                <label>Experience in Current Job</label>
-                <div class="form-inline">
-                  <input
-                    type="text"
-                    name="yearsInCurrentJob"
-                    class="form-control col-md-4"
-                    [readonly]="readOnlyForm == 'R'"
-                    [(ngModel)]="model.yearsInCurrentJob"
-                    min="0"
-                    placeholder="Years"
-                  />&nbsp;<small>yrs</small><span>/</span>&nbsp;<input
-                    type="text"
-                    class="form-control col-md-5"
-                    name="monthsInCurrentJob"
-                    [readonly]="readOnlyForm == 'R'"
-                    [(ngModel)]="model.monthsInCurrentJob"
-                    min="0"
-                    max="12"
-                    placeholder="Months"
-                  /><small>mon</small>
+                  name="constat"
+                  [disabled]="readOnlyForm == 'R'"
+                  [(ngModel)]="model.conStatus"
+                  [ngClass]="{ 'is-invalid': f.submitted && constat.invalid }"
+                  #constat="ngModel"
+                  required
+                >
+                  <option *ngFor="let cs of consultantStatusList.list" [ngValue]="cs.code"> {{ cs.description }}</option>
+                </select>
+                <div class="invalid-feedback">
+                  consultant status is mandatory
                 </div>
               </div>
             </div>
-          </div>
-          <div class="row">
             <div class="col-md-6">
               <div class="form-group">
-                <label>Total Experience</label>
-                <div class="form-inline">
+                <label>Sourced From</label>
+                <select
+                  class="form-control"
+                  name="sourced"
+                  [disabled]="readOnlyForm == 'R'"
+                  [(ngModel)]="model.sourcedFrom"
+                  #sourced="ngModel"
+                >
+                  <option *ngFor="let cs of properties.CON_SOURCE" [ngValue]="cs">
+                    {{ cs }}
+                  </option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12 pb-2">
+              <input type="checkbox" class="" [(ngModel)]="isFresher" (change)="emptyExperience()" name="interviewCheckbox" />&nbsp;<label
+                >Fresher</label
+              >
+            </div>
+          </div>
+          <div *ngIf="!isFresher">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Current Company</label>
                   <input
                     type="text"
-                    name="expyears"
-                    class="form-control col-md-4"
+                    name="currentCompany"
+                    class="form-control"
                     [readonly]="readOnlyForm == 'R'"
-                    [(ngModel)]="model.experienceYrs"
-                    min="0"
-                    placeholder="Years"
+                    [(ngModel)]="model.currentCompany"
                   />
-                  &nbsp;<small>yrs</small><span>/</span>&nbsp;<input
-                    type="text"
-                    class="form-control col-md-5"
-                    name="expmonths"
-                    [readonly]="readOnlyForm == 'R'"
-                    [(ngModel)]="model.experienceMonths"
-                    min="0"
-                    max="11"
-                    placeholder="Months"
-                    (onkeyup)="imposeMinMax(this)"
-                  /><small>mon</small>
                 </div>
               </div>
             </div>
-            <div class="col-md-6">
-              <div class="form-group">
-                <label>Notice period</label>
-                <input
-                  type="text"
-                  name="noticePeriod"
-                  [readonly]="readOnlyForm == 'R'"
-                  class="form-control"
-                  [(ngModel)]="model.noticePeriod"
-                />
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Current CTC</label>
+                  <input
+                    type="text"
+                    name="currentCTC"
+                    [readonly]="readOnlyForm == 'R'"
+                    class="form-control"
+                    [(ngModel)]="model.currentCTC"
+                  />
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Expected CTC</label>
+                  <input
+                    type="text"
+                    name="expectedCTC"
+                    [readonly]="readOnlyForm == 'R'"
+                    class="form-control"
+                    [(ngModel)]="model.expectedCTC"
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Current Job Title</label>
+                  <input
+                    type="text"
+                    name="currentJobTitle"
+                    [readonly]="readOnlyForm == 'R'"
+                    class="form-control"
+                    [(ngModel)]="model.currentJobTitle"
+                  />
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Current Functional Area</label>
+                  <input
+                    type="text"
+                    name="currentFunctionalArea"
+                    [readonly]="readOnlyForm == 'R'"
+                    class="form-control"
+                    [(ngModel)]="model.currentFunctionalArea"
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Current Industry</label>
+                  <input
+                    type="text"
+                    name="currentIndustry"
+                    [readonly]="readOnlyForm == 'R'"
+                    class="form-control"
+                    [(ngModel)]="model.currentIndustry"
+                  />
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Experience in Current Job</label>
+                  <div class="form-inline">
+                    <input
+                      type="text"
+                      name="yearsInCurrentJob"
+                      class="form-control col-md-4"
+                      [readonly]="readOnlyForm == 'R'"
+                      [(ngModel)]="model.yearsInCurrentJob"
+                      min="0"
+                      placeholder="Years"
+                    />&nbsp;<small>yrs</small><span>/</span>&nbsp;<input
+                      type="text"
+                      class="form-control col-md-5"
+                      name="monthsInCurrentJob"
+                      [readonly]="readOnlyForm == 'R'"
+                      [(ngModel)]="model.monthsInCurrentJob"
+                      min="0"
+                      max="12"
+                      placeholder="Months"
+                    /><small>mon</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Total Experience</label>
+                  <div class="form-inline">
+                    <input
+                      type="text"
+                      name="expyears"
+                      class="form-control col-md-4"
+                      [readonly]="readOnlyForm == 'R'"
+                      [(ngModel)]="model.experienceYrs"
+                      min="0"
+                      placeholder="Years"
+                    />
+                    &nbsp;<small>yrs</small><span>/</span>&nbsp;<input
+                      type="text"
+                      class="form-control col-md-5"
+                      name="expmonths"
+                      [readonly]="readOnlyForm == 'R'"
+                      [(ngModel)]="model.experienceMonths"
+                      min="0"
+                      max="11"
+                      placeholder="Months"
+                      (onkeyup)="imposeMinMax(this)"
+                    /><small>mon</small>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Notice period</label>
+                  <input
+                    type="text"
+                    name="noticePeriod"
+                    [readonly]="readOnlyForm == 'R'"
+                    class="form-control"
+                    [(ngModel)]="model.noticePeriod"
+                  />
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        <div class="row">
-          <div class="col-md-12">
-            <div class="form-group">
-              <label>Skills</label>
-              <textarea class="form-control" cols="10" rows="10" name="skills" [readonly]="readOnlyForm == 'R'" [(ngModel)]="model.skills">
-              </textarea>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label>Skills</label>
+                <textarea
+                  class="form-control"
+                  cols="10"
+                  rows="10"
+                  name="skills"
+                  [readonly]="readOnlyForm == 'R'"
+                  [(ngModel)]="model.skills"
+                >
+                </textarea>
+              </div>
+            </div>
+            <div class="row" *ngIf="model.properties.length > 0">
+              <div class="col-md-12 ml-3">
+                <div class="form-group">
+                  <label>Additional Properties</label>
+                  <div class="row" *ngFor="let ap of model.properties; let i = index">
+                    <div class="col-md-5">
+                      <input
+                        type="text"
+                        [(ngModel)]="ap.name"
+                        class="form-control"
+                        name="addPropName{{ i }}"
+                        [readonly]="readOnlyForm == 'R'"
+                      />
+                    </div>
+                    <div class="col-md-5">
+                      <input
+                        type="text"
+                        [(ngModel)]="ap.value"
+                        class="form-control"
+                        name="addPropValue{{ i }}"
+                        [readonly]="readOnlyForm == 'R'"
+                      />
+                    </div>
+                    <div class="col-md-2">
+                      <i
+                        class="fa fa-minus"
+                        aria-hidden="true"
+                        id="decrease"
+                        *ngIf="enableButtonType != 'E'"
+                        (click)="propertiesListIncrement($event.target, i)"
+                      ></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="form-group">
+                <label>Description</label>
+                <textarea
+                  class="form-control"
+                  name="description"
+                  [readonly]="readOnlyForm == 'R'"
+                  [(ngModel)]="model.description"
+                  rows="10"
+                ></textarea>
+              </div>
             </div>
           </div>
-          <div class="row" *ngIf="model.properties.length > 0">
-            <div class="col-md-12 ml-3">
+          <div class="row">
+            <div class="col-md-12">
               <div class="form-group">
                 <label>Additional Properties</label>
-                <div class="row" *ngFor="let ap of model.properties; let i = index">
+                <div class="row">
                   <div class="col-md-5">
-                    <input
-                      type="text"
-                      [(ngModel)]="ap.name"
-                      class="form-control"
-                      name="addPropName{{ i }}"
-                      [readonly]="readOnlyForm == 'R'"
-                    />
+                    <input type="text" [(ngModel)]="apName" class="form-control" name="apName" [readonly]="readOnlyForm == 'R'" />
                   </div>
                   <div class="col-md-5">
-                    <input
-                      type="text"
-                      [(ngModel)]="ap.value"
-                      class="form-control"
-                      name="addPropValue{{ i }}"
-                      [readonly]="readOnlyForm == 'R'"
-                    />
+                    <input type="text" [(ngModel)]="apValue" class="form-control" name="apValue" [readonly]="readOnlyForm == 'R'" />
                   </div>
                   <div class="col-md-2">
                     <i
-                      class="fa fa-minus"
+                      class="fa fa-plus"
                       aria-hidden="true"
-                      id="decrease"
+                      id="increase"
                       *ngIf="enableButtonType != 'E'"
-                      (click)="propertiesListIncrement($event.target, i)"
+                      (click)="propertiesListIncrement($event.target, 0)"
                     ></i>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          <div class="col-md-12">
-            <div class="form-group">
-              <label>Description</label>
-              <textarea
-                class="form-control"
-                name="description"
-                [readonly]="readOnlyForm == 'R'"
-                [(ngModel)]="model.description"
-                rows="10"
-              ></textarea>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-12">
-            <div class="form-group">
-              <label>Additional Properties</label>
-              <div class="row">
-                <div class="col-md-5">
-                  <input type="text" [(ngModel)]="apName" class="form-control" name="apName" [readonly]="readOnlyForm == 'R'" />
-                </div>
-                <div class="col-md-5">
-                  <input type="text" [(ngModel)]="apValue" class="form-control" name="apValue" [readonly]="readOnlyForm == 'R'" />
-                </div>
-                <div class="col-md-2">
-                  <i
-                    class="fa fa-plus"
-                    aria-hidden="true"
-                    id="increase"
-                    *ngIf="enableButtonType != 'E'"
-                    (click)="propertiesListIncrement($event.target, 0)"
-                  ></i>
-                </div>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="modal-body" *ngIf="model.files.length > 0">
+                <table class="table">
+                  <thead>
+                    <th>File Name</th>
+                    <th>Description</th>
+                    <th>Action</th>
+                  </thead>
+                  <tbody *ngFor="let fl of model.files">
+                    <td>{{ fl.fileName }}</td>
+                    <td>{{ fl.description }}</td>
+                    <td>
+                      <i class="fa fa-download" (click)="downloadFile(fl.id)"></i>&nbsp;
+                      <i class="fa fa-trash" (click)="trashFile(fl.id, fl)"></i>
+                    </td>
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>
-        </div>
-        <div class="row">
-          <div class="col-md-12">
-            <div class="modal-body" *ngIf="model.files.length>0">
-              <table class="table">
-                <thead>
-                  <th>File Name</th>
-                  <th>Description</th>
-                  <th>Action</th>
-                </thead>
-                <tbody *ngFor="let fl of model.files">
-                  <td>{{ fl.fileName }}</td>
-                  <td>{{ fl.description }}</td>
-                  <td>
-                    <i class="fa fa-download" (click)="downloadFile(fl.id)"></i>&nbsp;
-                    <i class="fa fa-trash" (click)="trashFile(fl.id,fl)"></i>
-                  </td>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
         </ng-template>
         <div class="row text-center">
           <div class="col-md-12 form-group">

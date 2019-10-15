@@ -28,6 +28,7 @@ export class URLConstants {
     CPGetById = 'clientPosition/';
     CPDropdown = 'clientPosition/getAllCps';
     CPGetAllByStatus = 'clientPosition/getAllByStatus?pageNo='
+    CPUpdatePosting = 'clientPosition/updatePosting'
 
     /*Consultant */
     CCreate = 'consultant';

@@ -12,7 +12,7 @@
       <div class="row">
         <div class="col-md-6"><input type="text" class="form-control" placeholder="search..." [(ngModel)]="currSearchTxt" /></div>
       </div>
-      <div class="table-responsive mt-2 tableFixHead" [style.height.px]="screenHeight">
+      <div class="table-responsive mt-2 table-wrapper-scroll-y my-custom-scrollbar" [style.height.px]="screenHeight">
         <table class="table table-hover table-striped">
           <thead>
             <tr>
@@ -99,11 +99,11 @@
               <tr *ngIf="model.name">
                 <th>Client Name</th>
                 <td>{{ model.name }}</td>
-              </tr>>
+              </tr>
               <tr *ngIf="model.contactPersonName">
                 <th>Contact Person Name</th>
                 <td>{{ model.contactPersonName }}</td>
-              </tr>>
+              </tr>
               <tr *ngIf="model.contactPersonDesignation">
                 <th>Contact Person Designation</th>
                 <td>{{ model.contactPersonDesignation }}</td>
@@ -447,7 +447,7 @@
                               <select class="form-control form-control-sm" name="sal{{i}}" [disabled]="readOnlyForm == 'R'" [(ngModel)]="cc.salutation"
                                  #sal="ngModel">
                                  <option [ngValue]='null' hidden selected>salutation</option>
-                                <option *ngFor="let cs of properties.clientSalutation" [ngValue]="cs">
+                                <option *ngFor="let cs of properties.SALUTATION" [ngValue]="cs">
                                   {{ cs }}
                                 </option>
                               </select>
@@ -590,7 +590,7 @@
 
 <ng-template #uploadContent let-c="close" let-d="dismiss">
   <div class="modal-header modal-popup-header-bg">
-    <h4 class="modal-title">{{ urlConstants.UploadFilesMsg }}</h4>
+    <h4 class="modal-title">{{ properties.UPLOAD }}</h4>
     <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
       <span aria-hidden="true">&times;</span>
     </button>
@@ -607,7 +607,7 @@
 
 <ng-template #downloadContent let-c="close" let-d="dismiss">
   <div class="modal-header modal-popup-header-bg">
-    <h4 class="modal-title">Client {{ urlConstants.DownloadFilesMsg }}</h4>
+    <h4 class="modal-title">Client {{ properties.DOWNLOAD }}</h4>
     <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
       <span aria-hidden="true">&times;</span>
     </button>

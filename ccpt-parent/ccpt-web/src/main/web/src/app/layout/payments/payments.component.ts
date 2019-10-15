@@ -102,7 +102,8 @@ export class PaymentsComponent implements OnInit {
     private setDefaultValues(){
         this.model.branchHeadName = this.properties.HEAD;
         this.model.phone = this.properties.PHONE;
-        this.model.branchLocation = this.properties.LOCATION
+        this.model.branchLocation = this.properties.LOCATION;
+        this.model.paidStatus=this.properties.PAYMENT_STATUS[1];
     }
     private getTodaysDate() {
         const today = new Date();

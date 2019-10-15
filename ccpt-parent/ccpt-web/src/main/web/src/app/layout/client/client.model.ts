@@ -18,18 +18,10 @@ export interface ClientModel {
   contactPersonName:string;
   website: string;
   files: Array<any>;
-  clientContacts: Array<ClientContactsModel>;
+  clientContacts: Array<ClientContactModel>;
   properties: Array<AdditionalPropertiesModel>;
 }
-export class ActionsList {
-  actions = [
-    { key: 'Edit', value: 'Edit' },
-    { key: 'File Upload', value: 'File Upload' },
-    { key: 'Delete', value: 'Delete' },
-    { key: 'Close', value: 'Close' }
-  ];
-}
-export interface ClientContactsModel {
+export interface ClientContactModel {
   salutation: string;
   email: string;
   fullname: string;

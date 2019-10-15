@@ -11,16 +11,18 @@
     <div class="col-md-7">
       <div class="row">
         <div class="col-md-6"><input type="text" class="form-control" placeholder="search" [(ngModel)]="currSearchTxt" /></div>
-        <div class="col-md-6 mt-2"><input class="check" type="checkbox" [(ngModel)]="showInactiveContent" (change)="checkTableType()" value=""/> <span class="">  Include Inactive Positions</span></div>
+        <div class="col-md-6 mt-2">
+          <input class="check" type="checkbox" [(ngModel)]="showInactiveContent" (change)="checkTableType()" value="" />
+          <span class="">Include Inactive Positions</span>
+        </div>
       </div>
-      <div class="table-responsive mt-2 tableFixHead" [style.height.px]="screenHeight">
-        <table class="table table-hover table-striped">
-          <tbody class="overflow-ele-scroll">
+      <div class="mt-2 table-responsive table-wrapper-scroll-y my-custom-scrollbar" [style.height.px]="screenHeight">
+        <table class="table table-sm table-hover table-striped">
+          <tbody>
             <tr
               *ngFor="let cpl of clientPositionList.list | filter: currSearchTxt | paginate: paginateConfig; let i = index"
               (click)="setModel(cpl.id)"
-              [ngClass]="{ 'bl-closed': cpl.status.code === 'Closed', 'bl-on-hold': cpl.status.code === 'On Hold' }"
-            >
+              [ngClass]="{ 'bl-on-hold': !cpl.isProfilePosted,'bl-trans':cpl.isProfilePosted}">
               <td class="table-data-padding">
                 <dl>
                   <dt>{{ cpl.generatedCode }} ({{ cpl.assignedTo.fullname }})</dt>
@@ -107,6 +109,7 @@
                     <a class="dropdown-item drop-list" (click)="smsJd(sendSMSContent)">SMS JD</a>
                     <a class="dropdown-item drop-list" *ngIf="loggedInRole != 'User'" (click)="cloneData(model)">Clone</a>
                     <a class="dropdown-item drop-list" *ngIf="loggedInRole != 'User'" (click)="open(model.id, trashContent)">Delete</a>
+                    <a class="dropdown-item drop-list" (click)="open(model.id, editPI)">Edit Posting Info</a>
                   </div>
                 </div>
               </span>
@@ -118,7 +121,9 @@
             <tbody>
               <tr *ngIf="model?.client?.name">
                 <th>Client Name</th>
-                <td>{{ model.client.name }}</td>
+                <td>
+                  {{ model.client.name }}
+                </td>
               </tr>
               <tr *ngIf="model.role">
                 <th>Job Title</th>
@@ -171,6 +176,18 @@
                 <td>
                   <p [innerHTML]="model.description"></p>
                 </td>
+              </tr>
+              <tr *ngIf="model.shineURL">
+                <th>Shine</th>
+                <td>{{ model.shineURL }}</td>
+              </tr>
+              <tr *ngIf="model.naukriURL">
+                <th>Naukri</th>
+                <td>{{ model.naukriURL }}</td>
+              </tr>
+              <tr *ngIf="model.almaConnectURL">
+                <th>Alma Connect</th>
+                <td>{{ model.almaConnectURL }}</td>
               </tr>
               <tr *ngFor="let ap of model.properties">
                 <th>{{ ap.name }}</th>
@@ -380,10 +397,10 @@
                 <label>Required Skills<span class="required">*</span></label>
                 <angular-editor
                   [(ngModel)]="model.requiredSkills"
-                  [disabled]="readOnlyForm == 'R'"
                   [ngClass]="{ 'is-invalid': f.submitted && requiredSkills.invalid }"
                   name="requiredSkills"
                   [config]="config"
+                  required
                 >
                 </angular-editor>
                 <div class="invalid-feedback">
@@ -703,6 +720,34 @@
   <div class="modal-footer">
     <button type="button" class="btn btn-secondary" (click)="createClientCallHistory()" [disabled]="creating">
       {{ creating ? 'loading...' : ('Send' | translate) }}
+    </button>
+    <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
+  </div>
+</ng-template>
+<ng-template #editPI let-c="close" let-d="dismiss">
+  <div class="modal-header modal-popup-header-bg">
+    <h4 class="modal-title">Edit Posting Info<span class="required">*</span></h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div>
+      <label>Shine</label>
+      <textarea class="form-control" cols="2" rows="2" [(ngModel)]="model.shineURL" name="shine"></textarea>
+    </div>
+    <div class="pt-2">
+      <label>Naukri</label>
+      <textarea class="form-control" cols="2" rows="2" [(ngModel)]="model.naukriURL" name="naukri"></textarea>
+    </div>
+    <div class="pt-2">
+      <label>Alma Connect</label>
+      <textarea class="form-control" cols="2" rows="2" [(ngModel)]="model.almaConnectURL" name="alma"></textarea>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="editPostingInfo()" [disabled]="creating">
+      {{ creating ? 'loading...' : ('Update' | translate) }}
     </button>
     <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
   </div>

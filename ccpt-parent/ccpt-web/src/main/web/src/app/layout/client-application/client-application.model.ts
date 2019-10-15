@@ -16,9 +16,6 @@ export interface ClientApplicationModel {
     onlineId: string;
     properties: Array<AdditionalPropertiesModel>;
 }
-export class ActionsList {
-    actions = [{key: 'Edit' , value:'Edit'},{key: 'Send Interview Schedule' , value:'Send Interview Schedule'},{key: 'Body Mail' , value:'Body Mail'},{key: 'File Upload' , value:'File Upload'}, {key: 'Delete' , value:'Delete'}, {key: 'Close' , value:'Close'}];
-}
 export class SendEmailModel {
     toEmails:string;
     subject: string;

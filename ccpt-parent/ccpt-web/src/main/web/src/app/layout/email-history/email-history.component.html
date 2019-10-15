@@ -15,11 +15,11 @@
         <table class="table table-sm table-hover table-striped">
           <thead>
             <tr>
-              <th width="70px">
+              <th width="80">
                 Date
               </th>
-              <th>
-                Ref Id
+              <th width="180">
+                Reference Id
               </th>
               <th>
                 Sent to
@@ -34,13 +34,13 @@
               *ngFor="let ehl of ehList.list| filter:currSearchTxt | paginate: paginateConfig; let i = index"
               (click)="setModel(ehl.id)"
             >
-              <td width="70px">
+              <td width="80px">
                 {{ ehl.createdDate | date:'dd-mm-yyyy' }}
               </td>
-              <td>
-                {{ ehl.refId}}
+              <td width="180">
+                {{ ehl.uuid}}
               </td>
-              <td >
+              <td style="overflow: hidden">
                 {{ ehl.toEmails }}
               </td>
               <td>
@@ -93,24 +93,28 @@
         <div *ngIf="readOnlyForm == 'U'; else notRead">
           <table class="table table-borderless table-striped">
             <tbody>
+                <tr *ngIf="model.uuid">
+                    <th width="110px">Reference Id</th>
+                    <td>{{ model?.uuid }}</td>
+                  </tr>
               <tr *ngIf="model.createdDate">
-                <th width="100px">Date</th>
+                <th width="110px">Date</th>
                 <td>{{ model?.createdDate | date:'dd-mm-yyyy'  }}</td>
               </tr>
               <tr *ngIf="model.toEmails">
-                <th width="100px">Sent To</th>
+                <th width="110px">Sent To</th>
                 <td>{{ model.toEmails }}</td>
               </tr>
               <tr *ngIf="model.cc">
-                <th width="100px">CC</th>
+                <th width="110px">CC</th>
                 <td>{{ model.cc }}</td>
               </tr>
               <tr *ngIf="model.bcc">
-                <th width="100px">Refine 1</th>
+                <th width="110px">BCC</th>
                 <td>{{ model.bcc }}</td>
               </tr>
               <tr *ngIf="model.subject">
-                <th width="100px">Subject</th>
+                <th width="110px">Subject</th>
                 <td>{{ model.subject }}</td>
               </tr>
               <tr *ngIf="model.body">

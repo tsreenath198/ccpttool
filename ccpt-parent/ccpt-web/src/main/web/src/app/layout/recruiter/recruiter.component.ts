@@ -35,7 +35,7 @@ export class RecruiterComponent implements OnInit {
   private selectedRecrdToDel = 0;
   public closeResult = '';
   private modalRef: NgbModalRef;
-  public genderList = ['Male', 'Female', 'Other'];
+  public GENDER = ['Male', 'Female', 'Other'];
   public currSearchTxt: string;
   public screenHeight: any;
   public readOnlyForm = '';

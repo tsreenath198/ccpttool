@@ -1,3 +1,10 @@
+.my-custom-scrollbar {
+  position: relative;
+  overflow: auto;
+  }
+  .table-wrapper-scroll-y {
+  display: block;
+  }
 .table-scroll {
   height: 10em;
   overflow-y: scroll;
@@ -23,8 +30,12 @@
 }
 .table-overflow {
   position: relative;
-  height: 403px;
+  height: 458px;
   overflow-y: scroll;
+}
+.table-overflow-l {
+  position: relative;
+  height: 458px;
 }
 
 .table-fixed thead,

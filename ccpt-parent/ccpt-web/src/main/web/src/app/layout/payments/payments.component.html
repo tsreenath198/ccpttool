@@ -112,7 +112,7 @@
               </div>
             </div>
           </div>
-          <div class="col-md-6">
+          <div class="col-md-6" *ngIf="readOnlyForm == ''">
               <div class="form-group">
                 <label>Client Application<span class="required">*</span></label>
                 <select
@@ -444,6 +444,45 @@
               />
               <div class="invalid-feedback">
                 Service charge is mandatory
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>Payment Status <span class="required">*</span></label>
+              <select
+                  class="form-control"
+                  name="ps"
+                  [disabled]="readOnlyForm == 'R'"
+                  [(ngModel)]="model.paidStatus"
+                  [ngClass]="{ 'is-invalid': f.submitted && ps.invalid }"
+                  #ps="ngModel"
+                  required
+                >
+                  <option *ngFor="let cal of properties.PAYMENT_STATUS" >{{ cal }} </option>
+                </select>
+              <div class="invalid-feedback">
+                Payment Status is mandatory
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6" *ngIf="model.paidStatus == 'Paid'">
+            <div class="form-group">
+              <label>Paid On <span class="required">*</span></label>
+              <input
+                type="date"
+                class="form-control"
+                name="paidOn"
+                [(ngModel)]="model.joiningDate"
+                [ngClass]="{ 'is-invalid': f.submitted && paidOn.invalid }"
+                #paidOn="ngModel"
+                [readonly]="readOnlyForm == 'R'"
+                required
+              />
+              <div class="invalid-feedback">
+                Paid On is mandatory
               </div>
             </div>
           </div>

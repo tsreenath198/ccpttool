@@ -8,9 +8,8 @@ import { ConsultantStatusModel } from '../consultant-status/consultant-status.mo
 import { URLConstants } from '../components/constants/url-constants';
 import { Properties } from '../components/constants/properties';
 import { AdditionalPropertiesModel } from 'src/app/additional-properties.model';
-import { Router } from '@angular/router'; 
+import { Router } from '@angular/router';
 import { StorageService, HttpClientService, ToastrCustomService } from '../../shared/services';
-
 
 @Component({
   selector: 'app-consultant',
@@ -26,7 +25,7 @@ export class ConsultantComponent implements OnInit {
   public formButtonsToggler = true;
   public readOnlyForm = '';
   public enableButtonType = '';
-  public genderList = [{ key: 'Mr.', value: 'Male' }, { key: 'Mrs.', value: 'Female' }];
+  public GENDER = [{ key: 'Mr.', value: 'Male' }, { key: 'Mrs.', value: 'Female' }];
   public uploadFileList: Array<any> = [];
   public fileList: Array<any> = [];
   public refType = '';
@@ -48,7 +47,7 @@ export class ConsultantComponent implements OnInit {
   public showAction: boolean = false;
   public actionsList = new ActionsList();
   public action: string;
-  public inCon:boolean=true;
+  public inCon: boolean = true;
   public isCreate: boolean = false;
   public currSearchTxt: string;
   public idToActivate: number;
@@ -57,11 +56,11 @@ export class ConsultantComponent implements OnInit {
   public pageSize: number = 20;
   public cSGetAllPromise = this.http.get(this.urlConstants.CSGetAll);
   public cGetAllPromise = this.http.get(this.urlConstants.CGetAll);
-  public paginateConfig :any={
+  public paginateConfig: any = {
     itemsPerPage: 0,
     currentPage: 0,
     totalItems: 0
-  }
+  };
   constructor(
     private http: HttpClientService,
     private router: Router,
@@ -84,32 +83,31 @@ export class ConsultantComponent implements OnInit {
     this.cSGetAllPromise.subscribe(resp => {
       this.consultantStatusList = resp as any;
     });
-    this.paginateConfigDeclare(this.properties.ITEMSPERPAGE,1,0);
+    this.paginateConfigDeclare(this.properties.ITEMSPERPAGE, 1, 0);
     this.init();
-    this.initialGetAll(); 
+    this.initialGetAll();
     this.spinner(true);
     /**Emptying the consultantId in storage */
     this.storage.consultantId = null;
   }
-  private paginateConfigDeclare(itemsPerPage,currentPage,totalItems){
-    this.paginateConfig.itemsPerPage = itemsPerPage,
-    this.paginateConfig.currentPage = currentPage,
-    this.paginateConfig.totalItems = totalItems
+  private paginateConfigDeclare(itemsPerPage, currentPage, totalItems) {
+    (this.paginateConfig.itemsPerPage = itemsPerPage),
+      (this.paginateConfig.currentPage = currentPage),
+      (this.paginateConfig.totalItems = totalItems);
   }
-  public initialGetAll(){
-    let pageNumber = this.paginateConfig.currentPage-1
-    let temp=this.http.get(this.urlConstants.CGetAllByStatus+ pageNumber + "&pageSize=50&sortBy=id&status=Active");
+  public initialGetAll() {
+    let pageNumber = this.paginateConfig.currentPage - 1;
+    let temp = this.http.get(this.urlConstants.CGetAllByStatus + pageNumber + '&pageSize=50&sortBy=id&status=Active');
     temp.subscribe(resp => {
       this.consultantList = resp as any;
       this.consultantList.list.forEach(cl => {
         if (this.validate(cl.fullname) && this.validate(cl.email) && this.validate(cl.phone)) {
           cl['isProfileCompleted'] = 'profileComplete';
-        }
-        else {
+        } else {
           cl['isProfileCompleted'] = 'profileInComplete';
         }
       });
-      this.paginateConfig.totalItems = this.consultantList.noOfRecords
+      this.paginateConfig.totalItems = this.consultantList.noOfRecords;
     });
   }
   init(): void {
@@ -131,7 +129,7 @@ export class ConsultantComponent implements OnInit {
     this.model.files = [];
     this.model.conStatus = 'Active';
     this.model.phone = '+91 ';
-    this.model.sourcedFrom = this.properties.consultantSource[0];
+    this.model.sourcedFrom = this.properties.CON_SOURCE[0];
     this.page = 1;
   }
   private validate(value: any): boolean {
@@ -141,8 +139,7 @@ export class ConsultantComponent implements OnInit {
   private validateFile(value: any): boolean {
     if (value == null) {
       return false;
-    }
-    else {
+    } else {
       return true;
     }
   }
@@ -165,7 +162,7 @@ export class ConsultantComponent implements OnInit {
   private formReset() {
     this.model = <ConsultantModel>{};
     this.model.properties = [];
-    this.model.files = []
+    this.model.files = [];
     this.model.conStatus = 'Active';
     this.model.phone = '+91';
   }
@@ -181,7 +178,7 @@ export class ConsultantComponent implements OnInit {
         consultantForm.resetForm();
         this.init();
         this.formReset();
-        this.paginateConfig.currentPage=1;
+        this.paginateConfig.currentPage = 1;
         this.initialGetAll();
         /**Creation of client application */
         this.createCA(resp);
@@ -198,7 +195,7 @@ export class ConsultantComponent implements OnInit {
     if (decision == true) {
       /**Assigning consultant id to the storage consultant */
       this.storage.consultantId = resp.id;
-      this.router.navigate(['/layout/client-application'])
+      this.router.navigate(['/layout/client-application']);
     }
   }
   public update(consultantForm: NgForm) {
@@ -309,25 +306,22 @@ export class ConsultantComponent implements OnInit {
       }
       case 'increase': {
         if (this.model.properties.length == 0) {
-          this.model.properties.push(<AdditionalPropertiesModel>{ 'name': this.apName, 'value': this.apValue });
+          this.model.properties.push(<AdditionalPropertiesModel>{ name: this.apName, value: this.apValue });
           this.apName = '';
           this.apValue = '';
-        }
-        else {
+        } else {
           let propertyExist: boolean;
           for (let i = 0; i < this.model.properties.length; i++) {
             if (this.model.properties[i].name == this.apName && this.model.properties[i].value == this.apValue) {
               propertyExist = true;
-            }
-            else {
+            } else {
               propertyExist = false;
             }
           }
           if (propertyExist) {
             this.toastr.error(this.properties.PROPERTY_EXIST, this.properties.PROPERTIES);
-          }
-          else {
-            this.model.properties.push(<AdditionalPropertiesModel>{ 'name': this.apName, 'value': this.apValue });
+          } else {
+            this.model.properties.push(<AdditionalPropertiesModel>{ name: this.apName, value: this.apValue });
             this.apName = '';
             this.apValue = '';
           }
@@ -408,7 +402,7 @@ export class ConsultantComponent implements OnInit {
   /**Download file */
   public downloadFile(id: number) {
     this.http.get(this.urlConstants.FileDownload + id).subscribe(
-      resp => { },
+      resp => {},
       err => {
         if (err.status == 200) window.open(err.url);
       }
@@ -423,7 +417,7 @@ export class ConsultantComponent implements OnInit {
     this.http.upload(this.urlConstants.FileUpload + params, formData).subscribe(
       resp => {
         let temp: any = resp;
-        this.uploader=new FileUploader({});
+        this.uploader = new FileUploader({});
         this.toastr.success(temp.message, 'Client');
         this.close();
       },
@@ -469,37 +463,36 @@ export class ConsultantComponent implements OnInit {
   private spinner(isSpinner: boolean) {
     this.listReturned = isSpinner;
   }
-  public search(){
-    this.paginateConfig.currentPage =1
-    if(this.currSearchTxt.length == 0){
-      this.paginateConfigDeclare(this.properties.ITEMSPERPAGE,1,0);
+  public search() {
+    this.paginateConfig.currentPage = 1;
+    if (this.currSearchTxt.length == 0) {
+      this.paginateConfigDeclare(this.properties.ITEMSPERPAGE, 1, 0);
       this.initialGetAll();
-    }
-    else if(this.currSearchTxt.length > 3){
-      let temp = this.http.get(this.urlConstants.CSearch+this.currSearchTxt)
+    } else if (this.currSearchTxt.length > 3) {
+      let temp = this.http.get(this.urlConstants.CSearch + this.currSearchTxt);
       temp.subscribe(resp => {
         this.consultantList.list = resp as any;
-        this.paginateConfigDeclare(this.consultantList.list.length,1,this.consultantList.list.length)
-      })
+        this.paginateConfigDeclare(this.consultantList.list.length, 1, this.consultantList.list.length);
+      });
     }
   }
-  
-  pageChanged(event){
-    this.paginateConfig.currentPage = event
-    if(this.inCon){
+
+  pageChanged(event) {
+    this.paginateConfig.currentPage = event;
+    if (this.inCon) {
       this.initialGetAll();
     }
   }
-  public getIncompleteCon(){
-    let temp=this.http.get(this.urlConstants.CGetInactive);
-    temp.subscribe(resp=>{
+  public getIncompleteCon() {
+    let temp = this.http.get(this.urlConstants.CGetInactive);
+    temp.subscribe(resp => {
       this.consultantList.list = resp as any;
-      this.paginateConfigDeclare(this.properties.ITEMSPERPAGE,1,this.consultantList.list.length);
-      this.inCon=false;
-    })
+      this.paginateConfigDeclare(this.properties.ITEMSPERPAGE, 1, this.consultantList.list.length);
+      this.inCon = false;
+    });
   }
-  public getAllCon(){
-    this.paginateConfigDeclare(this.properties.ITEMSPERPAGE,1,0);
+  public getAllCon() {
+    this.paginateConfigDeclare(this.properties.ITEMSPERPAGE, 1, 0);
     this.initialGetAll();
     this.inCon = true;
   }

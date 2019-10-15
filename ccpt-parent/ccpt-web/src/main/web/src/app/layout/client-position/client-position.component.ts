@@ -53,8 +53,8 @@ export class ClientPositionComponent implements OnInit {
   public urlConstants = new URLConstants();
   public properties = new Properties();
   public currSearchTxt: string;
-  public readOnlyForm:any = '';
-  public enableButtonType:any = '';
+  public readOnlyForm: any = '';
+  public enableButtonType: any = '';
   public shortList = 'shortList';
   public sms = 'sms';
   public email = 'email';
@@ -69,7 +69,7 @@ export class ClientPositionComponent implements OnInit {
   public action: string;
   public isCreate: boolean = false;
   public tableType: string;
-  public showInactiveContent:boolean = false;
+  public showInactiveContent: boolean = false;
   public page: number;
   public cpListLength: number;
   public listReturned: boolean;
@@ -81,6 +81,7 @@ export class ClientPositionComponent implements OnInit {
   public getAllC = this.http.get(this.urlConstants.ClientDropdown);
   public getAllCon = this.http.get(this.urlConstants.CDropdown);
   public creating: boolean = false;
+  public clientId: number;
   public cpForm: NgForm;
   public config: AngularEditorConfig = {
     editable: true,
@@ -169,10 +170,21 @@ export class ClientPositionComponent implements OnInit {
     let temp = this.http.get(this.urlConstants.CPGetAllByStatus + pageNumber + '&pageSize=50&sortBy=id&status=Active');
     temp.subscribe(resp => {
       this.clientPositionList = resp as any;
+      this.clientPositionList.list.forEach(cl => {
+        if (this.validate(cl.shineURL) || this.validate(cl.naukriURL) && this.validate(cl.almaConnectURL)) {
+          cl['isProfilePosted'] = true;
+        } else {
+          cl['isProfilePosted'] = false;
+        }
+      });
       //this.pageChange(this.page);
       this.paginateConfig.totalItems = this.clientPositionList.noOfRecords;
       this.tableType = 'Active Positions';
     });
+  }
+  private validate(value: any): boolean {
+    const bool = value ? true : false;
+    return bool;
   }
   private getAllDropdowns() {
     forkJoin(
@@ -301,6 +313,7 @@ export class ClientPositionComponent implements OnInit {
     data.id = null;
     this.readOnlyForm = '';
     this.enableButtonType = '';
+    this.config.editable = true;
     this.closedByEnable = false;
   }
   private formReset() {
@@ -368,7 +381,7 @@ export class ClientPositionComponent implements OnInit {
         clientPositionForm.resetForm();
         this.isCreate = false;
         this.paginateConfig.currentPage = 1;
-        this.checkTableType()
+        this.checkTableType();
         this.emptyStorage();
         if (this.showAction) {
           this.showAction = false;
@@ -422,7 +435,7 @@ export class ClientPositionComponent implements OnInit {
         this.init();
         this.spinner(true);
         clientPositionForm.resetForm();
-        this.checkTableType()
+        this.checkTableType();
         this.readOnlyForm = '';
         this.enableButtonType = '';
         this.closedByEnable = false;
@@ -453,7 +466,7 @@ export class ClientPositionComponent implements OnInit {
         this.close();
         this.formReset();
         this.spinner(true);
-        this.checkTableType()
+        this.checkTableType();
         this.readOnlyForm = '';
         this.enableButtonType = '';
         this.showAction = false;
@@ -642,12 +655,12 @@ export class ClientPositionComponent implements OnInit {
   }
   pageChanged(event) {
     this.paginateConfig.currentPage = event;
-    switch(this.tableType){
-      case "Active Positions":{
+    switch (this.tableType) {
+      case 'Active Positions': {
         this.initialGetAll();
         break;
       }
-      case "Inactive Positions":{
+      case 'Inactive Positions': {
         this.showInactive();
         break;
       }
@@ -657,11 +670,10 @@ export class ClientPositionComponent implements OnInit {
   private spinner(isSpinner: boolean) {
     this.listReturned = isSpinner;
   }
-  public checkTableType(){
-    if(this.showInactiveContent){
+  public checkTableType() {
+    if (this.showInactiveContent) {
       this.showInactive();
-    }
-    else{
+    } else {
       this.showActive();
     }
   }
@@ -683,17 +695,22 @@ export class ClientPositionComponent implements OnInit {
       this.paginateConfig.totalItems = this.clientPositionList.noOfRecords;
     });
   }
-
-  // public showAll() {
-  //   if (this.tableType != 'All Positions') {
-  //     this.paginateConfigDeclare(this.properties.ITEMSPERPAGE, 1, 0);
-  //   }
-  //   let pageNumber = this.paginateConfig.currentPage - 1;
-  //   let temp = this.http.get(this.urlConstants.CPGetAll + pageNumber + '&pageSize=50&sortBy=id');
-  //   temp.subscribe(resp => {
-  //     this.clientPositionList = resp as any;
-  //     this.paginateConfig.totalItems = this.clientPositionList.noOfRecords;
-  //     this.tableType = 'All Positions';
-  //   });
-  // }
+  public editPostingInfo() {
+    this.creating = true;
+    let temp = {
+      id: this.model.id,
+      shineURL: this.model.shineURL,
+      naukriURL: this.model.naukriURL,
+      almaConnectURL: this.model.almaConnectURL
+    };
+    console.log(temp);
+    this.http.update(temp, this.urlConstants.CPUpdatePosting).subscribe(resp => {
+      this.toastr.success(this.properties.UPDATE, this.properties.CP);
+      this.creating = false;
+    },
+    err => {
+      this.toastr.error(err.error.message, this.properties.CP);
+      this.creating = false;
+    })
+  }
 }

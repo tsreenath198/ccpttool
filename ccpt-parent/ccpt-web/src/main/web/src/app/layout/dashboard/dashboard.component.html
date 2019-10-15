@@ -4,72 +4,70 @@
     <div class="bounce2"></div>
     <div class="bounce3"></div>
   </div>
-
-  <div class="row" *ngIf="listReturned">
-    <div class="col col-xl-12 col-lg-12" *ngIf="interviewsToday.length != 0">
-      <div class="card mb-3">
-        <div class="card-header bg-dark text-clr-white">{{constantProperties.DASHBOARD_ITW}}</div>
-        <div>
-          <div class="card-body">
-            <table class="table table-sm table-striped">
-              <thead>
-                <tr>
-                  <th>{{constantProperties.CLIENT}}</th>
-                  <th>{{constantProperties.TH_C_NO}}</th>
-                  <th>{{constantProperties.CON}}</th>
-                  <th>{{constantProperties.TH_CON_NO}}</th>
-                  <th>{{constantProperties.TH_MODE}}</th>
-                  <th>{{constantProperties.TH_DATE}}</th>
-                  <th>{{constantProperties.TH_LOC}}</th>
-                  <th>{{constantProperties.TH_TIME}}</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let val of interviewsToday">
-                  <td>{{ val.clientName }}</td>
-                  <td>{{ val.clientPhone }}</td>
-                  <td>{{ val.consultantName }}</td>
-                  <td>{{ val.consultantPhone }}</td>
-                  <td>{{ val.interviewMode }}</td>
-                  <td>{{ val.interviewDate | date }}</td>
-                  <td>{{ val.interviewLocation }}</td>
-                  <td>{{ val.interviewTime }}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
   <div class="row" *ngIf="listReturned">
     <div class="col-md-6">
       <div class="row">
+        <div class="col col-xl-12 col-lg-12" *ngIf="interviewsToday.length != 0">
+          <div class="card mb-3">
+            <div class="card-header bg-dark text-clr-white">{{ constantProperties.DASHBOARD_ITW }}</div>
+            <div>
+              <div class="card-body table-responsive">
+                <table class="table table-sm table-striped ">
+                  <thead>
+                    <tr>
+                      <th>{{ constantProperties.CLIENT }}</th>
+                      <th>{{ constantProperties.CON }}</th>
+                      <th>{{ constantProperties.TH_MODE }}</th>
+                      <th>{{ constantProperties.TH_DATE }}/{{ constantProperties.TH_TIME }}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let val of interviewsToday">
+                      <td container="body" class="click-data" [autoClose]="'outside'" [ngbPopover]="popContent1" [popoverTitle]="popTitle1">
+                        {{ val.clientName }}
+                      </td>
+                      <td container="body" class="click-data" [autoClose]="'outside'" [ngbPopover]="popContent2" [popoverTitle]="popTitle2">
+                        {{ val.consultantName }}
+                      </td>
+                      <td>{{ val.interviewMode }}</td>
+                      <td>{{ val.interviewDate | date }}/{{ val.interviewTime }}</td>
+                      <ng-template #popContent1>{{ val.clientPhone }}</ng-template>
+                      <ng-template #popTitle1><b>Client Phone</b></ng-template>
+                      <ng-template #popContent2>{{ val.consultantPhone }} </ng-template>
+                      <ng-template #popTitle2><b>Consultant Phone</b></ng-template>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
         <div class="col-md-12">
           <div class="card mb-3">
-            <div class="card-header bg-dark text-clr-white">{{constantProperties.DASHBOARD_QSU}}</div>
-            <div class="card-body  table-responsive table-overflow">
-              <table class="table tableFixHead table-sm table-striped">
+            <div class="card-header bg-dark text-clr-white">{{ constantProperties.DASHBOARD_QSU }}</div>
+            <div class="card-body  table-responsive table-overflow-l">
+              <table class="table table-sm table-striped ">
                 <thead>
                   <tr>
-                    <th>{{constantProperties.CLIENT}}</th>
-                    <th>{{constantProperties.CON}}</th>
-                    <th>{{constantProperties.TH_STAT}}</th>
+                    <th>{{ constantProperties.CLIENT }}</th>
+                    <th>{{ constantProperties.CON }}</th>
+                    <th>{{ constantProperties.TH_STAT }}</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr *ngFor="let ca of caStat">
-                    <td>{{ ca.clientName }}</td>
-                    <td>{{ ca.consultantName }}</td>
+                    <td>
+                      {{ ca.clientName }}
+                    </td>
+                    <td>
+                      {{ ca.consultantName }}
+                    </td>
                     <td colspan="2">
                       <select class="form-control form-control-sm" name="cas" [(ngModel)]="ca.status" (change)="updateCAStatus(ca)">
                         <option *ngFor="let casl of caStatusList.list" [ngValue]="casl.code">
                           {{ casl.description }}
                         </option> </select
-                      ><i
-                        *ngIf="updateIndex == ca.id"
-                        class="fa fa-check fa-lg fa-position"
-                      ></i>
+                      ><i *ngIf="updateIndex == ca.id" class="fa fa-check fa-lg fa-position"></i>
                     </td>
                   </tr>
                 </tbody>
@@ -80,7 +78,8 @@
         <div class="col-md-12" *ngIf="openCP.length > 0">
           <div class="card mb-3">
             <div class="card-header bg-dark text-clr-white">
-              {{constantProperties.DASHBOARD_OCP}}<i
+              {{ constantProperties.DASHBOARD_OCP
+              }}<i
                 class="fa fa-question-circle-o ml-2"
                 placement="top"
                 ngbTooltip="All those positions which dont have any applications."
@@ -89,18 +88,20 @@
             </div>
             <div>
               <div class="card-body">
-                <table class="table table-sm table-striped">
+                <table class="table table-sm table-striped my-custom-scrollbar table-wrapper-scroll-y">
                   <thead>
                     <tr>
-                      <th>{{constantProperties.CLIENT}}</th>
-                      <th>{{constantProperties.TH_CODE}}</th>
-                      <th>{{constantProperties.TH_DATE}}</th>
-                      <th>{{constantProperties.TH_ASSIGN}}</th>
+                      <th>{{ constantProperties.CLIENT }}</th>
+                      <th>{{ constantProperties.TH_CODE }}</th>
+                      <th>{{ constantProperties.TH_DATE }}</th>
+                      <th>{{ constantProperties.TH_ASSIGN }}</th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr *ngFor="let ocp of openCP">
-                      <td>{{ ocp.clientName }}</td>
+                      <td>
+                        {{ ocp.clientName }}
+                      </td>
                       <td>{{ ocp.generatedCode }}</td>
                       <td width="100">{{ ocp.createdDate | date: 'dd-MM-yy' }}</td>
                       <td>{{ ocp.recruiterName }}</td>
@@ -114,7 +115,7 @@
         <div class="col-md-12">
           <div class="card mb-3">
             <div class="card-header bg-dark text-clr-white">
-              {{constantProperties.DASHBOARD_RP}}
+              {{ constantProperties.DASHBOARD_RP }}
               <span class="pull-right">
                 <select class="form-control form-control-sm" name="rpChoosenDays" [(ngModel)]="rpChoosenDays" (change)="rpGetAllByDays()">
                   <option *ngFor="let nod of noOfDays" [ngValue]="nod.value">{{ nod.key }} </option>
@@ -122,12 +123,11 @@
               </span>
             </div>
             <div *ngIf="(ccptReportCC | json) != ({} | json)" class="card-body">
-              <!--  -->
               <table class="table table-sm table-striped">
                 <thead>
                   <tr>
-                    <th>{{constantProperties.RECRUITER}}</th>
-                    <th>{{constantProperties.TH_NOC}}</th>
+                    <th>{{ constantProperties.RECRUITER }}</th>
+                    <th>{{ constantProperties.TH_NOC }}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -143,7 +143,7 @@
         <div class="col-md-12">
           <div class="card mb-3 ">
             <div class="card-header bg-dark text-clr-white">
-              {{constantProperties.CON_C_H}}
+              {{ constantProperties.CON_C_H }}
               <span class="pull-right">
                 <select
                   class="form-control form-control-sm"
@@ -159,8 +159,8 @@
               <table class="table table-sm table-striped">
                 <thead>
                   <tr>
-                    <th>{{constantProperties.TH_NAME}}</th>
-                    <th>{{constantProperties.TH_COUNT}}</th>
+                    <th>{{ constantProperties.TH_NAME }}</th>
+                    <th>{{ constantProperties.TH_COUNT }}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -183,10 +183,39 @@
     </div>
     <div class="col-md-6" *ngIf="listReturned">
       <div class="row">
+        <div class="col col-xl-12 col-lg-12" *ngIf="paymentTrack.length != 0">
+          <div class="card mb-3">
+            <div class="card-header bg-dark text-clr-white">{{ constantProperties.DASHBOARD_PT }}</div>
+            <div>
+              <div class="card-body table-responsive">
+                <table class="table table-sm table-striped ">
+                  <thead>
+                    <tr>
+                      <th>{{ constantProperties.CLIENT }}</th>
+                      <th>{{ constantProperties.CON }}</th>
+                      <th>{{ constantProperties.JOINING_DATE }}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let pt of paymentTrack">
+                      <td>
+                        {{ pt.companyName }}
+                      </td>
+                      <td>
+                        {{ pt.candidateName }}
+                      </td>
+                      <td>{{ pt.joiningDate | date }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
         <div class="col-md-12">
           <div class="card mb-3">
             <div class="card-header bg-dark text-clr-white">
-              {{constantProperties.DASHBOARD_CAS}}
+              {{ constantProperties.DASHBOARD_CAS }}
             </div>
             <div class="card-body table-overflow">
               <div [style.height.px]="stackChartHeight">
@@ -208,7 +237,8 @@
         <div class="col-md-12" *ngIf="dyingCP.length > 0">
           <div class="card mb-3">
             <div class="card-header bg-dark text-clr-white">
-              {{constantProperties.DASHBOARD_DCP}}<i
+              {{ constantProperties.DASHBOARD_DCP
+              }}<i
                 class="fa fa-question-circle-o ml-2"
                 placement="top"
                 ngbTooltip="All those positions which dont have applications since one week."
@@ -216,18 +246,20 @@
               ></i>
             </div>
             <div class="card-body">
-              <table class="table table-sm table-striped">
+              <table class="table table-sm table-striped my-custom-scrollbar table-wrapper-scroll-y">
                 <thead>
                   <tr>
-                    <th>{{constantProperties.CLIENT}}</th>
-                    <th>{{constantProperties.TH_CODE}}</th>
-                    <th>{{constantProperties.TH_DATE}}</th>
-                    <th>{{constantProperties.TH_ASSIGN}}</th>
+                    <th>{{ constantProperties.CLIENT }}</th>
+                    <th>{{ constantProperties.TH_CODE }}</th>
+                    <th>{{ constantProperties.TH_DATE }}</th>
+                    <th>{{ constantProperties.TH_ASSIGN }}</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr *ngFor="let ocp of dyingCP">
-                    <td>{{ ocp.clientName }}</td>
+                    <td>
+                      {{ ocp.clientName }}
+                    </td>
                     <td>{{ ocp.generatedCode }}</td>
                     <td width="100">{{ ocp.createdDate | date: 'dd-MM-yy' }}</td>
                     <td>{{ ocp.recruiterName }}</td>
@@ -274,7 +306,7 @@
 </div>
 <ng-template #contentClch let-c="close" let-d="dismiss">
   <div class="modal-header modal-popup-header-bg">
-    <h4 class="modal-title">{{constantProperties.CLI_C_H}}</h4>
+    <h4 class="modal-title">{{ constantProperties.CLI_C_H }}</h4>
     <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
       <span aria-hidden="true">&times;</span>
     </button>
@@ -285,16 +317,16 @@
         <thead>
           <tr>
             <th>
-              {{constantProperties.TH_CALLER}}
+              {{ constantProperties.TH_CALLER }}
             </th>
             <th>
-              {{constantProperties.CP}}
+              {{ constantProperties.CP }}
             </th>
             <th>
-              {{constantProperties.TH_CALL_DATE}}
+              {{ constantProperties.TH_CALL_DATE }}
             </th>
             <th width="150">
-              {{constantProperties.TH_DESC}}
+              {{ constantProperties.TH_DESC }}
             </th>
           </tr>
         </thead>
@@ -316,7 +348,7 @@
 </ng-template>
 <ng-template #contentCoCH let-c="close" let-d="dismiss">
   <div class="modal-header modal-popup-header-bg">
-    <h4 class="modal-title">{{constantProperties.CON_C_H}}</h4>
+    <h4 class="modal-title">{{ constantProperties.CON_C_H }}</h4>
     <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
       <span aria-hidden="true">&times;</span>
     </button>
@@ -327,19 +359,19 @@
         <thead>
           <tr>
             <th>
-              {{constantProperties.TH_SNO}}
+              {{ constantProperties.TH_SNO }}
             </th>
             <th>
-                {{constantProperties.TH_CALLER}}
+              {{ constantProperties.TH_CALLER }}
             </th>
             <th>
-              {{constantProperties.CON}}
+              {{ constantProperties.CON }}
             </th>
             <th>
-                {{constantProperties.TH_CALL_DATE}}
+              {{ constantProperties.TH_CALL_DATE }}
             </th>
             <th width="150">
-                {{constantProperties.TH_DESC}}
+              {{ constantProperties.TH_DESC }}
             </th>
           </tr>
         </thead>
@@ -347,7 +379,9 @@
           <tr *ngFor="let aca of cochByIdList; let i = index">
             <td>{{ i + 1 }}.</td>
             <td>{{ aca.calledBy.fullname }}</td>
-            <td>{{ aca.consultant.fullname }}</td>
+            <td>
+              {{ aca.consultant.fullname }}
+            </td>
             <td>{{ aca.calledDate }}</td>
             <td>{{ aca.description }}</td>
           </tr>
@@ -362,7 +396,7 @@
 </ng-template>
 <ng-template #contentACA let-c="close" let-d="dismiss">
   <div class="modal-header modal-popup-header-bg">
-    <h4 class="modal-title">{{constantProperties.DASHBOARD_ACA}}</h4>
+    <h4 class="modal-title">{{ constantProperties.DASHBOARD_ACA }}</h4>
     <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
       <span aria-hidden="true">&times;</span>
     </button>
@@ -372,11 +406,11 @@
       <table class="table table-sm table-striped">
         <thead>
           <tr>
-            <th>{{constantProperties.TH_SNO}}</th>
-            <th>{{constantProperties.TH_POS}}</th>
-            <th>{{constantProperties.CLIENT}}</th>
-            <th>{{constantProperties.CON}}</th>
-            <th>{{constantProperties.TH_INT_DT}}</th>
+            <th>{{ constantProperties.TH_SNO }}</th>
+            <th>{{ constantProperties.TH_POS }}</th>
+            <th>{{ constantProperties.CLIENT }}</th>
+            <th>{{ constantProperties.CON }}</th>
+            <th>{{ constantProperties.TH_INT_DT }}</th>
           </tr>
         </thead>
         <tbody>
@@ -392,13 +426,12 @@
     </div>
   </div>
   <div class="modal-footer">
-    <!-- <button type="button" class="btn btn-secondary" (click)="deleteCoCHRecord()">Ok</button> -->
     <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
   </div>
 </ng-template>
 <ng-template #top5CP let-c="close" let-d="dismiss">
   <div class="modal-header modal-popup-header-bg">
-    <h4 class="modal-title">{{constantProperties.CP}}</h4>
+    <h4 class="modal-title">{{ constantProperties.CP }}</h4>
     <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
       <span aria-hidden="true">&times;</span>
     </button>
@@ -408,7 +441,7 @@
       <div class="row">
         <div class="col-md-6">
           <div class="form-group">
-            <label>{{constantProperties.CP_CN}} </label>
+            <label>{{ constantProperties.CP_CN }} </label>
             <input
               class="form-control"
               [readonly]="readOnlyForm == 'R'"
@@ -436,7 +469,7 @@
         </div>
         <div class="col-md-6">
           <div class="form-group">
-            <label>{{constantProperties.CP_JT}} </label>
+            <label>{{ constantProperties.CP_JT }} </label>
             <input
               class="form-control"
               [readonly]="readOnlyForm == 'R'"
@@ -455,7 +488,7 @@
       <div class="row">
         <div class="col-md-6">
           <div class="form-group">
-            <label>{{constantProperties.CP_JTY}}</label>
+            <label>{{ constantProperties.CP_JTY }}</label>
             <input
               class="form-control"
               [readonly]="readOnlyForm == 'R'"
@@ -468,7 +501,7 @@
         </div>
         <div class="col-md-6">
           <div class="form-group">
-            <label>{{constantProperties.CP_AVAIL}}</label>
+            <label>{{ constantProperties.CP_AVAIL }}</label>
             <input
               class="form-control"
               [readonly]="readOnlyForm == 'R'"
@@ -483,7 +516,7 @@
       <div class="row">
         <div class="col-md-6">
           <div class="form-group">
-            <label>{{constantProperties.CP_RP}}</label>
+            <label>{{ constantProperties.CP_RP }}</label>
             <input
               class="form-control"
               type="number"
@@ -497,7 +530,7 @@
         </div>
         <div class="col-md-6">
           <div class="form-group">
-            <label>{{constantProperties.CP_RE}}</label>
+            <label>{{ constantProperties.CP_RE }}</label>
             <input
               class="form-control"
               [readonly]="readOnlyForm == 'R'"
@@ -512,7 +545,7 @@
       <div class="row">
         <div class="col-md-6">
           <div class="form-group">
-            <label>{{constantProperties.CP_MIN_CTC}}</label>
+            <label>{{ constantProperties.CP_MIN_CTC }}</label>
             <input
               class="form-control"
               [readonly]="readOnlyForm == 'R'"
@@ -526,7 +559,7 @@
         </div>
         <div class="col-md-6">
           <div class="form-group">
-            <label>{{constantProperties.CP_MAX_CTC}}</label>
+            <label>{{ constantProperties.CP_MAX_CTC }}</label>
             <input
               class="form-control"
               [readonly]="readOnlyForm == 'R'"
@@ -542,7 +575,7 @@
       <div class="row">
         <div class="col-md-6">
           <div class="form-group">
-            <label>{{constantProperties.TH_LOC}}</label>
+            <label>{{ constantProperties.TH_LOC }}</label>
             <input
               class="form-control"
               [readonly]="readOnlyForm == 'R'"
@@ -555,7 +588,7 @@
         </div>
         <div class="col-md-6">
           <div class="form-group">
-            <label>{{constantProperties.CP_CPS}} </label>
+            <label>{{ constantProperties.CP_CPS }} </label>
             <input
               class="form-control"
               [readonly]="readOnlyForm == 'R'"
@@ -573,7 +606,7 @@
       <div class="row">
         <div class="col-md-6">
           <div class="form-group">
-            <label>{{constantProperties.CP_ASSIGN}}</label>
+            <label>{{ constantProperties.CP_ASSIGN }}</label>
             <input
               class="form-control"
               [readonly]="readOnlyForm == 'R'"
@@ -596,7 +629,7 @@
         </div>
         <div class="col-md-6">
           <div class="form-group">
-            <label>{{constantProperties.CP_QUAL}}</label>
+            <label>{{ constantProperties.CP_QUAL }}</label>
             <input
               class="form-control"
               [readonly]="readOnlyForm == 'R'"
@@ -609,7 +642,7 @@
         </div>
         <div class="col-md-6" *ngIf="top5ById.cpstatus == 'Closed'">
           <div class="form-group">
-            <label>{{constantProperties.CP_CL_BY}}</label>
+            <label>{{ constantProperties.CP_CL_BY }}</label>
             <select class="form-control" name="closedBy" [disabled]="readOnlyForm == 'R'" [(ngModel)]="top5ById.closedBy">
               <!-- <option *ngFor="let rl of recruiterList" [ngValue]="rl.id"> {{ rl.name }}</option> -->
             </select>
@@ -619,7 +652,7 @@
       <div class="row">
         <div class="col-md-12">
           <div class="form-group">
-            <label>{{constantProperties.CP_REQ_SKILL}} </label>
+            <label>{{ constantProperties.CP_REQ_SKILL }} </label>
             <textarea
               class="form-control"
               cols="10"
@@ -640,7 +673,7 @@
       <div class="row" *ngIf="top5ById?.properties?.length > 0">
         <div class="col-md-12 mb-5" *ngIf="top5ById.properties.length > 0">
           <div class="form-group">
-            <label>{{constantProperties.ADD_PROP}}</label>
+            <label>{{ constantProperties.ADD_PROP }}</label>
             <div class="row" *ngFor="let ap of top5ById.properties; let i = index">
               <div class="col-md-5 pt-3">
                 <input type="text" [(ngModel)]="ap.name" class="form-control" name="addPropName{{ i }}" [readonly]="readOnlyForm == 'R'" />
@@ -666,11 +699,11 @@
             </div>
           </div>
         </div>
-      </div>   
+      </div>
       <div class="row">
         <div class="col-md-12">
           <div class="form-group">
-            <label>{{constantProperties.TH_DESC}}</label>
+            <label>{{ constantProperties.TH_DESC }}</label>
             <angular-editor [(ngModel)]="top5ById.description" name="description" [config]="config"> </angular-editor>
           </div>
         </div>
@@ -679,7 +712,7 @@
   </div>
   <div class="modal-footer">
     <!-- <button type="button" class="btn btn-secondary" (click)="deleteCoCHRecord()">Ok</button> -->
-    <button type="button" class="btn btn-secondary" (click)="c('Close click')">{{constantProperties.CLOSE}}</button>
+    <button type="button" class="btn btn-secondary" (click)="c('Close click')">{{ constantProperties.CLOSE }}</button>
   </div>
 </ng-template>
 

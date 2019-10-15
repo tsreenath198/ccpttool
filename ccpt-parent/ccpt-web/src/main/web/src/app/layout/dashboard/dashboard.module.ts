@@ -9,7 +9,7 @@ import {
     NotificationComponent,
     ChatComponent
 } from './components';
-import { StatModule } from '../../shared';
+import { StatModule, ActionListModule } from '../../shared';
 import { FormsModule } from '@angular/forms';
 import { AngularEditorModule } from '@kolkov/angular-editor';
 import { ChartsModule as Ng2Charts } from 'ng2-charts';
@@ -23,7 +23,8 @@ import { ChartsModule as Ng2Charts } from 'ng2-charts';
         StatModule,
         FormsModule,
         AngularEditorModule,
-        NgbModule,Ng2Charts
+        NgbModule,Ng2Charts,
+        ActionListModule
     ],
     declarations: [
         DashboardComponent,

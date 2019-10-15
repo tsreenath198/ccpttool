@@ -48,9 +48,12 @@ export class DashboardComponent implements OnInit {
   public chartHeight: any;
   public stackChartHeight: any;
   public caStat: any;
+  public paymentTrack:any;
   public caStatusList: any;
   public isCollapsed = true;
   public updateIndex: number;
+  public clientId:number;
+  public consultantId:number;
   /** Template references */
 
   @ViewChild('contentACA')
@@ -155,6 +158,7 @@ export class DashboardComponent implements OnInit {
       this.ccptReportCLCH = temp.clientCallHistoryList;
       this.ccptReportCOCH = temp.consultantCallHistoryList;
       this.caStat = temp.dashboardCAStatistics;
+      this.paymentTrack = temp.paymentStatistics
       this.setCAByStatusBarData(this.caByStatusList);
       this.spinner(true);
     });

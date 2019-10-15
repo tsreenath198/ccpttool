@@ -51,6 +51,7 @@ export class ConsultantCallHistoryComponent implements OnInit {
   public pageSize: number = 20;
   public incr: number = 0;
   public listReturned: boolean;
+  public consultantId:number;
   public getCplPromise = this.http.get(this.urlConstants.CPDropdown);
   public getClPromise = this.http.get(this.urlConstants.CDropdown);
   public getRlPromise = this.http.get(this.urlConstants.RDropdown);
@@ -310,7 +311,7 @@ export class ConsultantCallHistoryComponent implements OnInit {
     if (event) {
       this.selectedRecrdToDel = event;
     }
-    this.modalRef = this.modalService.open(content);
+    this.modalRef = this.modalService.open(content, { size: 'lg', backdrop: 'static' });
     this.modalRef.result.then(
       result => {
         this.closeResult = `Closed with: ${result}`;

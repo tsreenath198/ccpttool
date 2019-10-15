@@ -3,7 +3,7 @@ import { routerTransition } from '../../router.animations';
 import { forkJoin } from 'rxjs';
 import { Properties } from '../components/constants/properties';
 import { URLConstants } from '../components/constants/url-constants';
-import { ClientApplicationModel, ActionsList, SendEmailModel, SendSmsModel, FAQModel } from './client-application.model';
+import { ClientApplicationModel, SendEmailModel, SendSmsModel, FAQModel } from './client-application.model';
 import { ClientApplicationStatusModel } from '../client-application-status/client-application-status.model';
 import { NgForm } from '@angular/forms';
 import { NgbModalRef, ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -40,10 +40,8 @@ export class ClientApplicationComponent implements OnInit {
   public interviewMode = [{ key: 'Face to Face', value: 'F2F' }, { key: 'Telephone', value: 'TEL' }, { key: 'Video Call', value: 'VID' }];
   public searchStatusType = ['Active', 'Inactive'];
   public showAction: boolean = false;
-  public actionsList = new ActionsList();
-  public action: string;
   public tabCheck: string;
-  public currSearch = { client: 0, clientPos: 0, status: null, key: null };
+  public currSearch = { client: 0, clientPos: 0, status: 'Active', key: null };
   public searchCon = '';
   public searchConsultantList: any = [];
   public isSerach: boolean = false;
@@ -81,6 +79,8 @@ export class ClientApplicationComponent implements OnInit {
   public caForm: NgForm;
   public sendEmailModel: SendEmailModel = <SendEmailModel>{};
   public sendSmsModel: SendSmsModel = <SendSmsModel>{};
+  public clientId:number;
+  public consultantId:number;
   public config: AngularEditorConfig = {
     editable: true,
     spellcheck: true,
@@ -123,7 +123,7 @@ export class ClientApplicationComponent implements OnInit {
     this.getAllDropdowns();
     this.paginateConfigDeclare(this.properties.ITEMSPERPAGE, 1, 0);
     this.init();
-    this.checkStorage();
+    this.checkIsConsultantExist();
     this.initialGetAll();
     this.spinner(true);
   }
@@ -134,7 +134,8 @@ export class ClientApplicationComponent implements OnInit {
       (this.paginateConfig.totalItems = totalItems);
   }
 
-  private checkStorage() {
+  /**Checks if storage service have any saved consultants */
+  private checkIsConsultantExist() {
     if (this.storageService.consultantId) {
       this.model.consultantId = this.storageService.consultantId;
     }
@@ -204,7 +205,6 @@ export class ClientApplicationComponent implements OnInit {
     this.readOnlyForm = 'U';
     this.enableButtonType = 'E';
     this.showAction = true;
-    this.action = null;
   }
 
   private getCAById(id: number) {
@@ -312,15 +312,15 @@ export class ClientApplicationComponent implements OnInit {
     }
   }
 
-  sendIds(Ids: any, sendMailContent: any, type: any) {
+  public mailSelectedApplications(Ids: any, sendMailContent: any, type: any) {
     this.spinner(false);
     let temp;
     if (type == 'interviewSchedule') {
       temp = this.http.post(Ids, this.urlConstants.EmailGetShortlistCA);
     } else if (type == 'shortlistedCandidates') {
       temp = this.http.post(Ids, this.urlConstants.EmailGetClientApps);
-    }else if(type == 'statusVerification'){
-      temp = this.http.post(Ids,this.urlConstants.EmailGetReqUpdate);
+    } else if (type == 'statusVerification') {
+      temp = this.http.post(Ids, this.urlConstants.EmailGetReqUpdate);
     }
     temp.subscribe(
       resp => {
@@ -465,7 +465,6 @@ export class ClientApplicationComponent implements OnInit {
     this.readOnlyForm = 'U';
     this.enableButtonType = 'U';
     this.showAction = true;
-    this.action = null;
   }
   public update(clientApplicationForm: NgForm) {
     this.spinner(false);
@@ -480,7 +479,7 @@ export class ClientApplicationComponent implements OnInit {
         this.readOnlyForm = '';
         this.enableButtonType = '';
         this.showAction = false;
-        if(!this.isSerach){
+        if (!this.isSerach) {
           this.initialGetAll();
         }
         this.getRecruiterId();
@@ -792,7 +791,7 @@ export class ClientApplicationComponent implements OnInit {
   public cancelSearch() {
     this.isSerach = false;
     this.searchCp = this.clientPositionList;
-    this.currSearch = { client: 0, clientPos: 0, status: null, key: null };
+    this.currSearch = { client: 0, clientPos: 0, status: 'Active', key: null };
     this.initialGetAll();
     this.paginateConfigDeclare(this.properties.ITEMSPERPAGE, 1, 0);
   }
@@ -835,7 +834,7 @@ export class ClientApplicationComponent implements OnInit {
       request.subscribe(resp => {
         this.searchConsultantList = resp as any;
       });
-    }else if(this.searchCon.length == 0){
+    } else if (this.searchCon.length == 0) {
       this.searchConsultantList = [];
     }
   }
@@ -851,7 +850,7 @@ export class ClientApplicationComponent implements OnInit {
     this.model.consultantId = data.id;
     this.close();
   }
-  public dateChange(){
-    this.model.interviewMode=" ";
+  public dateChange() {
+    this.model.interviewMode = ' ';
   }
 }

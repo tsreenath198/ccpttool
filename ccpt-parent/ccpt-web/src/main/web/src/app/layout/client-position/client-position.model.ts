@@ -20,6 +20,9 @@ export interface ClientPositionModel {
     qualification: string;
     availability: string;
     jobType: string;
+    naukriURL: string;
+    shineURL: string;
+    almaConnectURL: string;
     properties: Array<AdditionalPropertiesModel>;
 }
 

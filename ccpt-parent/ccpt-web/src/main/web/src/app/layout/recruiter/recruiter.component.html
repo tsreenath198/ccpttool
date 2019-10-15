@@ -105,7 +105,7 @@
               <select class="form-control" name="gender" [disabled]="readOnlyForm == 'R'"
                 [(ngModel)]="model.gender" [ngClass]="{'is-invalid': f.submitted && gender.invalid}"
                 #gender="ngModel" required>
-                <option *ngFor="let gl of genderList" [ngValue]="gl">{{gl}}</option>
+                <option *ngFor="let gl of GENDER" [ngValue]="gl">{{gl}}</option>
               </select>
               <div class="invalid-feedback">
                 gender is mandatory
