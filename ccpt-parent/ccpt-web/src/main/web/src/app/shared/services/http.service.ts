@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Subject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -7,7 +8,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 export class HttpClientService {
 
   constructor(private http: HttpClient) { }
-  private base_url = 'http://210.16.76.202:8081/';
+  private base_url = 'http://210.16.76.202:8082/';
+  public subject = new Subject();
   public getLogin(URL: string) {
     return this.http.get(URL);
   }
@@ -43,5 +45,17 @@ export class HttpClientService {
       return true
     else
       return false;
+  }
+
+  sendSubject(event: any) {
+    this.subject.next(event);
+  }
+
+  clearSubject() {
+    this.subject.next();
+  }
+
+  getSubject(): Observable<any> {
+    return this.subject.asObservable();
   }
 }
