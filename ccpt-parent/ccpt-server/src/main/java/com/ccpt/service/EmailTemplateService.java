@@ -283,8 +283,13 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 		if (ca.get().getInterviewMode().equalsIgnoreCase("f2f")) {
 			sbPara.append(
 					"<p><strong>Interview Location :</strong><span style=\"background-color:yellow\">${interviewLocation}</span></p>"
-							+ "<p><strong>Address :</strong><span style=\"background-color:yellow\">${address}</span></p>"
-							+ "<p><strong>Name of Client Contact Person :</strong><span style=\"background-color:yellow\">${clientContactPersonName} (${clientContactPersonNumber})"
+							+ "<p><strong>Address :</strong><span style=\"background-color:yellow\">${address}</span></p>");
+			if (ca.get().getClientPosition().getClient().getMapLocation() != null) {
+				sbPara.append("<p><strong>Map Location :</strong><span style=\"background-color:yellow\">"
+						+ ca.get().getClientPosition().getClient().getMapLocation() + "</span></p>");
+			}
+			sbPara.append(
+					"<p><strong>Name of Client Contact Person :</strong><span style=\"background-color:yellow\">${clientContactPersonName} (${clientContactPersonNumber})"
 							+ "</span></p></span></p>" + "<p>**Feel free to call us any time.</p><p></p>"
 							+ "<p><span style=\"background-color:yellow\">** Things to Carry:</span></p><p></p>"
 							+ "<p>1.A physical copy of this interview confirmation email</p>" + "<p></p>"
