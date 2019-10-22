@@ -22,7 +22,7 @@ public interface ClientPositionRepository extends BaseRepository<ClientPosition,
 	List<ClientPosition> findByClientIdAndActiveFlagOrderByCreatedDateDesc(@Param("clientId") Integer clientId,
 			@Param("activeFlag") Boolean activeFlag);
 
-	@Query("SELECT id as id,generatedCode as name FROM ClientPosition WHERE active_flag=1  ORDER BY createdDate DESC")
+	@Query("SELECT cp.id as id,cp.generatedCode as name FROM ClientPosition cp,ClientPositionStatus cps WHERE cp.activeFlag=1 AND cp.status=cps.code AND cps.statusType='active' ORDER BY cp.createdDate DESC")
 	List<DropDownStatistics> getAllCps();
 
 	@Query(value = "SELECT * FROM Client_Position t1 WHERE t1.id NOT IN (SELECT distinct t2.client_position_id FROM Client_Application t2 WHERE t2.created_date >= DATE(NOW()) - INTERVAL 7 DAY) AND t1.status_code='Open' AND (t1.created_date <= DATE(NOW()) - INTERVAL 7 DAY) AND t1.active_flag=1  ORDER BY t1.created_date DESC", nativeQuery = true)

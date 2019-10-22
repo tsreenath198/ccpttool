@@ -17,7 +17,8 @@ public interface ConsultantRepository extends BaseRepository<Consultant, Integer
 	@Query(value = "SELECT id as id,fullname as name,email as email,phone as phone FROM consultant WHERE active_flag=1 AND status_code != 'Inactive' ORDER BY created_date DESC LIMIT 100", nativeQuery = true)
 	List<ConsultantStatistics> getAllConsultants();
 
-	@Query(value = "SELECT * FROM consultant WHERE (fullname LIKE %:searchKey% OR  phone LIKE %:searchKey% OR email LIKE %:searchKey% OR skills LIKE %:searchKey%) and active_flag=1 ORDER BY created_date DESC", nativeQuery = true)
+	@Query(value = "SELECT * FROM consultant WHERE (fullname LIKE %:searchKey% OR  phone LIKE %:searchKey% OR email LIKE %:searchKey% OR skills LIKE %:searchKey%) "
+			+ "and active_flag=1 ORDER BY created_date DESC", nativeQuery = true)
 	List<Consultant> search(@Param(value = "searchKey") String searchKey);
 
 	@Query("SELECT DISTINCT c FROM  Consultant c,ConsultantStatus cs WHERE (c.phone IS NULL OR c.phone ='' OR c.email IS NULL OR c.email ='' OR c.skills IS NULL OR c.skills ='' OR c.highestEducation IS NULL OR c.highestEducation ='' AND c.status = cs.code AND cs.statusType='Active') AND c.activeFlag=1 ORDER BY c.createdDate DESC ")
