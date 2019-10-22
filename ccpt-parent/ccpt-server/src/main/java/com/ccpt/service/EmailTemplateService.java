@@ -285,8 +285,9 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 					"<p><strong>Interview Location :</strong><span style=\"background-color:yellow\">${interviewLocation}</span></p>"
 							+ "<p><strong>Address :</strong><span style=\"background-color:yellow\">${address}</span></p>");
 			if (ca.get().getClientPosition().getClient().getMapLocation() != null) {
-				sbPara.append("<p><strong>Map Location :</strong><span style=\"background-color:yellow\">"
-						+ ca.get().getClientPosition().getClient().getMapLocation() + "</span></p>");
+				sbPara.append("<p><strong>").append("<a href=\"")
+						.append(ca.get().getClientPosition().getClient().getMapLocation()).append("\">Show on Map</a>")
+						.append("</strong><span style=\"background-color:yellow\"></span></p>");
 			}
 			sbPara.append(
 					"<p><strong>Name of Client Contact Person :</strong><span style=\"background-color:yellow\">${clientContactPersonName} (${clientContactPersonNumber})"
