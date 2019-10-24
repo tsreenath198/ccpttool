@@ -9,7 +9,7 @@
             type="text"
             [(ngModel)]="loginDetails.username"
             class="form-control input-underline input-lg"
-            id=""
+            id="user"
             placeholder="{{ 'Email' | translate }}"
             (keypress)="login($event)"
           />
@@ -19,12 +19,17 @@
           <input
             type="password"
             class="form-control input-underline input-lg"
-            id=""
+            id="pwd"
             placeholder="{{ 'Password' | translate }}"
             [(ngModel)]="loginDetails.password"
             (keypress)="login($event)"
+            #password
           />
-        </div>
+          <span id="toogle" (click)="toogle(password)"
+            ><i toggle="#pwd" class="fa fa-eye field-icon toggle-password" *ngIf="!viewPassword" aria-hidden="true"></i>
+            <i toggle="#pwd" class="fa fa-eye-slash field-icon toggle-password" *ngIf="viewPassword" aria-hidden="true"></i>
+          </span>
+         </div>
         <div class="row">
           <div class="form-group col-md-6">
             <div class="checkbox">

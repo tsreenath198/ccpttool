@@ -22,6 +22,7 @@ export class LoginComponent implements OnInit {
     public properties = new Properties();
     public loggingIn: boolean = false;
     public isRememberMe: boolean = false;
+    public viewPassword: boolean;
   ngOnInit() {
     this.session(null);
     if (document.cookie !== "" && document.cookie.split(';')[0].split('=')[1] !== '' && document.cookie.split(';')[1].split('=')[1] !== '') {
@@ -71,4 +72,14 @@ export class LoginComponent implements OnInit {
       sessionStorage.setItem('role', null);
     }
   }
+  public toogle(html: HTMLInputElement) {
+    if (html.type === 'password') {
+        html.type = 'text';
+        this.viewPassword = true;
+    } else {
+        html.type = 'password';
+        this.viewPassword = false;
+    }
+
+}
 }
