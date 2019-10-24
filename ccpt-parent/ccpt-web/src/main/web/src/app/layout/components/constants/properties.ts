@@ -55,6 +55,10 @@ export class Properties {
 
   GENDER = [{ key: 'Mr.', value: 'Male' }, { key: 'Mrs.', value: 'Female' }];
 
+  DURATION = ['Immediate', '7 Days', '15 Days', '1 Month', '2 Months', '3+ Months'];
+
+  JOB_TYPE = ['Permanent', 'Contract'];
+
   /**Client Contact Salutation */
   SALUTATION = ['Mr.', 'Mrs.'];
 
@@ -63,7 +67,7 @@ export class Properties {
 
   /**Dashboard constants */
   DASHBOARD_ITW = 'Interviews this week';
-  DASHBOARD_PT = 'Payment Tracker'
+  DASHBOARD_PT = 'Pending Payments';
   DASHBOARD_QSU = 'Quick Status Update';
   DASHBOARD_OCP = 'Open Client Positions';
   DASHBOARD_RP = 'Recruiter Performance';

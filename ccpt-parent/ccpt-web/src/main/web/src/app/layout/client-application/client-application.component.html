@@ -116,8 +116,8 @@
               <!-- 
                 
                -->
-              <td  container="body" class="click-data" [autoClose]="'outside'" [ngbPopover]="popContent1" [popoverTitle]="popTitle1">
-                 {{ cal.consultant.fullname }}
+              <td container="body" class="click-data" [autoClose]="'outside'" [ngbPopover]="popContent1" [popoverTitle]="popTitle1">
+                {{ cal.consultant.fullname }}
               </td>
               <td
                 width="300"
@@ -137,7 +137,11 @@
 
               <ng-template #popContent1>{{ cal.consultant.phone }}<br />{{ cal.consultant.email }}</ng-template>
               <ng-template #popTitle1><b>Consultant Details</b></ng-template>
-              <ng-template #popContent2>{{ cal.clientPosition.client.phone }}<br />{{ cal.clientPosition.client.email }}<br/>{{cal.clientPosition.client.address}} </ng-template>
+              <ng-template #popContent2
+                >{{ cal.clientPosition.client.phone }}<br />{{ cal.clientPosition.client.email }}<br />{{
+                  cal.clientPosition.client.address
+                }}
+              </ng-template>
               <ng-template #popTitle2><b>Client Details</b></ng-template>
               <!-- <td width="140">
                         <app-action [trashContent]="trashContent" [uploadContent]="uploadContent"
@@ -291,7 +295,6 @@
                     [(ngModel)]="model.cpId"
                     [ngClass]="{ 'is-invalid': f.submitted && cp.invalid }"
                     #cp="ngModel"
-                    (change)="setLocation($event.target.value)"
                     required
                   >
                     <option *ngFor="let cpl of clientPositionList" [ngValue]="cpl.id">{{ cpl.name }} </option>
@@ -445,9 +448,14 @@
                   <div class="row">
                     <div class="col-md-6">
                       <label class="pt-2">Interview Location<span class="required">*</span></label>
-                      <input class="form-control " name="loc" [readonly]="readOnlyForm == 'R'" [(ngModel)]="model.interviewLocation"
-                      [ngClass]="{ 'is-invalid': f.submitted && loc.invalid }"
-                        required />
+                      <input
+                        class="form-control "
+                        name="loc"
+                        [readonly]="readOnlyForm == 'R'"
+                        [(ngModel)]="model.interviewLocation"
+                        [ngClass]="{ 'is-invalid': f.submitted && loc.invalid }"
+                        required
+                      />
                       <div class="invalid-feedback">
                         Interview Location is mandatory
                       </div>
@@ -457,9 +465,14 @@
                     </div>
                     <div class="col-md-6">
                       <label class="pt-2">Interview Mode<span class="required">*</span></label>
-                      <select class="form-control " name="mode" [disabled]="readOnlyForm == 'R'" [(ngModel)]="model.interviewMode"
-                      [ngClass]="{ 'is-invalid': f.submitted && mode.invalid }"
-                        required>
+                      <select
+                        class="form-control "
+                        name="mode"
+                        [disabled]="readOnlyForm == 'R'"
+                        [(ngModel)]="model.interviewMode"
+                        [ngClass]="{ 'is-invalid': f.submitted && mode.invalid }"
+                        required
+                      >
                         <option *ngFor="let im of interviewMode" [ngValue]="im.value">{{ im.key }}</option>
                       </select>
                       <div class="invalid-feedback">
@@ -486,7 +499,7 @@
                 <div class="form-group">
                   <label>Additional Properties</label>
                   <div class="row" *ngFor="let ap of model.properties; let i = index">
-                    <div class="col-md-5">
+                    <div class="col-md-5 pt-2">
                       <input
                         type="text"
                         [(ngModel)]="ap.name"
@@ -495,7 +508,7 @@
                         [readonly]="readOnlyForm == 'R'"
                       />
                     </div>
-                    <div class="col-md-5">
+                    <div class="col-md-5 pt-2">
                       <input
                         type="text"
                         [(ngModel)]="ap.value"
@@ -504,7 +517,7 @@
                         [readonly]="readOnlyForm == 'R'"
                       />
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-2 pt-2">
                       <i
                         class="fa fa-minus"
                         aria-hidden="true"

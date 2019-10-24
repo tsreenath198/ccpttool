@@ -17,6 +17,7 @@ export interface ClientModel {
   contactPersonDesignation:string;
   contactPersonName:string;
   website: string;
+  mapLocation: string;
   files: Array<any>;
   clientContacts: Array<ClientContactModel>;
   properties: Array<AdditionalPropertiesModel>;

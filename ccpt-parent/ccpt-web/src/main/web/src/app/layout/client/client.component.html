@@ -85,9 +85,9 @@
                     <i class="fa fa-bars" ngbDropdownToggle></i>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenu1" ngbDropdownMenu>
                         <a class="dropdown-item drop-list" (click)="editForm()">Edit</a>
+                        <a class="dropdown-item drop-list" (click)="emptyForm(f)">New</a>
                         <a class="dropdown-item drop-list" (click)="open(model.id,uploadContent)">File Upload</a>
                         <a class="dropdown-item drop-list" (click)="open(model.id, trashContent)">Delete</a>
-                        <a class="dropdown-item drop-list" (click)="emptyForm(f)">Close</a>
                     </div>
                 </div> 
             </span>
@@ -153,6 +153,10 @@
               <tr *ngIf="model.address">
                 <th>Address</th>
                 <td>{{ model.address }}</td>
+              </tr>
+              <tr *ngIf="model.mapLocation">
+                <th>Map Location</th>
+                <td>{{ model.mapLocation }}</td>
               </tr>
               <tr *ngIf="model.address != model.billingAddress">
                 <th>Billing Address</th>
@@ -434,6 +438,21 @@
                   [ngClass]="{ 'is-invalid': f.submitted && billingAddress.invalid }"
                   #billingAddress="ngModel"
                 ></textarea>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label>Map Location</label>
+                <input
+                  class="form-control"
+                  [readonly]="readOnlyForm == 'R'"
+                  [(ngModel)]="model.mapLocation"
+                  name="mapLoc"
+                  [ngClass]="{ 'is-invalid': f.submitted && web.invalid }"
+                  #mapLoc="ngModel"
+                />
               </div>
             </div>
           </div>

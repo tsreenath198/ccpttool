@@ -22,19 +22,17 @@
               </th>
               <th>
                 Consultant
-              <!-- </th>
+                <!-- </th>
               <th>
                 <span class="pull-right">Action</span>
               </th> -->
+              </th>
             </tr>
           </thead>
           <tbody>
-            <tr
-              *ngFor="let pl of paymentsList.list | paginate: paginateConfig; let i = index"
-              (click)="setModel(pl.id)"
-            >
+            <tr *ngFor="let pl of paymentsList.list | paginate: paginateConfig; let i = index" (click)="setModel(pl.id)">
               <td>
-                {{ pl.invoiceDate | date}}
+                {{ pl.invoiceDate | date }}
               </td>
               <td>
                 {{ pl.companyName }}
@@ -55,43 +53,54 @@
     </div>
     <div class=" col-md-5">
       <form name="form" id="paymentsForm" (ngSubmit)="f.form.valid && create(f)" #f="ngForm" novalidate>
-          <div class="row text-center">
-              <div class="col-md-12 form-group">
-                <button
-                  type="submit"
-                  *ngIf="enableButtonType == ''"
-                  class="btn btn-secondary ml-3"
-                  [disabled]="f.form.pristine || f.form.invalid || isCreate"
-    
-                >
-                  Add
-                </button>
-                <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2" (click)="update(f)">Update</button>
-                <!-- <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button" (click)="enableFormEditable()">
+        <div class="row text-center">
+          <div class="col-md-12 form-group">
+            <button
+              type="submit"
+              *ngIf="enableButtonType == ''"
+              class="btn btn-secondary ml-3"
+              [disabled]="f.form.pristine || f.form.invalid || isCreate"
+            >
+              Add
+            </button>
+            <button
+              type="button"
+              *ngIf="enableButtonType == 'U'"
+              [disabled]="f.form.pristine || f.form.invalid || isCreate"
+              class="btn btn-secondary ml-2"
+              (click)="update(f)"
+            >
+              Update
+            </button>
+            <!-- <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button" (click)="enableFormEditable()">
                   Edit
                 </button> -->
-                <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3" 
-                    *ngIf="enableButtonType == '' || enableButtonType == 'U'">
-                      {{ enableButtonType != '' ? 'Close' : 'Clear' }}
-                    </button>
-                    
-                    <span class="pull-right" *ngIf="showAction && readOnlyForm == 'R'">
-                        <div class="dropdown theme-dropdown clearfix" placement="bottom-right" ngbDropdown>
-                            <!-- <button class="btn btn-secondary" >
+            <button
+              type="button"
+              (click)="cancelForm(f)"
+              class="btn btn-secondary ml-3"
+              *ngIf="enableButtonType == '' || enableButtonType == 'U'"
+            >
+              {{ enableButtonType != '' ? 'Close' : 'Clear' }}
+            </button>
+
+            <span class="pull-right" *ngIf="showAction && readOnlyForm == 'R'">
+              <div class="dropdown theme-dropdown clearfix" placement="bottom-right" ngbDropdown>
+                <!-- <button class="btn btn-secondary" >
                                 Dropdown
                             </button> -->
-                            <i class="fa fa-bars" ngbDropdownToggle></i>
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenu1" ngbDropdownMenu>
-                                <a class="dropdown-item drop-list" (click)="enableFormEditable()">Edit</a>
-                                <a class="dropdown-item drop-list" (click)="cancelForm(f)">New</a>
-                                <a class="dropdown-item drop-list" (click)="open(model.id,uploadContent)">File Upload</a>
-                                <a class="dropdown-item drop-list" (click)="downloadBif()">Download BIF</a>
-                                <a class="dropdown-item drop-list" (click)="open(model.id, trashContent)">Delete</a>
-                            </div>
-                        </div> 
-                    </span>
+                <i class="fa fa-bars" ngbDropdownToggle></i>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenu1" ngbDropdownMenu>
+                  <a class="dropdown-item drop-list" (click)="enableFormEditable()">Edit</a>
+                  <a class="dropdown-item drop-list" (click)="cancelForm(f)">New</a>
+                  <a class="dropdown-item drop-list" (click)="open(model.id, uploadContent)">File Upload</a>
+                  <a class="dropdown-item drop-list" (click)="downloadBif()">Download BIF</a>
+                  <a class="dropdown-item drop-list" (click)="open(model.id, trashContent)">Delete</a>
+                </div>
               </div>
-            </div>
+            </span>
+          </div>
+        </div>
         <div class="row">
           <div class="col-md-6">
             <div class="form-group " data-provide="datepicker">
@@ -113,25 +122,25 @@
             </div>
           </div>
           <div class="col-md-6" *ngIf="readOnlyForm == ''">
-              <div class="form-group">
-                <label>Client Application<span class="required">*</span></label>
-                <select
-                  class="form-control"
-                  name="cp"
-                  [disabled]="readOnlyForm == 'R'"
-                  [(ngModel)]="caId"
-                  [ngClass]="{ 'is-invalid': f.submitted && cp.invalid }"
-                  #cp="ngModel"
-                  (change)="getCPDetails(caId)"
-                  required
-                >
-                  <option *ngFor="let cal of clientApplicationList" [ngValue]="cal.id">{{ cal.name }} </option>
-                </select>
-                <div class="invalid-feedback">
-                  Client Application is mandatory
-                </div>
+            <div class="form-group">
+              <label>Client Application<span class="required">*</span></label>
+              <select
+                class="form-control"
+                name="cp"
+                [disabled]="readOnlyForm == 'R'"
+                [(ngModel)]="caId"
+                [ngClass]="{ 'is-invalid': f.submitted && cp.invalid }"
+                #cp="ngModel"
+                (change)="getCPDetails(caId)"
+                required
+              >
+                <option *ngFor="let cal of clientApplicationList" [ngValue]="cal.id">{{ cal.name }} </option>
+              </select>
+              <div class="invalid-feedback">
+                Client Application is mandatory
               </div>
             </div>
+          </div>
         </div>
         <div class="row">
           <div class="col-md-6">
@@ -300,7 +309,7 @@
         </div>
         <div class="row">
           <div class="col-md-6">
-            <div class="form-group ">
+            <div class="form-group " data-provide="datepicker">
               <label>Joining Date<span class="required">*</span></label>
               <input
                 type="date"
@@ -318,9 +327,9 @@
             </div>
           </div>
           <div class="col-md-6">
-              <div class="form-group">
-                <label>Candidate Name<span class="required">*</span></label>
-                <input
+            <div class="form-group">
+              <label>Candidate Name<span class="required">*</span></label>
+              <input
                 type="text"
                 class="form-control"
                 name="candidateName"
@@ -330,11 +339,11 @@
                 [readonly]="readOnlyForm == 'R'"
                 required
               />
-                <div class="invalid-feedback">
-                  Candidate Name is mandatory
-                </div>
+              <div class="invalid-feedback">
+                Candidate Name is mandatory
               </div>
             </div>
+          </div>
         </div>
         <div class="row">
           <div class="col-md-6">
@@ -453,29 +462,29 @@
             <div class="form-group">
               <label>Payment Status <span class="required">*</span></label>
               <select
-                  class="form-control"
-                  name="ps"
-                  [disabled]="readOnlyForm == 'R'"
-                  [(ngModel)]="model.paidStatus"
-                  [ngClass]="{ 'is-invalid': f.submitted && ps.invalid }"
-                  #ps="ngModel"
-                  required
-                >
-                  <option *ngFor="let cal of properties.PAYMENT_STATUS" >{{ cal }} </option>
-                </select>
+                class="form-control"
+                name="ps"
+                [disabled]="readOnlyForm == 'R'"
+                [(ngModel)]="model.paidStatus"
+                [ngClass]="{ 'is-invalid': f.submitted && ps.invalid }"
+                #ps="ngModel"
+                required
+              >
+                <option *ngFor="let cal of properties.PAYMENT_STATUS">{{ cal }} </option>
+              </select>
               <div class="invalid-feedback">
                 Payment Status is mandatory
               </div>
             </div>
           </div>
           <div class="col-md-6" *ngIf="model.paidStatus == 'Paid'">
-            <div class="form-group">
+            <div class="form-group" data-provide="datepicker">
               <label>Paid On <span class="required">*</span></label>
               <input
                 type="date"
                 class="form-control"
                 name="paidOn"
-                [(ngModel)]="model.joiningDate"
+                [(ngModel)]="model.paidOn"
                 [ngClass]="{ 'is-invalid': f.submitted && paidOn.invalid }"
                 #paidOn="ngModel"
                 [readonly]="readOnlyForm == 'R'"
@@ -510,44 +519,44 @@
         </div>
         <div class="row">
           <div class="row" *ngIf="model.properties.length > 0">
-              <div class="col-md-12 ml-3" *ngIf="model.properties.length > 0">
-                  <div class="form-group">
-                    <label>Additional Properties</label>
-                    <div class="row" *ngFor="let ap of model.properties; let i = index">
-                      <div class="col-md-5">
-                        <input
-                          type="text"
-                          [(ngModel)]="ap.name"
-                          class="form-control"
-                          name="addPropName{{ i }}"
-                          [readonly]="readOnlyForm == 'R'"
-                        />
-                      </div>
-                      <div class="col-md-5">
-                        <input
-                          type="text"
-                          [(ngModel)]="ap.value"
-                          class="form-control"
-                          name="addPropValue{{ i }}"
-                          [readonly]="readOnlyForm == 'R'"
-                        />
-                      </div>
-                      <div class="col-md-2">
-                        <i
-                          class="fa fa-minus"
-                          aria-hidden="true"
-                          id="decrease"
-                          *ngIf="enableButtonType != 'E'"
-                          (click)="propertiesListIncrement($event.target, i)"
-                        ></i>
-                      </div>
-                    </div>
+            <div class="col-md-12 ml-3" *ngIf="model.properties.length > 0">
+              <div class="form-group">
+                <label>Additional Properties</label>
+                <div class="row" *ngFor="let ap of model.properties; let i = index">
+                  <div class="col-md-5">
+                    <input
+                      type="text"
+                      [(ngModel)]="ap.name"
+                      class="form-control"
+                      name="addPropName{{ i }}"
+                      [readonly]="readOnlyForm == 'R'"
+                    />
+                  </div>
+                  <div class="col-md-5">
+                    <input
+                      type="text"
+                      [(ngModel)]="ap.value"
+                      class="form-control"
+                      name="addPropValue{{ i }}"
+                      [readonly]="readOnlyForm == 'R'"
+                    />
+                  </div>
+                  <div class="col-md-2">
+                    <i
+                      class="fa fa-minus"
+                      aria-hidden="true"
+                      id="decrease"
+                      *ngIf="enableButtonType != 'E'"
+                      (click)="propertiesListIncrement($event.target, i)"
+                    ></i>
                   </div>
                 </div>
+              </div>
+            </div>
           </div>
           <div class="col-md-12">
             <div class="form-group">
-              <label>Description<span class="required">*</span></label>
+              <label>Description</label>
               <textarea
                 class="form-control"
                 cols="5"
@@ -561,45 +570,44 @@
           </div>
         </div>
         <div class="row">
-            <div class="col-md-12">
-                <div class="form-group">
-                  <label>Additional Properties</label>
-                  <div class="row">
-                    <div class="col-md-5">
-                      <input type="text" [(ngModel)]="apName" class="form-control" name="apName" [readonly]="readOnlyForm == 'R'" />
-                    </div>
-                    <div class="col-md-5">
-                      <input type="text" [(ngModel)]="apValue" class="form-control" name="apValue" [readonly]="readOnlyForm == 'R'" />
-                    </div>
-                    <div class="col-md-2">
-                      <i
-                        class="fa fa-plus"
-                        aria-hidden="true"
-                        id="increase"
-                        *ngIf="enableButtonType != 'E'"
-                        (click)="propertiesListIncrement($event.target, 0)"
-                      ></i>
-                    </div>
-                  </div>
+          <div class="col-md-12">
+            <div class="form-group">
+              <label>Additional Properties</label>
+              <div class="row">
+                <div class="col-md-5">
+                  <input type="text" [(ngModel)]="apName" class="form-control" name="apName" [readonly]="readOnlyForm == 'R'" />
                 </div>
-              </div>
-        </div>
-        <div class="row" *ngIf="model?.files?.length > 0">
-          <div class="col-md-12 ml-3">
-              <div class="form-group">
-                <label>Files</label>
-                <div class="row" *ngFor="let ap of model.files; let i = index">
-                  <div class="col-md-5">
-                    <span class="file-download" 
-                    (click)="downloadFile(ap.id)">
-                      {{ap.fileName}}
-                    </span>
-                  </div>
+                <div class="col-md-5">
+                  <input type="text" [(ngModel)]="apValue" class="form-control" name="apValue" [readonly]="readOnlyForm == 'R'" />
+                </div>
+                <div class="col-md-2">
+                  <i
+                    class="fa fa-plus"
+                    aria-hidden="true"
+                    id="increase"
+                    *ngIf="enableButtonType != 'E'"
+                    (click)="propertiesListIncrement($event.target, 0)"
+                  ></i>
                 </div>
               </div>
             </div>
-      </div>
-        
+          </div>
+        </div>
+        <div class="row" *ngIf="model?.files?.length > 0">
+          <div class="col-md-12 ml-3">
+            <div class="form-group">
+              <label>Files</label>
+              <div class="row" *ngFor="let ap of model.files; let i = index">
+                <div class="col-md-5">
+                  <span class="file-download" (click)="downloadFile(ap.id)">
+                    {{ ap.fileName }}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div class="row text-center">
           <div class="col-md-12">
             <button
@@ -607,19 +615,29 @@
               *ngIf="enableButtonType == ''"
               class="btn btn-secondary ml-3"
               [disabled]="f.form.pristine || f.form.invalid || isCreate"
-
             >
               Add
             </button>
-            <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2" (click)="update(f)">Update</button>
+            <button
+              type="button"
+              *ngIf="enableButtonType == 'U'"
+              [disabled]="f.form.pristine || f.form.invalid || isCreate"
+              class="btn btn-secondary ml-2"
+              (click)="update(f)"
+            >
+              Update
+            </button>
             <!-- <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button" (click)="enableFormEditable()">
               Edit
             </button> -->
-            <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3" 
-                *ngIf="enableButtonType == '' || enableButtonType == 'U'">
-                  {{ enableButtonType != '' ? 'Close' : 'Clear' }}
-                </button>
-                
+            <button
+              type="button"
+              (click)="cancelForm(f)"
+              class="btn btn-secondary ml-3"
+              *ngIf="enableButtonType == '' || enableButtonType == 'U'"
+            >
+              {{ enableButtonType != '' ? 'Close' : 'Clear' }}
+            </button>
           </div>
         </div>
       </form>

@@ -24,7 +24,7 @@
           <button *ngIf="!inCon" class="btn btn-secondary btn-sm ml-2" (click)="getAllCon()">All Consultants</button>
         </div>
       </div>
-      <div class="table-responsive  tableFixHead mt-2" id="viewTable" [style.height.px]="screenHeight">
+      <div class="table-responsive mt-2  table-wrapper-scroll-y my-custom-scrollbar " id="viewTable" [style.height.px]="screenHeight">
         <table class="table table-sm table-hover table-striped">
           <thead>
             <tr>
@@ -43,7 +43,7 @@
                   </th> -->
             </tr>
           </thead>
-          <tbody>
+          <tbody class="overflow-ele-scroll">
             <tr
               *ngFor="let cl of consultantList.list | paginate: paginateConfig; let i = index"
               (click)="setModel(cl.id)"
@@ -331,6 +331,7 @@
                   name="highesteducation"
                   [readonly]="readOnlyForm == 'R'"
                   [(ngModel)]="model.highestEducation"
+                  maxlength="15"
                   #highesteducation="ngModel"
                 />
               </div>
@@ -517,21 +518,19 @@
                     <input
                       type="text"
                       name="yearsInCurrentJob"
-                      class="form-control col-md-4"
+                      class="form-control col-md-2"
                       [readonly]="readOnlyForm == 'R'"
                       [(ngModel)]="model.yearsInCurrentJob"
                       min="0"
-                      placeholder="Years"
-                    />&nbsp;<small>yrs</small><span>/</span>&nbsp;<input
+                    />&nbsp;&nbsp; <small>years</small>&nbsp;<span> /</span>&nbsp;<input
                       type="text"
-                      class="form-control col-md-5"
+                      class="form-control col-md-2"
                       name="monthsInCurrentJob"
                       [readonly]="readOnlyForm == 'R'"
                       [(ngModel)]="model.monthsInCurrentJob"
                       min="0"
                       max="12"
-                      placeholder="Months"
-                    /><small>mon</small>
+                    />&nbsp;&nbsp;<small>months</small>
                   </div>
                 </div>
               </div>
@@ -544,36 +543,38 @@
                     <input
                       type="text"
                       name="expyears"
-                      class="form-control col-md-4"
+                      class="form-control col-md-2"
                       [readonly]="readOnlyForm == 'R'"
                       [(ngModel)]="model.experienceYrs"
                       min="0"
-                      placeholder="Years"
                     />
-                    &nbsp;<small>yrs</small><span>/</span>&nbsp;<input
+                    &nbsp;&nbsp; <small>years</small>&nbsp;<span> /</span>&nbsp;<input
                       type="text"
-                      class="form-control col-md-5"
+                      class="form-control col-md-2"
                       name="expmonths"
                       [readonly]="readOnlyForm == 'R'"
                       [(ngModel)]="model.experienceMonths"
                       min="0"
                       max="11"
-                      placeholder="Months"
                       (onkeyup)="imposeMinMax(this)"
-                    /><small>mon</small>
+                    />&nbsp;&nbsp;<small>months</small>
                   </div>
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="form-group">
                   <label>Notice period</label>
-                  <input
-                    type="text"
-                    name="noticePeriod"
-                    [readonly]="readOnlyForm == 'R'"
-                    class="form-control"
-                    [(ngModel)]="model.noticePeriod"
-                  />
+                  <select
+                  class="form-control"
+                  name="noticeperiod"
+                  [disabled]="readOnlyForm == 'R'"
+                  [(ngModel)]="model.noticePeriod"
+                  #noticeperiod="ngModel"
+                >
+                  <option *ngFor="let cs of properties.DURATION">
+                    {{ cs }}
+                  </option>
+                </select>
                 </div>
               </div>
             </div>

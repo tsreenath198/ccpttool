@@ -243,27 +243,34 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label>Job Type</label>
-                <input
+                <select
                   class="form-control"
-                  [readonly]="readOnlyForm == 'R'"
-                  [(ngModel)]="model.jobType"
                   name="jobType"
+                  [disabled]="readOnlyForm == 'R'"
+                  [(ngModel)]="model.jobType"
                   [ngClass]="{ 'is-invalid': f.submitted && jobType.invalid }"
                   #jobType="ngModel"
-                />
+                >
+                  <option *ngFor="let cs of properties.JOB_TYPE">
+                    {{ cs }}
+                  </option>
+                </select>
               </div>
             </div>
             <div class="col-md-6">
               <div class="form-group">
                 <label>Availability</label>
-                <input
+                <select
                   class="form-control"
-                  [readonly]="readOnlyForm == 'R'"
+                  name="sourced"
+                  [disabled]="readOnlyForm == 'R'"
                   [(ngModel)]="model.availability"
-                  name="availability"
-                  [ngClass]="{ 'is-invalid': f.submitted && availability.invalid }"
-                  #availability="ngModel"
-                />
+                  #sourced="ngModel"
+                >
+                  <option *ngFor="let cs of properties.DURATION">
+                    {{ cs }}
+                  </option>
+                </select>
               </div>
             </div>
           </div>
@@ -299,11 +306,11 @@
           <div class="row">
             <div class="col-md-6">
               <div class="form-group">
-                <label>Min CTC</label>
+                <label>Min CTC(in LPA)</label>
                 <input
                   class="form-control"
                   [readonly]="readOnlyForm == 'R'"
-                  type="text"
+                  type="number"
                   [(ngModel)]="model.minCtc"
                   name="minctc"
                   [ngClass]="{ 'is-invalid': f.submitted && minctc.invalid }"
@@ -313,14 +320,15 @@
             </div>
             <div class="col-md-6">
               <div class="form-group">
-                <label>Max CTC</label>
+                <label>Max CTC(in LPA)</label>
                 <input
                   class="form-control"
                   [readonly]="readOnlyForm == 'R'"
-                  type="text"
+                  type="number"
                   [(ngModel)]="model.maxCtc"
                   name="maxctc"
                   [ngClass]="{ 'is-invalid': f.submitted && maxctc.invalid }"
+                  (blur)="checkCTC()"
                   #maxctc="ngModel"
                 />
               </div>
@@ -362,7 +370,7 @@
                   #assign="ngModel"
                   required
                 >
-                  <option *ngFor="let rl of recruiterList" [ngValue]="rl.id"> {{ rl.name }}</option>
+                  <option *ngFor="let rl of recruiterList" [ngValue]="rl.id"> {{ rl.name }}({{ rl.count}})</option>
                 </select>
                 <div class="invalid-feedback">
                   Assign to is mandatory
@@ -488,7 +496,7 @@
             >
               Add
             </button>
-            <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2" (click)="update(f)">
+            <button type="button" *ngIf="enableButtonType == 'U'"  class="btn btn-secondary ml-2" (click)="update(f)">
               Update
             </button>
             <!-- <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button" (click)="enableFormEditable()">

@@ -227,6 +227,9 @@ export class ConsultantComponent implements OnInit {
       if (this.model.properties == null) {
         this.model.properties = [];
       }
+      if(this.model.currentCompany == "" || this.model.currentCompany == null){
+        this.isFresher = true;
+      }
       this.spinner(true);
     });
   }
@@ -305,11 +308,18 @@ export class ConsultantComponent implements OnInit {
         break;
       }
       case 'increase': {
-        if (this.model.properties.length == 0) {
+        if(this.model.properties == null){
+          this.model.properties = [];
           this.model.properties.push(<AdditionalPropertiesModel>{ name: this.apName, value: this.apValue });
           this.apName = '';
           this.apValue = '';
-        } else {
+        }
+        else if (  this.model.properties.length == 0 ) {
+          this.model.properties.push(<AdditionalPropertiesModel>{ name: this.apName, value: this.apValue });
+          this.apName = '';
+          this.apValue = '';
+        } 
+        else {
           let propertyExist: boolean;
           for (let i = 0; i < this.model.properties.length; i++) {
             if (this.model.properties[i].name == this.apName && this.model.properties[i].value == this.apValue) {

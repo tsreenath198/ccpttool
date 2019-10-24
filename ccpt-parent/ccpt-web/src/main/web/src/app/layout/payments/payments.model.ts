@@ -1,5 +1,4 @@
 import { AdditionalPropertiesModel } from 'src/app/additional-properties.model';
-
 export interface PaymentsModel {
   id: string;
   annualPackage: string;

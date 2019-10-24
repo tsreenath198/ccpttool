@@ -244,11 +244,18 @@ export class ClientPositionComponent implements OnInit {
         break;
       }
       case 'increase': {
-        if (this.model.properties.length == 0) {
+        if(this.model.properties == null){
+          this.model.properties = [];
           this.model.properties.push(<AdditionalPropertiesModel>{ name: this.apName, value: this.apValue });
           this.apName = '';
           this.apValue = '';
-        } else {
+        }
+        else if (  this.model.properties.length == 0 ) {
+          this.model.properties.push(<AdditionalPropertiesModel>{ name: this.apName, value: this.apValue });
+          this.apName = '';
+          this.apValue = '';
+        } 
+        else {
           let propertyExist: boolean;
           for (let i = 0; i < this.model.properties.length; i++) {
             if (this.model.properties[i].name == this.apName && this.model.properties[i].value == this.apValue) {
@@ -712,5 +719,13 @@ export class ClientPositionComponent implements OnInit {
       this.toastr.error(err.error.message, this.properties.CP);
       this.creating = false;
     })
+  }
+  public checkCTC(){
+    if(this.model.maxCtc != null && this.model.minCtc !=null){
+      if(this.model.maxCtc < this.model.minCtc){
+        this.model.maxCtc = null;
+        this.toastr.error("Max CTC should be greater than Min CTC" , this.properties.CP);
+      }
+    }
   }
 }
