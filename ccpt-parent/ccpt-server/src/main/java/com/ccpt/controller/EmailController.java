@@ -31,8 +31,9 @@ public class EmailController {
 		try {
 			String uuid = UUID.randomUUID().toString();
 			emailContent.setUuid(uuid);
-			String body = "<span style=\"background-color:yellow\"><b>Email Ref#:</b>".concat(uuid).concat("</span>").concat("<br>")
-					.concat(emailContent.getBody());
+			
+			String body = "<body style=\"font-family:Calibri;\"><span style=\"background-color:yellow\"><b>Email Ref#:</b>"
+					.concat(uuid).concat("</span>").concat("<br>").concat(emailContent.getBody()).concat("</body>");
 			emailService.sendEmailWithAttachments(emailContent.getToEmails(), emailContent.getSubject(), body,
 					emailContent.getCc(), emailContent.getBcc(), emailContent.getUploadFiles());
 			emailContentService.save(emailContent);
