@@ -52,6 +52,7 @@ public class Payment extends FileSupportEntity {
 
 	@Column
 	@NotNull
+	@Temporal(TemporalType.DATE)
 	private Date joiningDate;
 
 	@Column
@@ -103,6 +104,7 @@ public class Payment extends FileSupportEntity {
 	private String gauranteePeriod;
 
 	@Column
+	@Temporal(TemporalType.DATE)
 	private Date paidOn;
 
 	@Column
