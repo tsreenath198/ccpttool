@@ -289,27 +289,7 @@
               <div class="form-group">
                 <label>Client Position<span class="required">*</span></label>
                 <span *ngIf="readOnlyForm == 'U' || readOnlyForm == ''">
-                  <div class="ng-autocomplete">
-                    <ng-autocomplete
-                      [data]="clientPositionList"
-                      [searchKeyword]="keyword"
-                      (selected)="selectEvent($event)"
-                      (inputChanged)="onChangeSearch($event)"
-                      (inputFocused)="onFocused($event)"
-                      [itemTemplate]="itemTemplate"
-                      [notFoundTemplate]="notFoundTemplate"
-                    >
-                    </ng-autocomplete>
-
-                    <ng-template #itemTemplate let-item>
-                      <a [innerHTML]="item.name"></a>
-                    </ng-template>
-
-                    <ng-template #notFoundTemplate let-notFound>
-                      <div [innerHTML]="notFound"></div>
-                    </ng-template>
-                  </div>
-                  <!-- <select
+                  <select
                     class="form-control "
                     name="cp"
                     [(ngModel)]="model.cpId"
@@ -321,7 +301,7 @@
                   </select>
                   <div class="invalid-feedback">
                     Client Position is mandatory
-                  </div> -->
+                  </div>
                 </span>
                 <span *ngIf="readOnlyForm == 'R'">
                   <input
@@ -909,7 +889,7 @@
   </div>
   <div class="modal-body">
     <label>Description</label>
-    <textarea class="form-control " cols="5" rows="8" [(ngModel)]="conchModel.description" name="body"></textarea>
+    <textarea class="form-control " required cols="5" rows="8" [(ngModel)]="conchModel.description" name="body"></textarea>
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-secondary" (click)="createConCallHistory()" [disabled]="creating">

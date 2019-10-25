@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { AutocompleteLibModule } from 'angular-ng-autocomplete';
 
 import { PageHeaderModule, SharedPipesModule, ActionListModule } from '../../shared';
 import { ClientApplicationComponent } from './client-application.component';
@@ -25,7 +24,6 @@ import { TranslateModule } from '@ngx-translate/core';
     ActionListModule,
     AngularEditorModule,
     FileUploadModule,
-    AutocompleteLibModule,
     NgbModule
   ],
   declarations: [ClientApplicationComponent],
