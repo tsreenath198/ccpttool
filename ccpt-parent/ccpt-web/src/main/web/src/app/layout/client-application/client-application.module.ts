@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { AutocompleteLibModule } from 'angular-ng-autocomplete';
 
 import { PageHeaderModule, SharedPipesModule, ActionListModule } from '../../shared';
 import { ClientApplicationComponent } from './client-application.component';
@@ -12,8 +13,22 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
-    imports: [CommonModule,TranslateModule, ClientApplicationRoutingModule,NgxPaginationModule , FormsModule, PageHeaderModule, SharedPipesModule, NgbModule, ActionListModule,AngularEditorModule,FileUploadModule,NgbModule],
-    declarations: [ClientApplicationComponent],
-    providers: [NgbActiveModal]
+  imports: [
+    CommonModule,
+    TranslateModule,
+    ClientApplicationRoutingModule,
+    NgxPaginationModule,
+    FormsModule,
+    PageHeaderModule,
+    SharedPipesModule,
+    NgbModule,
+    ActionListModule,
+    AngularEditorModule,
+    FileUploadModule,
+    AutocompleteLibModule,
+    NgbModule
+  ],
+  declarations: [ClientApplicationComponent],
+  providers: [NgbActiveModal]
 })
-export class ClientApplicationModule { }
+export class ClientApplicationModule {}

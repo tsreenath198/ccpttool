@@ -81,6 +81,7 @@ export class ClientApplicationComponent implements OnInit {
   public sendSmsModel: SendSmsModel = <SendSmsModel>{};
   public clientId:number;
   public consultantId:number;
+  public keyword = "name";
   public config: AngularEditorConfig = {
     editable: true,
     spellcheck: true,
@@ -229,6 +230,23 @@ export class ClientApplicationComponent implements OnInit {
         }
       );
     });
+  }
+
+  selectEvent(item) {
+    // do something with selected item
+    this.model.cpId = item.id;
+    console.log("1",item);
+  }
+
+  onChangeSearch(val: string) {
+    console.log("2",val);
+    // fetch remote data from here
+    // And reassign the 'data' which is binded to 'data' property.
+  }
+
+  onFocused(e) {
+    console.log("3",e);
+    // do something when input is focused
   }
 
   private mapToUpdateModel(response): ClientApplicationModel {
