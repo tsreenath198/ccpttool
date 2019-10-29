@@ -382,7 +382,7 @@
           </div>
           <div class="row">
             <div class="col-md-6">
-              <label>Sent On</label>
+              <label>Sent On{{maxdate}}</label>
               <input
                 type="date"
                 class="form-control "
@@ -390,6 +390,7 @@
                 #senton="ngModel"
                 [readonly]="readOnlyForm == 'R'"
                 [(ngModel)]="model.sentOn"
+                max="9999-12-31"
               />
               <div class="input-group-addon">
                 <span class="glyphicon glyphicon-th"></span>
