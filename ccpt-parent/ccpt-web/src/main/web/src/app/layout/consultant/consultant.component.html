@@ -282,6 +282,7 @@
                   [ngClass]="{ 'is-invalid': f.submitted && dob.invalid }"
                   #dob="ngModel"
                   [readonly]="readOnlyForm == 'R'"
+                  max="9999-12-31"
                 />
                 <div class="input-group-addon">
                   <span class="glyphicon glyphicon-th"></span>

@@ -89,7 +89,7 @@
           <div class="col-md-6">
             <div class="form-group" data-provide="datepicker">
               <label>Date of Birth</label>
-              <input type="date" class="form-control" name="dob" [(ngModel)]="model.dob"
+              <input type="date" class="form-control" name="dob" [(ngModel)]="model.dob"  max="9999-12-31"
                 [ngClass]="{'is-invalid': f.submitted && dob.invalid}" #dob="ngModel" [readonly]="readOnlyForm == 'R'"
                 >
               <div class="input-group-addon">
