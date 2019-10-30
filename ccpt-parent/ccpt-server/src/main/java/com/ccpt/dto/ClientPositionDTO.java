@@ -1,5 +1,7 @@
 package com.ccpt.dto;
 
+import java.util.Date;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -26,4 +28,13 @@ public class ClientPositionDTO extends FileSupportEntityDTO {
 	private String almaConnectURL;
 	private String shineURL;
 	private String naukriURL;
+	private Date shinePosting;
+	private Date naukriPosting;
+	private Date almaConnectPosting;
+	private Date facebookPosting;
+	private Date twitterPosting;
+	private Date shineMassMailing;
+	private Date naukriMassMailing;
+	private Integer shineMassMailingCount;
+	private Integer naukriMassMailingCount;
 }

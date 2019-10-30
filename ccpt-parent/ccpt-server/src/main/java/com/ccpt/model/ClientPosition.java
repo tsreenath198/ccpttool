@@ -1,5 +1,7 @@
 package com.ccpt.model;
 
+import java.util.Date;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -64,23 +66,49 @@ public class ClientPosition extends FileSupportEntity {
 
 	@Column
 	private String location;
-	
+
 	@Column
 	private String qualification;
-	
+
 	@Column
 	private String availability;
-	
+
 	@Column
 	private String jobType;
-	
+
 	@Column
 	private String almaConnectURL;
-	
+
 	@Column
 	private String shineURL;
-	
+
 	@Column
 	private String naukriURL;
 
+	@Column
+	private Date shinePosting;
+
+	@Column
+	private Date naukriPosting;
+
+	@Column
+	private Date almaConnectPosting;
+
+	@Column
+	private Date facebookPosting;
+
+	@Column
+	private Date twitterPosting;
+
+	@Column
+	private Date shineMassMailing;
+
+	@Column
+	private Date naukriMassMailing;
+
+	@Column
+	private Integer shineMassMailingCount;
+
+	@Column
+	private Integer naukriMassMailingCount;
 }
