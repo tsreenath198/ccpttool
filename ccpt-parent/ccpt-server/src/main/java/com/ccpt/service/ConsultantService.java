@@ -1,8 +1,18 @@
 package com.ccpt.service;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -20,6 +30,14 @@ import com.ccpt.repository.ConsultantRepository;
 
 @Service
 public class ConsultantService extends BaseService<Consultant, Integer> {
+	@PersistenceContext
+	EntityManager em;
+
+	public ConsultantService(String entity, EntityManager em) {
+		super(entity);
+		this.em = em;
+	}
+
 	public ConsultantService() {
 		super("Consultant");
 	}
@@ -45,7 +63,7 @@ public class ConsultantService extends BaseService<Consultant, Integer> {
 		}
 
 	}
- 
+
 	public List<Consultant> find(String fullname, String email, String phone) {
 		return consultantRepository.findByPhoneOrFullnameOrEmail(phone, fullname, email);
 	}
@@ -64,7 +82,24 @@ public class ConsultantService extends BaseService<Consultant, Integer> {
 	}
 
 	public List<Consultant> search(String searchKey) {
-		return consultantRepository.search(searchKey);
+		if (searchKey.contains(","))
+			return findConsultantBySkills(searchKey);
+		else
+			return consultantRepository.search(searchKey.concat(" "));
+	}
+
+	List<Consultant> findConsultantBySkills(String searchKey) {
+		final List<Predicate> predicates = new ArrayList<Predicate>();
+		List<String> result = Arrays.asList(searchKey.split("\\s*,\\s*"));
+		CriteriaBuilder cb = em.getCriteriaBuilder();
+		CriteriaQuery<Consultant> cq = cb.createQuery(Consultant.class);
+		Root<Consultant> consultant = cq.from(Consultant.class);
+		for (String skills : result) {
+			predicates.add(cb.like(consultant.get("skills"), "% " + skills + " %"));
+		}
+		cq.where(cb.and(predicates.toArray(new Predicate[] {})));
+		TypedQuery<Consultant> query = em.createQuery(cq);
+		return query.getResultList();
 	}
 
 	public List<Consultant> getInactiveConsultants() {

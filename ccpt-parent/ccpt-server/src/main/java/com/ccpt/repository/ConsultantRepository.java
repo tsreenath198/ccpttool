@@ -26,4 +26,5 @@ public interface ConsultantRepository extends BaseRepository<Consultant, Integer
 
 	@Query(value = "SELECT DISTINCT consultant.* from consultant,consultant_status WHERE consultant.status_code=consultant_status.code and (consultant_status.status_type=:status or :status is null or :status = '' ) and consultant.active_flag=1 ORDER BY consultant.created_date DESC ", nativeQuery = true)
 	Page<Consultant> getAllByStatus(@Param(value = "status") String status, Pageable paging);
+
 }
