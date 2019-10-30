@@ -50,7 +50,6 @@ public class BulkSMSForClientPositionSubstitutor implements ContentSubstitutor {
 
 	@Override
 	public EmailContent generate(EmailTemplate template, Map<String, String> params) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
