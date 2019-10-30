@@ -22,7 +22,8 @@
             <tr
               *ngFor="let cpl of clientPositionList.list | filter: currSearchTxt | paginate: paginateConfig; let i = index"
               (click)="setModel(cpl.id)"
-              [ngClass]="{ 'bl-on-hold': !cpl.isProfilePosted,'bl-trans':cpl.isProfilePosted}">
+              [ngClass]="{ 'bl-on-hold': !cpl.isProfilePosted, 'bl-trans': cpl.isProfilePosted }"
+            >
               <td class="table-data-padding">
                 <dl>
                   <dt>{{ cpl.generatedCode }} ({{ cpl.assignedTo.fullname }})</dt>
@@ -370,7 +371,7 @@
                   #assign="ngModel"
                   required
                 >
-                  <option *ngFor="let rl of recruiterList" [ngValue]="rl.id"> {{ rl.name }} ({{ rl.count}})</option>
+                  <option *ngFor="let rl of recruiterList" [ngValue]="rl.id"> {{ rl.name }} ({{ rl.count }})</option>
                 </select>
                 <div class="invalid-feedback">
                   Assign to is mandatory
@@ -399,6 +400,145 @@
               </div>
             </div>
           </div>
+          <h5>Tracker</h5>
+          <hr />
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Shine Mass Mailing</label>
+                <div class="row">
+                  <div class="col-sm-8">
+                    <input
+                      class="form-control input-group-lg reg_name"
+                      type="date"
+                      name="shineMassMailing"
+                      [(ngModel)]="model.shineMassMailing"
+                      [ngClass]="{ 'is-invalid': f.submitted && shineMassMailing.invalid }"
+                      [readonly]="readOnlyForm == 'R'"
+                      max="9999-12-31"
+                    />
+                  </div>
+                  <div class="col-sm-4">
+                    <input
+                      class="form-control input-group-lg reg_name"
+                      type="number"
+                      name="shineMassMailingCount"
+                      [(ngModel)]="model.shineMassMailingCount"
+                      [ngClass]="{ 'is-invalid': f.submitted && shineMassMailingCount.invalid }"
+                      [readonly]="readOnlyForm == 'R'"
+                      placeholder="Count"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Naukri Mass Mailing</label>
+                <div class="row">
+                  <div class="col-sm-8">
+                    <input
+                      class="form-control input-group-lg reg_name"
+                      type="date"
+                      name="naukriMassMailing"
+                      [(ngModel)]="model.naukriMassMailing"
+                      [ngClass]="{ 'is-invalid': f.submitted && naukriMassMailing.invalid }"
+                      [readonly]="readOnlyForm == 'R'"
+                      max="9999-12-31"
+                    />
+                  </div>
+                  <div class="col-sm-4">
+                    <input
+                      class="form-control input-group-lg reg_name"
+                      type="number"
+                      name="naukriMassMailingCount"
+                      [(ngModel)]="model.naukriMassMailingCount"
+                      [ngClass]="{ 'is-invalid': f.submitted && naukriMassMailingCount.invalid }"
+                      [readonly]="readOnlyForm == 'R'"
+                      placeholder="Count"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Shine Posting</label>
+                <input
+                  type="date"
+                  class="form-control"
+                  name="shinePosting"
+                  [(ngModel)]="model.shinePosting"
+                  [ngClass]="{ 'is-invalid': f.submitted && shinePosting.invalid }"
+                  [readonly]="readOnlyForm == 'R'"
+                  max="9999-12-31"
+                />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Naukri Posting</label>
+                <input
+                  type="date"
+                  class="form-control"
+                  name="naukriPosting"
+                  [(ngModel)]="model.naukriPosting"
+                  [ngClass]="{ 'is-invalid': f.submitted && naukriPosting.invalid }"
+                  [readonly]="readOnlyForm == 'R'"
+                  max="9999-12-31"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Alma Connect Posting</label>
+                <input
+                  type="date"
+                  class="form-control"
+                  name="almaConnectPosting"
+                  [(ngModel)]="model.almaConnectPosting"
+                  [ngClass]="{ 'is-invalid': f.submitted && almaConnectPosting.invalid }"
+                  [readonly]="readOnlyForm == 'R'"
+                  max="9999-12-31"
+                />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Facebook Posting</label>
+                <input
+                  type="date"
+                  class="form-control"
+                  name="facebookPosting"
+                  [(ngModel)]="model.facebookPosting"
+                  [ngClass]="{ 'is-invalid': f.submitted && facebookPosting.invalid }"
+                  [readonly]="readOnlyForm == 'R'"
+                  max="9999-12-31"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Twitter Posting</label>
+                <input
+                  type="date"
+                  class="form-control"
+                  name="twitterPosting"
+                  [(ngModel)]="model.twitterPosting"
+                  [ngClass]="{ 'is-invalid': f.submitted && twitterPosting.invalid }"
+                  [readonly]="readOnlyForm == 'R'"
+                  max="9999-12-31"
+                />
+              </div>
+            </div>
+          </div>
+          <hr />
           <div class="row">
             <div class="col-md-12">
               <div class="form-group">
@@ -496,7 +636,7 @@
             >
               Add
             </button>
-            <button type="button" *ngIf="enableButtonType == 'U'"  class="btn btn-secondary ml-2" (click)="update(f)">
+            <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2" (click)="update(f)">
               Update
             </button>
             <!-- <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button" (click)="enableFormEditable()">

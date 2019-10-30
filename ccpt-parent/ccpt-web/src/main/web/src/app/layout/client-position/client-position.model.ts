@@ -23,6 +23,15 @@ export interface ClientPositionModel {
     naukriURL: string;
     shineURL: string;
     almaConnectURL: string;
+    shinePosting:Date;
+    naukriPosting:Date;
+    almaConnectPosting:Date;
+    facebookPosting:Date;
+    twitterPosting:Date;
+    shineMassMailing:Date;
+    naukriMassMailing:Date;
+    shineMassMailingCount:number;
+    naukriMassMailingCount:number;
     properties: Array<AdditionalPropertiesModel>;
 }
 
