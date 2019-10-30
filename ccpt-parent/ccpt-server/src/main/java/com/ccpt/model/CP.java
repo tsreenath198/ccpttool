@@ -8,7 +8,6 @@ import lombok.ToString;
 @Setter
 @ToString
 public class CP {
-	
 	private Integer id;
 	private String almaConnectURL;
 	private String shineURL;
