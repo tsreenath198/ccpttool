@@ -122,7 +122,7 @@ public class DashBoardController {
 		dashboardModel.setCaByStatusList(clientApplicationService.getAllCAbyStatus());
 		dashboardModel.setClientCallHistoryList(clientCallHistoryService.getAllCchCountByRecruiters(7));
 		dashboardModel.setConsultantCallHistoryList(consultantCallHistoryService.getAllconCHCountByRecruiters(7));
-		dashboardModel.setDashboardCAStatistics(clientApplicationService.getDashboardCAStatistics());
+		// dashboardModel.setDashboardCAStatistics(clientApplicationService.getDashboardCAStatistics());
 		dashboardModel.setPaymentStatistics(paymentService.get());
 		return new ResponseEntity<DashboardModel>(dashboardModel, HttpStatus.OK);
 	}
