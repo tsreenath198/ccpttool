@@ -30,4 +30,9 @@ public interface ClientPositionRepository extends BaseRepository<ClientPosition,
 
 	@Query(value = "SELECT DISTINCT cp.* from client_position cp,client_position_status cps WHERE cp.status_code=cps.code and (cps.status_type=:status or :status is null ) and cp.active_flag=1  ORDER BY cp.created_date DESC", nativeQuery = true)
 	Page<ClientPosition> getAllByStatus(@Param(value = "status") String status, Pageable paging);
+
+	@Query(value = "SELECT cp FROM ClientPosition cp "
+			+ "where cp.almaConnectURL=null or cp.shineURL=null or cp.naukriURL=null or cp.shinePosting=null or cp.naukriPosting=null or cp.almaConnectPosting=null or cp.facebookPosting=null"
+			+ " or cp.twitterPosting=null or cp.shineMassMailing=null or cp.naukriMassMailing=null Order By updatedDate Desc")
+	List<ClientPosition> getEmptyData();
 }

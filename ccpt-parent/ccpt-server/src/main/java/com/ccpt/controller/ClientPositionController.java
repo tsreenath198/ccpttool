@@ -110,4 +110,37 @@ public class ClientPositionController extends BaseController<ClientPositionDTO, 
 		return new ResponseEntity<BaseReturn>(br, HttpStatus.OK);
 
 	}
+
+	@GetMapping("/getEmptyData")
+	public ResponseEntity<String> getEmptyData() {
+		List<ClientPosition> result = clientPositionService.getEmptyData();
+		String csv = "";
+		StringBuilder sb = new StringBuilder();
+		for (ClientPosition clientPosition : result) {
+			sb.append(clientPosition.getGeneratedCode()).append(",");
+			if (clientPosition.getAlmaConnectURL() == null)
+				sb.append("AlmaConnectURL,");
+			if (clientPosition.getShineURL() == null)
+				sb.append("ShineURL,");
+			if (clientPosition.getNaukriURL() == null)
+				sb.append("NaukriURL,");
+			if (clientPosition.getShinePosting() == null)
+				sb.append("ShinePosting,");
+			if (clientPosition.getNaukriPosting() == null)
+				sb.append("NaukriPosting,");
+			if (clientPosition.getAlmaConnectPosting() == null)
+				sb.append("AlmaConnectPosting,");
+			if (clientPosition.getFacebookPosting() == null)
+				sb.append("FacebookPosting,");
+			if (clientPosition.getTwitterPosting() == null)
+				sb.append("TwitterPosting,");
+			if (clientPosition.getShineMassMailing() == null)
+				sb.append("ShineMassMailing,");
+			if (clientPosition.getNaukriMassMailing() == null)
+				sb.append("NaukriMassMailing");
+			sb.append("\n");
+			csv = sb.toString();
+		}
+		return new ResponseEntity<String>(csv, HttpStatus.OK);
+	}
 }

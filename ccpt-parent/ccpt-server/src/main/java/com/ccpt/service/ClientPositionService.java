@@ -136,4 +136,8 @@ public class ClientPositionService extends BaseService<ClientPosition, Integer> 
 		save(cp);
 	}
 
+	public List<ClientPosition> getEmptyData() {
+		return clientPositionRepository.getEmptyData();
+	}
+
 }
