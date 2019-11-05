@@ -1,12 +1,12 @@
 <div [@routerTransition]>
   <app-page-header [icon1]="'fa-building'" [heading1]="'Client'"></app-page-header>
-  <ng-template #spinner >
-      <div class="spinner padding-top justify-content-md-center">
-        <div class="bounce1"></div>
-        <div class="bounce2"></div>
-        <div class="bounce3"></div>
+  <ng-template #spinner>
+    <div class="spinner padding-top justify-content-md-center">
+      <div class="bounce1"></div>
+      <div class="bounce2"></div>
+      <div class="bounce3"></div>
     </div>
-    </ng-template>
+  </ng-template>
   <div class="row" *ngIf="listReturned == true; else spinner">
     <div class="col-md-7">
       <div class="row">
@@ -32,7 +32,7 @@
           </thead>
           <tbody>
             <tr
-              *ngFor="let cl of clientList.list| filter:currSearchTxt | paginate: paginateConfig; let i = index"
+              *ngFor="let cl of clientList.list | filter: currSearchTxt | paginate: paginateConfig; let i = index"
               (click)="setModel(cl.id)"
             >
               <td>
@@ -55,7 +55,7 @@
         </table>
       </div>
       <div class="col-12 justify-content-center mb-5" *ngIf="clientList.noOfRecords > properties.ITEMSPERPAGE">
-        <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>  
+        <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
       </div>
     </div>
     <div class=" col-md-5">
@@ -73,23 +73,28 @@
             <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2" (click)="update(f)">Update</button>
             <!-- <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button"
               (click)="enableFormEditable()">Edit</button> -->
-            <button type="button" (click)="emptyForm(f)" *ngIf="enableButtonType == ''||enableButtonType == 'U'" class="btn btn-secondary ml-3">
+            <button
+              type="button"
+              (click)="emptyForm(f)"
+              *ngIf="enableButtonType == '' || enableButtonType == 'U'"
+              class="btn btn-secondary ml-3"
+            >
               {{ enableButtonType != '' ? 'Close' : 'Clear' }}
             </button>
 
             <span class="pull-right" *ngIf="showAction && readOnlyForm == 'U'">
-                <div class="dropdown theme-dropdown clearfix" placement="bottom-right" ngbDropdown>
-                    <!-- <button class="btn btn-secondary" >
+              <div class="dropdown theme-dropdown clearfix" placement="bottom-right" ngbDropdown>
+                <!-- <button class="btn btn-secondary" >
                         Dropdown
                     </button> -->
-                    <i class="fa fa-bars" ngbDropdownToggle></i>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenu1" ngbDropdownMenu>
-                        <a class="dropdown-item drop-list" (click)="editForm()">Edit</a>
-                        <a class="dropdown-item drop-list" (click)="emptyForm(f)">New</a>
-                        <a class="dropdown-item drop-list" (click)="open(model.id,uploadContent)">File Upload</a>
-                        <a class="dropdown-item drop-list" (click)="open(model.id, trashContent)">Delete</a>
-                    </div>
-                </div> 
+                <i class="fa fa-bars" ngbDropdownToggle></i>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenu1" ngbDropdownMenu>
+                  <a class="dropdown-item drop-list" (click)="editForm()">Edit</a>
+                  <a class="dropdown-item drop-list" (click)="emptyForm(f)">New</a>
+                  <a class="dropdown-item drop-list" (click)="open(model.id, uploadContent)">File Upload</a>
+                  <a class="dropdown-item drop-list" (click)="open(model.id, trashContent)">Delete</a>
+                </div>
+              </div>
             </span>
           </div>
         </div>
@@ -163,19 +168,21 @@
                 <td>{{ model.billingAddress }}</td>
               </tr>
               <tr *ngFor="let ap of model.properties">
-                <th>{{ap.name}}</th>
-                <td>{{ap.value}}</td>
+                <th>{{ ap.name }}</th>
+                <td>{{ ap.value }}</td>
               </tr>
               <tr *ngFor="let cc of model.clientContacts">
                 <th>Contact</th>
-                <td>{{cc.fullname}}<br>
-                {{cc.email}}<br>
-                {{cc.phone}}</td>
+                <td>
+                  {{ cc.fullname }}<br />
+                  {{ cc.email }}<br />
+                  {{ cc.phone }}
+                </td>
               </tr>
               <tr *ngFor="let fl of model.files">
-                  <th>Files</th>
-                  <td class="file-download" (click)="downloadFile(fl.id)">{{fl.fileName}}</td>
-                </tr>
+                <th>Files</th>
+                <td class="file-download" (click)="downloadFile(fl.id)">{{ fl.fileName }}</td>
+              </tr>
             </tbody>
           </table>
         </div>
@@ -215,33 +222,33 @@
             </div>
           </div>
           <div class="row">
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label>Contact Person Name</label>
-                  <input
-                    class="form-control"
-                    [readonly]="readOnlyForm == 'R'"
-                    [(ngModel)]="model.contactPersonName"
-                    name="cpn"
-                    [ngClass]="{ 'is-invalid': f.submitted && cpn.invalid }"
-                    #cpn="ngModel"
-                  />
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label>Contact Person Designation</label>
-                  <input
-                    class="form-control"
-                    [readonly]="readOnlyForm == 'R'"
-                    [(ngModel)]="model.contactPersonDesignation"
-                    name="cpd"
-                    [ngClass]="{ 'is-invalid': f.submitted && cpd.invalid }"
-                    #cpd="ngModel"
-                  />
-                </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Contact Person Name</label>
+                <input
+                  class="form-control"
+                  [readonly]="readOnlyForm == 'R'"
+                  [(ngModel)]="model.contactPersonName"
+                  name="cpn"
+                  [ngClass]="{ 'is-invalid': f.submitted && cpn.invalid }"
+                  #cpn="ngModel"
+                />
               </div>
             </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Contact Person Designation</label>
+                <input
+                  class="form-control"
+                  [readonly]="readOnlyForm == 'R'"
+                  [(ngModel)]="model.contactPersonDesignation"
+                  name="cpd"
+                  [ngClass]="{ 'is-invalid': f.submitted && cpd.invalid }"
+                  #cpd="ngModel"
+                />
+              </div>
+            </div>
+          </div>
           <div class="row">
             <div class="col-md-6">
               <div class="form-group">
@@ -357,7 +364,7 @@
             </div>
           </div>
           <div class="row" *ngIf="model.properties.length > 0">
-            <div class="col-md-12" >
+            <div class="col-md-12">
               <div class="form-group">
                 <label>Additional Properties</label>
                 <div class="row" *ngFor="let ap of model.properties; let i = index">
@@ -463,13 +470,18 @@
                 <tbody>
                   <tr *ngFor="let cc of model.clientContacts; let i = index">
                     <td>
-                              <select class="form-control form-control-sm" name="sal{{i}}" [disabled]="readOnlyForm == 'R'" [(ngModel)]="cc.salutation"
-                                 #sal="ngModel">
-                                 <option [ngValue]='null' hidden selected>salutation</option>
-                                <option *ngFor="let cs of properties.SALUTATION" [ngValue]="cs">
-                                  {{ cs }}
-                                </option>
-                              </select>
+                      <select
+                        class="form-control form-control-sm"
+                        name="sal{{ i }}"
+                        [disabled]="readOnlyForm == 'R'"
+                        [(ngModel)]="cc.salutation"
+                        #sal="ngModel"
+                      >
+                        <option [ngValue]="null" hidden selected>salutation</option>
+                        <option *ngFor="let cs of properties.SALUTATION" [ngValue]="cs">
+                          {{ cs }}
+                        </option>
+                      </select>
                     </td>
                     <td>
                       <input
@@ -508,7 +520,14 @@
                       />
                     </td>
                     <td width="20">
-                      <i class="fa fa-minus" *ngIf="model.clientContacts.length > 1" style="font-size:15px" aria-hidden="true" id="decrease" (click)="contactListIncrement($event.target, i)"></i>
+                      <i
+                        class="fa fa-minus"
+                        *ngIf="model.clientContacts.length > 1"
+                        style="font-size:15px"
+                        aria-hidden="true"
+                        id="decrease"
+                        (click)="contactListIncrement($event.target, i)"
+                      ></i>
                       <i
                         class="fa fa-plus"
                         style="font-size:15px"
@@ -548,27 +567,27 @@
             </div>
           </div>
           <div class="row">
-              <div class="col-md-12">
-                  <div class="modal-body" *ngIf="model?.files?.length>0">
-                      <table class="table">
-                        <thead>
-                          <th>File Name</th>
-                          <th>Description</th>
-                          <th>Action</th>
-                        </thead>
-                        <tbody *ngFor="let fl of model.files">
-                          <td>{{ fl.fileName }}</td>
-                          <td>{{ fl.Description }}</td>
-                          <td>
-                            <button type="button" class="btn btn-secondary btn-sm" (click)="downloadFile(fl.id)">Download</button>
-                          </td>
-                        </tbody>
-                      </table>
-                    </div>
+            <div class="col-md-12">
+              <div class="modal-body" *ngIf="model?.files?.length > 0">
+                <table class="table">
+                  <thead>
+                    <th>File Name</th>
+                    <th>Description</th>
+                    <th>Action</th>
+                  </thead>
+                  <tbody *ngFor="let fl of model.files">
+                    <td>{{ fl.fileName }}</td>
+                    <td>{{ fl.Description }}</td>
+                    <td>
+                      <button type="button" class="btn btn-secondary btn-sm" (click)="downloadFile(fl.id)">Download</button>
+                    </td>
+                  </tbody>
+                </table>
               </div>
             </div>
+          </div>
         </ng-template>
-        
+
         <div class="row text-center" *ngIf="loggedInRole != 'User'">
           <div class="col-md-12 form-group">
             <button
@@ -593,13 +612,13 @@
 </div>
 <ng-template #trashContent let-c="close" let-d="dismiss">
   <div class="modal-header modal-popup-header-bg">
-    <h4 class="modal-title">{{properties.APP_STATUS}}</h4>
+    <h4 class="modal-title">{{ properties.APP_STATUS }}</h4>
     <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
   <div class="modal-body">
-    <p>{{properties.CONFIRM_DELETE}} ? &hellip;</p>
+    <p>{{ properties.CONFIRM_DELETE }} ? &hellip;</p>
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-secondary" (click)="trash()">Ok</button>
