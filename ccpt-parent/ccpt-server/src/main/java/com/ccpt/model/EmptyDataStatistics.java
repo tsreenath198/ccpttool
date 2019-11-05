@@ -7,7 +7,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class EmptyUrlStatistics {
+public class EmptyDataStatistics {
 	private String generatedCode;
 
 	private String value;

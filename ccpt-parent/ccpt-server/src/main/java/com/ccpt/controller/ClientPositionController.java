@@ -25,7 +25,7 @@ import com.ccpt.model.BaseReturn;
 import com.ccpt.model.CP;
 import com.ccpt.model.ClientPosition;
 import com.ccpt.model.DropDownStatistics;
-import com.ccpt.model.EmptyUrlStatistics;
+import com.ccpt.model.EmptyDataStatistics;
 import com.ccpt.service.BaseService;
 import com.ccpt.service.ClientPositionService;
 import com.ccpt.service.ClientPositionStatusService;
@@ -114,14 +114,14 @@ public class ClientPositionController extends BaseController<ClientPositionDTO, 
 	}
 
 	@GetMapping("/getEmptyData")
-	public ResponseEntity<List<EmptyUrlStatistics>> getEmptyData() {
-		EmptyUrlStatistics emptyUrlStatistics = null;
-		List<EmptyUrlStatistics> resultList = new ArrayList<EmptyUrlStatistics>();
+	public ResponseEntity<List<EmptyDataStatistics>> getEmptyData() {
+		EmptyDataStatistics emptyUrlStatistics = null;
+		List<EmptyDataStatistics> resultList = new ArrayList<EmptyDataStatistics>();
 		List<ClientPosition> result = clientPositionService.getEmptyData();
 		String csv = "";
 		StringBuilder sb;
 		for (ClientPosition clientPosition : result) {
-			emptyUrlStatistics = new EmptyUrlStatistics();
+			emptyUrlStatistics = new EmptyDataStatistics();
 			sb = new StringBuilder();
 			emptyUrlStatistics.setGeneratedCode(clientPosition.getGeneratedCode());
 			if (clientPosition.getAlmaConnectURL() == null)
@@ -148,6 +148,6 @@ public class ClientPositionController extends BaseController<ClientPositionDTO, 
 			emptyUrlStatistics.setValue(csv);
 			resultList.add(emptyUrlStatistics);
 		}
-		return new ResponseEntity<List<EmptyUrlStatistics>>(resultList, HttpStatus.OK);
+		return new ResponseEntity<List<EmptyDataStatistics>>(resultList, HttpStatus.OK);
 	}
 }
