@@ -1,10 +1,10 @@
 .my-custom-scrollbar {
   position: relative;
   overflow: auto;
-  }
-  .table-wrapper-scroll-y {
+}
+.table-wrapper-scroll-y {
   display: block;
-  }
+}
 .table-scroll {
   height: 10em;
   overflow-y: scroll;
@@ -20,6 +20,8 @@
 }
 .link:hover {
   cursor: pointer;
+}
+.link-style:hover {
   color: blue;
   text-decoration: underline;
 }
@@ -46,8 +48,8 @@
   display: block;
 }
 .fa-position {
-    position: absolute;
-    margin-left: 158px;
-    margin-top: -18px;
-    color: #2af72a;
+  position: absolute;
+  margin-left: 158px;
+  margin-top: -18px;
+  color: #2af72a;
 }

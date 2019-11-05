@@ -79,7 +79,7 @@ export class DashboardComponent implements OnInit {
   // public getAllActiveCA = this.http.get(this.urlConstants.ReportingGetAllActiveCA);
   // public getAllInterviewsToday = this.http.get(this.urlConstants.ReportingGetAllInterviewsToday);
   // public getAllDyingCP = this.http.get(this.urlConstants.ReportingDyingCp);
-  // public getAllCAByStatus = this.http.get(this.urlConstants.ReportingGetAllCAByStatus);
+  public getAllCAByStatus = this.http.get(this.urlConstants.ReportingGetAllCAByStatus);
   public getAllDBContent = this.http.get(this.urlConstants.GetAllDashboard);
   public barChartOptions: any = {
     scaleShowVerticalLines: false,
@@ -154,21 +154,30 @@ export class DashboardComponent implements OnInit {
       this.interviewsToday = temp.interviewSummaryStatistics;
       this.openCP = temp.openClientPositions;
       this.dyingCP = temp.dyingClientPositions;
-      this.caByStatusList = temp.caByStatusList;
       this.ccptReportCLCH = temp.clientCallHistoryList;
       this.ccptReportCOCH = temp.consultantCallHistoryList;
       this.caStat = temp.dashboardCAStatistics;
       this.paymentTrack = temp.paymentStatistics
-      this.setCAByStatusBarData(this.caByStatusList);
+     // this.setCAByStatusBarData(this.caByStatusList);
       this.spinner(true);
     });
     forkJoin(this.getAllReportCC, this.getAllCAStatus).subscribe(listofrecords => {
       this.ccptReportCC = listofrecords[0] as any;
       this.caStatusList = listofrecords[1] as any;
       this.setActiveCPBarData();
-      this.setCAByStatusBarData(this.caByStatusList);
     });
     this.top5ById.properties = [];
+  }
+  public getGraphData(){
+    if(this.caByStatusList.length == 0){
+      this.getAllCAByStatus.subscribe(resp =>{
+        this.caByStatusList = resp as any;
+        this.setCAByStatusBarData(this.caByStatusList);
+      })
+    }
+    else if(this.caByStatusList.length != 0){
+      this.caByStatusList = []
+    }
   }
   public rpGetAllByDays() {
     const numberOfDays = this.rpChoosenDays;
@@ -333,7 +342,6 @@ export class DashboardComponent implements OnInit {
   }
   public updateCAStatus(ca) {
     this.http.update({}, this.urlConstants.CAStatusUpdate + ca.id + '&status=' + ca.status).subscribe(resp => {
-      this.updateBarChart();
       this.updateIndex = ca.id;
       setTimeout(() => {
         this.updateIndex = 0;
@@ -346,11 +354,11 @@ export class DashboardComponent implements OnInit {
       this.caStat = resp as any;
     });
   }
-  public updateBarChart() {
-    let temp1 = this.http.get(this.urlConstants.ReportingGetAllCAByStatus).subscribe(resp => {
-      this.caByStatusList = resp as any;
-      this.barChartCAByStatusData = [];
-      this.setCAByStatusBarData(this.caByStatusList);
-    });
-  }
+  // public updateBarChart() {
+  //   let temp1 = this.http.get(this.urlConstants.ReportingGetAllCAByStatus).subscribe(resp => {
+  //     this.caByStatusList = resp as any;
+  //     this.barChartCAByStatusData = [];
+  //     this.setCAByStatusBarData(this.caByStatusList);
+  //   });
+  // }
 }

@@ -165,7 +165,7 @@
                 </thead>
                 <tbody>
                   <tr
-                    class="link"
+                    class="link link-style"
                     placement="top"
                     ngbTooltip="click for details"
                     *ngFor="let cch of ccptReportCOCH"
@@ -214,10 +214,11 @@
         </div>
         <div class="col-md-12">
           <div class="card mb-3">
-            <div class="card-header bg-dark text-clr-white">
+            <div (click)="getGraphData()" class="link card-header bg-dark text-clr-white">
               {{ constantProperties.DASHBOARD_CAS }}
+              
             </div>
-            <div class="card-body table-overflow">
+            <div *ngIf="caByStatusList.length != 0" class="card-body table-overflow">
               <div [style.height.px]="stackChartHeight">
                 <canvas
                   baseChart
