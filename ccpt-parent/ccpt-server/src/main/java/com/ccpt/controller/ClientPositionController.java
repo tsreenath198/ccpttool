@@ -1,5 +1,6 @@
 package com.ccpt.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.ValidationException;
@@ -24,6 +25,7 @@ import com.ccpt.model.BaseReturn;
 import com.ccpt.model.CP;
 import com.ccpt.model.ClientPosition;
 import com.ccpt.model.DropDownStatistics;
+import com.ccpt.model.EmptyUrlStatistics;
 import com.ccpt.service.BaseService;
 import com.ccpt.service.ClientPositionService;
 import com.ccpt.service.ClientPositionStatusService;
@@ -112,12 +114,16 @@ public class ClientPositionController extends BaseController<ClientPositionDTO, 
 	}
 
 	@GetMapping("/getEmptyData")
-	public ResponseEntity<String> getEmptyData() {
+	public ResponseEntity<List<EmptyUrlStatistics>> getEmptyData() {
+		EmptyUrlStatistics emptyUrlStatistics = null;
+		List<EmptyUrlStatistics> resultList = new ArrayList<EmptyUrlStatistics>();
 		List<ClientPosition> result = clientPositionService.getEmptyData();
 		String csv = "";
-		StringBuilder sb = new StringBuilder();
+		StringBuilder sb;
 		for (ClientPosition clientPosition : result) {
-			sb.append(clientPosition.getGeneratedCode()).append(",");
+			emptyUrlStatistics = new EmptyUrlStatistics();
+			sb = new StringBuilder();
+			emptyUrlStatistics.setGeneratedCode(clientPosition.getGeneratedCode());
 			if (clientPosition.getAlmaConnectURL() == null)
 				sb.append("AlmaConnectURL,");
 			if (clientPosition.getShineURL() == null)
@@ -138,9 +144,10 @@ public class ClientPositionController extends BaseController<ClientPositionDTO, 
 				sb.append("ShineMassMailing,");
 			if (clientPosition.getNaukriMassMailing() == null)
 				sb.append("NaukriMassMailing");
-			sb.append("\n");
 			csv = sb.toString();
+			emptyUrlStatistics.setValue(csv);
+			resultList.add(emptyUrlStatistics);
 		}
-		return new ResponseEntity<String>(csv, HttpStatus.OK);
+		return new ResponseEntity<List<EmptyUrlStatistics>>(resultList, HttpStatus.OK);
 	}
 }
