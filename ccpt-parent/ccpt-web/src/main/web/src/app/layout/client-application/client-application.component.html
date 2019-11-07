@@ -454,7 +454,6 @@
                         name="loc"
                         [readonly]="readOnlyForm == 'R'"
                         [(ngModel)]="model.interviewLocation"
-                        [ngClass]="{ 'is-invalid': f.submitted && loc.invalid }"
                         required
                       />
                       <div class="invalid-feedback">
@@ -471,7 +470,6 @@
                         name="mode"
                         [disabled]="readOnlyForm == 'R'"
                         [(ngModel)]="model.interviewMode"
-                        [ngClass]="{ 'is-invalid': f.submitted && mode.invalid }"
                         required
                       >
                         <option *ngFor="let im of interviewMode" [ngValue]="im.value">{{ im.key }}</option>
@@ -738,7 +736,6 @@
               class="form-control "
               name="joiningDate"
               [(ngModel)]="paymentModel.joiningDate"
-              [ngClass]="{ 'is-invalid': paymentform.submitted && joiningDate.invalid }"
               #joiningDate="ngModel"
               required
             />
@@ -755,7 +752,6 @@
               class="form-control "
               name="annualPackage"
               [(ngModel)]="paymentModel.annualPackage"
-              [ngClass]="{ 'is-invalid': paymentform.submitted && annualPackage.invalid }"
               #annualPackage="ngModel"
               required
             />
@@ -771,7 +767,6 @@
               class="form-control "
               [(ngModel)]="paymentModel.contactPersonDesignation"
               name="contactPersonDesignation"
-              [ngClass]="{ 'is-invalid': paymentform.submitted && contactPersonDesignation.invalid }"
               #contactPersonDesignation="ngModel"
               required
             />
@@ -787,7 +782,6 @@
               class="form-control "
               [(ngModel)]="paymentModel.gst"
               name="gst"
-              [ngClass]="{ 'is-invalid': paymentform.submitted && gst.invalid }"
               #gst="ngModel"
               required
             />
@@ -803,7 +797,6 @@
               class="form-control "
               [(ngModel)]="paymentModel.gst"
               name="website"
-              [ngClass]="{ 'is-invalid': paymentform.submitted && website.invalid }"
               #website="ngModel"
               required
             />
@@ -819,7 +812,6 @@
               class="form-control "
               rows="5"
               [(ngModel)]="paymentModel.billingAddress"
-              [ngClass]="{ 'is-invalid': paymentform.submitted && billingAddress.invalid }"
               name="billingAddress"
               #billingAddress="ngModel"
             ></textarea>
@@ -836,7 +828,6 @@
               class="form-control "
               rows="5"
               [(ngModel)]="paymentModel.description"
-              [ngClass]="{ 'is-invalid': paymentform.submitted && description.invalid }"
               name="description"
               #description="ngModel"
             ></textarea>
