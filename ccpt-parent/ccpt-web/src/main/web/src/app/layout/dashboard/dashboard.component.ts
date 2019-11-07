@@ -39,7 +39,7 @@ export class DashboardComponent implements OnInit {
   public cochByIdList: Array<any> = [];
   public clchByIdList: Array<any> = [];
   public interviewsToday: Array<any> = [];
-  public cpEmptyPostings: Array<any>=[];
+  public cpEmptyPostings: Array<any> = [];
   private urlConstants = new URLConstants();
   public constantProperties = new Properties();
   public rpChoosenDays: any = 7;
@@ -49,12 +49,12 @@ export class DashboardComponent implements OnInit {
   public chartHeight: any;
   public stackChartHeight: any;
   public caStat: any;
-  public paymentTrack:any;
+  public paymentTrack: any;
   public caStatusList: any;
   public isCollapsed = true;
   public updateIndex: number;
-  public clientId:number;
-  public consultantId:number;
+  public clientId: number;
+  public consultantId: number;
   /** Template references */
 
   @ViewChild('contentACA')
@@ -159,8 +159,8 @@ export class DashboardComponent implements OnInit {
       this.ccptReportCLCH = temp.clientCallHistoryList;
       this.ccptReportCOCH = temp.consultantCallHistoryList;
       this.caStat = temp.dashboardCAStatistics;
-      this.paymentTrack = temp.paymentStatistics
-     // this.setCAByStatusBarData(this.caByStatusList);
+      this.paymentTrack = temp.paymentStatistics;
+      // this.setCAByStatusBarData(this.caByStatusList);
       this.spinner(true);
     });
     forkJoin(this.getAllReportCC, this.getAllCAStatus, this.getCPEmptyPostings).subscribe(listofrecords => {
@@ -171,15 +171,14 @@ export class DashboardComponent implements OnInit {
     });
     this.top5ById.properties = [];
   }
-  public getGraphData(){
-    if(this.caByStatusList.length == 0){
-      this.getAllCAByStatus.subscribe(resp =>{
+  public getGraphData() {
+    if (this.caByStatusList.length == 0) {
+      this.getAllCAByStatus.subscribe(resp => {
         this.caByStatusList = resp as any;
         this.setCAByStatusBarData(this.caByStatusList);
-      })
-    }
-    else if(this.caByStatusList.length != 0){
-      this.caByStatusList = []
+      });
+    } else if (this.caByStatusList.length != 0) {
+      this.caByStatusList = [];
     }
   }
   public rpGetAllByDays() {
@@ -300,7 +299,7 @@ export class DashboardComponent implements OnInit {
     let CAStatusOder: any = [];
     this.caStatusList.list.filter(csl => {
       for (let i = 1; i <= this.caStatusList.list.length; i++) {
-        if (csl.ordr == i) {
+        if (csl.ordr == i && CAStatusOder.length) {
           CAStatusOder[i - 1] = csl.description;
         }
       }
@@ -310,30 +309,31 @@ export class DashboardComponent implements OnInit {
     this.stackChartHeight = uniqueClientName.length * 60;
     let uniqueStatus: any = [];
     let tempUniqueStatus = data.map(item => item.statusCode).filter((value, index, self) => self.indexOf(value) === index);
-    CAStatusOder.forEach(cp => {
-      tempUniqueStatus.forEach(tus => {
-        if (cp === tus) {
-          uniqueStatus.push(tus);
-        }
+    if (CAStatusOder.length) {
+      CAStatusOder.forEach(cp => {
+        tempUniqueStatus.forEach(tus => {
+          if (cp === tus) {
+            uniqueStatus.push(tus);
+          }
+        });
       });
-    });
-    /**
-                { data: [65, 59, 80, 81, 56, 55, 40, 65, 59, 80], label: 'Series A', stack: 'a' },
-                { data: [28, 48, 40, 19, 86, 27, 90, 65, 59, 80], label: 'Series B', stack: 'a' },
-                { data: [28, 48, 40, 19, 86, 27, 90, 65, 59, 80], label: 'Series Bd', stack: 'a' }
-             */
-    uniqueStatus.forEach(us => {
-      let temp = { data: [], label: '', stack: 'a' };
-      uniqueClientName.forEach(ucn => {
-        let unique: any = data.filter(dt => dt.clientName == ucn && dt.statusCode == us);
-        temp.data.push(unique[0].count);
+    }
+    if (uniqueStatus.length) {
+      uniqueStatus.forEach(us => {
+        let temp = { data: [], label: '', stack: 'a' };
+        uniqueClientName.forEach(ucn => {
+          let unique: any = data.filter(dt => dt.clientName == ucn && dt.statusCode == us);
+          temp.data.push(unique[0].count);
+        });
+        this.barChartCAByStautsLabels = uniqueClientName;
+        this.barChartCAByStatusData.push(temp);
       });
-      this.barChartCAByStautsLabels = uniqueClientName;
-      this.barChartCAByStatusData.push(temp);
-    });
+    }
 
-    for (let i = 0; i < this.barChartCAByStatusData.length; i++) {
-      this.barChartCAByStatusData[i].label = uniqueStatus[i];
+    if (this.barChartCAByStatusData.length) {
+      for (let i = 0; i < this.barChartCAByStatusData.length; i++) {
+        this.barChartCAByStatusData[i].label = uniqueStatus[i];
+      }
     }
   }
   /**

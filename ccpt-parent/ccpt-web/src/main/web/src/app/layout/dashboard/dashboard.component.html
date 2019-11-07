@@ -64,7 +64,7 @@
                     </td>
                     <td colspan="2">
                       <select class="form-control form-control-sm" name="cas" [(ngModel)]="ca.status" (change)="updateCAStatus(ca)">
-                        <option *ngFor="let casl of caStatusList.list" [ngValue]="casl.code">
+                        <option *ngFor="let casl of caStatusList?.list" [ngValue]="casl.code">
                           {{ casl.description }}
                         </option> </select
                       ><i *ngIf="updateIndex == ca.id" class="fa fa-check fa-lg fa-position"></i>
@@ -218,7 +218,7 @@
               {{ constantProperties.DASHBOARD_CAS }}
               
             </div>
-            <div *ngIf="caByStatusList.length" class="card-body table-overflow">
+            <div *ngIf="caByStatusList.length && barChartCAByStatusData.length" class="card-body table-overflow">
               <div [style.height.px]="stackChartHeight">
                 <canvas
                   baseChart
