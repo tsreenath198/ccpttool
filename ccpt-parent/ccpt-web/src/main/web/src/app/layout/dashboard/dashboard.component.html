@@ -183,7 +183,7 @@
     </div>
     <div class="col-md-6" *ngIf="listReturned">
       <div class="row">
-        <div class="col col-xl-12 col-lg-12" *ngIf="paymentTrack.length != 0">
+        <div class="col col-xl-12 col-lg-12" *ngIf="paymentTrack.length">
           <div class="card mb-3">
             <div class="card-header bg-dark text-clr-white">{{ constantProperties.DASHBOARD_PT }}</div>
             <div>
@@ -218,7 +218,7 @@
               {{ constantProperties.DASHBOARD_CAS }}
               
             </div>
-            <div *ngIf="caByStatusList.length != 0" class="card-body table-overflow">
+            <div *ngIf="caByStatusList.length" class="card-body table-overflow">
               <div [style.height.px]="stackChartHeight">
                 <canvas
                   baseChart
@@ -231,6 +231,33 @@
                   [chartType]="barChartType"
                 >
                 </canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col col-xl-12 col-lg-12" *ngIf="cpEmptyPostings.length">
+          <div class="card mb-3">
+            <div class="card-header bg-dark text-clr-white">TO-DO List </div>
+            <div>
+              <div class="card-body table-responsive">
+                <table class="table table-sm table-striped ">
+                  <thead>
+                    <tr>
+                      <th>Client Position</th>
+                      <th>Postings</th>
+                    </tr>
+                  </thead>
+                  <tbody class="word-break">
+                    <tr *ngFor="let ep of cpEmptyPostings">
+                      <td width="100">
+                        {{ep.generatedCode}}
+                      </td>
+                      <td>
+                        {{ep.value}}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>

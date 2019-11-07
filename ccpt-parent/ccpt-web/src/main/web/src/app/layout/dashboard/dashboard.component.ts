@@ -39,6 +39,7 @@ export class DashboardComponent implements OnInit {
   public cochByIdList: Array<any> = [];
   public clchByIdList: Array<any> = [];
   public interviewsToday: Array<any> = [];
+  public cpEmptyPostings: Array<any>=[];
   private urlConstants = new URLConstants();
   public constantProperties = new Properties();
   public rpChoosenDays: any = 7;
@@ -75,6 +76,7 @@ export class DashboardComponent implements OnInit {
   public getAllReportCC = this.http.get(this.urlConstants.ReportingGetClosures + this.rpChoosenDays);
   public getAllCAStatus = this.http.get(this.urlConstants.CASGetAll + '0&pageSize=100&sortBy=id');
   public getCAStatUPdate = this.http.get(this.urlConstants.DashboardCAStat);
+  public getCPEmptyPostings = this.http.get(this.urlConstants.CPEmptyPostings);
   // public getAllOpenCP = this.http.get(this.urlConstants.ReportingGetAllOpenCP);
   // public getAllActiveCA = this.http.get(this.urlConstants.ReportingGetAllActiveCA);
   // public getAllInterviewsToday = this.http.get(this.urlConstants.ReportingGetAllInterviewsToday);
@@ -161,9 +163,10 @@ export class DashboardComponent implements OnInit {
      // this.setCAByStatusBarData(this.caByStatusList);
       this.spinner(true);
     });
-    forkJoin(this.getAllReportCC, this.getAllCAStatus).subscribe(listofrecords => {
+    forkJoin(this.getAllReportCC, this.getAllCAStatus, this.getCPEmptyPostings).subscribe(listofrecords => {
       this.ccptReportCC = listofrecords[0] as any;
       this.caStatusList = listofrecords[1] as any;
+      this.cpEmptyPostings = listofrecords[2] as any;
       this.setActiveCPBarData();
     });
     this.top5ById.properties = [];
@@ -293,6 +296,7 @@ export class DashboardComponent implements OnInit {
    * data list of client applications by status
    */
   private setCAByStatusBarData(data: any[]) {
+    this.barChartCAByStatusData = [];
     let CAStatusOder: any = [];
     this.caStatusList.list.filter(csl => {
       for (let i = 1; i <= this.caStatusList.list.length; i++) {
