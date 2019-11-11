@@ -15,6 +15,7 @@ import javax.xml.bind.ValidationException;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,7 +26,7 @@ import com.ccpt.constants.CCPTConstants;
 @Controller
 @CrossOrigin
 @RequestMapping(CCPTConstants.BACKUP)
-public class BackUpController {
+public class BackupController {
 
 	@Value("${spring.datasource.driver}")
 	private String driver;
@@ -39,7 +40,7 @@ public class BackUpController {
 	@Value("${spring.datasource.url}")
 	private String url;
 
-	@GetMapping("/backUP")
+	@GetMapping("/backup")
 	public ResponseEntity<String> backUp() throws SQLException, ValidationException {
 		String[] tables = { "additional_property", "client", "client_application", "client_application_status",
 				"client_call_history", "client_contact", "client_position", "client_position_status", "consultant",
@@ -62,7 +63,7 @@ public class BackUpController {
 			from.close();
 			to.close();
 		}
-		return null;
+		return new ResponseEntity<String>("Successfully done backup", HttpStatus.OK);
 	}
 
 	private static Connection getDestinationConnection(String username, String password, String url, String driver)
