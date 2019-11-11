@@ -38,7 +38,7 @@ public class BackupController {
 	private String password;
 
 	@Value("${spring.datasource.url}")
-	private String url;
+	private String url; 
 
 	@GetMapping("/backup")
 	public ResponseEntity<String> backUp() throws SQLException, ValidationException {
