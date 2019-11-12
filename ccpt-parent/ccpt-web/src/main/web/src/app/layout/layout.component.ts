@@ -8,6 +8,7 @@ import { HttpClientService } from "../shared/services/http.service";
 })
 export class LayoutComponent implements OnInit {
   collapedSideBar: boolean;
+  backupStatus: boolean;
 
   constructor(private http: HttpClientService) {}
 
@@ -19,5 +20,8 @@ export class LayoutComponent implements OnInit {
 
   receiveCollapsed($event) {
     this.collapedSideBar = $event;
+  }
+  checkBackupStatus(event){
+    this.backupStatus = event
   }
 }

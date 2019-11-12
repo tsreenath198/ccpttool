@@ -192,4 +192,7 @@ export class URLConstants {
   FileDelete = 'uploadFile/';
   getCRF = 'uploadFile/getCRFResume?caId=';
   saveCRF = 'uploadFile/saveCrf?caId=';
+
+  /**backup */
+  Backup = 'backUpCCPT/backup'
 }
