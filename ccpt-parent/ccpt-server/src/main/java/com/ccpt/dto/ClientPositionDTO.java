@@ -25,12 +25,10 @@ public class ClientPositionDTO extends FileSupportEntityDTO {
 	private String qualification;
 	private String availability;
 	private String jobType;
-	private String almaConnectURL;
 	private String shineURL;
 	private String naukriURL;
 	private Date shinePosting;
 	private Date naukriPosting;
-	private Date almaConnectPosting;
 	private Date facebookPosting;
 	private Date twitterPosting;
 	private Date shineMassMailing;

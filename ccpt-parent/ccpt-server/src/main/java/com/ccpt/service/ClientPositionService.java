@@ -130,7 +130,6 @@ public class ClientPositionService extends BaseService<ClientPosition, Integer> 
 
 	public void updatePosting(CP model) {
 		ClientPosition cp = get(model.getId());
-		cp.setAlmaConnectURL(model.getAlmaConnectURL());
 		cp.setNaukriURL(model.getNaukriURL());
 		cp.setShineURL(model.getShineURL());
 		save(cp);

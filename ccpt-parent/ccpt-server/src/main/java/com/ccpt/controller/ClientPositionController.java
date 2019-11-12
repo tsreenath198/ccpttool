@@ -124,8 +124,6 @@ public class ClientPositionController extends BaseController<ClientPositionDTO, 
 			emptyUrlStatistics = new EmptyDataStatistics();
 			sb = new StringBuilder();
 			emptyUrlStatistics.setGeneratedCode(clientPosition.getGeneratedCode());
-			if (clientPosition.getAlmaConnectURL() == null)
-				sb.append("AlmaConnectURL,");
 			if (clientPosition.getShineURL() == null)
 				sb.append("ShineURL,");
 			if (clientPosition.getNaukriURL() == null)
@@ -134,8 +132,6 @@ public class ClientPositionController extends BaseController<ClientPositionDTO, 
 				sb.append("ShinePosting,");
 			if (clientPosition.getNaukriPosting() == null)
 				sb.append("NaukriPosting,");
-			if (clientPosition.getAlmaConnectPosting() == null)
-				sb.append("AlmaConnectPosting,");
 			if (clientPosition.getFacebookPosting() == null)
 				sb.append("FacebookPosting,");
 			if (clientPosition.getTwitterPosting() == null)
