@@ -1,25 +1,44 @@
-import { Component, OnInit, HostListener, ElementRef, ViewChild } from '@angular/core';
-import { NgbModal, ModalDismissReasons, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { URLConstants } from '../components/constants/url-constants';
-import { Properties } from '../components/constants/properties';
-import { routerTransition } from '../../router.animations';
-import { ClientPositionModel, SendSmsModel, SendEmailModel, ActionsList } from './client-position.model';
-import { NgForm } from '@angular/forms';
-import { forkJoin } from 'rxjs';
-import { MessageTemplateModel } from '../message-template/message-template.model';
-import { EmailTemplateModel } from '../email-template/email-template.model';
-import { AdditionalPropertiesModel } from 'src/app/additional-properties.model';
-import { ActionModel } from '../modals/action';
-import { AngularEditorConfig } from '@kolkov/angular-editor';
-import { Router } from '@angular/router';
-import { Title } from '@angular/platform-browser';
-import { StorageService, HttpClientService, ToastrCustomService } from '../../shared/services';
-import { ClientCallHistoryModel } from '../client-call-history/client-call-history.model';
+import {
+  Component,
+  OnInit,
+  HostListener,
+  ElementRef,
+  ViewChild
+} from "@angular/core";
+import {
+  NgbModal,
+  ModalDismissReasons,
+  NgbModalRef
+} from "@ng-bootstrap/ng-bootstrap";
+import { URLConstants } from "../components/constants/url-constants";
+import { Properties } from "../components/constants/properties";
+import { routerTransition } from "../../router.animations";
+import {
+  ClientPositionModel,
+  SendSmsModel,
+  SendEmailModel,
+  ActionsList
+} from "./client-position.model";
+import { NgForm } from "@angular/forms";
+import { forkJoin } from "rxjs";
+import { MessageTemplateModel } from "../message-template/message-template.model";
+import { EmailTemplateModel } from "../email-template/email-template.model";
+import { AdditionalPropertiesModel } from "src/app/additional-properties.model";
+import { ActionModel } from "../modals/action";
+import { AngularEditorConfig } from "@kolkov/angular-editor";
+import { Router } from "@angular/router";
+import { Title } from "@angular/platform-browser";
+import {
+  StorageService,
+  HttpClientService,
+  ToastrCustomService
+} from "../../shared/services";
+import { ClientCallHistoryModel } from "../client-call-history/client-call-history.model";
 
 @Component({
-  selector: 'app-client-position',
-  templateUrl: './client-position.component.html',
-  styleUrls: ['./client-position.component.scss'],
+  selector: "app-client-position",
+  templateUrl: "./client-position.component.html",
+  styleUrls: ["./client-position.component.scss"],
   animations: [routerTransition()]
 })
 export class ClientPositionComponent implements OnInit {
@@ -48,22 +67,22 @@ export class ClientPositionComponent implements OnInit {
   public invalidAppCode = false;
   public closedByEnable = false;
   private selectedRecrd = 0;
-  public closeResult = '';
+  public closeResult = "";
   private modalRef: NgbModalRef;
   public urlConstants = new URLConstants();
   public properties = new Properties();
   public currSearchTxt: string;
-  public readOnlyForm: any = '';
-  public enableButtonType: any = '';
-  public shortList = 'shortList';
-  public sms = 'sms';
-  public email = 'email';
+  public readOnlyForm: any = "";
+  public enableButtonType: any = "";
+  public shortList = "shortList";
+  public sms = "sms";
+  public email = "email";
   public numberOfPositions = 0;
   public screenHeight: any;
   public creator = 0;
-  public apName = '';
-  public apValue = '';
-  public loggedInRole = '';
+  public apName = "";
+  public apValue = "";
+  public loggedInRole = "";
   public showAction: boolean = false;
   public actionsList = new ActionsList();
   public action: string;
@@ -86,16 +105,16 @@ export class ClientPositionComponent implements OnInit {
   public config: AngularEditorConfig = {
     editable: true,
     spellcheck: true,
-    height: '15rem',
-    minHeight: '5rem',
-    translate: 'no'
+    height: "15rem",
+    minHeight: "5rem",
+    translate: "no"
   };
   public emailEditorconfig: AngularEditorConfig = {
     editable: true,
     spellcheck: true,
-    height: '15rem',
-    minHeight: '5rem',
-    translate: 'no'
+    height: "15rem",
+    minHeight: "5rem",
+    translate: "no"
   };
   public paginateConfig: any = {
     itemsPerPage: 0,
@@ -115,7 +134,7 @@ export class ClientPositionComponent implements OnInit {
     this.actionModel.sendMail;
     this.getScreenSize();
   }
-  @HostListener('window:resize', ['$event'])
+  @HostListener("window:resize", ["$event"])
   private getScreenSize(event?) {
     this.screenHeight = window.innerHeight;
   }
@@ -123,16 +142,16 @@ export class ClientPositionComponent implements OnInit {
   ngOnInit() {
     /*Autheticate user with the token */
     if (!this.http.isAuthenticate()) {
-      this.router.navigate(['/login']);
+      this.router.navigate(["/login"]);
     }
     this.getAllDropdowns();
-    this.loggedInRole = sessionStorage.getItem('role');
+    this.loggedInRole = sessionStorage.getItem("role");
     this.dropdownSettings = {
       singleSelection: false,
-      idField: 'item_id',
-      textField: 'item_text',
-      selectAllText: 'Select All',
-      unSelectAllText: 'UnSelect All',
+      idField: "item_id",
+      textField: "item_text",
+      selectAllText: "Select All",
+      unSelectAllText: "UnSelect All",
       itemsShowLimit: 3,
       allowSearchFilter: true
     };
@@ -140,6 +159,7 @@ export class ClientPositionComponent implements OnInit {
     this.initialGetAll();
     this.spinner(true);
     this.checkStorage();
+    this.setAdditionalDefaultProps();
   }
   private checkStorage() {
     if (this.storageService.clientId) {
@@ -161,26 +181,41 @@ export class ClientPositionComponent implements OnInit {
     // });
     this.paginateConfigDeclare(this.properties.ITEMSPERPAGE, 1, 0);
     this.model.properties = [];
-    this.model.cpstatus = 'Open';
-    this.model.requiredPositions = '1';
+    this.model.cpstatus = "Open";
+    this.model.requiredPositions = "1";
     this.page = 1;
   }
   public initialGetAll() {
     let pageNumber = this.paginateConfig.currentPage - 1;
-    let temp = this.http.get(this.urlConstants.CPGetAllByStatus + pageNumber + '&pageSize=50&sortBy=id&status=Active');
+    let temp = this.http.get(
+      this.urlConstants.CPGetAllByStatus +
+        pageNumber +
+        "&pageSize=50&sortBy=id&status=Active"
+    );
     temp.subscribe(resp => {
       this.clientPositionList = resp as any;
       this.clientPositionList.list.forEach(cl => {
-        if (this.validate(cl.shineURL) || this.validate(cl.naukriURL) && this.validate(cl.almaConnectURL)) {
-          cl['isProfilePosted'] = true;
+        if (
+          this.validate(cl.shineURL) ||
+          (this.validate(cl.naukriURL))
+        ) {
+          cl["isProfilePosted"] = true;
         } else {
-          cl['isProfilePosted'] = false;
+          cl["isProfilePosted"] = false;
         }
       });
       //this.pageChange(this.page);
       this.paginateConfig.totalItems = this.clientPositionList.noOfRecords;
-      this.tableType = 'Active Positions';
+      this.tableType = "Active Positions";
     });
+  }
+  private setAdditionalDefaultProps() {
+    this.model.properties.push(
+      <AdditionalPropertiesModel>{ name: "Office Hours", value: "" },
+      <AdditionalPropertiesModel>{ name: "Interview Process", value: ""},
+      <AdditionalPropertiesModel>{ name: "Communication", value: "" },
+      <AdditionalPropertiesModel>{ name: "Gender", value: "" }
+    );
   }
   private validate(value: any): boolean {
     const bool = value ? true : false;
@@ -201,16 +236,16 @@ export class ClientPositionComponent implements OnInit {
     });
   }
   private enableFormEditable(): void {
-    this.readOnlyForm = '';
-    this.enableButtonType = 'U';
+    this.readOnlyForm = "";
+    this.enableButtonType = "U";
     this.config.editable = true;
     this.closedByEnable = true;
   }
   public setModel(id: number) {
     this.getCPById(id);
     this.config.editable = false;
-    this.readOnlyForm = 'U';
-    this.enableButtonType = 'E';
+    this.readOnlyForm = "U";
+    this.enableButtonType = "E";
     this.showAction = true;
     this.action = null;
   }
@@ -230,46 +265,59 @@ export class ClientPositionComponent implements OnInit {
   private mapToUpdateModel(response): ClientPositionModel {
     const temp = response;
     this.model = temp;
-    this.model['clientId'] = temp.client.id;
-    this.model['cpstatus'] = temp.status.code;
-    this.model['assignedTo'] = temp.assignedTo ? temp.assignedTo.id : 0;
-    this.model['closedBy'] = temp.closedBy ? temp.closedBy.id : 0;
-    this.titleService.setTitle('CCPT-' + temp.client.name + '-' + temp.role);
+    this.model["clientId"] = temp.client.id;
+    this.model["cpstatus"] = temp.status.code;
+    this.model["assignedTo"] = temp.assignedTo ? temp.assignedTo.id : 0;
+    this.model["closedBy"] = temp.closedBy ? temp.closedBy.id : 0;
+    this.titleService.setTitle("CCPT-" + temp.client.name + "-" + temp.role);
     return this.model;
   }
   public propertiesListIncrement(event, i: number) {
     switch (event.id) {
-      case 'decrease': {
+      case "decrease": {
         this.model.properties.splice(i, 1);
         break;
       }
-      case 'increase': {
-        if(this.model.properties == null){
+      case "increase": {
+        if (this.model.properties == null) {
           this.model.properties = [];
-          this.model.properties.push(<AdditionalPropertiesModel>{ name: this.apName, value: this.apValue });
-          this.apName = '';
-          this.apValue = '';
-        }
-        else if (  this.model.properties.length == 0 ) {
-          this.model.properties.push(<AdditionalPropertiesModel>{ name: this.apName, value: this.apValue });
-          this.apName = '';
-          this.apValue = '';
-        } 
-        else {
+          this.model.properties.push(<AdditionalPropertiesModel>{
+            name: this.apName,
+            value: this.apValue
+          });
+          this.apName = "";
+          this.apValue = "";
+        } else if (this.model.properties.length == 0) {
+          this.model.properties.push(<AdditionalPropertiesModel>{
+            name: this.apName,
+            value: this.apValue
+          });
+          this.apName = "";
+          this.apValue = "";
+        } else {
           let propertyExist: boolean;
           for (let i = 0; i < this.model.properties.length; i++) {
-            if (this.model.properties[i].name == this.apName && this.model.properties[i].value == this.apValue) {
+            if (
+              this.model.properties[i].name == this.apName &&
+              this.model.properties[i].value == this.apValue
+            ) {
               propertyExist = true;
             } else {
               propertyExist = false;
             }
           }
           if (propertyExist) {
-            this.toastr.error(this.properties.PROPERTY_EXIST, this.properties.PROPERTIES);
+            this.toastr.error(
+              this.properties.PROPERTY_EXIST,
+              this.properties.PROPERTIES
+            );
           } else {
-            this.model.properties.push(<AdditionalPropertiesModel>{ name: this.apName, value: this.apValue });
-            this.apName = '';
-            this.apValue = '';
+            this.model.properties.push(<AdditionalPropertiesModel>{
+              name: this.apName,
+              value: this.apValue
+            });
+            this.apName = "";
+            this.apValue = "";
           }
         }
         break;
@@ -278,21 +326,25 @@ export class ClientPositionComponent implements OnInit {
   }
   public createApplication(shortListContent) {
     for (let i = 0; i < this.consultantList.length; i++) {
-      const temp = { item_id: this.consultantList[i].id, item_text: this.consultantList[i].name, notes: '' };
+      const temp = {
+        item_id: this.consultantList[i].id,
+        item_text: this.consultantList[i].name,
+        notes: ""
+      };
       this.consultantNames.push(temp);
     }
     this.open(this.model.id, shortListContent);
   }
   public onItemSelect(cl, type) {
-    if (type == 'email') {
+    if (type == "email") {
       if (this.sendEmailModel.toEmails.length > 0) {
-        this.sendEmailModel.toEmails += ',';
+        this.sendEmailModel.toEmails += ",";
       }
       this.sendEmailModel.toEmails += cl.email;
       this.sendTo = null;
-    } else if (type == 'sms') {
+    } else if (type == "sms") {
       if (this.sendSmsModel.contactNumbers.length > 0) {
-        this.sendSmsModel.contactNumbers += ',';
+        this.sendSmsModel.contactNumbers += ",";
       }
       this.sendSmsModel.contactNumbers += cl.phone;
       this.sendTo = null;
@@ -300,37 +352,44 @@ export class ClientPositionComponent implements OnInit {
   }
   public emailJd(sendMailContent) {
     let temp = { cpId: this.model.id };
-    this.http.post(temp, this.urlConstants.EmailTemplateBuildContent + 'Job Description').subscribe(resp => {
-      this.sendEmailModel = resp as any;
-      this.sendEmailModel.target = '';
-      this.sendEmailModel.toEmails = '';
-    });
+    this.http
+      .post(
+        temp,
+        this.urlConstants.EmailTemplateBuildContent + "Job Description"
+      )
+      .subscribe(resp => {
+        this.sendEmailModel = resp as any;
+        this.sendEmailModel.target = "";
+        this.sendEmailModel.toEmails = "";
+      });
     this.open(this.model.id, sendMailContent);
   }
   public smsJd(sendSMSContent) {
     let temp = { cpId: this.model.id };
-    this.http.post(temp, this.urlConstants.SMSTemplateBuildContent + 'JobDescription').subscribe(resp => {
-      this.sendSmsModel = resp as any;
-      this.sendSmsModel.target = '';
-      this.sendSmsModel.contactNumbers = '';
-    });
+    this.http
+      .post(temp, this.urlConstants.SMSTemplateBuildContent + "JobDescription")
+      .subscribe(resp => {
+        this.sendSmsModel = resp as any;
+        this.sendSmsModel.target = "";
+        this.sendSmsModel.contactNumbers = "";
+      });
     this.open(this.model.id, sendSMSContent);
   }
   public cloneData(data: any) {
     data.id = null;
-    this.readOnlyForm = '';
-    this.enableButtonType = '';
+    this.readOnlyForm = "";
+    this.enableButtonType = "";
     this.config.editable = true;
     this.closedByEnable = false;
   }
   private formReset() {
     this.model = <ClientPositionModel>{};
     this.model.properties = [];
-    this.model.cpstatus = 'Open';
-    this.model.requiredPositions = '1';
+    this.model.cpstatus = "Open";
+    this.model.requiredPositions = "1";
   }
   private getRecruiterId(): any {
-    const temp = sessionStorage.getItem('username');
+    const temp = sessionStorage.getItem("username");
     let id;
     this.recruiterList.forEach(rl => {
       if (rl.email === temp) {
@@ -348,10 +407,10 @@ export class ClientPositionComponent implements OnInit {
   }
   private setTodaysDate(): string {
     const today = new Date();
-    const dd = String(today.getDate()).padStart(2, '0');
-    const mm = String(today.getMonth() + 1).padStart(2, '0'); // January is 0!
+    const dd = String(today.getDate()).padStart(2, "0");
+    const mm = String(today.getMonth() + 1).padStart(2, "0"); // January is 0!
     const yyyy = today.getFullYear();
-    const temp = yyyy + '-' + mm + '-' + dd;
+    const temp = yyyy + "-" + mm + "-" + dd;
     return temp;
   }
   public createClientCallHistory() {
@@ -377,7 +436,11 @@ export class ClientPositionComponent implements OnInit {
     this.isCreate = true;
     this.spinner(false);
     // tslint:disable-next-line:max-line-length
-    this.model.generatedCode = this.generateCPCode(this.model.clientId, this.model.role, this.model.location);
+    this.model.generatedCode = this.generateCPCode(
+      this.model.clientId,
+      this.model.role,
+      this.model.location
+    );
     const temp = this.http.post(this.model, this.urlConstants.CPCreate);
     temp.subscribe(
       resp => {
@@ -410,7 +473,7 @@ export class ClientPositionComponent implements OnInit {
     if (loc == null || loc === undefined) {
       return this.getClientNameById(cnt) + role;
     } else {
-      return this.getClientNameById(cnt) + '-' + role + '-' + loc;
+      return this.getClientNameById(cnt) + "-" + role + "-" + loc;
     }
   }
   private getClientNameById(clientId: number) {
@@ -433,7 +496,11 @@ export class ClientPositionComponent implements OnInit {
   public update(clientPositionForm: NgForm) {
     // tslint:disable-next-line:max-line-length
     this.spinner(false);
-    this.model.generatedCode = this.generateCPCode(this.model.clientId, this.model.role, this.model.location);
+    this.model.generatedCode = this.generateCPCode(
+      this.model.clientId,
+      this.model.role,
+      this.model.location
+    );
     const temp = this.http.update(this.model, this.urlConstants.CPUpdate);
     temp.subscribe(
       resp => {
@@ -443,8 +510,8 @@ export class ClientPositionComponent implements OnInit {
         this.spinner(true);
         clientPositionForm.resetForm();
         this.checkTableType();
-        this.readOnlyForm = '';
-        this.enableButtonType = '';
+        this.readOnlyForm = "";
+        this.enableButtonType = "";
         this.closedByEnable = false;
         this.showAction = false;
       },
@@ -458,14 +525,16 @@ export class ClientPositionComponent implements OnInit {
     clientPositionForm.resetForm();
     this.formReset();
     this.init();
-    this.readOnlyForm = '';
-    this.enableButtonType = '';
+    this.readOnlyForm = "";
+    this.enableButtonType = "";
     this.closedByEnable = false;
     this.showAction = false;
   }
   public trash(): void {
     this.spinner(false);
-    const temp = this.http.delete(this.urlConstants.CPDelete + this.selectedRecrd);
+    const temp = this.http.delete(
+      this.urlConstants.CPDelete + this.selectedRecrd
+    );
     temp.subscribe(
       resp => {
         this.toastr.success(this.properties.DELETE, this.properties.CP);
@@ -474,8 +543,8 @@ export class ClientPositionComponent implements OnInit {
         this.formReset();
         this.spinner(true);
         this.checkTableType();
-        this.readOnlyForm = '';
-        this.enableButtonType = '';
+        this.readOnlyForm = "";
+        this.enableButtonType = "";
         this.showAction = false;
       },
       err => {
@@ -483,7 +552,10 @@ export class ClientPositionComponent implements OnInit {
           this.init();
           this.close();
           this.formReset();
-          return this.toastr.success(this.properties.DELETE, this.properties.CP);
+          return this.toastr.success(
+            this.properties.DELETE,
+            this.properties.CP
+          );
         }
         this.spinner(true);
         this.toastr.error(err.error.message, this.properties.CP);
@@ -492,23 +564,28 @@ export class ClientPositionComponent implements OnInit {
   }
   public selectSms(sms) {
     const temp = { cpId: this.selectedRecrd };
-    this.http.post(temp, this.urlConstants.SMSTemplateBuildContent + sms.value).subscribe(resp => {
-      // tslint:disable-next-line:no-shadowed-variable
-      const temp = resp as any;
-      this.sendSmsModel.message = temp.message;
-    });
+    this.http
+      .post(temp, this.urlConstants.SMSTemplateBuildContent + sms.value)
+      .subscribe(resp => {
+        // tslint:disable-next-line:no-shadowed-variable
+        const temp = resp as any;
+        this.sendSmsModel.message = temp.message;
+      });
   }
   public sendSmsReq(): void {
     this.spinner(false);
     this.creating = true;
-    const temp = this.http.post(this.sendSmsModel, this.urlConstants.SMSTemplateSend);
+    const temp = this.http.post(
+      this.sendSmsModel,
+      this.urlConstants.SMSTemplateSend
+    );
     temp.subscribe(
       resp => {
         /**Check if any new consultants exists in emails to which send  */
         this.close();
         this.creating = false;
         this.sendSmsModel = <SendSmsModel>{};
-        this.toastr.success('Sms sent successfully', 'Sent!');
+        this.toastr.success("Sms sent successfully", "Sent!");
         this.spinner(true);
       },
       err => {
@@ -521,7 +598,10 @@ export class ClientPositionComponent implements OnInit {
   public sendEmailReq(createConsultants: any): void {
     this.spinner(false);
     this.creating = true;
-    const temp = this.http.post(this.sendEmailModel, this.urlConstants.EmailTemplateSend);
+    const temp = this.http.post(
+      this.sendEmailModel,
+      this.urlConstants.EmailTemplateSend
+    );
     temp.subscribe(
       resp => {
         /**Check if any new consultants exists in emails to which send  */
@@ -529,7 +609,7 @@ export class ClientPositionComponent implements OnInit {
         this.creating = false;
         this.quickAddConsultants(createConsultants);
         this.sendEmailModel = <SendEmailModel>{};
-        this.toastr.success('Email/Emails sent successfully', 'Sent!');
+        this.toastr.success("Email/Emails sent successfully", "Sent!");
         this.spinner(true);
       },
       err => {
@@ -542,7 +622,7 @@ export class ClientPositionComponent implements OnInit {
   private quickAddConsultants(createConsultants: any) {
     this.consultantsToCreate = [];
     let newConEmails: any = [];
-    let selectedEmails = this.sendEmailModel.toEmails.split(',');
+    let selectedEmails = this.sendEmailModel.toEmails.split(",");
     let conEmails = this.consultantList.map(cl => {
       return cl.email;
     });
@@ -552,7 +632,13 @@ export class ClientPositionComponent implements OnInit {
       }
     });
     newConEmails.forEach(element => {
-      let temp = { email: element, gender: '', fullname: '', phone: '+91', conStatus: 'Active' };
+      let temp = {
+        email: element,
+        gender: "",
+        fullname: "",
+        phone: "+91",
+        conStatus: "Active"
+      };
       this.consultantsToCreate.push(temp);
     });
     if (this.consultantsToCreate.length > 0) {
@@ -584,7 +670,7 @@ export class ClientPositionComponent implements OnInit {
     const dataToCreate = {
       cpId: this.selectedRecrd,
       consultantId: data.item_id,
-      caStatus: 'NEW',
+      caStatus: "NEW",
       description: data.notes,
       creatorId: this.creator
     };
@@ -619,7 +705,10 @@ export class ClientPositionComponent implements OnInit {
     if (event) {
       this.selectedRecrd = event;
     }
-    this.modalRef = this.modalService.open(content, { size: 'lg', backdrop: 'static' });
+    this.modalRef = this.modalService.open(content, {
+      size: "lg",
+      backdrop: "static"
+    });
     this.modalRef.result.then(
       result => {
         this.action = null;
@@ -633,7 +722,11 @@ export class ClientPositionComponent implements OnInit {
     if (content) {
       if (content.type === this.email) {
         for (let i = 0; i < this.consultantList.length; i++) {
-          const temp = { item_id: this.consultantList[i].id, item_text: this.consultantList[i].fullname, notes: '' };
+          const temp = {
+            item_id: this.consultantList[i].id,
+            item_text: this.consultantList[i].fullname,
+            notes: ""
+          };
           this.mailIdForMails.push(this.consultantList[i].email);
         }
       }
@@ -642,7 +735,11 @@ export class ClientPositionComponent implements OnInit {
           this.smsList = resp as any;
         });
         for (let i = 0; i < this.consultantList.length; i++) {
-          const temp = { item_id: this.consultantList[i].phone, item_text: this.consultantList[i].fullname, notes: '' };
+          const temp = {
+            item_id: this.consultantList[i].phone,
+            item_text: this.consultantList[i].fullname,
+            notes: ""
+          };
           this.numbersForSmsDropdown.push(temp);
         }
       }
@@ -653,9 +750,9 @@ export class ClientPositionComponent implements OnInit {
   }
   private getDismissReason(reason: any): string {
     if (reason === ModalDismissReasons.ESC) {
-      return 'by pressing ESC';
+      return "by pressing ESC";
     } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-      return 'by clicking on a backdrop';
+      return "by clicking on a backdrop";
     } else {
       return `with: ${reason}`;
     }
@@ -663,11 +760,11 @@ export class ClientPositionComponent implements OnInit {
   pageChanged(event) {
     this.paginateConfig.currentPage = event;
     switch (this.tableType) {
-      case 'Active Positions': {
+      case "Active Positions": {
         this.initialGetAll();
         break;
       }
-      case 'Inactive Positions': {
+      case "Inactive Positions": {
         this.showInactive();
         break;
       }
@@ -685,18 +782,20 @@ export class ClientPositionComponent implements OnInit {
     }
   }
   public showActive() {
-    if (this.tableType != 'Active Positions') {
+    if (this.tableType != "Active Positions") {
       this.paginateConfigDeclare(this.properties.ITEMSPERPAGE, 1, 0);
     }
     this.initialGetAll();
   }
 
   public showInactive() {
-    if (this.tableType != 'Inactive Positions') {
+    if (this.tableType != "Inactive Positions") {
       this.paginateConfigDeclare(this.properties.ITEMSPERPAGE, 1, 0);
     }
     let pageNumber = this.paginateConfig.currentPage - 1;
-    let temp = this.http.get(this.urlConstants.CPGetAllByStatus + pageNumber + '&pageSize=50&sortBy=id');
+    let temp = this.http.get(
+      this.urlConstants.CPGetAllByStatus + pageNumber + "&pageSize=50&sortBy=id"
+    );
     temp.subscribe(resp => {
       this.clientPositionList = resp as any;
       this.paginateConfig.totalItems = this.clientPositionList.noOfRecords;
@@ -708,23 +807,27 @@ export class ClientPositionComponent implements OnInit {
       id: this.model.id,
       shineURL: this.model.shineURL,
       naukriURL: this.model.naukriURL,
-      almaConnectURL: this.model.almaConnectURL
     };
     console.log(temp);
-    this.http.update(temp, this.urlConstants.CPUpdatePosting).subscribe(resp => {
-      this.toastr.success(this.properties.UPDATE, this.properties.CP);
-      this.creating = false;
-    },
-    err => {
-      this.toastr.error(err.error.message, this.properties.CP);
-      this.creating = false;
-    })
+    this.http.update(temp, this.urlConstants.CPUpdatePosting).subscribe(
+      resp => {
+        this.toastr.success(this.properties.UPDATE, this.properties.CP);
+        this.creating = false;
+      },
+      err => {
+        this.toastr.error(err.error.message, this.properties.CP);
+        this.creating = false;
+      }
+    );
   }
-  public checkCTC(){
-    if(this.model.maxCtc != null && this.model.minCtc !=null){
-      if(this.model.maxCtc < this.model.minCtc){
+  public checkCTC() {
+    if (this.model.maxCtc != null && this.model.minCtc != null) {
+      if (this.model.maxCtc < this.model.minCtc) {
         this.model.maxCtc = null;
-        this.toastr.error("Max CTC should be greater than Min CTC" , this.properties.CP);
+        this.toastr.error(
+          "Max CTC should be greater than Min CTC",
+          this.properties.CP
+        );
       }
     }
   }

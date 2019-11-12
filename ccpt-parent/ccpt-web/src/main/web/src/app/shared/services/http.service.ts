@@ -58,4 +58,8 @@ export class HttpClientService {
   getSubject(): Observable<any> {
     return this.subject.asObservable();
   }
+
+  checkAdditionPropValueExist(data:any[]):Boolean{
+    return data.filter(item => item.value == "").length == 0;
+  }
 }
