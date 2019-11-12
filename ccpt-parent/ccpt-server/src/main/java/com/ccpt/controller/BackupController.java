@@ -63,6 +63,7 @@ public class BackupController {
 			for (int i = 0; i < tables.length; i++) {
 				String table = tables[i];
 				copy(table, from, to);
+				System.out.println(table + " table copied successfully");
 			}
 
 		} catch (Exception e) {
@@ -92,6 +93,7 @@ public class BackupController {
 		Statement stmt = null;
 		stmt = to.createStatement();
 		String sql = "DELETE FROM " + table;
+		System.out.println(table + " table deleted ");
 		stmt.executeUpdate(sql);
 		try (PreparedStatement s1 = from.prepareStatement("select * from " + table); ResultSet rs = s1.executeQuery()) {
 			ResultSetMetaData meta = rs.getMetaData();
