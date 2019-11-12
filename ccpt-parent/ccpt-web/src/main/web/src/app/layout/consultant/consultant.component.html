@@ -11,15 +11,17 @@
     <div class="col-md-7">
       <div class="row">
         <div class="col-md-4">
-          <input type="text" class="form-control form-control-sm" placeholder="search..." (keyup)="search()" [(ngModel)]="currSearchTxt" />
+          <input type="text" class="form-control" placeholder="search..." (keyup)="search()" [(ngModel)]="currSearchTxt" />
         </div>
-        <div class=" col-md-6 ">
-          <div class="row">
-            <input type="text" [(ngModel)]="idToActivate" class="form-control form-control-sm col-md-6" placeholder="Consultant ID" />
-            <button class="btn btn-secondary btn-sm ml-2" (click)="activateId()" type="button">Activate</button>
+        <div class=" col-md-4">
+          <div class="input-group mb-3">
+            <input type="text" class="form-control"  [(ngModel)]="idToActivate" placeholder="Consultant ID">
+            <div class="input-group-append">
+              <span class="input-group-text" (click)="activateId()" id="basic-addon2">Activate</span>
+            </div>
           </div>
         </div>
-        <div class="col-md-2 ml-n1">
+        <div class="col-md-2">
           <button *ngIf="inCon" class="btn btn-secondary btn-sm ml-2" (click)="getIncompleteCon()">Incomplete Consultants</button>
           <button *ngIf="!inCon" class="btn btn-secondary btn-sm ml-2" (click)="getAllCon()">All Consultants</button>
         </div>
