@@ -1,20 +1,24 @@
-import { Component, OnInit, HostListener } from '@angular/core';
-import { routerTransition } from '../../router.animations';
-import { EmailHistoryModel } from './email-history.model';
-import { HttpClientService } from 'src/app/shared/services/http.service';
-import { URLConstants } from '../components/constants/url-constants';
-import { ToastrCustomService } from 'src/app/shared/services/toastr.service';
-import { NgbModal, ModalDismissReasons, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { NgForm } from '@angular/forms';
-import { AdditionalPropertiesModel } from 'src/app/additional-properties.model';
-import { Router } from '@angular/router';
-import { Properties } from '../components/constants/properties';
-import { AngularEditorConfig } from '@kolkov/angular-editor';
+import { Component, OnInit, HostListener } from "@angular/core";
+import { routerTransition } from "../../router.animations";
+import { EmailHistoryModel } from "./email-history.model";
+import { HttpClientService } from "src/app/shared/services/http.service";
+import { URLConstants } from "../components/constants/url-constants";
+import { ToastrCustomService } from "src/app/shared/services/toastr.service";
+import {
+  NgbModal,
+  ModalDismissReasons,
+  NgbModalRef
+} from "@ng-bootstrap/ng-bootstrap";
+import { NgForm } from "@angular/forms";
+import { AdditionalPropertiesModel } from "src/app/additional-properties.model";
+import { Router } from "@angular/router";
+import { Properties } from "../components/constants/properties";
+import { AngularEditorConfig } from "@kolkov/angular-editor";
 
 @Component({
-  selector: 'email-history',
-  templateUrl: './email-history.component.html',
-  styleUrls: ['./email-history.component.scss'],
+  selector: "email-history",
+  templateUrl: "./email-history.component.html",
+  styleUrls: ["./email-history.component.scss"],
   animations: [routerTransition()]
 })
 export class EmailHistoryComponent implements OnInit {
@@ -26,23 +30,23 @@ export class EmailHistoryComponent implements OnInit {
   public showAction: boolean = false;
   public action: string = null;
 
-  public readOnlyForm = '';
-  public enableButtonType = '';
-  public currSearchTxt = '';
+  public readOnlyForm = "";
+  public enableButtonType = "";
+  public currSearchTxt = "";
   public listReturned: boolean;
   public isCreate: boolean = false;
   public screenHeight: any;
   private selectedRecrdToDel = 0;
-  public closeResult = '';
-  public apName = '';
-  public apValue = '';
+  public closeResult = "";
+  public apName = "";
+  public apValue = "";
   private modalRef: NgbModalRef;
   public config: AngularEditorConfig = {
     editable: true,
     spellcheck: true,
-    height: '15rem',
-    minHeight: '5rem',
-    translate: 'no'
+    height: "15rem",
+    minHeight: "5rem",
+    translate: "no"
   };
   public paginateConfig: any = {
     itemsPerPage: 0,
@@ -57,17 +61,17 @@ export class EmailHistoryComponent implements OnInit {
   ) {
     this.getScreenSize();
   }
-  @HostListener('window:resize', ['$event'])
+  @HostListener("window:resize", ["$event"])
   getScreenSize(event?) {
     this.screenHeight = window.innerHeight;
   }
   ngOnInit() {
     /*Autheticate user with the token */
     if (!this.http.isAuthenticate()) {
-      this.router.navigate(['/login']);
+      this.router.navigate(["/login"]);
     }
     this.init();
-    this.paginateConfigDeclare(this.properties.ITEMSPERPAGE,1,0);
+    this.paginateConfigDeclare(this.properties.ITEMSPERPAGE, 1, 0);
     this.initialGetAll();
     this.spinner(true);
   }
@@ -79,14 +83,16 @@ export class EmailHistoryComponent implements OnInit {
     // });
     this.model.properties = [];
   }
-  private paginateConfigDeclare(itemsPerPage,currentPage,totalItems){
-    this.paginateConfig.itemsPerPage = itemsPerPage,
-    this.paginateConfig.currentPage = currentPage,
-    this.paginateConfig.totalItems = totalItems
+  private paginateConfigDeclare(itemsPerPage, currentPage, totalItems) {
+    (this.paginateConfig.itemsPerPage = itemsPerPage),
+      (this.paginateConfig.currentPage = currentPage),
+      (this.paginateConfig.totalItems = totalItems);
   }
   public initialGetAll() {
     let pageNumber = this.paginateConfig.currentPage - 1;
-    let temp = this.http.get(this.urlConstants.EHGetAll + pageNumber + '&pageSize=50&sortBy=id');
+    let temp = this.http.get(
+      this.urlConstants.EHGetAll + pageNumber + "&pageSize=50&sortBy=id"
+    );
     temp.subscribe(resp => {
       this.ehList = resp as any;
       //this.pageChange(this.page);
@@ -94,16 +100,16 @@ export class EmailHistoryComponent implements OnInit {
     });
   }
   public enableFormEditable(): void {
-    this.readOnlyForm = '';
+    this.readOnlyForm = "";
     //this.config.editable = true;
-    this.enableButtonType = 'U';
+    this.enableButtonType = "U";
   }
   public setModel(id) {
     this.spinner(false);
     this.getById(id);
-    this.readOnlyForm = 'U';
+    this.readOnlyForm = "U";
     // this.config.editable = false;
-    this.enableButtonType = 'E';
+    this.enableButtonType = "E";
     this.showAction = true;
     this.action = null;
   }
@@ -132,7 +138,10 @@ export class EmailHistoryComponent implements OnInit {
     const temp = this.http.post(this.model, this.urlConstants.EHCreate);
     temp.subscribe(
       resp => {
-        this.toastr.success(this.properties.CREATE, this.properties.EMAIL_HISTORY);
+        this.toastr.success(
+          this.properties.CREATE,
+          this.properties.EMAIL_HISTORY
+        );
         this.init();
         this.formReset();
         searchBankForm.resetForm();
@@ -154,12 +163,15 @@ export class EmailHistoryComponent implements OnInit {
     temp.subscribe(
       resp => {
         this.formReset();
-        this.toastr.success(this.properties.UPDATE, this.properties.EMAIL_HISTORY);
+        this.toastr.success(
+          this.properties.UPDATE,
+          this.properties.EMAIL_HISTORY
+        );
         this.init();
         searchBankForm.resetForm();
         this.initialGetAll();
-        this.readOnlyForm = '';
-        this.enableButtonType = '';
+        this.readOnlyForm = "";
+        this.enableButtonType = "";
         this.showAction = false;
         this.spinner(true);
       },
@@ -173,22 +185,27 @@ export class EmailHistoryComponent implements OnInit {
     consultantCallHistory.resetForm();
     this.formReset();
     this.init();
-    this.readOnlyForm = '';
-    this.enableButtonType = '';
+    this.readOnlyForm = "";
+    this.enableButtonType = "";
     this.showAction = false;
   }
   public trash(): void {
     this.spinner(false);
-    const temp = this.http.delete(this.urlConstants.EHDelete + this.selectedRecrdToDel);
+    const temp = this.http.delete(
+      this.urlConstants.EHDelete + this.selectedRecrdToDel
+    );
     temp.subscribe(
       resp => {
-        this.toastr.success(this.properties.DELETE, this.properties.EMAIL_HISTORY);
+        this.toastr.success(
+          this.properties.DELETE,
+          this.properties.EMAIL_HISTORY
+        );
         this.init();
         this.close();
         this.formReset();
         this.initialGetAll();
-        this.readOnlyForm = '';
-        this.enableButtonType = '';
+        this.readOnlyForm = "";
+        this.enableButtonType = "";
         this.showAction = false;
         this.spinner(true);
       },
@@ -222,9 +239,9 @@ export class EmailHistoryComponent implements OnInit {
   }
   private getDismissReason(reason: any): string {
     if (reason === ModalDismissReasons.ESC) {
-      return 'by pressing ESC';
+      return "by pressing ESC";
     } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-      return 'by clicking on a backdrop';
+      return "by clicking on a backdrop";
     } else {
       return `with: ${reason}`;
     }
@@ -236,18 +253,23 @@ export class EmailHistoryComponent implements OnInit {
     this.paginateConfig.currentPage = event;
     this.initialGetAll();
   }
-  public search(){
-    this.paginateConfig.currentPage =1
-    if(this.currSearchTxt.length == 0){
-      this.paginateConfigDeclare(this.properties.ITEMSPERPAGE,1,0);
+  public search() {
+    this.paginateConfig.currentPage = 1;
+    if (this.currSearchTxt.length == 0) {
+      this.paginateConfigDeclare(this.properties.ITEMSPERPAGE, 1, 0);
       this.initialGetAll();
-    }
-    else if(this.currSearchTxt.length > 3){
-      let temp = this.http.get(this.urlConstants.SearchAllSearch + this.currSearchTxt)
+    } else if (this.currSearchTxt.length > 3) {
+      let temp = this.http.get(
+        this.urlConstants.SearchAllSearch + this.currSearchTxt
+      );
       temp.subscribe(resp => {
         this.ehList.list = resp as any;
-        this.paginateConfigDeclare(this.ehList.list.length,1,this.ehList.list.length)
-      })
+        this.paginateConfigDeclare(
+          this.ehList.list.length,
+          1,
+          this.ehList.list.length
+        );
+      });
     }
   }
 }

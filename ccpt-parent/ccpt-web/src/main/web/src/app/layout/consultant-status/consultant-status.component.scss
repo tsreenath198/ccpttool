@@ -1,25 +1,25 @@
 .required {
-    color: red; 
- }
- .my-custom-scrollbar {
-    position: relative;
-    height: 31.5em;
-    overflow: auto;
-    }
-    .table-wrapper-scroll-y {
-    display: block;
-    }
-    .padding-top{
-     padding-top: 60px;
-   }
-   .dropdown-toggle::after{
-    display:none;
+  color: red;
+}
+.my-custom-scrollbar {
+  position: relative;
+  height: 31.5em;
+  overflow: auto;
+}
+.table-wrapper-scroll-y {
+  display: block;
+}
+.padding-top {
+  padding-top: 60px;
+}
+.dropdown-toggle::after {
+  display: none;
+}
+.drop-list:hover {
+  cursor: pointer;
+}
+.table-striped {
+  tbody tr:nth-of-type(odd) {
+    background-color: #c1c1c1;
   }
-  .drop-list:hover{
-    cursor: pointer;
-  }
-  .table-striped {
-    tbody tr:nth-of-type(odd) {
-      background-color: #c1c1c1;
-    }
- }
+}

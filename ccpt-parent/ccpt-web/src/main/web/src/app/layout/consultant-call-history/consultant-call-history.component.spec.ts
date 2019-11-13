@@ -1,25 +1,23 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { async, ComponentFixture, TestBed } from "@angular/core/testing";
+import { RouterTestingModule } from "@angular/router/testing";
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 
-import { ConsultantCallHistoryComponent } from './consultant-call-history.component';
-import { ConsultantCallHistoryModule } from './consultant-call-history.module';
+import { ConsultantCallHistoryComponent } from "./consultant-call-history.component";
+import { ConsultantCallHistoryModule } from "./consultant-call-history.module";
 
-describe('ChartsComponent', () => {
+describe("ChartsComponent", () => {
   let component: ConsultantCallHistoryComponent;
   let fixture: ComponentFixture<ConsultantCallHistoryComponent>;
 
-  beforeEach(
-    async(() => {
-      TestBed.configureTestingModule({
-        imports: [
-          ConsultantCallHistoryModule,
-          RouterTestingModule,
-          BrowserAnimationsModule,
-        ],
-      }).compileComponents();
-    })
-  );
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        ConsultantCallHistoryModule,
+        RouterTestingModule,
+        BrowserAnimationsModule
+      ]
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ConsultantCallHistoryComponent);
@@ -27,7 +25,7 @@ describe('ChartsComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });

@@ -1,27 +1,34 @@
-import { Component, OnInit, HostListener } from '@angular/core';
-import { routerTransition } from '../../router.animations';
-import { NgbModal, ModalDismissReasons, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { ConsultantCallHistoryModel, ActionsList } from './consultant-call-history.model';
-import { HttpClientService } from 'src/app/shared/services/http.service';
-import { ToastrCustomService } from 'src/app/shared/services/toastr.service';
-import { URLConstants } from '../components/constants/url-constants';
-import { Properties } from '../components/constants/properties';
-import { NgForm } from '@angular/forms';
-import { AdditionalPropertiesModel } from 'src/app/additional-properties.model';
-import { forkJoin } from 'rxjs';
-import { Router } from '@angular/router';
+import { Component, OnInit, HostListener } from "@angular/core";
+import { routerTransition } from "../../router.animations";
+import {
+  NgbModal,
+  ModalDismissReasons,
+  NgbModalRef
+} from "@ng-bootstrap/ng-bootstrap";
+import {
+  ConsultantCallHistoryModel,
+  ActionsList
+} from "./consultant-call-history.model";
+import { HttpClientService } from "src/app/shared/services/http.service";
+import { ToastrCustomService } from "src/app/shared/services/toastr.service";
+import { URLConstants } from "../components/constants/url-constants";
+import { Properties } from "../components/constants/properties";
+import { NgForm } from "@angular/forms";
+import { AdditionalPropertiesModel } from "src/app/additional-properties.model";
+import { forkJoin } from "rxjs";
+import { Router } from "@angular/router";
 
 @Component({
-  selector: 'app-consultant-call-history',
-  templateUrl: './consultant-call-history.component.html',
-  styleUrls: ['./consultant-call-history.component.scss'],
+  selector: "app-consultant-call-history",
+  templateUrl: "./consultant-call-history.component.html",
+  styleUrls: ["./consultant-call-history.component.scss"],
   animations: [routerTransition()]
 })
 export class ConsultantCallHistoryComponent implements OnInit {
   public model: ConsultantCallHistoryModel = <any>{};
   public consultantCallHistoryList: any = [];
-  public currSearchTxt = '';
-  public searchCon = '';
+  public currSearchTxt = "";
+  public searchCon = "";
   public searchConsultantList: any = [];
   public pagedConsultantList: Array<ConsultantCallHistoryModel> = [];
   public formButtonsToggler = true;
@@ -33,25 +40,25 @@ export class ConsultantCallHistoryComponent implements OnInit {
   public properties = new Properties();
 
   private selectedRecrdToDel = 0;
-  public closeResult = '';
+  public closeResult = "";
   private modalRef: NgbModalRef;
   public screenHeight: any;
-  public readOnlyForm = '';
-  public enableButtonType = '';
+  public readOnlyForm = "";
+  public enableButtonType = "";
   public showAction: boolean = false;
   public actionsList = new ActionsList();
   public action: string = null;
   public isCreate: boolean = false;
-  public apName = '';
-  public apValue = '';
-  public key: string = 'name';
+  public apName = "";
+  public apValue = "";
+  public key: string = "name";
   public reverse: boolean = false;
   public page: number = 1;
   public consultantListLength: number;
   public pageSize: number = 20;
   public incr: number = 0;
   public listReturned: boolean;
-  public consultantId:number;
+  public consultantId: number;
   public getCplPromise = this.http.get(this.urlConstants.CPDropdown);
   public getClPromise = this.http.get(this.urlConstants.CDropdown);
   public getRlPromise = this.http.get(this.urlConstants.RDropdown);
@@ -70,14 +77,14 @@ export class ConsultantCallHistoryComponent implements OnInit {
     this.getScreenSize();
   }
 
-  @HostListener('window:resize', ['$event'])
+  @HostListener("window:resize", ["$event"])
   getScreenSize(event?) {
     this.screenHeight = window.innerHeight - 237;
   }
   ngOnInit() {
     /*Autheticate user with the token */
     if (!this.http.isAuthenticate()) {
-      this.router.navigate(['/login']);
+      this.router.navigate(["/login"]);
     }
     this.joins();
     this.init();
@@ -85,7 +92,11 @@ export class ConsultantCallHistoryComponent implements OnInit {
     this.spinner(true);
   }
   joins() {
-    forkJoin(this.getCplPromise, this.getClPromise, this.getRlPromise).subscribe(listofrecords => {
+    forkJoin(
+      this.getCplPromise,
+      this.getClPromise,
+      this.getRlPromise
+    ).subscribe(listofrecords => {
       this.clientPositionList = listofrecords[0] as any;
       this.consultantList = listofrecords[1] as any;
       this.recruiterList = listofrecords[2] as any;
@@ -106,7 +117,9 @@ export class ConsultantCallHistoryComponent implements OnInit {
   }
   public initialGetAll() {
     let pageNumber = this.paginateConfig.currentPage - 1;
-    let temp = this.http.get(this.urlConstants.CoCHGetAll + pageNumber + '&pageSize=50&sortBy=id');
+    let temp = this.http.get(
+      this.urlConstants.CoCHGetAll + pageNumber + "&pageSize=50&sortBy=id"
+    );
     temp.subscribe(resp => {
       this.consultantCallHistoryList = resp as any;
       //this.pageChange(this.page);
@@ -114,16 +127,16 @@ export class ConsultantCallHistoryComponent implements OnInit {
     });
   }
   public dblSetModel() {
-    this.readOnlyForm = 'U';
-    this.enableButtonType = 'U';
+    this.readOnlyForm = "U";
+    this.enableButtonType = "U";
     this.showAction = true;
     this.action = null;
   }
   public setModel(id: number) {
     this.spinner(false);
     this.getConsultantById(id);
-    this.readOnlyForm = 'R';
-    this.enableButtonType = 'E';
+    this.readOnlyForm = "R";
+    this.enableButtonType = "E";
     this.showAction = true;
     this.action = null;
   }
@@ -136,48 +149,67 @@ export class ConsultantCallHistoryComponent implements OnInit {
   }
   private mapToUpdateModel(response): ConsultantCallHistoryModel {
     const temp = response;
-    let consultant = { name: temp.fullname, id: temp.id, phone: temp.phone, email: temp.email };
+    let consultant = {
+      name: temp.fullname,
+      id: temp.id,
+      phone: temp.phone,
+      email: temp.email
+    };
     this.consultantList.push(consultant);
     this.model = temp;
-    this.model['consultantId'] = temp.consultant.id;
-    this.model['calledBy'] = temp.calledBy.id;
-    this.model['cpId'] = temp.clientPosition ? temp.clientPosition.id : 0;
-    this.model.properties = this.model.properties == null ? [] : this.model.properties;
+    this.model["consultantId"] = temp.consultant.id;
+    this.model["calledBy"] = temp.calledBy.id;
+    this.model["cpId"] = temp.clientPosition ? temp.clientPosition.id : 0;
+    this.model.properties =
+      this.model.properties == null ? [] : this.model.properties;
     return this.model;
   }
   public propertiesListIncrement(event, i: number) {
     switch (event.id) {
-      case 'decrease': {
+      case "decrease": {
         this.model.properties.splice(i, 1);
         break;
       }
-      case 'increase': {
-        if(this.model.properties == null){
+      case "increase": {
+        if (this.model.properties == null) {
           this.model.properties = [];
-          this.model.properties.push(<AdditionalPropertiesModel>{ name: this.apName, value: this.apValue });
-          this.apName = '';
-          this.apValue = '';
-        }
-        else if (  this.model.properties.length == 0 ) {
-          this.model.properties.push(<AdditionalPropertiesModel>{ name: this.apName, value: this.apValue });
-          this.apName = '';
-          this.apValue = '';
-        } 
-        else {
+          this.model.properties.push(<AdditionalPropertiesModel>{
+            name: this.apName,
+            value: this.apValue
+          });
+          this.apName = "";
+          this.apValue = "";
+        } else if (this.model.properties.length == 0) {
+          this.model.properties.push(<AdditionalPropertiesModel>{
+            name: this.apName,
+            value: this.apValue
+          });
+          this.apName = "";
+          this.apValue = "";
+        } else {
           let propertyExist: boolean;
           for (let i = 0; i < this.model.properties.length; i++) {
-            if (this.model.properties[i].name == this.apName && this.model.properties[i].value == this.apValue) {
+            if (
+              this.model.properties[i].name == this.apName &&
+              this.model.properties[i].value == this.apValue
+            ) {
               propertyExist = true;
             } else {
               propertyExist = false;
             }
           }
           if (propertyExist) {
-            this.toastr.error(this.properties.PROPERTY_EXIST, this.properties.PROPERTIES);
+            this.toastr.error(
+              this.properties.PROPERTY_EXIST,
+              this.properties.PROPERTIES
+            );
           } else {
-            this.model.properties.push(<AdditionalPropertiesModel>{ name: this.apName, value: this.apValue });
-            this.apName = '';
-            this.apValue = '';
+            this.model.properties.push(<AdditionalPropertiesModel>{
+              name: this.apName,
+              value: this.apValue
+            });
+            this.apName = "";
+            this.apValue = "";
           }
         }
         break;
@@ -187,15 +219,15 @@ export class ConsultantCallHistoryComponent implements OnInit {
   public actions(value, trashContent, form) {
     console.log(value);
     switch (value) {
-      case 'Delete': {
+      case "Delete": {
         this.open(this.model.id, trashContent);
         break;
       }
-      case 'Edit': {
+      case "Edit": {
         this.enableFormEditable();
         break;
       }
-      case 'Close': {
+      case "Close": {
         this.cancelForm(form);
       }
     }
@@ -206,11 +238,11 @@ export class ConsultantCallHistoryComponent implements OnInit {
     }
   }
   private enableFormEditable(): void {
-    this.readOnlyForm = 'U';
-    this.enableButtonType = 'U';
+    this.readOnlyForm = "U";
+    this.enableButtonType = "U";
   }
   private formReset() {
-    this.model = <ConsultantCallHistoryModel>{ calledBy: 0, calledDate: '' };
+    this.model = <ConsultantCallHistoryModel>{ calledBy: 0, calledDate: "" };
     this.model.properties = [];
   }
   public create(consultantCallHistory: NgForm): void {
@@ -248,8 +280,8 @@ export class ConsultantCallHistoryComponent implements OnInit {
         this.callAfterFormReset();
         this.initialGetAll();
         this.spinner(true);
-        this.readOnlyForm = '';
-        this.enableButtonType = '';
+        this.readOnlyForm = "";
+        this.enableButtonType = "";
         this.showAction = false;
       },
       err => {
@@ -263,13 +295,15 @@ export class ConsultantCallHistoryComponent implements OnInit {
     this.formReset();
     this.init();
     this.callAfterFormReset();
-    this.readOnlyForm = '';
-    this.enableButtonType = '';
+    this.readOnlyForm = "";
+    this.enableButtonType = "";
     this.showAction = false;
   }
   public trash(): void {
     this.spinner(false);
-    const temp = this.http.delete(this.urlConstants.CoCHDelete + this.selectedRecrdToDel);
+    const temp = this.http.delete(
+      this.urlConstants.CoCHDelete + this.selectedRecrdToDel
+    );
     temp.subscribe(
       resp => {
         this.toastr.success(this.properties.DELETE, this.properties.CON_C_H);
@@ -279,8 +313,8 @@ export class ConsultantCallHistoryComponent implements OnInit {
         this.callAfterFormReset();
         this.initialGetAll();
         this.spinner(true);
-        this.readOnlyForm = '';
-        this.enableButtonType = '';
+        this.readOnlyForm = "";
+        this.enableButtonType = "";
         this.showAction = false;
       },
       err => {
@@ -290,7 +324,7 @@ export class ConsultantCallHistoryComponent implements OnInit {
     );
   }
   private getRecruiterId() {
-    const temp = sessionStorage.getItem('username');
+    const temp = sessionStorage.getItem("username");
     this.recruiterList.forEach(rl => {
       if (rl.email === temp) {
         this.model.calledBy = rl.id;
@@ -299,10 +333,10 @@ export class ConsultantCallHistoryComponent implements OnInit {
   }
   private getTodaysDate() {
     const today = new Date();
-    const dd = String(today.getDate()).padStart(2, '0');
-    const mm = String(today.getMonth() + 1).padStart(2, '0'); // January is 0!
+    const dd = String(today.getDate()).padStart(2, "0");
+    const mm = String(today.getMonth() + 1).padStart(2, "0"); // January is 0!
     const yyyy = today.getFullYear();
-    const temp = yyyy + '-' + mm + '-' + dd;
+    const temp = yyyy + "-" + mm + "-" + dd;
     this.model.calledDate = temp;
   }
   private callAfterFormReset(): void {
@@ -318,7 +352,10 @@ export class ConsultantCallHistoryComponent implements OnInit {
     if (event) {
       this.selectedRecrdToDel = event;
     }
-    this.modalRef = this.modalService.open(content, { size: 'lg', backdrop: 'static' });
+    this.modalRef = this.modalService.open(content, {
+      size: "lg",
+      backdrop: "static"
+    });
     this.modalRef.result.then(
       result => {
         this.closeResult = `Closed with: ${result}`;
@@ -333,9 +370,9 @@ export class ConsultantCallHistoryComponent implements OnInit {
   }
   private getDismissReason(reason: any): string {
     if (reason === ModalDismissReasons.ESC) {
-      return 'by pressing ESC';
+      return "by pressing ESC";
     } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-      return 'by clicking on a backdrop';
+      return "by clicking on a backdrop";
     } else {
       return `with: ${reason}`;
     }
@@ -363,18 +400,23 @@ export class ConsultantCallHistoryComponent implements OnInit {
       request.subscribe(resp => {
         this.searchConsultantList = resp as any;
       });
-    }else if(this.searchCon.length == 0){
+    } else if (this.searchCon.length == 0) {
       this.searchConsultantList = [];
     }
   }
   public openSearchCon(value: any, content: any) {
-    if (value == 'more') {
+    if (value == "more") {
       this.searchConsultantList = [];
       this.open(this.model.id, content);
     }
   }
   public setSearch(data) {
-    let temp = { name: data.fullname, id: data.id, phone: data.phone, email: data.email };
+    let temp = {
+      name: data.fullname,
+      id: data.id,
+      phone: data.phone,
+      email: data.email
+    };
     this.consultantList.push(temp);
     this.model.consultantId = data.id;
     this.close();

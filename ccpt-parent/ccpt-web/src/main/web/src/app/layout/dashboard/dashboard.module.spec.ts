@@ -1,13 +1,13 @@
-import { DashboardModule } from './dashboard.module';
+import { DashboardModule } from "./dashboard.module";
 
-describe('DashboardModule', () => {
+describe("DashboardModule", () => {
   let dashboardModule: DashboardModule;
 
   beforeEach(() => {
     dashboardModule = new DashboardModule();
   });
 
-  it('should create an instance', () => {
+  it("should create an instance", () => {
     expect(dashboardModule).toBeTruthy();
   });
 });

@@ -1,13 +1,13 @@
-import { EmailTemplateModule } from './email-template.module';
+import { EmailTemplateModule } from "./email-template.module";
 
-describe('ChartsModule', () => {
-    let emailTemplateModule: EmailTemplateModule;
+describe("ChartsModule", () => {
+  let emailTemplateModule: EmailTemplateModule;
 
-    beforeEach(() => {
-        emailTemplateModule = new EmailTemplateModule();
-    });
+  beforeEach(() => {
+    emailTemplateModule = new EmailTemplateModule();
+  });
 
-    it('should create an instance', () => {
-        expect(emailTemplateModule).toBeTruthy();
-    });
+  it("should create an instance", () => {
+    expect(emailTemplateModule).toBeTruthy();
+  });
 });

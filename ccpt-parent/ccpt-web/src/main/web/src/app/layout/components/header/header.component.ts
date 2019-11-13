@@ -1,14 +1,17 @@
-import { Component, OnInit, Output,EventEmitter } from '@angular/core';
-import { Router, NavigationEnd } from '@angular/router';
-import { TranslateService } from '@ngx-translate/core';
-import { Properties } from '../constants/properties';
-import { HttpClientService, ToastrCustomService } from 'src/app/shared/services';
-import { URLConstants } from '../constants/url-constants';
+import { Component, OnInit, Output, EventEmitter } from "@angular/core";
+import { Router, NavigationEnd } from "@angular/router";
+import { TranslateService } from "@ngx-translate/core";
+import { Properties } from "../constants/properties";
+import {
+  HttpClientService,
+  ToastrCustomService
+} from "src/app/shared/services";
+import { URLConstants } from "../constants/url-constants";
 
 @Component({
-  selector: 'app-header',
-  templateUrl: './header.component.html',
-  styleUrls: ['./header.component.scss']
+  selector: "app-header",
+  templateUrl: "./header.component.html",
+  styleUrls: ["./header.component.scss"]
 })
 export class HeaderComponent implements OnInit {
   public pushRightClass: string;
@@ -23,33 +26,37 @@ export class HeaderComponent implements OnInit {
     private toastr: ToastrCustomService
   ) {
     this.router.events.subscribe(val => {
-      if (val instanceof NavigationEnd && window.innerWidth <= 992 && this.isToggled()) {
+      if (
+        val instanceof NavigationEnd &&
+        window.innerWidth <= 992 &&
+        this.isToggled()
+      ) {
         this.toggleSidebar();
       }
     });
   }
 
   ngOnInit() {
-    this.pushRightClass = 'push-right';
-    this.loggedInUserName = sessionStorage.getItem('username');
+    this.pushRightClass = "push-right";
+    this.loggedInUserName = sessionStorage.getItem("username");
   }
 
   isToggled(): boolean {
-    const dom: Element = document.querySelector('body');
+    const dom: Element = document.querySelector("body");
     return dom.classList.contains(this.pushRightClass);
   }
 
   logout() {
-    this.router.navigateByUrl('/login');
-    document.cookie = 'username=' + '';
-    document.cookie = 'password=' + '';
+    this.router.navigateByUrl("/login");
+    document.cookie = "username=" + "";
+    document.cookie = "password=" + "";
   }
   private ccptBackup() {
-      this.backup.emit(true);
+    this.backup.emit(true);
     this.http.get(this.urlConstants.Backup).subscribe(
       resp => {
-          this.toastr.success("Backup","Successful")
-          this.backup.emit(false);
+        this.toastr.success("Backup", "Successful");
+        this.backup.emit(false);
       },
       err => {
         this.toastr.error(err.error.error, err.message);
@@ -59,13 +66,13 @@ export class HeaderComponent implements OnInit {
     );
   }
   toggleSidebar() {
-    const dom: any = document.querySelector('body');
+    const dom: any = document.querySelector("body");
     dom.classList.toggle(this.pushRightClass);
   }
 
   rltAndLtr() {
-    const dom: any = document.querySelector('body');
-    dom.classList.toggle('rtl');
+    const dom: any = document.querySelector("body");
+    dom.classList.toggle("rtl");
   }
 
   changeLang(language: string) {

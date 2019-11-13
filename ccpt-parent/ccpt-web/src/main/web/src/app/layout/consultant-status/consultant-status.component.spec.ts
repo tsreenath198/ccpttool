@@ -1,26 +1,22 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ConsultantStatusComponent } from './consultant-status.component';
-import { ConsultantStatusModule } from './consultant-status.module';
+import { async, ComponentFixture, TestBed } from "@angular/core/testing";
+import { RouterTestingModule } from "@angular/router/testing";
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { ConsultantStatusComponent } from "./consultant-status.component";
+import { ConsultantStatusModule } from "./consultant-status.module";
 
-
-
-describe('ChartsComponent', () => {
+describe("ChartsComponent", () => {
   let component: ConsultantStatusComponent;
   let fixture: ComponentFixture<ConsultantStatusComponent>;
 
-  beforeEach(
-    async(() => {
-      TestBed.configureTestingModule({
-        imports: [
-          ConsultantStatusModule,
-          RouterTestingModule,
-          BrowserAnimationsModule,
-        ],
-      }).compileComponents();
-    })
-  );
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        ConsultantStatusModule,
+        RouterTestingModule,
+        BrowserAnimationsModule
+      ]
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ConsultantStatusComponent);
@@ -28,7 +24,7 @@ describe('ChartsComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });
