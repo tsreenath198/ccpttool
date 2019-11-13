@@ -368,7 +368,7 @@
               <div class="form-group">
                 <label>Additional Properties</label>
                 <div class="row" *ngFor="let ap of model.properties; let i = index">
-                  <div class="col-md-5">
+                  <div class="col-md-5 pt-2">
                     <input
                       type="text"
                       [(ngModel)]="ap.name"
@@ -377,7 +377,7 @@
                       [readonly]="readOnlyForm == 'R'"
                     />
                   </div>
-                  <div class="col-md-5">
+                  <div class="col-md-5 pt-2">
                     <input
                       type="text"
                       [(ngModel)]="ap.value"

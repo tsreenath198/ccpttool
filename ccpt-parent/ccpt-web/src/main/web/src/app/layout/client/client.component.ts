@@ -94,6 +94,15 @@ export class ClientComponent implements OnInit {
     this.model.guaranteePeriod = "3 months";
     this.model.creditPeriod = "1 month";
     this.model.phone = "+91 ";
+    this.setAdditionalDefaultProps();
+  }
+  private setAdditionalDefaultProps() {
+    this.model.properties.push(
+      <AdditionalPropertiesModel>{ name: "Company Size", value: "" },
+      <AdditionalPropertiesModel>{ name: "Establishment Year", value: "" },
+      <AdditionalPropertiesModel>{ name: "Branches", value: "" },
+      <AdditionalPropertiesModel>{ name: "Certification", value: "" }
+    );
   }
   public initialGetAll() {
     let pageNumber = this.paginateConfig.currentPage - 1;
@@ -146,24 +155,31 @@ export class ClientComponent implements OnInit {
     this.model.phone = "+91 ";
   }
   public create(clientForm: NgForm): void {
-    this.isCreate = true;
-    this.spinner(false);
-    const temp = this.http.post(this.model, this.urlConstants.ClientCreate);
-    temp.subscribe(
-      resp => {
-        this.successHandle();
-        clientForm.resetForm();
-        this.setClientContactModel();
-        this.isCreate = false;
-        this.paginateConfig.currentPage = 1;
-        this.initialGetAll();
-        this.addCP(resp);
-      },
-      err => {
-        this.errorHandle(err);
-        this.isCreate = false;
-      }
-    );
+    if (!this.http.checkAdditionPropValueExist(this.model.properties)) {
+      this.toastr.error(
+        "Please provide all property values",
+        this.properties.CLIENT
+      );
+    } else {
+      this.isCreate = true;
+      this.spinner(false);
+      const temp = this.http.post(this.model, this.urlConstants.ClientCreate);
+      temp.subscribe(
+        resp => {
+          this.successHandle();
+          clientForm.resetForm();
+          this.setClientContactModel();
+          this.isCreate = false;
+          this.paginateConfig.currentPage = 1;
+          this.initialGetAll();
+          this.addCP(resp);
+        },
+        err => {
+          this.errorHandle(err);
+          this.isCreate = false;
+        }
+      );
+    }
   }
   private successHandle() {
     this.toastr.success(this.properties.CREATE, this.properties.CLIENT);
