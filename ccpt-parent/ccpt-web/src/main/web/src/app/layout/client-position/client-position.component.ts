@@ -195,10 +195,7 @@ export class ClientPositionComponent implements OnInit {
     temp.subscribe(resp => {
       this.clientPositionList = resp as any;
       this.clientPositionList.list.forEach(cl => {
-        if (
-          this.validate(cl.shineURL) ||
-          (this.validate(cl.naukriURL))
-        ) {
+        if (this.validate(cl.shineURL) || this.validate(cl.naukriURL)) {
           cl["isProfilePosted"] = true;
         } else {
           cl["isProfilePosted"] = false;
@@ -212,7 +209,7 @@ export class ClientPositionComponent implements OnInit {
   private setAdditionalDefaultProps() {
     this.model.properties.push(
       <AdditionalPropertiesModel>{ name: "Office Hours", value: "" },
-      <AdditionalPropertiesModel>{ name: "Interview Process", value: ""},
+      <AdditionalPropertiesModel>{ name: "Interview Process", value: "" },
       <AdditionalPropertiesModel>{ name: "Communication", value: "" },
       <AdditionalPropertiesModel>{ name: "Gender", value: "" }
     );
@@ -433,37 +430,44 @@ export class ClientPositionComponent implements OnInit {
     );
   }
   public create(clientPositionForm: NgForm, clientCall: any): void {
-    this.isCreate = true;
-    this.spinner(false);
-    // tslint:disable-next-line:max-line-length
-    this.model.generatedCode = this.generateCPCode(
-      this.model.clientId,
-      this.model.role,
-      this.model.location
-    );
-    const temp = this.http.post(this.model, this.urlConstants.CPCreate);
-    temp.subscribe(
-      resp => {
-        this.toastr.success(this.properties.CREATE, this.properties.CP);
-        this.init();
-        this.formReset();
-        this.spinner(true);
-        clientPositionForm.resetForm();
-        this.isCreate = false;
-        this.paginateConfig.currentPage = 1;
-        this.checkTableType();
-        this.emptyStorage();
-        if (this.showAction) {
-          this.showAction = false;
+    if (!this.http.checkAdditionPropValueExist(this.model.properties)) {
+      this.toastr.error(
+        "Please provide all property values",
+        this.properties.CP
+      );
+    } else {
+      this.isCreate = true;
+      this.spinner(false);
+      // tslint:disable-next-line:max-line-length
+      this.model.generatedCode = this.generateCPCode(
+        this.model.clientId,
+        this.model.role,
+        this.model.location
+      );
+      const temp = this.http.post(this.model, this.urlConstants.CPCreate);
+      temp.subscribe(
+        resp => {
+          this.toastr.success(this.properties.CREATE, this.properties.CP);
+          this.init();
+          this.formReset();
+          this.spinner(true);
+          clientPositionForm.resetForm();
+          this.isCreate = false;
+          this.paginateConfig.currentPage = 1;
+          this.checkTableType();
+          this.emptyStorage();
+          if (this.showAction) {
+            this.showAction = false;
+          }
+          this.createReqClch(clientCall, resp);
+        },
+        err => {
+          this.toastr.error(err.error.message, this.properties.CP);
+          this.isCreate = false;
+          this.spinner(true);
         }
-        this.createReqClch(clientCall, resp);
-      },
-      err => {
-        this.toastr.error(err.error.message, this.properties.CP);
-        this.isCreate = false;
-        this.spinner(true);
-      }
-    );
+      );
+    }
   }
   private emptyStorage() {
     this.storageService.clientId = 0;
@@ -806,7 +810,7 @@ export class ClientPositionComponent implements OnInit {
     let temp = {
       id: this.model.id,
       shineURL: this.model.shineURL,
-      naukriURL: this.model.naukriURL,
+      naukriURL: this.model.naukriURL
     };
     console.log(temp);
     this.http.update(temp, this.urlConstants.CPUpdatePosting).subscribe(

@@ -1,25 +1,23 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { async, ComponentFixture, TestBed } from "@angular/core/testing";
+import { RouterTestingModule } from "@angular/router/testing";
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 
-import { ClientCallHistoryComponent } from './client-call-history.component';
-import { ClientCallHistoryModule } from './client-call-history.module';
+import { ClientCallHistoryComponent } from "./client-call-history.component";
+import { ClientCallHistoryModule } from "./client-call-history.module";
 
-describe('ChartsComponent', () => {
+describe("ChartsComponent", () => {
   let component: ClientCallHistoryComponent;
   let fixture: ComponentFixture<ClientCallHistoryComponent>;
 
-  beforeEach(
-    async(() => {
-      TestBed.configureTestingModule({
-        imports: [
-          ClientCallHistoryModule,
-          RouterTestingModule,
-          BrowserAnimationsModule,
-        ],
-      }).compileComponents();
-    })
-  );
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        ClientCallHistoryModule,
+        RouterTestingModule,
+        BrowserAnimationsModule
+      ]
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ClientCallHistoryComponent);
@@ -27,7 +25,7 @@ describe('ChartsComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });

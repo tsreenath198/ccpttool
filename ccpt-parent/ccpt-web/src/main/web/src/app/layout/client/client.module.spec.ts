@@ -1,13 +1,13 @@
-import { ClientModule } from './client.module';
+import { ClientModule } from "./client.module";
 
-describe('ChartsModule', () => {
-    let clientModule: ClientModule;
+describe("ChartsModule", () => {
+  let clientModule: ClientModule;
 
-    beforeEach(() => {
-        clientModule = new ClientModule();
-    });
+  beforeEach(() => {
+    clientModule = new ClientModule();
+  });
 
-    it('should create an instance', () => {
-        expect(clientModule).toBeTruthy();
-    });
+  it("should create an instance", () => {
+    expect(clientModule).toBeTruthy();
+  });
 });

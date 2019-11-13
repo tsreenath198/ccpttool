@@ -338,10 +338,7 @@
                   class="form-control"
                   name="jobType"
                   [disabled]="readOnlyForm == 'R'"
-                  [(ngModel)]="model.jobType"
-                  [ngClass]="{ 'is-invalid': f.submitted && jobType.invalid }"
-                  #jobType="ngModel"
-                >
+                  [(ngModel)]="model.jobType">
                   <option *ngFor="let cs of properties.JOB_TYPE">
                     {{ cs }}
                   </option>
@@ -356,7 +353,6 @@
                   name="sourced"
                   [disabled]="readOnlyForm == 'R'"
                   [(ngModel)]="model.availability"
-                  #sourced="ngModel"
                 >
                   <option *ngFor="let cs of properties.DURATION">
                     {{ cs }}
@@ -376,7 +372,6 @@
                   [readonly]="readOnlyForm == 'R'"
                   [(ngModel)]="model.requiredPositions"
                   name="nofpos"
-                  #nofpos="ngModel"
                 />
               </div>
             </div>
@@ -388,10 +383,6 @@
                   [readonly]="readOnlyForm == 'R'"
                   [(ngModel)]="model.experience"
                   name="experience"
-                  [ngClass]="{
-                    'is-invalid': f.submitted && experience.invalid
-                  }"
-                  #experience="ngModel"
                 />
               </div>
             </div>
@@ -406,8 +397,6 @@
                   type="number"
                   [(ngModel)]="model.minCtc"
                   name="minctc"
-                  [ngClass]="{ 'is-invalid': f.submitted && minctc.invalid }"
-                  #minctc="ngModel"
                 />
               </div>
             </div>
@@ -420,9 +409,7 @@
                   type="number"
                   [(ngModel)]="model.maxCtc"
                   name="maxctc"
-                  [ngClass]="{ 'is-invalid': f.submitted && maxctc.invalid }"
                   (blur)="checkCTC()"
-                  #maxctc="ngModel"
                 />
               </div>
             </div>
@@ -436,8 +423,6 @@
                   [readonly]="readOnlyForm == 'R'"
                   [(ngModel)]="model.location"
                   name="loc"
-                  [ngClass]="{ 'is-invalid': f.submitted && loc.invalid }"
-                  #loc="ngModel"
                 />
               </div>
             </div>
@@ -522,9 +507,6 @@
                       type="date"
                       name="shineMassMailing"
                       [(ngModel)]="model.shineMassMailing"
-                      [ngClass]="{
-                        'is-invalid': f.submitted && shineMassMailing.invalid
-                      }"
                       [readonly]="readOnlyForm == 'R'"
                       max="9999-12-31"
                     />
@@ -535,10 +517,6 @@
                       type="number"
                       name="shineMassMailingCount"
                       [(ngModel)]="model.shineMassMailingCount"
-                      [ngClass]="{
-                        'is-invalid':
-                          f.submitted && shineMassMailingCount.invalid
-                      }"
                       [readonly]="readOnlyForm == 'R'"
                       placeholder="Count"
                     />
@@ -556,9 +534,6 @@
                       type="date"
                       name="naukriMassMailing"
                       [(ngModel)]="model.naukriMassMailing"
-                      [ngClass]="{
-                        'is-invalid': f.submitted && naukriMassMailing.invalid
-                      }"
                       [readonly]="readOnlyForm == 'R'"
                       max="9999-12-31"
                     />
@@ -569,10 +544,6 @@
                       type="number"
                       name="naukriMassMailingCount"
                       [(ngModel)]="model.naukriMassMailingCount"
-                      [ngClass]="{
-                        'is-invalid':
-                          f.submitted && naukriMassMailingCount.invalid
-                      }"
                       [readonly]="readOnlyForm == 'R'"
                       placeholder="Count"
                     />
@@ -590,9 +561,6 @@
                   class="form-control"
                   name="shinePosting"
                   [(ngModel)]="model.shinePosting"
-                  [ngClass]="{
-                    'is-invalid': f.submitted && shinePosting.invalid
-                  }"
                   [readonly]="readOnlyForm == 'R'"
                   max="9999-12-31"
                 />
@@ -606,9 +574,6 @@
                   class="form-control"
                   name="naukriPosting"
                   [(ngModel)]="model.naukriPosting"
-                  [ngClass]="{
-                    'is-invalid': f.submitted && naukriPosting.invalid
-                  }"
                   [readonly]="readOnlyForm == 'R'"
                   max="9999-12-31"
                 />
@@ -624,9 +589,6 @@
                   class="form-control"
                   name="twitterPosting"
                   [(ngModel)]="model.twitterPosting"
-                  [ngClass]="{
-                    'is-invalid': f.submitted && twitterPosting.invalid
-                  }"
                   [readonly]="readOnlyForm == 'R'"
                   max="9999-12-31"
                 />
@@ -640,9 +602,6 @@
                   class="form-control"
                   name="facebookPosting"
                   [(ngModel)]="model.facebookPosting"
-                  [ngClass]="{
-                    'is-invalid': f.submitted && facebookPosting.invalid
-                  }"
                   [readonly]="readOnlyForm == 'R'"
                   max="9999-12-31"
                 />
@@ -656,9 +615,6 @@
                 <label>Required Skills<span class="required">*</span></label>
                 <angular-editor
                   [(ngModel)]="model.requiredSkills"
-                  [ngClass]="{
-                    'is-invalid': f.submitted && requiredSkills.invalid
-                  }"
                   name="requiredSkills"
                   [config]="config"
                   required

@@ -1,4 +1,4 @@
-import { AdditionalPropertiesModel } from 'src/app/additional-properties.model';
+import { AdditionalPropertiesModel } from "src/app/additional-properties.model";
 
 export interface ClientModel {
   id: number;
@@ -14,8 +14,8 @@ export interface ClientModel {
   servicetaxNo: string;
   gst: string;
   description: string;
-  contactPersonDesignation:string;
-  contactPersonName:string;
+  contactPersonDesignation: string;
+  contactPersonName: string;
   website: string;
   mapLocation: string;
   files: Array<any>;

@@ -1,21 +1,25 @@
-import { Component, OnInit, HostListener } from '@angular/core';
-import { routerTransition } from '../../router.animations';
-import { NgbModal, ModalDismissReasons, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { ClientCallHistoryModel } from './client-call-history.model';
-import { HttpClientService } from 'src/app/shared/services/http.service';
-import { ToastrCustomService } from 'src/app/shared/services/toastr.service';
-import { URLConstants } from '../components/constants/url-constants';
-import { Properties } from '../components/constants/properties';
-import { NgForm } from '@angular/forms';
-import { AdditionalPropertiesModel } from 'src/app/additional-properties.model';
-import { forkJoin } from 'rxjs';
-import { ActionsList } from '../consultant-call-history/consultant-call-history.model';
-import { Router } from '@angular/router';
+import { Component, OnInit, HostListener } from "@angular/core";
+import { routerTransition } from "../../router.animations";
+import {
+  NgbModal,
+  ModalDismissReasons,
+  NgbModalRef
+} from "@ng-bootstrap/ng-bootstrap";
+import { ClientCallHistoryModel } from "./client-call-history.model";
+import { HttpClientService } from "src/app/shared/services/http.service";
+import { ToastrCustomService } from "src/app/shared/services/toastr.service";
+import { URLConstants } from "../components/constants/url-constants";
+import { Properties } from "../components/constants/properties";
+import { NgForm } from "@angular/forms";
+import { AdditionalPropertiesModel } from "src/app/additional-properties.model";
+import { forkJoin } from "rxjs";
+import { ActionsList } from "../consultant-call-history/consultant-call-history.model";
+import { Router } from "@angular/router";
 
 @Component({
-  selector: 'app-client-call-history',
-  templateUrl: './client-call-history.component.html',
-  styleUrls: ['./client-call-history.component.scss'],
+  selector: "app-client-call-history",
+  templateUrl: "./client-call-history.component.html",
+  styleUrls: ["./client-call-history.component.scss"],
   animations: [routerTransition()]
 })
 export class ClientCallHistoryComponent implements OnInit {
@@ -32,29 +36,29 @@ export class ClientCallHistoryComponent implements OnInit {
   public actionsList = new ActionsList();
   public action: string;
   private selectedRecrdToDel = 0;
-  public closeResult = '';
+  public closeResult = "";
   private modalRef: NgbModalRef;
   public screenHeight: any;
   public currSearchTxt: string;
-  public readOnlyForm = '';
-  public enableButtonType = '';
-  public apName = '';
-  public apValue = '';
-  public loggedInRole = '';
+  public readOnlyForm = "";
+  public enableButtonType = "";
+  public apName = "";
+  public apValue = "";
+  public loggedInRole = "";
   public isCreate: boolean = false;
   public page: number;
   public consultantListLength: number;
   public pageSize: number = 10;
-  public listReturned:boolean;
+  public listReturned: boolean;
   public getCplPromise = this.http.get(this.urlConstants.CPDropdown);
   public getClPromise = this.http.get(this.urlConstants.ClientGetAll);
   public getRlPromise = this.http.get(this.urlConstants.RDropdown);
   //public cchGetAllPromise = this.http.get(this.urlConstants.CCHGetAll);
-  public paginateConfig :any={
+  public paginateConfig: any = {
     itemsPerPage: this.properties.ITEMSPERPAGE,
     currentPage: 1,
     totalItems: 0
-  }
+  };
   constructor(
     private http: HttpClientService,
     private toastr: ToastrCustomService,
@@ -63,7 +67,7 @@ export class ClientCallHistoryComponent implements OnInit {
   ) {
     this.getScreenSize();
   }
-  @HostListener('window:resize', ['$event'])
+  @HostListener("window:resize", ["$event"])
   getScreenSize(event?) {
     this.screenHeight = window.innerHeight;
   }
@@ -71,14 +75,18 @@ export class ClientCallHistoryComponent implements OnInit {
   ngOnInit() {
     /*Autheticate user with the token */
     if (!this.http.isAuthenticate()) {
-      this.router.navigate(['/login']);
+      this.router.navigate(["/login"]);
     }
     this.joins();
     this.init();
-    this.loggedInRole = sessionStorage.getItem('role');
+    this.loggedInRole = sessionStorage.getItem("role");
   }
   private joins() {
-    forkJoin(this.getCplPromise, this.getClPromise, this.getRlPromise).subscribe(listofrecords => {
+    forkJoin(
+      this.getCplPromise,
+      this.getClPromise,
+      this.getRlPromise
+    ).subscribe(listofrecords => {
       this.clientPositionList = listofrecords[0] as any;
       this.clientList = listofrecords[1] as any;
       this.recruiterList = listofrecords[2] as any;
@@ -95,17 +103,19 @@ export class ClientCallHistoryComponent implements OnInit {
     // });
     this.model.properties = [];
   }
-  public initialGetAll(){
-    let pageNumber = this.paginateConfig.currentPage-1
-    let temp=this.http.get(this.urlConstants.CCHGetAll+ pageNumber + "&pageSize=50&sortBy=id");
+  public initialGetAll() {
+    let pageNumber = this.paginateConfig.currentPage - 1;
+    let temp = this.http.get(
+      this.urlConstants.CCHGetAll + pageNumber + "&pageSize=50&sortBy=id"
+    );
     temp.subscribe(resp => {
       this.clientCallHistoryList = resp as any;
       //this.pageChange(this.page);
-      this.paginateConfig.totalItems = this.clientCallHistoryList.noOfRecords
+      this.paginateConfig.totalItems = this.clientCallHistoryList.noOfRecords;
     });
   }
   private getRecruiterId() {
-    const temp = sessionStorage.getItem('username');
+    const temp = sessionStorage.getItem("username");
     this.recruiterList.forEach(rl => {
       if (rl.email === temp) {
         this.model.calledBy = rl.id;
@@ -118,23 +128,23 @@ export class ClientCallHistoryComponent implements OnInit {
 
   private getTodaysDate() {
     const today = new Date();
-    const dd = String(today.getDate()).padStart(2, '0');
-    const mm = String(today.getMonth() + 1).padStart(2, '0'); // January is 0!
+    const dd = String(today.getDate()).padStart(2, "0");
+    const mm = String(today.getMonth() + 1).padStart(2, "0"); // January is 0!
     const yyyy = today.getFullYear();
-    const temp = yyyy + '-' + mm + '-' + dd;
+    const temp = yyyy + "-" + mm + "-" + dd;
     this.model.calledDate = temp;
   }
   public dblSetModel() {
-    this.readOnlyForm = 'U';
-    this.enableButtonType = 'U';
+    this.readOnlyForm = "U";
+    this.enableButtonType = "U";
     this.showAction = true;
     this.action = null;
   }
   public setModel(id: number) {
     this.spinner(false);
     this.getCCHById(id);
-    this.readOnlyForm = 'R';
-    this.enableButtonType = 'E';
+    this.readOnlyForm = "R";
+    this.enableButtonType = "E";
     this.showAction = true;
     this.action = null;
   }
@@ -148,43 +158,56 @@ export class ClientCallHistoryComponent implements OnInit {
   private mapToUpdateModel(response): ClientCallHistoryModel {
     const temp = response;
     this.model = temp;
-    this.model['cpId'] = temp.clientPosition.id;
-    this.model['calledBy'] = temp.calledBy.id;
+    this.model["cpId"] = temp.clientPosition.id;
+    this.model["calledBy"] = temp.calledBy.id;
     return this.model;
   }
   public propertiesListIncrement(event, i: number) {
     switch (event.id) {
-      case 'decrease': {
+      case "decrease": {
         this.model.properties.splice(i, 1);
         break;
       }
-      case 'increase': {
-        if(this.model.properties == null){
+      case "increase": {
+        if (this.model.properties == null) {
           this.model.properties = [];
-          this.model.properties.push(<AdditionalPropertiesModel>{ name: this.apName, value: this.apValue });
-          this.apName = '';
-          this.apValue = '';
-        }
-        else if (  this.model.properties.length == 0 ) {
-          this.model.properties.push(<AdditionalPropertiesModel>{ name: this.apName, value: this.apValue });
-          this.apName = '';
-          this.apValue = '';
-        } 
-        else {
+          this.model.properties.push(<AdditionalPropertiesModel>{
+            name: this.apName,
+            value: this.apValue
+          });
+          this.apName = "";
+          this.apValue = "";
+        } else if (this.model.properties.length == 0) {
+          this.model.properties.push(<AdditionalPropertiesModel>{
+            name: this.apName,
+            value: this.apValue
+          });
+          this.apName = "";
+          this.apValue = "";
+        } else {
           let propertyExist: boolean;
           for (let i = 0; i < this.model.properties.length; i++) {
-            if (this.model.properties[i].name == this.apName && this.model.properties[i].value == this.apValue) {
+            if (
+              this.model.properties[i].name == this.apName &&
+              this.model.properties[i].value == this.apValue
+            ) {
               propertyExist = true;
             } else {
               propertyExist = false;
             }
           }
           if (propertyExist) {
-            this.toastr.error(this.properties.PROPERTY_EXIST, this.properties.PROPERTIES);
+            this.toastr.error(
+              this.properties.PROPERTY_EXIST,
+              this.properties.PROPERTIES
+            );
           } else {
-            this.model.properties.push(<AdditionalPropertiesModel>{ name: this.apName, value: this.apValue });
-            this.apName = '';
-            this.apValue = '';
+            this.model.properties.push(<AdditionalPropertiesModel>{
+              name: this.apName,
+              value: this.apValue
+            });
+            this.apName = "";
+            this.apValue = "";
           }
         }
         break;
@@ -194,22 +217,22 @@ export class ClientCallHistoryComponent implements OnInit {
   public actions(value, trashContent, form) {
     console.log(value);
     switch (value) {
-      case 'Delete': {
+      case "Delete": {
         this.open(this.model.id, trashContent);
         break;
       }
-      case 'Edit': {
+      case "Edit": {
         this.enableFormEditable();
         break;
       }
-      case 'Close': {
+      case "Close": {
         this.cancelForm(form);
       }
     }
   }
   private enableFormEditable(): void {
-    this.readOnlyForm = 'U';
-    this.enableButtonType = 'U';
+    this.readOnlyForm = "U";
+    this.enableButtonType = "U";
   }
   private formReset() {
     this.model = <ClientCallHistoryModel>{};
@@ -227,7 +250,7 @@ export class ClientCallHistoryComponent implements OnInit {
         this.init();
         this.getRecruiterId();
         this.isCreate = false;
-        this.paginateConfig.currentPage=1;
+        this.paginateConfig.currentPage = 1;
         this.initialGetAll();
         this.getTodaysDate();
         this.formReset();
@@ -254,8 +277,8 @@ export class ClientCallHistoryComponent implements OnInit {
         this.getTodaysDate();
         this.spinner(true);
         this.initialGetAll();
-        this.readOnlyForm = '';
-        this.enableButtonType = '';
+        this.readOnlyForm = "";
+        this.enableButtonType = "";
         this.showAction = false;
         clientCallHistoryForm.resetForm();
       },
@@ -270,20 +293,22 @@ export class ClientCallHistoryComponent implements OnInit {
     clientCallHistoryForm.resetForm();
     this.formReset();
     this.init();
-    this.readOnlyForm = '';
-    this.enableButtonType = '';
+    this.readOnlyForm = "";
+    this.enableButtonType = "";
     this.showAction = false;
   }
   public trash(): void {
     this.spinner(false);
-    const temp = this.http.delete(this.urlConstants.CCHDelete + this.selectedRecrdToDel);
+    const temp = this.http.delete(
+      this.urlConstants.CCHDelete + this.selectedRecrdToDel
+    );
     temp.subscribe(
       resp => {
         this.toastr.success(this.properties.DELETE, this.properties.CLI_C_H);
         this.init();
         this.getRecruiterId();
-        this.readOnlyForm = '';
-        this.enableButtonType = '';
+        this.readOnlyForm = "";
+        this.enableButtonType = "";
         this.getTodaysDate();
         this.close();
         this.initialGetAll();
@@ -321,18 +346,18 @@ export class ClientCallHistoryComponent implements OnInit {
   }
   private getDismissReason(reason: any): string {
     if (reason === ModalDismissReasons.ESC) {
-      return 'by pressing ESC';
+      return "by pressing ESC";
     } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-      return 'by clicking on a backdrop';
+      return "by clicking on a backdrop";
     } else {
       return `with: ${reason}`;
     }
   }
-  private spinner(isSpinner: boolean){
-      this.listReturned = isSpinner;
-    }
-    pageChanged(event){
-      this.paginateConfig.currentPage = event
-      this.initialGetAll();
-    } 
+  private spinner(isSpinner: boolean) {
+    this.listReturned = isSpinner;
+  }
+  pageChanged(event) {
+    this.paginateConfig.currentPage = event;
+    this.initialGetAll();
+  }
 }

@@ -1,20 +1,28 @@
-import { Component, OnInit, HostListener } from '@angular/core';
-import { NgbModal, ModalDismissReasons, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { FileUploader, FileLikeObject } from 'ng2-file-upload';
-import { NgForm } from '@angular/forms';
-import { routerTransition } from '../../router.animations';
-import { ConsultantModel, ActionsList } from './consultant.model';
-import { ConsultantStatusModel } from '../consultant-status/consultant-status.model';
-import { URLConstants } from '../components/constants/url-constants';
-import { Properties } from '../components/constants/properties';
-import { AdditionalPropertiesModel } from 'src/app/additional-properties.model';
-import { Router } from '@angular/router';
-import { StorageService, HttpClientService, ToastrCustomService } from '../../shared/services';
+import { Component, OnInit, HostListener } from "@angular/core";
+import {
+  NgbModal,
+  ModalDismissReasons,
+  NgbModalRef
+} from "@ng-bootstrap/ng-bootstrap";
+import { FileUploader, FileLikeObject } from "ng2-file-upload";
+import { NgForm } from "@angular/forms";
+import { routerTransition } from "../../router.animations";
+import { ConsultantModel, ActionsList } from "./consultant.model";
+import { ConsultantStatusModel } from "../consultant-status/consultant-status.model";
+import { URLConstants } from "../components/constants/url-constants";
+import { Properties } from "../components/constants/properties";
+import { AdditionalPropertiesModel } from "src/app/additional-properties.model";
+import { Router } from "@angular/router";
+import {
+  StorageService,
+  HttpClientService,
+  ToastrCustomService
+} from "../../shared/services";
 
 @Component({
-  selector: 'app-consultant',
-  templateUrl: './consultant.component.html',
-  styleUrls: ['./consultant.component.scss'],
+  selector: "app-consultant",
+  templateUrl: "./consultant.component.html",
+  styleUrls: ["./consultant.component.scss"],
   animations: [routerTransition()]
 })
 export class ConsultantComponent implements OnInit {
@@ -23,21 +31,24 @@ export class ConsultantComponent implements OnInit {
   public pagedConsultantList: Array<ConsultantModel> = [];
   public consultantStatusList: Array<ConsultantStatusModel> = [];
   public formButtonsToggler = true;
-  public readOnlyForm = '';
-  public enableButtonType = '';
-  public GENDER = [{ key: 'Mr.', value: 'Male' }, { key: 'Mrs.', value: 'Female' }];
+  public readOnlyForm = "";
+  public enableButtonType = "";
+  public GENDER = [
+    { key: "Mr.", value: "Male" },
+    { key: "Mrs.", value: "Female" }
+  ];
   public uploadFileList: Array<any> = [];
   public fileList: Array<any> = [];
-  public refType = '';
-  public comments = '';
+  public refType = "";
+  public comments = "";
   public isFresher: boolean;
   public uploader: FileUploader = new FileUploader({});
   private selectedRecrdToDel = 0;
-  public closeResult = '';
-  public download = 'download';
-  public upload = 'upload';
-  public apName = '';
-  public apValue = '';
+  public closeResult = "";
+  public download = "download";
+  public upload = "upload";
+  public apName = "";
+  public apValue = "";
   public screenHeight: any;
   private modalRef: NgbModalRef;
   public listReturned: boolean;
@@ -70,7 +81,7 @@ export class ConsultantComponent implements OnInit {
   ) {
     this.getScreenSize();
   }
-  @HostListener('window:resize', ['$event'])
+  @HostListener("window:resize", ["$event"])
   getScreenSize(event?) {
     /* Here we are decreasing screenheight to 237 for pagination */
     this.screenHeight = window.innerHeight - 237;
@@ -78,7 +89,7 @@ export class ConsultantComponent implements OnInit {
   ngOnInit() {
     /*Autheticate user with the token */
     if (!this.http.isAuthenticate()) {
-      this.router.navigate(['/login']);
+      this.router.navigate(["/login"]);
     }
     this.cSGetAllPromise.subscribe(resp => {
       this.consultantStatusList = resp as any;
@@ -97,14 +108,22 @@ export class ConsultantComponent implements OnInit {
   }
   public initialGetAll() {
     let pageNumber = this.paginateConfig.currentPage - 1;
-    let temp = this.http.get(this.urlConstants.CGetAllByStatus + pageNumber + '&pageSize=50&sortBy=id&status=Active');
+    let temp = this.http.get(
+      this.urlConstants.CGetAllByStatus +
+        pageNumber +
+        "&pageSize=50&sortBy=id&status=Active"
+    );
     temp.subscribe(resp => {
       this.consultantList = resp as any;
       this.consultantList.list.forEach(cl => {
-        if (this.validate(cl.fullname) && this.validate(cl.email) && this.validate(cl.phone)) {
-          cl['isProfileCompleted'] = 'profileComplete';
+        if (
+          this.validate(cl.fullname) &&
+          this.validate(cl.email) &&
+          this.validate(cl.phone)
+        ) {
+          cl["isProfileCompleted"] = "profileComplete";
         } else {
-          cl['isProfileCompleted'] = 'profileInComplete';
+          cl["isProfileCompleted"] = "profileInComplete";
         }
       });
       this.paginateConfig.totalItems = this.consultantList.noOfRecords;
@@ -127,8 +146,8 @@ export class ConsultantComponent implements OnInit {
     // });
     this.model.properties = [];
     this.model.files = [];
-    this.model.conStatus = 'Active';
-    this.model.phone = '+91 ';
+    this.model.conStatus = "Active";
+    this.model.phone = "+91 ";
     this.model.sourcedFrom = this.properties.CON_SOURCE[0];
     this.page = 1;
   }
@@ -145,26 +164,26 @@ export class ConsultantComponent implements OnInit {
   }
   defaultValues() {
     this.model.properties = [];
-    this.model.conStatus = 'Active';
-    this.model.phone = '+91';
+    this.model.conStatus = "Active";
+    this.model.phone = "+91";
   }
   public setModel(id: number) {
     this.getConsultantById(id);
-    this.readOnlyForm = 'U';
-    this.enableButtonType = 'E';
+    this.readOnlyForm = "U";
+    this.enableButtonType = "E";
     this.showAction = true;
     this.action = null;
   }
   private enableFormEditable(): void {
-    this.readOnlyForm = '';
-    this.enableButtonType = 'U';
+    this.readOnlyForm = "";
+    this.enableButtonType = "U";
   }
   private formReset() {
     this.model = <ConsultantModel>{};
     this.model.properties = [];
     this.model.files = [];
-    this.model.conStatus = 'Active';
-    this.model.phone = '+91';
+    this.model.conStatus = "Active";
+    this.model.phone = "+91";
   }
   public create(consultantForm: NgForm): void {
     this.spinner(false);
@@ -195,7 +214,7 @@ export class ConsultantComponent implements OnInit {
     if (decision == true) {
       /**Assigning consultant id to the storage consultant */
       this.storage.consultantId = resp.id;
-      this.router.navigate(['/layout/client-application']);
+      this.router.navigate(["/layout/client-application"]);
     }
   }
   public update(consultantForm: NgForm) {
@@ -209,8 +228,8 @@ export class ConsultantComponent implements OnInit {
         this.init();
         this.initialGetAll();
         this.spinner(true);
-        this.readOnlyForm = '';
-        this.enableButtonType = '';
+        this.readOnlyForm = "";
+        this.enableButtonType = "";
         this.showAction = false;
       },
       err => {
@@ -227,14 +246,17 @@ export class ConsultantComponent implements OnInit {
       if (this.model.properties == null) {
         this.model.properties = [];
       }
-      if(this.model.currentCompany == "" || this.model.currentCompany == null){
+      if (
+        this.model.currentCompany == "" ||
+        this.model.currentCompany == null
+      ) {
         this.isFresher = true;
       }
       this.spinner(true);
     });
   }
   public getFilesById(id: number) {
-    this.http.get('/uploadFile/id?id=' + id).subscribe(resp => {
+    this.http.get("/uploadFile/id?id=" + id).subscribe(resp => {
       this.fileList.push(resp);
     });
   }
@@ -242,14 +264,16 @@ export class ConsultantComponent implements OnInit {
     consultantForm.resetForm();
     this.init();
     this.formReset();
-    this.readOnlyForm = '';
-    this.enableButtonType = '';
+    this.readOnlyForm = "";
+    this.enableButtonType = "";
     this.showAction = false;
     this.defaultValues();
   }
   public trash(): void {
     this.spinner(false);
-    const temp = this.http.delete(this.urlConstants.CDelete + this.selectedRecrdToDel);
+    const temp = this.http.delete(
+      this.urlConstants.CDelete + this.selectedRecrdToDel
+    );
     temp.subscribe(
       resp => {
         this.toastr.success(this.properties.DELETE, this.properties.CON);
@@ -258,8 +282,8 @@ export class ConsultantComponent implements OnInit {
         this.formReset();
         this.initialGetAll();
         this.spinner(true);
-        this.readOnlyForm = '';
-        this.enableButtonType = '';
+        this.readOnlyForm = "";
+        this.enableButtonType = "";
         this.showAction = false;
       },
       err => {
@@ -267,7 +291,10 @@ export class ConsultantComponent implements OnInit {
           this.init();
           this.close();
           this.formReset();
-          return this.toastr.success(this.properties.DELETE, this.properties.CON);
+          return this.toastr.success(
+            this.properties.DELETE,
+            this.properties.CON
+          );
         }
         this.toastr.error(err.statusText, this.properties.CON);
         this.spinner(true);
@@ -289,7 +316,10 @@ export class ConsultantComponent implements OnInit {
       },
       err => {
         if (err.status === 200) {
-          return this.toastr.success(this.properties.DELETE, this.properties.CON);
+          return this.toastr.success(
+            this.properties.DELETE,
+            this.properties.CON
+          );
         }
         this.toastr.error(err.statusText, this.properties.CON);
       }
@@ -298,42 +328,55 @@ export class ConsultantComponent implements OnInit {
   private mapToUpdateModel(response): ConsultantModel {
     const temp = response;
     this.model = temp;
-    this.model['conStatus'] = temp.status.code;
+    this.model["conStatus"] = temp.status.code;
     return this.model;
   }
   public propertiesListIncrement(event, i: number) {
     switch (event.id) {
-      case 'decrease': {
+      case "decrease": {
         this.model.properties.splice(i, 1);
         break;
       }
-      case 'increase': {
-        if(this.model.properties == null){
+      case "increase": {
+        if (this.model.properties == null) {
           this.model.properties = [];
-          this.model.properties.push(<AdditionalPropertiesModel>{ name: this.apName, value: this.apValue });
-          this.apName = '';
-          this.apValue = '';
-        }
-        else if (  this.model.properties.length == 0 ) {
-          this.model.properties.push(<AdditionalPropertiesModel>{ name: this.apName, value: this.apValue });
-          this.apName = '';
-          this.apValue = '';
-        } 
-        else {
+          this.model.properties.push(<AdditionalPropertiesModel>{
+            name: this.apName,
+            value: this.apValue
+          });
+          this.apName = "";
+          this.apValue = "";
+        } else if (this.model.properties.length == 0) {
+          this.model.properties.push(<AdditionalPropertiesModel>{
+            name: this.apName,
+            value: this.apValue
+          });
+          this.apName = "";
+          this.apValue = "";
+        } else {
           let propertyExist: boolean;
           for (let i = 0; i < this.model.properties.length; i++) {
-            if (this.model.properties[i].name == this.apName && this.model.properties[i].value == this.apValue) {
+            if (
+              this.model.properties[i].name == this.apName &&
+              this.model.properties[i].value == this.apValue
+            ) {
               propertyExist = true;
             } else {
               propertyExist = false;
             }
           }
           if (propertyExist) {
-            this.toastr.error(this.properties.PROPERTY_EXIST, this.properties.PROPERTIES);
+            this.toastr.error(
+              this.properties.PROPERTY_EXIST,
+              this.properties.PROPERTIES
+            );
           } else {
-            this.model.properties.push(<AdditionalPropertiesModel>{ name: this.apName, value: this.apValue });
-            this.apName = '';
-            this.apValue = '';
+            this.model.properties.push(<AdditionalPropertiesModel>{
+              name: this.apName,
+              value: this.apValue
+            });
+            this.apName = "";
+            this.apValue = "";
           }
         }
         break;
@@ -341,7 +384,7 @@ export class ConsultantComponent implements OnInit {
     }
   }
   public imposeMinMax(el) {
-    if (el.value !== '') {
+    if (el.value !== "") {
       if (parseInt(el.value) < parseInt(el.min)) {
         el.value = el.min;
       }
@@ -359,7 +402,13 @@ export class ConsultantComponent implements OnInit {
     });
   }
   public transformTitleCase(ip: HTMLInputElement) {
-    let temp = ip.value.length === 0 ? '' : ip.value.replace(/\w\S*/g, txt => txt[0].toUpperCase() + txt.substr(1).toLowerCase());
+    let temp =
+      ip.value.length === 0
+        ? ""
+        : ip.value.replace(
+            /\w\S*/g,
+            txt => txt[0].toUpperCase() + txt.substr(1).toLowerCase()
+          );
     ip.value = temp;
   }
   /**
@@ -396,9 +445,9 @@ export class ConsultantComponent implements OnInit {
   }
   private getDismissReason(reason: any): string {
     if (reason === ModalDismissReasons.ESC) {
-      return 'by pressing ESC';
+      return "by pressing ESC";
     } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-      return 'by clicking on a backdrop';
+      return "by clicking on a backdrop";
     } else {
       return `with: ${reason}`;
     }
@@ -422,17 +471,21 @@ export class ConsultantComponent implements OnInit {
   public uploadFiles() {
     const files = this.getFiles();
     const formData = new FormData();
-    formData.append('file', files[0].rawFile, files[0].name);
-    const params = 'refId=' + this.selectedRecrdToDel + '&refType=Consultant&comments=' + this.comments;
+    formData.append("file", files[0].rawFile, files[0].name);
+    const params =
+      "refId=" +
+      this.selectedRecrdToDel +
+      "&refType=Consultant&comments=" +
+      this.comments;
     this.http.upload(this.urlConstants.FileUpload + params, formData).subscribe(
       resp => {
         let temp: any = resp;
         this.uploader = new FileUploader({});
-        this.toastr.success(temp.message, 'Client');
+        this.toastr.success(temp.message, "Client");
         this.close();
       },
       err => {
-        this.toastr.success(err.error.message, 'Client');
+        this.toastr.success(err.error.message, "Client");
       }
     );
     /* let requests = [];
@@ -457,17 +510,17 @@ export class ConsultantComponent implements OnInit {
   }
   public emptyExperience() {
     if (this.isFresher) {
-      this.model.currentCompany = '';
-      this.model.currentCTC = '';
-      this.model.expectedCTC = '';
-      this.model.currentJobTitle = '';
-      this.model.currentFunctionalArea = '';
-      this.model.currentIndustry = '';
-      this.model.yearsInCurrentJob = '';
-      this.model.monthsInCurrentJob = '';
-      this.model.experienceYrs = '';
-      this.model.experienceMonths = '';
-      this.model.noticePeriod = '';
+      this.model.currentCompany = "";
+      this.model.currentCTC = "";
+      this.model.expectedCTC = "";
+      this.model.currentJobTitle = "";
+      this.model.currentFunctionalArea = "";
+      this.model.currentIndustry = "";
+      this.model.yearsInCurrentJob = "";
+      this.model.monthsInCurrentJob = "";
+      this.model.experienceYrs = "";
+      this.model.experienceMonths = "";
+      this.model.noticePeriod = "";
     }
   }
   private spinner(isSpinner: boolean) {
@@ -482,7 +535,11 @@ export class ConsultantComponent implements OnInit {
       let temp = this.http.get(this.urlConstants.CSearch + this.currSearchTxt);
       temp.subscribe(resp => {
         this.consultantList.list = resp as any;
-        this.paginateConfigDeclare(this.consultantList.list.length, 1, this.consultantList.list.length);
+        this.paginateConfigDeclare(
+          this.consultantList.list.length,
+          1,
+          this.consultantList.list.length
+        );
       });
     }
   }
@@ -497,7 +554,11 @@ export class ConsultantComponent implements OnInit {
     let temp = this.http.get(this.urlConstants.CGetInactive);
     temp.subscribe(resp => {
       this.consultantList.list = resp as any;
-      this.paginateConfigDeclare(this.properties.ITEMSPERPAGE, 1, this.consultantList.list.length);
+      this.paginateConfigDeclare(
+        this.properties.ITEMSPERPAGE,
+        1,
+        this.consultantList.list.length
+      );
       this.inCon = false;
     });
   }

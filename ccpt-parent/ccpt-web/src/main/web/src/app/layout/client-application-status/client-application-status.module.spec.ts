@@ -1,13 +1,13 @@
-import { ClientApplicationStatusModule } from './client-application-status.module';
+import { ClientApplicationStatusModule } from "./client-application-status.module";
 
-describe('ChartsModule', () => {
-    let clientApplicationStatusModule: ClientApplicationStatusModule;
+describe("ChartsModule", () => {
+  let clientApplicationStatusModule: ClientApplicationStatusModule;
 
-    beforeEach(() => {
-        clientApplicationStatusModule = new ClientApplicationStatusModule();
-    });
+  beforeEach(() => {
+    clientApplicationStatusModule = new ClientApplicationStatusModule();
+  });
 
-    it('should create an instance', () => {
-        expect(clientApplicationStatusModule).toBeTruthy();
-    });
+  it("should create an instance", () => {
+    expect(clientApplicationStatusModule).toBeTruthy();
+  });
 });
