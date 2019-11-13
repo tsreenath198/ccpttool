@@ -88,7 +88,7 @@ public class BackupController {
 		return new ResponseEntity<String>("Successfully done backup", HttpStatus.OK);
 	}
 
-	@GetMapping("/backUpArchives")
+	@GetMapping("/backupArchives")
 	public ResponseEntity<String> backUpArchives() throws SQLException, ValidationException {
 		String[] tables = { "additional_property", "client", "client_application", "client_application_status",
 				"client_call_history", "client_contact", "client_position", "client_position_status", "consultant",
