@@ -81,8 +81,8 @@ export class ClientComponent implements OnInit {
       this.router.navigate(["/login"]);
     }
     this.loggedInRole = sessionStorage.getItem("role");
-    this.setClientContactModel();
     this.init();
+    this.setClientContactModel();
     this.initialGetAll();
     this.spinner(true);
     this.storageService.clientId = null;
@@ -96,14 +96,13 @@ export class ClientComponent implements OnInit {
     this.model.phone = "+91 ";
     this.setAdditionalDefaultProps();
   }
-  private setAdditionalDefaultProps() {
-    this.model.properties.push(
-      <AdditionalPropertiesModel>{ name: "Company Size", value: "" },
-      <AdditionalPropertiesModel>{ name: "Establishment Year", value: "" },
-      <AdditionalPropertiesModel>{ name: "Branches", value: "" },
-      <AdditionalPropertiesModel>{ name: "Certification", value: "" }
-    );
+
+  private setClientContactModel() {
+    this.model.clientContacts = [
+      { salutation: "", fullname: "", email: "", phone: "+91 " }
+    ];
   }
+
   public initialGetAll() {
     let pageNumber = this.paginateConfig.currentPage - 1;
     let temp = this.http.get(
@@ -115,10 +114,16 @@ export class ClientComponent implements OnInit {
       this.paginateConfig.totalItems = this.clientList.noOfRecords;
     });
   }
-  private setClientContactModel() {
-    this.model.clientContacts = [
-      { salutation: "", fullname: "", email: "", phone: "+91 " }
-    ];
+  private spinner(isSpinner: boolean) {
+    this.listReturned = isSpinner;
+  }
+  private setAdditionalDefaultProps() {
+    this.model.properties.push(
+      <AdditionalPropertiesModel>{ name: "Company Size", value: "" },
+      <AdditionalPropertiesModel>{ name: "Establishment Year", value: "" },
+      <AdditionalPropertiesModel>{ name: "Branches", value: "" },
+      <AdditionalPropertiesModel>{ name: "Certification", value: "" }
+    );
   }
   public editForm(): void {
     this.readOnlyForm = "";
@@ -172,7 +177,7 @@ export class ClientComponent implements OnInit {
           this.isCreate = false;
           this.paginateConfig.currentPage = 1;
           this.initialGetAll();
-          this.addCP(resp);
+          this.createCPReq(resp);
         },
         err => {
           this.errorHandle(err);
@@ -187,7 +192,7 @@ export class ClientComponent implements OnInit {
     this.formReset();
     this.spinner(true);
   }
-  private addCP(resp: any) {
+  private createCPReq(resp: any) {
     let decision = confirm(this.properties.CONFIRM_CP_NEW);
     if (decision == true) {
       /**set consultant id in storage service*/
@@ -405,9 +410,6 @@ export class ClientComponent implements OnInit {
             txt => txt[0].toUpperCase() + txt.substr(1).toLowerCase()
           );
     ip.value = temp;
-  }
-  private spinner(isSpinner: boolean) {
-    this.listReturned = isSpinner;
   }
   pageChanged(event) {
     this.paginateConfig.currentPage = event;
