@@ -224,6 +224,7 @@ export class ClientComponent implements OnInit {
     this.readOnlyForm = "";
     this.enableButtonType = "";
     this.showAction = false;
+    this.init();
     this.setClientContactModel();
   }
   public contactListIncrement(event, i: number) {
