@@ -1,14 +1,13 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Subject, Observable } from 'rxjs';
+import { Injectable } from "@angular/core";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { Subject, Observable } from "rxjs";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root"
 })
 export class HttpClientService {
-
-  constructor(private http: HttpClient) { }
-  private base_url = 'http://210.16.76.202:8082/';
+  constructor(private http: HttpClient) {}
+  private base_url = "http://210.16.76.202:8082/";
   public subject = new Subject();
   public getLogin(URL: string) {
     return this.http.get(URL);
@@ -16,7 +15,7 @@ export class HttpClientService {
   post(data: any, url: string) {
     const httpOptions = {
       headers: new HttpHeaders({
-        'X-TOKEN': sessionStorage.getItem('access_token')
+        "X-TOKEN": sessionStorage.getItem("access_token")
       })
     };
     return this.http.post(this.base_url + url, data);
@@ -34,17 +33,19 @@ export class HttpClientService {
     // 'X-TOKEN': sessionStorage.getItem('access_token'),
     const httpOptions = {
       headers: new HttpHeaders({
-        'Content-Type': 'multipart/form-data',
-        'Accept': 'application/json'
+        "Content-Type": "multipart/form-data",
+        Accept: "application/json"
       })
     };
     return this.http.post(this.base_url + URL, formData);
   }
   isAuthenticate(): boolean {
-    if (sessionStorage.getItem('token') !== "null" && sessionStorage.getItem('token') !== null)
-      return true
-    else
-      return false;
+    if (
+      sessionStorage.getItem("token") !== "null" &&
+      sessionStorage.getItem("token") !== null
+    )
+      return true;
+    else return false;
   }
 
   sendSubject(event: any) {
@@ -59,7 +60,7 @@ export class HttpClientService {
     return this.subject.asObservable();
   }
 
-  checkAdditionPropValueExist(data:any[]):Boolean{
+  checkAdditionPropValueExist(data: any[]): Boolean {
     return data.filter(item => item.value == "").length == 0;
   }
 }

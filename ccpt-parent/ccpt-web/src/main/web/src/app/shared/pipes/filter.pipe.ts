@@ -1,18 +1,23 @@
-import { Pipe, PipeTransform, Injectable } from '@angular/core';
+import { Pipe, PipeTransform, Injectable } from "@angular/core";
 
 @Pipe({
-    name: 'filter'
+  name: "filter"
 })
 @Injectable()
 export class FilterPipe implements PipeTransform {
-    transform(items: any[], value: string): any[] {
-        if (items && !items.length) {
-            return [];
-        }
-        if (!value) {
-            return items;
-        }
-        //item[field].toLowerCase().indexOf(value.toLowerCase()) !== -1
-        return items.filter(item => JSON.stringify(item).toLowerCase().indexOf(value.toLowerCase()) !== -1);
+  transform(items: any[], value: string): any[] {
+    if (items && !items.length) {
+      return [];
     }
+    if (!value) {
+      return items;
+    }
+    //item[field].toLowerCase().indexOf(value.toLowerCase()) !== -1
+    return items.filter(
+      item =>
+        JSON.stringify(item)
+          .toLowerCase()
+          .indexOf(value.toLowerCase()) !== -1
+    );
+  }
 }
