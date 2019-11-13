@@ -195,5 +195,5 @@ export class URLConstants {
   saveCRF = "uploadFile/saveCrf?caId=";
 
   /**backup */
-  Backup = "backUpCCPT/backup";
+  Backup = "backUpCCPT/backupArchives";
 }
