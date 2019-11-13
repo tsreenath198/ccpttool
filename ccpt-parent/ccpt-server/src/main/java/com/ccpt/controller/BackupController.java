@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+//import com.ccpt.constants.BackupStatus;
 import com.ccpt.constants.CCPTConstants;
 
 @Controller
@@ -66,6 +67,7 @@ public class BackupController {
 				"search", "sms", "sms_template", "upload_file" };
 		Connection from = null, to = null;
 		PreparedStatement statement = null;
+//		BackupStatus.startBackup();
 		try {
 			from = getDBConnection(username, password, url, driver);
 			to = getDBConnection(prod_username, prod_password, prod_url, driver);
@@ -82,6 +84,7 @@ public class BackupController {
 		} catch (Exception e) {
 			throw new ValidationException("Exception Occur While BackUp " + e.getMessage());
 		} finally {
+//			BackupStatus.finishBackup();
 			from.close();
 			to.close();
 		}
@@ -98,6 +101,7 @@ public class BackupController {
 
 		Connection from = null, to = null;
 		PreparedStatement statement = null;
+//		BackupStatus.startBackup();
 		try {
 			from = getDBConnection(username, password, url, driver);
 			to = getDBConnection(prod_username, prod_password, prod_url, driver);
@@ -119,8 +123,10 @@ public class BackupController {
 		} catch (Exception e) {
 			throw new ValidationException("Exception Occur While BackUp " + e.getMessage());
 		} finally {
+//			BackupStatus.finishBackup();
 			from.close();
 			to.close();
+
 		}
 		return new ResponseEntity<String>("Successfully done backup", HttpStatus.OK);
 	}
@@ -133,11 +139,12 @@ public class BackupController {
 			cal.setTime(lastUpdatedDate);
 			cal.add(Calendar.DATE, 0);
 			lastUpdatedDate = cal.getTime();
+
 		} else {
 			String strDate = "2019-01-01 00:00:00";
 			lastUpdatedDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(strDate);
 		}
-		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		String currentDate = dateFormat.format(getCurrentDateAndTime());
 		String selectSQL = "select * from ".concat(table).concat(" where created_date BETWEEN ' ")
 				.concat(dateFormat.format(lastUpdatedDate)).concat("' AND '").concat(currentDate).concat("'");
