@@ -59,11 +59,11 @@ public class BackupController {
 
 	@GetMapping("/backup")
 	public ResponseEntity<String> backUp() throws SQLException, ValidationException {
-		String[] tables = { "additional_property", "backup","client", "client_application", "client_application_status",
-				"client_call_history", "client_contact", "client_position", "client_position_status", "consultant",
-				"consultant_call_history", "consultant_status", "email_content", "email_template", "login",
-				"other_contact", "payment", "position_summary", "question", "recruiter", "search", "sms",
-				"sms_template", "upload_file" };
+		String[] tables = { "additional_property", "backup", "client", "client_application",
+				"client_application_status", "client_call_history", "client_contact", "client_position",
+				"client_position_status", "consultant", "consultant_call_history", "consultant_status", "email_content",
+				"email_template", "login", "other_contact", "payment", "position_summary", "question", "recruiter",
+				"search", "sms", "sms_template", "upload_file" };
 		Connection from = null, to = null;
 		PreparedStatement statement = null;
 		try {
@@ -137,11 +137,10 @@ public class BackupController {
 			String strDate = "2019-01-01 00:00:00";
 			lastUpdatedDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(strDate);
 		}
-
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-
-		String selectSQL = "select * from ".concat(table).concat(" where created_date >= ' ")
-				.concat(dateFormat.format(lastUpdatedDate)).concat("'");
+		String currentDate = dateFormat.format(getCurrentDateAndTime());
+		String selectSQL = "select * from ".concat(table).concat(" where created_date BETWEEN ' ")
+				.concat(dateFormat.format(lastUpdatedDate)).concat("' AND '").concat(currentDate).concat("'");
 		System.out.println("sql:" + selectSQL);
 		try (PreparedStatement s1 = from.prepareStatement(selectSQL); ResultSet rs = s1.executeQuery()) {
 			ResultSetMetaData meta = rs.getMetaData();
@@ -206,4 +205,9 @@ public class BackupController {
 		return date;
 	}
 
+	private static Date getCurrentDateAndTime() {
+		final Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.DATE, 0);
+		return cal.getTime();
+	}
 }
