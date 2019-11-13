@@ -1,19 +1,23 @@
-import { Component, OnInit, HostListener } from '@angular/core';
-import { routerTransition } from '../../router.animations';
-import { SearchBankModel } from './search-bank.model';
-import { HttpClientService } from 'src/app/shared/services/http.service';
-import { URLConstants } from '../components/constants/url-constants';
-import { ToastrCustomService } from 'src/app/shared/services/toastr.service';
-import { NgbModal, ModalDismissReasons, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { NgForm } from '@angular/forms';
-import { AdditionalPropertiesModel } from 'src/app/additional-properties.model';
-import { Router } from '@angular/router';
-import { Properties } from '../components/constants/properties';
+import { Component, OnInit, HostListener } from "@angular/core";
+import { routerTransition } from "../../router.animations";
+import { SearchBankModel } from "./search-bank.model";
+import { HttpClientService } from "src/app/shared/services/http.service";
+import { URLConstants } from "../components/constants/url-constants";
+import { ToastrCustomService } from "src/app/shared/services/toastr.service";
+import {
+  NgbModal,
+  ModalDismissReasons,
+  NgbModalRef
+} from "@ng-bootstrap/ng-bootstrap";
+import { NgForm } from "@angular/forms";
+import { AdditionalPropertiesModel } from "src/app/additional-properties.model";
+import { Router } from "@angular/router";
+import { Properties } from "../components/constants/properties";
 
 @Component({
-  selector: 'app-search-bank',
-  templateUrl: './search-bank.component.html',
-  styleUrls: ['./search-bank.component.scss'],
+  selector: "app-search-bank",
+  templateUrl: "./search-bank.component.html",
+  styleUrls: ["./search-bank.component.scss"],
   animations: [routerTransition()]
 })
 export class SearchBankComponent implements OnInit {
@@ -25,16 +29,16 @@ export class SearchBankComponent implements OnInit {
   public showAction: boolean = false;
   public action: string = null;
 
-  public readOnlyForm = '';
-  public enableButtonType = '';
-  public currSearchTxt = '';
+  public readOnlyForm = "";
+  public enableButtonType = "";
+  public currSearchTxt = "";
   public listReturned: boolean;
   public isCreate: boolean = false;
   public screenHeight: any;
   private selectedRecrdToDel = 0;
-  public closeResult = '';
-  public apName = '';
-  public apValue = '';
+  public closeResult = "";
+  public apName = "";
+  public apValue = "";
   private modalRef: NgbModalRef;
   public paginateConfig: any = {
     itemsPerPage: 0,
@@ -49,17 +53,17 @@ export class SearchBankComponent implements OnInit {
   ) {
     this.getScreenSize();
   }
-  @HostListener('window:resize', ['$event'])
+  @HostListener("window:resize", ["$event"])
   getScreenSize(event?) {
     this.screenHeight = window.innerHeight;
   }
   ngOnInit() {
     /*Autheticate user with the token */
     if (!this.http.isAuthenticate()) {
-      this.router.navigate(['/login']);
+      this.router.navigate(["/login"]);
     }
     this.init();
-    this.paginateConfigDeclare(this.properties.ITEMSPERPAGE,1,0);
+    this.paginateConfigDeclare(this.properties.ITEMSPERPAGE, 1, 0);
     this.initialGetAll();
     this.spinner(true);
   }
@@ -71,14 +75,16 @@ export class SearchBankComponent implements OnInit {
     // });
     this.model.properties = [];
   }
-  private paginateConfigDeclare(itemsPerPage,currentPage,totalItems){
-    this.paginateConfig.itemsPerPage = itemsPerPage,
-    this.paginateConfig.currentPage = currentPage,
-    this.paginateConfig.totalItems = totalItems
+  private paginateConfigDeclare(itemsPerPage, currentPage, totalItems) {
+    (this.paginateConfig.itemsPerPage = itemsPerPage),
+      (this.paginateConfig.currentPage = currentPage),
+      (this.paginateConfig.totalItems = totalItems);
   }
   public initialGetAll() {
     let pageNumber = this.paginateConfig.currentPage - 1;
-    let temp = this.http.get(this.urlConstants.SearchGetAll + pageNumber + '&pageSize=50&sortBy=id');
+    let temp = this.http.get(
+      this.urlConstants.SearchGetAll + pageNumber + "&pageSize=50&sortBy=id"
+    );
     temp.subscribe(resp => {
       this.sbList = resp as any;
       //this.pageChange(this.page);
@@ -86,16 +92,16 @@ export class SearchBankComponent implements OnInit {
     });
   }
   public enableFormEditable(): void {
-    this.readOnlyForm = '';
+    this.readOnlyForm = "";
     //this.config.editable = true;
-    this.enableButtonType = 'U';
+    this.enableButtonType = "U";
   }
   public setModel(id) {
     this.spinner(false);
     this.getById(id);
-    this.readOnlyForm = 'U';
+    this.readOnlyForm = "U";
     // this.config.editable = false;
-    this.enableButtonType = 'E';
+    this.enableButtonType = "E";
     this.showAction = true;
     this.action = null;
   }
@@ -116,37 +122,50 @@ export class SearchBankComponent implements OnInit {
   }
   public propertiesListIncrement(event, i: number) {
     switch (event.id) {
-      case 'decrease': {
+      case "decrease": {
         this.model.properties.splice(i, 1);
         break;
       }
-      case 'increase': {
-        if(this.model.properties == null){
+      case "increase": {
+        if (this.model.properties == null) {
           this.model.properties = [];
-          this.model.properties.push(<AdditionalPropertiesModel>{ name: this.apName, value: this.apValue });
-          this.apName = '';
-          this.apValue = '';
-        }
-        else if (  this.model.properties.length == 0 ) {
-          this.model.properties.push(<AdditionalPropertiesModel>{ name: this.apName, value: this.apValue });
-          this.apName = '';
-          this.apValue = '';
-        } 
-        else {
+          this.model.properties.push(<AdditionalPropertiesModel>{
+            name: this.apName,
+            value: this.apValue
+          });
+          this.apName = "";
+          this.apValue = "";
+        } else if (this.model.properties.length == 0) {
+          this.model.properties.push(<AdditionalPropertiesModel>{
+            name: this.apName,
+            value: this.apValue
+          });
+          this.apName = "";
+          this.apValue = "";
+        } else {
           let propertyExist: boolean;
           for (let i = 0; i < this.model.properties.length; i++) {
-            if (this.model.properties[i].name == this.apName && this.model.properties[i].value == this.apValue) {
+            if (
+              this.model.properties[i].name == this.apName &&
+              this.model.properties[i].value == this.apValue
+            ) {
               propertyExist = true;
             } else {
               propertyExist = false;
             }
           }
           if (propertyExist) {
-            this.toastr.error(this.properties.PROPERTY_EXIST, this.properties.PROPERTIES);
+            this.toastr.error(
+              this.properties.PROPERTY_EXIST,
+              this.properties.PROPERTIES
+            );
           } else {
-            this.model.properties.push(<AdditionalPropertiesModel>{ name: this.apName, value: this.apValue });
-            this.apName = '';
-            this.apValue = '';
+            this.model.properties.push(<AdditionalPropertiesModel>{
+              name: this.apName,
+              value: this.apValue
+            });
+            this.apName = "";
+            this.apValue = "";
           }
         }
         break;
@@ -189,8 +208,8 @@ export class SearchBankComponent implements OnInit {
         this.init();
         searchBankForm.resetForm();
         this.initialGetAll();
-        this.readOnlyForm = '';
-        this.enableButtonType = '';
+        this.readOnlyForm = "";
+        this.enableButtonType = "";
         this.showAction = false;
         this.spinner(true);
       },
@@ -204,13 +223,15 @@ export class SearchBankComponent implements OnInit {
     consultantCallHistory.resetForm();
     this.formReset();
     this.init();
-    this.readOnlyForm = '';
-    this.enableButtonType = '';
+    this.readOnlyForm = "";
+    this.enableButtonType = "";
     this.showAction = false;
   }
   public trash(): void {
     this.spinner(false);
-    const temp = this.http.delete(this.urlConstants.SearchDelete + this.selectedRecrdToDel);
+    const temp = this.http.delete(
+      this.urlConstants.SearchDelete + this.selectedRecrdToDel
+    );
     temp.subscribe(
       resp => {
         this.toastr.success(this.properties.DELETE, this.properties.SEARCH);
@@ -218,8 +239,8 @@ export class SearchBankComponent implements OnInit {
         this.close();
         this.formReset();
         this.initialGetAll();
-        this.readOnlyForm = '';
-        this.enableButtonType = '';
+        this.readOnlyForm = "";
+        this.enableButtonType = "";
         this.showAction = false;
         this.spinner(true);
       },
@@ -253,9 +274,9 @@ export class SearchBankComponent implements OnInit {
   }
   private getDismissReason(reason: any): string {
     if (reason === ModalDismissReasons.ESC) {
-      return 'by pressing ESC';
+      return "by pressing ESC";
     } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-      return 'by clicking on a backdrop';
+      return "by clicking on a backdrop";
     } else {
       return `with: ${reason}`;
     }
@@ -267,18 +288,23 @@ export class SearchBankComponent implements OnInit {
     this.paginateConfig.currentPage = event;
     this.initialGetAll();
   }
-  public search(){
-    this.paginateConfig.currentPage =1
-    if(this.currSearchTxt.length == 0){
-      this.paginateConfigDeclare(this.properties.ITEMSPERPAGE,1,0);
+  public search() {
+    this.paginateConfig.currentPage = 1;
+    if (this.currSearchTxt.length == 0) {
+      this.paginateConfigDeclare(this.properties.ITEMSPERPAGE, 1, 0);
       this.initialGetAll();
-    }
-    else if(this.currSearchTxt.length > 3){
-      let temp = this.http.get(this.urlConstants.SearchAllSearch + this.currSearchTxt)
+    } else if (this.currSearchTxt.length > 3) {
+      let temp = this.http.get(
+        this.urlConstants.SearchAllSearch + this.currSearchTxt
+      );
       temp.subscribe(resp => {
         this.sbList.list = resp as any;
-        this.paginateConfigDeclare(this.sbList.list.length,1,this.sbList.list.length)
-      })
+        this.paginateConfigDeclare(
+          this.sbList.list.length,
+          1,
+          this.sbList.list.length
+        );
+      });
     }
   }
 }

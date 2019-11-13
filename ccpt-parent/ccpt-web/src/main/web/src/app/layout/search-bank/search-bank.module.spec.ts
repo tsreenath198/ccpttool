@@ -1,13 +1,13 @@
-import { SearchBankModule } from './search-bank.module';
+import { SearchBankModule } from "./search-bank.module";
 
-describe('ChartsModule', () => {
-    let searchBankModule: SearchBankModule;
+describe("ChartsModule", () => {
+  let searchBankModule: SearchBankModule;
 
-    beforeEach(() => {
-        searchBankModule = new SearchBankModule();
-    });
+  beforeEach(() => {
+    searchBankModule = new SearchBankModule();
+  });
 
-    it('should create an instance', () => {
-        expect(searchBankModule).toBeTruthy();
-    });
+  it("should create an instance", () => {
+    expect(searchBankModule).toBeTruthy();
+  });
 });

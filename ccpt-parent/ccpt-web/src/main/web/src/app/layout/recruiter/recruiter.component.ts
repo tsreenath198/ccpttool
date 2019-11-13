@@ -1,19 +1,23 @@
-import { Component, OnInit, HostListener } from '@angular/core';
-import { routerTransition } from '../../router.animations';
-import { NgbModal, ModalDismissReasons, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { RecruiterModel, Roles, ActionsList } from './recruiter.model';
-import { HttpClientService } from 'src/app/shared/services/http.service';
-import { ToastrCustomService } from 'src/app/shared/services/toastr.service';
-import { URLConstants } from '../components/constants/url-constants';
-import { NgForm } from '@angular/forms';
-import { AdditionalPropertiesModel } from 'src/app/additional-properties.model';
-import { Router } from '@angular/router';
-import { Properties } from '../components/constants/properties';
+import { Component, OnInit, HostListener } from "@angular/core";
+import { routerTransition } from "../../router.animations";
+import {
+  NgbModal,
+  ModalDismissReasons,
+  NgbModalRef
+} from "@ng-bootstrap/ng-bootstrap";
+import { RecruiterModel, Roles, ActionsList } from "./recruiter.model";
+import { HttpClientService } from "src/app/shared/services/http.service";
+import { ToastrCustomService } from "src/app/shared/services/toastr.service";
+import { URLConstants } from "../components/constants/url-constants";
+import { NgForm } from "@angular/forms";
+import { AdditionalPropertiesModel } from "src/app/additional-properties.model";
+import { Router } from "@angular/router";
+import { Properties } from "../components/constants/properties";
 
 @Component({
-  selector: 'app-recruiter',
-  templateUrl: './recruiter.component.html',
-  styleUrls: ['./recruiter.component.scss'],
+  selector: "app-recruiter",
+  templateUrl: "./recruiter.component.html",
+  styleUrls: ["./recruiter.component.scss"],
   animations: [routerTransition()]
 })
 export class RecruiterComponent implements OnInit {
@@ -33,35 +37,40 @@ export class RecruiterComponent implements OnInit {
 
   public isCreate: boolean = false;
   private selectedRecrdToDel = 0;
-  public closeResult = '';
+  public closeResult = "";
   private modalRef: NgbModalRef;
-  public GENDER = ['Male', 'Female', 'Other'];
+  public GENDER = ["Male", "Female", "Other"];
   public currSearchTxt: string;
   public screenHeight: any;
-  public readOnlyForm = '';
-  public enableButtonType = '';
-  public apName = '';
-  public apValue = '';
+  public readOnlyForm = "";
+  public enableButtonType = "";
+  public apName = "";
+  public apValue = "";
   public listReturned: boolean;
-  public paginateConfig :any={
+  public paginateConfig: any = {
     itemsPerPage: this.properties.ITEMSPERPAGE,
     currentPage: 1,
     totalItems: 0
-  }
-  constructor(private http: HttpClientService, private router: Router, private toastr: ToastrCustomService, private modalService: NgbModal) {
+  };
+  constructor(
+    private http: HttpClientService,
+    private router: Router,
+    private toastr: ToastrCustomService,
+    private modalService: NgbModal
+  ) {
     this.getScreenSize();
   }
-  @HostListener('window:resize', ['$event'])
+  @HostListener("window:resize", ["$event"])
   getScreenSize(event?) {
     this.screenHeight = window.innerHeight;
   }
   ngOnInit() {
     /*Autheticate user with the token */
     if (!this.http.isAuthenticate()) {
-      this.router.navigate(['/login']);
+      this.router.navigate(["/login"]);
     }
     this.init();
-    this.initialGetAll(); 
+    this.initialGetAll();
     this.spinner(true);
     this.rolesList = this.rolesModel.roles;
   }
@@ -71,36 +80,38 @@ export class RecruiterComponent implements OnInit {
     //   this.recruiterList = resp as any;
     //   this.spinner(true);
     // });
-    this.http.get(this.urlConstants.RLeadEmails).subscribe(resp =>{
+    this.http.get(this.urlConstants.RLeadEmails).subscribe(resp => {
       this.leadEmailList = resp as any;
-    })
+    });
     this.model.properties = [];
-    this.model['phone'] = '+91';
+    this.model["phone"] = "+91";
   }
-  public initialGetAll(){
-    let pageNumber = this.paginateConfig.currentPage-1
-    let temp=this.http.get(this.urlConstants.RGetAll+ pageNumber + "&pageSize=50&sortBy=id");
+  public initialGetAll() {
+    let pageNumber = this.paginateConfig.currentPage - 1;
+    let temp = this.http.get(
+      this.urlConstants.RGetAll + pageNumber + "&pageSize=50&sortBy=id"
+    );
     temp.subscribe(resp => {
       this.recruiterList = resp as any;
       //this.pageChange(this.page);
-      this.paginateConfig.totalItems = this.recruiterList.noOfRecords
+      this.paginateConfig.totalItems = this.recruiterList.noOfRecords;
     });
   }
   public dblSetModel() {
-    this.readOnlyForm = 'U';
-    this.enableButtonType = 'U';
+    this.readOnlyForm = "U";
+    this.enableButtonType = "U";
     this.showAction = true;
     this.action = null;
   }
   private enableFormEditable(): void {
-    this.readOnlyForm = 'U';
-    this.enableButtonType = 'U';
+    this.readOnlyForm = "U";
+    this.enableButtonType = "U";
   }
   public setModel(id: number) {
     this.spinner(false);
     this.getById(id);
-    this.readOnlyForm = 'R';
-    this.enableButtonType = 'E';
+    this.readOnlyForm = "R";
+    this.enableButtonType = "E";
     this.showAction = true;
     this.action = null;
   }
@@ -121,41 +132,54 @@ export class RecruiterComponent implements OnInit {
   }
   public additionalPropertiesDeclare() {
     this.model.properties = [<AdditionalPropertiesModel>{}];
-    this.model['phone'] = '+91';
+    this.model["phone"] = "+91";
   }
   public propertiesListIncrement(event, i: number) {
     switch (event.id) {
-      case 'decrease': {
+      case "decrease": {
         this.model.properties.splice(i, 1);
         break;
       }
-      case 'increase': {
-        if(this.model.properties == null){
+      case "increase": {
+        if (this.model.properties == null) {
           this.model.properties = [];
-          this.model.properties.push(<AdditionalPropertiesModel>{ name: this.apName, value: this.apValue });
-          this.apName = '';
-          this.apValue = '';
-        }
-        else if (  this.model.properties.length == 0 ) {
-          this.model.properties.push(<AdditionalPropertiesModel>{ name: this.apName, value: this.apValue });
-          this.apName = '';
-          this.apValue = '';
-        } 
-        else {
+          this.model.properties.push(<AdditionalPropertiesModel>{
+            name: this.apName,
+            value: this.apValue
+          });
+          this.apName = "";
+          this.apValue = "";
+        } else if (this.model.properties.length == 0) {
+          this.model.properties.push(<AdditionalPropertiesModel>{
+            name: this.apName,
+            value: this.apValue
+          });
+          this.apName = "";
+          this.apValue = "";
+        } else {
           let propertyExist: boolean;
           for (let i = 0; i < this.model.properties.length; i++) {
-            if (this.model.properties[i].name == this.apName && this.model.properties[i].value == this.apValue) {
+            if (
+              this.model.properties[i].name == this.apName &&
+              this.model.properties[i].value == this.apValue
+            ) {
               propertyExist = true;
             } else {
               propertyExist = false;
             }
           }
           if (propertyExist) {
-            this.toastr.error(this.properties.PROPERTY_EXIST, this.properties.PROPERTIES);
+            this.toastr.error(
+              this.properties.PROPERTY_EXIST,
+              this.properties.PROPERTIES
+            );
           } else {
-            this.model.properties.push(<AdditionalPropertiesModel>{ name: this.apName, value: this.apValue });
-            this.apName = '';
-            this.apValue = '';
+            this.model.properties.push(<AdditionalPropertiesModel>{
+              name: this.apName,
+              value: this.apValue
+            });
+            this.apName = "";
+            this.apValue = "";
           }
         }
         break;
@@ -165,15 +189,15 @@ export class RecruiterComponent implements OnInit {
   public actions(value, trashContent, form) {
     console.log(value);
     switch (value) {
-      case 'Delete': {
+      case "Delete": {
         this.open(this.model.id, trashContent);
         break;
       }
-      case 'Edit': {
+      case "Edit": {
         this.enableFormEditable();
         break;
       }
-      case 'Close': {
+      case "Close": {
         this.cancelForm(form);
       }
     }
@@ -191,13 +215,16 @@ export class RecruiterComponent implements OnInit {
         this.init();
         this.formReset();
         recruiterForm.resetForm();
-        this.paginateConfig.currentPage=1;
+        this.paginateConfig.currentPage = 1;
         this.initialGetAll();
         this.isCreate = false;
         this.spinner(true);
       },
       err => {
-        this.toastr.error(err.error.message + err.status, this.properties.RECRUITER);
+        this.toastr.error(
+          err.error.message + err.status,
+          this.properties.RECRUITER
+        );
         this.isCreate = false;
         this.spinner(true);
       }
@@ -214,8 +241,8 @@ export class RecruiterComponent implements OnInit {
         recruiterForm.resetForm();
         this.initialGetAll();
         this.spinner(true);
-        this.readOnlyForm = '';
-        this.enableButtonType = '';
+        this.readOnlyForm = "";
+        this.enableButtonType = "";
         this.showAction = false;
       },
       err => {
@@ -228,13 +255,15 @@ export class RecruiterComponent implements OnInit {
     recruiterForm.resetForm();
     this.formReset();
     this.init();
-    this.readOnlyForm = '';
-    this.enableButtonType = '';
+    this.readOnlyForm = "";
+    this.enableButtonType = "";
     this.showAction = false;
   }
   public trash(): void {
     this.spinner(false);
-    const temp = this.http.delete(this.urlConstants.RDelete + this.selectedRecrdToDel);
+    const temp = this.http.delete(
+      this.urlConstants.RDelete + this.selectedRecrdToDel
+    );
     temp.subscribe(
       resp => {
         const response: any = resp;
@@ -243,8 +272,8 @@ export class RecruiterComponent implements OnInit {
         this.init();
         this.formReset();
         this.initialGetAll();
-        this.readOnlyForm = '';
-        this.enableButtonType = '';
+        this.readOnlyForm = "";
+        this.enableButtonType = "";
         this.showAction = false;
         this.spinner(true);
       },
@@ -255,8 +284,13 @@ export class RecruiterComponent implements OnInit {
     );
   }
   public transformTitleCase(ip: HTMLInputElement) {
-    let temp = ip.value.length === 0 ? '' :
-      ip.value.replace(/\w\S*/g, (txt => txt[0].toUpperCase() + txt.substr(1).toLowerCase()));
+    let temp =
+      ip.value.length === 0
+        ? ""
+        : ip.value.replace(
+            /\w\S*/g,
+            txt => txt[0].toUpperCase() + txt.substr(1).toLowerCase()
+          );
     ip.value = temp;
   }
   /**
@@ -283,9 +317,9 @@ export class RecruiterComponent implements OnInit {
   }
   private getDismissReason(reason: any): string {
     if (reason === ModalDismissReasons.ESC) {
-      return 'by pressing ESC';
+      return "by pressing ESC";
     } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-      return 'by clicking on a backdrop';
+      return "by clicking on a backdrop";
     } else {
       return `with: ${reason}`;
     }
@@ -293,8 +327,8 @@ export class RecruiterComponent implements OnInit {
   private spinner(isSpinner: boolean) {
     this.listReturned = isSpinner;
   }
-  pageChanged(event){
-    this.paginateConfig.currentPage = event
+  pageChanged(event) {
+    this.paginateConfig.currentPage = event;
     this.initialGetAll();
   }
 }

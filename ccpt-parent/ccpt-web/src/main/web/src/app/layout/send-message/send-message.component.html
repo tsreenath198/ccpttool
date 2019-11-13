@@ -1,29 +1,62 @@
 <div [@routerTransition]>
-
-  <app-page-header [icon2]="'fa-comments'" [heading2]="'Send Message'" [icon1]="'fa-user'" [heading1]="'Administration'">
+  <app-page-header
+    [icon2]="'fa-comments'"
+    [heading2]="'Send Message'"
+    [icon1]="'fa-user'"
+    [heading1]="'Administration'"
+  >
   </app-page-header>
-  <div class="spinner padding-top justify-content-md-center" *ngIf="!listReturned">
-      <div class="bounce1"></div>
-      <div class="bounce2"></div>
-      <div class="bounce3"></div>
-    </div>
+  <div
+    class="spinner padding-top justify-content-md-center"
+    *ngIf="!listReturned"
+  >
+    <div class="bounce1"></div>
+    <div class="bounce2"></div>
+    <div class="bounce3"></div>
+  </div>
   <div class="row" *ngIf="listReturned">
-      <div class=" col-md-12">
-        <form name="form" id="messageTemplateForm" (ngSubmit)="f.form.valid&&sendSms(f)" #f="ngForm" novalidate>
-          <label>Number</label>
-          <div class="form-group">
-            <input class="form-control" [(ngModel)]="model.contactNumbers" name="tonumbers" #tonumbers="ngModel" />
-          </div>
-          <label>Message Body</label>
-          <textarea class="form-control" cols="5" rows="8" [(ngModel)]="model.message" name="body"></textarea>
-          <div class="col-md-12" class="pull=right pt-3">
-            <button type="submit"  class="btn btn-secondary ml-3"
-              [disabled]="f.form.pristine || f.form.invalid || isCreate">Send</button>
-            <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3">
-              Clear
-            </button>
-          </div>
-        </form>
-      </div>
+    <div class=" col-md-12">
+      <form
+        name="form"
+        id="messageTemplateForm"
+        (ngSubmit)="f.form.valid && sendSms(f)"
+        #f="ngForm"
+        novalidate
+      >
+        <label>Number</label>
+        <div class="form-group">
+          <input
+            class="form-control"
+            [(ngModel)]="model.contactNumbers"
+            name="tonumbers"
+            #tonumbers="ngModel"
+          />
+        </div>
+        <label>Message Body</label>
+        <textarea
+          class="form-control"
+          cols="5"
+          rows="8"
+          [(ngModel)]="model.message"
+          name="body"
+        ></textarea>
+        <div class="col-md-12" class="pull=right pt-3">
+          <button
+            type="submit"
+            class="btn btn-secondary ml-3"
+            [disabled]="f.form.pristine || f.form.invalid || isCreate"
+          >
+            Send
+          </button>
+          <button
+            type="button"
+            (click)="cancelForm(f)"
+            class="btn btn-secondary ml-3"
+          >
+            Clear
+          </button>
+        </div>
+      </form>
     </div>
+  </div>
 </div>

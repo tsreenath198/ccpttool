@@ -1,13 +1,13 @@
-import { OtherContactsModule } from './other-contacts.module';
+import { OtherContactsModule } from "./other-contacts.module";
 
-describe('ChartsModule', () => {
-    let otherContactsModule: OtherContactsModule;
+describe("ChartsModule", () => {
+  let otherContactsModule: OtherContactsModule;
 
-    beforeEach(() => {
-        otherContactsModule = new OtherContactsModule();
-    });
+  beforeEach(() => {
+    otherContactsModule = new OtherContactsModule();
+  });
 
-    it('should create an instance', () => {
-        expect(otherContactsModule).toBeTruthy();
-    });
+  it("should create an instance", () => {
+    expect(otherContactsModule).toBeTruthy();
+  });
 });

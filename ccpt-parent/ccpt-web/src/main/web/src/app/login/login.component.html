@@ -26,19 +26,37 @@
             #password
           />
           <span id="toogle" (click)="toogle(password)"
-            ><i toggle="#pwd" class="fa fa-eye field-icon toggle-password" *ngIf="!viewPassword" aria-hidden="true"></i>
-            <i toggle="#pwd" class="fa fa-eye-slash field-icon toggle-password" *ngIf="viewPassword" aria-hidden="true"></i>
+            ><i
+              toggle="#pwd"
+              class="fa fa-eye field-icon toggle-password"
+              *ngIf="!viewPassword"
+              aria-hidden="true"
+            ></i>
+            <i
+              toggle="#pwd"
+              class="fa fa-eye-slash field-icon toggle-password"
+              *ngIf="viewPassword"
+              aria-hidden="true"
+            ></i>
           </span>
-         </div>
+        </div>
         <div class="row">
           <div class="form-group col-md-6">
             <div class="checkbox">
-              <label> <input type="checkbox" [(ngModel)]="isRememberMe" /> Remember me </label>
+              <label>
+                <input type="checkbox" [(ngModel)]="isRememberMe" /> Remember me
+              </label>
             </div>
           </div>
           <div class="col-md-6">
-            <button class="btn rounded-btn" (click)="onLoggedin()" [disabled]="loggingIn">
-              <span class="fa fa-sign-in"></span>&nbsp;&nbsp;{{ loggingIn ? 'loading...' : ('Sign In' | translate) }}
+            <button
+              class="btn rounded-btn"
+              (click)="onLoggedin()"
+              [disabled]="loggingIn"
+            >
+              <span class="fa fa-sign-in"></span>&nbsp;&nbsp;{{
+                loggingIn ? "loading..." : ("Sign In" | translate)
+              }}
             </button>
           </div>
         </div>

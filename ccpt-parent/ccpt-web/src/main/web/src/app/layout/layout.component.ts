@@ -21,7 +21,7 @@ export class LayoutComponent implements OnInit {
   receiveCollapsed($event) {
     this.collapedSideBar = $event;
   }
-  checkBackupStatus(event){
-    this.backupStatus = event
+  checkBackupStatus(event) {
+    this.backupStatus = event;
   }
 }

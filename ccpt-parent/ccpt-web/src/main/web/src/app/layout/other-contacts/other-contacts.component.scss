@@ -15,21 +15,21 @@
 .bl-trans {
   border-left: 6px solid transparent;
 }
-.padding-top{
- padding-top: 60px;
+.padding-top {
+  padding-top: 60px;
 }
-.dropdown-toggle::after{
-    display:none;
+.dropdown-toggle::after {
+  display: none;
+}
+.drop-list:hover {
+  cursor: pointer;
+}
+.table-striped {
+  tbody tr:nth-of-type(odd) {
+    background-color: #c1c1c1;
   }
-  .drop-list:hover{
-    cursor: pointer;
-  }
-  .table-striped {
-    tbody tr:nth-of-type(odd) {
-      background-color: #c1c1c1;
-    }
- }
+}
 
- .shrinkBody {
+.shrinkBody {
   flex-shrink: 3;
 }

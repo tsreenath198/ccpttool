@@ -1,4 +1,4 @@
-import { AdditionalPropertiesModel } from 'src/app/additional-properties.model';
+import { AdditionalPropertiesModel } from "src/app/additional-properties.model";
 
 export interface SearchBankModel {
   id: string;

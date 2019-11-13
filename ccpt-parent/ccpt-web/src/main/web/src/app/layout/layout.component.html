@@ -1,12 +1,18 @@
-<app-header *ngIf="!backupStatus" (backup)="checkBackupStatus($event)"></app-header>
+<app-header
+  *ngIf="!backupStatus"
+  (backup)="checkBackupStatus($event)"
+></app-header>
 <app-sidebar></app-sidebar>
-<section *ngIf="!backupStatus" class="main-container" [ngClass]="{collapsed: collapedSideBar}">
-       
-    <router-outlet *ngIf="!backupStatus"></router-outlet>
+<section
+  *ngIf="!backupStatus"
+  class="main-container"
+  [ngClass]="{ collapsed: collapedSideBar }"
+>
+  <router-outlet *ngIf="!backupStatus"></router-outlet>
 </section>
 
 <div *ngIf="backupStatus" class="spinner">
-        <div class="bounce1"></div>
-        <div class="bounce2"></div>
-        <div class="bounce3"></div>
-    </div>
+  <div class="bounce1"></div>
+  <div class="bounce2"></div>
+  <div class="bounce3"></div>
+</div>

@@ -15,13 +15,13 @@
 .bl-trans {
   border-left: 6px solid transparent;
 }
-.padding-top{
- padding-top: 60px;
+.padding-top {
+  padding-top: 60px;
 }
-.dropdown-toggle::after{
-  display:none;
+.dropdown-toggle::after {
+  display: none;
 }
-.drop-list:hover{
+.drop-list:hover {
   cursor: pointer;
 }
 .table-striped {
@@ -29,8 +29,8 @@
     background-color: #c1c1c1;
   }
 }
-.file-download:hover{
+.file-download:hover {
   cursor: pointer;
-  color:blue;
+  color: blue;
   text-decoration: underline;
- }
+}

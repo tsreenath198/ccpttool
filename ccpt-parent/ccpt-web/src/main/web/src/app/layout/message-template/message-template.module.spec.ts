@@ -1,13 +1,13 @@
-import { MessageTemplateModule } from './message-template.module';
+import { MessageTemplateModule } from "./message-template.module";
 
-describe('ChartsModule', () => {
-    let messageTemplateModule: MessageTemplateModule;
+describe("ChartsModule", () => {
+  let messageTemplateModule: MessageTemplateModule;
 
-    beforeEach(() => {
-        messageTemplateModule = new MessageTemplateModule();
-    });
+  beforeEach(() => {
+    messageTemplateModule = new MessageTemplateModule();
+  });
 
-    it('should create an instance', () => {
-        expect(messageTemplateModule).toBeTruthy();
-    });
+  it("should create an instance", () => {
+    expect(messageTemplateModule).toBeTruthy();
+  });
 });

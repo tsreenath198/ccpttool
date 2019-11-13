@@ -1,3 +1,1 @@
-export interface UploadFileModel{
-    
-}
+export interface UploadFileModel {}
