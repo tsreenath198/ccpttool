@@ -85,10 +85,12 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 			ClientPosition clientPosition = clientApplications.get(0).getClientPosition();
 			valuesMap.put("jobTitle", clientPosition.getRole());
 			valuesMap.put("clientContactName", clientPosition.getClient().getClientContacts().get(0).getFullname());
-			if (clientPosition.getClient().getClientContacts().get(0).getSalutation().equalsIgnoreCase("Mr."))
-				sbPara.append("<p>Hi ${clientContactName} sir</p>");
-			else
-				sbPara.append("<p>Hi ${clientContactName} mam</p>");
+			if (clientPosition.getClient().getClientContacts().get(0).getSalutation() != null) {
+				if (clientPosition.getClient().getClientContacts().get(0).getSalutation().equalsIgnoreCase("Mr."))
+					sbPara.append("<p>Hi ${clientContactName} sir</p>");
+				else
+					sbPara.append("<p>Hi ${clientContactName} mam</p>");
+			}
 			if (ids.size() == 1)
 				sbPara.append("<p> Below is the profile with ${jobTitle}  experience (CV Attached)</p>");
 			else
@@ -121,6 +123,9 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 					}
 				}
 			}
+			Map<String, Integer[]> urlInfo = new HashMap<String, Integer[]>();
+			urlInfo.put("getClientApps", (Integer[]) ids.toArray());
+			emailContent.setUrlInfo(urlInfo);
 			emailContent.setBody(sb.toString().concat(JobDescriptionSubstitutor.getSign(body)));
 			emailContent.setUploadFiles(files);
 			emailContent.setToEmails(
@@ -157,10 +162,12 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 			ClientPosition clientPosition = clientApplications.get(0).getClientPosition();
 			valuesMap.put("jobTitle", clientPosition.getRole());
 			valuesMap.put("clientContactName", clientPosition.getClient().getClientContacts().get(0).getFullname());
-			if (clientPosition.getClient().getClientContacts().get(0).getSalutation().equalsIgnoreCase("Mr."))
-				sbPara.append("<p>Hi ${clientContactName} sir</p>");
-			else
-				sbPara.append("<p>Hi ${clientContactName} mam</p>");
+			if (clientPosition.getClient().getClientContacts().get(0).getSalutation() != null) {
+				if (clientPosition.getClient().getClientContacts().get(0).getSalutation().equalsIgnoreCase("Mr."))
+					sbPara.append("<p>Hi ${clientContactName} sir</p>");
+				else
+					sbPara.append("<p>Hi ${clientContactName} mam</p>");
+			}
 			if (ids.size() == 1)
 				sbPara.append("<p> Below is the profile with ${jobTitle}  experience (CV Attached)</p>");
 			else
@@ -351,11 +358,12 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 				sbPara = new StringBuilder();
 				emailContent = new EmailContent();
 				ClientPosition clientPosition = ca.getClientPosition();
-				if (clientPosition.getClient().getClientContacts().get(0).getSalutation().equalsIgnoreCase("Mr."))
-					ccName = clientPosition.getClient().getClientContacts().get(0).getFullname().concat(" sir");
-				else
-					ccName = clientPosition.getClient().getClientContacts().get(0).getFullname().concat(" mam");
-
+				if (clientPosition.getClient().getClientContacts().get(0).getSalutation() != null) {
+					if (clientPosition.getClient().getClientContacts().get(0).getSalutation().equalsIgnoreCase("Mr."))
+						ccName = clientPosition.getClient().getClientContacts().get(0).getFullname().concat(" sir");
+					else
+						ccName = clientPosition.getClient().getClientContacts().get(0).getFullname().concat(" mam");
+				}
 				valuesMap.put("jobTitle", clientPosition.getRole());
 				valuesMap.put("clientContactName", clientPosition.getClient().getClientContacts().get(0).getFullname());
 				valuesMap.put("consultantName", ca.getConsultant().getFullname());

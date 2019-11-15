@@ -1,6 +1,7 @@
 package com.ccpt.model;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -47,6 +48,9 @@ public class EmailContent extends IDEntity {
 
 	@Transient
 	private String bcc;
+
+	@Transient
+	private Map<String, Integer[]> urlInfo;
 
 	@Transient
 	private List<UploadFile> uploadFiles;
