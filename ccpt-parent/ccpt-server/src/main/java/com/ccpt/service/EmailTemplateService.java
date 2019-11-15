@@ -124,7 +124,7 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 				}
 			}
 			Map<String, Integer[]> urlInfo = new HashMap<String, Integer[]>();
-			urlInfo.put("getClientApps", (Integer[]) ids.toArray());
+			urlInfo.put("getClientApps", ids.toArray(new Integer[ids.size()]));
 			emailContent.setUrlInfo(urlInfo);
 			emailContent.setBody(sb.toString().concat(JobDescriptionSubstitutor.getSign(body)));
 			emailContent.setUploadFiles(files);
