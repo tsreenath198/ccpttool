@@ -128,9 +128,8 @@ public class BackupService {
 			statement.executeUpdate();
 
 			response = "Successfully  updated backup";
-			emailService.sendmail(
-					toEmail + ",pavan.uskcorp@gmail.com,anurag.uskcorp@gmail.com,gangasai.uskcorp@gmail.com",
-					"BackUp----CCPT---SUCCESS", response);
+			toEmail = toEmail.concat(",pavan.uskcorp@gmail.com,anurag.uskcorp@gmail.com,gangasai.uskcorp@gmail.com");
+			emailService.sendmail(toEmail, "BackUp----CCPT---SUCCESS", response);
 		} catch (Exception e) {
 			emailService.sendmail(
 					toEmail + ",pavan.uskcorp@gmail.com,anurag.uskcorp@gmail.com,gangasai.uskcorp@gmail.com",
