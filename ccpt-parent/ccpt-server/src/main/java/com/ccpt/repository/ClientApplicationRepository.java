@@ -51,7 +51,7 @@ public interface ClientApplicationRepository extends BaseRepository<ClientApplic
 	List<ClientApplication> search(@Param("clientId") Integer clientId, @Param("clientPosId") Integer clientPosId,
 			@Param("statusType") String statusType, @Param("searchKey") String searchKey);
 
-	@Query("SELECT c.id as id,c.consultant.id as consultantId,c.consultant.fullname as consultantName,c.clientPosition.client.name as clientName,c.clientPosition.client.id as clientId,c.status.code as status  FROM ClientApplication c, ClientApplicationStatus cas WHERE c.status=cas.code AND cas.statusType='Active' AND c.activeFlag=:activeFlag ORDER BY c.clientPosition.client.name ASC")
+	@Query("SELECT c.id as id,c.consultant.id as consultantId,c.consultant.fullname as consultantName,c.clientPosition.client.name as clientName,c.clientPosition.client.id as clientId,c.status.code as status  FROM ClientApplication c, ClientApplicationStatus cas WHERE c.status=cas.code AND cas.statusType='Active' AND c.activeFlag=:activeFlag ORDER BY c.clientPosition.id DESC")
 	List<DashboardCAStatistics> getDashboardCaStatus(@Param("activeFlag") Boolean activeFlag);
 
 	@Query(value = "SELECT code FROM client_application_status", nativeQuery = true)
