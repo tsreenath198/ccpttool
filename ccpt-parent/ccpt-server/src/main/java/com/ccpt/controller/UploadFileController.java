@@ -9,6 +9,7 @@ import javax.validation.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.orm.jpa.JpaSystemException;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -91,8 +92,11 @@ public class UploadFileController {
 		boolean isDuplicate = uploadFileService.isDuplicate(caId, "CRF", fileName);
 		if (!isDuplicate) {
 			UploadFile uploadFile = new UploadFile(file.getBytes(), caId, "CRF", comments, fileName, fileType);
-			uploadFileService.save(uploadFile);
-
+			try {
+				uploadFileService.save(uploadFile);
+			} catch (JpaSystemException e) {
+				throw new ValidationException("file size exceeds maximum limit");
+			}
 			return new ResponseEntity<GenericResponse>(new GenericResponse(fileName + "  uploaded successfully"),
 					HttpStatus.OK);
 		} else {
