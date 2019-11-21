@@ -46,8 +46,8 @@ public class Client extends FileSupportEntity {
 	private String industry;
 
 	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "industryId", referencedColumnName = "id")
-	private IndustryType industryType;
+	@JoinColumn(name = "industryId", nullable = true)
+	private IndustryType industryId;
 
 	@Column
 	private String email;
