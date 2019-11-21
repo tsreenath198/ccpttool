@@ -6,6 +6,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -44,8 +45,8 @@ public class Client extends FileSupportEntity {
 	@Column
 	private String industry;
 
-	@OneToMany(cascade = CascadeType.ALL)
-	@JoinColumn(name = "industryId", nullable = true)
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "industryId", referencedColumnName = "id")
 	private IndustryType industryType;
 
 	@Column
