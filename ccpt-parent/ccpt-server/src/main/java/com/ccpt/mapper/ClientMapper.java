@@ -14,6 +14,6 @@ public interface ClientMapper extends BaseMapper<ClientDTO, Client, Integer> {
 
 	public ClientContact toContactDTO(ClientContactDTO dto);
 
-	@Mappings({ @Mapping(source = "industryId", target = "industry.id") })
+	@Mappings({ @Mapping(source = "industryId", target = "industryId.id") })
 	public Client toModel(ClientDTO dto);
 }
