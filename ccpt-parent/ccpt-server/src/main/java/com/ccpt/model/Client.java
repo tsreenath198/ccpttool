@@ -6,6 +6,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -43,6 +44,10 @@ public class Client extends FileSupportEntity {
 
 	@Column
 	private String industry;
+
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "industryId", nullable = true)
+	private IndustryType industryType;
 
 	@Column
 	private String email;
