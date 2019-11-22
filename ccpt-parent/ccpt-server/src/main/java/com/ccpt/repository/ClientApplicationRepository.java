@@ -36,7 +36,7 @@ public interface ClientApplicationRepository extends BaseRepository<ClientApplic
 			+ "client_application.interview_date as interviewDate,client_application.interview_location as interviewLocation,"
 			+ "client_application.interview_time as interviewTime  FROM   client_application,client_position, client, consultant "
 			+ "WHERE client_application.client_position_id = client_position.id AND client_position.client_id = client.id  AND "
-			+ "client_application.consultant_id = consultant.id AND "
+			+ "client_application.consultant_id = consultant.id AND  client_application.status_code='Interview Scheduled' AND "
 			+ "client_application.status_code IN (SELECT client_application_status.code from client_application_status,client_application"
 			+ " WHERE client_application_status.code=client_application.status_code AND client_application_status.status_type='Active') "
 			+ "AND client_application.active_flag=1 ORDER BY client_position.id DESC", nativeQuery = true)
