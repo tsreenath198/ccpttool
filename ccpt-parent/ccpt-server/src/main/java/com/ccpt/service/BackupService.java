@@ -67,8 +67,8 @@ public class BackupService {
 		String[] tables = { "additional_property", "backup", "client", "client_application",
 				"client_application_status", "client_call_history", "client_contact", "client_position",
 				"client_position_status", "consultant", "consultant_call_history", "consultant_status", "email_content",
-				"email_template", "login", "other_contact", "payment", "position_summary", "question", "recruiter",
-				"search", "sms", "sms_template", "upload_file" };
+				"email_template", "industry_type", "login", "other_contact", "payment", "position_summary", "question",
+				"recruiter", "search", "sms", "sms_template", "upload_file" };
 		BackupStatus.startBackup();
 		try {
 			from = getDBConnection(username, password, url, driver);
@@ -105,8 +105,8 @@ public class BackupService {
 	public String backUpArchives() throws SQLException, ValidationException {
 		String[] tables = { "additional_property", "client", "client_application", "client_application_status",
 				"client_call_history", "client_contact", "client_position", "client_position_status", "consultant",
-				"consultant_call_history", "consultant_status", "email_content", "email_template", "login",
-				"other_contact", "payment", "position_summary", "question", "recruiter", "search", "sms",
+				"consultant_call_history", "consultant_status", "email_content", "email_template", "industry_type",
+				"login", "other_contact", "payment", "position_summary", "question", "recruiter", "search", "sms",
 				"sms_template", "upload_file" };
 		BackupStatus.startBackup();
 		try {
