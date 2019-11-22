@@ -85,7 +85,8 @@ public class ConsultantService extends BaseService<Consultant, Integer> {
 		if (searchKey.contains(","))
 			return findConsultantBySkills(searchKey);
 		else
-			return consultantRepository.search(searchKey.concat(" "));
+			searchKey = "%" + searchKey.replaceAll("%", "").toUpperCase() + "%";
+		return consultantRepository.search(searchKey);
 	}
 
 	List<Consultant> findConsultantBySkills(String searchKey) {
