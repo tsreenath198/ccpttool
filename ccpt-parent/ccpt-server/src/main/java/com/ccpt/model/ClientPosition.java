@@ -8,6 +8,8 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
 import lombok.Getter;
@@ -82,21 +84,27 @@ public class ClientPosition extends FileSupportEntity {
 	@Column
 	private String naukriURL;
 
+	@Temporal(TemporalType.DATE)
 	@Column
 	private Date shinePosting;
 
+	@Temporal(TemporalType.DATE)
 	@Column
 	private Date naukriPosting;
 
+	@Temporal(TemporalType.DATE)
 	@Column
 	private Date facebookPosting;
 
+	@Temporal(TemporalType.DATE)
 	@Column
 	private Date twitterPosting;
 
+	@Temporal(TemporalType.DATE)
 	@Column
 	private Date shineMassMailing;
 
+	@Temporal(TemporalType.DATE)
 	@Column
 	private Date naukriMassMailing;
 
