@@ -132,6 +132,14 @@ public class ClientPositionService extends BaseService<ClientPosition, Integer> 
 		ClientPosition cp = get(model.getId());
 		cp.setNaukriURL(model.getNaukriURL());
 		cp.setShineURL(model.getShineURL());
+		cp.setShinePosting(model.getShinePosting());
+		cp.setNaukriPosting(model.getNaukriPosting());
+		cp.setFacebookPosting(model.getFacebookPosting());
+		cp.setTwitterPosting(model.getTwitterPosting());
+		cp.setShineMassMailing(model.getShineMassMailing());
+		cp.setNaukriMassMailing(model.getNaukriMassMailing());
+		cp.setShineMassMailingCount(model.getShineMassMailingCount());
+		cp.setNaukriMassMailingCount(model.getNaukriMassMailingCount());
 		save(cp);
 	}
 

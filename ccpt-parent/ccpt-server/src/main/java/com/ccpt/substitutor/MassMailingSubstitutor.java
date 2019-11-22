@@ -35,7 +35,7 @@ public class MassMailingSubstitutor implements ContentSubstitutor {
 			valuesMap.put("phone", "9848071296");
 			valuesMap.put("role", clientPosition.getRole());
 			valuesMap.put("joblocation", clientPosition.getLocation());
-			valuesMap.put("sector", clientPosition.getClient().getIndustry());
+			valuesMap.put("sector", clientPosition.getClient().getIndustryType().getName());
 			if (clientPosition.getDescription() != null) {
 				valuesMap.put("jobDescription", clientPosition.getDescription());
 			} else {

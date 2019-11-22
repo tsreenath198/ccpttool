@@ -15,7 +15,6 @@ public class ClientDTO extends FileSupportEntityDTO {
 	private String billingAddress;
 	private String phone;
 	private String gst;
-	private String industry;
 	private String email;
 	private String servicetaxNo;
 	private String serviceCharge;

@@ -42,9 +42,6 @@ public class Client extends FileSupportEntity {
 	@Column
 	private String gst;
 
-	@Column
-	private String industry;
-
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "industry_id", referencedColumnName = "id")
 	private IndustryType industryType;
