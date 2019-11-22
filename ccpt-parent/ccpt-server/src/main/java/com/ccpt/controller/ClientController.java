@@ -21,6 +21,7 @@ import com.ccpt.model.Client;
 import com.ccpt.model.DropDownStatistics;
 import com.ccpt.service.BaseService;
 import com.ccpt.service.ClientService;
+import com.ccpt.service.IndustryTypeService;
 
 @Controller
 @CrossOrigin
@@ -29,6 +30,9 @@ public class ClientController extends BaseController<ClientDTO, Client, Integer>
 
 	@Autowired
 	private ClientService clientService;
+
+	@Autowired
+	private IndustryTypeService industryTypeService;
 
 	@Override
 	public BaseService<Client, Integer> getService() {
@@ -48,9 +52,13 @@ public class ClientController extends BaseController<ClientDTO, Client, Integer>
 		if (model.getPhone() == null && model.getEmail() == null) {
 			throw new ValidationException("Phone number and Email Both cannot be null");
 		}
-
+		if (model.getIndustryType() == null) {
+			model.setIndustryType(null);
+		} else {
+			model.setIndustryType(industryTypeService.get(model.getIndustryType().getId()));
+		}
 	}
-	
+
 	@GetMapping("/getAllClients")
 	public ResponseEntity<List<DropDownStatistics>> getAllClients() {
 		List<DropDownStatistics> result = clientService.getAllClients();

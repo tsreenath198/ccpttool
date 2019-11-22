@@ -10,7 +10,7 @@ import com.ccpt.repository.IndustryTypeRespository;
 @Service
 public class IndustryTypeService extends BaseService<IndustryType, Integer> {
 	public IndustryTypeService() {
-		super("SMS");
+		super("IndustryType");
 	}
 
 	@Autowired
