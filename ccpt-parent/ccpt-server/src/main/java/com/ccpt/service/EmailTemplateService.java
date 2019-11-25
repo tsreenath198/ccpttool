@@ -275,10 +275,8 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 		valuesMap.put("interviewTime", ca.get().getInterviewTime());
 		valuesMap.put("interviewLocation", ca.get().getInterviewLocation());
 		valuesMap.put("address", ca.get().getClientPosition().getClient().getAddress());
-		valuesMap.put("clientContactPersonName",
-				ca.get().getClientPosition().getClient().getClientContacts().get(0).getFullname());
-		valuesMap.put("clientContactPersonNumber",
-				ca.get().getClientPosition().getClient().getClientContacts().get(0).getPhone());
+		valuesMap.put("clientContactPersonName", ca.get().getClientPosition().getClient().getContactPersonName());
+		valuesMap.put("clientContactPersonNumber", ca.get().getClientPosition().getClient().getPhone());
 
 		sbPara.append("<p>Hi <strong>${consultantName}</strong>,</p>"
 				+ "<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
