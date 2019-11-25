@@ -101,7 +101,7 @@ public class BackupService {
 	}
 
 	// Fire at 12am every 5 days every month
-	@Scheduled(cron = "0 0 0 1/5 * ?")
+	// @Scheduled(cron = "0 0 0 1/5 * ?")
 	public String backUpArchives() throws SQLException, ValidationException {
 		String[] tables = { "additional_property", "client", "client_application", "client_application_status",
 				"client_call_history", "client_contact", "client_position", "client_position_status", "consultant",

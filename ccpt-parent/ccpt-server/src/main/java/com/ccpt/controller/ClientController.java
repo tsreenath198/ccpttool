@@ -57,6 +57,11 @@ public class ClientController extends BaseController<ClientDTO, Client, Integer>
 		} else {
 			model.setIndustryType(industryTypeService.get(model.getIndustryType().getId()));
 		}
+		if (model.getSalutation() == null) {
+			model.setSalutation(null);
+		} else {
+			model.setSalutation(model.getSalutation());
+		}
 	}
 
 	@GetMapping("/getAllClients")
