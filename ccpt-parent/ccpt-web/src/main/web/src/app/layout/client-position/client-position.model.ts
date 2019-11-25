@@ -50,3 +50,17 @@ export class SendEmailModel {
 export class ActionsList {
     actions = [{key: 'Edit' , value:'Edit'},{key: 'Send JD' , value:'Send JD'},{key: 'Clone' , value:'Clone'},{key: 'Create Application' , value:'Create Application'}, {key: 'Delete' , value:'Delete'}, {key: 'Close' , value:'Close'}];
 }
+
+export class PostingInfoModel{
+    id: number;
+    naukriURL: string;
+    shineURL: string;
+    shinePosting:Date;
+    naukriPosting:Date;
+    facebookPosting:Date;
+    twitterPosting:Date;
+    shineMassMailing:Date;
+    naukriMassMailing:Date;
+    shineMassMailingCount:number;
+    naukriMassMailingCount:number;
+}

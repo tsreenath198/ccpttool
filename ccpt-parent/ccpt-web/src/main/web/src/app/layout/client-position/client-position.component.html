@@ -186,10 +186,6 @@
                 <th>Naukri</th>
                 <td>{{ model.naukriURL }}</td>
               </tr>
-              <tr *ngIf="model.almaConnectURL">
-                <th>Alma Connect</th>
-                <td>{{ model.almaConnectURL }}</td>
-              </tr>
               <tr *ngFor="let ap of model.properties">
                 <th>{{ ap.name }}</th>
                 <td>{{ ap.value }}</td>
@@ -244,11 +240,7 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label>Job Type</label>
-                <select
-                  class="form-control"
-                  name="jobType"
-                  [disabled]="readOnlyForm == 'R'"
-                  [(ngModel)]="model.jobType">
+                <select class="form-control" name="jobType" [disabled]="readOnlyForm == 'R'" [(ngModel)]="model.jobType">
                   <option *ngFor="let cs of properties.JOB_TYPE">
                     {{ cs }}
                   </option>
@@ -258,12 +250,7 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label>Availability</label>
-                <select
-                  class="form-control"
-                  name="sourced"
-                  [disabled]="readOnlyForm == 'R'"
-                  [(ngModel)]="model.availability"
-                >
+                <select class="form-control" name="sourced" [disabled]="readOnlyForm == 'R'" [(ngModel)]="model.availability">
                   <option *ngFor="let cs of properties.DURATION">
                     {{ cs }}
                   </option>
@@ -288,12 +275,7 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label>Required Experience</label>
-                <input
-                  class="form-control"
-                  [readonly]="readOnlyForm == 'R'"
-                  [(ngModel)]="model.experience"
-                  name="experience"
-                />
+                <input class="form-control" [readonly]="readOnlyForm == 'R'" [(ngModel)]="model.experience" name="experience" />
               </div>
             </div>
           </div>
@@ -301,13 +283,7 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label>Min CTC(in LPA)</label>
-                <input
-                  class="form-control"
-                  [readonly]="readOnlyForm == 'R'"
-                  type="number"
-                  [(ngModel)]="model.minCtc"
-                  name="minctc"
-                />
+                <input class="form-control" [readonly]="readOnlyForm == 'R'" type="number" [(ngModel)]="model.minCtc" name="minctc" />
               </div>
             </div>
             <div class="col-md-6">
@@ -328,12 +304,7 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label>Location</label>
-                <input
-                  class="form-control"
-                  [readonly]="readOnlyForm == 'R'"
-                  [(ngModel)]="model.location"
-                  name="loc"
-                />
+                <input class="form-control" [readonly]="readOnlyForm == 'R'" [(ngModel)]="model.location" name="loc" />
               </div>
             </div>
             <div class="col-md-6">
@@ -387,148 +358,11 @@
               </div>
             </div>
           </div>
-          <h5>Tracker</h5>
-          <hr />
-          <div class="row">
-            <div class="col-md-6">
-              <div class="form-group">
-                <label>Shine Mass Mailing</label>
-                <div class="row">
-                  <div class="col-sm-8">
-                    <input
-                      class="form-control input-group-lg reg_name"
-                      type="date"
-                      name="shineMassMailing"
-                      [(ngModel)]="model.shineMassMailing"
-                      [readonly]="readOnlyForm == 'R'"
-                      max="9999-12-31"
-                    />
-                  </div>
-                  <div class="col-sm-4">
-                    <input
-                      class="form-control input-group-lg reg_name"
-                      type="number"
-                      name="shineMassMailingCount"
-                      [(ngModel)]="model.shineMassMailingCount"
-                      [readonly]="readOnlyForm == 'R'"
-                      placeholder="Count"
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="form-group">
-                <label>Naukri Mass Mailing</label>
-                <div class="row">
-                  <div class="col-sm-8">
-                    <input
-                      class="form-control input-group-lg reg_name"
-                      type="date"
-                      name="naukriMassMailing"
-                      [(ngModel)]="model.naukriMassMailing"
-                      [readonly]="readOnlyForm == 'R'"
-                      max="9999-12-31"
-                    />
-                  </div>
-                  <div class="col-sm-4">
-                    <input
-                      class="form-control input-group-lg reg_name"
-                      type="number"
-                      name="naukriMassMailingCount"
-                      [(ngModel)]="model.naukriMassMailingCount"
-                      [readonly]="readOnlyForm == 'R'"
-                      placeholder="Count"
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-6">
-              <div class="form-group">
-                <label>Shine Posting</label>
-                <input
-                  type="date"
-                  class="form-control"
-                  name="shinePosting"
-                  [(ngModel)]="model.shinePosting"
-                  [readonly]="readOnlyForm == 'R'"
-                  max="9999-12-31"
-                />
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="form-group">
-                <label>Naukri Posting</label>
-                <input
-                  type="date"
-                  class="form-control"
-                  name="naukriPosting"
-                  [(ngModel)]="model.naukriPosting"
-                  [readonly]="readOnlyForm == 'R'"
-                  max="9999-12-31"
-                />
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-6">
-              <div class="form-group">
-                <label>Alma Connect Posting</label>
-                <input
-                  type="date"
-                  class="form-control"
-                  name="twitterPosting"
-                  [(ngModel)]="model.twitterPosting"
-                  [readonly]="readOnlyForm == 'R'"
-                  max="9999-12-31"
-                />
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="form-group">
-                <label>Facebook Posting</label>
-                <input
-                  type="date"
-                  class="form-control"
-                  name="facebookPosting"
-                  [(ngModel)]="model.facebookPosting"
-                  [readonly]="readOnlyForm == 'R'"
-                  max="9999-12-31"
-                />
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-6">
-              <div class="form-group">
-                <label>Twitter Posting</label>
-                <input
-                  type="date"
-                  class="form-control"
-                  name="twitterPosting"
-                  [(ngModel)]="model.twitterPosting"
-                  [ngClass]="{ 'is-invalid': f.submitted && twitterPosting.invalid }"
-                  [readonly]="readOnlyForm == 'R'"
-                  max="9999-12-31"
-                />
-              </div>
-            </div>
-          </div>
-          <hr />
           <div class="row">
             <div class="col-md-12">
               <div class="form-group">
                 <label>Required Skills<span class="required">*</span></label>
-                <angular-editor
-                  [(ngModel)]="model.requiredSkills"
-                  name="requiredSkills"
-                  [config]="config"
-                  required
-                >
-                </angular-editor>
+                <angular-editor [(ngModel)]="model.requiredSkills" name="requiredSkills" [config]="config" required> </angular-editor>
                 <div class="invalid-feedback">
                   Required Skills are mandatory
                 </div>
@@ -858,17 +692,124 @@
     </button>
   </div>
   <div class="modal-body">
-    <div>
-      <label>Shine</label>
-      <textarea class="form-control" cols="2" rows="2" [(ngModel)]="model.shineURL" name="shine"></textarea>
+    <div class="row">
+      <div class="col-md-12">
+        <label>Shine</label>
+        <textarea class="form-control" cols="2" rows="2" [(ngModel)]="model.shineURL" name="shine"></textarea>
+      </div>
     </div>
-    <div class="pt-2">
-      <label>Naukri</label>
-      <textarea class="form-control" cols="2" rows="2" [(ngModel)]="model.naukriURL" name="naukri"></textarea>
+    <div class="row">
+      <div class="col-md-12">
+        <label>Naukri</label>
+        <textarea class="form-control" cols="2" rows="2" [(ngModel)]="model.naukriURL" name="naukri"></textarea>
+      </div>
     </div>
-    <div class="pt-2">
-      <label>Alma Connect</label>
-      <textarea class="form-control" cols="2" rows="2" [(ngModel)]="model.almaConnectURL" name="alma"></textarea>
+
+    <h5 class="pt-2">Tracker</h5>
+    <hr />
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group">
+          <label>Shine Mass Mailing</label>
+          <div class="row">
+            <div class="col-sm-8">
+              <input
+                class="form-control input-group-lg reg_name"
+                type="date"
+                name="shineMassMailing"
+                [(ngModel)]="model.shineMassMailing"
+                max="9999-12-31"
+              />
+            </div>
+            <div class="col-sm-4">
+              <input
+                class="form-control input-group-lg reg_name"
+                type="number"
+                name="shineMassMailingCount"
+                [(ngModel)]="model.shineMassMailingCount"
+                placeholder="Count"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label>Naukri Mass Mailing</label>
+          <div class="row">
+            <div class="col-sm-8">
+              <input
+                class="form-control input-group-lg reg_name"
+                type="date"
+                name="naukriMassMailing"
+                [(ngModel)]="model.naukriMassMailing"
+                max="9999-12-31"
+              />
+            </div>
+            <div class="col-sm-4">
+              <input
+                class="form-control input-group-lg reg_name"
+                type="number"
+                name="naukriMassMailingCount"
+                [(ngModel)]="model.naukriMassMailingCount"
+                placeholder="Count"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group">
+          <label>Shine Posting</label>
+          <input
+            type="date"
+            class="form-control"
+            name="shinePosting"
+            [(ngModel)]="model.shinePosting"
+            max="9999-12-31"
+          />
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label>Naukri Posting</label>
+          <input
+            type="date"
+            class="form-control"
+            name="naukriPosting"
+            [(ngModel)]="model.naukriPosting"
+            max="9999-12-31"
+          />
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group">
+          <label>Facebook Posting</label>
+          <input
+            type="date"
+            class="form-control"
+            name="facebookPosting"
+            [(ngModel)]="model.facebookPosting"
+            max="9999-12-31"
+          />
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label>Twitter Posting</label>
+          <input
+            type="date"
+            class="form-control"
+            name="twitterPosting"
+            [(ngModel)]="model.twitterPosting"
+            max="9999-12-31"
+          />
+        </div>
+      </div>
     </div>
   </div>
   <div class="modal-footer">
