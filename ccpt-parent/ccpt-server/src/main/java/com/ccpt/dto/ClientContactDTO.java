@@ -12,5 +12,6 @@ public class ClientContactDTO extends IDEntityDTO {
 	private String fullname;
 	private String phone;
 	private String email;
+	private String salutation;
 
 }
