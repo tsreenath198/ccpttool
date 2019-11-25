@@ -55,8 +55,8 @@ export class HeaderComponent implements OnInit {
     this.backup.emit(true);
     this.http.get(this.urlConstants.Backup).subscribe(
       resp => {
-        this.toastr.success("Backup", "Successful");
         this.backup.emit(false);
+        this.toastr.success("Backup", "Successful");
       },
       err => {
         this.toastr.error(err.error.error, err.message);
