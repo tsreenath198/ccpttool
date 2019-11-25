@@ -20,7 +20,6 @@ import org.springframework.stereotype.Component;
 
 import com.ccpt.exception.CAException;
 import com.ccpt.model.ClientApplication;
-import com.ccpt.model.ClientContact;
 import com.ccpt.model.ClientPosition;
 import com.ccpt.model.EmailContent;
 import com.ccpt.model.EmailTemplate;
@@ -40,6 +39,9 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 
 	@Value("${spring.mail.bcc}")
 	private String bcc;
+
+	@Value("${spring.mail.cc}")
+	private String cc;
 
 	@Autowired
 	private UploadFileService uploadFileService;
@@ -65,7 +67,6 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 
 	public EmailContent getClientApps(List<Integer> ids) throws Exception {
 		EmailContent emailContent = new EmailContent();
-		StringBuilder cc = null;
 		StringBuilder body = new StringBuilder();
 		List<String> names = new ArrayList<String>();
 		List<UploadFile> files = new ArrayList<UploadFile>();
@@ -85,8 +86,8 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 			ClientPosition clientPosition = clientApplications.get(0).getClientPosition();
 			valuesMap.put("jobTitle", clientPosition.getRole());
 			valuesMap.put("clientContactName", clientPosition.getClient().getContactPersonName());
-			if (clientPosition.getClient().getClientContacts().get(0).getSalutation() != null) {
-				if (clientPosition.getClient().getClientContacts().get(0).getSalutation().equalsIgnoreCase("Mr."))
+			if (clientPosition.getClient().getSalutation() != null) {
+				if (clientPosition.getClient().getSalutation().equalsIgnoreCase("Mr."))
 					sbPara.append("<p>Hi ${clientContactName} sir</p>");
 				else
 					sbPara.append("<p>Hi ${clientContactName} mam</p>");
@@ -100,7 +101,6 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 			String subject = StrSubstitutor.replace(sbPara.toString(), valuesMap);
 			StringBuilder sb = new StringBuilder(subject);
 			for (ClientApplication clientApplication : clientApplications) {
-				cc = new StringBuilder();
 				String template = JobDescriptionSubstitutor.appendCATemplate(clientApplication);
 				UploadFile uploadedFile = uploadFileService.getByRefIdAndRefType(clientApplication.getId(), "CRF");
 				if (uploadedFile != null)
@@ -111,28 +111,16 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 				String name = clientApplication.getClientPosition().getClient().getName();
 				names.add(name);
 				cpNames.add(clientApplication.getClientPosition().getRole());
-
-				List<ClientContact> clientContacts = clientApplication.getClientPosition().getClient()
-						.getClientContacts();
-				if (clientContacts.size() != 1) {
-					for (int i = 1; i < clientContacts.size(); i++) {
-						cc.append(clientContacts.get(i).getEmail());
-						if (i != clientContacts.size() - 1) {
-							cc.append(",");
-						}
-					}
-				}
 			}
 			Map<String, Integer[]> urlInfo = new HashMap<String, Integer[]>();
 			urlInfo.put("getClientApps", ids.toArray(new Integer[ids.size()]));
 			emailContent.setUrlInfo(urlInfo);
 			emailContent.setBody(sb.toString().concat(JobDescriptionSubstitutor.getSign(body)));
 			emailContent.setUploadFiles(files);
-			emailContent.setToEmails(
-					clientApplications.get(0).getClientPosition().getClient().getClientContacts().get(0).getEmail());
+			emailContent.setToEmails(clientApplications.get(0).getClientPosition().getClient().getEmail());
 			emailContent.setSubject("CV for " + String.join(",", cpNames));
 
-			emailContent.setCc(cc.toString());
+			emailContent.setCc(cc);
 			emailContent.setBcc(bcc);
 			return emailContent;
 		} else {
@@ -142,7 +130,6 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 
 	public EmailContent getCAs(List<Integer> ids) throws Exception {
 		EmailContent emailContent = new EmailContent();
-		StringBuilder cc = null;
 		StringBuilder body = new StringBuilder();
 		List<String> names = new ArrayList<String>();
 		List<UploadFile> files = new ArrayList<UploadFile>();
@@ -162,8 +149,8 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 			ClientPosition clientPosition = clientApplications.get(0).getClientPosition();
 			valuesMap.put("jobTitle", clientPosition.getRole());
 			valuesMap.put("clientContactName", clientPosition.getClient().getContactPersonName());
-			if (clientPosition.getClient().getClientContacts().get(0).getSalutation() != null) {
-				if (clientPosition.getClient().getClientContacts().get(0).getSalutation().equalsIgnoreCase("Mr."))
+			if (clientPosition.getClient().getSalutation() != null) {
+				if (clientPosition.getClient().getSalutation().equalsIgnoreCase("Mr."))
 					sbPara.append("<p>Hi ${clientContactName} sir</p>");
 				else
 					sbPara.append("<p>Hi ${clientContactName} mam</p>");
@@ -177,21 +164,9 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 			String subject = StrSubstitutor.replace(sbPara.toString(), valuesMap);
 			StringBuilder sb = new StringBuilder(subject);
 			for (ClientApplication clientApplication : clientApplications) {
-				cc = new StringBuilder();
 				String name = clientApplication.getClientPosition().getClient().getName();
 				names.add(name);
 				cpNames.add(clientApplication.getClientPosition().getRole());
-
-				List<ClientContact> clientContacts = clientApplication.getClientPosition().getClient()
-						.getClientContacts();
-				if (clientContacts.size() != 1) {
-					for (int i = 1; i < clientContacts.size(); i++) {
-						cc.append(clientContacts.get(i).getEmail());
-						if (i != clientContacts.size() - 1) {
-							cc.append(",");
-						}
-					}
-				}
 			}
 			String template = appendTemplate(clientApplications);
 			body.append(template);
@@ -200,7 +175,7 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 			emailContent.setToEmails(
 					clientApplications.get(0).getClientPosition().getClient().getClientContacts().get(0).getEmail());
 			emailContent.setSubject("Reqd update on CVs");
-			emailContent.setCc(cc.toString());
+			emailContent.setCc(cc);
 			emailContent.setBcc(bcc);
 			return emailContent;
 		} else {
@@ -356,8 +331,8 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 				sbPara = new StringBuilder();
 				emailContent = new EmailContent();
 				ClientPosition clientPosition = ca.getClientPosition();
-				if (clientPosition.getClient().getClientContacts().get(0).getSalutation() != null) {
-					if (clientPosition.getClient().getClientContacts().get(0).getSalutation().equalsIgnoreCase("Mr."))
+				if (clientPosition.getClient().getSalutation() != null) {
+					if (clientPosition.getClient().getSalutation().equalsIgnoreCase("Mr."))
 						ccName = clientPosition.getClient().getClientContacts().get(0).getFullname().concat(" sir");
 					else
 						ccName = clientPosition.getClient().getClientContacts().get(0).getFullname().concat(" mam");
