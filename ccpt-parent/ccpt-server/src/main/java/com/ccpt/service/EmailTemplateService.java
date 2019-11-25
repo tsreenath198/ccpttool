@@ -84,7 +84,7 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 			Map<String, String> valuesMap = new HashMap<String, String>();
 			ClientPosition clientPosition = clientApplications.get(0).getClientPosition();
 			valuesMap.put("jobTitle", clientPosition.getRole());
-			valuesMap.put("clientContactName", clientPosition.getClient().getClientContacts().get(0).getFullname());
+			valuesMap.put("clientContactName", clientPosition.getClient().getContactPersonName());
 			if (clientPosition.getClient().getClientContacts().get(0).getSalutation() != null) {
 				if (clientPosition.getClient().getClientContacts().get(0).getSalutation().equalsIgnoreCase("Mr."))
 					sbPara.append("<p>Hi ${clientContactName} sir</p>");
@@ -161,7 +161,7 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 			Map<String, String> valuesMap = new HashMap<String, String>();
 			ClientPosition clientPosition = clientApplications.get(0).getClientPosition();
 			valuesMap.put("jobTitle", clientPosition.getRole());
-			valuesMap.put("clientContactName", clientPosition.getClient().getClientContacts().get(0).getFullname());
+			valuesMap.put("clientContactName", clientPosition.getClient().getContactPersonName());
 			if (clientPosition.getClient().getClientContacts().get(0).getSalutation() != null) {
 				if (clientPosition.getClient().getClientContacts().get(0).getSalutation().equalsIgnoreCase("Mr."))
 					sbPara.append("<p>Hi ${clientContactName} sir</p>");
@@ -363,7 +363,7 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 						ccName = clientPosition.getClient().getClientContacts().get(0).getFullname().concat(" mam");
 				}
 				valuesMap.put("jobTitle", clientPosition.getRole());
-				valuesMap.put("clientContactName", clientPosition.getClient().getClientContacts().get(0).getFullname());
+				valuesMap.put("clientContactName", clientPosition.getClient().getContactPersonName());
 				valuesMap.put("consultantName", ca.getConsultant().getFullname());
 				DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 				if (ca.getInterviewDate() == null)
