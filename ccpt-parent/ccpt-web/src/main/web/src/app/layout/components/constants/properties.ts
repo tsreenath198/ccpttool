@@ -34,6 +34,7 @@ export class Properties {
   PAYMENT = "Payment";
   LOGIN = "Login";
   SEARCH = "Search";
+  IT = "Industry Type";
   EMAIL_HISTORY = "Email History";
 
   /** Interview Types */
@@ -84,6 +85,7 @@ export class Properties {
   DASHBOARD_CAS = "Client Applications By Status";
   DASHBOARD_DCP = "Dying Client Positions";
   DASHBOARD_ACA = "Active Client Applications";
+  DASHBOARD_TODO = "TO-DO List";
 
   /**Button Names */
   CLOSE = "Close";
