@@ -39,9 +39,10 @@ public interface ClientApplicationRepository extends BaseRepository<ClientApplic
 			+ "client_application.consultant_id = consultant.id AND  client_application.status_code='Interview Scheduled' AND "
 			+ "client_application.status_code IN (SELECT client_application_status.code from client_application_status,client_application"
 			+ " WHERE client_application_status.code=client_application.status_code AND client_application_status.status_type='Active') "
-			+ "AND client_application.active_flag=1 ORDER BY client_position.id DESC", nativeQuery = true)
+			+ " AND client_application.active_flag=1 ORDER BY client_application.interview_date DESC", nativeQuery = true)
 	List<InterviewSummaryStatistics> getAllInterviewsFromToday();
 	// AND client_application.interview_date >= curDate()
+	// AND client_application.status_code='Interview Scheduled'
 
 	List<ClientApplication> findByConsultantIdAndActiveFlagOrderByCreatedDateDesc(
 			@Param("consultantId") Integer consultantId, @Param("activeFlag") Boolean activeFlag);
