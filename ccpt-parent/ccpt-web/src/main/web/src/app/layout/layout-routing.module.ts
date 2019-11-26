@@ -62,6 +62,10 @@ const routes: Routes = [
         loadChildren: "./search-bank/search-bank.module#SearchBankModule"
       },
       {
+        path: "industry-type",
+        loadChildren: "./industry-type/industry-type.module#IndustryTypeModule"
+      },
+      {
         path: "other-contacts",
         loadChildren:
           "./other-contacts/other-contacts.module#OtherContactsModule"

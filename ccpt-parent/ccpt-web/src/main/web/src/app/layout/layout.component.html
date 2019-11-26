@@ -2,7 +2,7 @@
   *ngIf="!backupStatus"
   (backup)="checkBackupStatus($event)"
 ></app-header>
-<app-sidebar></app-sidebar>
+<app-sidebar *ngIf="!backupStatus"></app-sidebar>
 <section
   *ngIf="!backupStatus"
   class="main-container"

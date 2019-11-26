@@ -27,6 +27,7 @@ import {
 export class ClientComponent implements OnInit {
   public model: ClientModel = <ClientModel>{};
   public clientList: any = [];
+  public itList:any = [];
   public currSearchTxt = "";
   public urlConstants = new URLConstants();
   public properties = new Properties();
@@ -50,6 +51,7 @@ export class ClientComponent implements OnInit {
   public loggedInRole: any = "";
   public isCreate: boolean = false;
   public listReturned: boolean;
+  public getAllIT = this.http.get(this.urlConstants.ITGetAll + '0&pageSize=100000&sortBy=id');
   public config: AngularEditorConfig = {
     editable: true,
     spellcheck: true,
@@ -84,6 +86,7 @@ export class ClientComponent implements OnInit {
     this.init();
     this.setClientContactModel();
     this.initialGetAll();
+    this.getIndustryType();
     this.spinner(true);
     this.storageService.clientId = null;
   }
@@ -96,10 +99,14 @@ export class ClientComponent implements OnInit {
     this.model.phone = "+91 ";
     this.setAdditionalDefaultProps();
   }
-
+  private getIndustryType(){
+    this.getAllIT.subscribe(resp =>{
+      this.itList = resp as any;
+    })
+  }
   private setClientContactModel() {
     this.model.clientContacts = [
-      { salutation: "", fullname: "", email: "", phone: "+91 " }
+      { fullname: "", email: "", phone: "+91 " }
     ];
   }
 
@@ -150,6 +157,7 @@ export class ClientComponent implements OnInit {
   private mapToUpdateModel(response) {
     const temp = response;
     this.model = temp;
+    this.model["industryId"] = temp.industryType.id;
     return this.model;
   }
   private formReset() {
@@ -235,7 +243,6 @@ export class ClientComponent implements OnInit {
       }
       case "increase": {
         this.model.clientContacts.push({
-          salutation: "",
           fullname: "",
           email: "",
           phone: "+91 "
