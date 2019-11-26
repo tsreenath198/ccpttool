@@ -1,5 +1,5 @@
 <div [@routerTransition]>
-  <app-page-header [icon1]="'fa-search'" [heading1]="'Search'"> </app-page-header>
+  <app-page-header [icon1]="'fa-history'" [heading1]="'History'" [icon2]="'fa-comments'" [heading2]="'Messages'"> </app-page-header>
 
   <div class="spinner padding-top justify-content-md-center" *ngIf="!listReturned">
     <div class="bounce1"></div>
@@ -28,11 +28,11 @@
           </thead>
           <tbody>
             <tr
-              *ngFor="let ehl of ehList.list| filter:currSearchTxt | paginate: paginateConfig; let i = index"
+              *ngFor="let ehl of ehList.list | filter: currSearchTxt | paginate: paginateConfig; let i = index"
               (click)="setModel(ehl.id)"
             >
               <td>
-                {{ ehl.createdDate | date:'dd-mm-yyyy' }}
+                {{ ehl.createdDate | date: 'dd-mm-yyyy' }}
               </td>
               <td width="150px">
                 {{ ehl.contactNumbers }}
@@ -65,7 +65,12 @@
                   (click)="enableFormEditable()">
                   Edit
                 </button> -->
-            <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3" *ngIf="enableButtonType == '' || enableButtonType == 'U'">
+            <button
+              type="button"
+              (click)="cancelForm(f)"
+              class="btn btn-secondary ml-3"
+              *ngIf="enableButtonType == '' || enableButtonType == 'U'"
+            >
               {{ enableButtonType != '' ? 'Close' : 'Clear' }}
             </button>
 
@@ -89,7 +94,7 @@
             <tbody>
               <tr *ngIf="model.createdDate">
                 <th>Date</th>
-                <td>{{ model?.createdDate | date:'dd-mm-yyyy'  }}</td>
+                <td>{{ model?.createdDate | date: 'dd-mm-yyyy' }}</td>
               </tr>
               <tr *ngIf="model.contactNumbers">
                 <th>Sent To</th>
@@ -99,7 +104,7 @@
                 <th>CC</th>
                 <td>{{ model.message }}</td>
               </tr>
-                <!-- <tr *ngFor="let ap of model.properties; let i = index">
+              <!-- <tr *ngFor="let ap of model.properties; let i = index">
                   <th>{{ap.name}}</th>
                   <td>{{ap.value}}</td>
                 </tr> -->
@@ -212,7 +217,12 @@
               Add
             </button>
             <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2" (click)="update(f)">Update</button>
-            <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3" *ngIf="enableButtonType == '' || enableButtonType == 'U'">
+            <button
+              type="button"
+              (click)="cancelForm(f)"
+              class="btn btn-secondary ml-3"
+              *ngIf="enableButtonType == '' || enableButtonType == 'U'"
+            >
               {{ enableButtonType != '' ? 'Close' : 'Clear' }}
             </button>
           </div>
