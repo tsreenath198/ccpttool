@@ -160,9 +160,9 @@ export class PaymentsComponent implements OnInit {
       this.model.companyGstNum = temp.clientPosition.client.gst;
       this.model.creditPeriod = temp.clientPosition.client.creditPeriod;
       this.model.gauranteePeriod = temp.clientPosition.client.guaranteePeriod;
-      this.model.contactPerson = temp.clientPosition.client.clientContacts[0].fullname;
-      this.model.contactPersonNum = temp.clientPosition.client.clientContacts[0].phone;
-      this.model.contactPersonEmail = temp.clientPosition.client.clientContacts[0].email;
+      this.model.contactPerson = temp.clientPosition.client.contactPersonName;
+      this.model.contactPersonNum = temp.clientPosition.client.phone;
+      this.model.contactPersonEmail = temp.clientPosition.client.email;
       this.model.designation = temp.clientPosition.role;
       this.model.billingAddress = temp.clientPosition.client.billingAddress;
       this.model.serviceCharge = temp.clientPosition.client.serviceCharge;

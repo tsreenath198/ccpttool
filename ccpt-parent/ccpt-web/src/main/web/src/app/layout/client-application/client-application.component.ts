@@ -728,9 +728,9 @@ export class ClientApplicationComponent implements OnInit {
     this.paymentModel.companyGstNum = model.clientPosition.client.gst;
     this.paymentModel.creditPeriod = model.clientPosition.client.creditPeriod;
     this.paymentModel.gauranteePeriod = model.clientPosition.client.guaranteePeriod;
-    this.paymentModel.contactPerson = model.clientPosition.client.clientContacts[0].fullname;
-    this.paymentModel.contactPersonNum = model.clientPosition.client.clientContacts[0].phone;
-    this.paymentModel.contactPersonEmail = model.clientPosition.client.clientContacts[0].email;
+    this.paymentModel.contactPerson = model.clientPosition.client.contactPersonName;
+    this.paymentModel.contactPersonNum = model.clientPosition.client.phone;
+    this.paymentModel.contactPersonEmail = model.clientPosition.client.email;
     this.paymentModel.designation = model.clientPosition.role;
     this.paymentModel.serviceCharge = model.clientPosition.client.serviceCharge;
     this.paymentModel.candidateName = model.consultant.fullname;
