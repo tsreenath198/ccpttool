@@ -55,6 +55,8 @@ export class DashboardComponent implements OnInit {
   public updateIndex: number;
   public clientId: number;
   public consultantId: number;
+  public showLeftTable: string = this.constantProperties.DASHBOARD_ITW;
+  public showRightTable: string = this.constantProperties.DASHBOARD_PT;
   /** Template references */
 
   @ViewChild('contentACA')
@@ -176,21 +178,25 @@ export class DashboardComponent implements OnInit {
       this.getAllCAByStatus.subscribe(resp => {
         this.caByStatusList = resp as any;
         this.setCAByStatusBarData(this.caByStatusList);
+        this.selectRightTable(this.constantProperties.DASHBOARD_CAS);
       });
     } else if (this.caByStatusList.length != 0) {
       this.caByStatusList = [];
+      this.selectRightTable(this.constantProperties.DASHBOARD_CAS);
     }
   }
   public rpGetAllByDays() {
     const numberOfDays = this.rpChoosenDays;
     this.http.get(this.urlConstants.ReportingGetClosures + numberOfDays).subscribe(resp => {
       this.ccptReportCC = resp;
+      this.selectLeftTable(this.constantProperties.DASHBOARD_RP)
     });
   }
   public cochGetAllByDays() {
     const numberOfDays = this.cochChoosenDays;
     this.http.get(this.urlConstants.CoCHGetCountByRecruiter + numberOfDays).subscribe(resp => {
       this.ccptReportCOCH = resp as any;
+      this.selectLeftTable(this.constantProperties.CON_C_H)
     });
   }
   public clchGetAllByDays() {
@@ -299,7 +305,7 @@ export class DashboardComponent implements OnInit {
     let CAStatusOder: any = [];
     this.caStatusList.list.filter(csl => {
       for (let i = 1; i <= this.caStatusList.list.length; i++) {
-        if (csl.ordr == i && CAStatusOder.length) {
+        if (csl.ordr == i) {
           CAStatusOder[i - 1] = csl.description;
         }
       }
@@ -365,4 +371,20 @@ export class DashboardComponent implements OnInit {
   //     this.setCAByStatusBarData(this.caByStatusList);
   //   });
   // }
+  public selectLeftTable(value: any){
+    if(this.showLeftTable != value){
+      this.showLeftTable = value;
+    }
+    else{
+      this.showLeftTable = ''
+    }
+  }
+  public selectRightTable(value: any){
+    if(this.showRightTable != value){
+      this.showRightTable = value;
+    }
+    else{
+      this.showRightTable = ''
+    }
+  }
 }
