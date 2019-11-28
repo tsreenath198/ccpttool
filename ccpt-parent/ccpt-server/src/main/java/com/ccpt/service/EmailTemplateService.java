@@ -1,16 +1,11 @@
 package com.ccpt.service;
 
-import static java.util.Map.Entry.comparingByKey;
-import static java.util.stream.Collectors.toMap;
-
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -317,21 +312,26 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 		StringBuilder body = new StringBuilder();
 		List<String> names = new ArrayList<String>();
 		List<ClientApplication> clientApplications = new ArrayList<ClientApplication>();
-		Map<String, Optional<ClientApplication>> map = new TreeMap<String, Optional<ClientApplication>>(
-				Collections.reverseOrder());
+		Map<String, Optional<ClientApplication>> map = new TreeMap<String, Optional<ClientApplication>>();
 		for (Integer id : ids) {
 			Optional<ClientApplication> ca = clientApplicationRepository.findById(id);
 			String name = ca.get().getClientPosition().getClient().getName();
 			names.add(name);
-			String stringDate = ca.get().getInterviewDate().toString().concat(ca.get().getInterviewTime());
+			String stringDate = ca.get().getInterviewDate().toString().concat(" ").concat(ca.get().getInterviewTime());
 			map.put(stringDate, ca);
 		}
 
-		Map<String, Optional<ClientApplication>> sorted = map.entrySet().stream().sorted(comparingByKey())
-				.collect(toMap(e -> e.getKey(), e -> e.getValue(), (e1, e2) -> e2, LinkedHashMap::new));
+		/*
+		 * Map<String, Optional<ClientApplication>> reverseSortedMap = new
+		 * TreeMap<String, Optional<ClientApplication>>( Collections.reverseOrder());
+		 * reverseSortedMap.putAll(map);
+		 */
 
-		for (Entry<String, Optional<ClientApplication>> entry : sorted.entrySet()) {
+		for (Entry<String, Optional<ClientApplication>> entry : map.entrySet()) {
 			clientApplications.add(entry.getValue().get());
+		}
+		for (ClientApplication clientApplication : clientApplications) {
+			System.out.println("Date:::" + clientApplication.getInterviewDate());
 		}
 
 		boolean allEqual = names.isEmpty() || names.stream().allMatch(names.get(0)::equals);
