@@ -317,19 +317,20 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 		StringBuilder body = new StringBuilder();
 		List<String> names = new ArrayList<String>();
 		List<ClientApplication> clientApplications = new ArrayList<ClientApplication>();
-		Map<Date, Optional<ClientApplication>> map = new TreeMap<Date, Optional<ClientApplication>>(
+		Map<String, Optional<ClientApplication>> map = new TreeMap<String, Optional<ClientApplication>>(
 				Collections.reverseOrder());
 		for (Integer id : ids) {
 			Optional<ClientApplication> ca = clientApplicationRepository.findById(id);
 			String name = ca.get().getClientPosition().getClient().getName();
 			names.add(name);
-			map.put(ca.get().getInterviewDate(), ca);
+			String stringDate = ca.get().getInterviewDate().toString().concat(ca.get().getInterviewTime());
+			map.put(stringDate, ca);
 		}
 
-		Map<Date, Optional<ClientApplication>> sorted = map.entrySet().stream().sorted(comparingByKey())
+		Map<String, Optional<ClientApplication>> sorted = map.entrySet().stream().sorted(comparingByKey())
 				.collect(toMap(e -> e.getKey(), e -> e.getValue(), (e1, e2) -> e2, LinkedHashMap::new));
 
-		for (Entry<Date, Optional<ClientApplication>> entry : sorted.entrySet()) {
+		for (Entry<String, Optional<ClientApplication>> entry : sorted.entrySet()) {
 			clientApplications.add(entry.getValue().get());
 		}
 
