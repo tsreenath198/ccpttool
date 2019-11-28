@@ -1,15 +1,22 @@
 package com.ccpt.service;
 
+import static java.util.Map.Entry.comparingByKey;
+import static java.util.stream.Collectors.toMap;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.Set;
+import java.util.TreeMap;
 
 import javax.persistence.EntityNotFoundException;
 import javax.validation.ValidationException;
@@ -310,12 +317,22 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 		StringBuilder body = new StringBuilder();
 		List<String> names = new ArrayList<String>();
 		List<ClientApplication> clientApplications = new ArrayList<ClientApplication>();
+		Map<Date, Optional<ClientApplication>> map = new TreeMap<Date, Optional<ClientApplication>>(
+				Collections.reverseOrder());
 		for (Integer id : ids) {
 			Optional<ClientApplication> ca = clientApplicationRepository.findById(id);
 			String name = ca.get().getClientPosition().getClient().getName();
 			names.add(name);
-			clientApplications.add(ca.get());
+			map.put(ca.get().getInterviewDate(), ca);
 		}
+
+		Map<Date, Optional<ClientApplication>> sorted = map.entrySet().stream().sorted(comparingByKey())
+				.collect(toMap(e -> e.getKey(), e -> e.getValue(), (e1, e2) -> e2, LinkedHashMap::new));
+
+		for (Entry<Date, Optional<ClientApplication>> entry : sorted.entrySet()) {
+			clientApplications.add(entry.getValue().get());
+		}
+
 		boolean allEqual = names.isEmpty() || names.stream().allMatch(names.get(0)::equals);
 		if (allEqual) {
 			Map<String, String> valuesMap = new HashMap<String, String>();
