@@ -111,4 +111,8 @@ public class Payment extends FileSupportEntity {
 	@NotNull
 	private String paidStatus;
 
+	@Column()
+	// @NotNull
+	private String generatedCode;
+
 }

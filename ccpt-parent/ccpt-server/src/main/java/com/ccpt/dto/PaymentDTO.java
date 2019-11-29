@@ -50,6 +50,8 @@ public class PaymentDTO extends IDEntityDTO {
 	private String gauranteePeriod;
 
 	private Date paidOn;
-	
+
 	private String paidStatus;
+
+	private String generatedCode;
 }
