@@ -112,7 +112,7 @@ public class Payment extends FileSupportEntity {
 	private String paidStatus;
 
 	@Column()
-	// @NotNull
+	@NotNull
 	private String generatedCode;
 
 }

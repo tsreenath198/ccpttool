@@ -31,6 +31,7 @@ public interface CCPTConstants {
 	String EMAIL_HISTORY = "/emailHistory";
 	String SMS_HISTORY = "/smsHistory";
 	String BACKUP = "/backUpCCPT";
+	
 
 	String CLIENT_APPLICATION_STATUS = "/caStatus";
 	String CLIENT_POSITION_STATUS = "/cpStatus";
