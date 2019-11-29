@@ -28,7 +28,7 @@ public interface ClientPositionRepository extends BaseRepository<ClientPosition,
 	@Query(value = "SELECT * FROM Client_Position t1 WHERE t1.id NOT IN (SELECT distinct t2.client_position_id FROM Client_Application t2 WHERE t2.created_date >= DATE(NOW()) - INTERVAL 7 DAY) AND t1.status_code='Open' AND (t1.created_date <= DATE(NOW()) - INTERVAL 7 DAY) AND t1.active_flag=1  ORDER BY t1.created_date DESC", nativeQuery = true)
 	List<ClientPosition> getLastWeekDyingCP(@Param(value = "days") Integer days);
 
-	@Query(value = "SELECT DISTINCT cp.* from client_position cp,client_position_status cps WHERE cp.status_code=cps.code and (cps.status_type=:status or :status is null ) and cp.active_flag=1  ORDER BY cp.created_date DESC", nativeQuery = true)
+	@Query(value = "SELECT DISTINCT client_position.* from client_position,client_position_status WHERE client_position.status_code=client_position_status.code and (client_position_status.status_type=:status or :status is null ) and client_position.active_flag=1 ORDER BY client_position.created_date DESC", nativeQuery = true)
 	Page<ClientPosition> getAllByStatus(@Param(value = "status") String status, Pageable paging);
 
 	@Query(value = "SELECT * FROM client_position  	where created_date >= DATE_SUB(CURDATE(), INTERVAL 30 DAY) AND (alma_connecturl IS NULL or shineurl IS NULL or "
