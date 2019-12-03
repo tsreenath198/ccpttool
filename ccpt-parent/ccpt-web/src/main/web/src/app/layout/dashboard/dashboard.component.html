@@ -57,7 +57,7 @@
                       </td>
                       <td>{{ val.interviewMode }}</td>
                       <td>
-                        {{ val.interviewDate }}/{{ val.interviewTime }}
+                        {{ val.interviewDate | date }}/{{ val.interviewTime }}
                       </td>
                       <ng-template #popContent1>{{
                         val.clientPhone
