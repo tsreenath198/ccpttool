@@ -30,7 +30,8 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let pl of paymentsList.list | paginate: paginateConfig; let i = index" (click)="setModel(pl.id)">
+            <tr *ngFor="let pl of paymentsList.list | paginate: paginateConfig; let i = index" (click)="setModel(pl.id)"
+            [ngClass]="{ 'bl-green': pl.paidStatus == 'Paid', 'bl-red':  pl.paidStatus == 'Unpaid'}">
               <td>
                 {{ pl.invoiceDate | date }}
               </td>
