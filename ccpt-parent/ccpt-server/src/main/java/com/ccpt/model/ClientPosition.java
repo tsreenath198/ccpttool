@@ -88,4 +88,7 @@ public class ClientPosition extends FileSupportEntity {
 	private Integer shineMassMailingCount;
 	@Column
 	private Integer naukriMassMailingCount;
+	@Column
+	@NotNull
+	private String address;
 }

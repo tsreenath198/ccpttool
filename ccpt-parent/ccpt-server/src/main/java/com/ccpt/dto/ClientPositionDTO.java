@@ -35,4 +35,5 @@ public class ClientPositionDTO extends FileSupportEntityDTO {
 	private Date naukriMassMailing;
 	private Integer shineMassMailingCount;
 	private Integer naukriMassMailingCount;
+	private String address;
 }
