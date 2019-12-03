@@ -22,7 +22,7 @@
             <tr
               *ngFor="let cpl of clientPositionList.list | filter: currSearchTxt | paginate: paginateConfig; let i = index"
               (click)="setModel(cpl.id)"
-              [ngClass]="{ 'bl-on-hold': !cpl.isProfilePosted, 'bl-trans': cpl.isProfilePosted }"
+              [ngClass]="{ 'bl-red': !cpl.isProfilePosted, 'bl-green': cpl.isProfilePosted }"
             >
               <td class="table-data-padding">
                 <dl>
