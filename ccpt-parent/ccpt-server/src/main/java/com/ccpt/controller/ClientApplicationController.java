@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -116,10 +117,15 @@ public class ClientApplicationController extends BaseController<ClientApplicatio
 		return new ResponseEntity<BaseReturn>(br, HttpStatus.OK);
 	}
 
-	/* updates client application status based on the id */
+	/*
+	 * updates client application status based on the list of
+	 * clientApplicationIds
+	 */
 	@PutMapping("/updateStatus")
-	public ResponseEntity<Void> updateStatus(@RequestParam Integer id, @RequestParam String status) {
-		clientApplicationService.updateStatus(id, status);
+	public ResponseEntity<Void> updateStatus(@RequestBody List<Integer> caIds, @RequestParam String status) {
+		for (Integer caId : caIds) {
+			clientApplicationService.updateStatus(caId, status);
+		}
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 
