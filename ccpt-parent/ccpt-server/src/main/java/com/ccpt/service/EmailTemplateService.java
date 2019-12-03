@@ -243,8 +243,8 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 		valuesMap.put("interviewDate", strDate);
 		valuesMap.put("interviewTime", ca.get().getInterviewTime());
 		valuesMap.put("interviewLocation", ca.get().getInterviewLocation());
-		if (ca.get().getClientPosition().getAddress() != null)
-			valuesMap.put("address", ca.get().getClientPosition().getAddress());
+		System.out.println("address:::::"+ca.get().getClientPosition().getAddress());
+		valuesMap.put("address", ca.get().getClientPosition().getAddress());
 		valuesMap.put("clientContactPersonName", ca.get().getClientPosition().getClient().getContactPersonName());
 		valuesMap.put("clientContactPersonNumber", ca.get().getClientPosition().getClient().getPhone());
 		sbPara.append("<p>Hi <strong>${consultantName}</strong>,</p>"
@@ -352,8 +352,8 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 				valuesMap.put("interviewDate", strDate);
 				valuesMap.put("interviewTime", ca.getInterviewTime());
 				valuesMap.put("interviewLocation", ca.getInterviewLocation());
-				if (ca.getClientPosition().getAddress() != null)
-					valuesMap.put("address", ca.getClientPosition().getAddress());
+				System.out.println("address:::::"+ca.getClientPosition().getAddress());
+				valuesMap.put("address", ca.getClientPosition().getAddress());
 				valuesMap.put("interviewMode", ca.getInterviewMode());
 				sbPara.append("<tr>" + "<td  >\r\n<p>${consultantName}</p>\r\n </td>"
 						+ "<td  >\r\n<p>${jobTitle}</p>\r\n </td>" + "<td  >\r\n<p>${interviewDate}</p>\r\n </td>"
