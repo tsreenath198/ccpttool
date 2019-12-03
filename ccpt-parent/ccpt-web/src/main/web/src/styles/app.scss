@@ -4,7 +4,7 @@
 @import "utils";
 @import "rtl";
 @import "responsive";
-@import '~ngx-toastr/toastr.css';
+@import "~ngx-toastr/toastr.css";
 
 @media print {
   .breadcrumb {
@@ -21,15 +21,15 @@ td {
     margin-bottom: -6px !important;
 
     dd {
-      padding-left: 15px !important
+      padding-left: 15px !important;
     }
   }
 }
-table{
-  tbody{
-    tr{
-      td.click-data{
-          cursor: pointer;
+table {
+  tbody {
+    tr {
+      td.click-data {
+        cursor: pointer;
       }
     }
   }
@@ -48,16 +48,29 @@ table{
 // .tableFixHead thead { position: sticky; top: 0; background:white; }
 
 /* Just common table stuff. Really. */
-table  { border-collapse: collapse; width: 100%; }
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
 
 .justify-content-center {
   display: flex !important;
   justify-content: center !important;
 }
-.modal-popup-header-bg{
- background-color : #343a40 !important;
- color:white;
+.modal-popup-header-bg {
+  background-color: #343a40 !important;
+  color: white;
 }
-* { 
+* {
   font-size: 0.9rem;
+}
+
+.bl-red {
+  border-left: 6px solid red;
+}
+.bl-green {
+  border-left: 6px solid green;
+}
+.bl-yellow {
+  border-left: 6px solid #ffff99;
 }
