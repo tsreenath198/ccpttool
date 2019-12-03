@@ -235,6 +235,19 @@
               </div>
             </div>
           </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>Amount Receivable</label>
+              <input
+                type="number"
+                class="form-control capi"
+                [readonly]="true"
+                [(ngModel)]="model.amountReceivable"
+                name="amountReceivable"
+                #amountReceivable="ngModel"
+              />
+            </div>
+          </div>
         </div>
         <div class="row">
           <div class="col-md-6">
@@ -376,6 +389,7 @@
                 [ngClass]="{ 'is-invalid': f.submitted && annualPackage.invalid }"
                 #annualPackage="ngModel"
                 [readonly]="readOnlyForm == 'R'"
+                (blur)="calculateAmountReceivable()"
                 required
               />
               <div class="invalid-feedback">
@@ -443,13 +457,14 @@
             <div class="form-group">
               <label>Service Charge <span class="required">*</span></label>
               <input
-                type="text"
+                type="number"
                 class="form-control"
                 [readonly]="readOnlyForm == 'R'"
                 [(ngModel)]="model.serviceCharge"
                 name="serviceCharge"
                 [ngClass]="{ 'is-invalid': f.submitted && serviceCharge.invalid }"
                 #serviceCharge="ngModel"
+                (blur)="calculateAmountReceivable()"
                 required
               />
               <div class="invalid-feedback">

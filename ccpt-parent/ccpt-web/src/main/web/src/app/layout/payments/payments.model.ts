@@ -26,6 +26,7 @@ export interface PaymentsModel {
   paidOn: string;
   paidStatus: string;
   generatedCode: string;
+  amountReceivable: number;
 }
 export class ActionsList {
   actions = [

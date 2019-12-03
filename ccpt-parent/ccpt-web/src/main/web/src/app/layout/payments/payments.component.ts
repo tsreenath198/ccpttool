@@ -1,21 +1,25 @@
-import { Component, OnInit, HostListener } from '@angular/core';
-import { routerTransition } from '../../router.animations';
-import { PaymentsModel, ActionsList } from './payments.model';
-import { FileUploader, FileLikeObject } from 'ng2-file-upload';
-import { HttpClientService } from 'src/app/shared/services/http.service';
-import { URLConstants } from '../components/constants/url-constants';
-import { ToastrCustomService } from 'src/app/shared/services/toastr.service';
-import { NgbModal, ModalDismissReasons, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { NgForm } from '@angular/forms';
-import { AdditionalPropertiesModel } from 'src/app/additional-properties.model';
-import { forkJoin } from 'rxjs';
-import { Router } from '@angular/router';
-import { Properties } from '../components/constants/properties';
+import { Component, OnInit, HostListener } from "@angular/core";
+import { routerTransition } from "../../router.animations";
+import { PaymentsModel, ActionsList } from "./payments.model";
+import { FileUploader, FileLikeObject } from "ng2-file-upload";
+import { HttpClientService } from "src/app/shared/services/http.service";
+import { URLConstants } from "../components/constants/url-constants";
+import { ToastrCustomService } from "src/app/shared/services/toastr.service";
+import {
+  NgbModal,
+  ModalDismissReasons,
+  NgbModalRef
+} from "@ng-bootstrap/ng-bootstrap";
+import { NgForm } from "@angular/forms";
+import { AdditionalPropertiesModel } from "src/app/additional-properties.model";
+import { forkJoin } from "rxjs";
+import { Router } from "@angular/router";
+import { Properties } from "../components/constants/properties";
 
 @Component({
-  selector: 'app-payments',
-  templateUrl: './payments.component.html',
-  styleUrls: ['./payments.component.scss'],
+  selector: "app-payments",
+  templateUrl: "./payments.component.html",
+  styleUrls: ["./payments.component.scss"],
   animations: [routerTransition()]
 })
 export class PaymentsComponent implements OnInit {
@@ -25,16 +29,16 @@ export class PaymentsComponent implements OnInit {
   public consultantList: Array<any> = [];
   private urlConstants = new URLConstants();
   public properties = new Properties();
-  public readOnlyForm = '';
-  public enableButtonType = '';
-  public currSearchTxt = '';
+  public readOnlyForm = "";
+  public enableButtonType = "";
+  public currSearchTxt = "";
   public caId = 0;
   public screenHeight: any;
   private selectedRecrdToDel = 0;
-  public closeResult = '';
-  public apName = '';
-  public apValue = '';
-  public comments = '';
+  public closeResult = "";
+  public apName = "";
+  public apValue = "";
+  public comments = "";
   public showAction: boolean = false;
   public actionsList = new ActionsList();
   public uploader: FileUploader = new FileUploader({});
@@ -56,14 +60,14 @@ export class PaymentsComponent implements OnInit {
   ) {
     this.getScreenSize();
   }
-  @HostListener('window:resize', ['$event'])
+  @HostListener("window:resize", ["$event"])
   getScreenSize(event?) {
     this.screenHeight = window.innerHeight;
   }
   ngOnInit() {
     /*Autheticate user with the token */
     if (!this.http.isAuthenticate()) {
-      this.router.navigate(['/login']);
+      this.router.navigate(["/login"]);
     }
     this.init();
     this.initialGetAll();
@@ -71,7 +75,6 @@ export class PaymentsComponent implements OnInit {
     this.getAllDropdowns();
   }
   init() {
-    
     // this.spinner(false);
     // this.http.get(this.urlConstants.PaymentGetAll).subscribe(resp => {
     //     this.paymentsList = resp as any;
@@ -84,7 +87,9 @@ export class PaymentsComponent implements OnInit {
   }
   public initialGetAll() {
     let pageNumber = this.paginateConfig.currentPage - 1;
-    let temp = this.http.get(this.urlConstants.PaymentGetAll + pageNumber + '&pageSize=50&sortBy=id');
+    let temp = this.http.get(
+      this.urlConstants.PaymentGetAll + pageNumber + "&pageSize=50&sortBy=id"
+    );
     temp.subscribe(resp => {
       this.paymentsList = resp as any;
       //this.pageChange(this.page);
@@ -113,10 +118,10 @@ export class PaymentsComponent implements OnInit {
   }
   private getTodaysDate() {
     const today = new Date();
-    const dd = String(today.getDate()).padStart(2, '0');
-    const mm = String(today.getMonth() + 1).padStart(2, '0'); // January is 0!
+    const dd = String(today.getDate()).padStart(2, "0");
+    const mm = String(today.getMonth() + 1).padStart(2, "0"); // January is 0!
     const yyyy = today.getFullYear();
-    const temp = yyyy + '-' + mm + '-' + dd;
+    const temp = yyyy + "-" + mm + "-" + dd;
     this.model.invoiceDate = temp;
     this.model.joiningDate = temp;
   }
@@ -124,21 +129,21 @@ export class PaymentsComponent implements OnInit {
     this.model.joiningDate = this.model.invoiceDate;
   }
   public dblSetModel() {
-    this.readOnlyForm = 'U';
-    this.enableButtonType = 'U';
+    this.readOnlyForm = "U";
+    this.enableButtonType = "U";
     this.showAction = true;
     this.action = null;
   }
   enableFormEditable(): void {
-    this.readOnlyForm = 'U';
-    this.enableButtonType = 'U';
+    this.readOnlyForm = "U";
+    this.enableButtonType = "U";
   }
 
   public setModel(id) {
     this.spinner(false);
     this.getById(id);
-    this.readOnlyForm = 'R';
-    this.enableButtonType = 'E';
+    this.readOnlyForm = "R";
+    this.enableButtonType = "E";
     this.showAction = true;
     this.action = null;
   }
@@ -156,7 +161,7 @@ export class PaymentsComponent implements OnInit {
     this.spinner(false);
     this.http.get(this.urlConstants.CAGetById + caId).subscribe(resp => {
       let temp = resp as any;
-      
+
       this.model.companyName = temp.clientPosition.client.name;
       this.model.companyWebsite = temp.clientPosition.client.website;
       this.model.companyGstNum = temp.clientPosition.client.gst;
@@ -180,35 +185,50 @@ export class PaymentsComponent implements OnInit {
   }
   public propertiesListIncrement(event, i: number) {
     switch (event.id) {
-      case 'decrease': {
+      case "decrease": {
         this.model.properties.splice(i, 1);
         break;
       }
-      case 'increase': {
+      case "increase": {
         if (this.model.properties == null) {
           this.model.properties = [];
-          this.model.properties.push(<AdditionalPropertiesModel>{ name: this.apName, value: this.apValue });
-          this.apName = '';
-          this.apValue = '';
+          this.model.properties.push(<AdditionalPropertiesModel>{
+            name: this.apName,
+            value: this.apValue
+          });
+          this.apName = "";
+          this.apValue = "";
         } else if (this.model.properties.length == 0) {
-          this.model.properties.push(<AdditionalPropertiesModel>{ name: this.apName, value: this.apValue });
-          this.apName = '';
-          this.apValue = '';
+          this.model.properties.push(<AdditionalPropertiesModel>{
+            name: this.apName,
+            value: this.apValue
+          });
+          this.apName = "";
+          this.apValue = "";
         } else {
           let propertyExist: boolean;
           for (let i = 0; i < this.model.properties.length; i++) {
-            if (this.model.properties[i].name == this.apName && this.model.properties[i].value == this.apValue) {
+            if (
+              this.model.properties[i].name == this.apName &&
+              this.model.properties[i].value == this.apValue
+            ) {
               propertyExist = true;
             } else {
               propertyExist = false;
             }
           }
           if (propertyExist) {
-            this.toastr.error(this.properties.PROPERTY_EXIST, this.properties.PROPERTIES);
+            this.toastr.error(
+              this.properties.PROPERTY_EXIST,
+              this.properties.PROPERTIES
+            );
           } else {
-            this.model.properties.push(<AdditionalPropertiesModel>{ name: this.apName, value: this.apValue });
-            this.apName = '';
-            this.apValue = '';
+            this.model.properties.push(<AdditionalPropertiesModel>{
+              name: this.apName,
+              value: this.apValue
+            });
+            this.apName = "";
+            this.apValue = "";
           }
         }
         break;
@@ -218,15 +238,15 @@ export class PaymentsComponent implements OnInit {
   public actions(value, trashContent, form) {
     console.log(value);
     switch (value) {
-      case 'Delete': {
+      case "Delete": {
         this.open(this.model.id, trashContent);
         break;
       }
-      case 'Edit': {
+      case "Edit": {
         this.enableFormEditable();
         break;
       }
-      case 'Close': {
+      case "Close": {
         this.cancelForm(form);
       }
     }
@@ -268,8 +288,8 @@ export class PaymentsComponent implements OnInit {
         paymentsForm.resetForm();
         this.initialGetAll();
         this.isCreate = false;
-        this.readOnlyForm = '';
-        this.enableButtonType = '';
+        this.readOnlyForm = "";
+        this.enableButtonType = "";
         this.showAction = false;
         this.spinner(true);
       },
@@ -283,14 +303,16 @@ export class PaymentsComponent implements OnInit {
   public cancelForm(consultantCallHistory: NgForm) {
     consultantCallHistory.resetForm();
     this.formReset();
-    this.readOnlyForm = '';
-    this.enableButtonType = '';
+    this.readOnlyForm = "";
+    this.enableButtonType = "";
     this.showAction = false;
     this.init();
   }
   public trash(): void {
     this.spinner(false);
-    const temp = this.http.delete(this.urlConstants.PaymentDelete + this.selectedRecrdToDel);
+    const temp = this.http.delete(
+      this.urlConstants.PaymentDelete + this.selectedRecrdToDel
+    );
     temp.subscribe(
       resp => {
         this.toastr.success(this.properties.DELETE, this.properties.CONTACT);
@@ -298,8 +320,8 @@ export class PaymentsComponent implements OnInit {
         this.close();
         this.formReset();
         this.initialGetAll();
-        this.readOnlyForm = '';
-        this.enableButtonType = '';
+        this.readOnlyForm = "";
+        this.enableButtonType = "";
         this.showAction = false;
         this.spinner(true);
       },
@@ -328,17 +350,21 @@ export class PaymentsComponent implements OnInit {
   public uploadFiles() {
     const files = this.getFiles();
     const formData = new FormData();
-    formData.append('file', files[0].rawFile, files[0].name);
-    const params = 'refId=' + this.selectedRecrdToDel + '&refType=Payment&comments=' + this.comments;
+    formData.append("file", files[0].rawFile, files[0].name);
+    const params =
+      "refId=" +
+      this.selectedRecrdToDel +
+      "&refType=Payment&comments=" +
+      this.comments;
     this.http.upload(this.urlConstants.FileUpload + params, formData).subscribe(
       resp => {
         let temp: any = resp;
         this.uploader = new FileUploader({});
-        this.toastr.success(temp.message, 'Client');
+        this.toastr.success(temp.message, "Client");
         this.close();
       },
       err => {
-        this.toastr.success(err.error.message, 'Client');
+        this.toastr.success(err.error.message, "Client");
       }
     );
   }
@@ -366,9 +392,9 @@ export class PaymentsComponent implements OnInit {
   }
   private getDismissReason(reason: any): string {
     if (reason === ModalDismissReasons.ESC) {
-      return 'by pressing ESC';
+      return "by pressing ESC";
     } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-      return 'by clicking on a backdrop';
+      return "by clicking on a backdrop";
     } else {
       return `with: ${reason}`;
     }
@@ -384,5 +410,13 @@ export class PaymentsComponent implements OnInit {
         if (err.status == 200) window.open(err.url);
       }
     );
+  }
+  public calculateAmountReceivable() {
+    if (this.model.annualPackage && this.model.serviceCharge)
+      this.model.amountReceivable =
+        parseFloat(this.model.annualPackage) *
+        1.18 *
+        parseFloat(this.model.serviceCharge) *
+        0.0075;
   }
 }
