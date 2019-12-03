@@ -243,7 +243,6 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 		valuesMap.put("interviewDate", strDate);
 		valuesMap.put("interviewTime", ca.get().getInterviewTime());
 		valuesMap.put("interviewLocation", ca.get().getInterviewLocation());
-		System.out.println("address:::::"+ca.get().getClientPosition().getAddress());
 		valuesMap.put("address", ca.get().getClientPosition().getAddress());
 		valuesMap.put("clientContactPersonName", ca.get().getClientPosition().getClient().getContactPersonName());
 		valuesMap.put("clientContactPersonNumber", ca.get().getClientPosition().getClient().getPhone());
@@ -352,7 +351,6 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 				valuesMap.put("interviewDate", strDate);
 				valuesMap.put("interviewTime", ca.getInterviewTime());
 				valuesMap.put("interviewLocation", ca.getInterviewLocation());
-				System.out.println("address:::::"+ca.getClientPosition().getAddress());
 				valuesMap.put("address", ca.getClientPosition().getAddress());
 				valuesMap.put("interviewMode", ca.getInterviewMode());
 				sbPara.append("<tr>" + "<td  >\r\n<p>${consultantName}</p>\r\n </td>"
