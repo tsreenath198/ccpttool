@@ -27,6 +27,7 @@
                 <span class="pull-right">Action</span>
               </th> -->
               </th>
+              <th>Pending Since</th>
             </tr>
           </thead>
           <tbody>
@@ -41,6 +42,7 @@
               <td>
                 {{ pl.candidateName }}
               </td>
+              <td>{{(pl.paidStatus === 'Unpaid' && calculatePendingSince(pl.joiningDate) > 0) ? calculatePendingSince(pl.joiningDate)+' days' : ''}}</td>
               <!-- <td width="100">
                 <app-action [trashContent]="trashContent" [id]="pl.id" [isTrash]="trash" (trash)="open($event)"> </app-action>
               </td> -->

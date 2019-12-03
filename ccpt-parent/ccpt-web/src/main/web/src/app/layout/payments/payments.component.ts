@@ -419,4 +419,10 @@ export class PaymentsComponent implements OnInit {
         parseFloat(this.model.serviceCharge) *
         0.0075;
   }
+
+  public calculatePendingSince(jd: any): number {
+    let today = new Date().getTime();
+    let joiningDate = new Date(jd).getTime();
+    return Math.round(Math.abs(today - joiningDate) / (1000 * 3600 * 24));
+  }
 }
