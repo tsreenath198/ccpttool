@@ -36,7 +36,7 @@
                   </thead>
                   <tbody>
                     <tr *ngFor="let val of interviewsToday" 
-                    [ngClass]="{ 'bl-yellow': val.interviewDate == todayDate }">
+                    [ngClass]="{ 'bl-yellow': val.interviewDate === today }">
                       <td
                         container="body"
                         class="click-data"

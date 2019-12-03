@@ -1,21 +1,24 @@
-import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
-import { HttpClientService } from 'src/app/shared/services/http.service';
-import { ToastrCustomService } from 'src/app/shared/services/toastr.service';
-import { URLConstants } from '../components/constants/url-constants';
-import { routerTransition } from '../../router.animations';
-import { forkJoin } from 'rxjs';
-import { NgbModal, ModalDismissReasons, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { Keyvalue } from '../modals/action';
-import { Router } from '@angular/router';
-import { AngularEditorConfig } from '@kolkov/angular-editor';
-import { Color } from 'ng2-charts';
-import { Properties } from '../components/constants/properties';
-import { DatePipe } from '@angular/common';
+import { Component, OnInit, ViewChild, TemplateRef } from "@angular/core";
+import { HttpClientService } from "src/app/shared/services/http.service";
+import { ToastrCustomService } from "src/app/shared/services/toastr.service";
+import { URLConstants } from "../components/constants/url-constants";
+import { routerTransition } from "../../router.animations";
+import { forkJoin } from "rxjs";
+import {
+  NgbModal,
+  ModalDismissReasons,
+  NgbModalRef
+} from "@ng-bootstrap/ng-bootstrap";
+import { Keyvalue } from "../modals/action";
+import { Router } from "@angular/router";
+import { AngularEditorConfig } from "@kolkov/angular-editor";
+import { Color } from "ng2-charts";
+import { Properties } from "../components/constants/properties";
 
 @Component({
-  selector: 'app-dashboard',
-  templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.scss'],
+  selector: "app-dashboard",
+  templateUrl: "./dashboard.component.html",
+  styleUrls: ["./dashboard.component.scss"],
   animations: [routerTransition()]
 })
 export class DashboardComponent implements OnInit {
@@ -23,10 +26,10 @@ export class DashboardComponent implements OnInit {
   public sliders: Array<any> = [];
   //public noOfDays: any = { 'Day': 1, 'Week': 7, 'Month': 30, 'Year': 365 };
   public noOfDays: Array<Keyvalue> = [
-    { key: 'Day', value: 1 },
-    { key: 'Week', value: 7 },
-    { key: 'Month', value: 30 },
-    { key: 'Year', value: 365 }
+    { key: "Day", value: 1 },
+    { key: "Week", value: 7 },
+    { key: "Month", value: 30 },
+    { key: "Year", value: 365 }
   ];
   public ccptReportCLCH: Array<any> = [];
   public ccptReportCOCH: Array<any> = [];
@@ -56,36 +59,46 @@ export class DashboardComponent implements OnInit {
   public updateIndex: number;
   public clientId: number;
   public consultantId: number;
-  public todayDate: string;
+  public today: string;
   public showLeftTable: string = this.constantProperties.DASHBOARD_ITW;
   public showRightTable: string = this.constantProperties.DASHBOARD_PT;
   /** Template references */
 
-  @ViewChild('contentACA')
+  @ViewChild("contentACA")
   private contentACA: TemplateRef<any>;
 
   private selectedRecrd = 0;
-  public closeResult = '';
+  public closeResult = "";
   private modalRef: NgbModalRef;
   public config: AngularEditorConfig = {
     editable: true,
     spellcheck: true,
-    height: '15rem',
-    minHeight: '5rem',
-    translate: 'no'
+    height: "15rem",
+    minHeight: "5rem",
+    translate: "no"
   };
 
-  public getAllReportCLCH = this.http.get(this.urlConstants.CCHGetCountByRecruiter + this.clchChoosenDays);
-  public getAllReportCOCH = this.http.get(this.urlConstants.CoCHGetCountByRecruiter + this.cochChoosenDays);
-  public getAllReportCC = this.http.get(this.urlConstants.ReportingGetClosures + this.rpChoosenDays);
-  public getAllCAStatus = this.http.get(this.urlConstants.CASGetAll + '0&pageSize=100&sortBy=id');
+  public getAllReportCLCH = this.http.get(
+    this.urlConstants.CCHGetCountByRecruiter + this.clchChoosenDays
+  );
+  public getAllReportCOCH = this.http.get(
+    this.urlConstants.CoCHGetCountByRecruiter + this.cochChoosenDays
+  );
+  public getAllReportCC = this.http.get(
+    this.urlConstants.ReportingGetClosures + this.rpChoosenDays
+  );
+  public getAllCAStatus = this.http.get(
+    this.urlConstants.CASGetAll + "0&pageSize=100&sortBy=id"
+  );
   public getCAStatUPdate = this.http.get(this.urlConstants.DashboardCAStat);
   public getCPEmptyPostings = this.http.get(this.urlConstants.CPEmptyPostings);
   // public getAllOpenCP = this.http.get(this.urlConstants.ReportingGetAllOpenCP);
   // public getAllActiveCA = this.http.get(this.urlConstants.ReportingGetAllActiveCA);
   // public getAllInterviewsToday = this.http.get(this.urlConstants.ReportingGetAllInterviewsToday);
   // public getAllDyingCP = this.http.get(this.urlConstants.ReportingDyingCp);
-  public getAllCAByStatus = this.http.get(this.urlConstants.ReportingGetAllCAByStatus);
+  public getAllCAByStatus = this.http.get(
+    this.urlConstants.ReportingGetAllCAByStatus
+  );
   public getAllDBContent = this.http.get(this.urlConstants.GetAllDashboard);
   public barChartOptions: any = {
     scaleShowVerticalLines: false,
@@ -120,22 +133,24 @@ export class DashboardComponent implements OnInit {
   };
   public barChartLabels: string[] = [];
   public barChartCAByStautsLabels: string[] = [];
-  public barChartType: string = 'horizontalBar';
+  public barChartType: string = "horizontalBar";
   public barChartLegend: boolean = false;
   public stackBarChartLegend: boolean = true;
 
-  public barChartActiveCAData: any[] = [{ data: [], label: 'Active Client Applications', cpIds: [] }];
-  public barChartColors: Color[] = [{ backgroundColor: '#343a40' }];
+  public barChartActiveCAData: any[] = [
+    { data: [], label: "Active Client Applications", cpIds: [] }
+  ];
+  public barChartColors: Color[] = [{ backgroundColor: "#343a40" }];
   public stackbarChartColors: Color[] = [
-    { backgroundColor: '#f88e90' },
-    { backgroundColor: '#f88e90' },
-    { backgroundColor: '#f88e90' },
-    { backgroundColor: '#f88e90' },
-    { backgroundColor: '#ffe29a' },
-    { backgroundColor: '#ffe29a' },
-    { backgroundColor: '#ffe29a' },
-    { backgroundColor: '#ffe29a' },
-    { backgroundColor: '#46bfbd' }
+    { backgroundColor: "#f88e90" },
+    { backgroundColor: "#f88e90" },
+    { backgroundColor: "#f88e90" },
+    { backgroundColor: "#f88e90" },
+    { backgroundColor: "#ffe29a" },
+    { backgroundColor: "#ffe29a" },
+    { backgroundColor: "#ffe29a" },
+    { backgroundColor: "#ffe29a" },
+    { backgroundColor: "#46bfbd" }
   ];
   public barChartCAByStatusData: any[] = [];
 
@@ -143,17 +158,17 @@ export class DashboardComponent implements OnInit {
     private http: HttpClientService,
     private router: Router,
     private toastr: ToastrCustomService,
-    private modalService: NgbModal,
-    private datePipe: DatePipe
-  ) {}
+    private modalService: NgbModal
+  ) {
+    this.today = new Date().toISOString().split("T")[0]; //2019-12-05
+  }
 
   ngOnInit() {
     /*Autheticate user with the token */
     if (!this.http.isAuthenticate()) {
-      this.router.navigate(['/login']);
+      this.router.navigate(["/login"]);
     }
     this.init();
-    this.getTodaysDate();
   }
   public init() {
     this.spinner(false);
@@ -167,7 +182,11 @@ export class DashboardComponent implements OnInit {
       // this.setCAByStatusBarData(this.caByStatusList);
       this.spinner(true);
     });
-    forkJoin(this.getAllReportCC, this.getAllCAStatus, this.getCPEmptyPostings).subscribe(listofrecords => {
+    forkJoin(
+      this.getAllReportCC,
+      this.getAllCAStatus,
+      this.getCPEmptyPostings
+    ).subscribe(listofrecords => {
       this.ccptReportCC = listofrecords[0] as any;
       this.caStatusList = listofrecords[1] as any;
       this.cpEmptyPostings = listofrecords[2] as any;
@@ -175,10 +194,7 @@ export class DashboardComponent implements OnInit {
     });
     this.top5ById.properties = [];
   }
-  private getTodaysDate() {
-     this.todayDate = this.datePipe.transform(new Date(),"yyyy-MM-dd");
-     console.log(this.todayDate)
-  }
+
   public getGraphData() {
     if (this.caByStatusList.length == 0) {
       this.getAllCAByStatus.subscribe(resp => {
@@ -197,10 +213,12 @@ export class DashboardComponent implements OnInit {
   getAllActiveCAById(recrd: number) {
     this.spinner(false);
     this.activeCAById = [];
-    this.http.get(this.urlConstants.ReportingGetAllActiveCAById + recrd).subscribe(resp => {
-      this.activeCAById = resp as any;
-      this.spinner(true);
-    });
+    this.http
+      .get(this.urlConstants.ReportingGetAllActiveCAById + recrd)
+      .subscribe(resp => {
+        this.activeCAById = resp as any;
+        this.spinner(true);
+      });
   }
   public getTop5ById(recrd) {
     this.spinner(false);
@@ -218,7 +236,10 @@ export class DashboardComponent implements OnInit {
     if (selected) {
       this.selectedRecrd = selected;
     }
-    this.modalRef = this.modalService.open(content, { size: 'lg', backdrop: 'static' });
+    this.modalRef = this.modalService.open(content, {
+      size: "lg",
+      backdrop: "static"
+    });
     this.modalRef.result.then(
       result => {
         this.closeResult = `Closed with: ${result}`;
@@ -227,10 +248,10 @@ export class DashboardComponent implements OnInit {
         this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
       }
     );
-    if (type == 'activeClientApplication') {
+    if (type == "activeClientApplication") {
       this.getAllActiveCAById(this.selectedRecrd);
     }
-    if (type == 'latestCPTop5') {
+    if (type == "latestCPTop5") {
       this.getTop5ById(this.selectedRecrd);
     }
   }
@@ -239,9 +260,9 @@ export class DashboardComponent implements OnInit {
   }
   private getDismissReason(reason: any): string {
     if (reason === ModalDismissReasons.ESC) {
-      return 'by pressing ESC';
+      return "by pressing ESC";
     } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-      return 'by clicking on a backdrop';
+      return "by clicking on a backdrop";
     } else {
       return `with: ${reason}`;
     }
@@ -253,8 +274,8 @@ export class DashboardComponent implements OnInit {
   private setActiveCPBarData() {
     this.activeCA.forEach(ca => {
       this.barChartLabels.push(ca.generatedCode);
-      this.barChartActiveCAData[0].data.push('' + ca.count);
-      this.barChartActiveCAData[0].cpIds.push('' + ca.cpId);
+      this.barChartActiveCAData[0].data.push("" + ca.count);
+      this.barChartActiveCAData[0].cpIds.push("" + ca.cpId);
     });
     this.chartHeight = 55 * this.activeCA.length;
   }
@@ -273,10 +294,14 @@ export class DashboardComponent implements OnInit {
       }
     });
 
-    let uniqueClientName = data.map(item => item.clientName).filter((value, index, self) => self.indexOf(value) === index);
+    let uniqueClientName = data
+      .map(item => item.clientName)
+      .filter((value, index, self) => self.indexOf(value) === index);
     this.stackChartHeight = uniqueClientName.length * 60;
     let uniqueStatus: any = [];
-    let tempUniqueStatus = data.map(item => item.statusCode).filter((value, index, self) => self.indexOf(value) === index);
+    let tempUniqueStatus = data
+      .map(item => item.statusCode)
+      .filter((value, index, self) => self.indexOf(value) === index);
     if (CAStatusOder.length) {
       CAStatusOder.forEach(cp => {
         tempUniqueStatus.forEach(tus => {
@@ -288,9 +313,11 @@ export class DashboardComponent implements OnInit {
     }
     if (uniqueStatus.length) {
       uniqueStatus.forEach(us => {
-        let temp = { data: [], label: '', stack: 'a' };
+        let temp = { data: [], label: "", stack: "a" };
         uniqueClientName.forEach(ucn => {
-          let unique: any = data.filter(dt => dt.clientName == ucn && dt.statusCode == us);
+          let unique: any = data.filter(
+            dt => dt.clientName == ucn && dt.statusCode == us
+          );
           temp.data.push(unique[0].count);
         });
         this.barChartCAByStautsLabels = uniqueClientName;
@@ -310,16 +337,25 @@ export class DashboardComponent implements OnInit {
    */
   public chartClicked(event): void {
     const index = event.active[0]._index;
-    this.open(this.contentACA, this.barChartActiveCAData[0].cpIds[index], 'activeClientApplication');
+    this.open(
+      this.contentACA,
+      this.barChartActiveCAData[0].cpIds[index],
+      "activeClientApplication"
+    );
   }
   public updateCAStatus(ca) {
-    this.http.update({}, this.urlConstants.CAStatusUpdate + ca.id + '&status=' + ca.status).subscribe(resp => {
-      this.updateIndex = ca.id;
-      setTimeout(() => {
-        this.updateIndex = 0;
-        this.reload();
-      }, 1000);
-    });
+    this.http
+      .update(
+        {},
+        this.urlConstants.CAStatusUpdate + ca.id + "&status=" + ca.status
+      )
+      .subscribe(resp => {
+        this.updateIndex = ca.id;
+        setTimeout(() => {
+          this.updateIndex = 0;
+          this.reload();
+        }, 1000);
+      });
   }
   private reload() {
     this.getCAStatUPdate.subscribe(resp => {
@@ -333,20 +369,18 @@ export class DashboardComponent implements OnInit {
   //     this.setCAByStatusBarData(this.caByStatusList);
   //   });
   // }
-  public selectLeftTable(value: any){
-    if(this.showLeftTable != value){
+  public selectLeftTable(value: any) {
+    if (this.showLeftTable != value) {
       this.showLeftTable = value;
-    }
-    else{
-      this.showLeftTable = ''
+    } else {
+      this.showLeftTable = "";
     }
   }
-  public selectRightTable(value: any){
-    if(this.showRightTable != value){
+  public selectRightTable(value: any) {
+    if (this.showRightTable != value) {
       this.showRightTable = value;
-    }
-    else{
-      this.showRightTable = ''
+    } else {
+      this.showRightTable = "";
     }
   }
 }
