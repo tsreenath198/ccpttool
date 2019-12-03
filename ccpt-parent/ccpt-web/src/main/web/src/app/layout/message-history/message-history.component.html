@@ -31,8 +31,8 @@
               *ngFor="let ehl of ehList.list | filter: currSearchTxt | paginate: paginateConfig; let i = index"
               (click)="setModel(ehl.id)"
             >
-              <td>
-                {{ ehl.createdDate | date: 'dd-mm-yyyy' }}
+              <td width="100px">
+                {{ ehl.createdDate | date: 'dd-MM-yyyy' }}
               </td>
               <td width="150px">
                 {{ ehl.contactNumbers }}
