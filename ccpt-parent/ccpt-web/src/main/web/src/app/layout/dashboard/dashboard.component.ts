@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { Color } from 'ng2-charts';
 import { Properties } from '../components/constants/properties';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-dashboard',
@@ -55,6 +56,7 @@ export class DashboardComponent implements OnInit {
   public updateIndex: number;
   public clientId: number;
   public consultantId: number;
+  public todayDate: string;
   public showLeftTable: string = this.constantProperties.DASHBOARD_ITW;
   public showRightTable: string = this.constantProperties.DASHBOARD_PT;
   /** Template references */
@@ -141,7 +143,8 @@ export class DashboardComponent implements OnInit {
     private http: HttpClientService,
     private router: Router,
     private toastr: ToastrCustomService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private datePipe: DatePipe
   ) {}
 
   ngOnInit() {
@@ -150,6 +153,7 @@ export class DashboardComponent implements OnInit {
       this.router.navigate(['/login']);
     }
     this.init();
+    this.getTodaysDate();
   }
   public init() {
     this.spinner(false);
@@ -170,6 +174,10 @@ export class DashboardComponent implements OnInit {
       this.setActiveCPBarData();
     });
     this.top5ById.properties = [];
+  }
+  private getTodaysDate() {
+     this.todayDate = this.datePipe.transform(new Date(),"yyyy-MM-dd");
+     console.log(this.todayDate)
   }
   public getGraphData() {
     if (this.caByStatusList.length == 0) {

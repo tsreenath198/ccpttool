@@ -1,5 +1,5 @@
 import { NgModule } from "@angular/core";
-import { CommonModule } from "@angular/common";
+import { CommonModule, DatePipe } from "@angular/common";
 import {
   NgbCarouselModule,
   NgbAlertModule,
@@ -30,6 +30,9 @@ import { ChartsModule as Ng2Charts } from "ng2-charts";
     NgbModule,
     Ng2Charts,
     ActionListModule
+  ],
+  providers: [
+    DatePipe
   ],
   declarations: [
     DashboardComponent,

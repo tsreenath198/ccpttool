@@ -19,7 +19,8 @@
               {{ constantProperties.DASHBOARD_ITW }}
             </div>
             <div>
-              <div [ngbCollapse]=" showLeftTable != constantProperties.DASHBOARD_ITW" class="card-body table-responsive">
+              <div [ngbCollapse]=" showLeftTable != constantProperties.DASHBOARD_ITW" 
+              class="card-body table-responsive">
                 <table class="table table-sm table-striped ">
                   <thead>
                     <tr>
@@ -34,7 +35,8 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr *ngFor="let val of interviewsToday">
+                    <tr *ngFor="let val of interviewsToday" 
+                    [ngClass]="{ 'bl-yellow': val.interviewDate == todayDate }">
                       <td
                         container="body"
                         class="click-data"
@@ -55,7 +57,7 @@
                       </td>
                       <td>{{ val.interviewMode }}</td>
                       <td>
-                        {{ val.interviewDate | date }}/{{ val.interviewTime }}
+                        {{ val.interviewDate }}/{{ val.interviewTime }}
                       </td>
                       <ng-template #popContent1>{{
                         val.clientPhone
