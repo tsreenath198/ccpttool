@@ -7,5 +7,4 @@ import com.ccpt.model.SMS;
 
 @Mapper
 public interface SMSMapper extends BaseMapper<SMSDTO, SMS, Integer> {
-
 }

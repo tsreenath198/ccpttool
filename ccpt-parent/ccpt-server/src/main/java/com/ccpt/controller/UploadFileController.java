@@ -37,7 +37,6 @@ public class UploadFileController {
 	@GetMapping(CCPTConstants.DOWNLOAD)
 	public void downloadFile(@PathVariable Integer id, HttpServletResponse httpServletResponse) throws IOException {
 		UploadFile dbFile = uploadFileService.get(id);
-
 		byte[] retrievedFile = dbFile.getContent();
 		try {
 			httpServletResponse.setContentType(dbFile.getFileType());
@@ -60,35 +59,28 @@ public class UploadFileController {
 	public ResponseEntity<GenericResponse> uploadFile(@RequestParam("file") MultipartFile file,
 			@RequestParam("refId") int refId, @RequestParam("refType") String refType,
 			@RequestParam("comments") String comments) throws Exception {
-
 		String fileName = StringUtils.cleanPath(file.getOriginalFilename());
 		String fileType = file.getContentType();
-
 		boolean isDuplicate = uploadFileService.isDuplicate(refId, refType, fileName);
 		if (!isDuplicate) {
 			UploadFile uploadFile = new UploadFile(file.getBytes(), refId, refType, comments, fileName, fileType);
 			uploadFileService.save(uploadFile);
-
 			return new ResponseEntity<GenericResponse>(new GenericResponse(fileName + "  uploaded successfully"),
 					HttpStatus.OK);
-		} else {
+		} else
 			throw new ValidationException("File with file name : " + fileName + " already exists !");
-		}
 	}
 
 	@PostMapping("saveCrf")
 	public ResponseEntity<GenericResponse> uploadFile(@RequestParam("file") MultipartFile file,
 			@RequestParam("caId") int caId, @RequestParam("comments") String comments) throws Exception {
-
 		String fileName = StringUtils.cleanPath(file.getOriginalFilename());
 		String fileType = file.getContentType();
 		if (fileName.endsWith("doc") || fileName.endsWith("docx")) {
-			if (!fileName.contains("_Crf")) {
+			if (!fileName.contains("_Crf"))
 				throw new ValidationException("file name does not contain _Crf extension");
-			}
-		} else {
+		} else
 			throw new ValidationException("please upload only documents");
-		}
 		boolean isDuplicate = uploadFileService.isDuplicate(caId, "CRF", fileName);
 		if (!isDuplicate) {
 			UploadFile uploadFile = new UploadFile(file.getBytes(), caId, "CRF", comments, fileName, fileType);
@@ -99,16 +91,14 @@ public class UploadFileController {
 			}
 			return new ResponseEntity<GenericResponse>(new GenericResponse(fileName + "  uploaded successfully"),
 					HttpStatus.OK);
-		} else {
+		} else
 			throw new ValidationException("File with file name : " + fileName + " already exists !");
-		}
 	}
 
 	@GetMapping("getCRFResume")
 	public ResponseEntity<UploadFile> getFile(@RequestParam("caId") int caId) {
 		UploadFile result = uploadFileService.getByRefIdAndRefType(caId, "CRF");
 		return new ResponseEntity<UploadFile>(result, HttpStatus.OK);
-
 	}
 
 	@DeleteMapping(CCPTConstants.ID_PARAM)
@@ -116,5 +106,4 @@ public class UploadFileController {
 		uploadFileService.delete(id);
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
-
 }

@@ -14,9 +14,9 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class ClientPositionStatus extends StatusEntity {/**
-	 * 
-	 */
+public class ClientPositionStatus extends StatusEntity {
+	/**
+	* 
+	*/
 	private static final long serialVersionUID = 1L;
-
 }

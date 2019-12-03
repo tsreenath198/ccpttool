@@ -44,31 +44,30 @@ public class EmailTemplateController extends BaseController<EmailTemplateDTO, Em
 		return substitutor.generate(emailTemplate, params);
 	}
 
+	/* Retrieves data if client applications are same */
 	@PostMapping("/getClientApps")
 	@ResponseBody
-	public EmailContent getClientApps(@RequestBody List<Integer> ids) throws Exception {
-		return emailTemplateService.getClientApps(ids);
+	public EmailContent getClientApps(@RequestBody List<Integer> caIdList) throws Exception {
+		return emailTemplateService.getClientApps(caIdList);
 	}
 
+	/* Retrieves data if client applications are same */
 	@PostMapping("/getCAs")
 	@ResponseBody
-	public EmailContent getCAs(@RequestBody List<Integer> ids) throws Exception {
-		return emailTemplateService.getCAs(ids);
-
+	public EmailContent getCAs(@RequestBody List<Integer> caIdList) throws Exception {
+		return emailTemplateService.getCAs(caIdList);
 	}
 
 	@PostMapping("/getInterviewTemplate")
 	@ResponseBody
-	public EmailContent getInterviewTemplate(@RequestBody Integer id) throws Exception {
-		return emailTemplateService.getInterviewTemplate(id);
-
+	public EmailContent getInterviewTemplate(@RequestBody Integer caId) throws Exception {
+		return emailTemplateService.getInterviewTemplate(caId);
 	}
 
 	@PostMapping("/getShortListedCA")
 	@ResponseBody
-	public EmailContent getShortListedCA(@RequestBody List<Integer> ids) throws Exception {
-		return emailTemplateService.getShortListedCA(ids);
-
+	public EmailContent getShortListedCA(@RequestBody List<Integer> caIdList) throws Exception {
+		return emailTemplateService.getShortListedCA(caIdList);
 	}
 
 	@Override
@@ -80,5 +79,4 @@ public class EmailTemplateController extends BaseController<EmailTemplateDTO, Em
 	public BaseMapper<EmailTemplateDTO, EmailTemplate, Integer> getMapper() {
 		return Mappers.getMapper(EmailTemplateMapper.class);
 	}
-
 }

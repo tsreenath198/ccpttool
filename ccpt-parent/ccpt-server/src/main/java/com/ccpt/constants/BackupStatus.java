@@ -5,7 +5,6 @@ public class BackupStatus {
 	private boolean isRunning = false;
 
 	private BackupStatus() {
-
 	}
 
 	public static void startBackup() {

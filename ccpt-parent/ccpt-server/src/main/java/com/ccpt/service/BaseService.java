@@ -59,9 +59,8 @@ public abstract class BaseService<T extends BaseEntity<ID>, ID> {
 					IDEntity idEntity = (IDEntity) result;
 					Optional<List<AdditionalProperty>> addnProps = apRepo.findByRefIdAndRefType(idEntity.getId(),
 							ENTITY);
-					if (addnProps.isPresent()) {
+					if (addnProps.isPresent())
 						idEntity.setProperties(addnProps.get());
-					}
 				}
 				if (result instanceof FileSupportEntity) {
 					FileSupportEntity fsEntity = (FileSupportEntity) result;
@@ -127,14 +126,12 @@ public abstract class BaseService<T extends BaseEntity<ID>, ID> {
 			saveAddnProps(entity);
 			notify(old, entity);
 			return result;
-		} else {
+		} else
 			throw new EntityNotFoundException("Could not find " + ENTITY + " for id : " + entity.getKey());
-		}
 	}
 
 	protected void notify(T existing, T result) {
 		// override in children
-
 	}
 
 	public void delete(ID id) {
@@ -156,9 +153,8 @@ public abstract class BaseService<T extends BaseEntity<ID>, ID> {
 			entity.get().setActiveFlag(true);
 			postActivate(entity.get());
 			getRepository().save(entity.get());
-		} else {
+		} else
 			throw new EntityNotFoundException("Could not find a inactive" + ENTITY + " for id : " + id);
-		}
 	}
 
 	protected void postActivate(T entity2) {

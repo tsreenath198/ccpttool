@@ -42,6 +42,5 @@ public class SearchController extends BaseController<SearchDTO, Search, Integer>
 	public ResponseEntity<List<Search>> search(@RequestParam String searchKey) {
 		List<Search> result = searchService.search(searchKey);
 		return new ResponseEntity<List<Search>>(result, HttpStatus.OK);
-
 	}
 }

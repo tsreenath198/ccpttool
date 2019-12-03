@@ -81,9 +81,7 @@ public class SMSController extends BaseController<SMSDTO, SMS, Integer> {
 
 	@Override
 	protected void validateAndClean(SMS model) {
-		if (model.getMessage() == null) {
+		if (model.getMessage() == null)
 			throw new ValidationException("Message cannot be null");
-		}
 	}
-
 }

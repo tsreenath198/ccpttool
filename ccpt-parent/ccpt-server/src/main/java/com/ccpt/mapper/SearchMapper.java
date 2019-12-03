@@ -7,5 +7,4 @@ import com.ccpt.model.Search;
 
 @Mapper
 public interface SearchMapper extends BaseMapper<SearchDTO, Search, Integer> {
-
 }

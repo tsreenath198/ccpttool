@@ -30,5 +30,4 @@ public class EmailHistoryController extends BaseController<EmailContentDTO, Emai
 	public BaseMapper<EmailContentDTO, EmailContent, Integer> getMapper() {
 		return Mappers.getMapper(EmailContentMapper.class);
 	}
-
 }

@@ -7,5 +7,4 @@ import com.ccpt.model.Login;
 
 @Mapper
 public interface LoginMapper extends BaseMapper<LoginDTO, Login, Integer> {
-
 }

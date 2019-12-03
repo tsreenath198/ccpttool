@@ -17,8 +17,7 @@ import com.ccpt.service.IndustryTypeService;
 @Controller
 @CrossOrigin
 @RequestMapping(CCPTConstants.INDUSTRY_TYPE)
-public class IndustryTypeController
-		extends BaseController<IndustryTypeDTO, IndustryType, Integer> {
+public class IndustryTypeController extends BaseController<IndustryTypeDTO, IndustryType, Integer> {
 
 	@Autowired
 	private IndustryTypeService industryTypeService;
@@ -32,6 +31,4 @@ public class IndustryTypeController
 	public BaseMapper<IndustryTypeDTO, IndustryType, Integer> getMapper() {
 		return Mappers.getMapper(IndustryTypeMapper.class);
 	}
-
-
 }

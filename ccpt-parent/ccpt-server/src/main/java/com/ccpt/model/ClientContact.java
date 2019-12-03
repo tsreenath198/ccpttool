@@ -20,15 +20,11 @@ public class ClientContact extends IDEntity {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
 	@Column
 	@NotNull
 	private String fullname;
-
 	@Column
 	private String phone;
-
 	@Column
 	private String email;
-
 }

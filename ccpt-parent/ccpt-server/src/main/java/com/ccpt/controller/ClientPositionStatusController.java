@@ -35,11 +35,10 @@ public class ClientPositionStatusController
 		return Mappers.getMapper(ClientPositionStatusMapper.class);
 	}
 
+	/* Validates client position status */
 	@Override
 	protected void validateAndClean(ClientPositionStatus model) {
-		if (model.getCode() == null) {
+		if (model.getCode() == null)
 			throw new ValidationException("Client Position Status Code cannot be null");
-		}
 	}
-
 }

@@ -65,64 +65,43 @@ public class PaymentController extends BaseController<PaymentDTO, Payment, Integ
 
 	@Override
 	protected void validateAndClean(Payment model) {
-		if (model.getInvoiceDate() == null) {
+		if (model.getInvoiceDate() == null)
 			throw new ValidationException("Invoice Date cannot be null");
-		}
-		if (model.getBranchHeadName() == null) {
+		if (model.getBranchHeadName() == null)
 			throw new ValidationException("Branch head name cannot be null");
-		}
-		if (model.getBranchLocation() == null) {
+		if (model.getBranchLocation() == null)
 			throw new ValidationException("Branch location cannot be null");
-		}
-		if (model.getCandidateName() == null) {
+		if (model.getCandidateName() == null)
 			throw new ValidationException("Candidate name cannot be null");
-		}
-		if (model.getPhone() == null) {
+		if (model.getPhone() == null)
 			throw new ValidationException("Phone number cannot be null");
-		}
-		if (model.getDesignation() == null) {
+		if (model.getDesignation() == null)
 			throw new ValidationException("Designation cannot be null");
-		}
-		if (model.getJoiningDate() == null) {
+		if (model.getJoiningDate() == null)
 			throw new ValidationException("Joining Date cannot be null");
-		}
-		if (model.getAnnualPackage() == null) {
+		if (model.getAnnualPackage() == null)
 			throw new ValidationException("Annual package cannot be null");
-		}
-		if (model.getCompanyName() == null) {
+		if (model.getCompanyName() == null)
 			throw new ValidationException("Company name cannot be null");
-		}
-		if (model.getCompanyGstNum() == null) {
+		if (model.getCompanyGstNum() == null)
 			throw new ValidationException("Company Gst number cannot be null");
-		}
-		if (model.getCompanyWebsite() == null) {
+		if (model.getCompanyWebsite() == null)
 			throw new ValidationException("Company website cannot be null");
-		}
-		if (model.getBillingAddress() == null) {
+		if (model.getBillingAddress() == null)
 			throw new ValidationException("Billing address cannot be null");
-		}
-		if (model.getContactPerson() == null) {
+		if (model.getContactPerson() == null)
 			throw new ValidationException("Contact person cannot be null");
-		}
-		if (model.getContactPersonNum() == null) {
+		if (model.getContactPersonNum() == null)
 			throw new ValidationException("Contact person number cannot be null");
-		}
-		if (model.getContactPersonDesignation() == null) {
+		if (model.getContactPersonDesignation() == null)
 			throw new ValidationException("Contact person designation cannot be null");
-		}
-		if (model.getContactPersonEmail() == null) {
+		if (model.getContactPersonEmail() == null)
 			throw new ValidationException("Contact person email cannot be null");
-		}
-		if (model.getServiceCharge() == null) {
+		if (model.getServiceCharge() == null)
 			throw new ValidationException("Service charge cannot be null");
-		}
-		if (model.getCreditPeriod() == null) {
+		if (model.getCreditPeriod() == null)
 			throw new ValidationException("Credit period cannot be null");
-		}
-		if (model.getGauranteePeriod() == null) {
+		if (model.getGauranteePeriod() == null)
 			throw new ValidationException("Gaurantee period cannot be null");
-		}
-
 	}
-
 }

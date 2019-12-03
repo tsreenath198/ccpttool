@@ -27,17 +27,14 @@ public class ClientCallHistory extends IDEntity {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
 	@ManyToOne(cascade = CascadeType.MERGE)
 	@JoinColumn(name = "client_position_id")
 	@NotNull
 	private ClientPosition clientPosition;
-
 	@Temporal(TemporalType.DATE)
 	@Column
 	@NotNull
 	private Date calledDate;
-
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "called_by")
 	@NotNull

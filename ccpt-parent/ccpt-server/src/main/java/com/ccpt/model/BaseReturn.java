@@ -9,7 +9,5 @@ import lombok.Setter;
 @Setter
 public class BaseReturn {
 	public Long noOfRecords;
-
 	public List<?> list;
-
 }

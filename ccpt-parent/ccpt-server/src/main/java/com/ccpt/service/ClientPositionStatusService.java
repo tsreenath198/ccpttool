@@ -9,12 +9,12 @@ import com.ccpt.repository.ClientPositionStatusRepository;
 
 @Service
 public class ClientPositionStatusService extends BaseService<ClientPositionStatus, Integer> {
+	@Autowired
+	private ClientPositionStatusRepository clientPositionStatusRepository;
+
 	public ClientPositionStatusService() {
 		super("Client Position Status");
 	}
-
-	@Autowired
-	private ClientPositionStatusRepository clientPositionStatusRepository;
 
 	@Override
 	public BaseRepository<ClientPositionStatus, Integer> getRepository() {

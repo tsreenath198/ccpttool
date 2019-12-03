@@ -8,7 +8,6 @@ import lombok.ToString;
 @Setter
 @ToString
 public class ApplicationBody {
-
 	private String fullname;
 	private String role;
 	private String experienceYrs;
@@ -19,5 +18,4 @@ public class ApplicationBody {
 	private String conLocation;
 	private String noticePeriod;
 	private String description;
-
 }

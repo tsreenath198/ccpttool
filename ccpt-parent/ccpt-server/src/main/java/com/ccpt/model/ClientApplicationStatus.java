@@ -19,5 +19,4 @@ public class ClientApplicationStatus extends StatusEntity {
 	* 
 	*/
 	private static final long serialVersionUID = 1L;
-
 }

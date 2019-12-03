@@ -9,12 +9,12 @@ import com.ccpt.repository.UploadFileRepository;
 
 @Service
 public class UploadFileService extends BaseService<UploadFile, Integer> {
+	@Autowired
+	private UploadFileRepository uploadFileRepository;
+
 	public UploadFileService() {
 		super("Upload File");
 	}
-
-	@Autowired
-	private UploadFileRepository uploadFileRepository;
 
 	public UploadFile getByRefIdAndRefType(Integer refId, String refType) {
 		return uploadFileRepository.getByRefIdAndRefType(refId, refType);
@@ -33,5 +33,4 @@ public class UploadFileService extends BaseService<UploadFile, Integer> {
 	public void delete(Integer id) {
 		uploadFileRepository.deleteById(id);
 	}
-
 }

@@ -9,7 +9,6 @@ import com.ccpt.model.ClientCallHistory;
 
 @Mapper
 public interface ClientCallHistoryMapper extends BaseMapper<ClientCallHistoryDTO, ClientCallHistory, Integer> {
-
 	@Mappings({ @Mapping(source = "cpId", target = "clientPosition.id"),
 			@Mapping(source = "calledBy", target = "calledBy.id") })
 	public ClientCallHistory toModel(ClientCallHistoryDTO dto);

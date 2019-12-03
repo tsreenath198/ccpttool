@@ -30,5 +30,4 @@ public class SMSHistoryController extends BaseController<SMSDTO, SMS, Integer> {
 	public BaseMapper<SMSDTO, SMS, Integer> getMapper() {
 		return Mappers.getMapper(SMSMapper.class);
 	}
-
 }

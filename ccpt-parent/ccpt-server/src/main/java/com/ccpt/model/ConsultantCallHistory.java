@@ -26,25 +26,20 @@ public class ConsultantCallHistory extends IDEntity {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "consultant_id")
 	@NotNull
 	private Consultant consultant;
-
 	@Temporal(TemporalType.DATE)
 	@Column
 	@NotNull
 	private Date calledDate;
-
 	@ManyToOne(cascade = CascadeType.MERGE)
 	@JoinColumn(name = "client_position_id")
 	@NotNull
 	private ClientPosition clientPosition;
-
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "called_by")
 	@NotNull
 	private Recruiter calledBy;
-
 }

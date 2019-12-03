@@ -29,15 +29,16 @@ import com.ccpt.repository.PositionSummaryRepository;
 
 @Service
 public class ClientApplicationService extends BaseService<ClientApplication, Integer> {
-	public ClientApplicationService() {
-		super("Client Application");
-	}
 
 	@Autowired
 	private ClientApplicationRepository clientApplicationRepository;
 
 	@Autowired
 	private PositionSummaryRepository positionSummaryRepository;
+
+	public ClientApplicationService() {
+		super("Client Application");
+	}
 
 	@Override
 	public BaseRepository<ClientApplication, Integer> getRepository() {
@@ -46,7 +47,6 @@ public class ClientApplicationService extends BaseService<ClientApplication, Int
 
 	public List<ClientApplication> getAllActiveCAByCpID(Integer cpId) {
 		return clientApplicationRepository.getAllActiveCAByCpID(cpId);
-
 	}
 
 	public List<PositionSummaryStatistics> getAllActiveCACount() {
@@ -72,13 +72,11 @@ public class ClientApplicationService extends BaseService<ClientApplication, Int
 	public ApplicationBody showBodyMail(Integer caId) {
 		Optional<ClientApplication> clientApplication = clientApplicationRepository.findByIdAndActiveFlag(caId, true);
 		ClientApplication ca = null;
-		if (clientApplication.isPresent()) {
+		if (clientApplication.isPresent())
 			ca = clientApplication.get();
-		} else {
+		else
 			throw new EntityNotFoundException("Could not find ClientApplication for id : " + caId);
-		}
 		ApplicationBody body = new ApplicationBody();
-
 		if (ca.getConsultant() != null && ca.getClientPosition() != null) {
 			body.setFullname(ca.getConsultant().getFullname());
 			body.setRole(ca.getClientPosition().getRole());
@@ -90,10 +88,9 @@ public class ClientApplicationService extends BaseService<ClientApplication, Int
 			body.setConLocation(ca.getConsultant().getCurrentLocation());
 			body.setExperienceYrs(ca.getConsultant().getExperienceYrs());
 			body.setExperienceMonths(ca.getConsultant().getExperienceMonths());
-		} else {
+		} else
 			throw new EntityNotFoundException(
 					"Could not find ClientPosition and Consultant for  clientApplication id:" + ca.getId());
-		}
 		return body;
 	}
 
@@ -110,9 +107,8 @@ public class ClientApplicationService extends BaseService<ClientApplication, Int
 	}
 
 	public List<ClientApplication> search(Integer clientId, Integer clientPosId, String statusType, String searchKey) {
-		if (searchKey != null) {
+		if (searchKey != null)
 			searchKey = "%" + searchKey.replaceAll("%", "").toUpperCase() + "%";
-		}
 		return clientApplicationRepository.search(clientId, clientPosId, statusType, searchKey);
 	}
 
@@ -123,7 +119,6 @@ public class ClientApplicationService extends BaseService<ClientApplication, Int
 	public List<CAByStatusHelper> getAllCAbyStatus() {
 		List<String> statusCodes = clientApplicationRepository.getAllDistinctStatusCode();
 		List<Integer> clintPositionIds = clientApplicationRepository.getAllDistinctClientPositionId();
-
 		List<CAByStatus> clientPositioncountByStatusCode = null;
 		List<CAByStatusHelper> list = new ArrayList<CAByStatusHelper>();
 		for (int i = 0; i < statusCodes.size(); i++) {
@@ -166,5 +161,4 @@ public class ClientApplicationService extends BaseService<ClientApplication, Int
 		returnObj.setList(p.getContent());
 		return returnObj;
 	}
-
 }

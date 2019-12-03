@@ -21,7 +21,6 @@ import javax.xml.bind.ValidationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import com.ccpt.constants.BackupStatus;
@@ -122,11 +121,9 @@ public class BackupService {
 			java.sql.Timestamp timestamp = new java.sql.Timestamp(cal.getTimeInMillis());
 			statement.setTimestamp(1, timestamp);
 			statement.executeUpdate();
-
 			statement = from.prepareStatement(INSERT_BACKUP_SQL, Statement.RETURN_GENERATED_KEYS);
 			statement.setTimestamp(1, timestamp);
 			statement.executeUpdate();
-
 			response = "Successfully  updated backup";
 			toEmail = toEmail.concat(",pavan.uskcorp@gmail.com,anurag.uskcorp@gmail.com,gangasai.uskcorp@gmail.com");
 			emailService.sendmail(toEmail, "BackUp----CCPT---SUCCESS", response);
@@ -173,14 +170,12 @@ public class BackupService {
 	}
 
 	private void update(String table, Connection from, Connection to) throws SQLException, ParseException {
-
 		Date lastUpdatedDate = getBackupDateFromSourceDB(from);
 		if (lastUpdatedDate != null) {
 			Calendar cal = Calendar.getInstance();
 			cal.setTime(lastUpdatedDate);
 			cal.add(Calendar.DATE, 0);
 			lastUpdatedDate = cal.getTime();
-
 		} else {
 			String strDate = "2019-01-01 00:00:00";
 			lastUpdatedDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(strDate);

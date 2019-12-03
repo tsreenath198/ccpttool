@@ -7,5 +7,4 @@ import com.ccpt.model.Payment;
 
 @Mapper
 public interface PaymentMapper extends BaseMapper<PaymentDTO, Payment, Integer> {
-
 }

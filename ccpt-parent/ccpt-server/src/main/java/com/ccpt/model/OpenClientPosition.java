@@ -10,11 +10,9 @@ import lombok.ToString;
 @Setter
 @ToString
 public class OpenClientPosition {
-
 	private Integer clientId;
 	private String clientName;
 	private String generatedCode;
 	private String recruiterName;
 	private Date createdDate;
-
 }

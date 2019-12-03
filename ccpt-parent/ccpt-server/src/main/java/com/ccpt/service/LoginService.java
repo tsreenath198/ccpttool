@@ -9,12 +9,12 @@ import com.ccpt.repository.LoginRepository;
 
 @Service
 public class LoginService extends BaseService<Login, Integer> {
+	@Autowired
+	private LoginRepository loginRepository;
+
 	public LoginService() {
 		super("Login");
 	}
-
-	@Autowired
-	private LoginRepository loginRepository;
 
 	public Login login(String username, String password) {
 		return loginRepository.login(username, password);
@@ -28,5 +28,4 @@ public class LoginService extends BaseService<Login, Integer> {
 	public Integer checkUser(String username) {
 		return loginRepository.countByUsername(username);
 	}
-
 }

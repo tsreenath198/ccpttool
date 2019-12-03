@@ -59,42 +59,14 @@ public class ClientPositionController extends BaseController<ClientPositionDTO, 
 		return Mappers.getMapper(ClientPositionMapper.class);
 	}
 
-	@Override
-	protected void validateAndClean(ClientPosition model) {
-		if (model.getClosedBy().getId() == null) {
-			model.setClosedBy(null);
-		} else {
-			model.setClosedBy(recruiterService.get(model.getClosedBy().getId()));
-		}
-		if (model.getAssignedTo().getId() == null) {
-			model.setAssignedTo(null);
-		} else {
-			model.setAssignedTo(recruiterService.get(model.getAssignedTo().getId()));
-		}
-		if (model.getClient().getId() == null) {
-			throw new ValidationException("Client cannot be null");
-		} else {
-			model.setClient(clientService.get(model.getClient().getId()));
-		}
-		if (model.getStatus().getCode() == null) {
-			throw new ValidationException("Client Position Status cannot be null");
-		} else {
-			model.setStatus(ClientPositionStatusService.findByCode(model.getStatus().getCode()));
-		}
-		if (model.getRequiredSkills() == null) {
-			throw new ValidationException("Required skills cannot be null");
-		} else {
-			model.setRequiredSkills(model.getRequiredSkills());
-		}
-	}
-
+	/* Retrieves list of active id's and names from client position */
 	@GetMapping("/getAllCps")
 	public ResponseEntity<List<DropDownStatistics>> getAllCps() {
 		List<DropDownStatistics> result = clientPositionService.getAllCps();
 		return new ResponseEntity<List<DropDownStatistics>>(result, HttpStatus.OK);
-
 	}
 
+	/* Updates client position */
 	@PutMapping("/updatePosting")
 	public ResponseEntity<Void> updateStatus(@RequestBody CP model) {
 		if (model.getShineURL() == null && model.getAlmaConnectURL() == null && model.getNaukriURL() == null) {
@@ -104,6 +76,10 @@ public class ClientPositionController extends BaseController<ClientPositionDTO, 
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 
+	/*
+	 * Retrieves number of records and the list of active client positions based
+	 * on the status
+	 */
 	@GetMapping(CCPTConstants.GET_ALL_BY_STATUS)
 	public ResponseEntity<BaseReturn> getAllByStatus(@RequestParam(defaultValue = "0") Integer pageNo,
 			@RequestParam(defaultValue = "50") Integer pageSize, @RequestParam(defaultValue = "id") String sortBy,
@@ -113,6 +89,7 @@ public class ClientPositionController extends BaseController<ClientPositionDTO, 
 
 	}
 
+	/* Retrieves list of empty generated codes and values */
 	@GetMapping("/getEmptyData")
 	public ResponseEntity<List<EmptyDataStatistics>> getEmptyData() {
 		EmptyDataStatistics emptyUrlStatistics = null;
@@ -145,5 +122,30 @@ public class ClientPositionController extends BaseController<ClientPositionDTO, 
 			resultList.add(emptyUrlStatistics);
 		}
 		return new ResponseEntity<List<EmptyDataStatistics>>(resultList, HttpStatus.OK);
+	}
+
+	/* Validates client position */
+	@Override
+	protected void validateAndClean(ClientPosition model) {
+		if (model.getClosedBy().getId() == null)
+			model.setClosedBy(null);
+		else
+			model.setClosedBy(recruiterService.get(model.getClosedBy().getId()));
+		if (model.getAssignedTo().getId() == null)
+			model.setAssignedTo(null);
+		else
+			model.setAssignedTo(recruiterService.get(model.getAssignedTo().getId()));
+		if (model.getClient().getId() == null)
+			throw new ValidationException("Client cannot be null");
+		else
+			model.setClient(clientService.get(model.getClient().getId()));
+		if (model.getStatus().getCode() == null)
+			throw new ValidationException("Client Position Status cannot be null");
+		else
+			model.setStatus(ClientPositionStatusService.findByCode(model.getStatus().getCode()));
+		if (model.getRequiredSkills() == null)
+			throw new ValidationException("Required skills cannot be null");
+		else
+			model.setRequiredSkills(model.getRequiredSkills());
 	}
 }

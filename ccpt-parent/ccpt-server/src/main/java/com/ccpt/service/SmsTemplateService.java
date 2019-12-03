@@ -13,13 +13,12 @@ import com.ccpt.repository.SmsTemplateRepository;
 
 @Component
 public class SmsTemplateService extends BaseService<SmsTemplate, Integer> {
+	@Autowired
+	private SmsTemplateRepository smsTemplateRepository;
 
 	public SmsTemplateService() {
 		super("SMS Template");
 	}
-
-	@Autowired
-	private SmsTemplateRepository smsTemplateRepository;
 
 	@Override
 	public BaseRepository<SmsTemplate, Integer> getRepository() {
@@ -34,5 +33,4 @@ public class SmsTemplateService extends BaseService<SmsTemplate, Integer> {
 			throw new EntityNotFoundException("No SMS Template found for type : " + type);
 		}
 	}
-
 }

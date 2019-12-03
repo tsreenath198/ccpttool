@@ -9,16 +9,15 @@ import com.ccpt.repository.EmailContentRepository;
 
 @Service
 public class EmailContentService extends BaseService<EmailContent, Integer> {
+	@Autowired
+	private EmailContentRepository emailContentRepository;
+
 	public EmailContentService() {
 		super("Email Content");
 	}
-
-	@Autowired
-	private EmailContentRepository emailContentRepository;
 
 	@Override
 	public BaseRepository<EmailContent, Integer> getRepository() {
 		return emailContentRepository;
 	}
-
 }

@@ -31,13 +31,12 @@ public class EmailController {
 	@Autowired
 	private ClientApplicationService clientApplicationService;
 
+	/* Sends an email */
 	@PostMapping(CCPTConstants.SEND_EMAIL)
 	public ResponseEntity<String> sendEmail(@RequestBody EmailContent emailContent) throws Exception {
-
 		try {
 			String uuid = UUID.randomUUID().toString();
 			emailContent.setUuid(uuid);
-
 			String body = "<body style=\"font-family:Calibri;\"><span style=\"background-color:yellow\"><b>Email Ref#:</b>"
 					.concat(uuid).concat("</span>").concat("<br>").concat(emailContent.getBody()).concat("</body>");
 			emailService.sendEmailWithAttachments(emailContent.getToEmails(), emailContent.getSubject(), body,
@@ -56,5 +55,4 @@ public class EmailController {
 		}
 		return new ResponseEntity<String>(HttpStatus.OK);
 	}
-
 }

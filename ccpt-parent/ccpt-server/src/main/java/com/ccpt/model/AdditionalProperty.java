@@ -22,17 +22,12 @@ public class AdditionalProperty extends IDEntity {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
 	@Column
 	private String refType;
-
 	@Column
 	private Integer refId;
-
 	@Column
 	private String name;
-
 	@Column
 	private String value;
-
 }

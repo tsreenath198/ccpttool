@@ -15,12 +15,12 @@ import com.ccpt.util.DateUtil;
 
 @Service
 public class ClientCallHistoryService extends BaseService<ClientCallHistory, Integer> {
+	@Autowired
+	private ClientCallHistoryRepository clientCallHistoryRepository;
+
 	public ClientCallHistoryService() {
 		super("Client Call History");
 	}
-
-	@Autowired
-	private ClientCallHistoryRepository clientCallHistoryRepository;
 
 	@Override
 	public BaseRepository<ClientCallHistory, Integer> getRepository() {
@@ -28,7 +28,8 @@ public class ClientCallHistoryService extends BaseService<ClientCallHistory, Int
 	}
 
 	List<ClientCallHistory> findByClientPositionId(Integer clientPositionId) {
-		return clientCallHistoryRepository.findByClientPositionIdAndActiveFlagOrderByCreatedDateDesc(clientPositionId, true);
+		return clientCallHistoryRepository.findByClientPositionIdAndActiveFlagOrderByCreatedDateDesc(clientPositionId,
+				true);
 	}
 
 	public List<CallHistorySummaryStatistics> getAllCchCountByRecruiters(Integer days) throws ParseException {
@@ -40,5 +41,4 @@ public class ClientCallHistoryService extends BaseService<ClientCallHistory, Int
 		Day day = DateUtil.getDays(days);
 		return clientCallHistoryRepository.getAllCchByRecruiterId(rId, day.getStartDate(), day.getEndDate(), true);
 	}
-
 }

@@ -22,21 +22,15 @@ public class Login extends IDEntity {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
 	@Column(unique = true)
 	@NotNull
 	private String username;
-
 	@Column
 	private String password;
-
 	@Column
 	private String token = UUID.randomUUID().toString();
-
 	@Column
 	private String role;
-
 	@Transient
 	private boolean check;
-
 }

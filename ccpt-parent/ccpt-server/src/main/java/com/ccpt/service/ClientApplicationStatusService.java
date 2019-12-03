@@ -12,12 +12,13 @@ import com.ccpt.repository.ClientApplicationStatusRepository;
 
 @Service
 public class ClientApplicationStatusService extends BaseService<ClientApplicationStatus, Integer> {
-	public ClientApplicationStatusService() {
-		super("Client Application Status");
-	}
 
 	@Autowired
 	private ClientApplicationStatusRepository clientApplicationStatusRepository;
+
+	public ClientApplicationStatusService() {
+		super("Client Application Status");
+	}
 
 	@Override
 	public BaseRepository<ClientApplicationStatus, Integer> getRepository() {

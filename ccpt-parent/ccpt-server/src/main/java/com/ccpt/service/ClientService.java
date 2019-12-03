@@ -43,7 +43,6 @@ public class ClientService extends BaseService<Client, Integer> {
 
 	@Override
 	protected void postDelete(Client client) {
-
 		List<ClientPosition> cpList = clientPositionRepository
 				.findByClientIdAndActiveFlagOrderByCreatedDateDesc(client.getId(), true);
 		List<ClientContact> listOfContacts = client.getClientContacts();
@@ -71,5 +70,4 @@ public class ClientService extends BaseService<Client, Integer> {
 	public List<DropDownStatistics> getAllClients() {
 		return clientRepository.getAllClients();
 	}
-
 }

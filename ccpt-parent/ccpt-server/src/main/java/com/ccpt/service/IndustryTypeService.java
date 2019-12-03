@@ -9,16 +9,15 @@ import com.ccpt.repository.IndustryTypeRespository;
 
 @Service
 public class IndustryTypeService extends BaseService<IndustryType, Integer> {
+	@Autowired
+	private IndustryTypeRespository industryTypeRespository;
+
 	public IndustryTypeService() {
 		super("IndustryType");
 	}
-
-	@Autowired
-	private IndustryTypeRespository industryTypeRespository;
 
 	@Override
 	public BaseRepository<IndustryType, Integer> getRepository() {
 		return industryTypeRespository;
 	}
-
 }

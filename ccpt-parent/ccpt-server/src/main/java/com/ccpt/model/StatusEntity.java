@@ -22,19 +22,15 @@ public class StatusEntity extends BaseEntity<Integer> {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-
 	@Column
 	@Size(max = 30)
 	protected String code;
-
 	@Column
 	@Size(max = 30)
 	protected String statusType;
-
 	@Column(unique = true, nullable = false)
 	protected Integer ordr;
 

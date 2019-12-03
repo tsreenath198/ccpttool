@@ -36,11 +36,9 @@ public class OtherContactController extends BaseController<OtherContactDTO, Othe
 
 	@Override
 	protected void validateAndClean(OtherContact model) {
-		if (model.getName() == null) {
+		if (model.getName() == null)
 			throw new ValidationException("Name cannot be null");
-		}
-		if (model.getPhone() == null) {
+		if (model.getPhone() == null)
 			throw new ValidationException("Phone number cannot be null");
-		}
 	}
 }

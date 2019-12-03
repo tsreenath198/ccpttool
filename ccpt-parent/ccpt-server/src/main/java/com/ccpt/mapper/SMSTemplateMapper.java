@@ -7,5 +7,4 @@ import com.ccpt.model.SmsTemplate;
 
 @Mapper
 public interface SMSTemplateMapper extends BaseMapper<SmsTemplateDTO, SmsTemplate, Integer> {
-
 }

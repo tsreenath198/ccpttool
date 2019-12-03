@@ -28,79 +28,55 @@ public class Consultant extends FileSupportEntity {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
 	@Column(unique = true)
 	@NotNull
 	private String fullname;
-
 	@Column
 	@NotNull
 	private String gender;
-
 	@Temporal(TemporalType.DATE)
 	@Column
 	private Date dob;
-
 	@Column
 	private String email;
-
 	@Column
 	private String phone;
-
 	@Column
 	private String skills;
-
 	@Column
 	private String currentLocation;
-
 	@Column
 	private Integer passoutYear;
-
 	@Column
 	private String expectedCTC;
-
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "status_code", referencedColumnName = "code")
 	@NotNull
 	private ConsultantStatus status;
-
 	@Column
 	private String experienceYrs;
-
 	@Column
 	private String experienceMonths;
-
 	@Column
 	private String currentCompany;
-
 	@Column
 	private String currentCTC;
-
 	@Column
 	private String prefferedLocation;
-
 	@Column
 	private String currentJobTitle;
-
 	@Column
 	private String currentFunctionalArea;
-
 	@Column
 	private String currentIndustry;
-
 	@Column
 	private String yearsInCurrentJob;
-
 	@Column
 	private String monthsInCurrentJob;
-
 	@Column
 	private String noticePeriod;
-
 	@Column
 	private String highestEducation;
-	
 	@Column
 	private String sourcedFrom;
-
 }

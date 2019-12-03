@@ -9,16 +9,15 @@ import com.ccpt.repository.SMSRepository;
 
 @Service
 public class SMSService extends BaseService<SMS, Integer> {
+	@Autowired
+	private SMSRepository smsRepository;
+
 	public SMSService() {
 		super("SMS");
 	}
-
-	@Autowired
-	private SMSRepository smsRepository;
 
 	@Override
 	public BaseRepository<SMS, Integer> getRepository() {
 		return smsRepository;
 	}
-
 }

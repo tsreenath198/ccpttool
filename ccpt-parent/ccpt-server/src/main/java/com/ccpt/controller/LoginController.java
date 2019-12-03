@@ -38,14 +38,11 @@ public class LoginController extends BaseController<LoginDTO, Login, Integer> {
 		Integer count = loginService.checkUser(username);
 		if (count == 1) {
 			Login log = loginService.login(username, password);
-			if (log != null) {
+			if (log != null)
 				return new ResponseEntity<Login>(log, HttpStatus.OK);
-			}
 			throw new AuthenticationException("Invalid  password");
-
-		} else {
+		} else
 			throw new AuthenticationException("Invalid  username");
-		}
 	}
 
 	@Override
@@ -60,12 +57,9 @@ public class LoginController extends BaseController<LoginDTO, Login, Integer> {
 
 	@Override
 	protected void validateAndClean(Login model) {
-		if (model.getUsername() == null) {
+		if (model.getUsername() == null)
 			throw new ValidationException("username cannot be null");
-		}
-		if (model.getPassword() == null) {
+		if (model.getPassword() == null)
 			throw new ValidationException("password cannot be null");
-		}
 	}
-
 }

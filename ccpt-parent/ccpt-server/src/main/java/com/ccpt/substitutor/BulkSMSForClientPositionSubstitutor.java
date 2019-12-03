@@ -31,11 +31,10 @@ public class BulkSMSForClientPositionSubstitutor implements ContentSubstitutor {
 		ClientPosition clientPosition = clientPositionService.get(id);
 		if (clientPosition != null) {
 			Map<String, String> valuesMap = new HashMap<String, String>();
-			if (clientPosition.getLocation() != null) {
+			if (clientPosition.getLocation() != null)
 				valuesMap.put("joblocation", clientPosition.getLocation());
-			} else {
+			else
 				throw new Exception("ClientPosition Location is null");
-			}
 			valuesMap.put("client", clientPosition.getClient().getName());
 			valuesMap.put("job", clientPosition.getRole());
 			String msg = smsTemplate.getDescription();
@@ -43,14 +42,12 @@ public class BulkSMSForClientPositionSubstitutor implements ContentSubstitutor {
 			SMS sms = new SMS();
 			sms.setMessage(message);
 			return sms;
-		} else {
+		} else
 			throw new Exception("ClientPosition is null for given id:" + id);
-		}
 	}
 
 	@Override
 	public EmailContent generate(EmailTemplate template, Map<String, String> params) {
 		return null;
 	}
-
 }

@@ -54,37 +54,35 @@ public class ConsultantCallHistoryController
 		return Mappers.getMapper(ConsultantCallHistoryMapper.class);
 	}
 
+	/*
+	 * Retrieves all consultant call history based on the recruiter id and last
+	 * given days
+	 */
 	@GetMapping("/getAllconCHByRecruiterId")
 	public ResponseEntity<List<ConsultantCallHistory>> getAllconCHByRecruiterId(@RequestParam Integer rId,
 			@RequestParam Integer days) throws ParseException {
 		List<ConsultantCallHistory> result = consultantCallHistoryService.getAllconCHByRecruiterId(rId, days);
 		return new ResponseEntity<List<ConsultantCallHistory>>(result, HttpStatus.OK);
-
 	}
 
+	/* Validates consultant call history */
 	@Override
 	protected void validateAndClean(ConsultantCallHistory model) {
-		if (model.getConsultant() == null || model.getConsultant().getId() == null) {
+		if (model.getConsultant() == null || model.getConsultant().getId() == null)
 			throw new ValidationException("Consultant cannot be null");
-		} else {
+		else
 			model.setConsultant(consultantService.get(model.getConsultant().getId()));
-		}
-		if (model.getCalledBy() == null || model.getCalledBy().getId() == null) {
+		if (model.getCalledBy() == null || model.getCalledBy().getId() == null)
 			throw new ValidationException("Called By cannot be null");
-		} else {
+		else
 			model.setCalledBy(recruiterService.get(model.getCalledBy().getId()));
-		}
-		if (model.getCalledDate() == null) {
+		if (model.getCalledDate() == null)
 			throw new ValidationException("Called Date cannot be null");
-		}
-		if (model.getDescription() == null || model.getDescription().isEmpty()) {
+		if (model.getDescription() == null || model.getDescription().isEmpty())
 			throw new ValidationException("Description cannot be null");
-		}
-		if (model.getClientPosition() == null || model.getClientPosition().getId() == null) {
+		if (model.getClientPosition() == null || model.getClientPosition().getId() == null)
 			throw new ValidationException("Client Position cannot be null");
-		} else {
+		else
 			model.setClientPosition(clientPositionService.get(model.getClientPosition().getId()));
-		}
 	}
-
 }

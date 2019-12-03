@@ -11,5 +11,4 @@ public class Detail {
 	private Integer id;
 	private String generatedCode;
 	private Integer count;
-
 }

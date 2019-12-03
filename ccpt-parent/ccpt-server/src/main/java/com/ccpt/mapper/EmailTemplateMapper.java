@@ -7,5 +7,4 @@ import com.ccpt.model.EmailTemplate;
 
 @Mapper
 public interface EmailTemplateMapper extends BaseMapper<EmailTemplateDTO, EmailTemplate, Integer> {
-
 }

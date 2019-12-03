@@ -7,5 +7,4 @@ import com.ccpt.model.Recruiter;
 
 @Mapper
 public interface RecruiterMapper extends BaseMapper<RecruiterDTO, Recruiter, Integer> {
-
 }

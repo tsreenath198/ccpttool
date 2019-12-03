@@ -24,6 +24,4 @@ public class IndustryType extends IDEntity {
 
 	@Column
 	private String name;
-	
-
 }

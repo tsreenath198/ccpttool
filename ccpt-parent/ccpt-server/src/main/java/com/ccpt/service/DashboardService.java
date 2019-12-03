@@ -27,7 +27,6 @@ public class DashboardService {
 			openClientPositions.setClientId(clientPosition.getClient().getId());
 			listOfPositions.add(openClientPositions);
 		}
-
 		return listOfPositions;
 	}
 
@@ -43,7 +42,6 @@ public class DashboardService {
 			openClientPositions.setClientId(clientPosition.getClient().getId());
 			listOfPositions.add(openClientPositions);
 		}
-
 		return listOfPositions;
 	}
 }

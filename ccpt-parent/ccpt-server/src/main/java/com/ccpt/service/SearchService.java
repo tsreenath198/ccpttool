@@ -11,13 +11,12 @@ import com.ccpt.repository.SearchRepository;
 
 @Service
 public class SearchService extends BaseService<Search, Integer> {
-	
+	@Autowired
+	private SearchRepository searchRepository;
+
 	public SearchService() {
 		super("Search");
 	}
-
-	@Autowired
-	private SearchRepository searchRepository;
 
 	@Override
 	public BaseRepository<Search, Integer> getRepository() {

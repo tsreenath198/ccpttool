@@ -20,15 +20,11 @@ public class OtherContact extends IDEntity {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
 	@Column(unique = true)
 	@NotNull
 	private String name;
-
 	@Column
 	private String phone;
-
 	@Column
 	private String email;
-
 }

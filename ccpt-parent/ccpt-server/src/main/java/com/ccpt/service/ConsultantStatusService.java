@@ -9,20 +9,19 @@ import com.ccpt.repository.ConsultantStatusRepository;
 
 @Service
 public class ConsultantStatusService extends BaseService<ConsultantStatus, Integer> {
+	@Autowired
+	private ConsultantStatusRepository consultantStatusRepository;
+
 	public ConsultantStatusService() {
 		super("Consultant Status");
 	}
-
-	@Autowired
-	private ConsultantStatusRepository consultantStatusRepository;
 
 	@Override
 	public BaseRepository<ConsultantStatus, Integer> getRepository() {
 		return consultantStatusRepository;
 	}
-	
+
 	public ConsultantStatus findByCode(String code) {
 		return consultantStatusRepository.findByCodeAndActiveFlag(code, true);
 	}
-
 }

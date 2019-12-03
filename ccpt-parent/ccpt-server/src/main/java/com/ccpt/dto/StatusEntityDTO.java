@@ -14,5 +14,4 @@ public class StatusEntityDTO extends BaseEntityDTO<Integer> {
 	@Size(max = 30)
 	@NotNull
 	protected String code;
-	
 }

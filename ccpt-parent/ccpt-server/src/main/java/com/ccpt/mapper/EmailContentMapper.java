@@ -7,5 +7,4 @@ import com.ccpt.model.EmailContent;
 
 @Mapper
 public interface EmailContentMapper extends BaseMapper<EmailContentDTO, EmailContent, Integer> {
-
 }

@@ -61,88 +61,93 @@ public class ClientApplicationController extends BaseController<ClientApplicatio
 		return Mappers.getMapper(ClientApplicationMapper.class);
 	}
 
+	/*
+	 * Retrieves all client applications based on given on client position id
+	 * which are active
+	 */
 	@GetMapping("/getAllActiveCAByCpID")
 	public ResponseEntity<List<ClientApplication>> getAllActiveCAByCpID(@RequestParam Integer cpId) {
 		List<ClientApplication> result = clientApplicationService.getAllActiveCAByCpID(cpId);
 		return new ResponseEntity<List<ClientApplication>>(result, HttpStatus.OK);
-
 	}
 
+	/**/
 	@GetMapping("/showBodyMail")
 	public ResponseEntity<ApplicationBody> showBodyMail(@RequestParam Integer caId) {
 		ApplicationBody result = clientApplicationService.showBodyMail(caId);
 		return new ResponseEntity<ApplicationBody>(result, HttpStatus.OK);
-
 	}
 
+	/*
+	 * Retrieves id's and generated codes whose status is JobConfirmed from
+	 * client applications which are active
+	 */
 	@GetMapping("/getJobConfirmedCAs")
 	public ResponseEntity<List<CAStatistics>> getJobConfirmedCAs() {
 		List<CAStatistics> result = clientApplicationService.getJobConfirmedCAs();
 		return new ResponseEntity<List<CAStatistics>>(result, HttpStatus.OK);
-
 	}
 
+	/*
+	 * Retrieves id's and generated codes from client applications which are
+	 * active
+	 */
 	@GetMapping("/getCAStatistics")
 	public ResponseEntity<List<CAStatistics>> getCAStatistics() {
 		List<CAStatistics> result = clientApplicationService.getCAStatistics();
 		return new ResponseEntity<List<CAStatistics>>(result, HttpStatus.OK);
-
 	}
 
+	/* Retrieves client applications based on the search key which are active */
 	@GetMapping("/search")
 	public ResponseEntity<List<ClientApplication>> search(@RequestParam(required = false) Integer clientId,
 			@RequestParam(required = false) Integer clientPosId, @RequestParam(required = false) String statusType,
 			@RequestParam(required = false) String searchKey) {
 		List<ClientApplication> result = clientApplicationService.search(clientId, clientPosId, statusType, searchKey);
 		return new ResponseEntity<List<ClientApplication>>(result, HttpStatus.OK);
-
 	}
 
+	/* Retrieves client applications based on status which are active */
 	@GetMapping(CCPTConstants.GET_ALL_BY_STATUS)
 	public ResponseEntity<BaseReturn> getAllByStatus(@RequestParam(defaultValue = "0") Integer pageNo,
 			@RequestParam(defaultValue = "50") Integer pageSize, @RequestParam(defaultValue = "id") String sortBy,
 			@RequestParam(required = false) String status) {
 		BaseReturn br = clientApplicationService.getAllByStatus(pageNo, pageSize, sortBy, status);
 		return new ResponseEntity<BaseReturn>(br, HttpStatus.OK);
-
 	}
 
+	/* updates client application status based on the id */
 	@PutMapping("/updateStatus")
 	public ResponseEntity<Void> updateStatus(@RequestParam Integer id, @RequestParam String status) {
 		clientApplicationService.updateStatus(id, status);
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 
+	/* validates client application */
 	@Override
 	protected void validateAndClean(ClientApplication model) {
-		if (model.getClientPosition() == null || model.getClientPosition().getId() == null) {
+		if (model.getClientPosition() == null || model.getClientPosition().getId() == null)
 			throw new ValidationException("Client Position cannot be null");
-		} else {
+		else
 			model.setClientPosition(clientPositionService.get(model.getClientPosition().getId()));
-		}
-		if (model.getConsultant() == null || model.getConsultant().getId() == null) {
+		if (model.getConsultant() == null || model.getConsultant().getId() == null)
 			throw new ValidationException("Consultant cannot be null");
-		} else {
+		else
 			model.setConsultant(consultantService.get(model.getConsultant().getId()));
-		}
-		if (model.getCreator() == null || model.getCreator().getId() == null) {
+		if (model.getCreator() == null || model.getCreator().getId() == null)
 			throw new ValidationException("Application Creator cannot be null");
-		} else {
+		else
 			model.setCreator(recruiterService.get(model.getCreator().getId()));
-		}
-		if (model.getStatus() == null || model.getStatus().getCode() == null) {
+		if (model.getStatus() == null || model.getStatus().getCode() == null)
 			throw new ValidationException("Application Status cannot be null");
-		} else {
+		else
 			model.setStatus(clientApplicationStatusService.findByCode(model.getStatus().getCode()));
-		}
 		if (model.getId() == null) {
 			Integer check = clientApplicationService.checkPositionWithConsultant(model.getClientPosition().getId(),
 					model.getConsultant().getId());
-			if (check >= 1) {
+			if (check >= 1)
 				throw new EntityExistsException(
 						"Client Application is already exist with this consultant and client position");
-			}
 		}
 	}
-
 }

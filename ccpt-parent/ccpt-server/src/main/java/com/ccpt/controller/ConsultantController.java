@@ -47,60 +47,59 @@ public class ConsultantController extends BaseController<ConsultantDTO, Consulta
 		return Mappers.getMapper(ConsultantMapper.class);
 	}
 
+	/* Retrieves all active consultants with status code inactive */
 	@GetMapping("/getAllConsultants")
 	public ResponseEntity<List<ConsultantStatistics>> getAllConsultants() {
 		List<ConsultantStatistics> result = consultantService.getAllConsultants();
 		return new ResponseEntity<List<ConsultantStatistics>>(result, HttpStatus.OK);
-
 	}
 
+	/* Retrieves inactive consultants */
 	@GetMapping("/getInactiveConsultants")
 	public ResponseEntity<List<Consultant>> getInactiveConsultants() {
 		List<Consultant> result = consultantService.getInactiveConsultants();
 		return new ResponseEntity<List<Consultant>>(result, HttpStatus.OK);
-
 	}
 
+	/* Retrieves list of consultants based on the search key */
 	@GetMapping("/search")
 	public ResponseEntity<List<Consultant>> search(@RequestParam String searchKey) {
 		List<Consultant> result = consultantService.search(searchKey);
 		return new ResponseEntity<List<Consultant>>(result, HttpStatus.OK);
-
 	}
 
+	/*
+	 * Retrieves number of records and the list of consultants based on the
+	 * status type
+	 */
 	@GetMapping(CCPTConstants.GET_ALL_BY_STATUS)
 	public ResponseEntity<BaseReturn> getAllByStatus(@RequestParam(defaultValue = "0") Integer pageNo,
 			@RequestParam(defaultValue = "50") Integer pageSize, @RequestParam(defaultValue = "id") String sortBy,
 			@RequestParam(required = false) String status) {
 		BaseReturn br = consultantService.getAllByStatus(pageNo, pageSize, sortBy, status);
 		return new ResponseEntity<BaseReturn>(br, HttpStatus.OK);
-
 	}
 
+	/* Validates consultant */
 	@Override
 	protected void validateAndClean(Consultant model) {
-
 		List<Consultant> matchingConsultants = consultantService.find(model.getFullname(), model.getEmail(),
 				model.getPhone());
 		if (!CollectionUtils.isEmpty(matchingConsultants) && model.getId() == null) {
 			for (Consultant entity : matchingConsultants) {
-				if (!entity.getActiveFlag()) {
+				if (!entity.getActiveFlag())
 					throw new DataIntegrityViolationException(
 							"A Inactive consultant (" + entity.getId() + ") exists with (" + entity.getFullname() + ", "
 									+ entity.getEmail() + ", " + entity.getPhone() + ")");
-				}
-				if (model.getFullname().equals(entity.getFullname())) {
+				if (model.getFullname().equals(entity.getFullname()))
 					throw new DataIntegrityViolationException(
 							"Consultant(" + entity.getId() + ") is already exists with this " + entity.getFullname());
-				}
-				if (model.getEmail() != null && model.getEmail().equals(entity.getEmail())) {
+				if (model.getEmail() != null && model.getEmail().equals(entity.getEmail()))
 					throw new DataIntegrityViolationException(
 							"Consultant (" + entity.getId() + ")  is already exists with this " + entity.getEmail());
-				}
-				if (model.getPhone() != null && model.getPhone().equals(entity.getPhone())) {
+				if (model.getPhone() != null && model.getPhone().equals(entity.getPhone()))
 					throw new DataIntegrityViolationException(
 							"Consultant (" + entity.getId() + ")  is already exists with this " + entity.getPhone());
-				}
 			}
 		}
 		if (model.getStatus().getCode() == null)
@@ -111,7 +110,5 @@ public class ConsultantController extends BaseController<ConsultantDTO, Consulta
 			throw new ValidationException("Client Name cannot be null");
 		if (model.getPhone() == null && model.getEmail() == null)
 			throw new ValidationException("Phone number and Email Both cannot be null");
-
 	}
-
 }

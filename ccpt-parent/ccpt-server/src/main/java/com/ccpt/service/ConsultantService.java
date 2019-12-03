@@ -33,6 +33,12 @@ public class ConsultantService extends BaseService<Consultant, Integer> {
 	@PersistenceContext
 	EntityManager em;
 
+	@Autowired
+	private ConsultantRepository consultantRepository;
+
+	@Autowired
+	private ClientApplicationService clientApplicationService;
+
 	public ConsultantService(String entity, EntityManager em) {
 		super(entity);
 		this.em = em;
@@ -41,12 +47,6 @@ public class ConsultantService extends BaseService<Consultant, Integer> {
 	public ConsultantService() {
 		super("Consultant");
 	}
-
-	@Autowired
-	private ConsultantRepository consultantRepository;
-
-	@Autowired
-	private ClientApplicationService clientApplicationService;
 
 	@Override
 	public BaseRepository<Consultant, Integer> getRepository() {
@@ -95,9 +95,8 @@ public class ConsultantService extends BaseService<Consultant, Integer> {
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 		CriteriaQuery<Consultant> cq = cb.createQuery(Consultant.class);
 		Root<Consultant> consultant = cq.from(Consultant.class);
-		for (String skills : result) {
+		for (String skills : result)
 			predicates.add(cb.like(consultant.get("skills"), "% " + skills + " %"));
-		}
 		cq.where(cb.and(predicates.toArray(new Predicate[] {})));
 		TypedQuery<Consultant> query = em.createQuery(cq);
 		return query.getResultList();
@@ -115,5 +114,4 @@ public class ConsultantService extends BaseService<Consultant, Integer> {
 		returnObj.setList(p.getContent());
 		return returnObj;
 	}
-
 }

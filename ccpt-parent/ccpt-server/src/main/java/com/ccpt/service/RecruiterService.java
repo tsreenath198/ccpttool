@@ -14,12 +14,12 @@ import com.ccpt.repository.RecruiterRepository;
 
 @Service
 public class RecruiterService extends BaseService<Recruiter, Integer> {
+	@Autowired
+	private RecruiterRepository recruiterRepository;
+
 	public RecruiterService() {
 		super("Recruiter");
 	}
-
-	@Autowired
-	private RecruiterRepository recruiterRepository;
 
 	public Recruiter getRecruiterByName(String name) {
 		Recruiter obj = recruiterRepository.getRecruiterFromName(name);

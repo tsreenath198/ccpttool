@@ -47,43 +47,16 @@ public class RecruiterController extends BaseController<RecruiterDTO, Recruiter,
 		return Mappers.getMapper(RecruiterMapper.class);
 	}
 
-	@Override
-	protected void validateAndClean(Recruiter model) {
-		if (model.getFullname() == null) {
-			throw new ValidationException("Fullname cannot be null");
-		}
-		if (model.getPhone() == null) {
-			throw new ValidationException("Phone number cannot be null");
-		}
-		if (model.getEmail() == null) {
-			throw new ValidationException("Email cannot be null");
-		}
-		if (model.getGender() == null) {
-			throw new ValidationException("Gender cannot be null");
-		}
-		if (model.getDob() == null) {
-			throw new ValidationException("Date of birth cannot be null");
-		}
-		if (model.getRole() == null) {
-			throw new ValidationException("Role cannot be null");
-		}
-		if (model.getAddress() == null) {
-			throw new ValidationException("Address cannot be null");
-		}
-	}
-
 	@GetMapping("/getAllCreators")
 	public ResponseEntity<List<RecruiterDropdownStatistics>> getAllCreators() {
 		List<RecruiterDropdownStatistics> result = recruiterService.getAllCreators();
 		return new ResponseEntity<List<RecruiterDropdownStatistics>>(result, HttpStatus.OK);
-
 	}
 
 	@GetMapping("/getAllLeadEmails")
 	public ResponseEntity<List<String>> getAllLeadEmails() {
 		List<String> result = recruiterService.getAllLeadEmails();
 		return new ResponseEntity<List<String>>(result, HttpStatus.OK);
-
 	}
 
 	@GetMapping("/getLeadEmailById/{id}")
@@ -92,7 +65,23 @@ public class RecruiterController extends BaseController<RecruiterDTO, Recruiter,
 		String result = recruiterService.getLeadEmailById(id);
 		emailContent.setToEmails(result);
 		return new ResponseEntity<EmailContent>(emailContent, HttpStatus.OK);
-
 	}
 
+	@Override
+	protected void validateAndClean(Recruiter model) {
+		if (model.getFullname() == null)
+			throw new ValidationException("Fullname cannot be null");
+		if (model.getPhone() == null)
+			throw new ValidationException("Phone number cannot be null");
+		if (model.getEmail() == null)
+			throw new ValidationException("Email cannot be null");
+		if (model.getGender() == null)
+			throw new ValidationException("Gender cannot be null");
+		if (model.getDob() == null)
+			throw new ValidationException("Date of birth cannot be null");
+		if (model.getRole() == null)
+			throw new ValidationException("Role cannot be null");
+		if (model.getAddress() == null)
+			throw new ValidationException("Address cannot be null");
+	}
 }

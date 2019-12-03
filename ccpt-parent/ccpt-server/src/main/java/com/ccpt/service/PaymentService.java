@@ -16,13 +16,12 @@ import com.ccpt.util.ExcelWriter;
 
 @Service
 public class PaymentService extends BaseService<Payment, Integer> {
+	@Autowired
+	private PaymentRepository paymentRepository;
 
 	public PaymentService() {
 		super("Payment");
 	}
-
-	@Autowired
-	private PaymentRepository paymentRepository;
 
 	@Override
 	public BaseRepository<Payment, Integer> getRepository() {

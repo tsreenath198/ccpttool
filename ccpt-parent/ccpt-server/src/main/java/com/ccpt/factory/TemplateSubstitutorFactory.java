@@ -16,9 +16,8 @@ public class TemplateSubstitutorFactory {
 
 	public ContentSubstitutor getSubstitutor(String type) {
 		for (ContentSubstitutor contentSubstitutor : substitutors) {
-			if (contentSubstitutor.getType().equals(type)) {
+			if (contentSubstitutor.getType().equals(type))
 				return contentSubstitutor;
-			}
 		}
 		throw new NoSuchBeanDefinitionException("No Substitutor Bean found for type : " + type);
 	}

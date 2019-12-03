@@ -48,10 +48,10 @@ public class ClientApplicationStatusController
 		}
 	}
 
+	/* Retrieves list of id's and names which are active */
 	@GetMapping("/getAllCAStatus")
 	public ResponseEntity<List<DropDownStatistics>> getAllCAStatus() {
 		List<DropDownStatistics> result = clientApplicationStatusService.getAllCAStatus();
 		return new ResponseEntity<List<DropDownStatistics>>(result, HttpStatus.OK);
-
 	}
 }

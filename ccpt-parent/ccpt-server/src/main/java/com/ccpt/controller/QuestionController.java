@@ -86,15 +86,13 @@ public class QuestionController extends BaseController<QuestionDTO, Question, In
 
 	@Override
 	protected void validateAndClean(Question model) {
-		if (model.getCreator() == null || model.getCreator().getId() == null) {
+		if (model.getCreator() == null || model.getCreator().getId() == null)
 			throw new ValidationException("Application Creator cannot be null");
-		} else {
+		else
 			model.setCreator(recruiterService.get(model.getCreator().getId()));
-		}
-		if (model.getCa() == null || model.getCa().getId() == null) {
+		if (model.getCa() == null || model.getCa().getId() == null)
 			throw new ValidationException("Client Application cannot be null");
-		} else {
+		else
 			model.setCa(clientApplicationService.get(model.getCa().getId()));
-		}
 	}
 }

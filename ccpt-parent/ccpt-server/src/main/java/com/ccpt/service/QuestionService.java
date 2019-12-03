@@ -11,12 +11,12 @@ import com.ccpt.repository.QuestionRepository;
 
 @Service
 public class QuestionService extends BaseService<Question, Integer> {
+	@Autowired
+	private QuestionRepository questionRepository;
+
 	public QuestionService() {
 		super("Question");
 	}
-
-	@Autowired
-	private QuestionRepository questionRepository;
 
 	@Override
 	public BaseRepository<Question, Integer> getRepository() {
@@ -30,5 +30,4 @@ public class QuestionService extends BaseService<Question, Integer> {
 	public List<Question> searchByCAID(Integer caId) {
 		return questionRepository.searchByCAID(caId);
 	}
-
 }

@@ -40,11 +40,9 @@ public class UploadFile extends IDEntity {
 	@Column
 	@NotNull
 	private Integer refId;
-
 	@Column
 	@NotNull
 	private String refType;
-
 	@Lob
 	@Basic
 	@Column(name = "content")

@@ -70,7 +70,6 @@ public class EmailService {
 		properties.put("mail.smtp.port", port);
 		properties.put("mail.smtp.auth", "true");
 		properties.put("mail.smtp.starttls.enable", "true");
-
 		// creates a new session with an authenticator
 		Authenticator auth = new Authenticator() {
 			public PasswordAuthentication getPasswordAuthentication() {
@@ -78,7 +77,6 @@ public class EmailService {
 			}
 		};
 		Session session = Session.getInstance(properties, auth);
-
 		// creates a new e-mail message
 		Message msg = new MimeMessage(session);
 		msg.setHeader("Disposition-Notification-To", "prasad.uskcorp@gmail.com");
@@ -101,7 +99,6 @@ public class EmailService {
 				recipientAddressCC[counterCC] = new InternetAddress(recp.trim());
 				counterCC++;
 			}
-
 		}
 		msg.setRecipients(Message.RecipientType.CC, recipientAddressCC);
 		if (bcc != null && !bcc.trim().equals("")) {
@@ -118,15 +115,12 @@ public class EmailService {
 		msg.setRecipients(Message.RecipientType.TO, recipientAddress);
 		msg.setSubject(subject);
 		msg.setSentDate(new Date());
-
 		// creates message part
 		MimeBodyPart messageBodyPart = new MimeBodyPart();
 		messageBodyPart.setContent(message, "text/html");
-
 		// creates multi-part
 		Multipart multipart = new MimeMultipart();
 		multipart.addBodyPart(messageBodyPart);
-
 		// adds attachments
 		List<File> tempFiles = null;
 		if (files != null && files.size() > 0) {
@@ -141,26 +135,22 @@ public class EmailService {
 				multipart.addBodyPart(attachPart);
 			}
 		}
-
 		// sets the multi-part as e-mail's content
 		msg.setContent(multipart);
 		msg.setHeader("X-Priority", "1");
 		// sends the e-mail
 		Transport.send(msg);
-
 		if (tempFiles != null && tempFiles.size() > 0) {
 			for (File file : tempFiles) {
 				file.delete();
 			}
 		}
-
 	}
 
 	private List<File> createTempFiles(List<UploadFile> files) {
 		List<File> tempFiles = new ArrayList<File>();
-		for (UploadFile file : files) {
+		for (UploadFile file : files)
 			tempFiles.add(createTempFile(file));
-		}
 		return tempFiles;
 	}
 
@@ -177,5 +167,4 @@ public class EmailService {
 		}
 		throw new ValidationException("Unable to create temp file for : " + file.getFileName());
 	}
-
 }

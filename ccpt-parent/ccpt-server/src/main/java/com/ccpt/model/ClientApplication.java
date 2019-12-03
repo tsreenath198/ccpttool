@@ -24,47 +24,35 @@ import lombok.ToString;
 @Setter
 @ToString
 public class ClientApplication extends FileSupportEntity {
-
 	private static final long serialVersionUID = 1L;
-
 	@OneToOne(cascade = CascadeType.MERGE)
 	@JoinColumn(name = "status_code", referencedColumnName = "code")
 	@NotNull
 	private ClientApplicationStatus status;
-
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "client_position_id")
 	@NotNull
 	private ClientPosition clientPosition;
-
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "consultant_id")
 	@NotNull
 	private Consultant consultant;
-
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "creator_id")
 	@NotNull
 	private Recruiter creator;
-
 	@Temporal(TemporalType.DATE)
 	@Column
 	private Date interviewDate;
-
 	@Temporal(TemporalType.DATE)
 	@Column
 	private Date sentOn;
-
 	@Column
 	private String interviewTime;
-
 	@Column
 	private String interviewLocation;
-
 	@Column
 	private String interviewMode;
-
 	@Column
 	private String onlineId;
-
 }

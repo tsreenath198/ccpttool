@@ -8,6 +8,5 @@ import lombok.ToString;
 @Setter
 @ToString
 public class IndustryTypeDTO extends IDEntityDTO {
-	
 	private String name;
 }

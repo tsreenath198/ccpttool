@@ -25,7 +25,7 @@ import com.ccpt.substitutor.ContentSubstitutor;
 
 @RestController
 @CrossOrigin
-@RequestMapping(CCPTConstants.TEMPLATE+"/sms")
+@RequestMapping(CCPTConstants.TEMPLATE + "/sms")
 public class SmsTemplateController extends BaseController<SmsTemplateDTO, SmsTemplate, Integer> {
 
 	@Autowired
@@ -36,7 +36,7 @@ public class SmsTemplateController extends BaseController<SmsTemplateDTO, SmsTem
 
 	@PostMapping("/build/{type}")
 	@ResponseBody
-	public SMS buildContent(@PathVariable String type, @RequestBody  Map<String, String> params) throws Exception {
+	public SMS buildContent(@PathVariable String type, @RequestBody Map<String, String> params) throws Exception {
 		SmsTemplate smsTemplate = smsTemplateService.getTemplateByType(type);
 		ContentSubstitutor substitutor = factory.getSubstitutor(type);
 		return substitutor.generate(smsTemplate, params);
@@ -51,5 +51,4 @@ public class SmsTemplateController extends BaseController<SmsTemplateDTO, SmsTem
 	public BaseMapper<SmsTemplateDTO, SmsTemplate, Integer> getMapper() {
 		return Mappers.getMapper(SMSTemplateMapper.class);
 	}
-
 }

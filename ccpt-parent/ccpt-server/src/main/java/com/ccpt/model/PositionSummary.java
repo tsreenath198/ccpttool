@@ -24,5 +24,4 @@ public class PositionSummary extends IDEntity {
 		this.generatedCode = generatedCode;
 		this.count = count;
 	}
-
 }

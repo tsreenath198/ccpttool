@@ -25,7 +25,7 @@ import com.ccpt.model.BaseReturn;
 import com.ccpt.service.BaseService;
 
 public abstract class BaseController<DTO extends BaseEntityDTO<ID>, MODEL extends BaseEntity<ID>, ID> {
-
+	/* Retrieves all records from the table */
 	@GetMapping(GET_ALL)
 	@ResponseBody
 	BaseReturn getAll(@RequestParam(defaultValue = "0") Integer pageNo,
@@ -33,12 +33,14 @@ public abstract class BaseController<DTO extends BaseEntityDTO<ID>, MODEL extend
 		return getService().getAll(pageNo, pageSize, sortBy);
 	}
 
+	/* Retrieves a record from the table based on given id */
 	@GetMapping(ID_PARAM)
 	@ResponseBody
 	MODEL get(@PathVariable ID id) {
 		return getService().get(id, true);
 	}
 
+	/* Creates new record into the table */
 	@PostMapping
 	@ResponseBody
 	MODEL create(@RequestBody @Valid DTO dto) {
@@ -48,6 +50,7 @@ public abstract class BaseController<DTO extends BaseEntityDTO<ID>, MODEL extend
 		return get(result.getKey());
 	}
 
+	/* Updates existing record in the table */
 	@PutMapping
 	@ResponseBody
 	MODEL update(@RequestBody @Valid DTO dto) {
@@ -57,6 +60,7 @@ public abstract class BaseController<DTO extends BaseEntityDTO<ID>, MODEL extend
 		return get(result.getKey());
 	}
 
+	/* Updates active flag to 0 in the table */
 	@DeleteMapping(ID_PARAM)
 	ResponseEntity<GenericResponse> delete(@PathVariable ID id) {
 		getService().delete(id);
@@ -64,6 +68,7 @@ public abstract class BaseController<DTO extends BaseEntityDTO<ID>, MODEL extend
 				HttpStatus.OK);
 	}
 
+	/* Updates active flag to 1 in the table */
 	@GetMapping(ACTIVATE_ID_PARAM)
 	ResponseEntity<GenericResponse> activate(@PathVariable ID id) {
 		getService().activate(id);

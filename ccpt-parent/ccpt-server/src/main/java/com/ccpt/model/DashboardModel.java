@@ -10,7 +10,6 @@ import lombok.ToString;
 @Setter
 @ToString
 public class DashboardModel {
-
 	private List<InterviewSummaryStatistics> interviewSummaryStatistics;
 	private List<OpenClientPosition> openClientPositions;
 	private List<OpenClientPosition> dyingClientPositions;

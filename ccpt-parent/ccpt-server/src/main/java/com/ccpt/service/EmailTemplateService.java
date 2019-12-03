@@ -35,23 +35,20 @@ import com.ccpt.util.StrSubstitutor;
 @Component
 public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 
-	public EmailTemplateService() {
-		super("Email Template");
-	}
-
 	@Value("${spring.mail.bcc}")
 	private String bcc;
-
 	@Value("${spring.mail.cc}")
 	private String cc;
-
 	@Autowired
 	private UploadFileService uploadFileService;
 	@Autowired
 	private EmailTemplateRepository emailTemplateRepository;
-
 	@Autowired
 	private ClientApplicationRepository clientApplicationRepository;
+
+	public EmailTemplateService() {
+		super("Email Template");
+	}
 
 	@Override
 	public BaseRepository<EmailTemplate, Integer> getRepository() {
@@ -60,22 +57,21 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 
 	public EmailTemplate getTemplateByType(String type) {
 		Optional<EmailTemplate> template = emailTemplateRepository.findByType(type);
-		if (template.isPresent()) {
+		if (template.isPresent())
 			return template.get();
-		} else {
+		else
 			throw new EntityNotFoundException("No Email Template found for type : " + type);
-		}
 	}
 
-	public EmailContent getClientApps(List<Integer> ids) throws Exception {
+	public EmailContent getClientApps(List<Integer> caIdList) throws Exception {
 		EmailContent emailContent = new EmailContent();
 		StringBuilder body = new StringBuilder();
 		List<String> names = new ArrayList<String>();
 		List<UploadFile> files = new ArrayList<UploadFile>();
 		List<ClientApplication> clientApplications = new ArrayList<ClientApplication>();
 		Set<String> cpNames = new HashSet<String>();
-		for (Integer id : ids) {
-			Optional<ClientApplication> ca = clientApplicationRepository.findById(id);
+		for (Integer caId : caIdList) {
+			Optional<ClientApplication> ca = clientApplicationRepository.findById(caId);
 			String name = ca.get().getClientPosition().getClient().getName();
 			names.add(name);
 			clientApplications.add(ca.get());
@@ -94,7 +90,7 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 				else
 					sbPara.append("<p>Hi ${clientContactName} mam</p>");
 			}
-			if (ids.size() == 1)
+			if (caIdList.size() == 1)
 				sbPara.append("<p> Below is the profile with ${jobTitle}  experience (CV Attached)</p>");
 			else
 				sbPara.append("<p> Below are the profiles with ${jobTitle}  experience (CVs Attached)</p>");
@@ -115,34 +111,31 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 				cpNames.add(clientApplication.getClientPosition().getRole());
 			}
 			Map<String, Integer[]> urlInfo = new HashMap<String, Integer[]>();
-			urlInfo.put("getClientApps", ids.toArray(new Integer[ids.size()]));
+			urlInfo.put("getClientApps", caIdList.toArray(new Integer[caIdList.size()]));
 			emailContent.setUrlInfo(urlInfo);
 			emailContent.setBody(sb.toString().concat(JobDescriptionSubstitutor.getSign(body)));
 			emailContent.setUploadFiles(files);
 			emailContent.setToEmails(clientApplications.get(0).getClientPosition().getClient().getEmail());
 			emailContent.setSubject("CV for " + String.join(",", cpNames));
-
 			emailContent.setCc(cc);
 			emailContent.setBcc(bcc);
 			return emailContent;
-		} else {
+		} else
 			throw new CAException("please select same client application ");
-		}
 	}
 
-	public EmailContent getCAs(List<Integer> ids) throws Exception {
+	public EmailContent getCAs(List<Integer> caIdList) throws Exception {
 		EmailContent emailContent = new EmailContent();
 		StringBuilder body = new StringBuilder();
 		List<String> names = new ArrayList<String>();
 		List<UploadFile> files = new ArrayList<UploadFile>();
 		List<ClientApplication> clientApplications = new ArrayList<ClientApplication>();
 		Set<String> cpNames = new HashSet<String>();
-		for (Integer id : ids) {
-			Optional<ClientApplication> ca = clientApplicationRepository.findById(id);
+		for (Integer caId : caIdList) {
+			Optional<ClientApplication> ca = clientApplicationRepository.findById(caId);
 			String name = ca.get().getClientPosition().getClient().getName();
 			names.add(name);
 			clientApplications.add(ca.get());
-
 		}
 		boolean allEqual = names.isEmpty() || names.stream().allMatch(names.get(0)::equals);
 		if (allEqual) {
@@ -157,7 +150,7 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 				else
 					sbPara.append("<p>Hi ${clientContactName} mam</p>");
 			}
-			if (ids.size() == 1)
+			if (caIdList.size() == 1)
 				sbPara.append("<p> Below is the profile with ${jobTitle}  experience (CV Attached)</p>");
 			else
 				sbPara.append("<p> Below are the profiles with ${jobTitle}  experience (CVs Attached)</p>");
@@ -180,9 +173,8 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 			emailContent.setCc(cc);
 			emailContent.setBcc(bcc);
 			return emailContent;
-		} else {
+		} else
 			throw new CAException("please select same client application ");
-		}
 	}
 
 	public static String appendTemplate(List<ClientApplication> clientApplications) {
@@ -235,12 +227,12 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 		return sb.toString();
 	}
 
-	public EmailContent getInterviewTemplate(Integer id) {
+	public EmailContent getInterviewTemplate(Integer caId) {
 		EmailContent emailContent = new EmailContent();
 		StringBuilder body = new StringBuilder();
 		StringBuilder sbPara = new StringBuilder();
 		Map<String, String> valuesMap = new HashMap<String, String>();
-		Optional<ClientApplication> ca = clientApplicationRepository.findById(id);
+		Optional<ClientApplication> ca = clientApplicationRepository.findById(caId);
 		valuesMap.put("clientName", ca.get().getClientPosition().getClient().getName());
 		valuesMap.put("consultantName", ca.get().getConsultant().getFullname());
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -254,23 +246,20 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 		valuesMap.put("address", ca.get().getClientPosition().getClient().getAddress());
 		valuesMap.put("clientContactPersonName", ca.get().getClientPosition().getClient().getContactPersonName());
 		valuesMap.put("clientContactPersonNumber", ca.get().getClientPosition().getClient().getPhone());
-
 		sbPara.append("<p>Hi <strong>${consultantName}</strong>,</p>"
 				+ "<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
 				+ "We are excited to inform you that your interview has been confirmed with <strong><span style=\"background-color:yellow\">${clientName}</span></strong>."
 				+ "</p><p><span style=\"background-color:yellow\">Please confirm your availability.</span></p><p>Please find the interview details below:</p>"
 				+ "<p><strong>Interview Date :</strong><span style=\"background-color:yellow\">${interviewDate}</span></p>"
 				+ "<p><strong>Interview Time :</strong><span style=\"background-color:yellow\">${interviewTime}</span></p>");
-
 		if (ca.get().getInterviewMode().equalsIgnoreCase("f2f")) {
 			sbPara.append(
 					"<p><strong>Interview Location :</strong><span style=\"background-color:yellow\">${interviewLocation}</span></p>"
 							+ "<p><strong>Address :</strong><span style=\"background-color:yellow\">${address}</span></p>");
-			if (ca.get().getClientPosition().getClient().getMapLocation() != null) {
+			if (ca.get().getClientPosition().getClient().getMapLocation() != null)
 				sbPara.append("<p><strong>").append("<a href=\"")
 						.append(ca.get().getClientPosition().getClient().getMapLocation()).append("\">Show on Map</a>")
 						.append("</strong><span style=\"background-color:yellow\"></span></p>");
-			}
 			sbPara.append(
 					"<p><strong>Name of Client Contact Person :</strong><span style=\"background-color:yellow\">${clientContactPersonName} (${clientContactPersonNumber})"
 							+ "</span></p></span></p>" + "<p>**Feel free to call us any time.</p><p></p>"
@@ -288,13 +277,12 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 							+ "<p>5.Keep your phone in silent mode. If possible, switch off the mobile when entering the interview room.</p>"
 							+ "<p>6.After the interview is completed, please take permission from client before leaving the interview location.</p>"
 							+ "	<p></p>");
-		} else {
+		} else
 			sbPara.append("</span></p>" + "<p>**Feel free to call us any time.</p><p></p>"
 					+ "<p><span style=\"background-color:yellow\">** Remember:</span></p>" + "<p></p>"
 					+ "<p>1.Find a quite location</p>" + "<p>2.Make sure your mobile is fully charged</p>"
 					+ "<p>3.Speak clearly</p>" + "<p>4.Listen carefully</p>"
 					+ "<p>5.Focus on your language and voice</p><p></p>");
-		}
 		sbPara.append("<p>After the interview is completed, inform us on how the interview went.</p><p></p>");
 		emailContent.setSubject(
 				StrSubstitutor.replace("Congratulations! Your Interview is confirmed with ${clientName}", valuesMap));
@@ -306,34 +294,31 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 		return emailContent;
 	}
 
-	public EmailContent getShortListedCA(List<Integer> ids) throws Exception {
+	public EmailContent getShortListedCA(List<Integer> caIdList) throws Exception {
 		EmailContent emailContent = null;
 		String ccName = null;
 		StringBuilder body = new StringBuilder();
 		List<String> names = new ArrayList<String>();
 		List<ClientApplication> clientApplications = new ArrayList<ClientApplication>();
 		Map<String, Optional<ClientApplication>> map = new TreeMap<String, Optional<ClientApplication>>();
-		for (Integer id : ids) {
-			Optional<ClientApplication> ca = clientApplicationRepository.findById(id);
+		for (Integer caId : caIdList) {
+			Optional<ClientApplication> ca = clientApplicationRepository.findById(caId);
 			String name = ca.get().getClientPosition().getClient().getName();
 			names.add(name);
 			String stringDate = ca.get().getInterviewDate().toString().concat(" ").concat(ca.get().getInterviewTime());
 			map.put(stringDate, ca);
 		}
-
 		/*
 		 * Map<String, Optional<ClientApplication>> reverseSortedMap = new
-		 * TreeMap<String, Optional<ClientApplication>>( Collections.reverseOrder());
-		 * reverseSortedMap.putAll(map);
+		 * TreeMap<String, Optional<ClientApplication>>(
+		 * Collections.reverseOrder()); reverseSortedMap.putAll(map);
 		 */
-
 		for (Entry<String, Optional<ClientApplication>> entry : map.entrySet()) {
 			clientApplications.add(entry.getValue().get());
 		}
 		for (ClientApplication clientApplication : clientApplications) {
 			System.out.println("Date:::" + clientApplication.getInterviewDate());
 		}
-
 		boolean allEqual = names.isEmpty() || names.stream().allMatch(names.get(0)::equals);
 		if (allEqual) {
 			Map<String, String> valuesMap = new HashMap<String, String>();
@@ -368,27 +353,22 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 				valuesMap.put("interviewLocation", ca.getInterviewLocation());
 				valuesMap.put("address", ca.getClientPosition().getClient().getAddress());
 				valuesMap.put("interviewMode", ca.getInterviewMode());
-
 				sbPara.append("<tr>" + "<td  >\r\n<p>${consultantName}</p>\r\n </td>"
 						+ "<td  >\r\n<p>${jobTitle}</p>\r\n </td>" + "<td  >\r\n<p>${interviewDate}</p>\r\n </td>"
 						+ "<td  >\r\n<p>${interviewTime}</p>\r\n </td>"
 						+ "<td  >\r\n<p>${interviewMode}</p>\r\n </td>");
 				if (!ca.getInterviewMode().equalsIgnoreCase("VID")) {
-					if (ca.getConsultant().getPhone() != null) {
+					if (ca.getConsultant().getPhone() != null)
 						sbPara.append("<td  >\r\n").append("<p>" + ca.getConsultant().getPhone() + "</p>\r\n </td>")
 								.append("</tr>");
-					}
 				} else {
-					if (ca.getOnlineId() != null) {
+					if (ca.getOnlineId() != null)
 						sbPara.append("<td  >\r\n").append("<p>" + ca.getOnlineId() + "</p>\r\n </td>").append("</tr>");
-					}
 				}
-
 				emailContent.setToEmails(ca.getClientPosition().getClient().getClientContacts().get(0).getEmail());
 				data = data.concat(StrSubstitutor.replace(sbPara.toString(), valuesMap));
 			}
 			data = data.concat("</tbody>").concat("</table>");
-
 			StringBuilder sb = new StringBuilder();
 			sb.append("<p>Hi ").append(ccName).append("</p>")
 					.append("Please review & confirm the interview scheduled mentioned below ").append("<p>")
@@ -398,9 +378,7 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 			emailContent.setBody(finalData.concat(JobDescriptionSubstitutor.getSign(body)));
 			emailContent.setSubject("Upcoming Interview Schedule");
 			return emailContent;
-
-		} else {
+		} else
 			throw new ValidationException("select same client application");
-		}
 	}
 }

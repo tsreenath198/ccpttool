@@ -8,7 +8,5 @@ import lombok.ToString;
 @Setter
 @ToString
 public abstract class BaseEntityDTO<ID> {
-
 	protected String description;
-
 }

@@ -49,33 +49,31 @@ public class ClientCallHistoryController extends BaseController<ClientCallHistor
 		return Mappers.getMapper(ClientCallHistoryMapper.class);
 	}
 
-
+	/*
+	 * Retrieves all client call history based on recruiter id and last given
+	 * days which are active
+	 */
 	@GetMapping("/getAllCchByRecruiterId")
 	public ResponseEntity<List<ClientCallHistory>> getAllCchByRecruiterId(@RequestParam Integer rId,
 			@RequestParam Integer days) throws ParseException {
 		List<ClientCallHistory> result = clientCallHistoryService.getAllCchByRecruiterId(rId, days);
 		return new ResponseEntity<List<ClientCallHistory>>(result, HttpStatus.OK);
-
 	}
 
+	/* Validates client call history */
 	@Override
 	protected void validateAndClean(ClientCallHistory model) {
-		if (model.getClientPosition() == null || model.getClientPosition().getId() == null) {
+		if (model.getClientPosition() == null || model.getClientPosition().getId() == null)
 			throw new ValidationException("Client Position cannot be null");
-		} else {
+		else
 			model.setClientPosition(clientPositionService.get(model.getClientPosition().getId()));
-		}
-
-		if (model.getCalledBy() == null || model.getCalledBy().getId() == null) {
+		if (model.getCalledBy() == null || model.getCalledBy().getId() == null)
 			throw new ValidationException("Called By cannot be null");
-		} else {
+		else
 			model.setCalledBy(recruiterService.get(model.getCalledBy().getId()));
-		}
-		if (model.getCalledDate() == null) {
+		if (model.getCalledDate() == null)
 			throw new ValidationException("Called Date cannot be null");
-		}
-		if (model.getDescription() == null || model.getDescription().isEmpty()) {
+		if (model.getDescription() == null || model.getDescription().isEmpty())
 			throw new ValidationException("Description cannot be null");
-		}
 	}
 }

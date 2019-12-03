@@ -29,55 +29,38 @@ public class Client extends FileSupportEntity {
 	@Column(unique = true)
 	@NotNull
 	private String name;
-
 	@Column
 	private String address;
-
 	@Column
 	private String billingAddress;
-
 	@Column
 	private String phone;
-
 	@Column
 	private String gst;
-
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "industry_id", referencedColumnName = "id")
 	private IndustryType industryType;
-
 	@Column
 	private String email;
-
 	@Column
 	private String servicetaxNo;
-
 	@Column
 	private String serviceCharge;
-
 	@Column
 	private String guaranteePeriod;
-
 	@Column
 	private String creditPeriod;
-
 	@Column
 	private String website;
-
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "clientId")
 	private List<ClientContact> clientContacts;
-
 	@Column
 	private String contactPersonName;
-
 	@Column
 	private String contactPersonDesignation;
-
 	@Column
 	private String mapLocation;
-
 	@Column
 	private String salutation;
-
 }

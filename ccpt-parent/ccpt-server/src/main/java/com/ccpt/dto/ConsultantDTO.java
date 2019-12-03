@@ -10,7 +10,6 @@ import lombok.ToString;
 @Setter
 @ToString
 public class ConsultantDTO extends FileSupportEntityDTO {
-
 	private String fullname;
 	private String gender;
 	private Date dob;

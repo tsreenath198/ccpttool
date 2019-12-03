@@ -27,5 +27,4 @@ public class ClientDTO extends FileSupportEntityDTO {
 	private List<ClientContactDTO> clientContacts;
 	private String mapLocation;
 	private Integer industryId;
-
 }

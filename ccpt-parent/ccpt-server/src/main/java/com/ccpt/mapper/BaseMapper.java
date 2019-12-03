@@ -8,6 +8,5 @@ import com.ccpt.model.BaseEntity;
 
 @MapperConfig(nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS)
 public interface BaseMapper<DTO extends BaseEntityDTO<ID>, MODEL extends BaseEntity<ID>, ID> {
-
 	public MODEL toModel(DTO dto);
 }

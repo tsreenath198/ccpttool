@@ -9,7 +9,5 @@ import lombok.ToString;
 @ToString
 public class EmptyDataStatistics {
 	private String generatedCode;
-
 	private String value;
-
 }

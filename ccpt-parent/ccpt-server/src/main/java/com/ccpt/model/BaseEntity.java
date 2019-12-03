@@ -27,21 +27,17 @@ public abstract class BaseEntity<ID> implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
 	@Column
 	@NotNull
 	protected Boolean activeFlag = true;
-
 	@Column(updatable = false)
 	@Temporal(TemporalType.TIMESTAMP)
 	@CreationTimestamp
 	protected Date createdDate;
-
 	@Column
 	@Temporal(TemporalType.TIMESTAMP)
 	@UpdateTimestamp
 	protected Date updatedDate;
-
 	@Column
 	protected String description;
 

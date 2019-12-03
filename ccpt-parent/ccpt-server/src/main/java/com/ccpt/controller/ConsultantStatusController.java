@@ -34,11 +34,10 @@ public class ConsultantStatusController extends BaseController<ConsultantStatusD
 		return Mappers.getMapper(ConsultantStatusMapper.class);
 	}
 
+	/* Validates consultant status */
 	@Override
 	protected void validateAndClean(ConsultantStatus model) {
-		if (model.getCode() == null) {
+		if (model.getCode() == null)
 			throw new ValidationException("Consultant Status Code cannot be null");
-		}
 	}
-
 }

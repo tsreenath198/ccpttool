@@ -8,13 +8,8 @@ import lombok.ToString;
 @Setter
 @ToString
 public class CAByStatusHelper {
-
 	public Integer id;
-
 	public String statusCode;
-
 	public String clientName;
-
 	public Integer count;
-
 }

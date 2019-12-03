@@ -44,30 +44,27 @@ public class ClientController extends BaseController<ClientDTO, Client, Integer>
 		return Mappers.getMapper(ClientMapper.class);
 	}
 
-	@Override
-	protected void validateAndClean(Client model) {
-		if (model.getName() == null) {
-			throw new ValidationException("Client Name cannot be null");
-		}
-		if (model.getPhone() == null && model.getEmail() == null) {
-			throw new ValidationException("Phone number and Email Both cannot be null");
-		}
-		if (model.getIndustryType() == null) {
-			model.setIndustryType(null);
-		} else {
-			model.setIndustryType(industryTypeService.get(model.getIndustryType().getId()));
-		}
-		if (model.getSalutation() == null) {
-			model.setSalutation(null);
-		} else {
-			model.setSalutation(model.getSalutation());
-		}
-	}
-
+	/* Retrieves list of id's and names which are active */
 	@GetMapping("/getAllClients")
 	public ResponseEntity<List<DropDownStatistics>> getAllClients() {
 		List<DropDownStatistics> result = clientService.getAllClients();
 		return new ResponseEntity<List<DropDownStatistics>>(result, HttpStatus.OK);
+	}
 
+	/* Validates client */
+	@Override
+	protected void validateAndClean(Client model) {
+		if (model.getName() == null)
+			throw new ValidationException("Client Name cannot be null");
+		if (model.getPhone() == null && model.getEmail() == null)
+			throw new ValidationException("Phone number and Email Both cannot be null");
+		if (model.getIndustryType() == null)
+			model.setIndustryType(null);
+		else
+			model.setIndustryType(industryTypeService.get(model.getIndustryType().getId()));
+		if (model.getSalutation() == null)
+			model.setSalutation(null);
+		else
+			model.setSalutation(model.getSalutation());
 	}
 }

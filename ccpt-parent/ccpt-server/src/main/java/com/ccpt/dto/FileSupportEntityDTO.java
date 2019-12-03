@@ -14,5 +14,4 @@ public class FileSupportEntityDTO extends IDEntityDTO {
 	public void setFiles(List<UploadFile> files) {
 		this.files = files;
 	}
-
 }

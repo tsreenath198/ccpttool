@@ -37,9 +37,8 @@ public class BulkSMSForClientRoleSubstitutor implements ContentSubstitutor {
 			SMS sms = new SMS();
 			sms.setMessage(message);
 			return sms;
-		} else {
+		} else
 			throw new Exception("ClientPosition is null for given id:" + id);
-		}
 	}
 
 	@Override
@@ -47,5 +46,4 @@ public class BulkSMSForClientRoleSubstitutor implements ContentSubstitutor {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
 }

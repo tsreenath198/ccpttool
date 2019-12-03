@@ -8,9 +8,6 @@ import lombok.ToString;
 @Setter
 @ToString
 public class CAStatistics {
-
 	private String name;
-
 	private Integer id;
-
 }

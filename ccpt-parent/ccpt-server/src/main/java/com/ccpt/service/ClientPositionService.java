@@ -29,10 +29,6 @@ public class ClientPositionService extends BaseService<ClientPosition, Integer> 
 	@Value("${spring.mail.username}")
 	private String cc;
 
-	public ClientPositionService() {
-		super("Client Position");
-	}
-
 	@Autowired
 	private ClientPositionRepository clientPositionRepository;
 
@@ -41,6 +37,10 @@ public class ClientPositionService extends BaseService<ClientPosition, Integer> 
 
 	@Autowired
 	private ClientApplicationRepository clientApplicationRepository;
+
+	public ClientPositionService() {
+		super("Client Position");
+	}
 
 	public List<ClientPosition> getTop5ClientPositions() {
 		return clientPositionRepository.findTop5ByActiveFlagAllIgnoreCaseOrderByIdDesc(true);
@@ -106,7 +106,6 @@ public class ClientPositionService extends BaseService<ClientPosition, Integer> 
 			sb.append("Hi").append(existing.getAssignedTo().getFullname()).append(",").append("<p>")
 					.append(existing.getGeneratedCode()).append(" has been updated. please review the changes.")
 					.append("</p>").append(JobDescriptionSubstitutor.getSign(new StringBuilder()));
-			;
 			emailContent.setBody(sb.toString());
 			try {
 				emailService.sendEmailWithAttachments(emailContent.getToEmails(), emailContent.getSubject(),
@@ -116,7 +115,6 @@ public class ClientPositionService extends BaseService<ClientPosition, Integer> 
 				e.printStackTrace();
 			}
 		}
-
 	}
 
 	public BaseReturn getAllByStatus(Integer pageNo, Integer pageSize, String sortBy, String status) {
@@ -146,5 +144,4 @@ public class ClientPositionService extends BaseService<ClientPosition, Integer> 
 	public List<ClientPosition> getEmptyData() {
 		return clientPositionRepository.getEmptyData();
 	}
-
 }
