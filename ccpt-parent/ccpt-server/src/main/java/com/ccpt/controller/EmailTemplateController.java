@@ -58,12 +58,14 @@ public class EmailTemplateController extends BaseController<EmailTemplateDTO, Em
 		return emailTemplateService.getCAs(caIdList);
 	}
 
+	/* Generate interviewTemplate based on client application id */
 	@PostMapping("/getInterviewTemplate")
 	@ResponseBody
 	public EmailContent getInterviewTemplate(@RequestBody Integer caId) throws Exception {
 		return emailTemplateService.getInterviewTemplate(caId);
 	}
 
+	/* Generate shortListed clientapplications from client_application table */
 	@PostMapping("/getShortListedCA")
 	@ResponseBody
 	public EmailContent getShortListedCA(@RequestBody List<Integer> caIdList) throws Exception {

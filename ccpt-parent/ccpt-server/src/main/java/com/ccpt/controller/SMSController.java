@@ -50,6 +50,7 @@ public class SMSController extends BaseController<SMSDTO, SMS, Integer> {
 	@Autowired
 	private RestTemplate restTemplate;
 
+	/* Send sms using resttemplate and save sms details in database */
 	@PostMapping(CCPTConstants.SEND)
 	public ResponseEntity<String> sendSMS(@RequestBody SMS sms) throws URISyntaxException {
 		String message = sms.getMessage();

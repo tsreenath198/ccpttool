@@ -5,4 +5,6 @@ public interface DropDownStatistics {
 
 	public String getName();
 
+	public String getAddress();
+
 }

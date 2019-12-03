@@ -31,12 +31,6 @@ public class RecruiterController extends BaseController<RecruiterDTO, Recruiter,
 	@Autowired
 	private RecruiterService recruiterService;
 
-	@GetMapping("name/{name}")
-	public ResponseEntity<Recruiter> getRecruiterByName(@PathVariable("name") String name) {
-		Recruiter recruiter = recruiterService.getRecruiterByName(name);
-		return new ResponseEntity<Recruiter>(recruiter, HttpStatus.OK);
-	}
-
 	@Override
 	public BaseService<Recruiter, Integer> getService() {
 		return recruiterService;
@@ -47,18 +41,31 @@ public class RecruiterController extends BaseController<RecruiterDTO, Recruiter,
 		return Mappers.getMapper(RecruiterMapper.class);
 	}
 
+	/* Retrieves Recruiter based on name */
+	@GetMapping("name/{name}")
+	public ResponseEntity<Recruiter> getRecruiterByName(@PathVariable("name") String name) {
+		Recruiter recruiter = recruiterService.getRecruiterByName(name);
+		return new ResponseEntity<Recruiter>(recruiter, HttpStatus.OK);
+	}
+
+	/*
+	 * Retrieves all Recruiter name,email and count of assigned Positions of
+	 * that recruiter
+	 */
 	@GetMapping("/getAllCreators")
 	public ResponseEntity<List<RecruiterDropdownStatistics>> getAllCreators() {
 		List<RecruiterDropdownStatistics> result = recruiterService.getAllCreators();
 		return new ResponseEntity<List<RecruiterDropdownStatistics>>(result, HttpStatus.OK);
 	}
 
+	/* Retrieves all leadEmails of Recruiter table */
 	@GetMapping("/getAllLeadEmails")
 	public ResponseEntity<List<String>> getAllLeadEmails() {
 		List<String> result = recruiterService.getAllLeadEmails();
 		return new ResponseEntity<List<String>>(result, HttpStatus.OK);
 	}
 
+	/* Retrieves leadEmail of Recruiter table based on recruiter id */
 	@GetMapping("/getLeadEmailById/{id}")
 	public ResponseEntity<EmailContent> getLeadEmailById(@PathVariable("id") Integer id) {
 		EmailContent emailContent = new EmailContent();

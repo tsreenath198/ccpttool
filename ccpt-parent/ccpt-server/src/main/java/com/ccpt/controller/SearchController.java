@@ -38,6 +38,7 @@ public class SearchController extends BaseController<SearchDTO, Search, Integer>
 		return Mappers.getMapper(SearchMapper.class);
 	}
 
+	/* It Searches given searchkey in Search table */
 	@GetMapping("/search")
 	public ResponseEntity<List<Search>> search(@RequestParam String searchKey) {
 		List<Search> result = searchService.search(searchKey);

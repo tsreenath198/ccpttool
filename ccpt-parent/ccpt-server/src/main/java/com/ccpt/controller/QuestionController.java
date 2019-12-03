@@ -36,10 +36,8 @@ public class QuestionController extends BaseController<QuestionDTO, Question, In
 
 	@Autowired
 	private QuestionService questionService;
-
 	@Autowired
 	private RecruiterService recruiterService;
-
 	@Autowired
 	private ClientApplicationService clientApplicationService;
 
@@ -53,18 +51,21 @@ public class QuestionController extends BaseController<QuestionDTO, Question, In
 		return Mappers.getMapper(QuestionMapper.class);
 	}
 
+	/* Search in Question table based on skills */
 	@GetMapping("/searchBySkills")
 	public ResponseEntity<List<Question>> searchBySkills(@RequestParam String skills) {
 		List<Question> result = questionService.searchBySkills(skills);
 		return new ResponseEntity<List<Question>>(result, HttpStatus.OK);
 	}
 
+	/* Search in Question table based on ca_id */
 	@GetMapping("/searchByCAID")
 	public ResponseEntity<List<Question>> searchByCAID(@RequestParam Integer caId) {
 		List<Question> result = questionService.searchByCAID(caId);
 		return new ResponseEntity<List<Question>>(result, HttpStatus.OK);
 	}
 
+	/* Save Question object in database */
 	@PostMapping("/save")
 	public ResponseEntity<Void> save(@RequestParam Integer caId, @RequestParam Integer userId,
 			@RequestBody QuestionWrapper questionwrapper) {

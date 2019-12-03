@@ -39,6 +39,7 @@ public class PaymentController extends BaseController<PaymentDTO, Payment, Integ
 		return Mappers.getMapper(PaymentMapper.class);
 	}
 
+	/* Download excel with bif format based on paymentId */
 	@GetMapping("/downloadExcel")
 	public void downloadExcel(@RequestParam Integer paymentId, HttpServletResponse httpServletResponse)
 			throws IOException {

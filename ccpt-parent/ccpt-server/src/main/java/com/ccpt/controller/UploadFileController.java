@@ -34,6 +34,7 @@ public class UploadFileController {
 	@Autowired
 	private UploadFileService uploadFileService;
 
+	/* Download file based on id */
 	@GetMapping(CCPTConstants.DOWNLOAD)
 	public void downloadFile(@PathVariable Integer id, HttpServletResponse httpServletResponse) throws IOException {
 		UploadFile dbFile = uploadFileService.get(id);
@@ -55,6 +56,7 @@ public class UploadFileController {
 		}
 	}
 
+	/* Save file in Database */
 	@PostMapping("save")
 	public ResponseEntity<GenericResponse> uploadFile(@RequestParam("file") MultipartFile file,
 			@RequestParam("refId") int refId, @RequestParam("refType") String refType,
@@ -71,6 +73,7 @@ public class UploadFileController {
 			throw new ValidationException("File with file name : " + fileName + " already exists !");
 	}
 
+	/* Save document in Database with specified format */
 	@PostMapping("saveCrf")
 	public ResponseEntity<GenericResponse> uploadFile(@RequestParam("file") MultipartFile file,
 			@RequestParam("caId") int caId, @RequestParam("comments") String comments) throws Exception {
@@ -95,12 +98,14 @@ public class UploadFileController {
 			throw new ValidationException("File with file name : " + fileName + " already exists !");
 	}
 
+	/* Retrieves CrfDocument based on client application id */
 	@GetMapping("getCRFResume")
 	public ResponseEntity<UploadFile> getFile(@RequestParam("caId") int caId) {
 		UploadFile result = uploadFileService.getByRefIdAndRefType(caId, "CRF");
 		return new ResponseEntity<UploadFile>(result, HttpStatus.OK);
 	}
 
+	/* Hard Delete file based on  id */
 	@DeleteMapping(CCPTConstants.ID_PARAM)
 	public ResponseEntity<Void> deleteFile(@PathVariable Integer id) {
 		uploadFileService.delete(id);

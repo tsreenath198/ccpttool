@@ -29,6 +29,7 @@ public class LoginController extends BaseController<LoginDTO, Login, Integer> {
 	@Autowired
 	private LoginService loginService;
 
+	/* Validates given username and password */
 	@PostMapping(CCPTConstants.LOGIN)
 	public ResponseEntity<Login> login(@RequestBody Login login, HttpSession session) throws AuthenticationException {
 		String username = login.getUsername();

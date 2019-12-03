@@ -28,13 +28,14 @@ public class ReportController {
 
 	@Autowired
 	private ClientApplicationService clientApplicationService;
-
 	@Autowired
 	private ConsultantCallHistoryService consultantCallHistoryService;
-
 	@Autowired
 	private ClientCallHistoryService clientCallHistoryService;
 
+	/*
+	 * Retrieves closedApplications count and recruiter name based on given days
+	 */
 	@GetMapping("/getClosedCountOfAllRecruitersFromLastGivenDays")
 	public ResponseEntity<Map<String, Long>> getClosedCountOfAllRecruitersFromLastGivenDays(@RequestParam Integer days)
 			throws ParseException {
@@ -46,6 +47,10 @@ public class ReportController {
 		return new ResponseEntity<>(map, HttpStatus.OK);
 	}
 
+	/*
+	 * Retrieves list of callhistory count of recruiter to consultant based on
+	 * given days
+	 */
 	@GetMapping("/getAllconCHCountByRecruiters")
 	public ResponseEntity<List<CallHistorySummaryStatistics>> getAllconCHCountByRecruiters(@RequestParam Integer days)
 			throws ParseException {
@@ -53,6 +58,10 @@ public class ReportController {
 		return new ResponseEntity<List<CallHistorySummaryStatistics>>(result, HttpStatus.OK);
 	}
 
+	/*
+	 * Retrieves list of callhistory count of recruiter to client based on given
+	 * days
+	 */
 	@GetMapping("/getAllCchCountByRecruiters")
 	public ResponseEntity<List<CallHistorySummaryStatistics>> getAllCchCountByRecruiters(@RequestParam Integer days)
 			throws ParseException {
@@ -60,6 +69,10 @@ public class ReportController {
 		return new ResponseEntity<List<CallHistorySummaryStatistics>>(result, HttpStatus.OK);
 	}
 
+	/*
+	 * Retrieves all Status codes and count of generatedcode with that status
+	 * code
+	 */
 	@GetMapping("/getAllCAbyStatus")
 	public ResponseEntity<List<CAByStatusHelper>> getAllCAbyStatus() {
 		List<CAByStatusHelper> result = clientApplicationService.getAllCAbyStatus();

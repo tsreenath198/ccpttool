@@ -34,6 +34,7 @@ public class SmsTemplateController extends BaseController<SmsTemplateDTO, SmsTem
 	@Autowired
 	TemplateSubstitutorFactory factory;
 
+	/* Generate SmsTemplete from Database based on type */
 	@PostMapping("/build/{type}")
 	@ResponseBody
 	public SMS buildContent(@PathVariable String type, @RequestBody Map<String, String> params) throws Exception {
