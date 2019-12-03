@@ -32,4 +32,5 @@ public class PaymentDTO extends IDEntityDTO {
 	private Date paidOn;
 	private String paidStatus;
 	private String generatedCode;
+	private Float amountReceivable;
 }

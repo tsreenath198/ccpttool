@@ -89,7 +89,10 @@ public class Payment extends FileSupportEntity {
 	@Column
 	@NotNull
 	private String paidStatus;
-	@Column()
+	@Column
 	@NotNull
 	private String generatedCode;
+	@Column
+	@NotNull
+	private Float amountReceivable;
 }
