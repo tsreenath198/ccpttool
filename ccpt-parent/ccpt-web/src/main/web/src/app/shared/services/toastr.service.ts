@@ -12,4 +12,7 @@ export class ToastrCustomService {
   error(msg, current) {
     this.toastr.error(msg, current);
   }
+  info(msg,current){
+    this.toastr.info(msg,current);
+  }
 }
