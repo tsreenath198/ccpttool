@@ -71,6 +71,7 @@ export class PaymentsComponent implements OnInit {
     this.getAllDropdowns();
   }
   init() {
+    
     // this.spinner(false);
     // this.http.get(this.urlConstants.PaymentGetAll).subscribe(resp => {
     //     this.paymentsList = resp as any;
@@ -155,6 +156,7 @@ export class PaymentsComponent implements OnInit {
     this.spinner(false);
     this.http.get(this.urlConstants.CAGetById + caId).subscribe(resp => {
       let temp = resp as any;
+      
       this.model.companyName = temp.clientPosition.client.name;
       this.model.companyWebsite = temp.clientPosition.client.website;
       this.model.companyGstNum = temp.clientPosition.client.gst;
@@ -167,6 +169,7 @@ export class PaymentsComponent implements OnInit {
       this.model.billingAddress = temp.clientPosition.client.billingAddress;
       this.model.serviceCharge = temp.clientPosition.client.serviceCharge;
       this.model.candidateName = temp.consultant.fullname;
+      this.model.generatedCode = temp.clientPosition.generatedCode;
       this.spinner(true);
     });
   }

@@ -1,0 +1,263 @@
+<div [@routerTransition]>
+  <!-- <div
+    class="spinner padding-top justify-content-md-center"
+    *ngIf="!listReturned"
+  >
+    <div class="bounce1"></div>
+    <div class="bounce2"></div>
+    <div class="bounce3"></div>
+  </div> -->
+  <div class="row" >
+    <div class="col-md-6">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card mb-3">
+            <div class="card-header bg-dark text-clr-white" >
+              <span class="link" (click)="selectLeftTable(constantProperties.DASHBOARD_RP)">{{ constantProperties.DASHBOARD_RP }}</span>
+              <span class="pull-right">
+                <select
+                  class="form-control form-control-sm"
+                  name="rpChoosenDays"
+                  [(ngModel)]="rpChoosenDays"
+                  (change)="rpGetAllByDays()"
+                >
+                  <option *ngFor="let nod of noOfDays" [ngValue]="nod.value"
+                    >{{ nod.key }}
+                  </option>
+                </select>
+              </span>
+            </div>
+            <div [ngbCollapse]="showLeftTable != constantProperties.DASHBOARD_RP" *ngIf="(ccptReportCC | json) != ({} | json)" class="card-body">
+              <table class="table table-sm table-striped">
+                <thead>
+                  <tr>
+                    <th>{{ constantProperties.RECRUITER }}</th>
+                    <th>{{ constantProperties.TH_NOC }}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let val of ccptReportCC | keyvalue">
+                    <td>{{ val.key }}</td>
+                    <td>{{ val.value }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <div class="card mb-3 ">
+            <div class="card-header bg-dark text-clr-white" >
+              <span class="link" (click)="selectLeftTable(constantProperties.CON_C_H)">{{ constantProperties.CON_C_H }}</span>
+              <span class="pull-right">
+                <select
+                  class="form-control form-control-sm"
+                  name="cochChoosenDays"
+                  [(ngModel)]="cochChoosenDays"
+                  (change)="cochGetAllByDays()"
+                >
+                  <option *ngFor="let nod of noOfDays" [ngValue]="nod.value"
+                    >{{ nod.key }}
+                  </option>
+                </select>
+              </span>
+            </div>
+            <div [ngbCollapse]="showLeftTable != constantProperties.CON_C_H" *ngIf="ccptReportCOCH.length != 0" class="card-body">
+              <table class="table table-sm table-striped">
+                <thead>
+                  <tr>
+                    <th>{{ constantProperties.TH_NAME }}</th>
+                    <th>{{ constantProperties.TH_COUNT }}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    class="link link-style"
+                    placement="top"
+                    ngbTooltip="click for details"
+                    *ngFor="let cch of ccptReportCOCH"
+                    (click)="
+                      open(
+                        contentCoCH,
+                        cch.recruiterId,
+                        'ConsultantCallHistory'
+                      )
+                    "
+                  >
+                    <td>{{ cch.fullName }}</td>
+                    <td>{{ cch.count }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6" >
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card mb-3">
+            <div
+              (click)="getGraphData()"
+              class="link card-header bg-dark text-clr-white"
+            >
+              {{ constantProperties.DASHBOARD_CAS }}
+            </div>
+            <div [ngbCollapse]="showRightTable != constantProperties.DASHBOARD_CAS"*ngIf="caByStatusList.length" class="card-body table-overflow">
+              <div [style.height.px]="stackChartHeight">
+                <canvas
+                  baseChart
+                  id="activeCAChart"
+                  [datasets]="barChartCAByStatusData"
+                  [labels]="barChartCAByStautsLabels"
+                  [colors]="stackbarChartColors"
+                  [options]="barChartOptions"
+                  [legend]="stackBarChartLegend"
+                  [chartType]="barChartType"
+                >
+                </canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- <div class="col-md-12">
+      <div class="card mb-3">
+        <div class="card-header bg-dark text-clr-white">
+          Client Call History
+          <span class="pull-right">
+            <select class="form-control form-control-sm" name="clchChoosenDays" [(ngModel)]="clchChoosenDays"
+              (change)="clchGetAllByDays()">
+              <option *ngFor="let nod of noOfDays" [ngValue]="nod.value">{{nod.key}}
+              </option>
+            </select>
+          </span>
+        </div>
+        <div *ngIf="ccptReportCLCH.length != 0" class="card-body">
+          <table class="table table-sm">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Count</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let cch of ccptReportCLCH" class="link" placement="top" ngbTooltip="click for details"
+                data-toggle="tooltip" (click)="open(contentClch, cch.recruiterId, 'ClientCallHistory')">
+                <td>{{ cch.fullName }}</td>
+                <td>{{ cch.count }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div> -->
+      </div>
+    </div>
+  </div>
+</div>
+<ng-template #contentClch let-c="close" let-d="dismiss">
+  <div class="modal-header modal-popup-header-bg">
+    <h4 class="modal-title">{{ constantProperties.CLI_C_H }}</h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="d('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="">
+      <table class="table table-sm table-striped">
+        <thead>
+          <tr>
+            <th>
+              {{ constantProperties.TH_CALLER }}
+            </th>
+            <th>
+              {{ constantProperties.CP }}
+            </th>
+            <th>
+              {{ constantProperties.TH_CALL_DATE }}
+            </th>
+            <th width="150">
+              {{ constantProperties.TH_DESC }}
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let aca of clchByIdList">
+            <td>{{ aca.calledBy.fullname }}</td>
+            <td>{{ aca.clientPosition.generatedCode }}</td>
+            <td>{{ aca.calledDate }}</td>
+            <td>{{ aca.description }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <!-- <button type="button" class="btn btn-secondary" (click)="deleteCoCHRecord()">Ok</button> -->
+    <button type="button" class="btn btn-secondary" (click)="c('Close click')">
+      Close
+    </button>
+  </div>
+</ng-template>
+<ng-template #contentCoCH let-c="close" let-d="dismiss">
+  <div class="modal-header modal-popup-header-bg">
+    <h4 class="modal-title">{{ constantProperties.CON_C_H }}</h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="d('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="table-scroll ht-30">
+      <table class="table table-sm table-striped">
+        <thead>
+          <tr>
+            <th>
+              {{ constantProperties.TH_SNO }}
+            </th>
+            <th>
+              {{ constantProperties.TH_CALLER }}
+            </th>
+            <th>
+              {{ constantProperties.CON }}
+            </th>
+            <th>
+              {{ constantProperties.TH_CALL_DATE }}
+            </th>
+            <th width="150">
+              {{ constantProperties.TH_DESC }}
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let aca of cochByIdList; let i = index">
+            <td>{{ i + 1 }}.</td>
+            <td>{{ aca.calledBy.fullname }}</td>
+            <td>
+              {{ aca.consultant.fullname }}
+            </td>
+            <td>{{ aca.calledDate }}</td>
+            <td>{{ aca.description }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <!-- <button type="button" class="btn btn-secondary" (click)="deleteCoCHRecord()">Ok</button> -->
+    <button type="button" class="btn btn-secondary" (click)="c('Close click')">
+      Close
+    </button>
+  </div>
+</ng-template>
+

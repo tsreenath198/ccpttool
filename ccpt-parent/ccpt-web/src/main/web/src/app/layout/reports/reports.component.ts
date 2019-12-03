@@ -12,12 +12,12 @@ import { Color } from 'ng2-charts';
 import { Properties } from '../components/constants/properties';
 
 @Component({
-  selector: 'app-dashboard',
-  templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.scss'],
+  selector: 'app-reports',
+  templateUrl: './reports.component.html',
+  styleUrls: ['./reports.component.scss'],
   animations: [routerTransition()]
 })
-export class DashboardComponent implements OnInit {
+export class ReportsComponent implements OnInit {
   public alerts: Array<any> = [];
   public sliders: Array<any> = [];
   //public noOfDays: any = { 'Day': 1, 'Week': 7, 'Month': 30, 'Year': 365 };
@@ -153,20 +153,11 @@ export class DashboardComponent implements OnInit {
   }
   public init() {
     this.spinner(false);
-    this.getAllDBContent.subscribe(resp => {
-      let temp = resp as any;
-      this.interviewsToday = temp.interviewSummaryStatistics;
-      this.openCP = temp.openClientPositions;
-      this.dyingCP = temp.dyingClientPositions;
-      this.caStat = temp.dashboardCAStatistics;
-      this.paymentTrack = temp.paymentStatistics;
-      // this.setCAByStatusBarData(this.caByStatusList);
-      this.spinner(true);
-    });
-    forkJoin(this.getAllReportCC, this.getAllCAStatus, this.getCPEmptyPostings).subscribe(listofrecords => {
+    forkJoin(this.getAllReportCC, this.getAllCAStatus, this.getCPEmptyPostings,this.getAllReportCOCH).subscribe(listofrecords => {
       this.ccptReportCC = listofrecords[0] as any;
       this.caStatusList = listofrecords[1] as any;
       this.cpEmptyPostings = listofrecords[2] as any;
+      this.ccptReportCOCH = listofrecords[3] as any;
       this.setActiveCPBarData();
     });
     this.top5ById.properties = [];
@@ -183,21 +174,48 @@ export class DashboardComponent implements OnInit {
       this.selectRightTable(this.constantProperties.DASHBOARD_CAS);
     }
   }
-  private spinner(isSpinner: boolean) {
-    this.listReturned = isSpinner;
+  public rpGetAllByDays() {
+    const numberOfDays = this.rpChoosenDays;
+    this.http.get(this.urlConstants.ReportingGetClosures + numberOfDays).subscribe(resp => {
+      this.ccptReportCC = resp as any;
+      if(this.showLeftTable != this.constantProperties.DASHBOARD_RP){
+        this.selectLeftTable(this.constantProperties.DASHBOARD_RP)
+      }
+    });
   }
-  getAllActiveCAById(recrd: number) {
+  public cochGetAllByDays() {
+    const numberOfDays = this.cochChoosenDays;
+    this.http.get(this.urlConstants.CoCHGetCountByRecruiter + numberOfDays).subscribe(resp => {
+      this.ccptReportCOCH = resp as any;
+      if(this.showLeftTable != this.constantProperties.CON_C_H){
+        this.selectLeftTable(this.constantProperties.CON_C_H)
+      }
+    });
+  }
+  public clchGetAllByDays() {
     this.spinner(false);
-    this.activeCAById = [];
-    this.http.get(this.urlConstants.ReportingGetAllActiveCAById + recrd).subscribe(resp => {
-      this.activeCAById = resp as any;
+    const numberOfDays = this.clchChoosenDays;
+    this.http.get(this.urlConstants.CCHGetCountByRecruiter + numberOfDays).subscribe(resp => {
+      this.ccptReportCLCH = resp as any;
       this.spinner(true);
     });
   }
-  public getTop5ById(recrd) {
+  private spinner(isSpinner: boolean) {
+    this.listReturned = isSpinner;
+  }
+  getAllCoCHByID(recrd: number, days: number) {
     this.spinner(false);
-    this.http.get(this.urlConstants.CPGetById + recrd).subscribe(resp => {
-      this.top5ById = resp as any;
+    this.cochByIdList = [];
+    this.http.get(this.urlConstants.CoCHGetByRecruiterId + recrd + '&days=' + days).subscribe(resp => {
+      this.cochByIdList = resp as any;
+      this.spinner(true);
+    });
+  }
+  getAllClCHByID(recrd: number, days: number) {
+    this.spinner(false);
+    this.clchByIdList = [];
+    this.http.get(this.urlConstants.CCHGetByRecruiterId + recrd + '&days=' + days).subscribe(resp => {
+      this.clchByIdList = resp as any;
       this.spinner(true);
     });
   }
@@ -219,11 +237,11 @@ export class DashboardComponent implements OnInit {
         this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
       }
     );
-    if (type == 'activeClientApplication') {
-      this.getAllActiveCAById(this.selectedRecrd);
+    if (type == 'ConsultantCallHistory') {
+      this.getAllCoCHByID(this.selectedRecrd, this.cochChoosenDays);
     }
-    if (type == 'latestCPTop5') {
-      this.getTop5ById(this.selectedRecrd);
+    if (type == 'ClientCallHistory') {
+      this.getAllClCHByID(this.selectedRecrd, this.clchChoosenDays);
     }
   }
   close() {
@@ -304,27 +322,6 @@ export class DashboardComponent implements OnInit {
     const index = event.active[0]._index;
     this.open(this.contentACA, this.barChartActiveCAData[0].cpIds[index], 'activeClientApplication');
   }
-  public updateCAStatus(ca) {
-    this.http.update({}, this.urlConstants.CAStatusUpdate + ca.id + '&status=' + ca.status).subscribe(resp => {
-      this.updateIndex = ca.id;
-      setTimeout(() => {
-        this.updateIndex = 0;
-        this.reload();
-      }, 1000);
-    });
-  }
-  private reload() {
-    this.getCAStatUPdate.subscribe(resp => {
-      this.caStat = resp as any;
-    });
-  }
-  // public updateBarChart() {
-  //   let temp1 = this.http.get(this.urlConstants.ReportingGetAllCAByStatus).subscribe(resp => {
-  //     this.caByStatusList = resp as any;
-  //     this.barChartCAByStatusData = [];
-  //     this.setCAByStatusBarData(this.caByStatusList);
-  //   });
-  // }
   public selectLeftTable(value: any){
     if(this.showLeftTable != value){
       this.showLeftTable = value;

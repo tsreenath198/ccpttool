@@ -63,7 +63,7 @@ export class URLConstants {
   CCHUpdate = 'clientCallHistory';
   CCHDelete = 'clientCallHistory/';
   CCHGetById = 'clientCallHistory/';
-  CCHGetCountByRecruiter = 'dashboard/getAllCchCountByRecruiters?days=';
+  CCHGetCountByRecruiter = 'report/getAllCchCountByRecruiters?days=';
   CCHGetByRecruiterId = 'clientCallHistory/getAllCchByRecruiterId?rId=';
 
   /* consultant Call History */
@@ -72,7 +72,7 @@ export class URLConstants {
   CoCHUpdate = 'consultantCallHistory';
   CoCHDelete = 'consultantCallHistory/';
   CoCHGetById = 'consultantCallHistory/';
-  CoCHGetCountByRecruiter = 'dashboard/getAllconCHCountByRecruiters?days=';
+  CoCHGetCountByRecruiter = 'report/getAllconCHCountByRecruiters?days=';
   CoCHGetByRecruiterId = 'consultantCallHistory/getAllconCHByRecruiterId?rId=';
 
   /* Recruiter */
@@ -133,13 +133,13 @@ export class URLConstants {
   /** Reporting */
   GetAllDashboard = 'dashboard/getAllDashboardContent';
   ReportingGetAllTop5CP = 'dashboard/getTop5CP';
-  ReportingGetClosures = 'dashboard/getClosedCountOfAllRecruitersFromLastGivenDays?days=';
+  ReportingGetClosures = 'report/getClosedCountOfAllRecruitersFromLastGivenDays?days=';
   ReportingGetAllOpenCP = 'dashboard/getAllOpenCP';
   ReportingGetAllActiveCA = 'dashboard/getAllActiveCACountByCpID';
   ReportingGetAllActiveCAById = 'clientApplication/getAllActiveCAByCpID?cpId=';
   ReportingGetAllInterviewsToday = 'dashboard/getAllInterviewsFromToday';
   ReportingDyingCp = 'dashboard/getLastWeekDyingCP';
-  ReportingGetAllCAByStatus = 'dashboard/getAllCAbyStatus';
+  ReportingGetAllCAByStatus = 'report/getAllCAbyStatus';
   DashboardCAStat = 'dashboard/getDashboardCAStatistics';
 
   /**Email Template */

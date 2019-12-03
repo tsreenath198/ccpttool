@@ -103,6 +103,11 @@ const routes: Routes = [
         loadChildren:
           "./message-history/message-history.module#MessageHistoryModule"
       },
+      {
+        path: "reports",
+        loadChildren:
+          "./reports/reports.module#ReportsModule"
+      },
 
       { path: "charts", loadChildren: "./charts/charts.module#ChartsModule" },
       { path: "tables", loadChildren: "./tables/tables.module#TablesModule" },

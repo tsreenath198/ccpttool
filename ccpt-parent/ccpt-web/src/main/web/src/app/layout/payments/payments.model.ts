@@ -25,6 +25,7 @@ export interface PaymentsModel {
   files: any;
   paidOn: string;
   paidStatus: string;
+  generatedCode: string;
 }
 export class ActionsList {
   actions = [

@@ -74,6 +74,23 @@
             </a>
           </li>
           <li>
+            <a [routerLink]="['/layout/user']" [routerLinkActive]="['router-link-active']" class="list-group-item"
+              ><i class="fa fa-fw fa-user-circle"></i>
+              <span>{{ 'Users' | translate }}</span>
+            </a>
+          </li>
+        </ul>
+      </li>
+    </div>
+    
+    <div class="nested-menu" (mouseover)="addExpandClass('metaData')" (mouseleave)="addCollapseClass()">
+      <a class="list-group-item">
+        <i class="fa fa-fw fa-sticky-note"></i>
+        <span>{{ 'Metadata' | translate }}</span>
+      </a>
+      <li class="nested" [class.expand]="showMenu === 'metaData'">
+        <ul class="submenu">
+          <li>
             <a [routerLink]="['/layout/client-application-status']" [routerLinkActive]="['router-link-active']" class="list-group-item">
               <i class="fa fa-fw fa-filter"></i>
               <span>{{ 'Application Status' | translate }}</span>
@@ -92,11 +109,21 @@
             </a>
           </li>
           <li>
-            <a [routerLink]="['/layout/user']" [routerLinkActive]="['router-link-active']" class="list-group-item"
-              ><i class="fa fa-fw fa-user-circle"></i>
-              <span>{{ 'Users' | translate }}</span>
+            <a [routerLink]="['/layout/industry-type']" [routerLinkActive]="['router-link-active']" class="list-group-item"
+              ><i class="fa fa-fw fa-industry"></i>
+              <span>{{ 'Industries' | translate }}</span>
             </a>
           </li>
+        </ul>
+      </li>
+    </div>
+    <div class="nested-menu" (mouseover)="addExpandClass('communication')" (mouseleave)="addCollapseClass()">
+      <a class="list-group-item">
+        <i class="fa fa-fw fa-inbox"></i>
+        <span>{{ 'Communication' | translate }}</span>
+      </a>
+      <li class="nested" [class.expand]="showMenu === 'communication'">
+        <ul class="submenu">
           <li>
             <a [routerLink]="['/layout/email-template']" [routerLinkActive]="['router-link-active']" class="list-group-item"
               ><i class="fa fa-fw fa-envelope"></i>
@@ -106,7 +133,7 @@
           <li>
             <a [routerLink]="['/layout/message-template']" [routerLinkActive]="['router-link-active']" class="list-group-item"
               ><i class="fa fa-fw fa-comment"></i>
-              <span>{{ 'Messages' | translate }}</span>
+              <span>{{ 'Message Templates' | translate }}</span>
             </a>
           </li>
 
@@ -116,15 +143,13 @@
               <span>{{ 'Send Message' | translate }}</span>
             </a>
           </li>
-          <li>
-            <a [routerLink]="['/layout/industry-type']" [routerLinkActive]="['router-link-active']" class="list-group-item"
-              ><i class="fa fa-fw fa-industry"></i>
-              <span>{{ 'Industries' | translate }}</span>
-            </a>
-          </li>
         </ul>
       </li>
     </div>
+    <a [routerLink]="['/layout/reports']" [routerLinkActive]="['router-link-active']" class="list-group-item">
+      <i class="fa fa-fw fa-bar-chart "></i>
+      <span>{{ 'Reports' | translate }}</span>
+    </a>
     <div class="nested-menu" (mouseover)="addExpandClass('guide')" (mouseleave)="addCollapseClass()">
       <a class="list-group-item">
         <i class="fa fa-fw fa-book"></i>
