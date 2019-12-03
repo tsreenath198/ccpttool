@@ -40,36 +40,36 @@ public class ExcelWriter {
 		cellStyle.setDataFormat(createHelper.createDataFormat().getFormat("dd/mm/yyyy"));
 
 		// Set font into style
-		XSSFCellStyle style = workbook.createCellStyle();
-		style.setAlignment(XSSFCellStyle.ALIGN_CENTER);
+		XSSFCellStyle sheetHeader = workbook.createCellStyle();
+		sheetHeader.setAlignment(XSSFCellStyle.ALIGN_CENTER);
 
-		XSSFCellStyle style1 = workbook.createCellStyle();
-		style1.setFont(font);
+		XSSFCellStyle cellLabel = workbook.createCellStyle();
+		cellLabel.setFont(font);
 
-		XSSFCellStyle style2 = workbook.createCellStyle();
-		style2.setAlignment(XSSFCellStyle.ALIGN_CENTER);
-		style2.setFont(font);
+		XSSFCellStyle cellValue = workbook.createCellStyle();
+		cellValue.setAlignment(XSSFCellStyle.ALIGN_CENTER);
+		cellValue.setFont(font);
 
 		row = sheet.createRow(0);
 		cell = row.createCell(0);
 		cell.setCellValue("TALENT CORNER HR SERVICES PVT LTD");
-		cell.setCellStyle(style);
+		cell.setCellStyle(sheetHeader);
 		sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 5));
-		cell.setCellStyle(style2);
+		cell.setCellStyle(cellValue);
 
 		row = sheet.createRow(1);
 		cell = row.createCell(0);
 		cell.setCellValue("GST NO. 27AACCT6635P1ZP");
-		cell.setCellStyle(style);
+		cell.setCellStyle(sheetHeader);
 		sheet.addMergedRegion(new CellRangeAddress(1, 1, 0, 5));
-		cell.setCellStyle(style2);
+		cell.setCellStyle(cellValue);
 
 		row = sheet.createRow(2);
 		cell = row.createCell(0);
 		cell.setCellValue("CIN NO. U7491OMH2007PTC170340");
-		cell.setCellStyle(style);
+		cell.setCellStyle(sheetHeader);
 		sheet.addMergedRegion(new CellRangeAddress(2, 2, 0, 5));
-		cell.setCellStyle(style2);
+		cell.setCellStyle(cellValue);
 
 		row = sheet.createRow(3);
 		row.createCell(0).setCellValue("");
@@ -77,9 +77,9 @@ public class ExcelWriter {
 		row = sheet.createRow(4);
 		cell = row.createCell(0);
 		cell.setCellValue("BILLING INTIMATION FORMAT");
-		cell.setCellStyle(style);
+		cell.setCellStyle(sheetHeader);
 		sheet.addMergedRegion(new CellRangeAddress(4, 4, 0, 5));
-		cell.setCellStyle(style2);
+		cell.setCellStyle(cellValue);
 
 		row = sheet.createRow(5);
 		row.createCell(0).setCellValue("");
@@ -88,7 +88,7 @@ public class ExcelWriter {
 		cell = row.createCell(3);
 		cell.setCellValue("Date");
 		sheet.addMergedRegion(new CellRangeAddress(6, 6, 3, 3));
-		cell.setCellStyle(style1);
+		cell.setCellStyle(cellLabel);
 		cell = row.createCell(4);
 		cell.setCellValue(new Date());
 		cell.setCellStyle(cellStyle);
@@ -100,29 +100,29 @@ public class ExcelWriter {
 		row = sheet.createRow(8);
 		cell = row.createCell(0);
 		cell.setCellValue("FROM");
-		cell.setCellStyle(style1);
+		cell.setCellStyle(cellLabel);
 		sheet.addMergedRegion(new CellRangeAddress(8, 8, 0, 2));
 
 		row = sheet.createRow(9);
 		cell = row.createCell(0);
 		cell.setCellValue("NAME OF BRANCH HEAD :");
 		sheet.addMergedRegion(new CellRangeAddress(9, 9, 0, 2));
-		cell.setCellStyle(style1);
+		cell.setCellStyle(cellLabel);
 
 		cell = row.createCell(3);
 		cell.setCellValue("SREENATH THATIKONDA");
 		sheet.addMergedRegion(new CellRangeAddress(9, 9, 3, 5));
-		cell.setCellStyle(style);
+		cell.setCellStyle(sheetHeader);
 
 		row = sheet.createRow(10);
 		cell = row.createCell(0);
 		cell.setCellValue("NAME OF BRANCH LOCATION:");
 		sheet.addMergedRegion(new CellRangeAddress(10, 10, 0, 2));
-		cell.setCellStyle(style1);
+		cell.setCellStyle(cellLabel);
 		cell = row.createCell(3);
 		cell.setCellValue("NIZAMABAD");
 		sheet.addMergedRegion(new CellRangeAddress(10, 10, 3, 5));
-		cell.setCellStyle(style);
+		cell.setCellStyle(sheetHeader);
 
 		row = sheet.createRow(11);
 		row.createCell(0).setCellValue("");
@@ -131,11 +131,11 @@ public class ExcelWriter {
 		cell = row.createCell(0);
 		cell.setCellValue("NAME OF CANDIDATE");
 		sheet.addMergedRegion(new CellRangeAddress(12, 12, 0, 2));
-		cell.setCellStyle(style1);
+		cell.setCellStyle(cellLabel);
 		cell = row.createCell(3);
 		cell.setCellValue(payment.getCandidateName());
 		sheet.addMergedRegion(new CellRangeAddress(12, 12, 3, 5));
-		cell.setCellStyle(style);
+		cell.setCellStyle(sheetHeader);
 
 		row = sheet.createRow(13);
 		row.createCell(0).setCellValue("");
@@ -144,11 +144,11 @@ public class ExcelWriter {
 		cell = row.createCell(0);
 		cell.setCellValue("DESIGNATION");
 		sheet.addMergedRegion(new CellRangeAddress(14, 14, 0, 2));
-		cell.setCellStyle(style1);
+		cell.setCellStyle(cellLabel);
 		cell = row.createCell(3);
 		cell.setCellValue(payment.getDesignation());
 		sheet.addMergedRegion(new CellRangeAddress(14, 14, 3, 5));
-		cell.setCellStyle(style);
+		cell.setCellStyle(sheetHeader);
 
 		row = sheet.createRow(15);
 		row.createCell(0).setCellValue("");
@@ -157,7 +157,7 @@ public class ExcelWriter {
 		cell = row.createCell(0);
 		cell.setCellValue("DATE OF JOINING");
 		sheet.addMergedRegion(new CellRangeAddress(16, 16, 0, 2));
-		cell.setCellStyle(style1);
+		cell.setCellStyle(cellLabel);
 		cell = row.createCell(3);
 		cell.setCellValue(payment.getJoiningDate());
 		cell.setCellStyle(cellStyle);
@@ -170,11 +170,11 @@ public class ExcelWriter {
 		cell = row.createCell(0);
 		cell.setCellValue("ANNUAL PACKAGE");
 		sheet.addMergedRegion(new CellRangeAddress(18, 18, 0, 2));
-		cell.setCellStyle(style1);
+		cell.setCellStyle(cellLabel);
 		cell = row.createCell(3);
 		cell.setCellValue(payment.getAnnualPackage());
 		sheet.addMergedRegion(new CellRangeAddress(18, 18, 3, 5));
-		cell.setCellStyle(style);
+		cell.setCellStyle(sheetHeader);
 
 		row = sheet.createRow(19);
 		row.createCell(0).setCellValue("");
@@ -183,11 +183,11 @@ public class ExcelWriter {
 		cell = row.createCell(0);
 		cell.setCellValue("NAME OF COMPANY");
 		sheet.addMergedRegion(new CellRangeAddress(20, 20, 0, 2));
-		cell.setCellStyle(style1);
+		cell.setCellStyle(cellLabel);
 		cell = row.createCell(3);
 		cell.setCellValue(payment.getCompanyName());
 		sheet.addMergedRegion(new CellRangeAddress(20, 20, 3, 5));
-		cell.setCellStyle(style);
+		cell.setCellStyle(sheetHeader);
 
 		row = sheet.createRow(21);
 		row.createCell(0).setCellValue("");
@@ -196,11 +196,11 @@ public class ExcelWriter {
 		cell = row.createCell(0);
 		cell.setCellValue("COMPANY GST No.");
 		sheet.addMergedRegion(new CellRangeAddress(22, 22, 0, 2));
-		cell.setCellStyle(style1);
+		cell.setCellStyle(cellLabel);
 		cell = row.createCell(3);
 		cell.setCellValue(payment.getCompanyGstNum());
 		sheet.addMergedRegion(new CellRangeAddress(22, 22, 3, 5));
-		cell.setCellStyle(style);
+		cell.setCellStyle(sheetHeader);
 
 		row = sheet.createRow(23);
 		row.createCell(0).setCellValue("");
@@ -209,11 +209,11 @@ public class ExcelWriter {
 		cell = row.createCell(0);
 		cell.setCellValue("COMPANY WEBSITE URL");
 		sheet.addMergedRegion(new CellRangeAddress(24, 24, 0, 2));
-		cell.setCellStyle(style1);
+		cell.setCellStyle(cellLabel);
 		cell = row.createCell(3);
 		cell.setCellValue(payment.getCompanyWebsite());
 		sheet.addMergedRegion(new CellRangeAddress(24, 24, 3, 5));
-		cell.setCellStyle(style);
+		cell.setCellStyle(sheetHeader);
 
 		row = sheet.createRow(25);
 		row.createCell(0).setCellValue("");
@@ -222,11 +222,11 @@ public class ExcelWriter {
 		cell = row.createCell(0);
 		cell.setCellValue("BILLING ADDRESS With PINCODE");
 		sheet.addMergedRegion(new CellRangeAddress(26, 26, 0, 2));
-		cell.setCellStyle(style1);
+		cell.setCellStyle(cellLabel);
 		cell = row.createCell(3);
 		cell.setCellValue(payment.getBillingAddress());
 		sheet.addMergedRegion(new CellRangeAddress(26, 26, 3, 5));
-		cell.setCellStyle(style);
+		cell.setCellStyle(sheetHeader);
 
 		row = sheet.createRow(27);
 		row.createCell(0).setCellValue("");
@@ -235,11 +235,11 @@ public class ExcelWriter {
 		cell = row.createCell(0);
 		cell.setCellValue("CONTACT PERSON");
 		sheet.addMergedRegion(new CellRangeAddress(28, 28, 0, 2));
-		cell.setCellStyle(style1);
+		cell.setCellStyle(cellLabel);
 		cell = row.createCell(3);
 		cell.setCellValue(payment.getContactPerson());
 		sheet.addMergedRegion(new CellRangeAddress(28, 28, 3, 5));
-		cell.setCellStyle(style);
+		cell.setCellStyle(sheetHeader);
 
 		row = sheet.createRow(29);
 		row.createCell(0).setCellValue("");
@@ -248,11 +248,11 @@ public class ExcelWriter {
 		cell = row.createCell(0);
 		cell.setCellValue("CONTACT PERSON DESIGNATION");
 		sheet.addMergedRegion(new CellRangeAddress(30, 30, 0, 2));
-		cell.setCellStyle(style1);
+		cell.setCellStyle(cellLabel);
 		cell = row.createCell(3);
 		cell.setCellValue(payment.getContactPersonDesignation());
 		sheet.addMergedRegion(new CellRangeAddress(30, 30, 3, 5));
-		cell.setCellStyle(style);
+		cell.setCellStyle(sheetHeader);
 
 		row = sheet.createRow(31);
 		row.createCell(0).setCellValue("");
@@ -261,11 +261,11 @@ public class ExcelWriter {
 		cell = row.createCell(0);
 		cell.setCellValue("CONTACT PERSON CONTACT NO");
 		sheet.addMergedRegion(new CellRangeAddress(32, 32, 0, 2));
-		cell.setCellStyle(style1);
+		cell.setCellStyle(cellLabel);
 		cell = row.createCell(3);
 		cell.setCellValue(payment.getContactPersonNum());
 		sheet.addMergedRegion(new CellRangeAddress(32, 32, 3, 5));
-		cell.setCellStyle(style);
+		cell.setCellStyle(sheetHeader);
 
 		row = sheet.createRow(33);
 		row.createCell(0).setCellValue("");
@@ -274,11 +274,11 @@ public class ExcelWriter {
 		cell = row.createCell(0);
 		cell.setCellValue("CONTACT PERSON EMAIL ID");
 		sheet.addMergedRegion(new CellRangeAddress(34, 34, 0, 2));
-		cell.setCellStyle(style1);
+		cell.setCellStyle(cellLabel);
 		cell = row.createCell(3);
 		cell.setCellValue(payment.getContactPersonEmail());
 		sheet.addMergedRegion(new CellRangeAddress(34, 34, 3, 5));
-		cell.setCellStyle(style);
+		cell.setCellStyle(sheetHeader);
 
 		row = sheet.createRow(35);
 		row.createCell(0).setCellValue("");
@@ -287,11 +287,11 @@ public class ExcelWriter {
 		cell = row.createCell(0);
 		cell.setCellValue("SERVICE CHARGE");
 		sheet.addMergedRegion(new CellRangeAddress(36, 36, 0, 2));
-		cell.setCellStyle(style1);
+		cell.setCellStyle(cellLabel);
 		cell = row.createCell(3);
 		cell.setCellValue(payment.getServiceCharge());
 		sheet.addMergedRegion(new CellRangeAddress(36, 36, 3, 5));
-		cell.setCellStyle(style);
+		cell.setCellStyle(sheetHeader);
 
 		row = sheet.createRow(37);
 		row.createCell(0).setCellValue("");
@@ -300,11 +300,11 @@ public class ExcelWriter {
 		cell = row.createCell(0);
 		cell.setCellValue("CREDIT PERIOD");
 		sheet.addMergedRegion(new CellRangeAddress(38, 38, 0, 2));
-		cell.setCellStyle(style1);
+		cell.setCellStyle(cellLabel);
 		cell = row.createCell(3);
 		cell.setCellValue(payment.getCreditPeriod());
 		sheet.addMergedRegion(new CellRangeAddress(38, 38, 3, 5));
-		cell.setCellStyle(style);
+		cell.setCellStyle(sheetHeader);
 
 		row = sheet.createRow(39);
 		row.createCell(0).setCellValue("");
@@ -313,11 +313,11 @@ public class ExcelWriter {
 		cell = row.createCell(0);
 		cell.setCellValue("GUARANTEE PERIOD");
 		sheet.addMergedRegion(new CellRangeAddress(40, 40, 0, 2));
-		cell.setCellStyle(style1);
+		cell.setCellStyle(cellLabel);
 		cell = row.createCell(3);
 		cell.setCellValue(payment.getGauranteePeriod());
 		sheet.addMergedRegion(new CellRangeAddress(40, 40, 3, 5));
-		cell.setCellStyle(style);
+		cell.setCellStyle(sheetHeader);
 
 		row = sheet.createRow(41);
 		row.createCell(0).setCellValue("");
@@ -325,23 +325,23 @@ public class ExcelWriter {
 		row = sheet.createRow(42);
 		cell = row.createCell(0);
 		cell.setCellValue("KINDLY SEND THE BIF  EMAIL TO ");
-		cell.setCellStyle(style);
+		cell.setCellStyle(sheetHeader);
 		sheet.addMergedRegion(new CellRangeAddress(42, 42, 0, 5));
-		cell.setCellStyle(style2);
+		cell.setCellStyle(cellValue);
 
 		row = sheet.createRow(43);
 		cell = row.createCell(0);
 		cell.setCellValue("rasheshdoshi@tcmail.co.in AND accounts@talentcorner.in.");
-		cell.setCellStyle(style);
+		cell.setCellStyle(sheetHeader);
 		sheet.addMergedRegion(new CellRangeAddress(43, 43, 0, 5));
-		cell.setCellStyle(style2);
+		cell.setCellStyle(cellValue);
 
 		row = sheet.createRow(44);
 		cell = row.createCell(0);
 		cell.setCellValue("We will create the invoice within 48 hours and send it to the client.");
-		cell.setCellStyle(style);
+		cell.setCellStyle(sheetHeader);
 		sheet.addMergedRegion(new CellRangeAddress(44, 44, 0, 5));
-		cell.setCellStyle(style2);
+		cell.setCellStyle(cellValue);
 
 		ByteArrayOutputStream os = new ByteArrayOutputStream();
 		workbook.write(os);
