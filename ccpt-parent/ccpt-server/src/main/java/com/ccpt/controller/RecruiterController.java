@@ -74,6 +74,7 @@ public class RecruiterController extends BaseController<RecruiterDTO, Recruiter,
 		return new ResponseEntity<EmailContent>(emailContent, HttpStatus.OK);
 	}
 
+	/* Validates recruiter */
 	@Override
 	protected void validateAndClean(Recruiter model) {
 		if (model.getFullname() == null)

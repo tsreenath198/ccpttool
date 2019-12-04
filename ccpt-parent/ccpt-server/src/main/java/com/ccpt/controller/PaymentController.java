@@ -64,6 +64,7 @@ public class PaymentController extends BaseController<PaymentDTO, Payment, Integ
 		}
 	}
 
+	/* Validates payment */
 	@Override
 	protected void validateAndClean(Payment model) {
 		if (model.getInvoiceDate() == null)

@@ -48,7 +48,7 @@ public class ReportController {
 	}
 
 	/*
-	 * Retrieves list of callhistory count of recruiter to consultant based on
+	 * Retrieves list of call history count of recruiter to consultant based on
 	 * given days
 	 */
 	@GetMapping("/getAllconCHCountByRecruiters")
@@ -59,8 +59,8 @@ public class ReportController {
 	}
 
 	/*
-	 * Retrieves list of callhistory count of recruiter to client based on given
-	 * days
+	 * Retrieves list of call history count of recruiter to client based on
+	 * given days
 	 */
 	@GetMapping("/getAllCchCountByRecruiters")
 	public ResponseEntity<List<CallHistorySummaryStatistics>> getAllCchCountByRecruiters(@RequestParam Integer days)
@@ -70,8 +70,8 @@ public class ReportController {
 	}
 
 	/*
-	 * Retrieves all Status codes and count of generatedcode with that status
-	 * code
+	 * Retrieves list of Status codes and count of generated code with that
+	 * status code
 	 */
 	@GetMapping("/getAllCAbyStatus")
 	public ResponseEntity<List<CAByStatusHelper>> getAllCAbyStatus() {

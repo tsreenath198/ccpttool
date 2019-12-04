@@ -85,6 +85,7 @@ public class QuestionController extends BaseController<QuestionDTO, Question, In
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 
+	/* Validates question */
 	@Override
 	protected void validateAndClean(Question model) {
 		if (model.getCreator() == null || model.getCreator().getId() == null)

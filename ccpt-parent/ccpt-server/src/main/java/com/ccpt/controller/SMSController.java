@@ -80,6 +80,7 @@ public class SMSController extends BaseController<SMSDTO, SMS, Integer> {
 		return Mappers.getMapper(SMSMapper.class);
 	}
 
+	/* Validates SMS */
 	@Override
 	protected void validateAndClean(SMS model) {
 		if (model.getMessage() == null)

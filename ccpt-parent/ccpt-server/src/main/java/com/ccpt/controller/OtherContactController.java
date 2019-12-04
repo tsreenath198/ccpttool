@@ -34,6 +34,7 @@ public class OtherContactController extends BaseController<OtherContactDTO, Othe
 		return Mappers.getMapper(OtherContactMapper.class);
 	}
 
+	/* Validates other contact */
 	@Override
 	protected void validateAndClean(OtherContact model) {
 		if (model.getName() == null)

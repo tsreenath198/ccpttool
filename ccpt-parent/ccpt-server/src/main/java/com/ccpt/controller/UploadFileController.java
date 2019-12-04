@@ -105,7 +105,7 @@ public class UploadFileController {
 		return new ResponseEntity<UploadFile>(result, HttpStatus.OK);
 	}
 
-	/* Hard Delete file based on  id */
+	/* Delete file based on id */
 	@DeleteMapping(CCPTConstants.ID_PARAM)
 	public ResponseEntity<Void> deleteFile(@PathVariable Integer id) {
 		uploadFileService.delete(id);

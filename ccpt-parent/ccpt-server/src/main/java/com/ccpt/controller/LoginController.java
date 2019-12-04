@@ -56,6 +56,7 @@ public class LoginController extends BaseController<LoginDTO, Login, Integer> {
 		return Mappers.getMapper(LoginMapper.class);
 	}
 
+	/* Validates Login */
 	@Override
 	protected void validateAndClean(Login model) {
 		if (model.getUsername() == null)
