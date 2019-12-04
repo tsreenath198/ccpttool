@@ -1,0 +1,71 @@
+<div [@routerTransition]>
+  <app-page-header
+    [icon2]="'fa-envelope'"
+    [heading2]="'Send Email'"
+    [icon1]="'fa-inbox'"
+    [heading1]="'Communication'"
+  >
+  </app-page-header>
+  <div
+    class="spinner padding-top justify-content-md-center"
+    *ngIf="!listReturned"
+  >
+    <div class="bounce1"></div>
+    <div class="bounce2"></div>
+    <div class="bounce3"></div>
+  </div>
+  <div class="row" *ngIf="listReturned">
+    <div class=" col-md-12">
+      <form
+        name="form"
+        id="messageTemplateForm"
+        (ngSubmit)="f.form.valid && sendSms(f)"
+        #f="ngForm"
+        novalidate
+      >
+        <label>E-Mail</label>
+        <input
+          type="text"
+          [(ngModel)]="model.toEmails"
+          class="form-control "
+          name="to"
+        />
+        <label class="pt-3">Cc</label>
+        <input
+          type="text"
+          [(ngModel)]="model.cc"
+          class="form-control "
+          name="cc"
+          disabled
+        />
+        <label class="pt-3">Bcc</label>
+        <input
+          type="text"
+          [(ngModel)]="model.bcc"
+          class="form-control "
+          name="bcc"
+        />
+        <label class="pt-3">Subject</label>
+        <input class="form-control " [(ngModel)]="model.subject" name="sub" />
+        <label class="pt-3">Message Body</label>
+        <angular-editor [(ngModel)]="model.body" name="body" [config]="config">
+        </angular-editor>
+        <button
+          type="button"
+          class="btn btn-secondary mt-3 ml-3"
+          (click)="sendEmailReq()"
+        >
+          Send
+        </button>
+        <button
+          type="button"
+          class="btn btn-secondary mt-3 ml-3"
+          
+          (click)="cancelForm(f)"
+        >
+          Clear
+        </button>
+      </form>
+    </div>
+  </div>
+</div>

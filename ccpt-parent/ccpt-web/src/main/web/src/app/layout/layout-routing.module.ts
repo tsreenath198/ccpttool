@@ -90,6 +90,10 @@ const routes: Routes = [
         loadChildren: "./send-message/send-message.module#SendMessageModule"
       },
       {
+        path: "send-email",
+        loadChildren: "./send-email/send-email.module#SendEmailModule"
+      },
+      {
         path: "faq",
         loadChildren:
           "./frequent-questions/frequent-questions.module#FrequentQuestionsModule"

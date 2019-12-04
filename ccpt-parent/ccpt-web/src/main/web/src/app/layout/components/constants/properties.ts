@@ -68,6 +68,8 @@ export class Properties {
     "3+ Months"
   ];
 
+  CONSTANT_CC="sreenath.t@talentcorner.in";
+
   JOB_TYPE = ["Permanent", "Contract"];
 
   /**Client Contact Salutation */
