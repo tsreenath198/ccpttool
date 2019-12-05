@@ -30,6 +30,7 @@ export interface ClientPositionModel {
     naukriMassMailing:Date;
     shineMassMailingCount:number;
     naukriMassMailingCount:number;
+    address: string;
     properties: Array<AdditionalPropertiesModel>;
 }
 

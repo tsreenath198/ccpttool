@@ -854,4 +854,16 @@ export class ClientPositionComponent implements OnInit {
       }
     }
   }
+  public setClientAddress(event,clientId){
+    if(event.target.checked){
+      this.clientList.forEach(cl =>{
+        if(clientId == cl.id){
+          this.model.address = cl.address;
+        }
+      })
+    }
+    else{
+      this.model.address=null;
+    }
+  }
 }
