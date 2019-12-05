@@ -174,14 +174,13 @@ export class DashboardComponent implements OnInit {
       // this.setCAByStatusBarData(this.caByStatusList);
       this.spinner(true);
     });
-    forkJoin(
-      this.getAllCAStatus,
-      this.getCPEmptyPostings
-    ).subscribe(listofrecords => {
-      this.caStatusList = listofrecords[0] as any;
-      this.cpEmptyPostings = listofrecords[1] as any;
-      this.setActiveCPBarData();
-    });
+    forkJoin(this.getAllCAStatus, this.getCPEmptyPostings).subscribe(
+      listofrecords => {
+        this.caStatusList = listofrecords[0] as any;
+        this.cpEmptyPostings = listofrecords[1] as any;
+        this.setActiveCPBarData();
+      }
+    );
     this.top5ById.properties = [];
   }
 
@@ -338,28 +337,31 @@ export class DashboardComponent implements OnInit {
     if (type == "table") {
       idsToUpdate.push(clientApps.id);
     }
-    if(type == "popup"){
-      clientApps.forEach(ca =>{
-        idsToUpdate.push(ca.id)
-      })
+    if (type == "popup") {
+      clientApps.forEach(ca => {
+        idsToUpdate.push(ca.id);
+      });
     }
     this.http
       .update(idsToUpdate, this.urlConstants.CAStatusUpdate + status)
       .subscribe(resp => {
         idsToUpdate = [];
-        if(type == "table"){
+        if (type === "table") {
           this.updateIndex = clientApps.id;
           setTimeout(() => {
             this.updateIndex = 0;
             this.reload();
           }, 1000);
         }
-        if(type == 'popup'){
+        if (type === "popup") {
           this.reload();
           this.close();
-          this.statusToChange = '';
+          this.statusToChange = "";
           this.selectedCAList = [];
-          this.toastr.success("Status changed successfully",this.constantProperties.CA);
+          this.toastr.success(
+            "Status changed successfully",
+            this.constantProperties.CA
+          );
         }
       });
   }
@@ -393,11 +395,15 @@ export class DashboardComponent implements OnInit {
     if (event.target.checked) {
       this.selectedCAList.push(ca);
     } else {
-      for (let i = 0; i < this.selectedCAList.length; i++) {
+      this.selectedCAList.forEach(sca => {
+        if (ca.id === sca.id)
+          this.selectedCAList.splice(this.selectedCAList.indexOf(sca), 1);
+      });
+      /* for (let i = 0; i < this.selectedCAList.length; i++) {
         if (ca.id == this.selectedCAList[i].id) {
           this.selectedCAList.splice(i, 1);
         }
-      }
+      }*/
     }
   }
 }
