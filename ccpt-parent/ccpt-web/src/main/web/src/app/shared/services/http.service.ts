@@ -1,13 +1,16 @@
 import { Injectable } from "@angular/core";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Subject, Observable } from "rxjs";
+import { Properties } from "src/app/layout/components/constants/properties";
 
 @Injectable({
   providedIn: "root"
 })
 export class HttpClientService {
   constructor(private http: HttpClient) {}
-  private base_url = "http://210.16.76.202:8082/";
+  public properties = new Properties();
+  private base_url =
+    "http://" + this.properties.PROD_IP + ":" + this.properties.PORT + "/";
   public subject = new Subject();
   public getLogin(URL: string) {
     return this.http.get(URL);

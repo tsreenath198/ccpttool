@@ -127,4 +127,9 @@ export class Properties {
   CP_REQ_SKILL = "Required Skills";
   ADD_PROP = "Additional Properties";
   JOINING_DATE = "Joining Date";
+
+  /** Ip Address */
+  PROD_IP = "210.16.76.202";
+  LOCAL_IP = "localhost";
+  PORT = "8082";
 }
