@@ -54,7 +54,7 @@ export class URLConstants {
   CAJobConfirmed = 'clientApplication/getJobConfirmedCAs';
   CASearch = 'clientApplication/search?';
   CADropdown = 'clientApplication/getCAStatistics';
-  CAStatusUpdate = 'clientApplication/updateStatus?id=';
+  CAStatusUpdate = 'clientApplication//updateStatus?status=';
   CAGetAllByStatus = 'clientApplication/getAllByStatus?pageNo=';
 
   /* Client Call History */

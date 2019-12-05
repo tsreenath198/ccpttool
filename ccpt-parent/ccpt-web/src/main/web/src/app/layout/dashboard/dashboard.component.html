@@ -15,12 +15,19 @@
           *ngIf="interviewsToday.length != 0"
         >
           <div class="card mb-3">
-            <div class="link card-header bg-dark text-clr-white" (click)="selectLeftTable(constantProperties.DASHBOARD_ITW)">
+            <div
+              class="link card-header bg-dark text-clr-white"
+              (click)="selectLeftTable(constantProperties.DASHBOARD_ITW)"
+            >
               {{ constantProperties.DASHBOARD_ITW }}
             </div>
             <div>
-              <div [ngbCollapse]=" showLeftTable != constantProperties.DASHBOARD_ITW" 
-              class="card-body table-responsive">
+              <div
+                [ngbCollapse]="
+                  showLeftTable != constantProperties.DASHBOARD_ITW
+                "
+                class="card-body table-responsive"
+              >
                 <table class="table table-sm table-striped ">
                   <thead>
                     <tr>
@@ -35,8 +42,10 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr *ngFor="let val of interviewsToday" 
-                    [ngClass]="{ 'bl-yellow': val.interviewDate === today }">
+                    <tr
+                      *ngFor="let val of interviewsToday"
+                      [ngClass]="{ 'bl-yellow': val.interviewDate === today }"
+                    >
                       <td
                         container="body"
                         class="click-data"
@@ -78,14 +87,32 @@
         </div>
         <div class="col-md-12">
           <div class="card mb-3">
-            <div class="link card-header bg-dark text-clr-white" (click)="selectLeftTable(constantProperties.DASHBOARD_QSU)">
-              {{ constantProperties.DASHBOARD_QSU }}
+            <div class=" card-header bg-dark text-clr-white">
+              <span
+                class="link"
+                (click)="selectLeftTable(constantProperties.DASHBOARD_QSU)"
+                >{{ constantProperties.DASHBOARD_QSU }}</span
+              >
+              <span class="pull-right">
+                <button
+                  type="submit"
+                  *ngIf="selectedCAList.length > 0"
+                  class="btn btn-secondary btn-sm ml-3"
+                  (click)="open(multipleQSU, 0, 'any')"
+                >
+                  Change Status
+                </button>
+              </span>
             </div>
 
-            <div [ngbCollapse]="showLeftTable != constantProperties.DASHBOARD_QSU" class="card-body  table-responsive table-overflow-l">
+            <div
+              [ngbCollapse]="showLeftTable != constantProperties.DASHBOARD_QSU"
+              class="card-body  table-responsive table-overflow-l"
+            >
               <table class="table table-sm table-striped ">
                 <thead>
                   <tr>
+                    <th></th>
                     <th>{{ constantProperties.CLIENT }}</th>
                     <th>{{ constantProperties.CON }}</th>
                     <th>{{ constantProperties.TH_STAT }}</th>
@@ -93,6 +120,15 @@
                 </thead>
                 <tbody>
                   <tr *ngFor="let ca of caStat">
+                    <td class="checkbox" width="15px">
+                      <label>
+                        <input
+                          class="check"
+                          type="checkbox"
+                          (change)="onSelectApplication($event, ca)"
+                        />
+                      </label>
+                    </td>
                     <td>
                       {{ ca.clientName }}
                     </td>
@@ -104,7 +140,7 @@
                         class="form-control form-control-sm"
                         name="cas"
                         [(ngModel)]="ca.status"
-                        (change)="updateCAStatus(ca)"
+                        (change)="updateCAStatus(ca, ca.status, 'table')"
                       >
                         <option
                           *ngFor="let casl of caStatusList?.list"
@@ -123,9 +159,12 @@
             </div>
           </div>
         </div>
-        <div class="col-md-12" >
+        <div class="col-md-12">
           <div class="card mb-3">
-            <div class="link card-header bg-dark text-clr-white" (click)="selectLeftTable(constantProperties.DASHBOARD_OCP)">
+            <div
+              class="link card-header bg-dark text-clr-white"
+              (click)="selectLeftTable(constantProperties.DASHBOARD_OCP)"
+            >
               {{ constantProperties.DASHBOARD_OCP
               }}<i
                 class="fa fa-question-circle-o ml-2"
@@ -135,7 +174,12 @@
               ></i>
             </div>
             <div>
-              <div [ngbCollapse]="showLeftTable != constantProperties.DASHBOARD_OCP" class="card-body">
+              <div
+                [ngbCollapse]="
+                  showLeftTable != constantProperties.DASHBOARD_OCP
+                "
+                class="card-body"
+              >
                 <table
                   class="table table-sm table-striped my-custom-scrollbar table-wrapper-scroll-y"
                 >
@@ -166,11 +210,19 @@
       <div class="row">
         <div class="col col-xl-12 col-lg-12" *ngIf="paymentTrack.length">
           <div class="card mb-3">
-            <div class="card-header bg-dark text-clr-white link" (click)="selectRightTable(constantProperties.DASHBOARD_PT)">
+            <div
+              class="card-header bg-dark text-clr-white link"
+              (click)="selectRightTable(constantProperties.DASHBOARD_PT)"
+            >
               {{ constantProperties.DASHBOARD_PT }}
             </div>
             <div>
-              <div [ngbCollapse]="showRightTable != constantProperties.DASHBOARD_PT"class="card-body table-responsive">
+              <div
+                [ngbCollapse]="
+                  showRightTable != constantProperties.DASHBOARD_PT
+                "
+                class="card-body table-responsive"
+              >
                 <table class="table table-sm table-striped ">
                   <thead>
                     <tr>
@@ -203,7 +255,11 @@
             >
               {{ constantProperties.DASHBOARD_CAS }}
             </div>
-            <div [ngbCollapse]="showRightTable != constantProperties.DASHBOARD_CAS"*ngIf="caByStatusList.length" class="card-body table-overflow">
+            <div
+              [ngbCollapse]="showRightTable != constantProperties.DASHBOARD_CAS"
+              *ngIf="caByStatusList.length"
+              class="card-body table-overflow"
+            >
               <div [style.height.px]="stackChartHeight">
                 <canvas
                   baseChart
@@ -222,9 +278,19 @@
         </div>
         <div class="col col-xl-12 col-lg-12" *ngIf="cpEmptyPostings.length">
           <div class="card mb-3">
-            <div class="card-header bg-dark text-clr-white link" (click)="selectRightTable(constantProperties.DASHBOARD_TODO)">{{ constantProperties.DASHBOARD_TODO }}</div>
+            <div
+              class="card-header bg-dark text-clr-white link"
+              (click)="selectRightTable(constantProperties.DASHBOARD_TODO)"
+            >
+              {{ constantProperties.DASHBOARD_TODO }}
+            </div>
             <div>
-              <div [ngbCollapse]="showRightTable != constantProperties.DASHBOARD_TODO" class="card-body table-responsive">
+              <div
+                [ngbCollapse]="
+                  showRightTable != constantProperties.DASHBOARD_TODO
+                "
+                class="card-body table-responsive"
+              >
                 <table class="table table-sm table-striped ">
                   <thead>
                     <tr>
@@ -249,7 +315,10 @@
         </div>
         <div class="col-md-12" *ngIf="dyingCP.length > 0">
           <div class="card mb-3">
-            <div class="card-header bg-dark text-clr-white link" (click)="selectRightTable(constantProperties.DASHBOARD_DCP)">
+            <div
+              class="card-header bg-dark text-clr-white link"
+              (click)="selectRightTable(constantProperties.DASHBOARD_DCP)"
+            >
               {{ constantProperties.DASHBOARD_DCP
               }}<i
                 class="fa fa-question-circle-o ml-2"
@@ -258,7 +327,10 @@
                 aria-hidden="true"
               ></i>
             </div>
-            <div [ngbCollapse]="showRightTable != constantProperties.DASHBOARD_DCP"class="card-body">
+            <div
+              [ngbCollapse]="showRightTable != constantProperties.DASHBOARD_DCP"
+              class="card-body"
+            >
               <table
                 class="table table-sm table-striped my-custom-scrollbar table-wrapper-scroll-y"
               >
@@ -783,7 +855,63 @@
     </button>
   </div>
 </ng-template>
-
+<ng-template #multipleQSU let-c="close" let-d="dismiss">
+  <div class="modal-header modal-popup-header-bg">
+    <h4 class="modal-title">{{ constantProperties.DASHBOARD_QSU }}</h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="d('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-md-6">
+        <h2>Choose Status to change:</h2>
+      </div>
+      <div class="col-md-6">
+        <select
+          class="form-control form-control-lg"
+          style="width:200px"
+          name="cast"
+          [(ngModel)]="statusToChange"
+        >
+          <option selected hidden>status</option>
+          <option *ngFor="let casl of caStatusList?.list" [ngValue]="casl.code">
+            {{ casl.description }}
+          </option>
+        </select>
+      </div>
+    </div>
+    <div class="table-scroll pt-3">
+      <table class="table table-sm table-striped">
+        <thead>
+          <tr>
+            <th>{{ constantProperties.CLIENT }}</th>
+            <th>{{ constantProperties.CON }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let aca of selectedCAList; let i = index">
+            <td>{{ aca.clientName }}</td>
+            <td>{{ aca.consultantName }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="updateCAStatus(selectedCAList,statusToChange,'popup')">
+      Update
+    </button>
+    <button type="button" class="btn btn-secondary" (click)="c('Close click')">
+      Close
+    </button>
+  </div>
+</ng-template>
 <!-- </div>
     <div class="row">
       <div class="col-xl-3 col-lg-6">

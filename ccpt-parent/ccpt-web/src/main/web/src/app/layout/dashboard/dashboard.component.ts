@@ -60,6 +60,8 @@ export class DashboardComponent implements OnInit {
   public clientId: number;
   public consultantId: number;
   public today: string;
+  public statusToChange: string;
+  public selectedCAList: Array<any> = [];
   public showLeftTable: string = this.constantProperties.DASHBOARD_ITW;
   public showRightTable: string = this.constantProperties.DASHBOARD_PT;
   /** Template references */
@@ -77,16 +79,6 @@ export class DashboardComponent implements OnInit {
     minHeight: "5rem",
     translate: "no"
   };
-
-  public getAllReportCLCH = this.http.get(
-    this.urlConstants.CCHGetCountByRecruiter + this.clchChoosenDays
-  );
-  public getAllReportCOCH = this.http.get(
-    this.urlConstants.CoCHGetCountByRecruiter + this.cochChoosenDays
-  );
-  public getAllReportCC = this.http.get(
-    this.urlConstants.ReportingGetClosures + this.rpChoosenDays
-  );
   public getAllCAStatus = this.http.get(
     this.urlConstants.CASGetAll + "0&pageSize=100&sortBy=id"
   );
@@ -183,13 +175,11 @@ export class DashboardComponent implements OnInit {
       this.spinner(true);
     });
     forkJoin(
-      this.getAllReportCC,
       this.getAllCAStatus,
       this.getCPEmptyPostings
     ).subscribe(listofrecords => {
-      this.ccptReportCC = listofrecords[0] as any;
-      this.caStatusList = listofrecords[1] as any;
-      this.cpEmptyPostings = listofrecords[2] as any;
+      this.caStatusList = listofrecords[0] as any;
+      this.cpEmptyPostings = listofrecords[1] as any;
       this.setActiveCPBarData();
     });
     this.top5ById.properties = [];
@@ -343,18 +333,34 @@ export class DashboardComponent implements OnInit {
       "activeClientApplication"
     );
   }
-  public updateCAStatus(ca) {
+  public updateCAStatus(clientApps, status, type) {
+    let idsToUpdate: Array<any> = [];
+    if (type == "table") {
+      idsToUpdate.push(clientApps.id);
+    }
+    if(type == "popup"){
+      clientApps.forEach(ca =>{
+        idsToUpdate.push(ca.id)
+      })
+    }
     this.http
-      .update(
-        {},
-        this.urlConstants.CAStatusUpdate + ca.id + "&status=" + ca.status
-      )
+      .update(idsToUpdate, this.urlConstants.CAStatusUpdate + status)
       .subscribe(resp => {
-        this.updateIndex = ca.id;
-        setTimeout(() => {
-          this.updateIndex = 0;
+        idsToUpdate = [];
+        if(type == "table"){
+          this.updateIndex = clientApps.id;
+          setTimeout(() => {
+            this.updateIndex = 0;
+            this.reload();
+          }, 1000);
+        }
+        if(type == 'popup'){
           this.reload();
-        }, 1000);
+          this.close();
+          this.statusToChange = '';
+          this.selectedCAList = [];
+          this.toastr.success("Status changed successfully",this.constantProperties.CA);
+        }
       });
   }
   private reload() {
@@ -381,6 +387,17 @@ export class DashboardComponent implements OnInit {
       this.showRightTable = value;
     } else {
       this.showRightTable = "";
+    }
+  }
+  public onSelectApplication(event, ca) {
+    if (event.target.checked) {
+      this.selectedCAList.push(ca);
+    } else {
+      for (let i = 0; i < this.selectedCAList.length; i++) {
+        if (ca.id == this.selectedCAList[i].id) {
+          this.selectedCAList.splice(i, 1);
+        }
+      }
     }
   }
 }
