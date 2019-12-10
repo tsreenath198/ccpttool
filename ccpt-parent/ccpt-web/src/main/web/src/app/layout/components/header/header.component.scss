@@ -12,6 +12,9 @@ $topnav-background-color: #222;
       }
     }
   }
+  .pointer:hover{
+    cursor: pointer;
+  }
   .messages {
     width: 300px;
     .media {
