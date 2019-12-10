@@ -17,9 +17,6 @@
           <b class="caret"></b>
         </a>
         <div class="dropdown-menu-right pointer" ngbDropdownMenu>
-          <a class="dropdown-item" (click)="logout()">
-            <i class="fa fa-fw fa-sign-out"></i> {{ "Log Out" | translate }}
-          </a>
           <a
             class="dropdown-item"
             (click)="ccptBackup()"
@@ -27,6 +24,9 @@
           >
             <i class="fa fa-fw fa fa-database"></i>
             {{ "Backup" | translate }}
+          </a>
+          <a class="dropdown-item" (click)="logout()">
+            <i class="fa fa-fw fa-sign-out"></i> {{ "Log Out" | translate }}
           </a>
         </div>
       </li>
