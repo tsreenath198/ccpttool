@@ -278,10 +278,10 @@ export class ClientApplicationComponent implements OnInit {
   private mapToUpdateModel(response): ClientApplicationModel {
     const temp = response;
     let consultant = {
-      name: temp.fullname,
-      id: temp.id,
-      phone: temp.phone,
-      email: temp.email
+      name: temp.consultant.fullname,
+      id: temp.consultant.id,
+      phone: temp.consultant.phone,
+      email: temp.consultant.email
     };
     this.consultantList.push(consultant);
     this.model = temp;
