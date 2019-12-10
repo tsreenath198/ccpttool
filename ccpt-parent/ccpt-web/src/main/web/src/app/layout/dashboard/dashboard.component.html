@@ -89,7 +89,7 @@
           <div class="card mb-3">
             <div class=" card-header bg-dark text-clr-white">
               <span
-                class="link"
+                class="link text-clr-white"
                 (click)="selectLeftTable(constantProperties.DASHBOARD_QSU)"
                 >{{ constantProperties.DASHBOARD_QSU }}</span
               >
@@ -194,7 +194,7 @@
                     <tr *ngFor="let ocp of openCP">
                       <td>{{ ocp.generatedCode }}</td>
                       <td width="100">
-                        {{ ocp.createdDate | date: "dd-MM-yy" }}
+                        {{ ocp.createdDate | date }}
                       </td>
                       <td>{{ ocp.recruiterName }}</td>
                     </tr>
@@ -345,7 +345,7 @@
                   <tr *ngFor="let ocp of dyingCP">
                     <td>{{ ocp.generatedCode }}</td>
                     <td width="100">
-                      {{ ocp.createdDate | date: "dd-MM-yy" }}
+                      {{ ocp.createdDate | date }}
                     </td>
                     <td>{{ ocp.recruiterName }}</td>
                   </tr>
@@ -904,7 +904,11 @@
     </div>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-secondary" (click)="updateCAStatus(selectedCAList,statusToChange,'popup')">
+    <button
+      type="button"
+      class="btn btn-secondary"
+      (click)="updateCAStatus(selectedCAList, statusToChange, 'popup')"
+    >
       Update
     </button>
     <button type="button" class="btn btn-secondary" (click)="c('Close click')">
