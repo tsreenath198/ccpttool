@@ -20,7 +20,11 @@
           <a class="dropdown-item" (click)="logout()">
             <i class="fa fa-fw fa-sign-out"></i> {{ "Log Out" | translate }}
           </a>
-          <a class="dropdown-item" (click)="ccptBackup()">
+          <a
+            class="dropdown-item"
+            (click)="ccptBackup()"
+            *ngIf="role === 'Admin'"
+          >
             <i class="fa fa-fw fa fa-database"></i>
             {{ "Backup" | translate }}
           </a>

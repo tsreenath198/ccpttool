@@ -19,6 +19,7 @@ export class HeaderComponent implements OnInit {
   public properties = new Properties();
   public urlConstants = new URLConstants();
   @Output() backup = new EventEmitter();
+  role: string;
   constructor(
     private translate: TranslateService,
     public router: Router,
@@ -39,6 +40,7 @@ export class HeaderComponent implements OnInit {
   ngOnInit() {
     this.pushRightClass = "push-right";
     this.loggedInUserName = sessionStorage.getItem("username");
+    this.role = sessionStorage.getItem("role");
   }
 
   isToggled(): boolean {
@@ -51,7 +53,7 @@ export class HeaderComponent implements OnInit {
     document.cookie = "username=" + "";
     document.cookie = "password=" + "";
   }
-  private ccptBackup() {
+  public ccptBackup() {
     this.backup.emit(true);
     this.http.get(this.urlConstants.Backup).subscribe(
       resp => {
