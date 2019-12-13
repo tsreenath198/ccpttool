@@ -34,6 +34,9 @@ table {
     }
   }
 }
+.pointer:hover{
+  cursor: pointer;
+}
 .link:hover {
   cursor: pointer;
   color: blue;
@@ -62,7 +65,7 @@ table {
   color: white;
 }
 * {
-  font-size: 0.9rem;
+  font-size: 0.85rem;
 }
 
 .bl-red {

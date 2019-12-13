@@ -127,6 +127,8 @@ export class Properties {
   CP_REQ_SKILL = "Required Skills";
   ADD_PROP = "Additional Properties";
   JOINING_DATE = "Joining Date";
+  AMT_REC ="Amount Receivable"
+  PEN_SIN = "Pending Since"
 
   /** Ip Address */
   PROD_IP = "210.16.76.202";

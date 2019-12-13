@@ -178,11 +178,9 @@
                 [ngbCollapse]="
                   showLeftTable != constantProperties.DASHBOARD_OCP
                 "
-                class="card-body"
+                class="card-body table-responsive "
               >
-                <table
-                  class="table table-sm table-striped my-custom-scrollbar table-wrapper-scroll-y"
-                >
+                <table class="table table-sm table-striped">
                   <thead>
                     <tr>
                       <th>{{ constantProperties.CLIENT }}</th>
@@ -229,6 +227,8 @@
                       <th>{{ constantProperties.CLIENT }}</th>
                       <th>{{ constantProperties.CON }}</th>
                       <th>{{ constantProperties.JOINING_DATE }}</th>
+                      <th>{{ constantProperties.AMT_REC }}</th>
+                      <th>{{ constantProperties.PEN_SIN }}</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -240,6 +240,8 @@
                         {{ pt.candidateName }}
                       </td>
                       <td>{{ pt.joiningDate | date }}</td>
+                      <td>{{ pt.amountReceivable }} rs.</td>
+                      <td>{{ pt.pendingSince }} days</td>
                     </tr>
                   </tbody>
                 </table>
@@ -329,11 +331,9 @@
             </div>
             <div
               [ngbCollapse]="showRightTable != constantProperties.DASHBOARD_DCP"
-              class="card-body"
+              class="card-body table-responsive"
             >
-              <table
-                class="table table-sm table-striped my-custom-scrollbar table-wrapper-scroll-y"
-              >
+              <table class="table table-sm table-striped">
                 <thead>
                   <tr>
                     <th>{{ constantProperties.CLIENT }}</th>
