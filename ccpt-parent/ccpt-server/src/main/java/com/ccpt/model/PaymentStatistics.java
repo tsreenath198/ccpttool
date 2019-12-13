@@ -12,4 +12,8 @@ public interface PaymentStatistics {
 
 	public Date getJoiningDate();
 
+	public Float getAmountReceivable();
+
+	public String getPendingSince();
+
 }
