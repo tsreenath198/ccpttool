@@ -347,7 +347,7 @@
                   name="passoutyear"
                   [readonly]="readOnlyForm == 'R'"
                   type="number"
-                  pattern="/^-?\d+\.?\d*$/" onkeypress="if(this.value.length==4) return false;"
+                  onkeypress="if(this.value.length==4) return false;"
                   max="9999"
                   [(ngModel)]="model.passoutYear"
                 />
