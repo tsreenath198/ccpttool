@@ -162,6 +162,11 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 				String name = clientApplication.getClientPosition().getClient().getName();
 				names.add(name);
 				cpNames.add(clientApplication.getClientPosition().getRole());
+				UploadFile uploadedFile = uploadFileService.getByRefIdAndRefType(clientApplication.getId(), "CRF");
+				if (uploadedFile != null)
+					files.add(uploadedFile);
+				else
+					throw new CAException(clientApplication.getConsultant().getFullname() + " doesn't have crf file");
 			}
 			String template = appendTemplate(clientApplications);
 			body.append(template);
@@ -185,13 +190,13 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 				+ "<p><strong>Sent On</strong></p>\r\n" + "</th>");
 		for (ClientApplication clientApplication : clientApplications) {
 
-			if (clientApplication.getClientPosition().getClient().getName() != null) {
+			if (clientApplication.getConsultant().getFullname() != null) {
 				sb.append("<tr>\r\n" + "<td width=\"529\">\r\n" + "<p>"
 						+ clientApplication.getConsultant().getFullname() + "</p>\r\n" + "</td>\r\n");
 			}
-			if (clientApplication.getClientPosition().getGeneratedCode() != null) {
+			if (clientApplication.getClientPosition().getRole() != null) {
 				sb.append("</td>\r\n" + "<td width=\"529\">\r\n" + "<p>"
-						+ clientApplication.getClientPosition().getGeneratedCode() + "</p>\r\n" + "</td>\r\n");
+						+ clientApplication.getClientPosition().getRole() + "</p>\r\n" + "</td>\r\n");
 			}
 			if (clientApplication.getSentOn() != null) {
 				sb.append("<td width=\"529\">\r\n" + "<p>" + clientApplication.getSentOn() + "</p>\r\n" + "</td>\r\n"
@@ -199,7 +204,8 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 			}
 		}
 		sb.append("</tbody></table>");
-		getSign(sb);
+
+		// getSign(sb);
 		String jd = sb.toString();
 		return jd;
 	}
@@ -310,8 +316,8 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 		}
 		/*
 		 * Map<String, Optional<ClientApplication>> reverseSortedMap = new
-		 * TreeMap<String, Optional<ClientApplication>>(
-		 * Collections.reverseOrder()); reverseSortedMap.putAll(map);
+		 * TreeMap<String, Optional<ClientApplication>>( Collections.reverseOrder());
+		 * reverseSortedMap.putAll(map);
 		 */
 		for (Entry<String, Optional<ClientApplication>> entry : map.entrySet()) {
 			clientApplications.add(entry.getValue().get());
