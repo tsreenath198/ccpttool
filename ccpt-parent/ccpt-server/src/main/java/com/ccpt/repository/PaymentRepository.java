@@ -9,7 +9,9 @@ import com.ccpt.model.PaymentStatistics;
 
 public interface PaymentRepository extends BaseRepository<Payment, Integer> {
 
-	@Query(value = "SELECT id as id ,generatedCode as companyName,candidateName as candidateName,joiningDate as joiningDate, amountReceivable as amountReceivable ,DATEDIFF(curdate(), joiningDate) as pendingSince FROM Payment where paidStatus='Unpaid'")
+	@Query(value = "SELECT id as id ,generatedCode as companyName,candidateName as candidateName,joiningDate as joiningDate, "
+			+ "amountReceivable as amountReceivable ,DATEDIFF(curdate(), joiningDate) as pendingSince FROM Payment"
+			+ " where paidStatus='Unpaid' and activeFlag=0")
 	List<PaymentStatistics> get();
 
 }
