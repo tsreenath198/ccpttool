@@ -316,8 +316,8 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 		}
 		/*
 		 * Map<String, Optional<ClientApplication>> reverseSortedMap = new
-		 * TreeMap<String, Optional<ClientApplication>>( Collections.reverseOrder());
-		 * reverseSortedMap.putAll(map);
+		 * TreeMap<String, Optional<ClientApplication>>(
+		 * Collections.reverseOrder()); reverseSortedMap.putAll(map);
 		 */
 		for (Entry<String, Optional<ClientApplication>> entry : map.entrySet()) {
 			clientApplications.add(entry.getValue().get());
@@ -342,9 +342,9 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 				ClientPosition clientPosition = ca.getClientPosition();
 				if (clientPosition.getClient().getSalutation() != null) {
 					if (clientPosition.getClient().getSalutation().equalsIgnoreCase("Mr."))
-						ccName = clientPosition.getClient().getClientContacts().get(0).getFullname().concat(" sir");
+						ccName = clientPosition.getClient().getContactPersonName().concat(" sir");
 					else
-						ccName = clientPosition.getClient().getClientContacts().get(0).getFullname().concat(" mam");
+						ccName = clientPosition.getClient().getContactPersonName().concat(" mam");
 				}
 				valuesMap.put("jobTitle", clientPosition.getRole());
 				valuesMap.put("clientContactName", clientPosition.getClient().getContactPersonName());
