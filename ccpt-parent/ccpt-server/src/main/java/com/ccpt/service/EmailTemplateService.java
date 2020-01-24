@@ -248,6 +248,7 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 		String strDate = dateFormat.format(date);
 		valuesMap.put("interviewDate", strDate);
 		valuesMap.put("interviewTime", ca.get().getInterviewTime());
+		valuesMap.put("interviewMode", ca.get().getInterviewMode());
 		valuesMap.put("interviewLocation", ca.get().getInterviewLocation());
 		valuesMap.put("address", ca.get().getClientPosition().getAddress());
 		valuesMap.put("clientContactPersonName", ca.get().getClientPosition().getClient().getContactPersonName());
@@ -258,6 +259,9 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 				+ "</p><p><span style=\"background-color:yellow\">Please confirm your availability.</span></p><p>Please find the interview details below:</p>"
 				+ "<p><strong>Interview Date :</strong><span style=\"background-color:yellow\">${interviewDate}</span></p>"
 				+ "<p><strong>Interview Time :</strong><span style=\"background-color:yellow\">${interviewTime}</span></p>");
+		if (ca.get().getInterviewMode() != null)
+			sbPara.append(
+					"<p><strong>Interview Mode :</strong><span style=\"background-color:yellow\">${interviewMode}</span></p>");
 		if (ca.get().getInterviewMode().equalsIgnoreCase("f2f")) {
 			sbPara.append(
 					"<p><strong>Interview Location :</strong><span style=\"background-color:yellow\">${interviewLocation}</span></p>"
