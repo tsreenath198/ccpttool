@@ -185,8 +185,8 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 	public static String appendTemplate(List<ClientApplication> clientApplications) {
 		StringBuilder sb = new StringBuilder();
 		sb.append("<p>" + "<table  border=\"1\"  cellspacing=\"0\" cellpadding=\"0\">" + "<tbody>" + "<tr>\r\n"
-				+ "<th width=\"199\">\r\n" + "<p><strong>Client</strong></p>\r\n" + "</th>" + "<th width=\"199\">\r\n"
-				+ "<p><strong>Position</strong></p>\r\n" + "</th>" + "<th width=\"199\">\r\n"
+				+ "<th width=\"199\">\r\n" + "<p><strong>Candidate</strong></p>\r\n" + "</th>"
+				+ "<th width=\"199\">\r\n" + "<p><strong>Position</strong></p>\r\n" + "</th>" + "<th width=\"199\">\r\n"
 				+ "<p><strong>Sent On</strong></p>\r\n" + "</th>");
 		for (ClientApplication clientApplication : clientApplications) {
 
