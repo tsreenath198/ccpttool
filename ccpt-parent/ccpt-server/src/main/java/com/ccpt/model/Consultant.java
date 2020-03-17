@@ -79,4 +79,9 @@ public class Consultant extends FileSupportEntity {
 	private String highestEducation;
 	@Column
 	private String sourcedFrom;
+
+	@Column
+	private Integer expYrs;
+	@Column
+	private Integer expMonths;
 }

@@ -139,6 +139,10 @@ public class ConsultantService extends BaseService<Consultant, Integer> {
 		return consultantRepository.getInactiveConsultants();
 	}
 
+	public Iterable<Consultant> getAll() {
+		return consultantRepository.findAll();
+	}
+
 	public BaseReturn getAllByStatus(Integer pageNo, Integer pageSize, String sortBy, String status) {
 		BaseReturn returnObj = new BaseReturn();
 		Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
@@ -147,4 +151,5 @@ public class ConsultantService extends BaseService<Consultant, Integer> {
 		returnObj.setList(p.getContent());
 		return returnObj;
 	}
+
 }

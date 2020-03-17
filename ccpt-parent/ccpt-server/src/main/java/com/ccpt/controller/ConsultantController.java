@@ -47,6 +47,23 @@ public class ConsultantController extends BaseController<ConsultantDTO, Consulta
 		return Mappers.getMapper(ConsultantMapper.class);
 	}
 
+	@GetMapping("/getAll")
+	public ResponseEntity<List<Consultant>> getAll() {
+		List<Consultant> result = (List<Consultant>) consultantService.getAll();
+		for (Consultant consultant : result) {
+			String month = "0";
+			String year = "0";
+			if (consultant.getExperienceMonths() != null && !consultant.getExperienceMonths().isEmpty())
+				month = consultant.getExperienceMonths().replaceAll("[^\\d.]", "");
+			consultant.setExpMonths(Integer.parseInt(month));
+			if (consultant.getExperienceYrs() != null && !consultant.getExperienceYrs().isEmpty())
+				year = consultant.getExperienceYrs().replaceAll("[^\\d.]", "");
+			consultant.setExpYrs(Integer.parseInt(year));
+			consultantService.save(consultant);
+		}
+		return new ResponseEntity<List<Consultant>>(result, HttpStatus.OK);
+	}
+
 	/* Retrieves all active consultants with status code inactive */
 	@GetMapping("/getAllConsultants")
 	public ResponseEntity<List<ConsultantStatistics>> getAllConsultants() {
