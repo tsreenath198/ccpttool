@@ -33,4 +33,6 @@ public class ConsultantDTO extends FileSupportEntityDTO {
 	private String noticePeriod;
 	private String highestEducation;
 	private String sourcedFrom;
+	private Integer expYrs;
+	private Integer expMonths;
 }
