@@ -68,6 +68,15 @@ public class ConsultantController extends BaseController<ConsultantDTO, Consulta
 		return new ResponseEntity<List<Consultant>>(result, HttpStatus.OK);
 	}
 
+	@GetMapping("/advSearch")
+	public ResponseEntity<List<Consultant>> advSearch(@RequestParam(value = "", required = false) String skills,
+			@RequestParam(value = "", required = false) String expYrs,
+			@RequestParam(value = "", required = false) String expMnths,
+			@RequestParam(value = "", required = false) String location) {
+		List<Consultant> result = consultantService.findConsultant(skills, expYrs, expMnths, location);
+		return new ResponseEntity<List<Consultant>>(result, HttpStatus.OK);
+	}
+
 	/*
 	 * Retrieves number of records and the list of consultants based on the
 	 * status type
