@@ -145,5 +145,14 @@ public class ConsultantController extends BaseController<ConsultantDTO, Consulta
 			throw new ValidationException("Client Name cannot be null");
 		if (model.getPhone() == null && model.getEmail() == null)
 			throw new ValidationException("Phone number and Email Both cannot be null");
+		if (model.getExperienceYrs() != null) {
+			String year = model.getExperienceYrs().replaceAll("[^\\d.]", "");
+			model.setExpYrs(Integer.parseInt(year));
+		}
+		if (model.getExperienceMonths() != null) {
+			String month = model.getExperienceMonths().replaceAll("[^\\d.]", "");
+			model.setExpMonths(Integer.parseInt(month));
+		}
+
 	}
 }
