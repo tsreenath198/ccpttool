@@ -103,39 +103,6 @@ public class ConsultantService extends BaseService<Consultant, Integer> {
 		return query.getResultList();
 	}
 
-	public List<Consultant> findConsultant(String skillsCsv, String expYrs, String expMnths, String location) {
-		final List<Predicate> skillsPredicates = new ArrayList<Predicate>();
-		final List<Predicate> yearsPredicates = new ArrayList<Predicate>();
-		final List<Predicate> monthsPredicates = new ArrayList<Predicate>();
-		final List<Predicate> locationPredicates = new ArrayList<Predicate>();
-		List<String> result = Arrays.asList(skillsCsv.split("\\s*,\\s*"));
-		CriteriaBuilder cb = em.getCriteriaBuilder();
-		CriteriaQuery<Consultant> cq = cb.createQuery(Consultant.class);
-		Root<Consultant> consultant = cq.from(Consultant.class);
-
-		if (result != null && !result.isEmpty()) {
-			for (String skills : result) {
-				skillsPredicates.add(cb.like(consultant.get("skills"), "%" + skills + "%"));
-			}
-		}
-		if (expYrs != null && !expYrs.isEmpty())
-			yearsPredicates.add(cb.like(consultant.get("experienceYrs"), "%" + expYrs + "%"));
-		if (expMnths != null && !expMnths.isEmpty())
-			monthsPredicates.add(cb.like(consultant.get("experienceMonths"), "%" + expMnths + "%"));
-		if (location != null && !location.isEmpty()) {
-			Predicate prefferedLocationPredicate = cb.like(consultant.get("prefferedLocation"), "%" + location + "%");
-			Predicate currentLocationPredicate = cb.like(consultant.get("currentLocation"), "%" + location + "%");
-			locationPredicates.add(cb.or(prefferedLocationPredicate, currentLocationPredicate));
-		}
-		cq.where(cb.and(skillsPredicates.toArray(new Predicate[] {})),
-				cb.and(yearsPredicates.toArray(new Predicate[] {})),
-				cb.and(monthsPredicates.toArray(new Predicate[] {})),
-				cb.and(locationPredicates.toArray(new Predicate[] {})));
-
-		TypedQuery<Consultant> query = em.createQuery(cq);
-		return query.getResultList();
-	}
-
 	public List<Consultant> getInactiveConsultants() {
 		return consultantRepository.getInactiveConsultants();
 	}
