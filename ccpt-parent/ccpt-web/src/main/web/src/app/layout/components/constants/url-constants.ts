@@ -41,6 +41,7 @@ export class URLConstants {
   CActivate = 'consultant/activate/';
   CDropdown = 'consultant/getAllConsultants';
   CSearch = 'consultant/search?searchKey=';
+  CAdvSearch = 'consultant/advanceSearch'
   CGetInactive = 'consultant/getInactiveConsultants';
   CGetAllByStatus = 'consultant/getAllByStatus?pageNo=';
 

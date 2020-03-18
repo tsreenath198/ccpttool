@@ -30,6 +30,15 @@ export interface ConsultantModel {
   files: Array<any>;
   properties: Array<AdditionalPropertiesModel>;
 }
+export interface AdvanceSearchModel {
+  skills: string;
+  minExpYrs: string;
+  minExpMnths: string;
+  maxExpYrs:string;
+  maxExpMnths:string;
+  location: string;
+  noticePeriod: string;
+}
 export class ActionsList {
   actions = [
     { key: "Edit", value: "Edit" },

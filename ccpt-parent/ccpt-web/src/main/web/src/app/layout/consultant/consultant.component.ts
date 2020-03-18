@@ -7,7 +7,11 @@ import {
 import { FileUploader, FileLikeObject } from "ng2-file-upload";
 import { NgForm } from "@angular/forms";
 import { routerTransition } from "../../router.animations";
-import { ConsultantModel, ActionsList } from "./consultant.model";
+import {
+  ConsultantModel,
+  ActionsList,
+  AdvanceSearchModel
+} from "./consultant.model";
 import { ConsultantStatusModel } from "../consultant-status/consultant-status.model";
 import { URLConstants } from "../components/constants/url-constants";
 import { Properties } from "../components/constants/properties";
@@ -54,6 +58,7 @@ export class ConsultantComponent implements OnInit {
   public listReturned: boolean;
   public urlConstants = new URLConstants();
   public properties = new Properties();
+  public advanceSearchModel: AdvanceSearchModel = <AdvanceSearchModel>{};
 
   public showAction: boolean = false;
   public actionsList = new ActionsList();
@@ -174,7 +179,7 @@ export class ConsultantComponent implements OnInit {
     this.showAction = true;
     this.action = null;
   }
-  private enableFormEditable(): void {
+  public enableFormEditable(): void {
     this.readOnlyForm = "";
     this.enableButtonType = "U";
   }
@@ -239,7 +244,6 @@ export class ConsultantComponent implements OnInit {
     );
   }
   private getConsultantById(id: number) {
-    this.spinner(false);
     const temp = this.http.get(this.urlConstants.CGetById + id);
     temp.subscribe(resp => {
       this.model = this.mapToUpdateModel(resp);
@@ -252,7 +256,6 @@ export class ConsultantComponent implements OnInit {
       ) {
         this.isFresher = true;
       }
-      this.spinner(true);
     });
   }
   public getFilesById(id: number) {
@@ -542,6 +545,24 @@ export class ConsultantComponent implements OnInit {
         );
       });
     }
+  }
+
+  public advanceSearch() {
+    let temp = this.http.post(this.advanceSearchModel, this.urlConstants.CAdvSearch);
+      temp.subscribe(resp => {
+        this.consultantList.list = resp as any;
+        this.paginateConfigDeclare(
+          this.consultantList.list.length,
+          1,
+          this.consultantList.list.length
+        );
+      });
+  }
+  public cancelAdvSearch(showSearch: HTMLInputElement) {
+    showSearch.checked = false;
+    this.advanceSearchModel = <AdvanceSearchModel>{};
+    this.paginateConfigDeclare(this.properties.ITEMSPERPAGE, 1, 0);
+    this.initialGetAll();
   }
 
   pageChanged(event) {

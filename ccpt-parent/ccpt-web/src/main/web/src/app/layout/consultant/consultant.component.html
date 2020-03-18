@@ -11,19 +11,87 @@
     <div class="col-md-7">
       <div class="row">
         <div class="col-md-4">
-          <input type="text" class="form-control" placeholder="search..." (keyup)="search()" [(ngModel)]="currSearchTxt" />
+          <input type="text" class="form-control " placeholder="search..." (keyup)="search()" [(ngModel)]="currSearchTxt" />
         </div>
         <div class=" col-md-4">
           <div class="input-group mb-3">
-            <input type="text" class="form-control"  [(ngModel)]="idToActivate" placeholder="Consultant ID">
+            <input type="text" class="form-control form-control-sm"  [(ngModel)]="idToActivate" placeholder="Consultant ID">
             <div class="input-group-append">
-              <span class="input-group-text" (click)="activateId()" id="basic-addon2">Activate</span>
+              <span class="input-group-text input-group-text-sm " (click)="activateId()" id="basic-addon2">Activate</span>
             </div>
           </div>
         </div>
         <div class="col-md-2">
           <button *ngIf="inCon" class="btn btn-secondary btn-sm ml-2" (click)="getIncompleteCon()">Incomplete Consultants</button>
           <button *ngIf="!inCon" class="btn btn-secondary btn-sm ml-2" (click)="getAllCon()">All Consultants</button>
+        </div>
+        <div class="col-md-4">
+          <input type="checkbox" #showAdvSearch (change)="advanceSearchModel = {}">Advance Search
+        </div>
+      </div>
+      <div class="row" *ngIf="showAdvSearch.checked">
+        <div class="col-md-3">
+          <label><small>Keywords</small> </label><br>
+          <input type="text" class="form-control form-control-sm"  [(ngModel)]="advanceSearchModel.skills">
+        </div>
+        <div class="col-md-3">
+          <label><small>Notice Period</small> </label><br>
+          <input type="text" class="form-control form-control-sm"  [(ngModel)]="advanceSearchModel.noticePeriod">
+        </div>
+        <div class="col-md-3">
+          <label><small>Location</small> </label><br>
+          <input type="text" class="form-control form-control-sm"  [(ngModel)]="advanceSearchModel.location">
+        </div>
+        <div class="col-md-4">
+          <div class="form-group">
+            <label><small>Experience From</small></label>
+            <div class="form-inline">
+              <input
+                type="text"
+                name="minExpYrs"
+                class="form-control form-control-sm col-md-2"
+                [(ngModel)]="advanceSearchModel.minExpYrs"
+                min="0"
+              />
+              &nbsp;&nbsp; <small>years</small>&nbsp;<span> /</span>&nbsp;<input
+                type="text"
+                class="form-control form-control-sm col-md-2"
+                name="minExpMnths"
+                [(ngModel)]="advanceSearchModel.minExpMnths"
+                min="0"
+                max="11"
+                (onkeyup)="imposeMinMax(this)"
+              />&nbsp;&nbsp;<small>months</small>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="form-group">
+            <label><small>Experience To</small></label>
+            <div class="form-inline">
+              <input
+                type="text"
+                name="maxExpYrs"
+                class="form-control form-control-sm col-md-2"
+                [(ngModel)]="advanceSearchModel.maxExpYrs"
+                min="0"
+              />
+              &nbsp;&nbsp; <small>years</small>&nbsp;<span> /</span>&nbsp;<input
+                type="text"
+                class="form-control form-control-sm col-md-2"
+                name="maxExpMnths"
+                [(ngModel)]="advanceSearchModel.maxExpMnths"
+                min="0"
+                max="11"
+              />&nbsp;&nbsp;<small>months</small>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-1">
+          <button class=" btn btn-secondary btn-sm mt-4" (click)="advanceSearch()">Search</button>
+        </div>
+        <div class="col-md-1">
+          <button class=" btn btn-secondary btn-sm mt-4" (click)="cancelAdvSearch(showAdvSearch)">Cancel</button>
         </div>
       </div>
       <div class="table-responsive mt-2  table-wrapper-scroll-y my-custom-scrollbar " id="viewTable" [style.height.px]="screenHeight">
