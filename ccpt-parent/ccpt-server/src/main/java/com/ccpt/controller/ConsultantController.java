@@ -13,10 +13,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.ccpt.constants.CCPTConstants;
+import com.ccpt.dto.AdvanceSearchDto;
 import com.ccpt.dto.ConsultantDTO;
 import com.ccpt.mapper.BaseMapper;
 import com.ccpt.mapper.ConsultantMapper;
@@ -91,6 +94,12 @@ public class ConsultantController extends BaseController<ConsultantDTO, Consulta
 			@RequestParam(value = "", required = false) String expMnths,
 			@RequestParam(value = "", required = false) String location) {
 		List<Consultant> result = consultantService.findConsultant(skills, expYrs, expMnths, location);
+		return new ResponseEntity<List<Consultant>>(result, HttpStatus.OK);
+	}
+
+	@PostMapping("/advanceSearch")
+	public ResponseEntity<List<Consultant>> advanceSearch(@RequestBody AdvanceSearchDto dto) {
+		List<Consultant> result = consultantService.findConsultant(dto);
 		return new ResponseEntity<List<Consultant>>(result, HttpStatus.OK);
 	}
 
