@@ -1,6 +1,7 @@
 
 package com.ccpt.controller;
 
+import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import com.ccpt.constants.CCPTConstants;
 import com.ccpt.model.EmailContent;
+import com.ccpt.service.ClientApplicationService;
 import com.ccpt.service.EmailContentService;
 import com.ccpt.service.EmailService;
 
@@ -26,8 +28,8 @@ public class EmailController {
 	@Autowired
 	private EmailService emailService;
 
-//	@Autowired
-//	private ClientApplicationService clientApplicationService;
+	@Autowired
+	private ClientApplicationService clientApplicationService;
 
 	/* Sends an email */
 	@PostMapping(CCPTConstants.SEND_EMAIL)
@@ -40,13 +42,13 @@ public class EmailController {
 			emailService.sendEmailWithAttachments(emailContent.getToEmails(), emailContent.getSubject(), body,
 					emailContent.getCc(), emailContent.getBcc(), emailContent.getUploadFiles());
 			emailContentService.save(emailContent);
-			/*Map<String, Integer[]> info = emailContent.getUrlInfo();
+			Map<String, Integer[]> info = emailContent.getUrlInfo();
 			if (info != null) {
 				Integer[] caIds = info.get("getClientApps");
 				for (Integer id : caIds) {
 					clientApplicationService.updateStatus(id, "Sent to Client");
 				}
-			}*/
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new Exception("Sending Email is Failed");
