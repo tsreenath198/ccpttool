@@ -86,7 +86,8 @@ public class ExcelWriter {
 		sheet.addMergedRegion(new CellRangeAddress(6, 6, 3, 3));
 		// cell.setCellStyle(cellLabel);
 		cell = row.createCell(4);
-		cell.setCellValue(new Date());
+		cell.setCellValue(payment.getJoiningDate());
+		// cell.setCellValue(new Date());
 		cell.setCellStyle(cellStyle);
 		sheet.addMergedRegion(new CellRangeAddress(6, 6, 4, 5));
 
