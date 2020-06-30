@@ -2,6 +2,8 @@ package com.ccpt.service;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -340,6 +342,7 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 					+ "<td  >\r\n<p><strong>Interview Mode</strong></p>\r\n </td>"
 					+ "<td  >\r\n<p><strong>Contact Info</strong></p>\r\n </td>\r\n</tr>";
 			StringBuilder sbPara = null;
+			boolean check = false;
 			for (ClientApplication ca : clientApplications) {
 				sbPara = new StringBuilder();
 				emailContent = new EmailContent();
@@ -356,8 +359,9 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 				DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 				if (ca.getInterviewDate() == null)
 					throw new ValidationException("this clientapplication id " + ca.getId() + " not shorlisted");
-				Date date = ca.getInterviewDate();
-				String strDate = dateFormat.format(date);
+				Date interviewDate = ca.getInterviewDate();
+				check = isSameDay(interviewDate, new Date());
+				String strDate = dateFormat.format(interviewDate);
 				valuesMap.put("interviewDate", strDate);
 				valuesMap.put("interviewTime", ca.getInterviewTime());
 				valuesMap.put("interviewLocation", ca.getInterviewLocation());
@@ -386,9 +390,19 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 			String finalData = sb.toString().concat(data)
 					.concat(new StringBuilder().append("<p>").append("<p>").toString());
 			emailContent.setBody(finalData.concat(JobDescriptionSubstitutor.getSign(body)));
-			emailContent.setSubject("Upcoming Interview Schedule");
+
+			if (!check)
+				emailContent.setSubject("Upcoming Interview Schedule");
+			else
+				emailContent.setSubject("Today Interview  Schedule");
 			return emailContent;
 		} else
 			throw new ValidationException("select same client application");
+	}
+
+	public static boolean isSameDay(Date date1, Date date2) {
+		Instant instant1 = date1.toInstant().truncatedTo(ChronoUnit.DAYS);
+		Instant instant2 = date2.toInstant().truncatedTo(ChronoUnit.DAYS);
+		return instant1.equals(instant2);
 	}
 }
