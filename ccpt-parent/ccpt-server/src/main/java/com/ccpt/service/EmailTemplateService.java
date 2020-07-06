@@ -1,6 +1,7 @@
 package com.ccpt.service;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -340,6 +341,7 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 					+ "<td  >\r\n<p><strong>Interview Mode</strong></p>\r\n </td>"
 					+ "<td  >\r\n<p><strong>Contact Info</strong></p>\r\n </td>\r\n</tr>";
 			StringBuilder sbPara = null;
+			int flag = 0;
 			for (ClientApplication ca : clientApplications) {
 				sbPara = new StringBuilder();
 				emailContent = new EmailContent();
@@ -356,8 +358,14 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 				DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 				if (ca.getInterviewDate() == null)
 					throw new ValidationException("this clientapplication id " + ca.getId() + " not shorlisted");
-				Date date = ca.getInterviewDate();
-				String strDate = dateFormat.format(date);
+				Date interviewDate = ca.getInterviewDate();
+
+				flag = validateInterviewDate(interviewDate);
+
+				if (flag < 0) {
+					throw new ValidationException("this clientapplication id " + ca.getId() + "interview is missed ");
+				}
+				String strDate = dateFormat.format(interviewDate);
 				valuesMap.put("interviewDate", strDate);
 				valuesMap.put("interviewTime", ca.getInterviewTime());
 				valuesMap.put("interviewLocation", ca.getInterviewLocation());
@@ -386,9 +394,28 @@ public class EmailTemplateService extends BaseService<EmailTemplate, Integer> {
 			String finalData = sb.toString().concat(data)
 					.concat(new StringBuilder().append("<p>").append("<p>").toString());
 			emailContent.setBody(finalData.concat(JobDescriptionSubstitutor.getSign(body)));
-			emailContent.setSubject("Upcoming Interview Schedule");
+
+			if (flag > 0)
+				emailContent.setSubject("Upcoming Interview Schedule");
+			else if (flag == 0)
+				emailContent.setSubject("Today Interview  Schedule");
 			return emailContent;
 		} else
 			throw new ValidationException("select same client application");
+	}
+
+	public static int validateInterviewDate(Date interviewDate) throws ParseException {
+
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		String date = sdf.format(new Date());
+		Date currentDate = sdf.parse(date);
+
+		if (interviewDate.compareTo(currentDate) > 0) {
+			return 1;
+		} else if (interviewDate.compareTo(currentDate) < 0) {
+			return -1;
+		}
+		return 0;
+
 	}
 }
