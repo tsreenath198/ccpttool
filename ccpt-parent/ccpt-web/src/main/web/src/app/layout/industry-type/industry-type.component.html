@@ -1,5 +1,6 @@
 <div [@routerTransition]>
-  <app-page-header [icon2]="'fa-industry'" [heading2]="'Industries'" [icon1]="'fa-sticky-note'" [heading1]="'Metadata'"> </app-page-header>
+  <app-page-header [icon2]="'fa-industry'" [heading2]="'Industries'" [icon1]="'fa-sticky-note'" [heading1]="'Metadata'">
+  </app-page-header>
 
   <div class="spinner padding-top justify-content-md-center" *ngIf="!listReturned">
     <div class="bounce1"></div>
@@ -9,7 +10,8 @@
   <div class="row" *ngIf="listReturned">
     <div class="col-md-7">
       <div class="row">
-        <div class="col-md-6"><input type="text" class="form-control" placeholder="search..." (keyup)="search()" [(ngModel)]="currSearchTxt" /></div>
+        <div class="col-md-6"><input type="text" class="form-control" placeholder="search..." (keyup)="search()"
+            [(ngModel)]="currSearchTxt" /></div>
       </div>
       <div class="table-responsive mt-2 tableFixHead" [style.height.px]="screenHeight">
         <table class="table table-hover table-striped">
@@ -21,10 +23,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr
-              *ngFor="let itl of itList.list | paginate: paginateConfig; let i = index"
-              (click)="setModel(itl.id)"
-            >
+            <tr *ngFor="let itl of itList.list | paginate: paginateConfig; let i = index" (click)="setModel(itl.id)">
               <td>
                 {{ itl.name }}
               </td>
@@ -40,20 +39,18 @@
       <form name="form" id="searchBankForm" (ngSubmit)="f.form.valid && create(f)" #f="ngForm" novalidate>
         <div class="row text-center">
           <div class="col-md-12 form-group">
-            <button
-              type="submit"
-              *ngIf="enableButtonType == ''"
-              class="btn btn-secondary ml-3"
-              [disabled]="f.form.pristine || f.form.invalid || isCreate"
-            >
+            <button type="submit" *ngIf="enableButtonType == ''" class="btn btn-secondary ml-3"
+              [disabled]="f.form.pristine || f.form.invalid || isCreate">
               Add
             </button>
-            <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2" (click)="update(f)">Update</button>
+            <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2"
+              (click)="update(f)">Update</button>
             <!-- <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button"
                   (click)="enableFormEditable()">
                   Edit
                 </button> -->
-            <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3" *ngIf="enableButtonType == '' || enableButtonType == 'U'">
+            <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3"
+              *ngIf="enableButtonType == '' || enableButtonType == 'U'">
               {{ enableButtonType != '' ? 'Close' : 'Clear' }}
             </button>
 
@@ -87,15 +84,9 @@
             <div class="col-md-12">
               <div class="form-group">
                 <label>Name<span class="required">*</span></label>
-                <input
-                  class="form-control capi"
-                  [readonly]="readOnlyForm == 'R'"
-                  [(ngModel)]="model.name"
-                  name="profile"
-                  [ngClass]="{ 'is-invalid': f.submitted && profile.invalid }"
-                  #profile="ngModel"
-                  required
-                />
+                <input class="form-control capi" [readonly]="readOnlyForm == 'R'" [(ngModel)]="model.name"
+                  name="profile" [ngClass]="{ 'is-invalid': f.submitted && profile.invalid }" #profile="ngModel"
+                  required />
                 <div class="invalid-feedback">
                   profile is mandatory
                 </div>
@@ -105,8 +96,7 @@
               <div class="form-group">
                 <label>Description</label>
                 <textarea class="form-control" name="description" [readonly]="readOnlyForm == 'R'"
-                  [(ngModel)]="model.description" #description="ngModel" cols="10"
-                  rows="10"></textarea>
+                  [(ngModel)]="model.description" #description="ngModel" cols="10" rows="10"></textarea>
               </div>
             </div>
           </div>
@@ -173,16 +163,14 @@
         </ng-template>
         <div class="row text-center">
           <div class="col-md-12">
-            <button
-              type="submit"
-              *ngIf="enableButtonType == ''"
-              class="btn btn-secondary ml-3"
-              [disabled]="f.form.pristine || f.form.invalid || isCreate"
-            >
+            <button type="submit" *ngIf="enableButtonType == ''" class="btn btn-secondary ml-3"
+              [disabled]="f.form.pristine || f.form.invalid || isCreate">
               Add
             </button>
-            <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2" (click)="update(f)">Update</button>
-            <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3" *ngIf="enableButtonType == '' || enableButtonType == 'U'">
+            <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2"
+              (click)="update(f)">Update</button>
+            <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3"
+              *ngIf="enableButtonType == '' || enableButtonType == 'U'">
               {{ enableButtonType != '' ? 'Close' : 'Clear' }}
             </button>
           </div>

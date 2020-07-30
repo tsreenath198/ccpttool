@@ -39,7 +39,7 @@ export class ClientApplicationComponent implements OnInit {
   public faqModel: FAQModel = <FAQModel>{};
   public conchModel: ConsultantCallHistoryModel = <
     ConsultantCallHistoryModel
-  >{};
+    >{};
   public paymentModel: PaymentsModel = <PaymentsModel>{};
   public bodyMailModel: any = <any>{};
   public clientApplicationList: any = [];
@@ -177,8 +177,8 @@ export class ClientApplicationComponent implements OnInit {
     let pageNumber = this.paginateConfig.currentPage - 1;
     let temp = this.http.get(
       this.urlConstants.CAGetAllByStatus +
-        pageNumber +
-        "&pageSize=50&sortBy=id&status=Active"
+      pageNumber +
+      "&pageSize=50&sortBy=id&status=Active"
     );
     temp.subscribe(resp => {
       this.clientApplicationList = resp as any;
@@ -454,9 +454,9 @@ export class ClientApplicationComponent implements OnInit {
     const temp = this.http.post(
       this.faqModel,
       this.urlConstants.FAQSaveInCA +
-        this.model.id +
-        "&userId=" +
-        this.model.creatorId
+      this.model.id +
+      "&userId=" +
+      this.model.creatorId
     );
     temp.subscribe(
       resp => {
@@ -670,7 +670,7 @@ export class ClientApplicationComponent implements OnInit {
   /**Download file */
   public downloadFile(id: number) {
     this.http.get(this.urlConstants.FileDownload + id).subscribe(
-      resp => {},
+      resp => { },
       err => {
         if (err.status == 200) window.open(err.url);
       }
@@ -936,8 +936,8 @@ export class ClientApplicationComponent implements OnInit {
     let pageNumber = this.paginateConfig.currentPage - 1;
     let temp = this.http.get(
       this.urlConstants.CAGetAllByStatus +
-        pageNumber +
-        "&pageSize=50&sortBy=id&status=Inactive"
+      pageNumber +
+      "&pageSize=50&sortBy=id&status=Inactive"
     );
     temp.subscribe(resp => {
       this.clientApplicationList = resp as any;

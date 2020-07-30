@@ -1,5 +1,6 @@
 <div [@routerTransition]>
-  <app-page-header [icon1]="'fa-user'" [heading1]="'Administration'" [icon2]="'fa-user-circle'" [heading2]="'Users'"></app-page-header>
+  <app-page-header [icon1]="'fa-user'" [heading1]="'Administration'" [icon2]="'fa-user-circle'" [heading2]="'Users'">
+  </app-page-header>
   <div class="spinner padding-top justify-content-md-center" *ngIf="!listReturned">
     <div class="bounce1"></div>
     <div class="bounce2"></div>
@@ -14,8 +15,7 @@
       <div class="table-responsive mt-2 tableFixHead" [style.height.px]="screenHeight">
         <table class="table table-hover table-striped">
           <tbody>
-            <tr *ngFor="let ul of usersList.list | paginate: paginateConfig ; let i = index"
-              (click)="setModel(ul.id)">
+            <tr *ngFor="let ul of usersList.list | paginate: paginateConfig ; let i = index" (click)="setModel(ul.id)">
               <td>{{ul.username}}</td>
               <!-- <td width="100">
                 <app-action [trashContent]="trashContent" [id]="ul.id" [isTrash]="trash" (trash)="open($event)">
@@ -31,39 +31,40 @@
     </div>
     <div class="col-md-6">
       <form name="form" id="UserForm" (ngSubmit)="f.form.valid&&create(f)" #f="ngForm" novalidate>
-          <div class="row text-center" >
-              <div class="col-md-12 form-group">
-                <button type="submit" *ngIf="enableButtonType == ''" class="btn btn-secondary ml-3" [disabled]="f.form.pristine || f.form.invalid || isCreate">Add</button>
-                <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2"
-                  (click)="update(f)">Update</button>
-                <!-- <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button"
+        <div class="row text-center">
+          <div class="col-md-12 form-group">
+            <button type="submit" *ngIf="enableButtonType == ''" class="btn btn-secondary ml-3"
+              [disabled]="f.form.pristine || f.form.invalid || isCreate">Add</button>
+            <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2"
+              (click)="update(f)">Update</button>
+            <!-- <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button"
                   (click)="enableFormEditable()">Edit</button> -->
-                  <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3" *ngIf="enableButtonType == '' || enableButtonType == 'U'">
-                      {{ enableButtonType != '' ? 'Close' : 'Clear' }}
-                    </button>
-        
-                    <span class="pull-right" *ngIf="showAction && readOnlyForm == 'R'">
-                        <div class="dropdown theme-dropdown clearfix" placement="bottom-right" ngbDropdown>
-                            <!-- <button class="btn btn-secondary" >
+            <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3"
+              *ngIf="enableButtonType == '' || enableButtonType == 'U'">
+              {{ enableButtonType != '' ? 'Close' : 'Clear' }}
+            </button>
+
+            <span class="pull-right" *ngIf="showAction && readOnlyForm == 'R'">
+              <div class="dropdown theme-dropdown clearfix" placement="bottom-right" ngbDropdown>
+                <!-- <button class="btn btn-secondary" >
                                 Dropdown
                             </button> -->
-                            <i class="fa fa-bars" ngbDropdownToggle></i>
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenu1" ngbDropdownMenu>
-                                <a class="dropdown-item drop-list" (click)="enableFormEditable()">Edit</a>
-                                <a class="dropdown-item drop-list" (click)="cancelForm(f)">New</a>
-                                <a class="dropdown-item drop-list" (click)="open(model.id, trashContent)">Delete</a>
-                            </div>
-                        </div> 
-                    </span>            
-                  </div>
-            </div>
+                <i class="fa fa-bars" ngbDropdownToggle></i>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenu1" ngbDropdownMenu>
+                  <a class="dropdown-item drop-list" (click)="enableFormEditable()">Edit</a>
+                  <a class="dropdown-item drop-list" (click)="cancelForm(f)">New</a>
+                  <a class="dropdown-item drop-list" (click)="open(model.id, trashContent)">Delete</a>
+                </div>
+              </div>
+            </span>
+          </div>
+        </div>
         <div class="row">
           <div class="col-md-6">
             <div class="form-group">
               <label>Username<span class="required">*</span></label>
-              <select class="form-control" name="uname" [(ngModel)]="model.username"
-                [disabled]="readOnlyForm == 'R'" [ngClass]="{'is-invalid': f.submitted && uname.invalid}"
-                #uname="ngModel" required>
+              <select class="form-control" name="uname" [(ngModel)]="model.username" [disabled]="readOnlyForm == 'R'"
+                [ngClass]="{'is-invalid': f.submitted && uname.invalid}" #uname="ngModel" required>
                 <option *ngFor="let gar of getAllR.list" [ngValue]="gar.email">{{gar.fullname}}
                 </option>
               </select>
@@ -108,40 +109,25 @@
           </div>
         </div>
         <div class="row" *ngIf="model.properties.length>0">
-            <div class="col-md-12" *ngIf="model.properties.length > 0">
-                <div class="form-group">
-                  <label>Additional Properties</label>
-                  <div class="row" *ngFor="let ap of model.properties; let i = index">
-                    <div class="col-md-5">
-                      <input
-                        type="text"
-                        [(ngModel)]="ap.name"
-                        class="form-control"
-                        name="addPropName{{ i }}"
-                        [readonly]="readOnlyForm == 'R'"
-                      />
-                    </div>
-                    <div class="col-md-5">
-                      <input
-                        type="text"
-                        [(ngModel)]="ap.value"
-                        class="form-control"
-                        name="addPropValue{{ i }}"
-                        [readonly]="readOnlyForm == 'R'"
-                      />
-                    </div>
-                    <div class="col-md-2">
-                      <i
-                        class="fa fa-minus"
-                        aria-hidden="true"
-                        id="decrease"
-                        *ngIf="enableButtonType != 'E'"
-                        (click)="propertiesListIncrement($event.target, i)"
-                      ></i>
-                    </div>
-                  </div>
+          <div class="col-md-12" *ngIf="model.properties.length > 0">
+            <div class="form-group">
+              <label>Additional Properties</label>
+              <div class="row" *ngFor="let ap of model.properties; let i = index">
+                <div class="col-md-5">
+                  <input type="text" [(ngModel)]="ap.name" class="form-control" name="addPropName{{ i }}"
+                    [readonly]="readOnlyForm == 'R'" />
+                </div>
+                <div class="col-md-5">
+                  <input type="text" [(ngModel)]="ap.value" class="form-control" name="addPropValue{{ i }}"
+                    [readonly]="readOnlyForm == 'R'" />
+                </div>
+                <div class="col-md-2">
+                  <i class="fa fa-minus" aria-hidden="true" id="decrease" *ngIf="enableButtonType != 'E'"
+                    (click)="propertiesListIncrement($event.target, i)"></i>
                 </div>
               </div>
+            </div>
+          </div>
         </div>
         <div class="row">
           <div class="col-md-12">
@@ -153,43 +139,41 @@
           </div>
         </div>
         <div class="row">
-            <div class="col-md-12">
-                <div class="form-group">
-                  <label>Additional Properties</label>
-                  <div class="row">
-                    <div class="col-md-5">
-                      <input type="text" [(ngModel)]="apName" class="form-control" name="apName" [readonly]="readOnlyForm == 'R'" />
-                    </div>
-                    <div class="col-md-5">
-                      <input type="text" [(ngModel)]="apValue" class="form-control" name="apValue" [readonly]="readOnlyForm == 'R'" />
-                    </div>
-                    <div class="col-md-2">
-                      <i
-                        class="fa fa-plus"
-                        aria-hidden="true"
-                        id="increase"
-                        *ngIf="enableButtonType != 'E'"
-                        (click)="propertiesListIncrement($event.target, 0)"
-                      ></i>
-                    </div>
-                  </div>
+          <div class="col-md-12">
+            <div class="form-group">
+              <label>Additional Properties</label>
+              <div class="row">
+                <div class="col-md-5">
+                  <input type="text" [(ngModel)]="apName" class="form-control" name="apName"
+                    [readonly]="readOnlyForm == 'R'" />
+                </div>
+                <div class="col-md-5">
+                  <input type="text" [(ngModel)]="apValue" class="form-control" name="apValue"
+                    [readonly]="readOnlyForm == 'R'" />
+                </div>
+                <div class="col-md-2">
+                  <i class="fa fa-plus" aria-hidden="true" id="increase" *ngIf="enableButtonType != 'E'"
+                    (click)="propertiesListIncrement($event.target, 0)"></i>
                 </div>
               </div>
-        </div>
-        <div class="row text-center" >
-            <div class="col-md-12">
-              <button type="submit" *ngIf="enableButtonType == ''" class="btn btn-secondary ml-3" [disabled]="f.form.pristine || f.form.invalid || isCreate"
->Add</button>
-              <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2"
-                (click)="update(f)">Update</button>
-              <!-- <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button"
-                (click)="enableFormEditable()">Edit</button> -->
-                <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3" *ngIf="enableButtonType == '' || enableButtonType == 'U'">
-                    {{ enableButtonType != '' ? 'Close' : 'Clear' }}
-                  </button>
-      
-              </div>
+            </div>
           </div>
+        </div>
+        <div class="row text-center">
+          <div class="col-md-12">
+            <button type="submit" *ngIf="enableButtonType == ''" class="btn btn-secondary ml-3"
+              [disabled]="f.form.pristine || f.form.invalid || isCreate">Add</button>
+            <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2"
+              (click)="update(f)">Update</button>
+            <!-- <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button"
+                (click)="enableFormEditable()">Edit</button> -->
+            <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3"
+              *ngIf="enableButtonType == '' || enableButtonType == 'U'">
+              {{ enableButtonType != '' ? 'Close' : 'Clear' }}
+            </button>
+
+          </div>
+        </div>
       </form>
     </div>
   </div>

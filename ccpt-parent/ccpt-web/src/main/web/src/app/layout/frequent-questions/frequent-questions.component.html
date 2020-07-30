@@ -1,5 +1,6 @@
 <div [@routerTransition]>
-  <app-page-header [icon1]="'fa-book'" [heading1]="'Guides'" [icon2]="'fa-question-circle'" [heading2]='"FAQs"'></app-page-header>
+  <app-page-header [icon1]="'fa-book'" [heading1]="'Guides'" [icon2]="'fa-question-circle'" [heading2]='"FAQs"'>
+  </app-page-header>
   <div class="spinner padding-top justify-content-md-center" *ngIf="!listReturned">
     <div class="bounce1"></div>
     <div class="bounce2"></div>
@@ -9,26 +10,26 @@
     <div class="col-md-6">
       <div class="row">
         <div class="col-md-3"> <input type="text" class="form-control form-control-sm" placeholder="search by skill"
-            [(ngModel)]="currSearchTxt" (keyup)="search()"/></div>
-            <div class="col-md-9">
-              <select class="form-control form-control-sm" [(ngModel)]="currDropSearch" name="sel1" (change)="searchSelect()">
-                  <option [ngValue]="null" hidden selected>--search client application--</option>
-                  <option *ngFor="let ca of getAllCA" [ngValue]="ca" >
-                    {{ ca.name }}
-                  </option>
-                </select> 
-                <span *ngIf="currDropSearch">
-                  <button type="button"  class ="btn btn-secondary  btn-sm ml-3" (click)="cancelSearch()">
-                  Cancel
-                </button>
-              </span> 
-          </div>   
+            [(ngModel)]="currSearchTxt" (keyup)="search()" /></div>
+        <div class="col-md-9">
+          <select class="form-control form-control-sm" [(ngModel)]="currDropSearch" name="sel1"
+            (change)="searchSelect()">
+            <option [ngValue]="null" hidden selected>--search client application--</option>
+            <option *ngFor="let ca of getAllCA" [ngValue]="ca">
+              {{ ca.name }}
+            </option>
+          </select>
+          <span *ngIf="currDropSearch">
+            <button type="button" class="btn btn-secondary  btn-sm ml-3" (click)="cancelSearch()">
+              Cancel
+            </button>
+          </span>
+        </div>
       </div>
       <div class="table-responsive mt-2 tableFixHead" [style.height.px]="screenHeight">
         <table class="table table-hover table-striped">
           <tbody>
-            <tr *ngFor="let ul of faqList.list | paginate: paginateConfig ; let i = index"
-              (click)="setModel(ul.id)">
+            <tr *ngFor="let ul of faqList.list | paginate: paginateConfig ; let i = index" (click)="setModel(ul.id)">
               <td>{{ul.question}}</td>
               <!-- <td width="100">
                 <app-action [trashContent]="trashContent" [id]="ul.id" [isTrash]="trash" (trash)="open($event)">
@@ -44,39 +45,40 @@
     </div>
     <div class="col-md-6">
       <form name="form" id="UserForm" (ngSubmit)="f.form.valid&&create(f)" #f="ngForm" novalidate>
-          <div class="row text-center" >
-              <div class="col-md-12 form-group">
-                <button type="submit" *ngIf="enableButtonType == ''" class="btn btn-secondary ml-3" [disabled]="f.form.pristine || f.form.invalid || isCreate">Add</button>
-                <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2"
-                  (click)="update(f)">Update</button>
-                <!-- <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button"
+        <div class="row text-center">
+          <div class="col-md-12 form-group">
+            <button type="submit" *ngIf="enableButtonType == ''" class="btn btn-secondary ml-3"
+              [disabled]="f.form.pristine || f.form.invalid || isCreate">Add</button>
+            <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2"
+              (click)="update(f)">Update</button>
+            <!-- <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button"
                   (click)="enableFormEditable()">Edit</button> -->
-                  <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3" *ngIf="enableButtonType == '' || enableButtonType == 'U'">
-                      {{ enableButtonType != '' ? 'Close' : 'Clear' }}
-                    </button>
-        
-                    <span class="pull-right" *ngIf="showAction && readOnlyForm == 'R'">
-                        <div class="dropdown theme-dropdown clearfix" placement="bottom-right" ngbDropdown>
-                            <!-- <button class="btn btn-secondary" >
+            <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3"
+              *ngIf="enableButtonType == '' || enableButtonType == 'U'">
+              {{ enableButtonType != '' ? 'Close' : 'Clear' }}
+            </button>
+
+            <span class="pull-right" *ngIf="showAction && readOnlyForm == 'R'">
+              <div class="dropdown theme-dropdown clearfix" placement="bottom-right" ngbDropdown>
+                <!-- <button class="btn btn-secondary" >
                                 Dropdown
                             </button> -->
-                            <i class="fa fa-bars" ngbDropdownToggle></i>
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenu1" ngbDropdownMenu>
-                                <a class="dropdown-item drop-list" (click)="enableFormEditable()">Edit</a>
-                                <a class="dropdown-item drop-list" (click)="cancelForm(f)">New</a>
-                                <a class="dropdown-item drop-list" (click)="open(model.id, trashContent)">Delete</a>
-                            </div>
-                        </div> 
-                    </span>            
-                  </div>
-            </div>
+                <i class="fa fa-bars" ngbDropdownToggle></i>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenu1" ngbDropdownMenu>
+                  <a class="dropdown-item drop-list" (click)="enableFormEditable()">Edit</a>
+                  <a class="dropdown-item drop-list" (click)="cancelForm(f)">New</a>
+                  <a class="dropdown-item drop-list" (click)="open(model.id, trashContent)">Delete</a>
+                </div>
+              </div>
+            </span>
+          </div>
+        </div>
         <div class="row">
           <div class="col-md-6">
             <div class="form-group">
               <label>Creator<span class="required">*</span></label>
-              <select class="form-control" name="uname" [(ngModel)]="model.creatorId"
-                [disabled]="readOnlyForm == 'R'" [ngClass]="{'is-invalid': f.submitted && uname.invalid}"
-                #uname="ngModel" required>
+              <select class="form-control" name="uname" [(ngModel)]="model.creatorId" [disabled]="readOnlyForm == 'R'"
+                [ngClass]="{'is-invalid': f.submitted && uname.invalid}" #uname="ngModel" required>
                 <option *ngFor="let gar of getAllR.list" [ngValue]="gar.id">{{gar.fullname}}
                 </option>
               </select>
@@ -88,9 +90,8 @@
           <div class="col-md-6">
             <div class="form-group">
               <label>Client Application<span class="required">*</span></label>
-              <select class="form-control" name="ca" [(ngModel)]="model.caId"
-                [disabled]="readOnlyForm == 'R'" [ngClass]="{'is-invalid': f.submitted && ca.invalid}"
-                #ca="ngModel" required>
+              <select class="form-control" name="ca" [(ngModel)]="model.caId" [disabled]="readOnlyForm == 'R'"
+                [ngClass]="{'is-invalid': f.submitted && ca.invalid}" #ca="ngModel" required>
                 <option *ngFor="let gac of getAllCA" [ngValue]="gac.id">{{gac.name}}
                 </option>
               </select>
@@ -104,9 +105,8 @@
           <div class="col-md-6">
             <div class="form-group">
               <label>Skills<span class="required">*</span></label>
-              <input type="text" class="form-control" [(ngModel)]="model.skills"
-                  [readonly]="readOnlyForm == 'R'" name="skills" [ngClass]="{'is-invalid': f.submitted && skills.invalid}"
-                  #pwd="ngModel" #skills required>
+              <input type="text" class="form-control" [(ngModel)]="model.skills" [readonly]="readOnlyForm == 'R'"
+                name="skills" [ngClass]="{'is-invalid': f.submitted && skills.invalid}" #pwd="ngModel" #skills required>
               <div class="invalid-feedback">
                 skills is mandatory
               </div>
@@ -188,20 +188,21 @@
                 </div>
               </div>
         </div> -->
-        <div class="row text-center" >
-            <div class="col-md-12">
-              <button type="submit" *ngIf="enableButtonType == ''" class="btn btn-secondary ml-3" [disabled]="f.form.pristine || f.form.invalid || isCreate"
->Add</button>
-              <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2"
-                (click)="update(f)">Update</button>
-              <!-- <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button"
+        <div class="row text-center">
+          <div class="col-md-12">
+            <button type="submit" *ngIf="enableButtonType == ''" class="btn btn-secondary ml-3"
+              [disabled]="f.form.pristine || f.form.invalid || isCreate">Add</button>
+            <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2"
+              (click)="update(f)">Update</button>
+            <!-- <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button"
                 (click)="enableFormEditable()">Edit</button> -->
-                <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3" *ngIf="enableButtonType == '' || enableButtonType == 'U'">
-                    {{ enableButtonType != '' ? 'Close' : 'Clear' }}
-                  </button>
-      
-              </div>
+            <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3"
+              *ngIf="enableButtonType == '' || enableButtonType == 'U'">
+              {{ enableButtonType != '' ? 'Close' : 'Clear' }}
+            </button>
+
           </div>
+        </div>
       </form>
     </div>
   </div>

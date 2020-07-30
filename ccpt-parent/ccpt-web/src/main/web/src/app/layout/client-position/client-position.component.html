@@ -1,8 +1,5 @@
 <div [@routerTransition]>
-  <app-page-header
-    [icon1]="'fa fa-briefcase'"
-    [heading1]="'Client Positions'"
-  ></app-page-header>
+  <app-page-header [icon1]="'fa fa-briefcase'" [heading1]="'Client Positions'"></app-page-header>
   <ng-template #spinner>
     <div class="spinner padding-top justify-content-md-center">
       <div class="bounce1"></div>
@@ -14,48 +11,28 @@
     <div class="col-md-7">
       <div class="row">
         <div class="col-md-6">
-          <input
-            type="text"
-            class="form-control"
-            placeholder="search"
-            [(ngModel)]="currSearchTxt"
-          />
+          <input type="text" class="form-control" placeholder="search" [(ngModel)]="currSearchTxt" />
         </div>
         <div class="col-md-6 mt-2">
-          <input
-            class="check"
-            type="checkbox"
-            [(ngModel)]="showInactiveContent"
-            (change)="checkTableType()"
-            value=""
-          />
+          <input class="check" type="checkbox" [(ngModel)]="showInactiveContent" (change)="checkTableType()" value="" />
           <span class=""> Include Inactive Positions</span>
         </div>
       </div>
       <div class="row">
-        <b class="pull-left"
-                >Filter list count : {{ clientPositionList?.list?.length }}</b
-              >
+        <b class="pull-left">Filter list count : {{ clientPositionList?.list?.length }}</b>
       </div>
-      <div
-        class="mt-2 table-responsive table-wrapper-scroll-y my-custom-scrollbar"
-        [style.height.px]="screenHeight"
-      >
+      <div class="mt-2 table-responsive table-wrapper-scroll-y my-custom-scrollbar" [style.height.px]="screenHeight">
         <table class="table table-sm table-hover table-striped">
           <tbody>
-            <tr
-              *ngFor="
+            <tr *ngFor="
                 let cpl of clientPositionList.list
                   | filter: currSearchTxt
                   | paginate: paginateConfig;
                 let i = index
-              "
-              (click)="setModel(cpl.id)"
-              [ngClass]="{
+              " (click)="setModel(cpl.id)" [ngClass]="{
                 'bl-red': !cpl.isProfilePosted,
                 'bl-green': cpl.isProfilePosted
-              }"
-            >
+              }">
               <td class="table-data-padding">
                 <dl>
                   <dt>
@@ -91,119 +68,55 @@
         </table>
       </div>
 
-      <div
-        class="col-12 justify-content-center mb-5"
-        *ngIf="clientPositionList.noOfRecords > properties.ITEMSPERPAGE"
-      >
-        <pagination-controls
-          (pageChange)="pageChanged($event)"
-        ></pagination-controls>
+      <div class="col-12 justify-content-center mb-5" *ngIf="clientPositionList.noOfRecords > properties.ITEMSPERPAGE">
+        <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
         <!-- <ngb-pagination [collectionSize]="cpListLength" [(page)]="page" [ellipses]="false" (pageChange)="pageChange($event)" [maxSize]="pageSize" [rotate]="true" [boundaryLinks]="true">
           </ngb-pagination> -->
       </div>
     </div>
     <div class="col-md-5">
-      <form
-        name="form"
-        id="clientPositionForm"
-        (ngSubmit)="f.form.valid && create(f, clientCall)"
-        #f="ngForm"
-        novalidate
-      >
+      <form name="form" id="clientPositionForm" (ngSubmit)="f.form.valid && create(f, clientCall)" #f="ngForm"
+        novalidate>
         <div class="row text-center">
           <div class="col-md-12">
             <div class="form-group">
-              <button
-                type="submit"
-                *ngIf="enableButtonType == '' && loggedInRole != 'User'"
-                class="btn btn-secondary ml-3"
-                [disabled]="f.form.pristine || f.form.invalid || isCreate"
-              >
+              <button type="submit" *ngIf="enableButtonType == '' && loggedInRole != 'User'"
+                class="btn btn-secondary ml-3" [disabled]="f.form.pristine || f.form.invalid || isCreate">
                 Add
               </button>
-              <button
-                type="button"
-                *ngIf="enableButtonType == 'U' && loggedInRole != 'User'"
-                class="btn btn-secondary ml-2"
-                (click)="update(f)"
-              >
+              <button type="button" *ngIf="enableButtonType == 'U' && loggedInRole != 'User'"
+                class="btn btn-secondary ml-2" (click)="update(f)">
                 Update
               </button>
               <!-- <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button" (click)="enableFormEditable()">
                 Edit
               </button> -->
-              <button
-                type="button"
-                (click)="cancelForm(f)"
-                *ngIf="
+              <button type="button" (click)="cancelForm(f)" *ngIf="
                   enableButtonType == '' ||
                   (enableButtonType == 'U' && loggedInRole != 'User')
-                "
-                class="btn btn-secondary ml-3"
-              >
+                " class="btn btn-secondary ml-3">
                 {{ enableButtonType != "" ? "Close" : "Clear" }}
               </button>
 
-              <span
-                class="pull-right"
-                *ngIf="showAction && readOnlyForm == 'U'"
-              >
-                <div
-                  class="dropdown theme-dropdown clearfix"
-                  placement="bottom-right"
-                  ngbDropdown
-                >
+              <span class="pull-right" *ngIf="showAction && readOnlyForm == 'U'">
+                <div class="dropdown theme-dropdown clearfix" placement="bottom-right" ngbDropdown>
                   <!-- <button class="btn btn-secondary" >
                             Dropdown
                         </button> -->
                   <i class="fa fa-bars" ngbDropdownToggle></i>
-                  <div
-                    class="dropdown-menu"
-                    aria-labelledby="dropdownMenu1"
-                    ngbDropdownMenu
-                  >
-                    <a
-                      class="dropdown-item drop-list"
-                      *ngIf="loggedInRole != 'User'"
-                      (click)="enableFormEditable()"
-                      >Edit</a
-                    >
-                    <a class="dropdown-item drop-list" (click)="cancelForm(f)"
-                      >New</a
-                    >
-                    <a
-                      class="dropdown-item drop-list"
-                      *ngIf="loggedInRole != 'User'"
-                      (click)="createApplication(shortListContent)"
-                      >Create Application</a
-                    >
-                    <a
-                      class="dropdown-item drop-list"
-                      (click)="emailJd(sendMailContent)"
-                      >Email JD</a
-                    >
-                    <a
-                      class="dropdown-item drop-list"
-                      (click)="smsJd(sendSMSContent)"
-                      >SMS JD</a
-                    >
-                    <a
-                      class="dropdown-item drop-list"
-                      *ngIf="loggedInRole != 'User'"
-                      (click)="cloneData(model)"
-                      >Clone</a
-                    >
-                    <a
-                      class="dropdown-item drop-list"
-                      *ngIf="loggedInRole != 'User'"
-                      (click)="open(model.id, trashContent)"
-                      >Delete</a
-                    >
-                    <a
-                      class="dropdown-item drop-list"
-                      (click)="open(model.id, editPI)"
-                      >Edit Posting Info</a
-                    >
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenu1" ngbDropdownMenu>
+                    <a class="dropdown-item drop-list" *ngIf="loggedInRole != 'User'"
+                      (click)="enableFormEditable()">Edit</a>
+                    <a class="dropdown-item drop-list" (click)="cancelForm(f)">New</a>
+                    <a class="dropdown-item drop-list" *ngIf="loggedInRole != 'User'"
+                      (click)="createApplication(shortListContent)">Create Application</a>
+                    <a class="dropdown-item drop-list" (click)="emailJd(sendMailContent)">Email JD</a>
+                    <a class="dropdown-item drop-list" (click)="smsJd(sendSMSContent)">SMS JD</a>
+                    <a class="dropdown-item drop-list" *ngIf="loggedInRole != 'User'"
+                      (click)="cloneData(model)">Clone</a>
+                    <a class="dropdown-item drop-list" *ngIf="loggedInRole != 'User'"
+                      (click)="open(model.id, trashContent)">Delete</a>
+                    <a class="dropdown-item drop-list" (click)="open(model.id, editPI)">Edit Posting Info</a>
                   </div>
                 </div>
               </span>
@@ -266,11 +179,11 @@
                 </td>
               </tr>
               <tr *ngIf="model.address">
-                  <th>Address</th>
-                  <td>
-                    {{model.address}}
-                  </td>
-                </tr>
+                <th>Address</th>
+                <td>
+                  {{model.address}}
+                </td>
+              </tr>
               <tr *ngIf="model.description">
                 <th>Description</th>
                 <td>
@@ -303,18 +216,10 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label>Client Name<span class="required">*</span></label>
-                <select
-                  class="form-control"
-                  name="cn"
-                  [disabled]="readOnlyForm == 'R'"
-                  [(ngModel)]="model.clientId"
-                  [ngClass]="{ 'is-invalid': f.submitted && cn.invalid }"
-                  #cn="ngModel"
-                  required
-                >
+                <select class="form-control" name="cn" [disabled]="readOnlyForm == 'R'" [(ngModel)]="model.clientId"
+                  [ngClass]="{ 'is-invalid': f.submitted && cn.invalid }" #cn="ngModel" required>
                   <option *ngFor="let cls of clientList" [ngValue]="cls.id">
-                    {{ cls.name }}</option
-                  >
+                    {{ cls.name }}</option>
                 </select>
                 <div class="invalid-feedback">
                   Client Name is mandatory
@@ -324,17 +229,10 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label>Job Title<span class="required">*</span></label>
-                <input
-                  class="form-control"
-                  [readonly]="readOnlyForm == 'R'"
-                  [(ngModel)]="model.role"
-                  name="technology"
+                <input class="form-control" [readonly]="readOnlyForm == 'R'" [(ngModel)]="model.role" name="technology"
                   [ngClass]="{
                     'is-invalid': f.submitted && technology.invalid
-                  }"
-                  #technology="ngModel"
-                  required
-                />
+                  }" #technology="ngModel" required />
                 <div class="invalid-feedback">
                   Role is mandatory
                 </div>
@@ -345,12 +243,8 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label>Job Type</label>
-                <select
-                  class="form-control"
-                  name="jobType"
-                  [disabled]="readOnlyForm == 'R'"
-                  [(ngModel)]="model.jobType"
-                >
+                <select class="form-control" name="jobType" [disabled]="readOnlyForm == 'R'"
+                  [(ngModel)]="model.jobType">
                   <option *ngFor="let cs of properties.JOB_TYPE">
                     {{ cs }}
                   </option>
@@ -360,12 +254,8 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label>Availability</label>
-                <select
-                  class="form-control"
-                  name="sourced"
-                  [disabled]="readOnlyForm == 'R'"
-                  [(ngModel)]="model.availability"
-                >
+                <select class="form-control" name="sourced" [disabled]="readOnlyForm == 'R'"
+                  [(ngModel)]="model.availability">
                   <option *ngFor="let cs of properties.DURATION">
                     {{ cs }}
                   </option>
@@ -377,25 +267,15 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label>Required Positions</label>
-                <input
-                  class="form-control"
-                  type="number"
-                  min="0"
-                  [readonly]="readOnlyForm == 'R'"
-                  [(ngModel)]="model.requiredPositions"
-                  name="nofpos"
-                />
+                <input class="form-control" type="number" min="0" [readonly]="readOnlyForm == 'R'"
+                  [(ngModel)]="model.requiredPositions" name="nofpos" />
               </div>
             </div>
             <div class="col-md-6">
               <div class="form-group">
                 <label>Required Experience</label>
-                <input
-                  class="form-control"
-                  [readonly]="readOnlyForm == 'R'"
-                  [(ngModel)]="model.experience"
-                  name="experience"
-                />
+                <input class="form-control" [readonly]="readOnlyForm == 'R'" [(ngModel)]="model.experience"
+                  name="experience" />
               </div>
             </div>
           </div>
@@ -403,26 +283,15 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label>Min CTC(in LPA)</label>
-                <input
-                  class="form-control"
-                  [readonly]="readOnlyForm == 'R'"
-                  type="number"
-                  [(ngModel)]="model.minCtc"
-                  name="minctc"
-                />
+                <input class="form-control" [readonly]="readOnlyForm == 'R'" type="number" [(ngModel)]="model.minCtc"
+                  name="minctc" />
               </div>
             </div>
             <div class="col-md-6">
               <div class="form-group">
                 <label>Max CTC(in LPA)</label>
-                <input
-                  class="form-control"
-                  [readonly]="readOnlyForm == 'R'"
-                  type="number"
-                  [(ngModel)]="model.maxCtc"
-                  name="maxctc"
-                  (blur)="checkCTC()"
-                />
+                <input class="form-control" [readonly]="readOnlyForm == 'R'" type="number" [(ngModel)]="model.maxCtc"
+                  name="maxctc" (blur)="checkCTC()" />
               </div>
             </div>
           </div>
@@ -430,27 +299,14 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label>Location</label>
-                <input
-                  class="form-control"
-                  [readonly]="readOnlyForm == 'R'"
-                  [(ngModel)]="model.location"
-                  name="loc"
-                />
+                <input class="form-control" [readonly]="readOnlyForm == 'R'" [(ngModel)]="model.location" name="loc" />
               </div>
             </div>
             <div class="col-md-6">
               <div class="form-group">
                 <label>Client Position Status </label>
-                <select
-                  class="form-control"
-                  name="cps"
-                  [disabled]="readOnlyForm == 'R'"
-                  [(ngModel)]="model.cpstatus"
-                >
-                  <option
-                    *ngFor="let cpsl of clientPositionStatusList.list"
-                    [ngValue]="cpsl.code"
-                  >
+                <select class="form-control" name="cps" [disabled]="readOnlyForm == 'R'" [(ngModel)]="model.cpstatus">
+                  <option *ngFor="let cpsl of clientPositionStatusList.list" [ngValue]="cpsl.code">
                     {{ cpsl.description }}
                   </option>
                 </select>
@@ -461,18 +317,11 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label>Assign To<span class="required">*</span></label>
-                <select
-                  class="form-control"
-                  name="assign"
-                  [disabled]="readOnlyForm == 'R'"
-                  [(ngModel)]="model.assignedTo"
-                  [ngClass]="{ 'is-invalid': f.submitted && assign.invalid }"
-                  #assign="ngModel"
-                  required
-                >
+                <select class="form-control" name="assign" [disabled]="readOnlyForm == 'R'"
+                  [(ngModel)]="model.assignedTo" [ngClass]="{ 'is-invalid': f.submitted && assign.invalid }"
+                  #assign="ngModel" required>
                   <option *ngFor="let rl of recruiterList" [ngValue]="rl.id">
-                    {{ rl.name }} ({{ rl.count }})</option
-                  >
+                    {{ rl.name }} ({{ rl.count }})</option>
                 </select>
                 <div class="invalid-feedback">
                   Assign to is mandatory
@@ -482,28 +331,17 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label>Qualification</label>
-                <input
-                  class="form-control"
-                  [readonly]="readOnlyForm == 'R'"
-                  [(ngModel)]="model.qualification"
-                  name="qual"
-                  [ngClass]="{ 'is-invalid': f.submitted && qual.invalid }"
-                  #qual="ngModel"
-                />
+                <input class="form-control" [readonly]="readOnlyForm == 'R'" [(ngModel)]="model.qualification"
+                  name="qual" [ngClass]="{ 'is-invalid': f.submitted && qual.invalid }" #qual="ngModel" />
               </div>
             </div>
             <div class="col-md-6" *ngIf="model.cpstatus == 'Closed'">
               <div class="form-group">
                 <label>Closed By</label>
-                <select
-                  class="form-control"
-                  name="closedBy"
-                  [disabled]="readOnlyForm == 'R'"
-                  [(ngModel)]="model.closedBy"
-                >
+                <select class="form-control" name="closedBy" [disabled]="readOnlyForm == 'R'"
+                  [(ngModel)]="model.closedBy">
                   <option *ngFor="let rl of recruiterList" [ngValue]="rl.id">
-                    {{ rl.name }}</option
-                  >
+                    {{ rl.name }}</option>
                 </select>
               </div>
             </div>
@@ -512,21 +350,10 @@
             <div class="col-md-12">
               <div class="form-group">
                 <label>Address</label>
-                <input
-                  type="checkbox"
-                  class="ml-3"
-                  name="addCheckbox"
-                  (change)="setClientAddress($event,model.clientId)"
-                />&nbsp;<small>Same as client</small>
-                <textarea
-                  class="form-control"
-                  cols="5"
-                  rows="5"
-                  [readonly]="readOnlyForm == 'R'"
-                  [(ngModel)]="model.address"
-                  name="address"
-                  #billingAddress="ngModel"
-                ></textarea>
+                <input type="checkbox" class="ml-3" name="addCheckbox"
+                  (change)="setClientAddress($event,model.clientId)" />&nbsp;<small>Same as client</small>
+                <textarea class="form-control" cols="5" rows="5" [readonly]="readOnlyForm == 'R'"
+                  [(ngModel)]="model.address" name="address" #billingAddress="ngModel"></textarea>
               </div>
             </div>
           </div>
@@ -534,12 +361,7 @@
             <div class="col-md-12">
               <div class="form-group">
                 <label>Required Skills<span class="required">*</span></label>
-                <angular-editor
-                  [(ngModel)]="model.requiredSkills"
-                  name="requiredSkills"
-                  [config]="config"
-                  required
-                >
+                <angular-editor [(ngModel)]="model.requiredSkills" name="requiredSkills" [config]="config" required>
                 </angular-editor>
                 <div class="invalid-feedback">
                   Required Skills are mandatory
@@ -551,36 +373,18 @@
             <div class="col-md-12 mb-5" *ngIf="model.properties.length > 0">
               <div class="form-group">
                 <label>Additional Properties</label>
-                <div
-                  class="row"
-                  *ngFor="let ap of model.properties; let i = index"
-                >
+                <div class="row" *ngFor="let ap of model.properties; let i = index">
                   <div class="col-md-5 pt-2">
-                    <input
-                      type="text"
-                      [(ngModel)]="ap.name"
-                      class="form-control"
-                      name="addPropName{{ i }}"
-                      [readonly]="readOnlyForm == 'R'"
-                    />
+                    <input type="text" [(ngModel)]="ap.name" class="form-control" name="addPropName{{ i }}"
+                      [readonly]="readOnlyForm == 'R'" />
                   </div>
                   <div class="col-md-5 pt-2">
-                    <input
-                      type="text"
-                      [(ngModel)]="ap.value"
-                      class="form-control"
-                      name="addPropValue{{ i }}"
-                      [readonly]="readOnlyForm == 'R'"
-                    />
+                    <input type="text" [(ngModel)]="ap.value" class="form-control" name="addPropValue{{ i }}"
+                      [readonly]="readOnlyForm == 'R'" />
                   </div>
                   <div class="col-md-2">
-                    <i
-                      class="fa fa-minus"
-                      aria-hidden="true"
-                      id="decrease"
-                      *ngIf="enableButtonType != 'E'"
-                      (click)="propertiesListIncrement($event.target, i)"
-                    ></i>
+                    <i class="fa fa-minus" aria-hidden="true" id="decrease" *ngIf="enableButtonType != 'E'"
+                      (click)="propertiesListIncrement($event.target, i)"></i>
                   </div>
                 </div>
               </div>
@@ -590,11 +394,7 @@
             <div class="col-md-12">
               <div class="form-group">
                 <label>Description</label>
-                <angular-editor
-                  [(ngModel)]="model.description"
-                  name="description"
-                  [config]="config"
-                >
+                <angular-editor [(ngModel)]="model.description" name="description" [config]="config">
                 </angular-editor>
               </div>
             </div>
@@ -605,31 +405,16 @@
                 <label>Additional Properties</label>
                 <div class="row">
                   <div class="col-md-5">
-                    <input
-                      type="text"
-                      [(ngModel)]="apName"
-                      class="form-control"
-                      name="apName"
-                      [readonly]="readOnlyForm == 'R'"
-                    />
+                    <input type="text" [(ngModel)]="apName" class="form-control" name="apName"
+                      [readonly]="readOnlyForm == 'R'" />
                   </div>
                   <div class="col-md-5">
-                    <input
-                      type="text"
-                      [(ngModel)]="apValue"
-                      class="form-control"
-                      name="apValue"
-                      [readonly]="readOnlyForm == 'R'"
-                    />
+                    <input type="text" [(ngModel)]="apValue" class="form-control" name="apValue"
+                      [readonly]="readOnlyForm == 'R'" />
                   </div>
                   <div class="col-md-2">
-                    <i
-                      class="fa fa-plus"
-                      aria-hidden="true"
-                      id="increase"
-                      *ngIf="enableButtonType != 'E'"
-                      (click)="propertiesListIncrement($event.target, 0)"
-                    ></i>
+                    <i class="fa fa-plus" aria-hidden="true" id="increase" *ngIf="enableButtonType != 'E'"
+                      (click)="propertiesListIncrement($event.target, 0)"></i>
                   </div>
                 </div>
               </div>
@@ -638,34 +423,20 @@
         </ng-template>
         <div class="row text-center" *ngIf="loggedInRole != 'User'">
           <div class="col-md-12">
-            <button
-              type="submit"
-              *ngIf="enableButtonType == ''"
-              [disabled]="f.form.pristine || f.form.invalid || isCreate"
-              class="btn btn-secondary ml-3"
-            >
+            <button type="submit" *ngIf="enableButtonType == ''"
+              [disabled]="f.form.pristine || f.form.invalid || isCreate" class="btn btn-secondary ml-3">
               Add
             </button>
-            <button
-              type="button"
-              *ngIf="enableButtonType == 'U'"
-              class="btn btn-secondary ml-2"
-              (click)="update(f)"
-            >
+            <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2" (click)="update(f)">
               Update
             </button>
             <!-- <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button" (click)="enableFormEditable()">
               Edit
             </button> -->
-            <button
-              type="button"
-              (click)="cancelForm(f)"
-              *ngIf="
+            <button type="button" (click)="cancelForm(f)" *ngIf="
                 enableButtonType == '' ||
                 (enableButtonType == 'U' && loggedInRole != 'User')
-              "
-              class="btn btn-secondary ml-3"
-            >
+              " class="btn btn-secondary ml-3">
               {{ enableButtonType != "" ? "Close" : "Clear" }}
             </button>
           </div>
@@ -679,12 +450,7 @@
 <ng-template #shortListContent let-c="close" let-d="dismiss">
   <div class="modal-header modal-popup-header-bg">
     <h4 class="modal-title">Create Client Application</h4>
-    <button
-      type="button"
-      class="close"
-      aria-label="Close"
-      (click)="d('Cross click')"
-    >
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
@@ -692,16 +458,11 @@
     <label>Creator</label>
     <select class="form-control" name="creator" [(ngModel)]="creator">
       <option *ngFor="let rl of recruiterList" [ngValue]="rl.id">
-        {{ rl.name }}</option
-      >
+        {{ rl.name }}</option>
     </select>
     <label>Consultants</label>
-    <ng-multiselect-dropdown
-      [placeholder]="'choose names..'"
-      [data]="consultantNames"
-      [(ngModel)]="shortListConsultants"
-      [settings]="dropdownSettings"
-    >
+    <ng-multiselect-dropdown [placeholder]="'choose names..'" [data]="consultantNames"
+      [(ngModel)]="shortListConsultants" [settings]="dropdownSettings">
       <!-- (onSelect)="onItemSelect($event)"
      (onSelectAll)="onSelectAll($event)" -->
     </ng-multiselect-dropdown>
@@ -720,18 +481,10 @@
               {{ cnt.item_text }}
             </td>
             <td>
-              <input
-                class="form-control"
-                [(ngModel)]="cnt.notes"
-                name="experience"
-              />
+              <input class="form-control" [(ngModel)]="cnt.notes" name="experience" />
             </td>
             <td>
-              <button
-                type="button"
-                class="btn btn-secondary"
-                (click)="createClientApplication(cnt, f)"
-              >
+              <button type="button" class="btn btn-secondary" (click)="createClientApplication(cnt, f)">
                 Create
               </button>
             </td>
@@ -750,23 +503,13 @@
 <ng-template #sendMailContent let-c="close" let-d="dismiss">
   <div class="modal-header modal-popup-header-bg">
     <h4 class="modal-title">Send Mail</h4>
-    <button
-      type="button"
-      class="close"
-      aria-label="Close"
-      (click)="d('Cross click')"
-    >
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
   <div class="modal-body">
     <div calss="form-group">
-      <select
-        class="form-control"
-        [(ngModel)]="sendTo"
-        name="sel1"
-        (change)="onItemSelect(sendTo, 'email')"
-      >
+      <select class="form-control" [(ngModel)]="sendTo" name="sel1" (change)="onItemSelect(sendTo, 'email')">
         <option [ngValue]="null" hidden selected>--select Consultant--</option>
         <option *ngFor="let cl of consultantList" [ngValue]="cl">
           {{ cl.name }}
@@ -775,47 +518,20 @@
     </div>
     <label>E-Mail</label>
     <div class="form-group">
-      <input
-        class="form-control"
-        [(ngModel)]="sendEmailModel.toEmails"
-        name="tomail"
-        #tomail="ngModel"
-      />
+      <input class="form-control" [(ngModel)]="sendEmailModel.toEmails" name="tomail" #tomail="ngModel" />
     </div>
     <label>Cc</label>
-    <input
-      type="text"
-      [(ngModel)]="sendEmailModel.cc"
-      class="form-control"
-      name="cc"
-    />
+    <input type="text" [(ngModel)]="sendEmailModel.cc" class="form-control" name="cc" />
     <label>Bcc</label>
-    <input
-      type="text"
-      [(ngModel)]="sendEmailModel.bcc"
-      class="form-control"
-      name="bcc"
-    />
+    <input type="text" [(ngModel)]="sendEmailModel.bcc" class="form-control" name="bcc" />
     <label>Subject</label>
-    <input
-      class="form-control"
-      [(ngModel)]="sendEmailModel.subject"
-      name="sub"
-    />
+    <input class="form-control" [(ngModel)]="sendEmailModel.subject" name="sub" />
     <label>Message Body</label>
-    <angular-editor
-      [(ngModel)]="sendEmailModel.body"
-      name="body"
-      [config]="emailEditorconfig"
-    >
+    <angular-editor [(ngModel)]="sendEmailModel.body" name="body" [config]="emailEditorconfig">
     </angular-editor>
   </div>
   <div class="modal-footer">
-    <button
-      type="button"
-      class="btn btn-secondary"
-      (click)="sendEmailReq(createConsultants)"
-    >
+    <button type="button" class="btn btn-secondary" (click)="sendEmailReq(createConsultants)">
       Send
     </button>
     <button type="button" class="btn btn-secondary" (click)="c('Close click')">
@@ -827,22 +543,12 @@
 <ng-template #sendSMSContent let-c="close" let-d="dismiss">
   <div class="modal-header modal-popup-header-bg">
     <h4 class="modal-title">Send SMS</h4>
-    <button
-      type="button"
-      class="close"
-      aria-label="Close"
-      (click)="d('Cross click')"
-    >
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
   <div class="modal-body">
-    <select
-      class="form-control"
-      [(ngModel)]="sendTo"
-      name="sel2"
-      (change)="onItemSelect(sendTo, 'sms')"
-    >
+    <select class="form-control" [(ngModel)]="sendTo" name="sel2" (change)="onItemSelect(sendTo, 'sms')">
       <option [ngValue]="null" hidden selected>--select Consultant--</option>
       <option *ngFor="let cl of consultantList" [ngValue]="cl">
         {{ cl.name }}
@@ -850,12 +556,7 @@
     </select>
     <label>Numbers</label>
     <div class="form-group">
-      <input
-        class="form-control"
-        [(ngModel)]="sendSmsModel.contactNumbers"
-        name="tonumbers"
-        #tonumbers="ngModel"
-      />
+      <input class="form-control" [(ngModel)]="sendSmsModel.contactNumbers" name="tonumbers" #tonumbers="ngModel" />
     </div>
     <!-- <ng-multiselect-dropdown
       [placeholder]="'choose numbers..'"
@@ -867,21 +568,10 @@
      (onSelectAll)="onSelectAll($event)" 
     </ng-multiselect-dropdown>-->
     <label>Message Body</label>
-    <textarea
-      class="form-control"
-      cols="5"
-      rows="8"
-      [(ngModel)]="sendSmsModel.message"
-      name="mbody"
-    ></textarea>
+    <textarea class="form-control" cols="5" rows="8" [(ngModel)]="sendSmsModel.message" name="mbody"></textarea>
   </div>
   <div class="modal-footer">
-    <button
-      type="button"
-      class="btn btn-secondary"
-      (click)="sendSmsReq()"
-      [disabled]="creating"
-    >
+    <button type="button" class="btn btn-secondary" (click)="sendSmsReq()" [disabled]="creating">
       {{ creating ? "loading..." : ("Send" | translate) }}
     </button>
     <button type="button" class="btn btn-secondary" (click)="c('Close click')">
@@ -893,12 +583,7 @@
 <ng-template #trashContent let-c="close" let-d="dismiss">
   <div class="modal-header modal-popup-header-bg">
     <h4 class="modal-title">Client Position</h4>
-    <button
-      type="button"
-      class="close"
-      aria-label="Close"
-      (click)="d('Cross click')"
-    >
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
@@ -917,23 +602,13 @@
 <ng-template #createConsultants let-c="close" let-d="dismiss">
   <div class="modal-header modal-popup-header-bg">
     <h4 class="modal-title">Create Consultants</h4>
-    <button
-      type="button"
-      class="close"
-      aria-label="Close"
-      (click)="d('Cross click')"
-    >
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
   <div class="modal-body">
-    <form
-      name="form"
-      id="consultantForm"
-      (ngSubmit)="consultantForm.form.valid && createConsultant()"
-      #consultantForm="ngForm"
-      novalidate
-    >
+    <form name="form" id="consultantForm" (ngSubmit)="consultantForm.form.valid && createConsultant()"
+      #consultantForm="ngForm" novalidate>
       <div *ngIf="consultantsToCreate">
         <table class="table table-hover table-striped">
           <thead>
@@ -946,36 +621,18 @@
           <tbody class="overflow-ele-scroll">
             <tr *ngFor="let cnt of consultantsToCreate">
               <td>
-                <input
-                  class="form-control"
-                  [(ngModel)]="cnt.email"
-                  name="email"
-                  #email="ngModel"
-                  readonly
-                />
+                <input class="form-control" [(ngModel)]="cnt.email" name="email" #email="ngModel" readonly />
               </td>
               <td>
-                <input
-                  class="form-control"
-                  [(ngModel)]="cnt.fullname"
-                  name="fullname"
-                  [ngClass]="{
+                <input class="form-control" [(ngModel)]="cnt.fullname" name="fullname" [ngClass]="{
                     'is-invalid': consultantForm.submitted && fullname.invalid
-                  }"
-                  #fullname="ngModel"
-                  required
-                />
+                  }" #fullname="ngModel" required />
                 <div class="invalid-feedback">
                   Fullname is mandatory
                 </div>
               </td>
               <td>
-                <input
-                  class="form-control"
-                  [(ngModel)]="cnt.phone"
-                  name="phone"
-                  #phone="ngModel"
-                />
+                <input class="form-control" [(ngModel)]="cnt.phone" name="phone" #phone="ngModel" />
               </td>
             </tr>
           </tbody>
@@ -984,19 +641,10 @@
       <hr />
       <div class="row pull-right">
         <div class="col-md-12">
-          <button
-            type="submit"
-            class="btn btn-secondary ml-3"
-            [disabled]="creating"
-          >
+          <button type="submit" class="btn btn-secondary ml-3" [disabled]="creating">
             {{ creating ? "loading..." : ("Create" | translate) }}
           </button>
-          <button
-            type="button"
-            class="btn btn-secondary ml-3"
-            (click)="c('Close click')"
-            [disabled]="creating"
-          >
+          <button type="button" class="btn btn-secondary ml-3" (click)="c('Close click')" [disabled]="creating">
             Close
           </button>
         </div>
@@ -1010,32 +658,16 @@
     <h4 class="modal-title">
       Consultant Call History<span class="required">*</span>
     </h4>
-    <button
-      type="button"
-      class="close"
-      aria-label="Close"
-      (click)="d('Cross click')"
-    >
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
   <div class="modal-body">
     <label>Description</label>
-    <textarea
-      class="form-control"
-      cols="5"
-      rows="8"
-      [(ngModel)]="clchModel.description"
-      name="desc"
-    ></textarea>
+    <textarea class="form-control" cols="5" rows="8" [(ngModel)]="clchModel.description" name="desc"></textarea>
   </div>
   <div class="modal-footer">
-    <button
-      type="button"
-      class="btn btn-secondary"
-      (click)="createClientCallHistory()"
-      [disabled]="creating"
-    >
+    <button type="button" class="btn btn-secondary" (click)="createClientCallHistory()" [disabled]="creating">
       {{ creating ? "loading..." : ("Send" | translate) }}
     </button>
     <button type="button" class="btn btn-secondary" (click)="c('Close click')">
@@ -1048,12 +680,7 @@
     <h4 class="modal-title">
       Edit Posting Info<span class="required">*</span>
     </h4>
-    <button
-      type="button"
-      class="close"
-      aria-label="Close"
-      (click)="d('Cross click')"
-    >
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
@@ -1061,25 +688,13 @@
     <div class="row">
       <div class="col-md-12">
         <label>Shine</label>
-        <textarea
-          class="form-control"
-          cols="2"
-          rows="2"
-          [(ngModel)]="model.shineURL"
-          name="shine"
-        ></textarea>
+        <textarea class="form-control" cols="2" rows="2" [(ngModel)]="model.shineURL" name="shine"></textarea>
       </div>
     </div>
     <div class="row">
       <div class="col-md-12">
         <label>Naukri</label>
-        <textarea
-          class="form-control"
-          cols="2"
-          rows="2"
-          [(ngModel)]="model.naukriURL"
-          name="naukri"
-        ></textarea>
+        <textarea class="form-control" cols="2" rows="2" [(ngModel)]="model.naukriURL" name="naukri"></textarea>
       </div>
     </div>
 
@@ -1091,22 +706,12 @@
           <label>Shine Mass Mailing</label>
           <div class="row">
             <div class="col-sm-8">
-              <input
-                class="form-control input-group-lg reg_name"
-                type="date"
-                name="shineMassMailing"
-                [(ngModel)]="model.shineMassMailing"
-                max="9999-12-31"
-              />
+              <input class="form-control input-group-lg reg_name" type="date" name="shineMassMailing"
+                [(ngModel)]="model.shineMassMailing" max="9999-12-31" />
             </div>
             <div class="col-sm-4">
-              <input
-                class="form-control input-group-lg reg_name"
-                type="number"
-                name="shineMassMailingCount"
-                [(ngModel)]="model.shineMassMailingCount"
-                placeholder="Count"
-              />
+              <input class="form-control input-group-lg reg_name" type="number" name="shineMassMailingCount"
+                [(ngModel)]="model.shineMassMailingCount" placeholder="Count" />
             </div>
           </div>
         </div>
@@ -1116,22 +721,12 @@
           <label>Naukri Mass Mailing</label>
           <div class="row">
             <div class="col-sm-8">
-              <input
-                class="form-control input-group-lg reg_name"
-                type="date"
-                name="naukriMassMailing"
-                [(ngModel)]="model.naukriMassMailing"
-                max="9999-12-31"
-              />
+              <input class="form-control input-group-lg reg_name" type="date" name="naukriMassMailing"
+                [(ngModel)]="model.naukriMassMailing" max="9999-12-31" />
             </div>
             <div class="col-sm-4">
-              <input
-                class="form-control input-group-lg reg_name"
-                type="number"
-                name="naukriMassMailingCount"
-                [(ngModel)]="model.naukriMassMailingCount"
-                placeholder="Count"
-              />
+              <input class="form-control input-group-lg reg_name" type="number" name="naukriMassMailingCount"
+                [(ngModel)]="model.naukriMassMailingCount" placeholder="Count" />
             </div>
           </div>
         </div>
@@ -1141,25 +736,15 @@
       <div class="col-md-6">
         <div class="form-group">
           <label>Shine Posting</label>
-          <input
-            type="date"
-            class="form-control"
-            name="shinePosting"
-            [(ngModel)]="model.shinePosting"
-            max="9999-12-31"
-          />
+          <input type="date" class="form-control" name="shinePosting" [(ngModel)]="model.shinePosting"
+            max="9999-12-31" />
         </div>
       </div>
       <div class="col-md-6">
         <div class="form-group">
           <label>Naukri Posting</label>
-          <input
-            type="date"
-            class="form-control"
-            name="naukriPosting"
-            [(ngModel)]="model.naukriPosting"
-            max="9999-12-31"
-          />
+          <input type="date" class="form-control" name="naukriPosting" [(ngModel)]="model.naukriPosting"
+            max="9999-12-31" />
         </div>
       </div>
     </div>
@@ -1167,36 +752,21 @@
       <div class="col-md-6">
         <div class="form-group">
           <label>Facebook Posting</label>
-          <input
-            type="date"
-            class="form-control"
-            name="facebookPosting"
-            [(ngModel)]="model.facebookPosting"
-            max="9999-12-31"
-          />
+          <input type="date" class="form-control" name="facebookPosting" [(ngModel)]="model.facebookPosting"
+            max="9999-12-31" />
         </div>
       </div>
       <div class="col-md-6">
         <div class="form-group">
           <label>Twitter Posting</label>
-          <input
-            type="date"
-            class="form-control"
-            name="twitterPosting"
-            [(ngModel)]="model.twitterPosting"
-            max="9999-12-31"
-          />
+          <input type="date" class="form-control" name="twitterPosting" [(ngModel)]="model.twitterPosting"
+            max="9999-12-31" />
         </div>
       </div>
     </div>
   </div>
   <div class="modal-footer">
-    <button
-      type="button"
-      class="btn btn-secondary"
-      (click)="editPostingInfo()"
-      [disabled]="creating"
-    >
+    <button type="button" class="btn btn-secondary" (click)="editPostingInfo()" [disabled]="creating">
       {{ creating ? "loading..." : ("Update" | translate) }}
     </button>
     <button type="button" class="btn btn-secondary" (click)="c('Close click')">

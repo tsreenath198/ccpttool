@@ -1,13 +1,6 @@
-<app-header
-  *ngIf="!backupStatus"
-  (backupa)="checkBackupStatus($event)"
-></app-header>
+<app-header *ngIf="!backupStatus" (backupa)="checkBackupStatus($event)"></app-header>
 <app-sidebar *ngIf="!backupStatus"></app-sidebar>
-<section
-  *ngIf="!backupStatus"
-  class="main-container"
-  [ngClass]="{ collapsed: collapedSideBar }"
->
+<section *ngIf="!backupStatus" class="main-container" [ngClass]="{ collapsed: collapedSideBar }">
   <router-outlet *ngIf="!backupStatus"></router-outlet>
 </section>
 

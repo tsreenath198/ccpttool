@@ -11,18 +11,22 @@
     <div class="col-md-7">
       <div class="row">
         <div class="col-md-4">
-          <input type="text" class="form-control " placeholder="search..." (keyup)="search()" [(ngModel)]="currSearchTxt" />
+          <input type="text" class="form-control " placeholder="search..." (keyup)="search()"
+            [(ngModel)]="currSearchTxt" />
         </div>
         <div class=" col-md-4">
           <div class="input-group mb-3">
-            <input type="text" class="form-control form-control-sm"  [(ngModel)]="idToActivate" placeholder="Consultant ID">
+            <input type="text" class="form-control form-control-sm" [(ngModel)]="idToActivate"
+              placeholder="Consultant ID">
             <div class="input-group-append">
-              <span class="input-group-text input-group-text-sm " (click)="activateId()" id="basic-addon2">Activate</span>
+              <span class="input-group-text input-group-text-sm " (click)="activateId()"
+                id="basic-addon2">Activate</span>
             </div>
           </div>
         </div>
         <div class="col-md-2">
-          <button *ngIf="inCon" class="btn btn-secondary btn-sm ml-2" (click)="getIncompleteCon()">Incomplete Consultants</button>
+          <button *ngIf="inCon" class="btn btn-secondary btn-sm ml-2" (click)="getIncompleteCon()">Incomplete
+            Consultants</button>
           <button *ngIf="!inCon" class="btn btn-secondary btn-sm ml-2" (click)="getAllCon()">All Consultants</button>
         </div>
         <div class="col-md-4">
@@ -32,36 +36,26 @@
       <div class="row" *ngIf="showAdvSearch.checked">
         <div class="col-md-3">
           <label><small>Keywords</small> </label><br>
-          <input type="text" class="form-control form-control-sm"  [(ngModel)]="advanceSearchModel.skills">
+          <input type="text" class="form-control form-control-sm" [(ngModel)]="advanceSearchModel.skills">
         </div>
         <div class="col-md-3">
           <label><small>Notice Period</small> </label><br>
-          <input type="text" class="form-control form-control-sm"  [(ngModel)]="advanceSearchModel.noticePeriod">
+          <input type="text" class="form-control form-control-sm" [(ngModel)]="advanceSearchModel.noticePeriod">
         </div>
         <div class="col-md-3">
           <label><small>Location</small> </label><br>
-          <input type="text" class="form-control form-control-sm"  [(ngModel)]="advanceSearchModel.location">
+          <input type="text" class="form-control form-control-sm" [(ngModel)]="advanceSearchModel.location">
         </div>
         <div class="col-md-4">
           <div class="form-group">
             <label><small>Experience From</small></label>
             <div class="form-inline">
-              <input
-                type="text"
-                name="minExpYrs"
-                class="form-control form-control-sm col-md-2"
-                [(ngModel)]="advanceSearchModel.minExpYrs"
-                min="0"
-              />
-              &nbsp;&nbsp; <small>years</small>&nbsp;<span> /</span>&nbsp;<input
-                type="text"
-                class="form-control form-control-sm col-md-2"
-                name="minExpMnths"
-                [(ngModel)]="advanceSearchModel.minExpMnths"
-                min="0"
-                max="11"
-                (onkeyup)="imposeMinMax(this)"
-              />&nbsp;&nbsp;<small>months</small>
+              <input type="text" name="minExpYrs" class="form-control form-control-sm col-md-2"
+                [(ngModel)]="advanceSearchModel.minExpYrs" min="0" />
+              &nbsp;&nbsp; <small>years</small>&nbsp;<span> /</span>&nbsp;<input type="text"
+                class="form-control form-control-sm col-md-2" name="minExpMnths"
+                [(ngModel)]="advanceSearchModel.minExpMnths" min="0" max="11"
+                (onkeyup)="imposeMinMax(this)" />&nbsp;&nbsp;<small>months</small>
             </div>
           </div>
         </div>
@@ -69,21 +63,11 @@
           <div class="form-group">
             <label><small>Experience To</small></label>
             <div class="form-inline">
-              <input
-                type="text"
-                name="maxExpYrs"
-                class="form-control form-control-sm col-md-2"
-                [(ngModel)]="advanceSearchModel.maxExpYrs"
-                min="0"
-              />
-              &nbsp;&nbsp; <small>years</small>&nbsp;<span> /</span>&nbsp;<input
-                type="text"
-                class="form-control form-control-sm col-md-2"
-                name="maxExpMnths"
-                [(ngModel)]="advanceSearchModel.maxExpMnths"
-                min="0"
-                max="11"
-              />&nbsp;&nbsp;<small>months</small>
+              <input type="text" name="maxExpYrs" class="form-control form-control-sm col-md-2"
+                [(ngModel)]="advanceSearchModel.maxExpYrs" min="0" />
+              &nbsp;&nbsp; <small>years</small>&nbsp;<span> /</span>&nbsp;<input type="text"
+                class="form-control form-control-sm col-md-2" name="maxExpMnths"
+                [(ngModel)]="advanceSearchModel.maxExpMnths" min="0" max="11" />&nbsp;&nbsp;<small>months</small>
             </div>
           </div>
         </div>
@@ -94,7 +78,8 @@
           <button class=" btn btn-secondary btn-sm mt-4" (click)="cancelAdvSearch(showAdvSearch)">Cancel</button>
         </div>
       </div>
-      <div class="table-responsive mt-2  table-wrapper-scroll-y my-custom-scrollbar " id="viewTable" [style.height.px]="screenHeight">
+      <div class="table-responsive mt-2  table-wrapper-scroll-y my-custom-scrollbar " id="viewTable"
+        [style.height.px]="screenHeight">
         <table class="table table-sm table-hover table-striped">
           <thead>
             <tr>
@@ -114,11 +99,9 @@
             </tr>
           </thead>
           <tbody class="overflow-ele-scroll">
-            <tr
-              *ngFor="let cl of consultantList.list | paginate: paginateConfig; let i = index"
+            <tr *ngFor="let cl of consultantList.list | paginate: paginateConfig; let i = index"
               (click)="setModel(cl.id)"
-              [ngClass]="{ 'bl-green': cl.isProfileCompleted == 'profileComplete', 'bl-red': cl.isProfileCompleted == 'profileInComplete' }"
-            >
+              [ngClass]="{ 'bl-green': cl.isProfileCompleted == 'profileComplete', 'bl-red': cl.isProfileCompleted == 'profileInComplete' }">
               <td class="table-data-padding ">
                 <dl>
                   <dt>{{ cl.fullname }}</dt>
@@ -167,12 +150,8 @@
       <form name="form" id="clientPositionForm" (ngSubmit)="f.form.valid && create(f)" #f="ngForm" novalidate>
         <div class="row text-center">
           <div class="col-md-12 form-group">
-            <button
-              type="submit"
-              *ngIf="enableButtonType == ''"
-              class="btn btn-secondary ml-3"
-              [disabled]="f.form.pristine || f.form.invalid || isCreate"
-            >
+            <button type="submit" *ngIf="enableButtonType == ''" class="btn btn-secondary ml-3"
+              [disabled]="f.form.pristine || f.form.invalid || isCreate">
               Add
             </button>
             <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2" (click)="update(f)">
@@ -182,12 +161,8 @@
               (click)="enableFormEditable()">
               Edit
             </button> -->
-            <button
-              type="button"
-              (click)="cancelForm(f)"
-              *ngIf="enableButtonType == '' || enableButtonType == 'U'"
-              class="btn btn-secondary ml-3"
-            >
+            <button type="button" (click)="cancelForm(f)" *ngIf="enableButtonType == '' || enableButtonType == 'U'"
+              class="btn btn-secondary ml-3">
               {{ enableButtonType != '' ? 'Close' : 'Clear' }}
             </button>
 
@@ -304,15 +279,8 @@
             <div class="col-md-3">
               <div class="form-group">
                 <label>Salutation<span class="required">*</span></label>
-                <select
-                  class="form-control"
-                  name="gender"
-                  [disabled]="readOnlyForm == 'R'"
-                  [(ngModel)]="model.gender"
-                  [ngClass]="{ 'is-invalid': f.submitted && gender.invalid }"
-                  #gender="ngModel"
-                  required
-                >
+                <select class="form-control" name="gender" [disabled]="readOnlyForm == 'R'" [(ngModel)]="model.gender"
+                  [ngClass]="{ 'is-invalid': f.submitted && gender.invalid }" #gender="ngModel" required>
                   <option *ngFor="let gl of GENDER" [ngValue]="gl.value">{{ gl.key }}</option>
                 </select>
                 <div class="invalid-feedback">
@@ -323,17 +291,9 @@
             <div class="col-md-5" style="margin-left:-20px;">
               <div class="form-group">
                 <label>Full Name<span class="required">*</span></label>
-                <input
-                  class="form-control"
-                  name="fullname"
-                  [readonly]="readOnlyForm == 'R'"
-                  [(ngModel)]="model.fullname"
-                  [ngClass]="{ 'is-invalid': f.submitted && fullname.invalid }"
-                  #fullname="ngModel"
-                  #consultantName
-                  (blur)="transformTitleCase(consultantName)"
-                  required
-                />
+                <input class="form-control" name="fullname" [readonly]="readOnlyForm == 'R'"
+                  [(ngModel)]="model.fullname" [ngClass]="{ 'is-invalid': f.submitted && fullname.invalid }"
+                  #fullname="ngModel" #consultantName (blur)="transformTitleCase(consultantName)" required />
                 <div class="invalid-feedback">
                   fullname is mandatory
                 </div>
@@ -343,17 +303,9 @@
             <div class="col-md-4">
               <div class="form-group" data-provide="datepicker">
                 <label>Date of Birth</label>
-                <input
-                  style="width: 175px; margin-left: -15px"
-                  type="date"
-                  class="form-control"
-                  name="dob"
-                  [(ngModel)]="model.dob"
-                  [ngClass]="{ 'is-invalid': f.submitted && dob.invalid }"
-                  #dob="ngModel"
-                  [readonly]="readOnlyForm == 'R'"
-                  max="9999-12-31"
-                />
+                <input style="width: 175px; margin-left: -15px" type="date" class="form-control" name="dob"
+                  [(ngModel)]="model.dob" [ngClass]="{ 'is-invalid': f.submitted && dob.invalid }" #dob="ngModel"
+                  [readonly]="readOnlyForm == 'R'" max="9999-12-31" />
                 <div class="input-group-addon">
                   <span class="glyphicon glyphicon-th"></span>
                 </div>
@@ -365,31 +317,17 @@
               <div class="form-group">
                 <!--pattern="/^-?\d+\.?\d*$/"
                 onKeyPress="if(this.value.length==12) return false;" -->
-                <label>Phone</label
-                ><input
-                  class="form-control"
-                  name="phone"
-                  [readonly]="readOnlyForm == 'R'"
-                  [(ngModel)]="model.phone"
-                  maxlength="14"
-                  onKeyPress="if(this.value.length==14) return false;"
-                  #phone="ngModel"
-                  type="tel"
-                />
+                <label>Phone</label><input class="form-control" name="phone" [readonly]="readOnlyForm == 'R'"
+                  [(ngModel)]="model.phone" maxlength="14" onKeyPress="if(this.value.length==14) return false;"
+                  #phone="ngModel" type="tel" />
               </div>
             </div>
             <div class="col-md-6">
               <div class="form-group">
                 <label>E-Mail</label>
                 <!-- ng-pattern="/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/" -->
-                <input
-                  class="form-control"
-                  name="email"
-                  [readonly]="readOnlyForm == 'R'"
-                  [(ngModel)]="model.email"
-                  #email="ngModel"
-                  type="email"
-                />
+                <input class="form-control" name="email" [readonly]="readOnlyForm == 'R'" [(ngModel)]="model.email"
+                  #email="ngModel" type="email" />
               </div>
             </div>
           </div>
@@ -397,28 +335,15 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label>Qualification</label>
-                <input
-                  class="form-control"
-                  name="highesteducation"
-                  [readonly]="readOnlyForm == 'R'"
-                  [(ngModel)]="model.highestEducation"
-                  maxlength="15"
-                  #highesteducation="ngModel"
-                />
+                <input class="form-control" name="highesteducation" [readonly]="readOnlyForm == 'R'"
+                  [(ngModel)]="model.highestEducation" maxlength="15" #highesteducation="ngModel" />
               </div>
             </div>
             <div class="col-md-6">
               <div class="form-group">
                 <label>Passout Year</label>
-                <input
-                  class="form-control"
-                  name="passoutyear"
-                  [readonly]="readOnlyForm == 'R'"
-                  type="number"
-                  onkeypress="if(this.value.length==4) return false;"
-                  max="9999"
-                  [(ngModel)]="model.passoutYear"
-                />
+                <input class="form-control" name="passoutyear" [readonly]="readOnlyForm == 'R'" type="number"
+                  onkeypress="if(this.value.length==4) return false;" max="9999" [(ngModel)]="model.passoutYear" />
               </div>
             </div>
           </div>
@@ -426,25 +351,16 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label>Current Location</label>
-                <input
-                  type="text"
-                  name="currentLocation"
-                  [readonly]="readOnlyForm == 'R'"
-                  class="form-control"
-                  [(ngModel)]="model.currentLocation"
-                />
+                <input type="text" name="currentLocation" [readonly]="readOnlyForm == 'R'" class="form-control"
+                  [(ngModel)]="model.currentLocation" />
               </div>
             </div>
 
             <div class="col-md-6">
               <div class="form-group">
                 <label>Prefer Location</label>
-                <input
-                  class="form-control"
-                  name="prefferedLocation"
-                  [readonly]="readOnlyForm == 'R'"
-                  [(ngModel)]="model.prefferedLocation"
-                />
+                <input class="form-control" name="prefferedLocation" [readonly]="readOnlyForm == 'R'"
+                  [(ngModel)]="model.prefferedLocation" />
               </div>
             </div>
           </div>
@@ -452,28 +368,18 @@
             <div *ngIf="isFresher" class="col-md-6">
               <div class="form-group">
                 <label>Expected CTC</label>
-                <input
-                  type="text"
-                  name="expectedCTC"
-                  [readonly]="readOnlyForm == 'R'"
-                  class="form-control"
-                  [(ngModel)]="model.expectedCTC"
-                />
+                <input type="text" name="expectedCTC" [readonly]="readOnlyForm == 'R'" class="form-control"
+                  [(ngModel)]="model.expectedCTC" />
               </div>
             </div>
             <div class="col-md-6">
               <div class="form-group">
                 <label>Consultant Status<span class="required">*</span></label>
-                <select
-                  class="form-control"
-                  name="constat"
-                  [disabled]="readOnlyForm == 'R'"
-                  [(ngModel)]="model.conStatus"
-                  [ngClass]="{ 'is-invalid': f.submitted && constat.invalid }"
-                  #constat="ngModel"
-                  required
-                >
-                  <option *ngFor="let cs of consultantStatusList.list" [ngValue]="cs.code"> {{ cs.description }}</option>
+                <select class="form-control" name="constat" [disabled]="readOnlyForm == 'R'"
+                  [(ngModel)]="model.conStatus" [ngClass]="{ 'is-invalid': f.submitted && constat.invalid }"
+                  #constat="ngModel" required>
+                  <option *ngFor="let cs of consultantStatusList.list" [ngValue]="cs.code"> {{ cs.description }}
+                  </option>
                 </select>
                 <div class="invalid-feedback">
                   consultant status is mandatory
@@ -483,13 +389,8 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label>Sourced From</label>
-                <select
-                  class="form-control"
-                  name="sourced"
-                  [disabled]="readOnlyForm == 'R'"
-                  [(ngModel)]="model.sourcedFrom"
-                  #sourced="ngModel"
-                >
+                <select class="form-control" name="sourced" [disabled]="readOnlyForm == 'R'"
+                  [(ngModel)]="model.sourcedFrom" #sourced="ngModel">
                   <option *ngFor="let cs of properties.CON_SOURCE" [ngValue]="cs">
                     {{ cs }}
                   </option>
@@ -499,9 +400,8 @@
           </div>
           <div class="row">
             <div class="col-md-12 pb-2">
-              <input type="checkbox" class="" [(ngModel)]="isFresher" (change)="emptyExperience()" name="interviewCheckbox" />&nbsp;<label
-                >Fresher</label
-              >
+              <input type="checkbox" class="" [(ngModel)]="isFresher" (change)="emptyExperience()"
+                name="interviewCheckbox" />&nbsp;<label>Fresher</label>
             </div>
           </div>
           <div *ngIf="!isFresher">
@@ -509,13 +409,8 @@
               <div class="col-md-6">
                 <div class="form-group">
                   <label>Current Company</label>
-                  <input
-                    type="text"
-                    name="currentCompany"
-                    class="form-control"
-                    [readonly]="readOnlyForm == 'R'"
-                    [(ngModel)]="model.currentCompany"
-                  />
+                  <input type="text" name="currentCompany" class="form-control" [readonly]="readOnlyForm == 'R'"
+                    [(ngModel)]="model.currentCompany" />
                 </div>
               </div>
             </div>
@@ -523,25 +418,15 @@
               <div class="col-md-6">
                 <div class="form-group">
                   <label>Current CTC</label>
-                  <input
-                    type="text"
-                    name="currentCTC"
-                    [readonly]="readOnlyForm == 'R'"
-                    class="form-control"
-                    [(ngModel)]="model.currentCTC"
-                  />
+                  <input type="text" name="currentCTC" [readonly]="readOnlyForm == 'R'" class="form-control"
+                    [(ngModel)]="model.currentCTC" />
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="form-group">
                   <label>Expected CTC</label>
-                  <input
-                    type="text"
-                    name="expectedCTC"
-                    [readonly]="readOnlyForm == 'R'"
-                    class="form-control"
-                    [(ngModel)]="model.expectedCTC"
-                  />
+                  <input type="text" name="expectedCTC" [readonly]="readOnlyForm == 'R'" class="form-control"
+                    [(ngModel)]="model.expectedCTC" />
                 </div>
               </div>
             </div>
@@ -549,25 +434,15 @@
               <div class="col-md-6">
                 <div class="form-group">
                   <label>Current Job Title</label>
-                  <input
-                    type="text"
-                    name="currentJobTitle"
-                    [readonly]="readOnlyForm == 'R'"
-                    class="form-control"
-                    [(ngModel)]="model.currentJobTitle"
-                  />
+                  <input type="text" name="currentJobTitle" [readonly]="readOnlyForm == 'R'" class="form-control"
+                    [(ngModel)]="model.currentJobTitle" />
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="form-group">
                   <label>Current Functional Area</label>
-                  <input
-                    type="text"
-                    name="currentFunctionalArea"
-                    [readonly]="readOnlyForm == 'R'"
-                    class="form-control"
-                    [(ngModel)]="model.currentFunctionalArea"
-                  />
+                  <input type="text" name="currentFunctionalArea" [readonly]="readOnlyForm == 'R'" class="form-control"
+                    [(ngModel)]="model.currentFunctionalArea" />
                 </div>
               </div>
             </div>
@@ -575,35 +450,19 @@
               <div class="col-md-6">
                 <div class="form-group">
                   <label>Current Industry</label>
-                  <input
-                    type="text"
-                    name="currentIndustry"
-                    [readonly]="readOnlyForm == 'R'"
-                    class="form-control"
-                    [(ngModel)]="model.currentIndustry"
-                  />
+                  <input type="text" name="currentIndustry" [readonly]="readOnlyForm == 'R'" class="form-control"
+                    [(ngModel)]="model.currentIndustry" />
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="form-group">
                   <label>Experience in Current Job</label>
                   <div class="form-inline">
-                    <input
-                      type="text"
-                      name="yearsInCurrentJob"
-                      class="form-control col-md-2"
-                      [readonly]="readOnlyForm == 'R'"
-                      [(ngModel)]="model.yearsInCurrentJob"
-                      min="0"
-                    />&nbsp;&nbsp; <small>years</small>&nbsp;<span> /</span>&nbsp;<input
-                      type="text"
-                      class="form-control col-md-2"
-                      name="monthsInCurrentJob"
-                      [readonly]="readOnlyForm == 'R'"
-                      [(ngModel)]="model.monthsInCurrentJob"
-                      min="0"
-                      max="12"
-                    />&nbsp;&nbsp;<small>months</small>
+                    <input type="text" name="yearsInCurrentJob" class="form-control col-md-2"
+                      [readonly]="readOnlyForm == 'R'" [(ngModel)]="model.yearsInCurrentJob" min="0" />&nbsp;&nbsp;
+                    <small>years</small>&nbsp;<span> /</span>&nbsp;<input type="text" class="form-control col-md-2"
+                      name="monthsInCurrentJob" [readonly]="readOnlyForm == 'R'" [(ngModel)]="model.monthsInCurrentJob"
+                      min="0" max="12" />&nbsp;&nbsp;<small>months</small>
                   </div>
                 </div>
               </div>
@@ -613,41 +472,24 @@
                 <div class="form-group">
                   <label>Total Experience</label>
                   <div class="form-inline">
-                    <input
-                      type="text"
-                      name="expyears"
-                      class="form-control col-md-2"
-                      [readonly]="readOnlyForm == 'R'"
-                      [(ngModel)]="model.experienceYrs"
-                      min="0"
-                    />
-                    &nbsp;&nbsp; <small>years</small>&nbsp;<span> /</span>&nbsp;<input
-                      type="text"
-                      class="form-control col-md-2"
-                      name="expmonths"
-                      [readonly]="readOnlyForm == 'R'"
-                      [(ngModel)]="model.experienceMonths"
-                      min="0"
-                      max="11"
-                      (onkeyup)="imposeMinMax(this)"
-                    />&nbsp;&nbsp;<small>months</small>
+                    <input type="text" name="expyears" class="form-control col-md-2" [readonly]="readOnlyForm == 'R'"
+                      [(ngModel)]="model.experienceYrs" min="0" />
+                    &nbsp;&nbsp; <small>years</small>&nbsp;<span> /</span>&nbsp;<input type="text"
+                      class="form-control col-md-2" name="expmonths" [readonly]="readOnlyForm == 'R'"
+                      [(ngModel)]="model.experienceMonths" min="0" max="11"
+                      (onkeyup)="imposeMinMax(this)" />&nbsp;&nbsp;<small>months</small>
                   </div>
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="form-group">
                   <label>Notice period</label>
-                  <select
-                  class="form-control"
-                  name="noticeperiod"
-                  [disabled]="readOnlyForm == 'R'"
-                  [(ngModel)]="model.noticePeriod"
-                  #noticeperiod="ngModel"
-                >
-                  <option *ngFor="let cs of properties.DURATION">
-                    {{ cs }}
-                  </option>
-                </select>
+                  <select class="form-control" name="noticeperiod" [disabled]="readOnlyForm == 'R'"
+                    [(ngModel)]="model.noticePeriod" #noticeperiod="ngModel">
+                    <option *ngFor="let cs of properties.DURATION">
+                      {{ cs }}
+                    </option>
+                  </select>
                 </div>
               </div>
             </div>
@@ -656,14 +498,8 @@
             <div class="col-md-12">
               <div class="form-group">
                 <label>Skills</label>
-                <textarea
-                  class="form-control"
-                  cols="10"
-                  rows="10"
-                  name="skills"
-                  [readonly]="readOnlyForm == 'R'"
-                  [(ngModel)]="model.skills"
-                >
+                <textarea class="form-control" cols="10" rows="10" name="skills" [readonly]="readOnlyForm == 'R'"
+                  [(ngModel)]="model.skills">
                 </textarea>
               </div>
             </div>
@@ -673,31 +509,16 @@
                   <label>Additional Properties</label>
                   <div class="row" *ngFor="let ap of model.properties; let i = index">
                     <div class="col-md-5">
-                      <input
-                        type="text"
-                        [(ngModel)]="ap.name"
-                        class="form-control"
-                        name="addPropName{{ i }}"
-                        [readonly]="readOnlyForm == 'R'"
-                      />
+                      <input type="text" [(ngModel)]="ap.name" class="form-control" name="addPropName{{ i }}"
+                        [readonly]="readOnlyForm == 'R'" />
                     </div>
                     <div class="col-md-5">
-                      <input
-                        type="text"
-                        [(ngModel)]="ap.value"
-                        class="form-control"
-                        name="addPropValue{{ i }}"
-                        [readonly]="readOnlyForm == 'R'"
-                      />
+                      <input type="text" [(ngModel)]="ap.value" class="form-control" name="addPropValue{{ i }}"
+                        [readonly]="readOnlyForm == 'R'" />
                     </div>
                     <div class="col-md-2">
-                      <i
-                        class="fa fa-minus"
-                        aria-hidden="true"
-                        id="decrease"
-                        *ngIf="enableButtonType != 'E'"
-                        (click)="propertiesListIncrement($event.target, i)"
-                      ></i>
+                      <i class="fa fa-minus" aria-hidden="true" id="decrease" *ngIf="enableButtonType != 'E'"
+                        (click)="propertiesListIncrement($event.target, i)"></i>
                     </div>
                   </div>
                 </div>
@@ -706,13 +527,8 @@
             <div class="col-md-12">
               <div class="form-group">
                 <label>Description</label>
-                <textarea
-                  class="form-control"
-                  name="description"
-                  [readonly]="readOnlyForm == 'R'"
-                  [(ngModel)]="model.description"
-                  rows="10"
-                ></textarea>
+                <textarea class="form-control" name="description" [readonly]="readOnlyForm == 'R'"
+                  [(ngModel)]="model.description" rows="10"></textarea>
               </div>
             </div>
           </div>
@@ -722,19 +538,16 @@
                 <label>Additional Properties</label>
                 <div class="row">
                   <div class="col-md-5">
-                    <input type="text" [(ngModel)]="apName" class="form-control" name="apName" [readonly]="readOnlyForm == 'R'" />
+                    <input type="text" [(ngModel)]="apName" class="form-control" name="apName"
+                      [readonly]="readOnlyForm == 'R'" />
                   </div>
                   <div class="col-md-5">
-                    <input type="text" [(ngModel)]="apValue" class="form-control" name="apValue" [readonly]="readOnlyForm == 'R'" />
+                    <input type="text" [(ngModel)]="apValue" class="form-control" name="apValue"
+                      [readonly]="readOnlyForm == 'R'" />
                   </div>
                   <div class="col-md-2">
-                    <i
-                      class="fa fa-plus"
-                      aria-hidden="true"
-                      id="increase"
-                      *ngIf="enableButtonType != 'E'"
-                      (click)="propertiesListIncrement($event.target, 0)"
-                    ></i>
+                    <i class="fa fa-plus" aria-hidden="true" id="increase" *ngIf="enableButtonType != 'E'"
+                      (click)="propertiesListIncrement($event.target, 0)"></i>
                   </div>
                 </div>
               </div>
@@ -764,12 +577,8 @@
         </ng-template>
         <div class="row text-center">
           <div class="col-md-12 form-group">
-            <button
-              type="submit"
-              *ngIf="enableButtonType == ''"
-              class="btn btn-secondary ml-3"
-              [disabled]="f.form.pristine || f.form.invalid || isCreate"
-            >
+            <button type="submit" *ngIf="enableButtonType == ''" class="btn btn-secondary ml-3"
+              [disabled]="f.form.pristine || f.form.invalid || isCreate">
               Add
             </button>
             <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2" (click)="update(f)">

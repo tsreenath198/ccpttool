@@ -10,7 +10,7 @@ export class LayoutComponent implements OnInit {
   collapedSideBar: boolean;
   backupStatus: boolean;
 
-  constructor(private http: HttpClientService) {}
+  constructor(private http: HttpClientService) { }
 
   ngOnInit() {
     this.http.getSubject().subscribe(resp => {

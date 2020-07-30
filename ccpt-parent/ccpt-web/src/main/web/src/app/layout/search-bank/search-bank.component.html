@@ -1,5 +1,6 @@
 <div [@routerTransition]>
-  <app-page-header [icon1]="'fa-book'" [heading1]="'Guides'" [icon2]="'fa-search'" [heading2]="'Search'"> </app-page-header>
+  <app-page-header [icon1]="'fa-book'" [heading1]="'Guides'" [icon2]="'fa-search'" [heading2]="'Search'">
+  </app-page-header>
 
   <div class="spinner padding-top justify-content-md-center" *ngIf="!listReturned">
     <div class="bounce1"></div>
@@ -9,7 +10,8 @@
   <div class="row" *ngIf="listReturned">
     <div class="col-md-7">
       <div class="row">
-        <div class="col-md-6"><input type="text" class="form-control" placeholder="search..." (keyup)="search()" [(ngModel)]="currSearchTxt" /></div>
+        <div class="col-md-6"><input type="text" class="form-control" placeholder="search..." (keyup)="search()"
+            [(ngModel)]="currSearchTxt" /></div>
       </div>
       <div class="table-responsive mt-2 tableFixHead" [style.height.px]="screenHeight">
         <table class="table table-hover table-striped">
@@ -21,10 +23,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr
-              *ngFor="let sbl of sbList.list | paginate: paginateConfig; let i = index"
-              (click)="setModel(sbl.id)"
-            >
+            <tr *ngFor="let sbl of sbList.list | paginate: paginateConfig; let i = index" (click)="setModel(sbl.id)">
               <td>
                 {{ sbl.profile }}
               </td>
@@ -40,20 +39,18 @@
       <form name="form" id="searchBankForm" (ngSubmit)="f.form.valid && create(f)" #f="ngForm" novalidate>
         <div class="row text-center">
           <div class="col-md-12 form-group">
-            <button
-              type="submit"
-              *ngIf="enableButtonType == ''"
-              class="btn btn-secondary ml-3"
-              [disabled]="f.form.pristine || f.form.invalid || isCreate"
-            >
+            <button type="submit" *ngIf="enableButtonType == ''" class="btn btn-secondary ml-3"
+              [disabled]="f.form.pristine || f.form.invalid || isCreate">
               Add
             </button>
-            <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2" (click)="update(f)">Update</button>
+            <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2"
+              (click)="update(f)">Update</button>
             <!-- <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button"
                   (click)="enableFormEditable()">
                   Edit
                 </button> -->
-            <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3" *ngIf="enableButtonType == '' || enableButtonType == 'U'">
+            <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3"
+              *ngIf="enableButtonType == '' || enableButtonType == 'U'">
               {{ enableButtonType != '' ? 'Close' : 'Clear' }}
             </button>
 
@@ -99,7 +96,7 @@
                 <th>Functional Area</th>
                 <td>{{ model.functionalArea }}</td>
               </tr>
-                <!-- <tr *ngFor="let ap of model.properties; let i = index">
+              <!-- <tr *ngFor="let ap of model.properties; let i = index">
                   <th>{{ap.name}}</th>
                   <td>{{ap.value}}</td>
                 </tr> -->
@@ -111,15 +108,9 @@
             <div class="col-md-12">
               <div class="form-group">
                 <label>Profile<span class="required">*</span></label>
-                <input
-                  class="form-control capi"
-                  [readonly]="readOnlyForm == 'R'"
-                  [(ngModel)]="model.profile"
-                  name="profile"
-                  [ngClass]="{ 'is-invalid': f.submitted && profile.invalid }"
-                  #profile="ngModel"
-                  required
-                />
+                <input class="form-control capi" [readonly]="readOnlyForm == 'R'" [(ngModel)]="model.profile"
+                  name="profile" [ngClass]="{ 'is-invalid': f.submitted && profile.invalid }" #profile="ngModel"
+                  required />
                 <div class="invalid-feedback">
                   profile is mandatory
                 </div>
@@ -128,71 +119,36 @@
             <div class="col-md-12">
               <div class="form-group">
                 <label>Any of Keywords (Logic Or)</label>
-                <textarea
-                  class="form-control"
-                  cols="5"
-                  rows="3"
-                  [readonly]="readOnlyForm == 'R'"
-                  [(ngModel)]="model.logicOr"
-                  name="logicOr"
-                  #logicOr="ngModel"
-                ></textarea>
+                <textarea class="form-control" cols="5" rows="3" [readonly]="readOnlyForm == 'R'"
+                  [(ngModel)]="model.logicOr" name="logicOr" #logicOr="ngModel"></textarea>
               </div>
             </div>
             <div class="col-md-12">
               <div class="form-group">
                 <label>All of Keywords (Logic And)</label>
-                <textarea
-                  class="form-control"
-                  cols="5"
-                  rows="3"
-                  [readonly]="readOnlyForm == 'R'"
-                  [(ngModel)]="model.logicAnd"
-                  name="logicAnd"
-                  #logicAnd="ngModel"
-                ></textarea>
+                <textarea class="form-control" cols="5" rows="3" [readonly]="readOnlyForm == 'R'"
+                  [(ngModel)]="model.logicAnd" name="logicAnd" #logicAnd="ngModel"></textarea>
               </div>
             </div>
             <div class="col-md-12">
               <div class="form-group">
                 <label>SWS-Refine1</label>
-                <textarea
-                  class="form-control"
-                  cols="5"
-                  rows="3"
-                  [readonly]="readOnlyForm == 'R'"
-                  [(ngModel)]="model.refine1"
-                  name="refine1"
-                  #refine1="ngModel"
-                ></textarea>
+                <textarea class="form-control" cols="5" rows="3" [readonly]="readOnlyForm == 'R'"
+                  [(ngModel)]="model.refine1" name="refine1" #refine1="ngModel"></textarea>
               </div>
             </div>
             <div class="col-md-12">
               <div class="form-group">
                 <label>SWS-Refine2</label>
-                <textarea
-                  class="form-control"
-                  cols="5"
-                  rows="3"
-                  [readonly]="readOnlyForm == 'R'"
-                  [(ngModel)]="model.refine2"
-                  name="refine2"
-                  #refine2="ngModel"
-                ></textarea>
+                <textarea class="form-control" cols="5" rows="3" [readonly]="readOnlyForm == 'R'"
+                  [(ngModel)]="model.refine2" name="refine2" #refine2="ngModel"></textarea>
               </div>
             </div>
             <div class="col-md-12">
               <div class="form-group">
                 <label>Functional Area</label>
-                <textarea
-                  class="form-control"
-                  cols="5"
-                  rows="3"
-                  [readonly]="readOnlyForm == 'R'"
-                  [(ngModel)]="model.functionalArea"
-                  name="functionalArea"
-                  #functionalArea="ngModel"
-                ></textarea>
+                <textarea class="form-control" cols="5" rows="3" [readonly]="readOnlyForm == 'R'"
+                  [(ngModel)]="model.functionalArea" name="functionalArea" #functionalArea="ngModel"></textarea>
               </div>
             </div>
           </div>
@@ -259,16 +215,14 @@
         </ng-template>
         <div class="row text-center">
           <div class="col-md-12">
-            <button
-              type="submit"
-              *ngIf="enableButtonType == ''"
-              class="btn btn-secondary ml-3"
-              [disabled]="f.form.pristine || f.form.invalid || isCreate"
-            >
+            <button type="submit" *ngIf="enableButtonType == ''" class="btn btn-secondary ml-3"
+              [disabled]="f.form.pristine || f.form.invalid || isCreate">
               Add
             </button>
-            <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2" (click)="update(f)">Update</button>
-            <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3" *ngIf="enableButtonType == '' || enableButtonType == 'U'">
+            <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2"
+              (click)="update(f)">Update</button>
+            <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3"
+              *ngIf="enableButtonType == '' || enableButtonType == 'U'">
               {{ enableButtonType != '' ? 'Close' : 'Clear' }}
             </button>
           </div>

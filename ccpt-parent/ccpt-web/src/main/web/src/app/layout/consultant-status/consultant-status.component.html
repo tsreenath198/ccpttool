@@ -1,5 +1,6 @@
 <div [@routerTransition]>
-  <app-page-header [icon2]="'fa-filter'" [heading2]="'Consultant Status'" [icon1]="'fa-sticky-note'" [heading1]="'Metadata'"></app-page-header>
+  <app-page-header [icon2]="'fa-filter'" [heading2]="'Consultant Status'" [icon1]="'fa-sticky-note'"
+    [heading1]="'Metadata'"></app-page-header>
   <div class="spinner padding-top justify-content-md-center" *ngIf="!listReturned">
     <div class="bounce1"></div>
     <div class="bounce2"></div>
@@ -31,8 +32,9 @@
           </tbody>
         </table>
       </div>
-      <div class="col-12 justify-content-center mb-5" *ngIf="consultantStatusList.noOfRecords > properties.ITEMSPERPAGE">
-        <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls> 
+      <div class="col-12 justify-content-center mb-5"
+        *ngIf="consultantStatusList.noOfRecords > properties.ITEMSPERPAGE">
+        <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
       </div>
     </div>
     <div class="col-md-5">
@@ -45,22 +47,23 @@
               (click)="update(f)">Update</button>
             <!-- <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button"
                 (click)="enableFormEditable()">Edit</button> -->
-            <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3" *ngIf="enableButtonType == '' || enableButtonType == 'U'">
+            <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3"
+              *ngIf="enableButtonType == '' || enableButtonType == 'U'">
               {{ enableButtonType != '' ? 'Close' : 'Clear' }}
             </button>
 
             <span class="pull-right" *ngIf="showAction && readOnlyForm =='R'">
-                <div class="dropdown theme-dropdown clearfix" placement="bottom-right" ngbDropdown>
-                    <!-- <button class="btn btn-secondary" >
+              <div class="dropdown theme-dropdown clearfix" placement="bottom-right" ngbDropdown>
+                <!-- <button class="btn btn-secondary" >
                         Dropdown
                     </button> -->
-                    <i class="fa fa-bars" ngbDropdownToggle></i>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenu1" ngbDropdownMenu>
-                        <a class="dropdown-item drop-list" (click)="enableFormEditable()">Edit</a>
-                        <a class="dropdown-item drop-list" (click)="cancelForm(f)">New</a>
-                        <a class="dropdown-item drop-list" (click)="open(model.id, trashContent)">Delete</a>
-                    </div>
-                </div> 
+                <i class="fa fa-bars" ngbDropdownToggle></i>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenu1" ngbDropdownMenu>
+                  <a class="dropdown-item drop-list" (click)="enableFormEditable()">Edit</a>
+                  <a class="dropdown-item drop-list" (click)="cancelForm(f)">New</a>
+                  <a class="dropdown-item drop-list" (click)="open(model.id, trashContent)">Delete</a>
+                </div>
+              </div>
             </span> </div>
         </div>
         <div class="row">
@@ -81,28 +84,28 @@
 
 
 
-              <select class="form-control" name="statustype" [disabled]="readOnlyForm == 'R'" [(ngModel)]="model.statusType"
-                [ngClass]="{ 'is-invalid': f.submitted && statustype.invalid }" #statustype="ngModel" required>
+              <select class="form-control" name="statustype" [disabled]="readOnlyForm == 'R'"
+                [(ngModel)]="model.statusType" [ngClass]="{ 'is-invalid': f.submitted && statustype.invalid }"
+                #statustype="ngModel" required>
                 <option *ngFor="let stl of properties.STATUS" [ngValue]="stl">
                   {{ stl }}
                 </option>
-              </select> 
+              </select>
               <div class="invalid-feedback">
                 Status Type is mandatory
               </div>
             </div>
           </div>
           <div class="col-md-12">
-              <div class="form-group">
-                <label>Order<span class="required">*</span></label>
-                <input type="number" class="form-control" [readonly]="readOnlyForm == 'R' "
-                  [(ngModel)]="model.ordr" name="order"
-                  [ngClass]="{'is-invalid': f.submitted && order.invalid}" #order="ngModel" required>
-                <div class="invalid-feedback">
-                  order is mandatory
-                </div>
+            <div class="form-group">
+              <label>Order<span class="required">*</span></label>
+              <input type="number" class="form-control" [readonly]="readOnlyForm == 'R' " [(ngModel)]="model.ordr"
+                name="order" [ngClass]="{'is-invalid': f.submitted && order.invalid}" #order="ngModel" required>
+              <div class="invalid-feedback">
+                order is mandatory
               </div>
             </div>
+          </div>
           <div class="col-md-12">
             <div class="form-group">
               <label>Description<span class="required">*</span></label>
@@ -124,7 +127,8 @@
               (click)="update(f)">Update</button>
             <!-- <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button"
               (click)="enableFormEditable()">Edit</button> -->
-            <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3" *ngIf="enableButtonType == '' || enableButtonType == 'U'">
+            <button type="button" (click)="cancelForm(f)" class="btn btn-secondary ml-3"
+              *ngIf="enableButtonType == '' || enableButtonType == 'U'">
               {{ enableButtonType != '' ? 'Close' : 'Clear' }}
             </button>
           </div>

@@ -10,7 +10,8 @@
   <div class="row" *ngIf="listReturned == true; else spinner">
     <div class="col-md-7">
       <div class="row">
-        <div class="col-md-6"><input type="text" class="form-control" placeholder="search..." [(ngModel)]="currSearchTxt" /></div>
+        <div class="col-md-6"><input type="text" class="form-control" placeholder="search..."
+            [(ngModel)]="currSearchTxt" /></div>
       </div>
       <div class="table-responsive mt-2 table-wrapper-scroll-y my-custom-scrollbar" [style.height.px]="screenHeight">
         <table class="table table-hover table-striped">
@@ -28,10 +29,8 @@
             </tr>
           </thead>
           <tbody>
-            <tr
-              *ngFor="let cl of clientList.list | filter: currSearchTxt | paginate: paginateConfig; let i = index"
-              (click)="setModel(cl.id)"
-            >
+            <tr *ngFor="let cl of clientList.list | filter: currSearchTxt | paginate: paginateConfig; let i = index"
+              (click)="setModel(cl.id)">
               <td>
                 {{ cl.name }}
               </td>
@@ -59,23 +58,16 @@
       <form name="form" id="clientForm" (ngSubmit)="f.form.valid && create(f)" #f="ngForm" novalidate>
         <div class="row text-center" *ngIf="loggedInRole != 'User'">
           <div class="col-md-12 form-group">
-            <button
-              type="submit"
-              *ngIf="enableButtonType == ''"
-              class="btn btn-secondary ml-3"
-              [disabled]="f.form.pristine || f.form.invalid || isCreate"
-            >
+            <button type="submit" *ngIf="enableButtonType == ''" class="btn btn-secondary ml-3"
+              [disabled]="f.form.pristine || f.form.invalid || isCreate">
               Add
             </button>
-            <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2" (click)="update(f)">Update</button>
+            <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2"
+              (click)="update(f)">Update</button>
             <!-- <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button"
               (click)="enableFormEditable()">Edit</button> -->
-            <button
-              type="button"
-              (click)="emptyForm(f)"
-              *ngIf="enableButtonType == '' || enableButtonType == 'U'"
-              class="btn btn-secondary ml-3"
-            >
+            <button type="button" (click)="emptyForm(f)" *ngIf="enableButtonType == '' || enableButtonType == 'U'"
+              class="btn btn-secondary ml-3">
               {{ enableButtonType != '' ? 'Close' : 'Clear' }}
             </button>
 
@@ -96,7 +88,7 @@
           </div>
         </div>
         <div *ngIf="readOnlyForm == 'U'; else notRead">
-          
+
           <table class="table table-borderless table-striped">
             <tbody>
               <tr *ngIf="model.name">
@@ -189,17 +181,9 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label>Client Name<span class="required">*</span></label>
-                <input
-                  class="form-control"
-                  [readonly]="readOnlyForm == 'R'"
-                  [(ngModel)]="model.name"
-                  name="code"
-                  [ngClass]="{ 'is-invalid': f.submitted && code.invalid }"
-                  #code="ngModel"
-                  #clientName
-                  (blur)="transformTitleCase(clientName)"
-                  required
-                />
+                <input class="form-control" [readonly]="readOnlyForm == 'R'" [(ngModel)]="model.name" name="code"
+                  [ngClass]="{ 'is-invalid': f.submitted && code.invalid }" #code="ngModel" #clientName
+                  (blur)="transformTitleCase(clientName)" required />
                 <div class="invalid-feedback">
                   client name is mandatory
                 </div>
@@ -208,14 +192,8 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label>Industry Type</label>
-                <select
-                  class="form-control "
-                  [disabled]="readOnlyForm == 'R'"
-                  [(ngModel)]="model.industryId"
-                  name="industryType"
-                  [ngClass]="{ 'is-invalid': f.submitted && industryType.invalid }"
-                  #con="ngModel"
-                >
+                <select class="form-control " [disabled]="readOnlyForm == 'R'" [(ngModel)]="model.industryId"
+                  name="industryType" [ngClass]="{ 'is-invalid': f.submitted && industryType.invalid }" #con="ngModel">
                   <option *ngFor="let itl of itList.list" [ngValue]="itl.id">{{ itl.name }}</option>
                 </select>
                 <div class="invalid-feedback">
@@ -225,51 +203,34 @@
             </div>
           </div>
           <div class="row">
-              <div class="col-md-3">
-                  <div class="form-group">
-                    <label>Salutation<span class="required">*</span></label>
-                    <select
-                      class="form-control"
-                      name="gender"
-                      [disabled]="readOnlyForm == 'R'"
-                      [(ngModel)]="model.salutation"
-                      [ngClass]="{ 'is-invalid': f.submitted && gender.invalid }"
-                      #gender="ngModel"
-                      required
-                    >
-                    <option *ngFor="let cs of properties.SALUTATION">
-                      {{ cs }}
-                    </option>
-                    </select>
-                    <div class="invalid-feedback">
-                      gender is mandatory
-                    </div>
-                  </div>
+            <div class="col-md-3">
+              <div class="form-group">
+                <label>Salutation<span class="required">*</span></label>
+                <select class="form-control" name="gender" [disabled]="readOnlyForm == 'R'"
+                  [(ngModel)]="model.salutation" [ngClass]="{ 'is-invalid': f.submitted && gender.invalid }"
+                  #gender="ngModel" required>
+                  <option *ngFor="let cs of properties.SALUTATION">
+                    {{ cs }}
+                  </option>
+                </select>
+                <div class="invalid-feedback">
+                  gender is mandatory
                 </div>
+              </div>
+            </div>
             <div class="col-md-5" style="margin-left:-20px;">
               <div class="form-group">
                 <label>Contact Person Name</label>
-                <input
-                  class="form-control"
-                  [readonly]="readOnlyForm == 'R'"
-                  [(ngModel)]="model.contactPersonName"
-                  name="cpn"
-                  [ngClass]="{ 'is-invalid': f.submitted && cpn.invalid }"
-                  #cpn="ngModel"
-                />
+                <input class="form-control" [readonly]="readOnlyForm == 'R'" [(ngModel)]="model.contactPersonName"
+                  name="cpn" [ngClass]="{ 'is-invalid': f.submitted && cpn.invalid }" #cpn="ngModel" />
               </div>
             </div>
-            <div class="col-md-4" >
+            <div class="col-md-4">
               <div class="form-group">
                 <label>Designation</label>
-                <input
-                  class="form-control"
-                  [readonly]="readOnlyForm == 'R'"
-                  [(ngModel)]="model.contactPersonDesignation"
-                  name="cpd"
-                  [ngClass]="{ 'is-invalid': f.submitted && cpd.invalid }"
-                  #cpd="ngModel"
-                />
+                <input class="form-control" [readonly]="readOnlyForm == 'R'"
+                  [(ngModel)]="model.contactPersonDesignation" name="cpd"
+                  [ngClass]="{ 'is-invalid': f.submitted && cpd.invalid }" #cpd="ngModel" />
               </div>
             </div>
           </div>
@@ -277,27 +238,15 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label>Phone</label>
-                <input
-                  class="form-control"
-                  [readonly]="readOnlyForm == 'R'"
-                  [(ngModel)]="model.phone"
-                  name="phone"
-                  [ngClass]="{ 'is-invalid': f.submitted && phone.invalid }"
-                  #phone="ngModel"
-                />
+                <input class="form-control" [readonly]="readOnlyForm == 'R'" [(ngModel)]="model.phone" name="phone"
+                  [ngClass]="{ 'is-invalid': f.submitted && phone.invalid }" #phone="ngModel" />
               </div>
             </div>
             <div class="col-md-6">
               <div class="form-group">
                 <label>Email</label>
-                <input
-                  class="form-control"
-                  [readonly]="readOnlyForm == 'R'"
-                  [(ngModel)]="model.email"
-                  name="email"
-                  [ngClass]="{ 'is-invalid': f.submitted && email.invalid }"
-                  #email="ngModel"
-                />
+                <input class="form-control" [readonly]="readOnlyForm == 'R'" [(ngModel)]="model.email" name="email"
+                  [ngClass]="{ 'is-invalid': f.submitted && email.invalid }" #email="ngModel" />
               </div>
             </div>
           </div>
@@ -305,29 +254,17 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label>Guarantee Period</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  [readonly]="readOnlyForm == 'R'"
-                  [(ngModel)]="model.guaranteePeriod"
-                  name="guaranteePeriod"
-                  [ngClass]="{ 'is-invalid': f.submitted && guaranteePeriod.invalid }"
-                  #guaranteePeriod="ngModel"
-                />
+                <input type="text" class="form-control" [readonly]="readOnlyForm == 'R'"
+                  [(ngModel)]="model.guaranteePeriod" name="guaranteePeriod"
+                  [ngClass]="{ 'is-invalid': f.submitted && guaranteePeriod.invalid }" #guaranteePeriod="ngModel" />
               </div>
             </div>
             <div class="col-md-6">
               <div class="form-group">
                 <label>Credit Period</label>
-                <input
-                  class="form-control"
-                  type="text"
-                  [readonly]="readOnlyForm == 'R'"
-                  [(ngModel)]="model.creditPeriod"
-                  name="creditPeriod"
-                  [ngClass]="{ 'is-invalid': f.submitted && creditPeriod.invalid }"
-                  #creditPeriod="ngModel"
-                />
+                <input class="form-control" type="text" [readonly]="readOnlyForm == 'R'"
+                  [(ngModel)]="model.creditPeriod" name="creditPeriod"
+                  [ngClass]="{ 'is-invalid': f.submitted && creditPeriod.invalid }" #creditPeriod="ngModel" />
               </div>
             </div>
           </div>
@@ -335,27 +272,17 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label>Service Tax no</label>
-                <input
-                  class="form-control"
-                  [readonly]="readOnlyForm == 'R'"
-                  [(ngModel)]="model.servicetaxNo"
-                  name="servicetaxNo"
-                  [ngClass]="{ 'is-invalid': f.submitted && servicetaxNo.invalid }"
-                  #servicetaxNo="ngModel"
-                />
+                <input class="form-control" [readonly]="readOnlyForm == 'R'" [(ngModel)]="model.servicetaxNo"
+                  name="servicetaxNo" [ngClass]="{ 'is-invalid': f.submitted && servicetaxNo.invalid }"
+                  #servicetaxNo="ngModel" />
               </div>
             </div>
             <div class="col-md-6">
               <div class="form-group">
                 <label>Service Charge</label>
-                <input
-                  class="form-control"
-                  [readonly]="readOnlyForm == 'R'"
-                  [(ngModel)]="model.serviceCharge"
-                  name="serviceCharge"
-                  [ngClass]="{ 'is-invalid': f.submitted && serviceCharge.invalid }"
-                  #serviceCharge="ngModel"
-                />
+                <input class="form-control" [readonly]="readOnlyForm == 'R'" [(ngModel)]="model.serviceCharge"
+                  name="serviceCharge" [ngClass]="{ 'is-invalid': f.submitted && serviceCharge.invalid }"
+                  #serviceCharge="ngModel" />
               </div>
             </div>
           </div>
@@ -363,27 +290,15 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label>GST</label>
-                <input
-                  class="form-control"
-                  [readonly]="readOnlyForm == 'R'"
-                  [(ngModel)]="model.gst"
-                  name="gst"
-                  [ngClass]="{ 'is-invalid': f.submitted && gst.invalid }"
-                  #gst="ngModel"
-                />
+                <input class="form-control" [readonly]="readOnlyForm == 'R'" [(ngModel)]="model.gst" name="gst"
+                  [ngClass]="{ 'is-invalid': f.submitted && gst.invalid }" #gst="ngModel" />
               </div>
             </div>
             <div class="col-md-6">
               <div class="form-group">
                 <label>Website</label>
-                <input
-                  class="form-control"
-                  [readonly]="readOnlyForm == 'R'"
-                  [(ngModel)]="model.website"
-                  name="web"
-                  [ngClass]="{ 'is-invalid': f.submitted && web.invalid }"
-                  #web="ngModel"
-                />
+                <input class="form-control" [readonly]="readOnlyForm == 'R'" [(ngModel)]="model.website" name="web"
+                  [ngClass]="{ 'is-invalid': f.submitted && web.invalid }" #web="ngModel" />
               </div>
             </div>
           </div>
@@ -393,31 +308,16 @@
                 <label>Additional Properties</label>
                 <div class="row" *ngFor="let ap of model.properties; let i = index">
                   <div class="col-md-5 pt-2">
-                    <input
-                      type="text"
-                      [(ngModel)]="ap.name"
-                      class="form-control"
-                      name="addPropName{{ i }}"
-                      [readonly]="readOnlyForm == 'R'"
-                    />
+                    <input type="text" [(ngModel)]="ap.name" class="form-control" name="addPropName{{ i }}"
+                      [readonly]="readOnlyForm == 'R'" />
                   </div>
                   <div class="col-md-5 pt-2">
-                    <input
-                      type="text"
-                      [(ngModel)]="ap.value"
-                      class="form-control"
-                      name="addPropValue{{ i }}"
-                      [readonly]="readOnlyForm == 'R'"
-                    />
+                    <input type="text" [(ngModel)]="ap.value" class="form-control" name="addPropValue{{ i }}"
+                      [readonly]="readOnlyForm == 'R'" />
                   </div>
                   <div class="col-md-2">
-                    <i
-                      class="fa fa-minus"
-                      aria-hidden="true"
-                      id="decrease"
-                      *ngIf="enableButtonType != 'E'"
-                      (click)="propertiesListIncrement($event.target, i)"
-                    ></i>
+                    <i class="fa fa-minus" aria-hidden="true" id="decrease" *ngIf="enableButtonType != 'E'"
+                      (click)="propertiesListIncrement($event.target, i)"></i>
                   </div>
                 </div>
               </div>
@@ -435,40 +335,26 @@
             <div class="col-md-12">
               <div class="form-group">
                 <label>Address</label>
-                <textarea
-                  class="form-control"
-                  cols="5"
-                  rows="5"
-                  [readonly]="readOnlyForm == 'R'"
-                  [(ngModel)]="model.address"
-                  name="add"
-                  [ngClass]="{ 'is-invalid': f.submitted && add.invalid }"
-                  #add="ngModel"
-                ></textarea>
+                <textarea class="form-control" cols="5" rows="5" [readonly]="readOnlyForm == 'R'"
+                  [(ngModel)]="model.address" name="add" [ngClass]="{ 'is-invalid': f.submitted && add.invalid }"
+                  #add="ngModel"></textarea>
               </div>
             </div>
           </div>
           <div class="row">
             <div class="col-md-12 pb-2">
-              <input type="checkbox" class="" [(ngModel)]="address" (change)="billngAddressMatch()" name="interviewCheckbox" />&nbsp;<label
-                >Billing address is same as address</label
-              >
+              <input type="checkbox" class="" [(ngModel)]="address" (change)="billngAddressMatch()"
+                name="interviewCheckbox" />&nbsp;<label>Billing address is same as address</label>
             </div>
           </div>
           <div class="row">
             <div class="col-md-12">
               <div class="form-group">
                 <label>Billing Address</label>
-                <textarea
-                  class="form-control"
-                  cols="5"
-                  rows="5"
-                  [readonly]="readOnlyForm == 'R'"
-                  [(ngModel)]="model.billingAddress"
-                  name="billingAddress"
+                <textarea class="form-control" cols="5" rows="5" [readonly]="readOnlyForm == 'R'"
+                  [(ngModel)]="model.billingAddress" name="billingAddress"
                   [ngClass]="{ 'is-invalid': f.submitted && billingAddress.invalid }"
-                  #billingAddress="ngModel"
-                ></textarea>
+                  #billingAddress="ngModel"></textarea>
               </div>
             </div>
           </div>
@@ -476,14 +362,8 @@
             <div class="col-md-12">
               <div class="form-group">
                 <label>Map Location</label>
-                <input
-                  class="form-control"
-                  [readonly]="readOnlyForm == 'R'"
-                  [(ngModel)]="model.mapLocation"
-                  name="mapLoc"
-                  [ngClass]="{ 'is-invalid': f.submitted && web.invalid }"
-                  #mapLoc="ngModel"
-                />
+                <input class="form-control" [readonly]="readOnlyForm == 'R'" [(ngModel)]="model.mapLocation"
+                  name="mapLoc" [ngClass]="{ 'is-invalid': f.submitted && web.invalid }" #mapLoc="ngModel" />
               </div>
             </div>
           </div>
@@ -494,58 +374,29 @@
                 <tbody>
                   <tr *ngFor="let cc of model.clientContacts; let i = index">
                     <td>
-                      <input
-                        class="form-control form-control-sm"
-                        [readonly]="readOnlyForm == 'R'"
-                        [(ngModel)]="cc.fullname"
-                        name="fullname{{ i }}"
-                        [ngClass]="{ 'is-invalid': f.submitted && fullname.invalid }"
-                        placeholder="fullname"
-                        #fullname="ngModel"
-                      />
+                      <input class="form-control form-control-sm" [readonly]="readOnlyForm == 'R'"
+                        [(ngModel)]="cc.fullname" name="fullname{{ i }}"
+                        [ngClass]="{ 'is-invalid': f.submitted && fullname.invalid }" placeholder="fullname"
+                        #fullname="ngModel" />
                     </td>
                     <td>
-                      <input
-                        class="form-control form-control-sm"
-                        type="email"
-                        [readonly]="readOnlyForm == 'R'"
-                        [(ngModel)]="cc.email"
-                        name="email{{ i }}"
-                        [ngClass]="{ 'is-invalid': f.submitted && email.invalid }"
-                        placeholder="email"
-                        #email="ngModel"
-                      />
+                      <input class="form-control form-control-sm" type="email" [readonly]="readOnlyForm == 'R'"
+                        [(ngModel)]="cc.email" name="email{{ i }}"
+                        [ngClass]="{ 'is-invalid': f.submitted && email.invalid }" placeholder="email"
+                        #email="ngModel" />
                     </td>
                     <td>
                       <!--pattern="/^-?\d+\.?\d*$/" onKeyPress="if(this.value.length==12) return false;"-->
-                      <input
-                        class="form-control form-control-sm"
-                        type="string"
-                        [readonly]="readOnlyForm == 'R'"
-                        [(ngModel)]="cc.phone"
-                        name="phone{{ i }}"
-                        [ngClass]="{ 'is-invalid': f.submitted && phone.invalid }"
-                        placeholder="phone"
-                        #phone="ngModel"
-                      />
+                      <input class="form-control form-control-sm" type="string" [readonly]="readOnlyForm == 'R'"
+                        [(ngModel)]="cc.phone" name="phone{{ i }}"
+                        [ngClass]="{ 'is-invalid': f.submitted && phone.invalid }" placeholder="phone"
+                        #phone="ngModel" />
                     </td>
                     <td width="20">
-                      <i
-                        class="fa fa-minus"
-                        *ngIf="model.clientContacts.length > 1"
-                        style="font-size:15px"
-                        aria-hidden="true"
-                        id="decrease"
-                        (click)="contactListIncrement($event.target, i)"
-                      ></i>
-                      <i
-                        class="fa fa-plus"
-                        style="font-size:15px"
-                        *ngIf="i + 1 == model.clientContacts.length"
-                        aria-hidden="true"
-                        id="increase"
-                        (click)="contactListIncrement($event.target, i)"
-                      ></i>
+                      <i class="fa fa-minus" *ngIf="model.clientContacts.length > 1" style="font-size:15px"
+                        aria-hidden="true" id="decrease" (click)="contactListIncrement($event.target, i)"></i>
+                      <i class="fa fa-plus" style="font-size:15px" *ngIf="i + 1 == model.clientContacts.length"
+                        aria-hidden="true" id="increase" (click)="contactListIncrement($event.target, i)"></i>
                     </td>
                   </tr>
                 </tbody>
@@ -558,19 +409,16 @@
                 <label>Additional Properties</label>
                 <div class="row">
                   <div class="col-md-5">
-                    <input type="text" [(ngModel)]="apName" class="form-control" name="apName" [readonly]="readOnlyForm == 'R'" />
+                    <input type="text" [(ngModel)]="apName" class="form-control" name="apName"
+                      [readonly]="readOnlyForm == 'R'" />
                   </div>
                   <div class="col-md-5">
-                    <input type="text" [(ngModel)]="apValue" class="form-control" name="apValue" [readonly]="readOnlyForm == 'R'" />
+                    <input type="text" [(ngModel)]="apValue" class="form-control" name="apValue"
+                      [readonly]="readOnlyForm == 'R'" />
                   </div>
                   <div class="col-md-2">
-                    <i
-                      class="fa fa-plus"
-                      aria-hidden="true"
-                      id="increase"
-                      *ngIf="enableButtonType != 'E'"
-                      (click)="propertiesListIncrement($event.target, 0)"
-                    ></i>
+                    <i class="fa fa-plus" aria-hidden="true" id="increase" *ngIf="enableButtonType != 'E'"
+                      (click)="propertiesListIncrement($event.target, 0)"></i>
                   </div>
                 </div>
               </div>
@@ -589,7 +437,8 @@
                     <td>{{ fl.fileName }}</td>
                     <td>{{ fl.Description }}</td>
                     <td>
-                      <button type="button" class="btn btn-secondary btn-sm" (click)="downloadFile(fl.id)">Download</button>
+                      <button type="button" class="btn btn-secondary btn-sm"
+                        (click)="downloadFile(fl.id)">Download</button>
                     </td>
                   </tbody>
                 </table>
@@ -600,15 +449,12 @@
 
         <div class="row text-center" *ngIf="loggedInRole != 'User'">
           <div class="col-md-12 form-group">
-            <button
-              type="submit"
-              *ngIf="enableButtonType == ''"
-              class="btn btn-secondary ml-3"
-              [disabled]="f.form.pristine || f.form.invalid || isCreate"
-            >
+            <button type="submit" *ngIf="enableButtonType == ''" class="btn btn-secondary ml-3"
+              [disabled]="f.form.pristine || f.form.invalid || isCreate">
               Add
             </button>
-            <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2" (click)="update(f)">Update</button>
+            <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2"
+              (click)="update(f)">Update</button>
             <!-- <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button"
                   (click)="enableFormEditable()">Edit</button> -->
             <button type="button" (click)="emptyForm(f)" *ngIf="enableButtonType == ''" class="btn btn-secondary ml-3">
