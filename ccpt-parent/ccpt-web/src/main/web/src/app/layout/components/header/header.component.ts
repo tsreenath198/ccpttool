@@ -18,7 +18,7 @@ export class HeaderComponent implements OnInit {
   public loggedInUserName: string;
   public properties = new Properties();
   public urlConstants = new URLConstants();
-  @Output() backup = new EventEmitter();
+  @Output() backupa = new EventEmitter<boolean>();
   role: string;
   constructor(
     private translate: TranslateService,
@@ -54,15 +54,15 @@ export class HeaderComponent implements OnInit {
     document.cookie = "password=" + "";
   }
   public ccptBackup() {
-    this.backup.emit(true);
+    this.backupa.emit(true);
     this.http.get(this.urlConstants.Backup).subscribe(
       resp => {
-        this.backup.emit(false);
+        this.backupa.emit(false);
         this.toastr.success("Backup", "Successful");
       },
       err => {
         this.toastr.error(err.error.error, err.message);
-        this.backup.emit(false);
+        this.backupa.emit(false);
         console.log(err);
       }
     );

@@ -26,7 +26,7 @@
           <button *ngIf="!inCon" class="btn btn-secondary btn-sm ml-2" (click)="getAllCon()">All Consultants</button>
         </div>
         <div class="col-md-4">
-          <input type="checkbox" #showAdvSearch (change)="advanceSearchModel = {}">Advance Search
+          <input type="checkbox" #showAdvSearch (change)="advanceSearchModel = {}"> Advance Search
         </div>
       </div>
       <div class="row" *ngIf="showAdvSearch.checked">

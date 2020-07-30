@@ -1,5 +1,8 @@
 <div [@routerTransition]>
-  <app-page-header [icon1]="'fa-paper-plane'" [heading1]="'Client Applications'"></app-page-header>
+  <app-page-header
+    [icon1]="'fa-paper-plane'"
+    [heading1]="'Client Applications'"
+  ></app-page-header>
   <ng-template #spinner>
     <div class="spinner padding-top justify-content-md-center">
       <div class="bounce1"></div>
@@ -7,13 +10,18 @@
       <div class="bounce3"></div>
     </div>
   </ng-template>
-  <div class="row " *ngIf="listReturned == true; else spinner">
+  <div class="row" *ngIf="listReturned == true; else spinner">
     <div class="col-md-7">
       <div class="row">
         <div class="col-md-12">
           <div class="row">
             <div class="col-md-3">
-              <select class="form-control  form-control-sm" [(ngModel)]="currSearch.client" name="sel1" (change)="filterSearchCp()">
+              <select
+                class="form-control form-control-sm"
+                [(ngModel)]="currSearch.client"
+                name="sel1"
+                (change)="filterSearchCp()"
+              >
                 <option [ngValue]="0" hidden selected> Client</option>
                 <option [ngValue]="-1">All</option>
                 <option *ngFor="let cl of clientList" [ngValue]="cl.id">
@@ -21,8 +29,16 @@
                 </option>
               </select>
             </div>
-            <div class="col-md-4" *ngIf="currSearch.client != 0 && currSearch.client != -1">
-              <select class="form-control  form-control-sm" [(ngModel)]="currSearch.clientPos" name="sel2" (change)="searchSelect()">
+            <div
+              class="col-md-4"
+              *ngIf="currSearch.client != 0 && currSearch.client != -1"
+            >
+              <select
+                class="form-control form-control-sm"
+                [(ngModel)]="currSearch.clientPos"
+                name="sel2"
+                (change)="searchSelect()"
+              >
                 <option [ngValue]="0" hidden selected> Client Position</option>
                 <option [ngValue]="-1">All</option>
                 <option *ngFor="let cl of searchCp" [ngValue]="cl.id">
@@ -31,7 +47,12 @@
               </select>
             </div>
             <div class="col-md-2">
-              <select class="form-control  form-control-sm" [(ngModel)]="currSearch.status" name="sel3" (change)="searchSelect()">
+              <select
+                class="form-control form-control-sm"
+                [(ngModel)]="currSearch.status"
+                name="sel3"
+                (change)="searchSelect()"
+              >
                 <option [ngValue]="null" hidden selected>Status</option>
                 <option [ngValue]="-1">All</option>
                 <option *ngFor="let st of searchStatusType" [ngValue]="st">
@@ -41,7 +62,7 @@
             </div>
             <div class="col-md-3">
               <input
-                class="form-control  form-control-sm"
+                class="form-control form-control-sm"
                 placeholder="Name/Email/Phone"
                 [(ngModel)]="currSearch.key"
                 (keyup)="searchSelect()"
@@ -51,30 +72,74 @@
           </div>
           <div class="row mt-2">
             <div class="col-md-4">
-              <b class="pull-left">Filter list count:{{ clientApplicationList?.list?.length }}</b>
+              <b class="pull-left"
+                >Filter list count : {{ clientApplicationList?.list?.length }}</b
+              >
             </div>
             <div class="col-md-2">
-              <button *ngIf="isSerach" type="button" class="btn btn-secondary  btn-sm ml-3" (click)="generateSearchParams()">
+              <button
+                *ngIf="isSerach"
+                type="button"
+                class="btn btn-secondary btn-sm ml-3"
+                (click)="generateSearchParams()"
+              >
                 Search
               </button>
             </div>
             <div class="col-md-2">
-              <button *ngIf="isSerach" type="button" class="btn btn-secondary  btn-sm ml-3" (click)="cancelSearch()">
+              <button
+                *ngIf="isSerach"
+                type="button"
+                class="btn btn-secondary btn-sm ml-3"
+                (click)="cancelSearch()"
+              >
                 Cancel
               </button>
             </div>
             <div class="col-md-4">
               <span class="pull-right mr-3" *ngIf="appIds.length > 0">
-                <div class="dropdown theme-dropdown clearfix" placement="bottom-right" ngbDropdown>
+                <div
+                  class="dropdown theme-dropdown clearfix"
+                  placement="bottom-right"
+                  ngbDropdown
+                >
                   <i class="fa fa-bars" ngbDropdownToggle></i>
-                  <div class="dropdown-menu" aria-labelledby="dropdownMenu1" ngbDropdownMenu>
-                    <a class="dropdown-item drop-list" (click)="mailSelectedApplications(appIds, sendMailContent, 'shortlistedCandidates')"
+                  <div
+                    class="dropdown-menu"
+                    aria-labelledby="dropdownMenu1"
+                    ngbDropdownMenu
+                  >
+                    <a
+                      class="dropdown-item drop-list"
+                      (click)="
+                        mailSelectedApplications(
+                          appIds,
+                          sendMailContent,
+                          'shortlistedCandidates'
+                        )
+                      "
                       >Email Shortlisted Candidates</a
                     >
-                    <a class="dropdown-item drop-list" (click)="mailSelectedApplications(appIds, sendMailContent, 'interviewSchedule')"
+                    <a
+                      class="dropdown-item drop-list"
+                      (click)="
+                        mailSelectedApplications(
+                          appIds,
+                          sendMailContent,
+                          'interviewSchedule'
+                        )
+                      "
                       >Email Interview Schedule</a
                     >
-                    <a class="dropdown-item drop-list" (click)="mailSelectedApplications(appIds, sendMailContent, 'statusVerification')"
+                    <a
+                      class="dropdown-item drop-list"
+                      (click)="
+                        mailSelectedApplications(
+                          appIds,
+                          sendMailContent,
+                          'statusVerification'
+                        )
+                      "
                       >Status Verification Email</a
                     >
                   </div>
@@ -84,11 +149,22 @@
           </div>
         </div>
       </div>
-      <div class="table-responsive  mt-2 table-wrapper-scroll-y my-custom-scrollbar" [style.height.px]="screenHeight">
+      <div
+        class="table-responsive mt-2 table-wrapper-scroll-y my-custom-scrollbar"
+        [style.height.px]="screenHeight"
+      >
         <table class="table table-sm table-hover table-striped">
           <thead>
             <tr>
-              <th width="15px"><input class="check" type="checkbox" [(ngModel)]="selectAllCAFlag" *ngIf="currSearch.client === selectedCPToSearch" (change)="onSelectApplication($event,0, 'all')"></th>
+              <th width="15px">
+                <input
+                  class="check"
+                  type="checkbox"
+                  [(ngModel)]="selectAllCAFlag"
+                  *ngIf="currSearch.client === selectedCPToSearch"
+                  (change)="onSelectApplication($event, 0, 'all')"
+                />
+              </th>
               <th>
                 Consultant
               </th>
@@ -107,13 +183,35 @@
             </tr>
           </thead>
           <tbody class="overflow-ele-scroll">
-            <tr class="table-data-padding" *ngFor="let cal of clientApplicationList.list | paginate: paginateConfig; let i = index">
+            <tr
+              class="table-data-padding"
+              *ngFor="
+                let cal of clientApplicationList.list
+                  | paginate: paginateConfig;
+                let i = index
+              "
+            >
               <td class="checkbox" width="15px">
                 <label>
-                  <input class="check" type="checkbox" [checked]="currSearch.client === selectedCPToSearch && selectAllCAFlag !== undefined && selectAllCAFlag === true" (change)="onSelectApplication($event, cal.id, 'single')" />
+                  <input
+                    class="check"
+                    type="checkbox"
+                    [checked]="
+                      currSearch.client === selectedCPToSearch &&
+                      selectAllCAFlag !== undefined &&
+                      selectAllCAFlag === true
+                    "
+                    (change)="onSelectApplication($event, cal.id, 'single')"
+                  />
                 </label>
               </td>
-              <td container="body" class="click-data" [autoClose]="'outside'" [ngbPopover]="popContent1" [popoverTitle]="popTitle1">
+              <td
+                container="body"
+                class="click-data"
+                [autoClose]="'outside'"
+                [ngbPopover]="popContent1"
+                [popoverTitle]="popTitle1"
+              >
                 {{ cal.consultant.fullname }}
               </td>
               <td
@@ -132,12 +230,16 @@
 
               <td (click)="setModel(cal.id)">{{ cal.sentOn }}</td>
 
-              <ng-template #popContent1>{{ cal.consultant.phone }}<br />{{ cal.consultant.email }}</ng-template>
+              <ng-template #popContent1
+                >{{ cal.consultant.phone }}<br />{{
+                  cal.consultant.email
+                }}</ng-template
+              >
               <ng-template #popTitle1><b>Consultant Details</b></ng-template>
               <ng-template #popContent2
-                >{{ cal.clientPosition.client.phone }}<br />{{ cal.clientPosition.client.email }}<br />{{
-                  cal.clientPosition.client.address
-                }}
+                >{{ cal.clientPosition.client.phone }}<br />{{
+                  cal.clientPosition.client.email
+                }}<br />{{ cal.clientPosition.client.address }}
               </ng-template>
               <ng-template #popTitle2><b>Client Details</b></ng-template>
               <!-- <td width="140">
@@ -150,12 +252,23 @@
           </tbody>
         </table>
       </div>
-      <div class="col-12 justify-content-center mb-5" *ngIf="clientApplicationList.noOfRecords > properties.ITEMSPERPAGE">
-        <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
+      <div
+        class="col-12 justify-content-center mb-5"
+        *ngIf="clientApplicationList.noOfRecords > properties.ITEMSPERPAGE"
+      >
+        <pagination-controls
+          (pageChange)="pageChanged($event)"
+        ></pagination-controls>
       </div>
     </div>
     <div class="col-md-5">
-      <form name="form" id="clientApplicationForm" (ngSubmit)="f.form.valid && createAll(f, consultantCall)" #f="ngForm" novalidate>
+      <form
+        name="form"
+        id="clientApplicationForm"
+        (ngSubmit)="f.form.valid && createAll(f, consultantCall)"
+        #f="ngForm"
+        novalidate
+      >
         <div class="row text-center">
           <div class="col-md-12 form-group">
             <button
@@ -166,7 +279,12 @@
             >
               Add
             </button>
-            <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2" (click)="update(f)">
+            <button
+              type="button"
+              *ngIf="enableButtonType == 'U'"
+              class="btn btn-secondary ml-2"
+              (click)="update(f)"
+            >
               Update
             </button>
             <!-- <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button"
@@ -177,22 +295,42 @@
               *ngIf="enableButtonType == '' || enableButtonType == 'U'"
               class="btn btn-secondary ml-3"
             >
-              {{ enableButtonType != '' ? 'Close' : 'Clear' }}
+              {{ enableButtonType != "" ? "Close" : "Clear" }}
             </button>
             <span class="pull-right" *ngIf="showAction && readOnlyForm == 'U'">
-              <div class="dropdown theme-dropdown clearfix" placement="bottom-right" ngbDropdown>
+              <div
+                class="dropdown theme-dropdown clearfix"
+                placement="bottom-right"
+                ngbDropdown
+              >
                 <!-- <button class="btn btn-secondary" >
                         Dropdown
                     </button> -->
                 <i class="fa fa-bars" ngbDropdownToggle></i>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenu1" ngbDropdownMenu>
-                  <a class="dropdown-item drop-list" (click)="enableFormEditable()">Edit</a>
-                  <a class="dropdown-item drop-list" (click)="cancelForm(f)">New</a>
-                  <a class="dropdown-item drop-list" (click)="open(model.id, uploadContent)">File Upload</a>
+                <div
+                  class="dropdown-menu"
+                  aria-labelledby="dropdownMenu1"
+                  ngbDropdownMenu
+                >
+                  <a
+                    class="dropdown-item drop-list"
+                    (click)="enableFormEditable()"
+                    >Edit</a
+                  >
+                  <a class="dropdown-item drop-list" (click)="cancelForm(f)"
+                    >New</a
+                  >
+                  <a
+                    class="dropdown-item drop-list"
+                    (click)="open(model.id, uploadContent)"
+                    >File Upload</a
+                  >
                   <a
                     class="dropdown-item drop-list"
                     *ngIf="model.status.description == 'Interview Scheduled'"
-                    (click)="getInterviewDetailsEmail(model.id, sendMailContent)"
+                    (click)="
+                      getInterviewDetailsEmail(model.id, sendMailContent)
+                    "
                     >Email Interview Schedule</a
                   >
                   <a
@@ -207,15 +345,23 @@
                     (click)="setPaymentModel(model, createPayment)"
                     >Create Payment</a
                   >
-                  <a class="dropdown-item drop-list" (click)="open(model.id, createFAQs)">FAQ's</a>
-                  <a class="dropdown-item drop-list" (click)="open(model.id, trashContent)">Delete</a>
+                  <a
+                    class="dropdown-item drop-list"
+                    (click)="open(model.id, createFAQs)"
+                    >FAQ's</a
+                  >
+                  <a
+                    class="dropdown-item drop-list"
+                    (click)="open(model.id, trashContent)"
+                    >Delete</a
+                  >
                 </div>
               </div>
             </span>
           </div>
         </div>
         <div *ngIf="readOnlyForm == 'U'; else notRead">
-          <table class="table table-borderless  table-striped">
+          <table class="table table-borderless table-striped">
             <tbody>
               <tr *ngIf="model?.clientPosition?.generatedCode">
                 <th width="200px">Client Position</th>
@@ -263,19 +409,33 @@
                 <th>CRF</th>
                 <td>
                   <span *ngIf="isCRF; else noCRF">
-                    <span class="crf" (click)="downloadFile(crfFile.id)">{{ crfFile.fileName }} </span>
+                    <span class="crf" (click)="downloadFile(crfFile.id)"
+                      >{{ crfFile.fileName }}
+                    </span>
                     <span class="pull-right">
-                      <i class="fa fa-trash" (click)="deleteCRF(crfFile.id)" aria-hidden="true"></i>
+                      <i
+                        class="fa fa-trash"
+                        (click)="deleteCRF(crfFile.id)"
+                        aria-hidden="true"
+                      ></i>
                     </span>
                   </span>
                   <ng-template #noCRF>
-                    <button class="btn btn-secondary btn-sm ml-2" type="button" (click)="uploadCRF(uploadContent)">Upload CRF</button>
+                    <button
+                      class="btn btn-secondary btn-sm ml-2"
+                      type="button"
+                      (click)="uploadCRF(uploadContent)"
+                    >
+                      Upload CRF
+                    </button>
                   </ng-template>
                 </td>
               </tr>
               <tr *ngFor="let fl of model.files">
                 <th>Files</th>
-                <td class="crf" (click)="downloadFile(fl.id)">{{ fl.fileName }}</td>
+                <td class="crf" (click)="downloadFile(fl.id)">
+                  {{ fl.fileName }}
+                </td>
               </tr>
             </tbody>
           </table>
@@ -287,14 +447,18 @@
                 <label>Client Position<span class="required">*</span></label>
                 <span *ngIf="readOnlyForm == 'U' || readOnlyForm == ''">
                   <select
-                    class="form-control "
+                    class="form-control"
                     name="cp"
                     [(ngModel)]="model.cpId"
                     [ngClass]="{ 'is-invalid': f.submitted && cp.invalid }"
                     #cp="ngModel"
                     required
                   >
-                    <option *ngFor="let cpl of clientPositionList" [ngValue]="cpl.id">{{ cpl.name }} </option>
+                    <option
+                      *ngFor="let cpl of clientPositionList"
+                      [ngValue]="cpl.id"
+                      >{{ cpl.name }}
+                    </option>
                   </select>
                   <div class="invalid-feedback">
                     Client Position is mandatory
@@ -303,7 +467,7 @@
                 <span *ngIf="readOnlyForm == 'R'">
                   <input
                     type="text"
-                    class="form-control "
+                    class="form-control"
                     name="generatedcode"
                     #generatedcode="ngModel"
                     readonly
@@ -316,16 +480,20 @@
               <div class="form-group">
                 <label>Consultant<span class="required">*</span></label>
                 <select
-                  class="form-control "
+                  class="form-control"
                   [disabled]="readOnlyForm == 'R'"
                   [(ngModel)]="model.consultantId"
                   name="con"
                   [ngClass]="{ 'is-invalid': f.submitted && con.invalid }"
                   #con="ngModel"
-                  (change)="openSearchCon($event.target.value, searchConsultant)"
+                  (change)="
+                    openSearchCon($event.target.value, searchConsultant)
+                  "
                   required
                 >
-                  <option *ngFor="let cl of consultantList" [ngValue]="cl.id">{{ cl.name }}</option>
+                  <option *ngFor="let cl of consultantList" [ngValue]="cl.id">{{
+                    cl.name
+                  }}</option>
                   <option value="more">More</option>
                 </select>
                 <div class="invalid-feedback">
@@ -337,9 +505,13 @@
           <div class="row">
             <div class="col-md-6">
               <div class="form-group">
-                <label>Client Application Status<span class="required">*</span></label>
+                <label
+                  >Client Application Status<span class="required"
+                    >*</span
+                  ></label
+                >
                 <select
-                  class="form-control "
+                  class="form-control"
                   name="cas"
                   [disabled]="readOnlyForm == 'R'"
                   [(ngModel)]="model.caStatus"
@@ -347,7 +519,10 @@
                   #cas="ngModel"
                   required
                 >
-                  <option *ngFor="let casl of clientApplicationStatusList.list" [ngValue]="casl.code">
+                  <option
+                    *ngFor="let casl of clientApplicationStatusList.list"
+                    [ngValue]="casl.code"
+                  >
                     {{ casl.description }}
                   </option>
                 </select>
@@ -360,7 +535,7 @@
               <div class="form-group">
                 <label>Creator<span class="required">*</span></label>
                 <select
-                  class="form-control "
+                  class="form-control"
                   name="creator"
                   [disabled]="readOnlyForm == 'R'"
                   [(ngModel)]="model.creatorId"
@@ -382,7 +557,7 @@
               <label>Sent On</label>
               <input
                 type="date"
-                class="form-control "
+                class="form-control"
                 name="senton"
                 #senton="ngModel"
                 [readonly]="readOnlyForm == 'R'"
@@ -403,15 +578,19 @@
                 <div *ngIf="model.caStatus == 'Interview Scheduled'">
                   <div class="row">
                     <div class="col-md-6">
-                      <label class="pt-2">Interview Date<span class="required">*</span></label>
+                      <label class="pt-2"
+                        >Interview Date<span class="required">*</span></label
+                      >
                       <input
                         type="date"
-                        class="form-control "
+                        class="form-control"
                         name="intDate"
                         #intDate="ngModel"
                         [readonly]="readOnlyForm == 'R'"
                         [(ngModel)]="model.interviewDate"
-                        [ngClass]="{ 'is-invalid': f.submitted && intDate.invalid }"
+                        [ngClass]="{
+                          'is-invalid': f.submitted && intDate.invalid
+                        }"
                         (change)="dateChange()"
                         required
                       />
@@ -424,15 +603,19 @@
                       </div>
                     </div>
                     <div class="col-md-6">
-                      <label class="pt-2">Interview Time<span class="required">*</span></label>
+                      <label class="pt-2"
+                        >Interview Time<span class="required">*</span></label
+                      >
                       <input
                         type="time"
-                        class="form-control "
+                        class="form-control"
                         name="intTime"
                         #intTime="ngModel"
                         [readonly]="readOnlyForm == 'R'"
                         [(ngModel)]="model.interviewTime"
-                        [ngClass]="{ 'is-invalid': f.submitted && intTime.invalid }"
+                        [ngClass]="{
+                          'is-invalid': f.submitted && intTime.invalid
+                        }"
                         required
                       />
                       <div class="invalid-feedback">
@@ -445,9 +628,13 @@
                   </div>
                   <div class="row">
                     <div class="col-md-6">
-                      <label class="pt-2">Interview Location<span class="required">*</span></label>
+                      <label class="pt-2"
+                        >Interview Location<span class="required"
+                          >*</span
+                        ></label
+                      >
                       <input
-                        class="form-control "
+                        class="form-control"
                         name="loc"
                         [readonly]="readOnlyForm == 'R'"
                         [(ngModel)]="model.interviewLocation"
@@ -461,15 +648,21 @@
                       </div>
                     </div>
                     <div class="col-md-6">
-                      <label class="pt-2">Interview Mode<span class="required">*</span></label>
+                      <label class="pt-2"
+                        >Interview Mode<span class="required">*</span></label
+                      >
                       <select
-                        class="form-control "
+                        class="form-control"
                         name="mode"
                         [disabled]="readOnlyForm == 'R'"
                         [(ngModel)]="model.interviewMode"
                         required
                       >
-                        <option *ngFor="let im of interviewMode" [ngValue]="im.value">{{ im.key }}</option>
+                        <option
+                          *ngFor="let im of interviewMode"
+                          [ngValue]="im.value"
+                          >{{ im.key }}</option
+                        >
                       </select>
                       <div class="invalid-feedback">
                         Interview Mode is mandatory
@@ -481,7 +674,12 @@
 
                     <div class="col-md-6">
                       <label class="pt-2">Online Id</label>
-                      <input class="form-control " name="onlineId" [readonly]="readOnlyForm == 'R'" [(ngModel)]="model.onlineId" />
+                      <input
+                        class="form-control"
+                        name="onlineId"
+                        [readonly]="readOnlyForm == 'R'"
+                        [(ngModel)]="model.onlineId"
+                      />
                       <div class="input-group-addon">
                         <span class="glyphicon glyphicon-th"></span>
                       </div>
@@ -494,12 +692,15 @@
               <div class="col-md-12 ml-3">
                 <div class="form-group">
                   <label>Additional Properties</label>
-                  <div class="row" *ngFor="let ap of model.properties; let i = index">
+                  <div
+                    class="row"
+                    *ngFor="let ap of model.properties; let i = index"
+                  >
                     <div class="col-md-5 pt-2">
                       <input
                         type="text"
                         [(ngModel)]="ap.name"
-                        class="form-control "
+                        class="form-control"
                         name="addPropName{{ i }}"
                         [readonly]="readOnlyForm == 'R'"
                       />
@@ -508,7 +709,7 @@
                       <input
                         type="text"
                         [(ngModel)]="ap.value"
-                        class="form-control "
+                        class="form-control"
                         name="addPropValue{{ i }}"
                         [readonly]="readOnlyForm == 'R'"
                       />
@@ -529,7 +730,11 @@
             <div class="col-md-12">
               <div class="form-group">
                 <label>Description</label>
-                <angular-editor [(ngModel)]="model.description" name="description" [config]="config"></angular-editor>
+                <angular-editor
+                  [(ngModel)]="model.description"
+                  name="description"
+                  [config]="config"
+                ></angular-editor>
               </div>
             </div>
           </div>
@@ -539,10 +744,22 @@
                 <label>Additional Properties</label>
                 <div class="row">
                   <div class="col-md-5">
-                    <input type="text" [(ngModel)]="apName" class="form-control " name="apName" [readonly]="readOnlyForm == 'R'" />
+                    <input
+                      type="text"
+                      [(ngModel)]="apName"
+                      class="form-control"
+                      name="apName"
+                      [readonly]="readOnlyForm == 'R'"
+                    />
                   </div>
                   <div class="col-md-5">
-                    <input type="text" [(ngModel)]="apValue" class="form-control " name="apValue" [readonly]="readOnlyForm == 'R'" />
+                    <input
+                      type="text"
+                      [(ngModel)]="apValue"
+                      class="form-control"
+                      name="apValue"
+                      [readonly]="readOnlyForm == 'R'"
+                    />
                   </div>
                   <div class="col-md-2">
                     <i
@@ -570,7 +787,13 @@
                     <td>{{ fl.fileName }}</td>
                     <td>{{ fl.Description }}</td>
                     <td>
-                      <button type="button" class="btn btn-secondary btn-sm" (click)="downloadFile(fl.id)">Download</button>
+                      <button
+                        type="button"
+                        class="btn btn-secondary btn-sm"
+                        (click)="downloadFile(fl.id)"
+                      >
+                        Download
+                      </button>
                     </td>
                   </tbody>
                 </table>
@@ -588,13 +811,23 @@
             >
               Add
             </button>
-            <button type="button" *ngIf="enableButtonType == 'U'" class="btn btn-secondary ml-2" (click)="update(f)">
+            <button
+              type="button"
+              *ngIf="enableButtonType == 'U'"
+              class="btn btn-secondary ml-2"
+              (click)="update(f)"
+            >
               Update
             </button>
             <!-- <button *ngIf="enableButtonType == 'E'" class="btn btn-secondary ml-2" type="button"
                   (click)="enableFormEditable()">Edit</button> -->
-            <button type="button" (click)="cancelForm(f)" *ngIf="enableButtonType == ''" class="btn btn-secondary ml-3">
-              {{ enableButtonType != '' ? 'Close' : 'Clear' }}
+            <button
+              type="button"
+              (click)="cancelForm(f)"
+              *ngIf="enableButtonType == ''"
+              class="btn btn-secondary ml-3"
+            >
+              {{ enableButtonType != "" ? "Close" : "Clear" }}
             </button>
           </div>
         </div>
@@ -606,7 +839,12 @@
 <ng-template #trashContent let-c="close" let-d="dismiss">
   <div class="modal-header modal-popup-header-bg">
     <h4 class="modal-title">Client Application</h4>
-    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="d('Cross click')"
+    >
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
@@ -614,14 +852,23 @@
     <p>Are you sure you want to delete ? &hellip;</p>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-secondary" (click)="trash()">Ok</button>
-    <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
+    <button type="button" class="btn btn-secondary" (click)="trash()">
+      Ok
+    </button>
+    <button type="button" class="btn btn-secondary" (click)="c('Close click')">
+      Close
+    </button>
   </div>
 </ng-template>
 <ng-template #downloadContent let-c="close" let-d="dismiss">
   <div class="modal-header modal-popup-header-bg">
     <h4 class="modal-title">Consultant {{ this.properties.DOWNLOAD }}</h4>
-    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="d('Cross click')"
+    >
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
@@ -636,13 +883,21 @@
         <td>{{ fl.fileName }}</td>
         <td>{{ fl.Description }}</td>
         <td>
-          <button type="button" class="btn btn-secondary btn-sm" (click)="downloadFile(fl.id)">Download</button>
+          <button
+            type="button"
+            class="btn btn-secondary btn-sm"
+            (click)="downloadFile(fl.id)"
+          >
+            Download
+          </button>
         </td>
       </tbody>
     </table>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
+    <button type="button" class="btn btn-secondary" (click)="c('Close click')">
+      Close
+    </button>
   </div>
 </ng-template>
 <ng-template #emptyMsg>
@@ -651,23 +906,48 @@
 <ng-template #uploadContent let-c="close" let-d="dismiss">
   <div class="modal-header modal-popup-header-bg">
     <h4 class="modal-title">{{ urlConstants.UploadFilesMsg }}</h4>
-    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="d('Cross click')"
+    >
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
   <div class="modal-body">
-    <input class="form-control " type="file" ng2FileSelect [uploader]="uploader" />
-    <textarea class="form-control  mt-3" placeholder="comments" cols="5" rows="5" [(ngModel)]="comments"></textarea>
+    <input
+      class="form-control"
+      type="file"
+      ng2FileSelect
+      [uploader]="uploader"
+    />
+    <textarea
+      class="form-control mt-3"
+      placeholder="comments"
+      cols="5"
+      rows="5"
+      [(ngModel)]="comments"
+    ></textarea>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-secondary" (click)="uploadFiles()">Upload</button>
-    <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
+    <button type="button" class="btn btn-secondary" (click)="uploadFiles()">
+      Upload
+    </button>
+    <button type="button" class="btn btn-secondary" (click)="c('Close click')">
+      Close
+    </button>
   </div>
 </ng-template>
 <ng-template #sendMailContent let-c="close" let-d="dismiss">
   <div class="modal-header modal-popup-header-bg">
     <h4 class="modal-title">Send Mail</h4>
-    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="d('Cross click')"
+    >
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
@@ -692,27 +972,61 @@
             </option>
           </select>
         </div> -->
-    <input type="text" [(ngModel)]="sendEmailModel.toEmails" [readonly]="loggedInRole != 'Admin'" class="form-control " name="to" />
+    <input
+      type="text"
+      [(ngModel)]="sendEmailModel.toEmails"
+      [readonly]="loggedInRole != 'Admin'"
+      class="form-control"
+      name="to"
+    />
     <div *ngIf="loggedInRole == 'Admin'">
       <label>Cc</label>
-      <input type="text" [(ngModel)]="sendEmailModel.cc" class="form-control " name="cc" />
+      <input
+        type="text"
+        [(ngModel)]="sendEmailModel.cc"
+        class="form-control"
+        name="cc"
+      />
     </div>
     <label>Bcc</label>
-    <input type="text" [(ngModel)]="sendEmailModel.bcc" class="form-control " name="bcc" />
+    <input
+      type="text"
+      [(ngModel)]="sendEmailModel.bcc"
+      class="form-control"
+      name="bcc"
+    />
     <label>Subject</label>
-    <input class="form-control " [(ngModel)]="sendEmailModel.subject" name="sub" />
+    <input
+      class="form-control"
+      [(ngModel)]="sendEmailModel.subject"
+      name="sub"
+    />
     <label>Message Body</label>
-    <angular-editor [(ngModel)]="sendEmailModel.body" name="body" [config]="config"> </angular-editor>
+    <angular-editor
+      [(ngModel)]="sendEmailModel.body"
+      name="body"
+      [config]="config"
+    >
+    </angular-editor>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-secondary" (click)="sendEmailReq()">Send</button>
-    <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
+    <button type="button" class="btn btn-secondary" (click)="sendEmailReq()">
+      Send
+    </button>
+    <button type="button" class="btn btn-secondary" (click)="c('Close click')">
+      Close
+    </button>
   </div>
 </ng-template>
 <ng-template #createPayment let-c="close" let-d="dismiss">
   <div class="modal-header modal-popup-header-bg">
     <h4 class="modal-title">Create Payment</h4>
-    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="d('Cross click')"
+    >
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
@@ -726,11 +1040,11 @@
     >
       <div class="row">
         <div class="col-md-6">
-          <div class="form-group ">
+          <div class="form-group">
             <label>Joining Date<span class="required">*</span></label>
             <input
               type="date"
-              class="form-control "
+              class="form-control"
               name="joiningDate"
               [(ngModel)]="paymentModel.joiningDate"
               #joiningDate="ngModel"
@@ -746,7 +1060,7 @@
             <label>Annual Package<span class="required">*</span></label>
             <input
               type="text"
-              class="form-control "
+              class="form-control"
               name="annualPackage"
               [(ngModel)]="paymentModel.annualPackage"
               #annualPackage="ngModel"
@@ -759,9 +1073,11 @@
         </div>
         <div class="col-md-6">
           <div class="form-group">
-            <label>Contact Person Designation<span class="required">*</span></label>
+            <label
+              >Contact Person Designation<span class="required">*</span></label
+            >
             <input
-              class="form-control "
+              class="form-control"
               [(ngModel)]="paymentModel.contactPersonDesignation"
               name="contactPersonDesignation"
               #contactPersonDesignation="ngModel"
@@ -776,7 +1092,7 @@
           <div class="form-group">
             <label>Company Gst<span class="required">*</span></label>
             <input
-              class="form-control "
+              class="form-control"
               [(ngModel)]="paymentModel.gst"
               name="gst"
               #gst="ngModel"
@@ -791,7 +1107,7 @@
           <div class="form-group">
             <label>Company Website<span class="required">*</span></label>
             <input
-              class="form-control "
+              class="form-control"
               [(ngModel)]="paymentModel.gst"
               name="website"
               #website="ngModel"
@@ -806,7 +1122,7 @@
           <div class="form-group">
             <label>Billing Address<span class="required">*</span></label>
             <textarea
-              class="form-control "
+              class="form-control"
               rows="5"
               [(ngModel)]="paymentModel.billingAddress"
               name="billingAddress"
@@ -822,7 +1138,7 @@
           <div class="form-group">
             <label>Description<span class="required">*</span></label>
             <textarea
-              class="form-control "
+              class="form-control"
               rows="5"
               [(ngModel)]="paymentModel.description"
               name="description"
@@ -838,10 +1154,20 @@
       <hr />
       <div class="row pull-right">
         <div class="col-md-12">
-          <button type="submit" class="btn btn-secondary ml-3" [disabled]="creating">
-            {{ creating ? 'loading...' : ('Create' | translate) }}
+          <button
+            type="submit"
+            class="btn btn-secondary ml-3"
+            [disabled]="creating"
+          >
+            {{ creating ? "loading..." : ("Create" | translate) }}
           </button>
-          <button type="button" class="btn btn-secondary ml-3" (click)="c('Close click')">Close</button>
+          <button
+            type="button"
+            class="btn btn-secondary ml-3"
+            (click)="c('Close click')"
+          >
+            Close
+          </button>
         </div>
       </div>
     </form>
@@ -850,62 +1176,123 @@
 <ng-template #sendSMSContent let-c="close" let-d="dismiss">
   <div class="modal-header modal-popup-header-bg">
     <h4 class="modal-title">Send SMS</h4>
-    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="d('Cross click')"
+    >
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
   <div class="modal-body">
     <label>Number</label>
     <div class="form-group">
-      <input class="form-control " [(ngModel)]="sendSmsModel.contactNumbers" name="tonumbers" #tonumbers="ngModel" />
+      <input
+        class="form-control"
+        [(ngModel)]="sendSmsModel.contactNumbers"
+        name="tonumbers"
+        #tonumbers="ngModel"
+      />
     </div>
     <label>Message Body</label>
-    <textarea class="form-control " cols="5" rows="8" [(ngModel)]="sendSmsModel.message" name="body"></textarea>
+    <textarea
+      class="form-control"
+      cols="5"
+      rows="8"
+      [(ngModel)]="sendSmsModel.message"
+      name="body"
+    ></textarea>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-secondary" (click)="sendSmsReq()" [disabled]="creating">
-      {{ creating ? 'loading...' : ('Send' | translate) }}
+    <button
+      type="button"
+      class="btn btn-secondary"
+      (click)="sendSmsReq()"
+      [disabled]="creating"
+    >
+      {{ creating ? "loading..." : ("Send" | translate) }}
     </button>
-    <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
+    <button type="button" class="btn btn-secondary" (click)="c('Close click')">
+      Close
+    </button>
   </div>
 </ng-template>
 <ng-template #consultantCall let-c="close" let-d="dismiss">
   <div class="modal-header modal-popup-header-bg">
-    <h4 class="modal-title">Consultant Call History<span class="required">*</span></h4>
-    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+    <h4 class="modal-title">
+      Consultant Call History<span class="required">*</span>
+    </h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="d('Cross click')"
+    >
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
   <div class="modal-body">
     <label>Description</label>
-    <textarea class="form-control " required cols="5" rows="8" [(ngModel)]="conchModel.description" name="body"></textarea>
+    <textarea
+      class="form-control"
+      required
+      cols="5"
+      rows="8"
+      [(ngModel)]="conchModel.description"
+      name="body"
+    ></textarea>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-secondary" (click)="createConCallHistory()" [disabled]="creating">
-      {{ creating ? 'loading...' : ('Send' | translate) }}
+    <button
+      type="button"
+      class="btn btn-secondary"
+      (click)="createConCallHistory()"
+      [disabled]="creating"
+    >
+      {{ creating ? "loading..." : ("Send" | translate) }}
     </button>
-    <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
-  </div> 
+    <button type="button" class="btn btn-secondary" (click)="c('Close click')">
+      Close
+    </button>
+  </div>
 </ng-template>
 
 <ng-template #createFAQs let-c="close" let-d="dismiss">
   <div class="modal-header modal-popup-header-bg">
-    <h4 class="modal-title">Frequently Asked Questions<span class="required">*</span></h4>
-    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+    <h4 class="modal-title">
+      Frequently Asked Questions<span class="required">*</span>
+    </h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="d('Cross click')"
+    >
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
   <div class="modal-body">
     <div class="row">
       <div class="table-responsive">
-        <table class="table table-hover ">
+        <table class="table table-hover">
           <tbody>
             <tr *ngFor="let cc of faqModel.questions; let i = index">
               <td>
-                <input class="form-control " [(ngModel)]="faqModel.questions[i]" name="fq{{ i }}" placeholder="question" />
+                <input
+                  class="form-control"
+                  [(ngModel)]="faqModel.questions[i]"
+                  name="fq{{ i }}"
+                  placeholder="question"
+                />
               </td>
               <td>
-                <i class="fa fa-minus" aria-hidden="true" id="decrease" (click)="faqListIncrement($event.target, i)"></i>
+                <i
+                  class="fa fa-minus"
+                  aria-hidden="true"
+                  id="decrease"
+                  (click)="faqListIncrement($event.target, i)"
+                ></i>
                 <br />
                 <i
                   class="fa fa-plus"
@@ -922,26 +1309,48 @@
     </div>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-secondary" (click)="createFAQ()" [disabled]="creating">
-      {{ creating ? 'loading...' : ('Create' | translate) }}
+    <button
+      type="button"
+      class="btn btn-secondary"
+      (click)="createFAQ()"
+      [disabled]="creating"
+    >
+      {{ creating ? "loading..." : ("Create" | translate) }}
     </button>
-    <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
+    <button type="button" class="btn btn-secondary" (click)="c('Close click')">
+      Close
+    </button>
   </div>
 </ng-template>
 <ng-template #searchConsultant let-c="close" let-d="dismiss">
   <div class="modal-header modal-popup-header-bg">
     <h4 class="modal-title">Search Consultant</h4>
-    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="d('Cross click')"
+    >
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
   <div class="modal-body">
     <div class="row">
       <div class="col-md-12">
-        <input type="text" class="form-control" placeholder="search..." (keyup)="popupSearchConsultant()" [(ngModel)]="searchCon" />
+        <input
+          type="text"
+          class="form-control"
+          placeholder="search..."
+          (keyup)="popupSearchConsultant()"
+          [(ngModel)]="searchCon"
+        />
       </div>
     </div>
-    <div *ngIf="searchConsultantList.length > 0; else noDataFound" class="table-responsive tableFixHead  mt-2" id="viewTable">
+    <div
+      *ngIf="searchConsultantList.length > 0; else noDataFound"
+      class="table-responsive tableFixHead mt-2"
+      id="viewTable"
+    >
       <table class="table table-sm table-hover table-striped">
         <thead>
           <tr>
@@ -955,8 +1364,11 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let cl of searchConsultantList; let i = index" (click)="setSearch(cl)">
-            <td class="table-data-padding ">
+          <tr
+            *ngFor="let cl of searchConsultantList; let i = index"
+            (click)="setSearch(cl)"
+          >
+            <td class="table-data-padding">
               {{ cl.fullname }}
             </td>
             <td>
@@ -970,10 +1382,14 @@
       </table>
     </div>
     <ng-template #noDataFound>
-      <span *ngIf="searchCon.length > 2" class="text-center"><h3>No Data Found</h3></span>
+      <span *ngIf="searchCon.length > 2" class="text-center"
+        ><h3>No Data Found</h3></span
+      >
     </ng-template>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
+    <button type="button" class="btn btn-secondary" (click)="c('Close click')">
+      Close
+    </button>
   </div>
 </ng-template>

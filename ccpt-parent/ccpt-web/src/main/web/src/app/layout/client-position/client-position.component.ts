@@ -3,12 +3,12 @@ import {
   OnInit,
   HostListener,
   ElementRef,
-  ViewChild
+  ViewChild,
 } from "@angular/core";
 import {
   NgbModal,
   ModalDismissReasons,
-  NgbModalRef
+  NgbModalRef,
 } from "@ng-bootstrap/ng-bootstrap";
 import { URLConstants } from "../components/constants/url-constants";
 import { Properties } from "../components/constants/properties";
@@ -18,7 +18,7 @@ import {
   SendSmsModel,
   SendEmailModel,
   ActionsList,
-  PostingInfoModel
+  PostingInfoModel,
 } from "./client-position.model";
 import { NgForm } from "@angular/forms";
 import { forkJoin } from "rxjs";
@@ -32,7 +32,7 @@ import { Title } from "@angular/platform-browser";
 import {
   StorageService,
   HttpClientService,
-  ToastrCustomService
+  ToastrCustomService,
 } from "../../shared/services";
 import { ClientCallHistoryModel } from "../client-call-history/client-call-history.model";
 
@@ -40,7 +40,7 @@ import { ClientCallHistoryModel } from "../client-call-history/client-call-histo
   selector: "app-client-position",
   templateUrl: "./client-position.component.html",
   styleUrls: ["./client-position.component.scss"],
-  animations: [routerTransition()]
+  animations: [routerTransition()],
 })
 export class ClientPositionComponent implements OnInit {
   public model: ClientPositionModel = <ClientPositionModel>{};
@@ -108,19 +108,19 @@ export class ClientPositionComponent implements OnInit {
     spellcheck: true,
     height: "15rem",
     minHeight: "5rem",
-    translate: "no"
+    translate: "no",
   };
   public emailEditorconfig: AngularEditorConfig = {
     editable: true,
     spellcheck: true,
     height: "15rem",
     minHeight: "5rem",
-    translate: "no"
+    translate: "no",
   };
   public paginateConfig: any = {
     itemsPerPage: 0,
     currentPage: 0,
-    totalItems: 0
+    totalItems: 0,
   };
   constructor(
     private http: HttpClientService,
@@ -154,7 +154,7 @@ export class ClientPositionComponent implements OnInit {
       selectAllText: "Select All",
       unSelectAllText: "UnSelect All",
       itemsShowLimit: 3,
-      allowSearchFilter: true
+      allowSearchFilter: true,
     };
     this.init();
     this.initialGetAll();
@@ -193,9 +193,9 @@ export class ClientPositionComponent implements OnInit {
         pageNumber +
         "&pageSize=50&sortBy=id&status=Active"
     );
-    temp.subscribe(resp => {
+    temp.subscribe((resp) => {
       this.clientPositionList = resp as any;
-      this.clientPositionList.list.forEach(cl => {
+      this.clientPositionList.list.forEach((cl) => {
         if (this.validate(cl.shineURL) || this.validate(cl.naukriURL)) {
           cl["isProfilePosted"] = true;
         } else {
@@ -226,7 +226,7 @@ export class ClientPositionComponent implements OnInit {
       this.getAllC,
       this.getAllCon
       // forkJoin on works for observables that complete
-    ).subscribe(listofrecords => {
+    ).subscribe((listofrecords) => {
       this.clientPositionStatusList = listofrecords[0] as any;
       this.recruiterList = listofrecords[1] as any;
       this.clientList = listofrecords[2] as any;
@@ -250,7 +250,7 @@ export class ClientPositionComponent implements OnInit {
   private getCPById(id: number) {
     this.spinner(false);
     const temp = this.http.get(this.urlConstants.CPGetById + id);
-    temp.subscribe(resp => {
+    temp.subscribe((resp) => {
       if (resp) {
         this.model = this.mapToUpdateModel(resp);
       }
@@ -281,14 +281,14 @@ export class ClientPositionComponent implements OnInit {
           this.model.properties = [];
           this.model.properties.push(<AdditionalPropertiesModel>{
             name: this.apName,
-            value: this.apValue
+            value: this.apValue,
           });
           this.apName = "";
           this.apValue = "";
         } else if (this.model.properties.length == 0) {
           this.model.properties.push(<AdditionalPropertiesModel>{
             name: this.apName,
-            value: this.apValue
+            value: this.apValue,
           });
           this.apName = "";
           this.apValue = "";
@@ -312,7 +312,7 @@ export class ClientPositionComponent implements OnInit {
           } else {
             this.model.properties.push(<AdditionalPropertiesModel>{
               name: this.apName,
-              value: this.apValue
+              value: this.apValue,
             });
             this.apName = "";
             this.apValue = "";
@@ -327,7 +327,7 @@ export class ClientPositionComponent implements OnInit {
       const temp = {
         item_id: this.consultantList[i].id,
         item_text: this.consultantList[i].name,
-        notes: ""
+        notes: "",
       };
       this.consultantNames.push(temp);
     }
@@ -355,7 +355,7 @@ export class ClientPositionComponent implements OnInit {
         temp,
         this.urlConstants.EmailTemplateBuildContent + "Job Description"
       )
-      .subscribe(resp => {
+      .subscribe((resp) => {
         this.sendEmailModel = resp as any;
         this.sendEmailModel.target = "";
         this.sendEmailModel.toEmails = "";
@@ -366,7 +366,7 @@ export class ClientPositionComponent implements OnInit {
     let temp = { cpId: this.model.id };
     this.http
       .post(temp, this.urlConstants.SMSTemplateBuildContent + "JobDescription")
-      .subscribe(resp => {
+      .subscribe((resp) => {
         this.sendSmsModel = resp as any;
         this.sendSmsModel.target = "";
         this.sendSmsModel.contactNumbers = "";
@@ -389,7 +389,7 @@ export class ClientPositionComponent implements OnInit {
   private getRecruiterId(): any {
     const temp = sessionStorage.getItem("username");
     let id;
-    this.recruiterList.forEach(rl => {
+    this.recruiterList.forEach((rl) => {
       if (rl.email === temp) {
         id = rl.id;
       }
@@ -417,14 +417,14 @@ export class ClientPositionComponent implements OnInit {
     this.clchModel.calledDate = this.setTodaysDate();
     const temp = this.http.post(this.clchModel, this.urlConstants.CCHCreate);
     temp.subscribe(
-      resp => {
+      (resp) => {
         this.toastr.success(this.properties.CREATE, this.properties.CON_C_H);
         //this.create(this.cpForm);
         this.clchModel = <ClientCallHistoryModel>{};
         this.creating = false;
         this.close();
       },
-      err => {
+      (err) => {
         this.toastr.error(err.error.message, this.properties.CON_C_H);
         this.creating = false;
       }
@@ -447,7 +447,7 @@ export class ClientPositionComponent implements OnInit {
       );
       const temp = this.http.post(this.model, this.urlConstants.CPCreate);
       temp.subscribe(
-        resp => {
+        (resp) => {
           this.toastr.success(this.properties.CREATE, this.properties.CP);
           this.init();
           this.formReset();
@@ -462,7 +462,7 @@ export class ClientPositionComponent implements OnInit {
           }
           this.createReqClch(clientCall, resp);
         },
-        err => {
+        (err) => {
           this.toastr.error(err.error.message, this.properties.CP);
           this.isCreate = false;
           this.spinner(true);
@@ -482,7 +482,7 @@ export class ClientPositionComponent implements OnInit {
     }
   }
   private getClientNameById(clientId: number) {
-    const temp = this.clientList.filter(c => c.id === clientId);
+    const temp = this.clientList.filter((c) => c.id === clientId);
     return temp[0].name;
   }
   /** Check contains Only Digits */
@@ -508,7 +508,7 @@ export class ClientPositionComponent implements OnInit {
     );
     const temp = this.http.update(this.model, this.urlConstants.CPUpdate);
     temp.subscribe(
-      resp => {
+      (resp) => {
         this.toastr.success(this.properties.UPDATE, this.properties.CP);
         this.formReset();
         this.init();
@@ -520,7 +520,7 @@ export class ClientPositionComponent implements OnInit {
         this.closedByEnable = false;
         this.showAction = false;
       },
-      err => {
+      (err) => {
         this.toastr.error(err.error.message, this.properties.CP);
         this.spinner(true);
       }
@@ -541,7 +541,7 @@ export class ClientPositionComponent implements OnInit {
       this.urlConstants.CPDelete + this.selectedRecrd
     );
     temp.subscribe(
-      resp => {
+      (resp) => {
         this.toastr.success(this.properties.DELETE, this.properties.CP);
         this.init();
         this.close();
@@ -552,7 +552,7 @@ export class ClientPositionComponent implements OnInit {
         this.enableButtonType = "";
         this.showAction = false;
       },
-      err => {
+      (err) => {
         if (err.status === 200) {
           this.init();
           this.close();
@@ -571,7 +571,7 @@ export class ClientPositionComponent implements OnInit {
     const temp = { cpId: this.selectedRecrd };
     this.http
       .post(temp, this.urlConstants.SMSTemplateBuildContent + sms.value)
-      .subscribe(resp => {
+      .subscribe((resp) => {
         // tslint:disable-next-line:no-shadowed-variable
         const temp = resp as any;
         this.sendSmsModel.message = temp.message;
@@ -585,7 +585,7 @@ export class ClientPositionComponent implements OnInit {
       this.urlConstants.SMSTemplateSend
     );
     temp.subscribe(
-      resp => {
+      (resp) => {
         /**Check if any new consultants exists in emails to which send  */
         this.close();
         this.creating = false;
@@ -593,7 +593,7 @@ export class ClientPositionComponent implements OnInit {
         this.toastr.success("Sms sent successfully", "Sent!");
         this.spinner(true);
       },
-      err => {
+      (err) => {
         this.creating = false;
         this.toastr.error(err.error.message, this.properties.CP);
         this.spinner(true);
@@ -608,7 +608,7 @@ export class ClientPositionComponent implements OnInit {
       this.urlConstants.EmailTemplateSend
     );
     temp.subscribe(
-      resp => {
+      (resp) => {
         /**Check if any new consultants exists in emails to which send  */
         this.close();
         this.creating = false;
@@ -617,7 +617,7 @@ export class ClientPositionComponent implements OnInit {
         this.toastr.success("Email/Emails sent successfully", "Sent!");
         this.spinner(true);
       },
-      err => {
+      (err) => {
         this.creating = false;
         this.toastr.error(err.error.message, this.properties.CP);
         this.spinner(true);
@@ -628,21 +628,21 @@ export class ClientPositionComponent implements OnInit {
     this.consultantsToCreate = [];
     let newConEmails: any = [];
     let selectedEmails = this.sendEmailModel.toEmails.split(",");
-    let conEmails = this.consultantList.map(cl => {
+    let conEmails = this.consultantList.map((cl) => {
       return cl.email;
     });
-    selectedEmails.forEach(ets => {
+    selectedEmails.forEach((ets) => {
       if (conEmails.indexOf(ets) == -1 && newConEmails.indexOf(ets) == -1) {
         newConEmails.push(ets);
       }
     });
-    newConEmails.forEach(element => {
+    newConEmails.forEach((element) => {
       let temp = {
         email: element,
         gender: "",
         fullname: "",
         phone: "+91",
-        conStatus: "Active"
+        conStatus: "Active",
       };
       this.consultantsToCreate.push(temp);
     });
@@ -653,16 +653,16 @@ export class ClientPositionComponent implements OnInit {
   public createConsultant() {
     this.spinner(false);
     this.creating = true;
-    this.consultantsToCreate.forEach(consultant => {
+    this.consultantsToCreate.forEach((consultant) => {
       const temp = this.http.post(consultant, this.urlConstants.CCreate);
       temp.subscribe(
-        resp => {
+        (resp) => {
           this.spinner(true);
           this.creating = false;
           this.toastr.success(this.properties.CREATE, this.properties.CON);
           this.close();
         },
-        err => {
+        (err) => {
           this.creating = false;
           this.toastr.error(err.error.message, this.properties.CON);
           this.spinner(true);
@@ -677,12 +677,12 @@ export class ClientPositionComponent implements OnInit {
       consultantId: data.item_id,
       caStatus: "NEW",
       description: data.notes,
-      creatorId: this.creator
+      creatorId: this.creator,
     };
     this.spinner(false);
     const temp = this.http.post(dataToCreate, this.urlConstants.CACreate);
     temp.subscribe(
-      resp => {
+      (resp) => {
         this.toastr.success(this.properties.CREATE, this.properties.CA);
         this.init();
         this.formReset();
@@ -694,7 +694,7 @@ export class ClientPositionComponent implements OnInit {
         this.shortListConsultants = [];
         this.spinner(true);
       },
-      err => {
+      (err) => {
         this.toastr.error(err.statusText, this.properties.CA);
         this.spinner(true);
       }
@@ -712,14 +712,14 @@ export class ClientPositionComponent implements OnInit {
     }
     this.modalRef = this.modalService.open(content, {
       size: "lg",
-      backdrop: "static"
+      backdrop: "static",
     });
     this.modalRef.result.then(
-      result => {
+      (result) => {
         this.action = null;
         this.closeResult = `Closed with: ${result}`;
       },
-      reason => {
+      (reason) => {
         this.action = null;
         this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
       }
@@ -730,20 +730,20 @@ export class ClientPositionComponent implements OnInit {
           const temp = {
             item_id: this.consultantList[i].id,
             item_text: this.consultantList[i].fullname,
-            notes: ""
+            notes: "",
           };
           this.mailIdForMails.push(this.consultantList[i].email);
         }
       }
       if (content.type === this.sms) {
-        this.http.get(this.urlConstants.SMSTemplateGetAll).subscribe(resp => {
+        this.http.get(this.urlConstants.SMSTemplateGetAll).subscribe((resp) => {
           this.smsList = resp as any;
         });
         for (let i = 0; i < this.consultantList.length; i++) {
           const temp = {
             item_id: this.consultantList[i].phone,
             item_text: this.consultantList[i].fullname,
-            notes: ""
+            notes: "",
           };
           this.numbersForSmsDropdown.push(temp);
         }
@@ -774,7 +774,7 @@ export class ClientPositionComponent implements OnInit {
         break;
       }
     }
-    this.initialGetAll();
+    // this.initialGetAll();
   }
   private spinner(isSpinner: boolean) {
     this.listReturned = isSpinner;
@@ -794,14 +794,14 @@ export class ClientPositionComponent implements OnInit {
   }
 
   public showInactive() {
-    if (this.tableType != "Inactive Positions") {
-      this.paginateConfigDeclare(this.properties.ITEMSPERPAGE, 1, 0);
-    }
+    this.tableType = "Inactive Positions";
     let pageNumber = this.paginateConfig.currentPage - 1;
     let temp = this.http.get(
-      this.urlConstants.CPGetAllByStatus + pageNumber + "&pageSize=50&sortBy=id"
+      this.urlConstants.CPGetAllByStatus +
+        pageNumber +
+        "&pageSize=50&sortBy=id&status=Inactive"
     );
-    temp.subscribe(resp => {
+    temp.subscribe((resp) => {
       this.clientPositionList = resp as any;
       this.paginateConfig.totalItems = this.clientPositionList.noOfRecords;
     });
@@ -819,8 +819,8 @@ export class ClientPositionComponent implements OnInit {
    */
   public editPostingInfo() {
     this.creating = true;
-    let postingInfo: PostingInfoModel= <PostingInfoModel>{}
-    postingInfo.id=this.model.id;
+    let postingInfo: PostingInfoModel = <PostingInfoModel>{};
+    postingInfo.id = this.model.id;
     postingInfo.shineURL = this.model.shineURL;
     postingInfo.naukriURL = this.model.naukriURL;
     postingInfo.shinePosting = this.model.shinePosting;
@@ -832,12 +832,12 @@ export class ClientPositionComponent implements OnInit {
     postingInfo.shineMassMailingCount = this.model.shineMassMailingCount;
     postingInfo.naukriMassMailingCount = this.model.naukriMassMailingCount;
     this.http.update(postingInfo, this.urlConstants.CPUpdatePosting).subscribe(
-      resp => {
+      (resp) => {
         this.toastr.success(this.properties.UPDATE, this.properties.CP);
         this.creating = false;
         this.close();
       },
-      err => {
+      (err) => {
         this.toastr.error(err.error.message, this.properties.CP);
         this.creating = false;
       }
@@ -854,16 +854,15 @@ export class ClientPositionComponent implements OnInit {
       }
     }
   }
-  public setClientAddress(event,clientId){
-    if(event.target.checked){
-      this.clientList.forEach(cl =>{
-        if(clientId == cl.id){
+  public setClientAddress(event, clientId) {
+    if (event.target.checked) {
+      this.clientList.forEach((cl) => {
+        if (clientId == cl.id) {
           this.model.address = cl.address;
         }
-      })
-    }
-    else{
-      this.model.address=null;
+      });
+    } else {
+      this.model.address = null;
     }
   }
 }
