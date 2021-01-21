@@ -7,6 +7,7 @@ export interface ClientModel {
   phone: string;
   email: string;
   address: string;
+  shareContactInfo: boolean;
   billingAddress: string;
   guaranteePeriod: string;
   creditPeriod: string;
