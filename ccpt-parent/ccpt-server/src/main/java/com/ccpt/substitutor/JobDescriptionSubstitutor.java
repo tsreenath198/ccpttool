@@ -233,6 +233,18 @@ public class JobDescriptionSubstitutor implements ContentSubstitutor {
 					+ "</td>\r\n" + "<td width=\"529\">\r\n" + "<p>"
 					+ clientApplication.getConsultant().getCurrentCompany() + "</p>\r\n" + "</td>\r\n" + "</tr>");
 		}
+		if (clientApplication.getClientPosition().getClient().isShareContactInfo()) {
+			if (clientApplication.getConsultant().getPhone() != null) {
+				sb.append("<tr>\r\n" + "<td width=\"199\">\r\n" + "<p><strong>Phone</strong></p>\r\n" + "</td>\r\n"
+						+ "<td width=\"529\">\r\n" + "<p>" + clientApplication.getConsultant().getPhone() + "</p>\r\n"
+						+ "</td>\r\n" + "</tr>");
+			}
+			if (clientApplication.getConsultant().getEmail() != null) {
+				sb.append("<tr>\r\n" + "<td width=\"199\">\r\n" + "<p><strong>Email</strong></p>\r\n" + "</td>\r\n"
+						+ "<td width=\"529\">\r\n" + "<p>" + clientApplication.getConsultant().getEmail() + "</p>\r\n"
+						+ "</td>\r\n" + "</tr>");
+			}
+		}
 		sb.append("</tbody>");
 		sb.append("</table>");
 		return sb.toString();

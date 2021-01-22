@@ -63,4 +63,7 @@ public class Client extends FileSupportEntity {
 	private String mapLocation;
 	@Column
 	private String salutation;
+	@Column
+	@NotNull
+	private boolean shareContactInfo;
 }
