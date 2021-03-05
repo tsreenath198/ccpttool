@@ -94,4 +94,11 @@ export class SidebarComponent implements OnInit {
   onLoggedout() {
     localStorage.removeItem("isLoggedin");
   }
+
+  /**
+   * navigateToLearn
+   */
+  public navigateToLearn() {
+    window.open("https://www.learn.talentcorner.in/", "_blank");
+  }
 }

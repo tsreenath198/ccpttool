@@ -1,15 +1,11 @@
-<nav
-  class="sidebar"
-  (mouseover)="sidebarExpand()"
-  (mouseleave)="sidebarCollapse()"
-  [ngClass]="{ sidebarPushRight: isActive, collapsed: collapsed }"
->
+<nav class="sidebar" (mouseover)="sidebarExpand()" (mouseleave)="sidebarCollapse()"
+  [ngClass]="{ sidebarPushRight: isActive, collapsed: collapsed }">
   <div class="list-group">
     <a routerLink="/layout/dashboard" [routerLinkActive]="['router-link-active']" class="list-group-item">
       <i class="fa fa-fw fa-home"></i>
       <span>{{ 'Dashboard' | translate }}</span>
     </a>
-    <div class="nested-menu" (mouseover)="addExpandClass('calls')" (mouseleave)="addCollapseClass()">
+    <!-- <div class="nested-menu" (mouseover)="addExpandClass('calls')" (mouseleave)="addCollapseClass()">
       <a class="list-group-item">
         <i class="fa fa-fw fa-phone"></i>
         <span>{{ 'Calls' | translate }}</span>
@@ -30,7 +26,7 @@
           </li>
         </ul>
       </li>
-    </div>
+    </div> -->
     <a [routerLink]="['/layout/consultant']" [routerLinkActive]="['router-link-active']" class="list-group-item">
       <i class="fa fa-fw fa-users"></i>
       <span>{{ 'Consultants' | translate }}</span>
@@ -43,24 +39,21 @@
       <i class="fa fa-fw fa-briefcase"></i>
       <span>{{ 'Client Positions' | translate }}</span>
     </a>
-    <a [routerLink]="['/layout/client-application']" [routerLinkActive]="['router-link-active']" class="list-group-item">
+    <a [routerLink]="['/layout/client-application']" [routerLinkActive]="['router-link-active']"
+      class="list-group-item">
       <i class="fa fa-fw fa-paper-plane"></i>
       <span>{{ 'Client Applications' | translate }}</span>
     </a>
-    <a [routerLink]="['/layout/payments']" [routerLinkActive]="['router-link-active']" class="list-group-item"
-      ><i class="fa fa-fw fa-inr"></i>
+    <a [routerLink]="['/layout/payments']" [routerLinkActive]="['router-link-active']" class="list-group-item"><i
+        class="fa fa-fw fa-inr"></i>
       <span>{{ 'Payments' | translate }}</span>
     </a>
     <a [routerLink]="['/layout/other-contacts']" [routerLinkActive]="['router-link-active']" class="list-group-item">
       <i class="fa fa-fw fa-address-book"></i>
       <span>{{ 'Other Contacts' | translate }}</span>
     </a>
-    <div
-      class="nested-menu"
-      (mouseover)="addExpandClass('administration')"
-      (mouseleave)="addCollapseClass()"
-      *ngIf="loggedInRole == 'Admin'"
-    >
+    <div class="nested-menu" (mouseover)="addExpandClass('administration')" (mouseleave)="addCollapseClass()"
+      *ngIf="loggedInRole == 'Admin'">
       <a class="list-group-item">
         <i class="fa fa-fw fa-user"></i>
         <span>{{ 'Administration' | translate }}</span>
@@ -74,15 +67,15 @@
             </a>
           </li>
           <li>
-            <a [routerLink]="['/layout/user']" [routerLinkActive]="['router-link-active']" class="list-group-item"
-              ><i class="fa fa-fw fa-user-circle"></i>
+            <a [routerLink]="['/layout/user']" [routerLinkActive]="['router-link-active']" class="list-group-item"><i
+                class="fa fa-fw fa-user-circle"></i>
               <span>{{ 'Users' | translate }}</span>
             </a>
           </li>
         </ul>
       </li>
     </div>
-    
+
     <div class="nested-menu" (mouseover)="addExpandClass('metaData')" (mouseleave)="addCollapseClass()">
       <a class="list-group-item">
         <i class="fa fa-fw fa-sticky-note"></i>
@@ -91,26 +84,27 @@
       <li class="nested" [class.expand]="showMenu === 'metaData'">
         <ul class="submenu">
           <li>
-            <a [routerLink]="['/layout/client-application-status']" [routerLinkActive]="['router-link-active']" class="list-group-item">
+            <a [routerLink]="['/layout/client-application-status']" [routerLinkActive]="['router-link-active']"
+              class="list-group-item">
               <i class="fa fa-fw fa-filter"></i>
               <span>{{ 'Application Status' | translate }}</span>
             </a>
           </li>
           <li>
-            <a [routerLink]="['/layout/client-position-status']" [routerLinkActive]="['router-link-active']" class="list-group-item"
-              ><i class="fa fa-fw fa-filter"></i>
+            <a [routerLink]="['/layout/client-position-status']" [routerLinkActive]="['router-link-active']"
+              class="list-group-item"><i class="fa fa-fw fa-filter"></i>
               <span>{{ 'Position Status' | translate }}</span>
             </a>
           </li>
           <li>
-            <a [routerLink]="['/layout/consultant-status']" [routerLinkActive]="['router-link-active']" class="list-group-item"
-              ><i class="fa fa-fw fa-filter"></i>
+            <a [routerLink]="['/layout/consultant-status']" [routerLinkActive]="['router-link-active']"
+              class="list-group-item"><i class="fa fa-fw fa-filter"></i>
               <span>{{ 'Consultant Status' | translate }}</span>
             </a>
           </li>
           <li>
-            <a [routerLink]="['/layout/industry-type']" [routerLinkActive]="['router-link-active']" class="list-group-item"
-              ><i class="fa fa-fw fa-industry"></i>
+            <a [routerLink]="['/layout/industry-type']" [routerLinkActive]="['router-link-active']"
+              class="list-group-item"><i class="fa fa-fw fa-industry"></i>
               <span>{{ 'Industries' | translate }}</span>
             </a>
           </li>
@@ -125,27 +119,27 @@
       <li class="nested" [class.expand]="showMenu === 'communication'">
         <ul class="submenu">
           <li>
-            <a [routerLink]="['/layout/email-template']" [routerLinkActive]="['router-link-active']" class="list-group-item"
-              ><i class="fa fa-fw fa-envelope"></i>
+            <a [routerLink]="['/layout/email-template']" [routerLinkActive]="['router-link-active']"
+              class="list-group-item"><i class="fa fa-fw fa-envelope"></i>
               <span>{{ 'Emails' | translate }}</span>
             </a>
           </li>
           <li>
-            <a [routerLink]="['/layout/message-template']" [routerLinkActive]="['router-link-active']" class="list-group-item"
-              ><i class="fa fa-fw fa-comment"></i>
+            <a [routerLink]="['/layout/message-template']" [routerLinkActive]="['router-link-active']"
+              class="list-group-item"><i class="fa fa-fw fa-comment"></i>
               <span>{{ 'Message Templates' | translate }}</span>
             </a>
           </li>
 
           <li>
-            <a [routerLink]="['/layout/send-message']" [routerLinkActive]="['router-link-active']" class="list-group-item"
-              ><i class="fa fa-fw fa-comments"></i>
+            <a [routerLink]="['/layout/send-message']" [routerLinkActive]="['router-link-active']"
+              class="list-group-item"><i class="fa fa-fw fa-comments"></i>
               <span>{{ 'Send Message' | translate }}</span>
             </a>
           </li>
           <li>
-            <a [routerLink]="['/layout/send-email']" [routerLinkActive]="['router-link-active']" class="list-group-item"
-              ><i class="fa fa-fw fa-envelope"></i>
+            <a [routerLink]="['/layout/send-email']" [routerLinkActive]="['router-link-active']"
+              class="list-group-item"><i class="fa fa-fw fa-envelope"></i>
               <span>{{ 'Send Email' | translate }}</span>
             </a>
           </li>
@@ -164,7 +158,8 @@
       <li class="nested" [class.expand]="showMenu === 'guide'">
         <ul class="submenu">
           <li>
-            <a class="list-group-item " [routerLink]="['/layout/search-bank']" [routerLinkActive]="['router-link-active']">
+            <a class="list-group-item " [routerLink]="['/layout/search-bank']"
+              [routerLinkActive]="['router-link-active']">
               <span class="fa fa-fw fa-search"></span>
               <span>{{ 'Search Bank' | translate }}</span>
             </a>
@@ -186,13 +181,15 @@
       <li class="nested" [class.expand]="showMenu === 'history'">
         <ul class="submenu">
           <li>
-            <a class="list-group-item " [routerLink]="['/layout/email-history']" [routerLinkActive]="['router-link-active']">
+            <a class="list-group-item " [routerLink]="['/layout/email-history']"
+              [routerLinkActive]="['router-link-active']">
               <span class="fa fa-fw fa-envelope"></span>
               <span>{{ 'Emails' | translate }}</span>
             </a>
           </li>
           <li>
-            <a class="list-group-item " [routerLink]="['/layout/message-history']" [routerLinkActive]="['router-link-active']">
+            <a class="list-group-item " [routerLink]="['/layout/message-history']"
+              [routerLinkActive]="['router-link-active']">
               <span class="fa fa-fw fa-comments"></span>
               <span>{{ 'Messages' | translate }}</span>
             </a>
@@ -200,6 +197,10 @@
         </ul>
       </li>
     </div>
+    <a (click)="navigateToLearn()" href="javascript:void(0)" class="list-group-item">
+      <i class="fa fa-fw fa-graduation-cap"></i>
+      <span>{{ 'Learn' | translate }}</span>
+    </a>
     <!-- <a [routerLink]="['/layout/charts']" [routerLinkActive]="['router-link-active']" class="list-group-item">
       <i class="fa fa-fw fa-bar-chart-o"></i>
       <span>{{ 'Charts' | translate }}</span>
