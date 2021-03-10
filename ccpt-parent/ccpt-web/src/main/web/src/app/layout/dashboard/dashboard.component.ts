@@ -406,4 +406,12 @@ export class DashboardComponent implements OnInit {
       }*/
     }
   }
+  public convertTime24To12Format(time:string){
+    let hours = parseInt(time.split(':')[0]);
+    let minutes = parseInt(time.split(':')[1]) == 0 ? '00' : parseInt(time.split(':')[1]);
+    if (hours > 12){
+      return `${hours - 12}:${minutes}`
+    }
+    return time;
+  }
 }

@@ -42,7 +42,7 @@
                       </td>
                       <td>{{ val.interviewMode }}</td>
                       <td>
-                        {{ val.interviewDate | date }}/{{ val.interviewTime }}
+                        {{ val.interviewDate | date }}/{{ convertTime24To12Format(val.interviewTime) }}
                       </td>
                       <ng-template #popContent1>{{
                         val.clientPhone
