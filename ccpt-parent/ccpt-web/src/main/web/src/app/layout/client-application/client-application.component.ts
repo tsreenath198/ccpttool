@@ -494,7 +494,8 @@ export class ClientApplicationComponent implements OnInit {
       }
     );
   }
-  createAll(form, consultantCall) {
+
+ /* createAll(form, consultantCall) {
     this.open(this.model.id, consultantCall);
     this.caForm = form;
   }
@@ -518,8 +519,10 @@ export class ClientApplicationComponent implements OnInit {
         this.creating = false;
       }
     );
-  }
+  }*/
+
   public create(clientApplicationForm: NgForm): void {
+    debugger
     this.spinner(false);
     this.isCreate = true;
     const temp = this.http.post(this.model, this.urlConstants.CACreate);
