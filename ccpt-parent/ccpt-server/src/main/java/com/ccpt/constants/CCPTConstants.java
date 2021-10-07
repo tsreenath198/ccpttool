@@ -21,7 +21,7 @@ public interface CCPTConstants {
 	String TEMPLATE = "/template";
 	String EMAIL = "/email";
 	String DOWNLOAD = "/download/{id}";
-	//String UPLOAD_FILE = "/uploadFile";
+	//  String UPLOAD_FILE = "/uploadFile";
 	String SMS = "/sms";
 	String PAYMENT = "/payment";
 	String SEARCH = "/search";
